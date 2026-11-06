@@ -71796,11 +71796,13 @@
      "cherry_tomato_2",
      "cherry_tomato_3",
      "floor_block",
+     "handled_cooking_pot",
      "juice_bottle",
      "kitchen_sponge",
      "mug",
      "oatmeal",
      "paperback_book",
+     "pot_lid",
      "rolling_pin",
      "soda_can",
      "spoon_kitchen_cabinet",
@@ -71825,6 +71827,15 @@
       "existing": false
      },
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "soup_bowl_1": {
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_6/top",
@@ -71879,6 +71890,15 @@
       "clutter_cereal_b"
      ],
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "soup_bowl_1": {
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_6/top",
@@ -72028,6 +72048,15 @@
       "referent_clue"
      ],
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "full_bowl": {
        "asset": "oatmeal_bowl",
        "support": "kitchen_cabinet_6/top",
@@ -72125,6 +72154,15 @@
       "item_put_away"
      ],
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "soup_bowl_1": {
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
@@ -72190,6 +72228,15 @@
       "bowl_side_table"
      ],
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "spare_mug": {
        "asset": "breakfast_mug",
        "support": "kitchen_cabinet_6/top",
@@ -72278,6 +72325,15 @@
       "referent_clue"
      ],
      "add": {
+      "stove_soup": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
       "spare_plate": {
        "asset": "breakfast_plate",
        "support": "kitchen_cabinet_6/top",

@@ -20011,7 +20011,8 @@
    "start": null,
    "moved": [],
    "added": [
-    "soup_bowl_1"
+    "soup_bowl_1",
+    "stove_soup"
    ],
    "removed": [],
    "conditions": [],
@@ -20067,7 +20068,8 @@
     "seat_spoon_3",
     "soup_bowl_1",
     "soup_bowl_2",
-    "soup_bowl_3"
+    "soup_bowl_3",
+    "stove_soup"
    ],
    "removed": [
     "clutter_cereal_a",
@@ -20126,7 +20128,8 @@
    "moved": [],
    "added": [
     "full_bowl",
-    "soup_bowl_1"
+    "soup_bowl_1",
+    "stove_soup"
    ],
    "removed": [],
    "conditions": [
@@ -20184,7 +20187,8 @@
    "start": null,
    "moved": [],
    "added": [
-    "soup_bowl_1"
+    "soup_bowl_1",
+    "stove_soup"
    ],
    "removed": [],
    "conditions": [
@@ -20242,7 +20246,8 @@
    "moved": [],
    "added": [
     "spare_mug",
-    "spare_plate"
+    "spare_plate",
+    "stove_soup"
    ],
    "removed": [
     "bowl_dining_cabinet",
@@ -20301,7 +20306,8 @@
    "moved": [],
    "added": [
     "soup_bowl_1",
-    "spare_plate"
+    "spare_plate",
+    "stove_soup"
    ],
    "removed": [],
    "conditions": [

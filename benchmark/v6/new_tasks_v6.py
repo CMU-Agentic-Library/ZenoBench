@@ -679,17 +679,20 @@ def t29():
 def t30():
     B1 = "soup_bowl_1"
     top6 = f"{C6}/top"
+    # the soup in its pot on the stove (the scene's empty cooking pot and its lid leave): what the bowls are for
+    SOUP = {"stove_soup": on("soup_pot", "kitchen_stove/top", 8.41, 1.725)}
     ctl = {"note": "the soup cooking in the pot on the stove; a clean bowl on the low wall cabinet",
-           "add": {B1: on("breakfast_bowl", top6, 3.40, 0.36)}}
+           "add": {**SOUP, B1: on("breakfast_bowl", top6, 3.40, 0.36)}}
     t = base_task("T30_bowls_for_soup", "ZB-T30", "The soup is almost ready. Bring a bowl over for serving it.",
                   "汤快好了，拿碗过来准备盛。", "bowl_on_cabinet", ctl, {"all": [["on", B1, ISL], ["upright", B1], H]},
-                  fetch(B1, ISL, [8.05, 1.75]), [B1], remove=["spoon_kitchen_cabinet"])
+                  fetch(B1, ISL, [8.05, 1.75]), [B1],
+                  remove=["spoon_kitchen_cabinet", "handled_cooking_pot", "pot_lid"])
     fams = {
         "how_many": fam(
             "bowl_on_cabinet", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
             "three spoons laid out at the dining table; three clean bowls on the cabinet",
             "as many bowls as places at the table: three",
-            {"": dict(add={**{f"soup_bowl_{i + 1}": on("breakfast_bowl", top6, x, 0.36)
+            {"": dict(add={**SOUP, **{f"soup_bowl_{i + 1}": on("breakfast_bowl", top6, x, 0.36)
                               for i, x in enumerate((3.29, 3.50, 3.71))},
                            **{f"seat_spoon_{i + 1}": on("breakfast_spoon", T2, 3.05, y) for i, y in enumerate((5.90, 6.70, 7.50))}},
                       remove=["clutter_cereal_a", "clutter_cereal_b"],
@@ -703,7 +706,7 @@ def t30():
             "bowl_on_cabinet", ["referent_clue"], "the seed's layout only",
             "two bowls on the cabinet: one still has oatmeal in it, the other is empty",
             "for serving, the empty bowl",
-            {"": dict(add={"full_bowl": on("oatmeal_bowl", top6, 3.35, 0.36), B1: on("breakfast_bowl", top6, 3.62, 0.36)},
+            {"": dict(add={**SOUP, "full_bowl": on("oatmeal_bowl", top6, 3.35, 0.36), B1: on("breakfast_bowl", top6, 3.62, 0.36)},
                       watch=[B1, "full_bowl"],
                       goal={"all": [["on", B1, ISL], ["upright", B1], ["near_start", "full_bowl", 0.03], H]},
                       route=[look(top6)] + fetch(B1, ISL, [8.05, 1.75]))}),
@@ -711,14 +714,14 @@ def t30():
             "bowl_on_cabinet", ["item_put_away"], "the seed's layout only",
             "no bowl out; the clean bowls are in the low cabinet",
             "look in the cabinet, take a bowl, close the door",
-            {"": dict(add={B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
+            {"": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
                       goal={"all": [["on", B1, ISL], ["upright", B1], ["is_closed", C4], H]},
                       route=explore(C4) + from_closed(B1, C4) + [nav(ISL), place(B1, ISL, [8.05, 1.75])])}),
         "no_bowl": fam(
             "bowl_on_cabinet", ["resource_absent"], "the seed's layout only",
             "no clean bowl anywhere; a mug and a plate on the cabinet",
             "soup needs something that holds liquid: the mug, not the plate",
-            {"": dict(add={"spare_mug": on("breakfast_mug", top6, 3.35, 0.36),
+            {"": dict(add={**SOUP, "spare_mug": on("breakfast_mug", top6, 3.35, 0.36),
                            "spare_plate": on("breakfast_plate", top6, 3.62, 0.36)},
                       remove=["bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table", "bowl_inside_kitchen_cabinet"],
                       watch=["spare_mug", "spare_plate"],
@@ -728,7 +731,7 @@ def t30():
             "bowl_on_cabinet", ["referent_clue"], "the seed's layout only",
             "a plate and a bowl on the cabinet",
             "soup is served in a bowl: the bowl, not the plate",
-            {"": dict(add={"spare_plate": on("breakfast_plate", top6, 3.35, 0.36), B1: on("breakfast_bowl", top6, 3.64, 0.36)},
+            {"": dict(add={**SOUP, "spare_plate": on("breakfast_plate", top6, 3.35, 0.36), B1: on("breakfast_bowl", top6, 3.64, 0.36)},
                       watch=[B1, "spare_plate"],
                       goal={"all": [["on", B1, ISL], ["upright", B1], ["near_start", "spare_plate", 0.03], H]},
                       route=[look(top6)] + fetch(B1, ISL, [8.05, 1.75]))}),
