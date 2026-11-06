@@ -102,7 +102,7 @@
 
 ### 目标豁免（`Motion._targets_allow`）
 
-TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这个物体的整个碰撞体在这段运动里对整个机器人都不存在。手里有东西、或 `coll_kw` 里 `exempt_targets` 为 False 时不做（`FREE_SPACE_KW`；pick 全程这样）。还在用的：place 停车点搜索里的接近起点（`FINGERS_KW`）和步骤 4 之前的其他技能。这是粗放的规则：手腕、小臂也能穿过目标物体的其他部位。只有带 TCP 目标点的查询会豁免：`ik` / `ik_global`（目标点）、`ik_set`、`cart_path`（起点和终点都算）、`plan_to`（起点和终点）、`clearance`；`free`、`near`、`segment_free`、关节空间的 `plan`、`explain` 不带目标点，不豁免。所以同一个姿态，用 IK 解出来时"不碰"、再用 `free` 查可能"碰"。各技能在步骤 4 改成 `Allow` 预设时取消。
+TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这个物体的整个碰撞体在这段运动里对整个机器人都不存在。手里有东西、或 `coll_kw` 里 `exempt_targets` 为 False 时不做（`FREE_SPACE_KW`；pick 全程这样）。还在用的：步骤 4 之前的其他技能（place 停车点搜索的接近起点写着 `FINGERS_KW`，但那时手里有东西，豁免不生效）。这是粗放的规则：手腕、小臂也能穿过目标物体的其他部位。只有带 TCP 目标点的查询会豁免：`ik` / `ik_global`（目标点）、`ik_set`、`cart_path`（起点和终点都算）、`plan_to`（起点和终点）、`clearance`；`free`、`near`、`segment_free`、关节空间的 `plan`、`explain` 不带目标点，不豁免。所以同一个姿态，用 IK 解出来时"不碰"、再用 `free` 查可能"碰"。各技能在步骤 4 改成 `Allow` 预设时取消。
 
 ### 底盘规划器（`base_planner.py`）
 
@@ -205,11 +205,11 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 | 松手 | 张开到抓取时的宽度 |
 | 离开 | 方向见第 10 节；长度由碰撞模型定 |
 | 下一个中继位姿 | 行驶姿态（收起，收起碰就下垂） |
-| 停车点验证 | 接近起点（自由空间，不豁免目标）、放下位姿、两者之间的直线、离开段终点、从离开段终点能到收起或下垂 |
+| 停车点验证 | 接近起点（自由空间）、放下位姿、两者之间的直线、离开段终点、从离开段终点能到收起或下垂 |
 | 书 | 放置点多一条约束：被夹的边伸出支撑面边缘，伸出量让下面那根手指离得开；上方开放竖直放下，上面有隔层水平伸进去。"把书推满"不属于 place（第 10 节） |
 | 深容器（drop） | 在沿口上方松手，本来就在空中，离开段为 0；去掉 `drop_above` / `hover_above` 的直线 fallback，停车点验证加收臂 |
 
-**删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、接近起点的目标豁免（`FINGERS_KW`）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（改成看持物的几何）。`_carry_bottom_z` 的避障抬高要等底盘规划器能换搬运高度（第 7 节、第 9 节）。
+**删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、接近起点的 `FINGERS_KW`（持物时豁免本来不生效，换成自由空间写清楚）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（改成看持物的几何）。`_carry_bottom_z` 的避障抬高要等底盘规划器能换搬运高度（第 7 节、第 9 节）。
 
 **已知的 place 失败**（重写后逐个复查）：
 
