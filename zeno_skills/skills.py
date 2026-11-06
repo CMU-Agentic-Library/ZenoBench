@@ -30,7 +30,7 @@ from .kinematics import PAD_TIP, finger_model_box, gripper_rot
 from .physics import PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .rig import FINGERS_KW, FREE_SPACE_KW, Dropped, SkillFailure
-from .sticky import note_grasp, rest_R, welded
+from .sticky import SHUT, note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
@@ -40,6 +40,14 @@ COM_MARGIN = 0.035            # centre of mass stays this far inside the edge wh
 PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
 PICK_APPROACH = 0.04          # m: a pinch closes in straight along the gripper axis for this long
+# the open hand reached the grasp pose within this, else it was stopped short (blocked) and does
+# not close: reach errors 0.1-0.4 mm in benchmark/runs/pick612_verify, 34.6 mm where a finger
+# rode on a mug's wall (T13 no_cup, fingers_cover_1105)
+PICK_REACH_TOL = 0.005
+# each finger closed at least this far from the opening it was given, and stopped short of shut:
+# it met the object (a finger left at the opening touched nothing -- [0.0102, 0.04] on T13's mug,
+# welded and carried as held)
+GRIP_CLOSED_BY = 0.003
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
 # m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
 # vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
@@ -987,10 +995,28 @@ def _grasp_approach(g):
 def _grasp_targets(g):
     """find_park's targets of a pinch: the start of its straight approach and the grasp, both free
     space (the open fingers checked, the object an obstacle: the hand closes where it already
-    stands), and the lift out of it (the object then in the hand: the fingers and it are not)."""
+    stands), and the lift out of it (the fingers checked, the object exempt: it is in the hand
+    then).  Each with its own rule: nothing rides on the arm's coll_kw."""
     u, L = _grasp_approach(g)
     return [(g["p"] - L * u, g["R"], FREE_SPACE_KW), (g["p"], g["R"], FREE_SPACE_KW),
-            (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"])]
+            (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"], FINGERS_KW)]
+
+
+def _pinch_candidates(rig, obj, pos, quat, kinds, surface_z):
+    """The annotated pinches of ``obj`` at (pos, quat), and after them a square block's pinches
+    across its other pair of faces; each with ``idx``, its place in that list (the same candidate
+    at another pose of the object), a top pinch's TCP raised so its pads clear ``surface_z``."""
+    cands = rig.ann.grasp_poses(obj, pos, quat, kinds=kinds)
+    extra = []
+    if "top_pinch" in kinds and hasattr(rig.ann, "asset_of"):
+        extra = [c for c in rig.ann.grasp_poses(obj, pos, quat, kinds=("top_pinch",), extra_rotations=True)
+                 if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
+                            for c0 in cands)]
+    for i, c in enumerate(cands + extra):
+        c["idx"] = i
+        if c["kind"] == "top_pinch":
+            c["p"] = _pads_clear_of(c, surface_z)
+    return cands, extra
 
 
 def _surface_under(rig, name, st):
@@ -1060,35 +1086,6 @@ def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS):
     return _pick_pinch_core(rig, name, max_candidates, kinds)
 
 
-def _neighbour_boxes(rig, name, st, radius=0.30):
-    """Loose objects next to a pick target that stand taller than its grasp
-    height: the forearm must not hit them (a stalled arm 7 cm short of a can
-    in a cluster).  The target, its contents and lid are excluded."""
-    from .predicates import lid_on
-    c = rig.geo.centre(name, st)
-    z_grasp = float(rig.geo.bottom(name, st)[2])
-    from .annotations import _tilted
-    if _tilted(st["objects"][name]["quat"]):
-        z_grasp = float(c[2])        # lying on its side: pinched across its centre
-    a = rig.ann.asset_of(rig.ann.objects[name])
-    out = []
-    for o in rig.ann.objects:
-        if o == name or (rig.held is not None and o == rig.held["name"]):
-            continue
-        if a.get("container") and (rig.geo.inside(o, name, st)[0] or lid_on(rig, name, o, st)[0]):
-            continue
-        fp = rig.geo.footprint(o, st)
-        d = math.hypot(max(fp[0] - c[0], 0, c[0] - fp[2]), max(fp[1] - c[1], 0, c[1] - fp[3]))
-        if d > radius:
-            continue
-        b = float(rig.geo.bottom(o, st)[2])
-        top = b + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2])
-        if top < z_grasp + 0.04:
-            continue
-        out.append([fp[0] - 0.005, fp[1] - 0.005, b, fp[2] + 0.005, fp[3] + 0.005, top + 0.005])
-    return out
-
-
 class ContactUnreachable(SkillFailure):
     """A contact motion (push, drag, sweep) found no base pose before moving anything."""
 
@@ -1140,34 +1137,10 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
     st = rig.state()
     floor_z = float(rig.geo.bottom(name, st)[2])
     surface_z = _surface_under(rig, name, st)
-    cands = rig.ann.grasp_poses(obj, pos, quat, kinds=kinds)
+    cands, extra = _pinch_candidates(rig, obj, pos, quat, kinds, surface_z)
     if not cands:
         raise SkillFailure(f"pick {name}: no pinch grasp annotated")
-    # a square block is also pinched across its other pair of faces: those come after the
-    # annotated pinches in the same candidate list (they used to be tried only once the
-    # annotated ones had no park)
-    extra = []
-    if "top_pinch" in kinds and hasattr(rig.ann, "asset_of"):
-        extra = [c for c in rig.ann.grasp_poses(obj, pos, quat, kinds=("top_pinch",), extra_rotations=True)
-                 if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
-                            for c0 in cands)]
-    # a finger slot occupied by a neighbour jams the finger before it closes
-    # (the arm model ignores the fingers); keep the pinches whose slots are free
-    from .predicates import slot_blocker, _neighbour_boxes
-    try:
-        st_ = rig.state()
-        nb = _neighbour_boxes(rig, name, st_)
-        free = [g for g in cands if slot_blocker(rig, name, g, st_, nb) is None]
-        if free and len(free) < len(cands):
-            rig.log("pick_free_slots", obj=name, kept=len(free), of=len(cands))
-            cands = free
-    except Exception as exc:      # minimal rigs in unit tests
-        rig.log("pick_free_slots_skipped", reason=str(exc)) if hasattr(rig, "log") else None
-    for g in cands + extra:      # pads must not dig into the surface below
-        if g["kind"] == "top_pinch":
-            g["p"] = _pads_clear_of(g, surface_z)
     rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
     rig.focus_z = float(pos[2])
     bx, by, _ = rig.base_pose()
     # A fridge shelf is recessed behind its door. The robot's post-opening
@@ -1224,14 +1197,12 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         rig.sync_world()
     else:
         _goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}      # the fingers on the object once closed (lift: lifting)
-    pos, quat = rig.obj_pose(name)          # re-read after driving
-    g2 = [c for c in rig.ann.grasp_poses(obj, pos, quat) if c["kind"] == g["kind"]
-          and np.linalg.norm(c["p"] - g["p"]) < 0.03 and np.allclose(c["R"], g["R"], atol=1e-3)]
-    if g2:
-        p2 = g2[0]["p"].copy()
-        p2[2] = max(p2[2], g["p"][2]) if g["kind"] == "top_pinch" else p2[2]
-        g = dict(g2[0], p=p2)
+    # re-read after driving (the drive may have knocked it): the same candidate at the object's
+    # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
+    # tolerance dropped every re-read of an object turned by a tenth of a degree)
+    pos, quat = rig.obj_pose(name)
+    now_c, now_x = _pinch_candidates(rig, obj, pos, quat, kinds, _surface_under(rig, name, rig.state()))
+    g = next((c for c in now_c + now_x if c["idx"] == g["idx"]), g)
     rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in pos],
             quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
@@ -1249,22 +1220,31 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
         rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
                 hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
+    if err > PICK_REACH_TOL:
+        # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
+        rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
+        rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+        rig.focus_z = None
+        raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
     rig.caption = f"PICK {name}: close gripper"
     rig.clear.motion("pick_close", closing(name), follows=False)
     rig.grip(0.0, PHYSICS_HZ, gradual=True)
     f = rig.fingers()
-    if f.min() <= 0.003:
-        # closed on nothing: leave the failed grasp with an open hand clear of the neighbours
-        # (fingers closed beside a crowding bowl stopped at 5 mm, so the next push could not
-        # make its fist)
-        rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False)
+    if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
+        # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
+        # with an open hand clear of the neighbours (fingers closed beside a crowding bowl stopped
+        # at 5 mm, so the next push could not make its fist); nothing is held, so nothing is welded
+        rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False, why="not pinched")
         rig.grip(0.04, 60)
         rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
         rig.focus_z = None
-        raise SkillFailure(f"pick {name}: not held (fingers closed on nothing)")
-    # held from here: the load is in the arm's collision model (off its support: the contact exit
-    # ends once it is clear), and whether it came along is judged at the next relay pose, the carry
-    tcp0, R = rig.kin.tcp(rig.q_cmd)
+        raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+                           f"opened to {g['pre_open']:.3f})")
+    # held from here -- and welded, under sticky hands: the load is in the arm's collision model
+    # (off its support: the contact exit ends once it is clear), and whether it came along is
+    # judged at the next relay pose, the carry.  The hand's pose as it stands, not as commanded
+    # (the held frame and the rise measured from it)
+    tcp0, R = rig.kin.tcp(rig.q())
     rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
                 "pre_open": g["pre_open"]}
     if g["kind"] == "thickness_pinch":
