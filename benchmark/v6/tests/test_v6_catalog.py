@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+
+from benchmark.v6.define_tasks_v6 import TASK_TEXT
 import subprocess
 import sys
 from collections import Counter
@@ -35,7 +37,11 @@ def test_v5_designs_unchanged():
                 assert vid not in t["variants"]
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
-            assert old.get("goal") == new.get("goal") and old.get("instruction") == new.get("instruction"), vid
+            assert old.get("goal") == new.get("goal"), vid
+            if tid not in TASK_TEXT:                # TASK_TEXT: the task's instruction was shortened on purpose
+                assert old.get("instruction") == new.get("instruction"), vid
+            else:
+                assert "instruction" not in new and t["instruction"] == TASK_TEXT[tid][0], vid
             if "conditions_ignored" not in new:
                 assert old.get("conditions") == new.get("conditions"), vid
             removed = set(new.get("injected_removed", []))
