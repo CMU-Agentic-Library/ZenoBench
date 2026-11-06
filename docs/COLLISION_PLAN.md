@@ -167,36 +167,36 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3a ✓ ──► 3b 第 1、2 项 ✓ ──► pick 两段式 ✓ ──► 6.1 pick 修完 ──► 6.2 place 修完 ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪（2026-11-05）**：6.1 第 2 项（删 pick 里剩下的换策略）。还有一件不属于 pick / place 的事要在 6.3 之前查：左臂收起姿态改了以后（`a99d8e7`），P06 的双手交接失败——左臂从新收起姿态规划到 `handover_left_pre` 出 `GRAPH_FAIL`（右手递擀面杖的 `handover_present_across` 也规划失败、退回直线），旧姿态下成功（`benchmark/runs/left_fold_1105`）。
+**现在在哪（2026-11-05）**：6.1 第 2 项、手指碰撞球包住指垫、删掉 edge / corner 捏取都改完（都没提交；前两个跑过，删 edge 没跑过）。下一步按 6.1 "接下来"的顺序：先查 T12 地上玩具车、验证夹厚度捏取，然后一起提交；然后查接近时的跟踪偏差、贴关节限位。还有一件不属于 pick / place 的事要在 6.3 之前查：左臂收起姿态改了以后（`a99d8e7`），P06 的双手交接失败——左臂从新收起姿态规划到 `handover_left_pre` 出 `GRAPH_FAIL`（右手递擀面杖的 `handover_present_across` 也规划失败、退回直线），旧姿态下成功（`benchmark/runs/left_fold_1105`）。
 
 ### 6.1 pick 修完（进行中）
 
 **范围：** `pick` 和它调用的所有抓法（捏取、`pick_flat`、corner / edge 捏取），从选停车点到抓起后到达搬运姿态为止。微波炉腔体里取物（`PickFromCavityPolicy`、`_pick_pinch_core` 里水平退出腔体的写死点）和双手平抬（`BimanualFlatPickPolicy`）是场景特例，留在 6.4。
 
-**要做的：**
+**已做（11-05，都没提交）：**
 
-1. **复查。**
-   - C 类（接近途中把要抓的物体推开，P14、T13 no_cup）两段式后 s10 都成功，s11 还没跑。
-   - T13 no_cup：捏 `tv_stand_2` 上的杯子，`pick_close` 上 `right_gripper_link` 碰 `tv_stand_2` 3.1 mm（`twophase_1105`）。用真实接触看是合爪时手被拉低，还是合爪前就贴得太近。
-   - T13 no_cup ×2、T09 lid_on_spoon_away 在 11-04 全量里合爪没捏稳（杯子一指 3.6 mm、一指 32 mm；勺子合在 22 mm 后滑出），两段式后再看。
-   - `twophase_1105` 说"pick 没有推动任何物体"是监视器给的，不可靠，验证批次用 `approach_watch` 和真实接触重新核对。已知的一次：T04 no_cup 接近时手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm、转 2.9°（第 7 节手指碰撞球、`CONTAINER_COLLIDERS.md`，都先不修）。
-   - `_goal`（`ba9fd99`）只在 T04 上验证过，影响所有带 `q_hint` 的规划段：看验证批次里有没有"分支上解不出来"的新失败。
-2. **删掉 pick 里剩下的 F、W 类**（`COLLISION_CLEANUP.md` 3.5，push 那行除外）：
-   - 捏取失败改 `pick_flat`；
-   - 放开腰限重试、"不管附近物体"重试（`_pick_pinch`）；edge 捏取的限腰 → 放开重试；
-   - 找不到停车点后追加旋转的 top pinch（改成一开始就在候选集合里，算目标采样）；
-   - `pick_flat` 换边重试；
-   - corner、edge 的 `pre_far` 额外 +3 cm；`corner_grasp_retry`；corner / edge 的接近改成和捏取一样的两段式（步骤 4 里"拆成两段的接近合成一段"中 pick 那部分提前到这里）。
-   - 删完后每个抓法只有一条路，失败就是失败；"按可行性挑抓法"如果要保留，要做成一次目标集合（第 2 节）。
-3. **离开接触和搬运。**
-   - 定 `PICK_LEAVE_CHECK`（第 8 节）和第 10 节"离开接触段提前停下"那条。
-   - T05 pen_available ×2：pick 结束选出的搬运姿态更高更伸展，拿着笔开车找不到路。
-   - pick 后手臂在另一个 IK 分支、去不了搬运姿态（`carry_pose_kept`，第 7 节，T10）：至少查清是不是选抓法 / 抓取 IK 时没看后面的搬运姿态；要动停车点搜索的部分如果太大，单独记下。
-4. **常数**（第 8 节里标 6.1 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
+- **第 2 项：删掉 pick 里剩下的 F、W 类**（`COLLISION_CLEANUP.md` 3.5）：捏取改 `pick_flat` 只在动手前没有任何捏取找得到停车点时（`NoReachableGrasp`）；腰不设限（删 0.2 rad 腰限、放开重试、"不管附近物体"重试、edge 的 `edge_pinch_upright_waist`——profile 键留着不读，改它会变 profile 哈希）；旋转的 top pinch 一开始就排在标注候选后面；`pick_flat` 只走推得最少的一条边；corner、edge 改两段式接近，删掉 +3 cm 预备点、不查碰撞的进去和 `corner_grasp_retry`。
+- **edge、corner 捏取删掉，平板物体改成普通捏取**：标注里新加 `thickness_pinch`（夹爪水平、从一条边外朝里进、上下夹住厚度、TCP 在边内 2.5 cm，`tools/prepare_assets.py`；`annotations/assets.json` 里 7 个只能 edge 捏取的物体换成它，其他物体的 `edge_pinch_after_push` 删掉），pick 只剩一条捏取流程。书要先伸出支撑面边缘，不写成规则：伸出不够的边，张开的手在完整模型里会碰支撑面，停车点搜索自己拒绝。推到边是 expose（`slide_to_edge`）的事。拿住后记成 edge 持物（`skills.edge_held`，放书用的 `h`、`depth`、`lat_half`、`dz`），离开竖直向上：sticky 合爪后就焊住，书刚性跟着手。删掉 `pick_flat`、`_edge_pinch`、`_corner_pinch`、抬起后水平拉出 12 cm、`EDGE_GRIP_DEPTH`、`EDGE_PAD_CLEAR`、`FloorCornerPickPolicy`（`policy_014` 连公开 ID 一起删）；`policy_013`（pick_edge）改成只用 `thickness_pinch` 的捏取，pick 的 `flat_edge` / `flat_overhang_ready`、flip 的 `edge_roll` 路径不变。**没在仿真里跑过。**
+- **手指碰撞球包住指垫**：`build_curobo_robot.finger_rows` 改成 18 个球完全包住指垫方块（凸出最少的排法：半径约 9.3 mm，最多凸出 4.2 mm，自碰撞对数不变 16271）；顶部捏取高度按碰撞球的外包围框算（`kinematics.finger_model_box`，真实指垫底部离支撑面约 6.3 mm，原来 2.15 mm）。
+- **结果：**
+  - `benchmark/runs/pick612_verify`（第 2 项，26 个，19 成功）：approach_leave 14 个 12/14（`twophase_1105` 11/14）；腰不设限后 T12 duck_in_study、T13 spoon_boxed_in 成功；T05 pen_available 成功（11-04 失败）。**edge 捏取两段式写错**：T01 overhang_ready、T14 book_on_desk、P05 都找不到停车点——书只伸出 5.7 cm，张开的手指贴着支撑面边缘，在完整模型里会碰（以前最后一段不查碰撞、不查手指）。T04 no_cup、T17 是贴关节限位（见下）；T19、T13 no_cup 的放下归 6.2；P16 和 11-04 一样。接近时推动要抓的物体 49 次里 5 次（马克杯 ×2 54 mm，小黄鸭 ×2 33 mm / 117°，易拉罐 19 mm），都是手指碰的，监视器原来的检查一次都没记到。
+  - `benchmark/runs/fingers_cover_1105`（加手指球，7 个，6 成功）：推动物体 15 次里 1 次（P15 易拉罐不再推动）；笔照样夹住；只剩 T13 no_cup 马克杯被推 45 mm（下面 c）。**T12 s11 变失败**：地上的玩具车找不到停车点（下面 a）。
+  - 复查项结束：C 类 s11（P14 成功、没推动；T13 no_cup 归下面 c）；T13 合爪时夹爪蹭 `tv_stand_2` 两批都没再出现；`_goal` 没有"分支上解不出来"的新失败。T13 杯子合爪没捏稳还在（一指 10 mm、一指 40 mm，杯子没跟着抬，sticky 焊住算拿住）：是接近时杯子被推开、捏错了位置，随 c 解决。
 
-**针对性检查：** approach_leave 14 个加 T03、T04、T05、T09、T13（no_cup、bowl_on_cabinet）、P14，种子 10、11，加 `ZB_COVERAGE=1` 看 pick 的哪些函数没跑到（`pick_flat`、corner / edge 要有用到它们的 episode）。跑完存第一份运动记录快照（第 5 节）。
+**接下来（按顺序）：**
 
-**完成标准：** pick 的每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.5 里 pick 的行清零；上面这批 episode 里 `approach_moved` 为 0（已知的 T04 除外），和 pick 有关的失败都归了类（第 5 节）；`skills/pick.md` 同步。
+a. **T12 s11 地上的玩具车找不到停车点**（加手指球后变失败，120 次全是 IK 被拒，上次同一位置能抓）。猜是躯干最低时加胖的手指碰到机器人自己（自碰撞）或地面：单独跑，记被拒的原因。修好之前手指球不提交。
+b. **夹厚度捏取在仿真里验证**（edge 捏取已删，见上）：重跑 T01 overhang_ready、T14 book_on_desk、T15 book_free、P05。看书伸出够不够（不够就是 expose 推得太少，或者 `THICKNESS_PINCH_DEPTH` 要调）、焊住后竖直抬起行不行、下游放书（`place_flat`、edge place、翻书）能不能用这个持物。不焊的 profile（`physical`）里书会绕支撑面边缘在指间转、竖直抬不离支撑面——不处理，记在 6.2。a、b 都好了，第 2 项、手指球、删 edge 一起提交。
+   - 结果（11-05，`benchmark/runs/thickness_pinch_1105`，s10）：4 本书都用 `thickness_pinch` 抓起来了（停车点搜索自己挑出伸出的那条边，合爪后焊住）；T01 overhang_ready、T14 book_on_desk（下游 `place_flat` 能用新持物）成功。**T15 book_free、P05 失败在翻书**：`FlipFlatPolicy` 按旧 edge 抓取的收尾写的（只抬 4 cm、拉出 12 cm，书的远边还压在桌上当转轴），现在 pick 抓完去搬运姿态，书整本离开桌面，转轴算在半空中。翻书需要"夹住、不抬"：考虑把 pick 拆成"抓住"（停车点、两段式接近、合爪、确认、焊住）和"拿起"（离开接触、搬运姿态），翻书路径只用前一段。
+c. **接近时的跟踪偏差**：T13 no_cup 加手指球后马克杯还被推 45 mm——右手指压在碰撞壁 `wall_89` 上 601 tick，到"抓取位姿"时手差 3.5 cm（关节误差 0.155 rad），按命令的姿态在模型里不碰。先确认：接近途中逐 tick 记关节误差和手指离杯壁的距离，看是跟踪滞后让实际路线偏离了规划，还是别的（马克杯的碰撞壁外扩 2.4 cm 也在起作用，`CONTAINER_COLLIDERS.md`）。确认是跟踪的话再定修法（接近放慢、按跟踪误差留余量，或者走到位再判断），不在这里先定。
+d. **贴关节限位**（T04 no_cup、T17：停车点搜索选出的解关节离限位只有几 mrad，执行时规划不稳）：停车点搜索里给关节留最小余量，或在停车点打分里惩罚贴限位。
+e. **候选循环改成目标集合**：候选逐个找停车点的循环（`for g in cands`）按第 2 节是"候选列表"；每个候选的手指张开宽度不同（`hand_open`），`find_park_set` 要先支持每组自己的宽度。
+f. **离开接触和搬运**：定 `PICK_LEAVE_CHECK`（第 8 节）和第 10 节"离开接触段提前停下"那条；pick 后手臂在另一个 IK 分支、去不了搬运姿态（`carry_pose_kept`，第 7 节，T10）：至少查清是不是选抓法 / 抓取 IK 时没看后面的搬运姿态。T05 拿着笔开车找不到路（11-04 的 F 类）两批都成功了，不再单列。
+g. **常数**（第 8 节里标 6.1 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
+
+**针对性检查（a–g 做完后）：** approach_leave 14 个加 T03、T04、T05、T09、T12（duck_in_study、toys_everywhere s11）、T13（no_cup、bowl_on_cabinet、spoon_boxed_in）、P14、P15、P16、T01 overhang_ready、T14 book_on_desk、P05，种子 10、11，加 `ZB_COVERAGE=1`（corner 捏取还没有 episode 走到）。跑完存第一份运动记录快照（第 5 节）。
+
+**完成标准：** pick 的每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.5 里 pick 的行清零；上面这批 episode 里 `approach_moved` 为 0、`pick_grasp` 上没有真实接触；和 pick 有关的失败都归了类（第 5 节）；`skills/pick.md` 同步。
 
 ### 6.2 place 修完
 
@@ -209,6 +209,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
    - `slots_blocked`（手指已在碰撞模型里，应该删）；
    - `place_flat`（清单 3.3）：内层板加大 `pre`、`while True` 换点、丢掉推入目标重找停车点、`flat_back_out`、吞异常；书在夹爪里下垂的 `R_fix` 补偿和搬运时书本 edge +6 cm（清单 3.1、清单第 6 节）；
    - sticky 的 `sticky_clear` 上抬 3 档 / 2 档（清单 3.9）。
+   - 下游还按 `rig.held["kind"] == "edge"` 认"夹在边上的书"（`EdgePlacePolicy`、`place_flat`、搬运时书本 +6 cm、`hand.py` 的翻书）：抓法统一以后改成看持物的几何（夹在哪条边、多深），不看 kind。不焊时书在指间转、竖直抬不离支撑面（`physical` profile）的问题也在这里定。
    - place 停车点搜索里接近起点的目标豁免（`FINGERS_KW`）：和 pick 一样改成自由空间。
 2. **已知的 place 失败：**
    - P18 floor_pick s10 `place_down` 带倾角 `IK_FAIL`（第 7 节）；
@@ -263,8 +264,8 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | 问题 | 例子 | 打算 |
 |---|---|---|
 | 同样输入，cuRobo 规划结果会分叉 | P07 s10 连跑两次一次成功一次 "no IK for shake" | 不单独处理，按第 5 节区分 |
-| cuRobo 规划到贴着关节限位的目标很不稳：腰离下限 1 mrad 的目标 4 次成 1 次，往里 0.02 rad 就 4/4 | T04 no_cup 抓马克杯（以前 `_goal` 重解出贴限位的解） | 规划器能力不够；`_goal` 不再无故重解。停车点搜索选出的解本身贴限位时还会遇到：可以在停车点打分里惩罚贴限位（目标采样） |
-| 手指碰撞球没包住仿真里的指垫方块（28 × 12 × 55 mm）：3 排球只在指尖面中心和方块底面相切，指尖棱边露出 2.3 mm、角 3.7 mm、侧棱 1.3 mm。规划器以为不碰的地方，指尖棱边会碰上 | T04 no_cup s10 接近时左手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm（`/data/zenobench/pick63/t04_physx`） | 先不修（11-05）。修法：加大球包住方块（手指变胖，指垫碰支撑面的误报会回来，自碰撞对数 16271 离上限 16384 很近）或仿真指垫改圆角对齐球（改仿真接触）；都改基线 |
+| cuRobo 规划到贴着关节限位的目标很不稳：腰离下限 1 mrad 的目标 4 次成 1 次，往里 0.02 rad 就 4/4 | T04 no_cup 抓马克杯；T17 唯一的停车点关节离限位 5 mrad | 6.1 d：停车点搜索留最小余量或打分惩罚 |
+| 手指碰撞球没包住仿真里的指垫方块（28 × 12 × 55 mm）：3 排球只在指尖面中心和方块底面相切，指尖棱边露出 2.3 mm、角 3.7 mm、侧棱 1.3 mm。规划器以为不碰的地方，指尖棱边会碰上 | T04 no_cup s10 接近时左手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm（`/data/zenobench/pick63/t04_physx`） | 试验中（11-05，未提交）：球改成完全包住方块、抓取高度按球的外包围框算，接近时推动物体从 5/49 降到 1/15，笔照样夹住；T12 地上玩具车变失败待查（6.1 a） |
 | 马克杯、带柄锅的容器碰撞体和真实网格对不上 | T04 no_cup 抓杯时手指捏在离真实杯壁约 2.2 cm 的碰撞壁上 | 见 `CONTAINER_COLLIDERS.md`；先不修 |
 | 仿真里手指只有指垫方块参与碰撞：原网格是 L 形（手指 + 横跨夹爪的滑轨），凸分解成伸进两指之间的楔形，所以整个关掉了（`physics.py`）。指垫以上那段手指、滑轨两端（各伸出夹爪本体约 13 mm）在仿真里不碰任何东西 | — | 这个分支不动（改仿真接触）；以后可以把 L 形拆成几块凸体 |
 | cuRobo 快速自碰撞内核上限 16384 对：超过后改用慢内核，单次 IK 约 25 ms → 0.8 s，停车点搜索在时间预算内找不到解 | 手指每根 18 个球、躯干和头不减时 18007 对 | 加球前先算对数（`build_curobo_robot.py` 打印）；现在 16271 对 |
