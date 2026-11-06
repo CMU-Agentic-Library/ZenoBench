@@ -67,17 +67,33 @@ def finger_model_box():
     grasp height from it keeps the planner's fingers, and with them the simulator's, off the surface."""
     global _FINGER_BOX
     if _FINGER_BOX is None:
-        import yaml
-        cfg = yaml.safe_load((ROOT / "robot_sources/curobo/zeno_malo.yml").read_text())
-        sph = cfg["robot_cfg"]["kinematics"]["collision_spheres"]["right_gripper_left_finger_link"]
-        C = np.array([s_["center"] for s_ in sph], float)
-        R = np.array([s_["radius"] for s_ in sph], float)
+        C, R = _finger_spheres()
         _FINGER_BOX = (float(np.max(np.abs(C[:, 0]) + R)), float(np.min(C[:, 1] - R)),
                        float(np.max(C[:, 1] + R)), FINGER_JOINT_DEPTH - float(np.min(C[:, 2] - R)) - TCP_DEPTH)
     return _FINGER_BOX
 
 
+def finger_model_length():
+    """The planner's finger along the gripper axis, tip to root (its collision spheres' extent on the
+    finger link's z; 6.3 cm over the 5.5 cm pad box): all of the hand that reaches into what a grasp
+    closes on -- the palm stays outside it."""
+    C, R = _finger_spheres()
+    return float(np.max(C[:, 2] + R) - np.min(C[:, 2] - R))
+
+
+def _finger_spheres():
+    """(centres, radii) of a finger's collision spheres in its link frame (robot config)."""
+    global _FINGER_SPH
+    if _FINGER_SPH is None:
+        import yaml
+        cfg = yaml.safe_load((ROOT / "robot_sources/curobo/zeno_malo.yml").read_text())
+        sph = cfg["robot_cfg"]["kinematics"]["collision_spheres"]["right_gripper_left_finger_link"]
+        _FINGER_SPH = (np.array([s_["center"] for s_ in sph], float), np.array([s_["radius"] for s_ in sph], float))
+    return _FINGER_SPH
+
+
 _FINGER_BOX = None
+_FINGER_SPH = None
 REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
 STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
 CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move

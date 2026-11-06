@@ -84,7 +84,7 @@
 
 物理上怎么走见 `skills/pick.md`。
 
-1. **张开的手到抓取位姿**：一次查碰撞的运动（`pick_grasp`），最后 4 cm（`PICK_APPROACH`）沿夹爪轴直线，要抓的物体是障碍物，不做目标豁免。停车点验证用同一条规则：接近起点和抓取位姿按自由空间查，模型里的手指张到候选的宽度；抬起 3 cm（`PICK_LEAVE_CHECK`）那一项照旧（那时物体算在手里）。
+1. **张开的手到抓取位姿**：一次查碰撞的运动（`pick_grasp`），最后一个手指长度加 1 cm（约 7.3 cm，`pick_approach`，11-06 起）沿夹爪轴直线，要抓的物体是障碍物，不做目标豁免。停车点验证用同一条规则：接近起点和抓取位姿按自由空间查，模型里的手指张到候选的宽度；抬起 3 cm（`PICK_LEAVE_CHECK`）那一项照旧（那时物体算在手里）。
 2. **合爪**：只动手指，`closing(name)`（这只手的手指可以碰这个物体）。然后竖直离开接触，再规划到搬运姿态。
 
 抓取高度：顶部捏取张开的指垫最低那个角至少比物体下面的表面高 `PAD_FLOOR_GAP`，按这次夹爪朝向算，表面取它所在的支撑面或包围盒最低点（`_surface_under`）；掌心、相机不碰物体的最低高度由 `tools/prepare_assets.py` 按碰撞球对物体网格推导，写在抓取标注里。
@@ -191,10 +191,10 @@ a. ~~**T12 地上的玩具车找不到停车点**~~ 查清并修好（11-06）�
 b. **夹厚度捏取在仿真里验证**（edge 捏取已删，见上）：重跑 T01 overhang_ready、T14 book_on_desk、T15 book_free、P05。看书伸出够不够（不够就是 expose 推得太少，或者 `THICKNESS_PINCH_DEPTH` 要调）、焊住后竖直抬起行不行、下游放书（`place_flat`、edge place、翻书）能不能用这个持物。不焊的 profile（`physical`）里书会绕支撑面边缘在指间转、竖直抬不离支撑面——不处理，记在 6.2。a、b 都好了，第 2 项、手指球、删 edge 一起提交。
    - 结果（11-05，`benchmark/runs/thickness_pinch_1105`，s10）：4 本书都用 `thickness_pinch` 抓起来了（停车点搜索自己挑出伸出的那条边，合爪后焊住）；T01 overhang_ready、T14 book_on_desk（下游 `place_flat` 能用新持物）成功。**T15 book_free、P05 失败在翻书**：`FlipFlatPolicy` 按旧 edge 抓取的收尾写的（只抬 4 cm、拉出 12 cm，书的远边还压在桌上当转轴），现在 pick 抓完去搬运姿态，书整本离开桌面，转轴算在半空中。翻书需要"夹住、不抬"：考虑把 pick 拆成"抓住"（停车点、两段式接近、合爪、确认、焊住）和"拿起"（离开接触、搬运姿态），翻书路径只用前一段。
 c. ~~**接近时的跟踪偏差**~~ 查清（11-05，不是跟踪）：T13 no_cup 马克杯被推 45 mm，是规划器里**右手指永远全开**。URDF 里右手指轴是左手指轴的 mimic，`motion._Locks.set` 只改写被锁关节自己的子连杆，右手指连杆停在配置加载时的 `FINGER_OPEN` 0.04；`live_locks` / `hand_open` 的宽度只到左手指（两只手都是）。沿口捏取张 3 cm 时实际右指垫比模型靠里 1 cm，压在 `wall_89` 顶面上（PhysX 接触点在右手指碰撞球外 7–11 mm；规划器 `free()` 在每个指令姿态都判不碰；实际关节落后约 1 cm，不是原因）。同类第二处：接触监视器和底盘整机检查用的整机模型（`_monitor_model`）里头和手指是 yml 锁定的关节，代码给的手指读数和 `head_q` 被丢掉，手指永远全开、头朝正前。修法：`_Locks` 连带锁 mimic 跟随关节（跟随主关节，或按给定值），整机模型也用 `_Locks` 设头和两根手指（`_mon_set`）。重跑 T13 no_cup s10（`/data/zenobench/approach_moved/run_fix`）：接近推动 0、`pick_grasp` 无真实接触，episode 成功（之前 4 次都在 pick 失败）；合爪时监视器记了一条左手指进 `bookcase_2` 3.8 mm，PhysX 无接触（碰撞球比指垫大 ≤4.2 mm）。改变规划器手指模型，影响所有张开 < 4 cm 的接近和持物搬运，要针对性检查。附带：cuRobo `get_sphere_distance` 带 gap 或放大半径时对多个碰撞体求和，不是单个碰撞体的距离，`Motion.clearance` 可能受影响，没查。
-d. **贴关节限位**（T04 no_cup、T17：停车点搜索选出的解关节离限位只有几 mrad，执行时规划不稳）：停车点搜索里给关节留最小余量，或在停车点打分里惩罚贴限位。
+d. **P11、T04 no_cup 的 `pick_grasp` 规划失败（11-06 查清并修好，不是贴关节限位）**：停车点 (7.802, 1.176, 90°) 上的目标姿态躯干到顶、腰后仰到限位 0.8 mrad，但手臂既没伸到极限（伸展度 0.77、肘角 100°）也不病态（可操作度在候选里最高）；把腰挪离限位 5 cm 照样失败。原因是接近段 4 cm 太短：沿口捏取的抓取点在杯口下 3.5 cm，接近起点的指尖还在杯里约 2 cm，从收起姿态直线插值只在最后 5% 被马克杯本身挡住（左手指进杯 22 mm），cuRobo 轨迹优化绕不进去；停车点搜索的那一次规划是碰巧成功的（同一规划紧接着重复 8 次全失败，重置 cuRobo 随机种子也一样），执行时重新规划失败。修法：接近段 = 手指碰撞球长度 + `LEAVE_MARGIN`（`pick_approach`，约 7.3 cm）。结果见 `skills/pick.md`"接近段长度"。另：cuRobo IK 的关节限位激活距离 0.001、轨迹优化 0.05，IK 解可以贴着限位而轨迹优化在 0.05 内重罚——停车点打分的关节余量只算手臂 7 个关节，没算躯干和腰，留待需要时再看。原来同归这一项的 T17 lid_on_crowded s10 在这批里成功了。
 e. **候选循环改成目标集合**：候选逐个找停车点的循环（`for g in cands`）按第 2 节是"候选列表"；每个候选的手指张开宽度不同（`hand_open`），`find_park_set` 要先支持每组自己的宽度。
 f. **离开接触和搬运**：定 `PICK_LEAVE_CHECK`（第 8 节）和第 10 节"离开接触段提前停下"那条；pick 后手臂在另一个 IK 分支、去不了搬运姿态（`carry_pose_kept`，第 7 节，T10）：至少查清是不是选抓法 / 抓取 IK 时没看后面的搬运姿态。T05 拿着笔开车找不到路（11-04 的 F 类）两批都成功了，不再单列。
-g. **常数**（第 8 节里标 6.1 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
+g. **常数**（第 8 节里标 6.1 的）：~~`PICK_APPROACH`~~（11-06 改成手指长度 + `LEAVE_MARGIN`，见 d）、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
 
 **针对性检查（a–g 做完后）：** approach_leave 14 个加 T03、T04、T05、T09、T12（duck_in_study、toys_everywhere s11）、T13（no_cup、bowl_on_cabinet、spoon_boxed_in）、P14、P15、P16、T01 overhang_ready、T14 book_on_desk、P05，种子 10、11，加 `ZB_COVERAGE=1`（corner 捏取还没有 episode 走到）。跑完存第一份运动记录快照（第 5 节）。
 
@@ -205,6 +205,10 @@ g. **常数**（第 8 节里标 6.1 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK
 **范围：** `place`、`place_on`、`place_flat`（书架、平放）、drop、hover，以及 sticky 的 place，从拿着东西选放置停车点到松手离开、收臂为止。微波炉里放（`place_microwave`）留在 6.4。
 
 **要做的：**
+
+0. **放完收不回臂（11-06 发现，先做）**：T13 no_cup s10 把碗放到餐桌后同样收臂失败、底盘开不走（`/data/zenobench/approach73`）。T12 toys_everywhere 两个种子把玩具车放进书架上的托盘后，松手没碰东西（离开段 0），手臂停在托盘上方；收臂失败（s10 收起姿态在这个停车点本身穿进场景 8.3 mm，s11 收起姿态不碰但从松手姿态规划不过去），手臂伸着时底盘一步也走不了，接着找小黄鸭的两个地方都被跳过。place 的停车点验证只看放得下去，没看下一个中继位姿（收起 / 下垂）回得去——和 pick 的 `carry_pose_kept`（6.1 f）同一类。修法方向：停车点验证加"松手姿态 → 收起或下垂"，用和执行一致的检查（第 9 节：不在停车点搜索里做规划级检查）。T12 toys_out 两个种子把车放进储物篮时 `place_drop` 规划失败，一起看（`/data/zenobench/t12_car/rerun`）。
+
+   **搬运中碗在手里滑动**：T20 table_full s10 沿口捏起 `party_bowl_1` 后，放之前重新测量碗在手里移了 6.1 cm（`place_remeasure shift_m 0.061`），`place_down` 规划失败（`/data/zenobench/approach73`；接近段改长后抓取停车点变了一点，间接诱因）。
 
 1. **删掉 place 里剩下的 W、F 类：**
    - `held_vertical_move` / `place_lower_to_contact`（落到支撑面前再往下放到差 6 mm）：改成放下运动本身就到位，或按第 2 节的接触段处理；
@@ -287,7 +291,7 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 常数 | 问题 | 什么时候处理 |
 |---|---|---|
-| `PICK_APPROACH` 4 cm、`PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm | 沿用旧的 `pick_pre`、`place_lower`、层板插入距离，没有出处 | `PICK_APPROACH` 在 6.1，另两个在 6.2（接近直线保留，11-05 定） |
+| `PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm | 沿用旧的 `place_lower`、层板插入距离，没有出处（pick 的已改成手指长度 + `LEAVE_MARGIN`，11-06） | 6.2（接近直线保留，11-05 定） |
 | `PICK_LEAVE_CHECK` 3 cm | 依据是 9af5c0c 时抬起离开段最长 2.9 cm，11-04 全量里最长 4.7 cm；执行时上限是 `LEAVE_MAX` 6 cm，两边不一致。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
 | `LEAVE_GAP` 5 mm、`LEAVE_MARGIN` 1 cm、`LEAVE_MAX` 6 cm、`ON_LINE` 5 mm | 步骤 1 补丁时拍定 | 离开段改提前停止时（第 10 节） |
 | `TARGET_PAD` 3 cm | 豁免盒子的边距；豁免本身要取消 | 随豁免一起删（步骤 4，6.5） |

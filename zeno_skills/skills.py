@@ -26,10 +26,10 @@ from scipy.spatial.transform import Rotation
 from .annotations import rz
 from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing, into_contact, lifting
 from .evaluator import quat_R
-from .kinematics import PAD_TIP, finger_model_box, gripper_rot
+from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
 from .physics import PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
-from .rig import FINGERS_KW, FREE_SPACE_KW, Dropped, SkillFailure
+from .rig import FINGERS_KW, FREE_SPACE_KW, LEAVE_MARGIN, Dropped, SkillFailure
 from .sticky import SHUT, note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
@@ -39,7 +39,6 @@ PLACE_LEVEL_MIN = 5.0        # deg: a held object tilted more than this is level
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
 PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
-PICK_APPROACH = 0.04          # m: a pinch closes in straight along the gripper axis for this long
 # the open hand reached the grasp pose within this, else it was stopped short (blocked) and does
 # not close: reach errors 0.1-0.4 mm in benchmark/runs/pick612_verify, 34.6 mm where a finger
 # rode on a mug's wall (T13 no_cup, fingers_cover_1105)
@@ -985,11 +984,19 @@ def _overlaps_objects(rig, box, exclude, st, margin=0.02):
 
 # ---------------------------------------------------------------- pick
 def _grasp_approach(g):
-    """(u, L): a pinch closes in along the gripper axis u, the last L straight.  One length for
-    every pinch: the old high-top-pinch case (a lid knob on the hob, approached from 5 cm instead
-    of 12 cm: fingers-down reach ends near 1.0 m) fits it, and at 2.5 cm it also caught a can on
-    the island (centre at 0.92 m) whose approach start then sat on the can's top (P15)."""
-    return -g["R"][:, 2], PICK_APPROACH
+    """(u, L): a pinch closes in along the gripper axis u, the last L straight: one finger length and
+    LEAVE_MARGIN (pick_approach).  At the grasp only the fingers reach into what the hand closes on
+    (between a mug's walls, around a toy car's sides), along the gripper axis, so backed out by a
+    finger length they are out of it and the free motion before the line ends in the open.  At the
+    4 cm it used to be the fingertips stayed 2 cm inside a mug's rim (a rim pinch 3.5 cm deep): the
+    free leg had to bring the open hand round the rim, the planner found that once in nine tries,
+    and the park search took the one (P11, T04 no_cup kitchen mug, 2026-11-06)."""
+    return -g["R"][:, 2], pick_approach()
+
+
+def pick_approach():
+    """m of a pinch's straight approach: the planner's finger length (finger_model_length) and LEAVE_MARGIN."""
+    return finger_model_length() + LEAVE_MARGIN
 
 
 def _grasp_targets(g):
