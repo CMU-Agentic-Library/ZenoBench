@@ -1258,6 +1258,23 @@ class Motion:
                 self.cull_at = None
         return out
 
+    def static_top(self, lo, hi, below):
+        """The highest top (m) of the static colliders whose box overlaps the xy box [lo, hi] and
+        tops out below ``below``: the surface something there rests on when no annotated support
+        says so (a floor, a rug: T12's rug collider tops out 3.6 mm above the toy car's box
+        bottom), or None.  The static colliders' boxes are computed once (they do not move)."""
+        if getattr(self, "_static_boxes", None) is None:
+            boxes = []
+            for c in self.cols.items:
+                if c.owner == "static":
+                    T = G.world_pose(c, self.body_pose.get)
+                    P = self._corners[c.name] @ T[:3, :3].T + T[:3, 3]
+                    boxes.append(np.r_[P.min(0), P.max(0)])
+            self._static_boxes = np.array(boxes).reshape(-1, 6)
+        B = self._static_boxes
+        m = (B[:, 0] < hi[0]) & (B[:, 3] > lo[0]) & (B[:, 1] < hi[1]) & (B[:, 4] > lo[1]) & (B[:, 5] < below)
+        return float(B[m, 5].max()) if m.any() else None
+
     def _region_colliders(self, lo, hi):
         """Names of the colliders whose box reaches the xy box [lo, hi] that neither hand holds."""
         held = set(self.held["right"]) | set(self.held["left"])

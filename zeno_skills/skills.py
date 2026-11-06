@@ -1021,14 +1021,24 @@ def _pinch_candidates(rig, obj, pos, quat, kinds, surface_z):
 
 def _surface_under(rig, name, st):
     """The surface a pinch's pads must clear under ``name``: the annotated support it rests on, or
-    the lowest point of its box where that is higher (a container's floor) or there is no support
-    (the floor).  Not the box's bottom face: a curved spoon's box hangs 4.7 mm below the island it
-    lies on, and pads 2 mm above that face went into the island."""
+    the lowest point of its box where that is higher (a container's floor).  Not the box's bottom
+    face: a curved spoon's box hangs 4.7 mm below the island it lies on, and pads 2 mm above that
+    face went into the island.  With no annotated support (the floor) the highest static collider
+    under it below its centre, where that is above its box's lowest point: T12's toy car on a rug,
+    its box 3.6 mm into the rug's collider, was pinched with the fingers in the rug (Motion.static_top)."""
     o = st["objects"][name]
     size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
-    low = float(rig.geo.centre(name, st)[2] - 0.5 * np.abs(quat_R(o["quat"])[2, :]) @ size)
+    c = rig.geo.centre(name, st)
+    low = float(c[2] - 0.5 * np.abs(quat_R(o["quat"])[2, :]) @ size)
     sup = rig.geo.support_under(name, st)
-    return max(low, float(sup["z"])) if sup is not None else low
+    if sup is not None:
+        return max(low, float(sup["z"]))
+    motion = getattr(rig.kin, "motion", None)
+    top = None
+    if motion is not None and hasattr(motion, "static_top"):
+        fp = rig.geo.footprint(name, st)
+        top = motion.static_top(fp[:2], fp[2:], float(c[2]))
+    return low if top is None else max(low, top)
 
 
 def _pads_clear_of(g, floor_z):
