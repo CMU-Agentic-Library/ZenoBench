@@ -287,7 +287,7 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Task-Level
 
 * `pin_out_of_view` (explore_search_pin, 3 steps): +search(rolling_pin,living_room_0_0) navigate(rolling_pin) roll(rolling_pin,0.12)
-* `everything_near_the_edge__pin_and_mug` (v6_everything_near_the_edge__pin_and_mug, 6 steps): look(kitchen_island/top) navigate(rolling_pin) roll(rolling_pin,0.12) navigate(mug) pick(mug) place(mug,kitchen_island/top,[7.3, 1.8])
+* `everything_near_the_edge__pin_and_mug` (v6_everything_near_the_edge__pin_and_mug, 6 steps): look(kitchen_island/top) navigate(rolling_pin) roll(rolling_pin,0.12) navigate(edge_mug) pick(edge_mug) place(edge_mug,kitchen_island/top,[7.3, 1.8])
 * `everything_near_the_edge__pin_and_bowl` (v6_everything_near_the_edge__pin_and_bowl, 6 steps): look(kitchen_island/top) navigate(rolling_pin) roll(rolling_pin,0.12) navigate(oatmeal) pick(oatmeal) place(oatmeal,kitchen_island/top,[7.3, 1.8])
 * `everything_near_the_edge__pin_only` (v6_everything_near_the_edge__pin_only, 3 steps): look(kitchen_island/top) navigate(rolling_pin) roll(rolling_pin,0.12)
 

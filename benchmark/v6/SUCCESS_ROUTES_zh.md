@@ -2160,14 +2160,14 @@
 - 摆法 `pin_only`：
   - `rolling_pin` 在 `kitchen_island/top` 上
   - `rolling_pin` 离台面边缘至少 6 cm
-  - `mug`、`oatmeal` 没被挪动（离开局位置不超过 3 cm）
+  - `edge_mug`、`oatmeal` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - 摆法 `pin_and_mug`：
   - `rolling_pin` 在 `kitchen_island/top` 上
   - `rolling_pin` 离台面边缘至少 6 cm
-  - `mug` 在 `kitchen_island/top` 上
-  - `mug` 离台面边缘至少 6 cm
-  - `mug` 立着
+  - `edge_mug` 在 `kitchen_island/top` 上
+  - `edge_mug` 离台面边缘至少 6 cm
+  - `edge_mug` 立着
   - `oatmeal` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - 摆法 `pin_and_bowl`：
@@ -2176,12 +2176,12 @@
   - `oatmeal` 在 `kitchen_island/top` 上
   - `oatmeal` 离台面边缘至少 6 cm
   - `oatmeal` 立着
-  - `mug` 没被挪动（离开局位置不超过 3 cm）
+  - `edge_mug` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `pin_and_mug`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)` → 4. `navigate(destination=mug)` → 5. `pick(object=mug)` → 6. `place(object=mug, receptacle=kitchen_island/top, hint_xy=[7.3, 1.8])`
+- 摆法 `pin_and_mug`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)` → 4. `navigate(destination=edge_mug)` → 5. `pick(object=edge_mug)` → 6. `place(object=edge_mug, receptacle=kitchen_island/top, hint_xy=[7.3, 1.8])`
 - 摆法 `pin_and_bowl`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[7.3, 1.8])`
 - 摆法 `pin_only`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)`
 

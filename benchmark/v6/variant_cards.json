@@ -13722,7 +13722,7 @@
     "rolling_pin"
    ],
    "added": [
-    "mug"
+    "edge_mug"
    ],
    "removed": [],
    "conditions": [
@@ -13746,17 +13746,17 @@
     ],
     [
      "on",
-     "mug",
+     "edge_mug",
      "kitchen_island/top"
     ],
     [
      "away_from_edge",
-     "mug",
+     "edge_mug",
      0.06
     ],
     [
      "upright",
-     "mug"
+     "edge_mug"
     ],
     [
      "near_start",
@@ -13792,7 +13792,7 @@
     "rolling_pin"
    ],
    "added": [
-    "mug"
+    "edge_mug"
    ],
    "removed": [],
    "conditions": [
@@ -13830,7 +13830,7 @@
     ],
     [
      "near_start",
-     "mug",
+     "edge_mug",
      0.03
     ],
     [
@@ -13862,7 +13862,7 @@
     "rolling_pin"
    ],
    "added": [
-    "mug"
+    "edge_mug"
    ],
    "removed": [],
    "conditions": [
@@ -13886,7 +13886,7 @@
     ],
     [
      "near_start",
-     "mug",
+     "edge_mug",
      0.03
     ],
     [

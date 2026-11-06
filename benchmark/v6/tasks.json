@@ -48798,7 +48798,7 @@
      "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
      "instruction_zh": "岛台边上有东西快掉下去了，处理一下。",
      "add": {
-      "mug": {
+      "edge_mug": {
        "asset": "breakfast_mug",
        "support": "kitchen_island/top",
        "xy": [
@@ -48822,17 +48822,17 @@
        ],
        [
         "on",
-        "mug",
+        "edge_mug",
         "kitchen_island/top"
        ],
        [
         "away_from_edge",
-        "mug",
+        "edge_mug",
         0.06
        ],
        [
         "upright",
-        "mug"
+        "edge_mug"
        ],
        [
         "near_start",
@@ -48847,7 +48847,7 @@
      },
      "watch": [
       "rolling_pin",
-      "mug",
+      "edge_mug",
       "oatmeal"
      ],
      "since": "v6",
@@ -48866,7 +48866,7 @@
       "clusters": [
        {
         "names": [
-         "mug",
+         "edge_mug",
          "oatmeal"
         ],
         "support": "kitchen_island/top",
@@ -48973,7 +48973,7 @@
      "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
      "instruction_zh": "岛台边上有东西快掉下去了，处理一下。",
      "add": {
-      "mug": {
+      "edge_mug": {
        "asset": "breakfast_mug",
        "support": "kitchen_island/top",
        "xy": [
@@ -49011,7 +49011,7 @@
        ],
        [
         "near_start",
-        "mug",
+        "edge_mug",
         0.03
        ],
        [
@@ -49022,7 +49022,7 @@
      },
      "watch": [
       "rolling_pin",
-      "mug",
+      "edge_mug",
       "oatmeal"
      ],
      "since": "v6",
@@ -49143,7 +49143,7 @@
      "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
      "instruction_zh": "岛台边上有东西快掉下去了，处理一下。",
      "add": {
-      "mug": {
+      "edge_mug": {
        "asset": "breakfast_mug",
        "support": "kitchen_island/top",
        "xy": [
@@ -49167,7 +49167,7 @@
        ],
        [
         "near_start",
-        "mug",
+        "edge_mug",
         0.03
        ],
        [
@@ -49183,7 +49183,7 @@
      },
      "watch": [
       "rolling_pin",
-      "mug",
+      "edge_mug",
       "oatmeal"
      ],
      "since": "v6",
@@ -49202,7 +49202,7 @@
       "clusters": [
        {
         "names": [
-         "mug",
+         "edge_mug",
          "oatmeal"
         ],
         "support": "kitchen_island/top",
@@ -49399,19 +49399,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "mug"
+        "destination": "edge_mug"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "mug"
+        "object": "edge_mug"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "mug",
+        "object": "edge_mug",
         "receptacle": "kitchen_island/top",
         "hint_xy": [
          7.3,

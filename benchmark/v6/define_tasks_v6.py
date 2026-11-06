@@ -1712,17 +1712,17 @@ def T16(t):
     PIN, ISL = "rolling_pin", "kitchen_island/top"
     # everything_near_the_edge: whatever is about to fall off the island's front edge is moved in (the pin rolled,
     # a mug or a bowl set back); what stands safely stays
-    edge = {"mug": P(ISL, 7.30, 1.565), "oatmeal": P(ISL, 7.90, 1.575)}
+    edge = {"edge_mug": P(ISL, 7.30, 1.565), "oatmeal": P(ISL, 7.90, 1.575)}
     cases = {}
-    for c, risky in (("pin_and_mug", ("mug",)), ("pin_and_bowl", ("oatmeal",)), ("pin_only", ())):
-        safe = [x for x in ("mug", "oatmeal") if x not in risky]
-        add = {"mug": {"asset": "breakfast_mug", **(edge["mug"] if "mug" in risky else P(ISL, 7.30, 1.85))}}
+    for c, risky in (("pin_and_mug", ("edge_mug",)), ("pin_and_bowl", ("oatmeal",)), ("pin_only", ())):
+        safe = [x for x in ("edge_mug", "oatmeal") if x not in risky]
+        add = {"edge_mug": {"asset": "breakfast_mug", **(edge["edge_mug"] if "edge_mug" in risky else P(ISL, 7.30, 1.85))}}
         move = {"oatmeal": edge["oatmeal"] if "oatmeal" in risky else P(ISL, 7.90, 1.85)}
         route = [look(ISL), nav(PIN), S("roll", object=PIN, distance_m=0.12)]
         for x, hx in zip(risky, (7.30, 7.90)):
             route += [nav(x), pick(x), place(x, ISL, [hx, 1.80])]
         cases[c] = dict(
-            add=add, move=move, watch=[PIN, "mug", "oatmeal"],
+            add=add, move=move, watch=[PIN, "edge_mug", "oatmeal"],
             goal={"all": [["on", PIN, ISL], ["away_from_edge", PIN, 0.06]]
                   + [a for x in risky for a in (["on", x, ISL], ["away_from_edge", x, 0.06], ["upright", x])]
                   + [["near_start", x, 0.03] for x in safe] + [["hand_empty", "right"]]},
