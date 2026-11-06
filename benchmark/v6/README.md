@@ -7,9 +7,9 @@ puts each variant in one of four categories.
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 116; each runs seeds 10-19 (1,160 episodes) |
-| categories | control 20 (one per task), Action-Level 13, Task-Level 76, Action + Task 7 (`TRACKS.md`) |
-| static checks | 1,160 / 1,160 episodes |
+| variants | 107; each runs seeds 10-19 (1,070 episodes) |
+| categories | control 20 (one per task), Action-Level 0, Task-Level 83, Action + Task 4 (`TRACKS.md`) |
+| static checks | 1,070 / 1,070 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
@@ -53,9 +53,9 @@ Each variant contains the fallback its category is about; the category reads onl
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
-| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 13 | 130 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 76 | 760 |
-| **Action + Task** | both | 7 | 70 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`); none left as a variant of its own (TAMPAgent covers clearing a blocker), only inside Action + Task | 0 | 0 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 83 | 830 |
+| **Action + Task** | both | 4 | 40 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
 call, once or every time. Every challenge comes from the scene (an absent or hidden object, a lid on, a closed

@@ -1219,6 +1219,24 @@
   },
   {
    "task": "T12_tidy_toys",
+   "layout": "bins_capacity__left_full",
+   "steps": 14,
+   "atoms_checked": 9,
+   "atoms_geometric": 2,
+   "problems": [],
+   "variant": "bins_capacity"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "layout": "bins_capacity__right_full",
+   "steps": 14,
+   "atoms_checked": 9,
+   "atoms_geometric": 2,
+   "problems": [],
+   "variant": "bins_capacity"
+  },
+  {
+   "task": "T12_tidy_toys",
    "layout": "find_all_toys__car_duck",
    "steps": 10,
    "atoms_checked": 4,
@@ -1363,21 +1381,21 @@
   },
   {
    "task": "T15_book_face_up",
-   "layout": "h_task_block_on_book",
-   "steps": 6,
-   "atoms_checked": 4,
+   "layout": "flip_on_the_shelf__shelf_1",
+   "steps": 8,
+   "atoms_checked": 3,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "h_task_block_on_book"
+   "variant": "flip_on_the_shelf"
   },
   {
    "task": "T15_book_face_up",
-   "layout": "h_dynamic_book_moved",
-   "steps": 10,
-   "atoms_checked": 4,
+   "layout": "flip_on_the_shelf__shelf_0",
+   "steps": 8,
+   "atoms_checked": 3,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "h_dynamic_book_moved"
+   "variant": "flip_on_the_shelf"
   },
   {
    "task": "T16_rolling_pin_at_edge",
@@ -1399,21 +1417,30 @@
   },
   {
    "task": "T16_rolling_pin_at_edge",
-   "layout": "h_task_bowl_behind",
-   "steps": 5,
+   "layout": "everything_near_the_edge__pin_and_mug",
+   "steps": 6,
    "atoms_checked": 4,
-   "atoms_geometric": 2,
+   "atoms_geometric": 3,
    "problems": [],
-   "variant": "h_task_bowl_behind"
+   "variant": "everything_near_the_edge"
   },
   {
    "task": "T16_rolling_pin_at_edge",
-   "layout": "h_dynamic_bowl_put_behind",
-   "steps": 7,
+   "layout": "everything_near_the_edge__pin_and_bowl",
+   "steps": 6,
    "atoms_checked": 4,
-   "atoms_geometric": 2,
+   "atoms_geometric": 3,
    "problems": [],
-   "variant": "h_dynamic_bowl_put_behind"
+   "variant": "everything_near_the_edge"
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "layout": "everything_near_the_edge__pin_only",
+   "steps": 3,
+   "atoms_checked": 4,
+   "atoms_geometric": 1,
+   "problems": [],
+   "variant": "everything_near_the_edge"
   },
   {
    "task": "T17_hide_and_seek_block",
@@ -1426,33 +1453,6 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "lid_on",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "lid_on"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
-   "layout": "block_crowded",
-   "steps": 8,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "block_crowded"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
-   "layout": "lid_on_crowded",
-   "steps": 13,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "lid_on_crowded"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
    "layout": "h_task_lid_elsewhere",
    "steps": 11,
    "atoms_checked": 3,
@@ -1462,48 +1462,30 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "h_dynamic_lid_put_on",
-   "steps": 16,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "h_dynamic_lid_put_on"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
-   "layout": "x6_pp_lid_lifted__cabinet4",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "x6_pp_lid_lifted"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
-   "layout": "x6_pp_lid_lifted__dining",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "x6_pp_lid_lifted"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
-   "layout": "x6_gd_hide_both_event__tv_stand",
+   "layout": "hide_both__tv_stand",
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_hide_both_event"
+   "variant": "hide_both"
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "x6_gd_hide_both_event__dining",
+   "layout": "hide_both__dining",
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_hide_both_event"
+   "variant": "hide_both"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "layout": "new_spot_this_time",
+   "steps": 8,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "new_spot_this_time"
   },
   {
    "task": "T18_check_cabinet_dishes",
@@ -1516,30 +1498,12 @@
   },
   {
    "task": "T18_check_cabinet_dishes",
-   "layout": "m_door_left_open",
-   "steps": 3,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "m_door_left_open"
-  },
-  {
-   "task": "T18_check_cabinet_dishes",
    "layout": "h_task_two_cabinets",
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "problems": [],
    "variant": "h_task_two_cabinets"
-  },
-  {
-   "task": "T18_check_cabinet_dishes",
-   "layout": "h_dynamic_door_closed",
-   "steps": 10,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "h_dynamic_door_closed"
   },
   {
    "task": "T18_check_cabinet_dishes",
@@ -1561,12 +1525,30 @@
   },
   {
    "task": "T18_check_cabinet_dishes",
-   "layout": "x6_pp_door_reopened",
-   "steps": 5,
+   "layout": "enough_for_dinner__enough",
+   "steps": 4,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "enough_for_dinner"
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "layout": "enough_for_dinner__one_short",
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_pp_door_reopened"
+   "variant": "enough_for_dinner"
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "layout": "enough_for_dinner__two_short",
+   "steps": 12,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "enough_for_dinner"
   },
   {
    "task": "T19_recycling",
@@ -1615,24 +1597,6 @@
   },
   {
    "task": "T19_recycling",
-   "layout": "h_dynamic_cube_moved",
-   "steps": 16,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "h_dynamic_cube_moved"
-  },
-  {
-   "task": "T19_recycling",
-   "layout": "h_dynamic_cube_moved__alt_kitchen_cabinet_6",
-   "steps": 16,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "h_dynamic_cube_moved"
-  },
-  {
-   "task": "T19_recycling",
    "layout": "x6_gd_can_put_away__in_4",
    "steps": 24,
    "atoms_checked": 5,
@@ -1678,33 +1642,6 @@
   },
   {
    "task": "T20_juice_back_to_table",
-   "layout": "table_full",
-   "steps": 14,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "problems": [],
-   "variant": "table_full"
-  },
-  {
-   "task": "T20_juice_back_to_table",
-   "layout": "h_dynamic_bottle_taken",
-   "steps": 15,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "problems": [],
-   "variant": "h_dynamic_bottle_taken"
-  },
-  {
-   "task": "T20_juice_back_to_table",
-   "layout": "h_dynamic_bottle_taken__alt_kitchen_cabinet_4",
-   "steps": 15,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "problems": [],
-   "variant": "h_dynamic_bottle_taken"
-  },
-  {
-   "task": "T20_juice_back_to_table",
    "layout": "x6_gd_bottle_put_away__in_cabinet_4",
    "steps": 17,
    "atoms_checked": 4,
@@ -1732,48 +1669,111 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "book_on_desk",
-   "steps": 8,
-   "atoms_checked": 2,
+   "layout": "within_kids_reach__set_on_large_shelf_4",
+   "steps": 6,
+   "atoms_checked": 15,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "book_on_desk"
+   "variant": "within_kids_reach"
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "shelf_taken",
+   "layout": "within_kids_reach__set_on_large_shelf_5",
+   "steps": 6,
+   "atoms_checked": 15,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "within_kids_reach"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "stack_them_stably__red_blue_paperback",
    "steps": 13,
    "atoms_checked": 4,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "stack_them_stably"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "stack_them_stably__green_paperback",
+   "steps": 9,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "stack_them_stably"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "stack_them_stably__blue_green_paperback",
+   "steps": 13,
+   "atoms_checked": 4,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "stack_them_stably"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "homework_stays",
+   "steps": 9,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "problems": [],
-   "variant": "shelf_taken"
+   "variant": "homework_stays"
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "h_dynamic_shelf_taken",
-   "steps": 15,
-   "atoms_checked": 2,
+   "layout": "whose_book__picture_book",
+   "steps": 5,
+   "atoms_checked": 6,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "h_dynamic_shelf_taken"
+   "variant": "whose_book"
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "x6_gd_book_put_away__in_4",
-   "steps": 19,
-   "atoms_checked": 4,
+   "layout": "whose_book__novel",
+   "steps": 5,
+   "atoms_checked": 6,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_book_put_away"
+   "variant": "whose_book"
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "x6_gd_book_put_away__in_6",
-   "steps": 19,
-   "atoms_checked": 4,
+   "layout": "whose_book__both",
+   "steps": 9,
+   "atoms_checked": 7,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_book_put_away"
+   "variant": "whose_book"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "next_in_series__on_bookcase",
+   "steps": 10,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "next_in_series"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "next_in_series__on_other_bookcase",
+   "steps": 12,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "next_in_series"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "layout": "next_in_series__on_tall_shelf",
+   "steps": 12,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "next_in_series"
   }
  ]
 }

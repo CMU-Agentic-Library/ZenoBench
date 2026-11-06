@@ -11805,6 +11805,202 @@
   "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T12_tidy_toys/bins_capacity__left_full": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   17,
+   18
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_bin_small_2"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "toy_car",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "rubber_duck",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small_2"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__left_full",
+  "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
+  "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bins_capacity__right_full": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   16,
+   19
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_bin_small_2"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "toy_car",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "rubber_duck",
+     "toy_bin_small_2"
+    ],
+    [
+     "upright",
+     "toy_bin_small_2"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__right_full",
+  "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
+  "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T12_tidy_toys/find_all_toys__car_duck": {
   "variant": "find_all_toys",
   "category": "task",
@@ -13199,7 +13395,7 @@
    18,
    19
   ],
-  "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them; they are still reading it.",
+  "instruction": "A paperback has been lying face down on the kitchen island; its spine is getting bent. Please sort it out; leave it on the island, he has not finished it.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13250,7 +13446,7 @@
    18,
    19
   ],
-  "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them; they are still reading it.",
+  "instruction": "A paperback has been lying face down on the kitchen island; its spine is getting bent. Please sort it out; leave it on the island, he has not finished it.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": [
@@ -13292,51 +13488,32 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_book_face_up/h_task_block_on_book": {
-  "variant": "h_task_block_on_book",
-  "category": "action",
+ "T15_book_face_up/flip_on_the_shelf__shelf_1": {
+  "variant": "flip_on_the_shelf",
+  "category": "task",
   "seeds": [
    10,
-   11,
-   12,
    13,
-   14,
    15,
-   16,
-   17,
    18,
    19
   ],
-  "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them; they are still reading it.",
+  "instruction": "A paperback has been lying face down on a shelf of the bedroom bookcase for days; its spine is getting bent. Please sort it out and leave it on its shelf.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "paperback_book",
-    "wooden_block_a"
+    "paperback_book"
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on_top_of",
-     "wooden_block_a",
-     "paperback_book"
-    ]
-   ]
+   "conditions": [
+    "workspace_choice",
+    "not_in_view"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -13346,99 +13523,46 @@
     [
      "on",
      "paperback_book",
-     "kitchen_island/top"
+     "bookcase_2/shelf_1"
     ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_island/top"
     ]
    ]
   },
   "control": "book_free",
-  "oracle_route": "v5_h_task_block_on_book",
-  "challenge": "a toy block lies on the book: take it off (and leave it on the island) before flipping",
-  "rationale": "",
+  "oracle_route": "v6_flip_on_the_shelf__shelf_1",
+  "challenge": "the face-down book lies on a shelf inside the bookcase, with only about 24 cm above it",
+  "rationale": "the turn needs room above the book: do it where there is room (the open top of the bookcase), then put the book back on its shelf; turning it in place fails",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_book_face_up/h_dynamic_book_moved": {
-  "variant": "h_dynamic_book_moved",
-  "category": "action",
+ "T15_book_face_up/flip_on_the_shelf__shelf_0": {
+  "variant": "flip_on_the_shelf",
+  "category": "task",
   "seeds": [
-   10,
    11,
    12,
-   13,
    14,
-   15,
    16,
-   17,
-   18,
-   19
+   17
   ],
-  "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them; they are still reading it.",
+  "instruction": "A paperback has been lying face down on a shelf of the bedroom bookcase for days; its spine is getting bent. Please sort it out and leave it on its shelf.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "paperback_book",
-    "wooden_block_a"
+    "paperback_book"
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on_top_of",
-     "wooden_block_a",
-     "paperback_book"
-    ]
-   ]
+   "conditions": [
+    "workspace_choice",
+    "not_in_view"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "dependency_wooden_block_a",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "wooden_block_a"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "wooden_block_a",
-     "onto": "paperback_book",
-     "to": {
-      "support": null,
-      "z": 0.886,
-      "xy": [
-       7.62,
-       1.65
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -13448,23 +13572,18 @@
     [
      "on",
      "paperback_book",
-     "kitchen_island/top"
+     "bookcase_2/shelf_0"
     ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_island/top"
     ]
    ]
   },
   "control": "book_free",
-  "oracle_route": "v5_h_dynamic_book_moved",
-  "challenge": "a block lies on the book; right after the robot takes it off, the kid puts it back on: take it off again before flipping",
-  "rationale": "",
+  "oracle_route": "v6_flip_on_the_shelf__shelf_0",
+  "challenge": "the face-down book lies on a shelf inside the bookcase, with only about 24 cm above it",
+  "rationale": "the turn needs room above the book: do it where there is room (the open top of the bookcase), then put the book back on its shelf; turning it in place fails",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T16_rolling_pin_at_edge/pin_free": {
@@ -13585,22 +13704,16 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T16_rolling_pin_at_edge/h_task_bowl_behind": {
-  "variant": "h_task_bowl_behind",
-  "category": "action",
+ "T16_rolling_pin_at_edge/everything_near_the_edge__pin_and_mug": {
+  "variant": "everything_near_the_edge",
+  "category": "task",
   "seeds": [
-   10,
    11,
-   12,
    13,
    14,
-   15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
-  "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
+  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13608,128 +13721,19 @@
     "oatmeal",
     "rolling_pin"
    ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "oatmeal",
-     "kitchen_island/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "object_rolled",
-     "rolling_pin"
-    ],
-    [
-     "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "on",
-     "oatmeal",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "oatmeal"
-    ]
-   ]
-  },
-  "control": "pin_free",
-  "oracle_route": "v5_h_task_bowl_behind",
-  "challenge": "the oatmeal bowl stands right behind the pin, in its rolling path: move it first",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T16_rolling_pin_at_edge/h_dynamic_bowl_put_behind": {
-  "variant": "h_dynamic_bowl_put_behind",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal",
-    "rolling_pin"
+   "added": [
+    "mug"
    ],
-   "added": [],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_oatmeal",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "oatmeal",
-     "to": {
-      "support": "kitchen_island/top",
-      "xy": [
-       6.69,
-       1.7
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
-    [
-     "object_rolled",
-     "rolling_pin"
-    ],
     [
      "on",
      "rolling_pin",
@@ -13741,8 +13745,74 @@
      0.06
     ],
     [
+     "on",
+     "mug",
+     "kitchen_island/top"
+    ],
+    [
+     "away_from_edge",
+     "mug",
+     0.06
+    ],
+    [
+     "upright",
+     "mug"
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
+    ]
+   ]
+  },
+  "control": "pin_free",
+  "oracle_route": "v6_everything_near_the_edge__pin_and_mug",
+  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
+  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T16_rolling_pin_at_edge/everything_near_the_edge__pin_and_bowl": {
+  "variant": "everything_near_the_edge",
+  "category": "task",
+  "seeds": [
+   12,
+   15,
+   19
+  ],
+  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "rolling_pin"
+   ],
+   "added": [
+    "mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "rolling_pin",
+     "kitchen_island/top"
+    ],
+    [
+     "away_from_edge",
+     "rolling_pin",
+     0.06
     ],
     [
      "on",
@@ -13750,15 +13820,90 @@
      "kitchen_island/top"
     ],
     [
+     "away_from_edge",
+     "oatmeal",
+     0.06
+    ],
+    [
      "upright",
      "oatmeal"
+    ],
+    [
+     "near_start",
+     "mug",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "pin_free",
-  "oracle_route": "v5_h_dynamic_bowl_put_behind",
-  "challenge": "after the robot looked, someone pushes the oatmeal bowl into the pin's rolling path",
-  "rationale": "",
+  "oracle_route": "v6_everything_near_the_edge__pin_and_bowl",
+  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
+  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T16_rolling_pin_at_edge/everything_near_the_edge__pin_only": {
+  "variant": "everything_near_the_edge",
+  "category": "task",
+  "seeds": [
+   10,
+   17,
+   18
+  ],
+  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "rolling_pin"
+   ],
+   "added": [
+    "mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "rolling_pin",
+     "kitchen_island/top"
+    ],
+    [
+     "away_from_edge",
+     "rolling_pin",
+     0.06
+    ],
+    [
+     "near_start",
+     "mug",
+     0.03
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "pin_free",
+  "oracle_route": "v6_everything_near_the_edge__pin_only",
+  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
+  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T17_hide_and_seek_block/lid_off": {
@@ -13813,178 +13958,6 @@
   "control": null,
   "oracle_route": "v5fix_lid_off",
   "challenge": "the lid lies on the stove beside the pot",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/lid_on": {
-  "variant": "lid_on",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "lid_on"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v5fix_lid_on",
-  "challenge": "the lid is on the pot: hide is refused until the pot is uncovered",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/block_crowded": {
-  "variant": "block_crowded",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "crowded"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v5fix_block_crowded",
-  "challenge": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/lid_on_crowded": {
-  "variant": "lid_on_crowded",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "lid_on",
-    "crowded"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v5fix_lid_on_crowded",
-  "challenge": "the lid is on the pot and the block is boxed in",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -14059,268 +14032,12 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/h_dynamic_lid_put_on": {
-  "variant": "h_dynamic_lid_put_on",
-  "category": "action_task",
+ "T17_hide_and_seek_block/hide_both__tv_stand": {
+  "variant": "hide_both",
+  "category": "task",
   "seeds": [
-   10,
    11,
-   12,
-   13,
    14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "pot_lid",
-     "kitchen_cabinet_6/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_initial",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "dependency_pot_lid",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": null,
-      "z": 0.8591,
-      "xy": [
-       8.4096,
-       1.725
-      ],
-      "yaw_deg": 0.0
-     },
-     "onto": "handled_cooking_pot"
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v5_h_dynamic_lid_put_on",
-  "challenge": "the lid is on the wall cabinet: fetch it first; and while the robot looks for the block, someone puts the lid back on the pot",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/x6_pp_lid_lifted__cabinet4": {
-  "variant": "x6_pp_lid_lifted",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   15,
-   16,
-   18
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_lid",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "hide",
-     "args": {
-      "object": "wooden_block_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_lid_lifted__cabinet4",
-  "challenge": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
-  "rationale": "the block is still in the pot: find the lid and cover again, do not take the block out",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/x6_pp_lid_lifted__dining": {
-  "variant": "x6_pp_lid_lifted",
-  "category": "task",
-  "seeds": [
-   12,
-   13,
-   14,
-   17,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_lid",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "hide",
-     "args": {
-      "object": "wooden_block_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_lid_lifted__dining",
-  "challenge": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
-  "rationale": "the block is still in the pot: find the lid and cover again, do not take the block out",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/x6_gd_hide_both_event__tv_stand": {
-  "variant": "x6_gd_hide_both_event",
-  "category": "task",
-  "seeds": [
-   11,
-   13,
    17,
    18,
    19
@@ -14339,38 +14056,13 @@
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "multi_object_goal",
+    "not_in_view"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_floor_block",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "hide",
-     "args": {
-      "object": "wooden_block_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "floor_block",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.0,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -14393,18 +14085,18 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_x6_gd_hide_both_event__tv_stand",
-  "challenge": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
-  "rationale": "the goal decomposes into two hides that share the lid (uncover between them); the event moves the second block after the first subgoal holds: keep the first hidden, find the second",
+  "oracle_route": "v6_hide_both__tv_stand",
+  "challenge": "one block on the island, the other in another room; one pot, one lid",
+  "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/x6_gd_hide_both_event__dining": {
-  "variant": "x6_gd_hide_both_event",
+ "T17_hide_and_seek_block/hide_both__dining": {
+  "variant": "hide_both",
   "category": "task",
   "seeds": [
    10,
    12,
-   14,
+   13,
    15,
    16
   ],
@@ -14422,38 +14114,13 @@
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "multi_object_goal",
+    "not_in_view"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_floor_block",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "hide",
-     "args": {
-      "object": "wooden_block_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "floor_block",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -14476,9 +14143,69 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_x6_gd_hide_both_event__dining",
-  "challenge": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
-  "rationale": "the goal decomposes into two hides that share the lid (uncover between them); the event moves the second block after the first subgoal holds: keep the first hidden, find the second",
+  "oracle_route": "v6_hide_both__dining",
+  "challenge": "one block on the island, the other in another room; one pot, one lid",
+  "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T17_hide_and_seek_block/new_spot_this_time": {
+  "variant": "new_spot_this_time",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Let's play hide-and-seek with the block again. Last time it was in the pot on the stove and the kid found it at once, so hide it somewhere else this time.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid",
+    "rolling_pin",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "history_exclusion"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hidden",
+     "wooden_block_b"
+    ],
+    [
+     "not inside",
+     "wooden_block_b",
+     "handled_cooking_pot"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_new_spot_this_time",
+  "challenge": "the usual hiding place (the pot with its lid) is excluded by what happened last time",
+  "rationale": "choose another place that hides the block: a closed cabinet (open it first with the free hand, put the block in, close it) or another covered container; not the pot",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T18_check_cabinet_dishes/at_island": {
@@ -14533,82 +14260,6 @@
   "control": null,
   "oracle_route": "nominal",
   "challenge": "the robot starts at its default spot in front of the island",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/m_door_left_open": {
-  "variant": "m_door_left_open",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for dinner. Have a look inside and close the cabinet door properly afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "state_differs"
-   ],
-   "initial_checks": [
-    [
-     "is_open",
-     "kitchen_cabinet_6"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": {
-     "type": "set_joint",
-     "articulated": "kitchen_cabinet_6",
-     "value": "open"
-    },
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "observed",
-     "plate_inside_kitchen_cabinet"
-    ],
-    [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v5_m_door_left_open",
-  "challenge": "the door was left open: no need to open it (open would be refused), inspect and close",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -14684,100 +14335,6 @@
   "control": "at_island",
   "oracle_route": "v5_h_task_two_cabinets",
   "challenge": "the bowl is not in the first cabinet: check the other low cabinet too and close both",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/h_dynamic_door_closed": {
-  "variant": "h_dynamic_door_closed",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinets for dinner. Have a look inside and close the cabinet doors properly afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "bowl_inside_kitchen_cabinet",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_initial",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "dependency_kitchen_cabinet_6",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "open",
-     "args": {
-      "articulated": "kitchen_cabinet_6"
-     },
-     "nth": 1
-    },
-    "event": {
-     "type": "set_joint",
-     "articulated": "kitchen_cabinet_6",
-     "value": "closed"
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "observed",
-     "plate_inside_kitchen_cabinet"
-    ],
-    [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v5_h_dynamic_door_closed",
-  "challenge": "the bowl is in the other cabinet: check and close both; and just after the robot opens the door, someone pushes it shut: inspecting needs it open",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -14935,22 +14492,147 @@
   "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T18_check_cabinet_dishes/x6_pp_door_reopened": {
-  "variant": "x6_pp_door_reopened",
-  "category": "action",
+ "T18_check_cabinet_dishes/enough_for_dinner__enough": {
+  "variant": "enough_for_dinner",
+  "category": "task",
   "seeds": [
-   10,
    11,
-   12,
-   13,
    14,
-   15,
    16,
-   17,
+   17
+  ],
+  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "added": [
+    "clean_bowl_2",
+    "clean_bowl_3"
+   ],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "count_against_need"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "bowl_inside_kitchen_cabinet",
+      "clean_bowl_2",
+      "clean_bowl_3",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table"
+     ],
+     "kitchen_cabinet_6/inside_shelf",
+     3
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "bowl_kitchen_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ]
+   ]
+  },
+  "control": "at_island",
+  "oracle_route": "v6_enough_for_dinner__enough",
+  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T18_check_cabinet_dishes/enough_for_dinner__one_short": {
+  "variant": "enough_for_dinner",
+  "category": "task",
+  "seeds": [
+   12,
    18,
    19
   ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for dinner. Have a look inside and close the cabinet door properly afterwards.",
+  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "added": [
+    "clean_bowl_2"
+   ],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "count_against_need"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "bowl_inside_kitchen_cabinet",
+      "clean_bowl_2",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table"
+     ],
+     "kitchen_cabinet_6/inside_shelf",
+     3
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ]
+   ]
+  },
+  "control": "at_island",
+  "oracle_route": "v6_enough_for_dinner__one_short",
+  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T18_check_cabinet_dishes/enough_for_dinner__two_short": {
+  "variant": "enough_for_dinner",
+  "category": "task",
+  "seeds": [
+   10,
+   13,
+   15
+  ],
+  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -14959,40 +14641,26 @@
     "plate_inside_kitchen_cabinet"
    ],
    "added": [],
-   "removed": [],
-   "conditions": [],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "count_against_need"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_kitchen_cabinet_6",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "close",
-     "args": {
-      "articulated": "kitchen_cabinet_6"
-     },
-     "nth": 1
-    },
-    "event": {
-     "type": "set_joint",
-     "articulated": "kitchen_cabinet_6",
-     "value": "open"
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
-     "observed",
-     "plate_inside_kitchen_cabinet"
-    ],
-    [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
+     "count_on_at_least",
+     [
+      "bowl_inside_kitchen_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table"
+     ],
+     "kitchen_cabinet_6/inside_shelf",
+     3
     ],
     [
      "is_closed",
@@ -15005,9 +14673,9 @@
    ]
   },
   "control": "at_island",
-  "oracle_route": "v6_x6_pp_door_reopened",
-  "challenge": "right after the robot closes the cabinet, someone opens the door again",
-  "rationale": "both dishes were already seen: close the door again, do not inspect again",
+  "oracle_route": "v6_enough_for_dinner__two_short",
+  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/bin_on_bookcase": {
@@ -15025,7 +14693,7 @@
    18,
    19
   ],
-  "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -15073,7 +14741,7 @@
    15,
    16
   ],
-  "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -15123,7 +14791,7 @@
    18,
    19
   ],
-  "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -15173,7 +14841,7 @@
    16,
    17
   ],
-  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -15229,7 +14897,7 @@
    18,
    19
   ],
-  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -15273,204 +14941,6 @@
   "oracle_route": "v6_lookalike_bin__alt_tv_stand_2",
   "challenge": "the can was left on the dining table (out of view); a look-alike wide storage bin with toy blocks in it stands on the living-room cabinet by the bedroom door; the recycling bin with a used plastic cup in it is on the bedroom bookcase (here the soda_can is on tv_stand_2/top)",
   "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T19_recycling/h_dynamic_cube_moved": {
-  "variant": "h_dynamic_cube_moved",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   16,
-   17
-  ],
-  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
-  "initial_conditions": {
-   "scene": "tasks/recycle_and_store",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "wide_storage_bin"
-   ],
-   "added": [
-    "toy_block_in_bin_1",
-    "toy_block_in_bin_2",
-    "toy_storage_bin",
-    "used_plastic_cup"
-   ],
-   "removed": [],
-   "conditions": [
-    "decoy_destination",
-    "item_out_of_view"
-   ],
-   "initial_checks": [
-    [
-     "inside",
-     "toy_block_in_bin_1",
-     "toy_storage_bin"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_v4_lookalike_bin",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_foam_cube",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "drop",
-     "args": {
-      "object": "soda_can"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "foam_cube",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.0,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "bin_on_bookcase",
-  "oracle_route": "v5_h_dynamic_cube_moved",
-  "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T19_recycling/h_dynamic_cube_moved__alt_kitchen_cabinet_6": {
-  "variant": "h_dynamic_cube_moved",
-  "category": "task",
-  "seeds": [
-   13,
-   14,
-   15,
-   18,
-   19
-  ],
-  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
-  "initial_conditions": {
-   "scene": "tasks/recycle_and_store",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "wide_storage_bin"
-   ],
-   "added": [
-    "toy_block_in_bin_1",
-    "toy_block_in_bin_2",
-    "toy_storage_bin",
-    "used_plastic_cup"
-   ],
-   "removed": [],
-   "conditions": [
-    "decoy_destination",
-    "item_out_of_view"
-   ],
-   "initial_checks": [
-    [
-     "inside",
-     "toy_block_in_bin_1",
-     "toy_storage_bin"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_v4_lookalike_bin",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_foam_cube",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "drop",
-     "args": {
-      "object": "soda_can"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "foam_cube",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "bin_on_bookcase",
-  "oracle_route": "v6_h_dynamic_cube_moved__alt_kitchen_cabinet_6",
-  "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube (here the foam_cube is on kitchen_cabinet_6/top)",
-  "rationale": "seed extension of the v5 design: the foam_cube ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/x6_gd_can_put_away__in_4": {
@@ -15768,373 +15238,6 @@
   "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T20_juice_back_to_table/table_full": {
-  "variant": "table_full",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
-  "initial_conditions": {
-   "scene": "tasks/organize_utility_items",
-   "start": null,
-   "moved": [
-    "juice_bottle"
-   ],
-   "added": [
-    "buffet_tray_1",
-    "buffet_tray_11",
-    "buffet_tray_12",
-    "buffet_tray_2",
-    "buffet_tray_6",
-    "buffet_tray_7",
-    "party_bowl_1",
-    "party_bowl_2",
-    "party_bowl_3",
-    "party_bowl_4",
-    "party_plate_10",
-    "party_plate_3",
-    "party_plate_4",
-    "party_plate_5",
-    "party_plate_8",
-    "party_plate_9"
-   ],
-   "removed": [
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "spoon_target_table"
-   ],
-   "conditions": [
-    "destination_full"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "juice_bottle",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "count_on_at_least",
-     [
-      "buffet_tray_1",
-      "buffet_tray_2",
-      "party_plate_3",
-      "party_plate_4",
-      "party_plate_5",
-      "buffet_tray_6",
-      "buffet_tray_7",
-      "party_plate_8",
-      "party_plate_9",
-      "party_plate_10",
-      "buffet_tray_11",
-      "buffet_tray_12",
-      "party_bowl_1",
-      "party_bowl_2",
-      "party_bowl_3",
-      "party_bowl_4"
-     ],
-     "dining_table_2/top",
-     14
-    ]
-   ]
-  },
-  "control": "bottle_on_cabinet",
-  "oracle_route": "v5fix_table_full",
-  "challenge": "the bottle on the low wall cabinet; the dining table is covered by six trays, six plates and four bowls: no spot left for the bottle to stand",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T20_juice_back_to_table/h_dynamic_bottle_taken": {
-  "variant": "h_dynamic_bottle_taken",
-  "category": "action_task",
-  "seeds": [
-   12,
-   13,
-   14,
-   15,
-   16
-  ],
-  "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
-  "initial_conditions": {
-   "scene": "tasks/organize_utility_items",
-   "start": null,
-   "moved": [
-    "juice_bottle"
-   ],
-   "added": [
-    "buffet_tray_1",
-    "buffet_tray_11",
-    "buffet_tray_12",
-    "buffet_tray_2",
-    "buffet_tray_6",
-    "buffet_tray_7",
-    "party_bowl_1",
-    "party_bowl_2",
-    "party_bowl_3",
-    "party_bowl_4",
-    "party_plate_10",
-    "party_plate_3",
-    "party_plate_4",
-    "party_plate_5",
-    "party_plate_8",
-    "party_plate_9"
-   ],
-   "removed": [
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "spoon_target_table"
-   ],
-   "conditions": [
-    "destination_full"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "buffet_tray_1",
-     "dining_table_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_table_full",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_juice_bottle",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_cabinet_6/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "juice_bottle",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       8.155,
-       0.366
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "juice_bottle",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "count_on_at_least",
-     [
-      "buffet_tray_1",
-      "buffet_tray_2",
-      "party_plate_3",
-      "party_plate_4",
-      "party_plate_5",
-      "buffet_tray_6",
-      "buffet_tray_7",
-      "party_plate_8",
-      "party_plate_9",
-      "party_plate_10",
-      "buffet_tray_11",
-      "buffet_tray_12",
-      "party_bowl_1",
-      "party_bowl_2",
-      "party_bowl_3",
-      "party_bowl_4"
-     ],
-     "dining_table_2/top",
-     14
-    ]
-   ]
-  },
-  "control": "bottle_on_cabinet",
-  "oracle_route": "v5_h_dynamic_bottle_taken",
-  "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T20_juice_back_to_table/h_dynamic_bottle_taken__alt_kitchen_cabinet_4": {
-  "variant": "h_dynamic_bottle_taken",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
-  "initial_conditions": {
-   "scene": "tasks/organize_utility_items",
-   "start": null,
-   "moved": [
-    "juice_bottle"
-   ],
-   "added": [
-    "buffet_tray_1",
-    "buffet_tray_11",
-    "buffet_tray_12",
-    "buffet_tray_2",
-    "buffet_tray_6",
-    "buffet_tray_7",
-    "party_bowl_1",
-    "party_bowl_2",
-    "party_bowl_3",
-    "party_bowl_4",
-    "party_plate_10",
-    "party_plate_3",
-    "party_plate_4",
-    "party_plate_5",
-    "party_plate_8",
-    "party_plate_9"
-   ],
-   "removed": [
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "spoon_target_table"
-   ],
-   "conditions": [
-    "destination_full"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "buffet_tray_1",
-     "dining_table_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_table_full",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_juice_bottle",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_cabinet_6/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "juice_bottle",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "juice_bottle",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "count_on_at_least",
-     [
-      "buffet_tray_1",
-      "buffet_tray_2",
-      "party_plate_3",
-      "party_plate_4",
-      "party_plate_5",
-      "buffet_tray_6",
-      "buffet_tray_7",
-      "party_plate_8",
-      "party_plate_9",
-      "party_plate_10",
-      "buffet_tray_11",
-      "buffet_tray_12",
-      "party_bowl_1",
-      "party_bowl_2",
-      "party_bowl_3",
-      "party_bowl_4"
-     ],
-     "dining_table_2/top",
-     14
-    ]
-   ]
-  },
-  "control": "bottle_on_cabinet",
-  "oracle_route": "v6_h_dynamic_bottle_taken__alt_kitchen_cabinet_4",
-  "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand (here the juice_bottle is on kitchen_cabinet_4/top)",
-  "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T20_juice_back_to_table/x6_gd_bottle_put_away__in_cabinet_4": {
   "variant": "x6_gd_bottle_put_away",
   "category": "task",
@@ -16294,7 +15397,7 @@
    18,
    19
   ],
-  "instruction": "The kid finished reading and left the red book on the study desk. Put it back on the low bookcase in the bedroom.",
+  "instruction": "The kid finished reading. Put the book away for him.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
@@ -16326,32 +15429,300 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/book_on_desk": {
-  "variant": "book_on_desk",
-  "category": "action",
+ "T14_shelve_the_book/within_kids_reach__set_on_large_shelf_4": {
+  "variant": "within_kids_reach",
+  "category": "task",
   "seeds": [
-   10,
-   11,
-   12,
    13,
-   14,
    15,
    16,
-   17,
    18,
    19
   ],
-  "instruction": "The kid finished reading and left the red book on the study desk. Put it back on the low bookcase in the bedroom.",
+  "instruction": "The kid finished reading. Put the book away for him; he wants to read it again tomorrow on his own.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
     "book_red"
    ],
-   "added": [],
+   "added": [
+    "set_book_1",
+    "set_book_2"
+   ],
    "removed": [],
    "conditions": [
-    "no_overhang"
+    "agent_ability"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "not on",
+     "book_red",
+     "large_shelf_4/shelf_4"
+    ],
+    [
+     "not on",
+     "book_red",
+     "large_shelf_5/shelf_3"
+    ],
+    [
+     "not on_floor",
+     "book_red"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_2"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_1"
+     ]
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_within_kids_reach__set_on_large_shelf_4",
+  "challenge": "the red book belongs with its set on a high shelf in the bedroom, out of the kid's reach",
+  "rationale": "weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a low shelf (below 0.8 m), not back with its set",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/within_kids_reach__set_on_large_shelf_5": {
+  "variant": "within_kids_reach",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   14,
+   17
+  ],
+  "instruction": "The kid finished reading. Put the book away for him; he wants to read it again tomorrow on his own.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "set_book_1",
+    "set_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "agent_ability"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "not on",
+     "book_red",
+     "large_shelf_4/shelf_4"
+    ],
+    [
+     "not on",
+     "book_red",
+     "large_shelf_5/shelf_3"
+    ],
+    [
+     "not on_floor",
+     "book_red"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_2"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_1"
+     ]
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_within_kids_reach__set_on_large_shelf_5",
+  "challenge": "the red book belongs with its set on a high shelf in the bedroom, out of the kid's reach",
+  "rationale": "weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a low shelf (below 0.8 m), not back with its set",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/stack_them_stably__red_blue_paperback": {
+  "variant": "stack_them_stably",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   16,
+   19
+  ],
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "desk_book_blue",
+    "desk_paperback_book"
+   ],
+   "removed": [],
+   "conditions": [
+    "subgoal_order",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
@@ -16362,6 +15733,16 @@
      "on",
      "book_red",
      "bookcase_2/top"
+    ],
+    [
+     "on_top_of",
+     "desk_book_blue",
+     "book_red"
+    ],
+    [
+     "on_top_of",
+     "desk_paperback_book",
+     "desk_book_blue"
     ],
     [
      "hand_empty",
@@ -16370,14 +15751,126 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v5fix_book_on_desk",
-  "challenge": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
-  "rationale": "",
+  "oracle_route": "v6_stack_them_stably__red_blue_paperback",
+  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/shelf_taken": {
-  "variant": "shelf_taken",
-  "category": "action",
+ "T14_shelve_the_book/stack_them_stably__green_paperback": {
+  "variant": "stack_them_stably",
+  "category": "task",
+  "seeds": [
+   14,
+   17,
+   18
+  ],
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "desk_book_green",
+    "desk_paperback_book"
+   ],
+   "removed": [
+    "book_red"
+   ],
+   "conditions": [
+    "subgoal_order",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "desk_book_green",
+     "bookcase_2/top"
+    ],
+    [
+     "on_top_of",
+     "desk_paperback_book",
+     "desk_book_green"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_stack_them_stably__green_paperback",
+  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/stack_them_stably__blue_green_paperback": {
+  "variant": "stack_them_stably",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   15
+  ],
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "desk_book_blue",
+    "desk_book_green",
+    "desk_paperback_book"
+   ],
+   "removed": [
+    "book_red"
+   ],
+   "conditions": [
+    "subgoal_order",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "desk_book_green",
+     "bookcase_2/top"
+    ],
+    [
+     "on_top_of",
+     "desk_book_blue",
+     "desk_book_green"
+    ],
+    [
+     "on_top_of",
+     "desk_paperback_book",
+     "desk_book_blue"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_stack_them_stably__blue_green_paperback",
+  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/homework_stays": {
+  "variant": "homework_stays",
+  "category": "task",
   "seeds": [
    10,
    11,
@@ -16390,19 +15883,22 @@
    18,
    19
   ],
-  "instruction": "Put the red book back on the low bookcase in the bedroom, and deal properly with whatever is taking up the space there.",
+  "instruction": "The kid finished reading. Tidy up his desk; he will go on with his homework tomorrow.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
-    "book_red",
-    "mug_shelf",
-    "shelf_blocker"
+    "book_red"
    ],
-   "added": [],
+   "added": [
+    "desk_mug",
+    "homework",
+    "hw_pencil"
+   ],
    "removed": [],
    "conditions": [
-    "destination_full"
+    "category_rule",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
@@ -16415,120 +15911,95 @@
      "bookcase_2/top"
     ],
     [
-     "hand_empty",
-     "right"
+     "on",
+     "desk_mug",
+     "kitchen_counter_2/top"
     ],
     [
      "upright",
-     "mug_shelf"
+     "desk_mug"
     ],
     [
-     "not on_floor",
-     "mug_shelf"
+     "near_start",
+     "homework",
+     0.03
     ],
     [
-     "not on_floor",
-     "shelf_blocker"
+     "near_start",
+     "hw_pencil",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v5fix_shelf_taken",
-  "challenge": "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the bedroom bookcase top",
-  "rationale": "",
+  "oracle_route": "v6_homework_stays",
+  "challenge": "the desk holds the finished book, a used mug and the open homework with its pencil",
+  "rationale": "each thing by what it is and what the instruction says about it: the book back on its bookcase, the mug to the kitchen, the homework stays as it lies",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/h_dynamic_shelf_taken": {
-  "variant": "h_dynamic_shelf_taken",
-  "category": "action",
+ "T14_shelve_the_book/whose_book__picture_book": {
+  "variant": "whose_book",
+  "category": "task",
   "seeds": [
    10,
-   11,
-   12,
-   13,
    14,
-   15,
    16,
-   17,
-   18,
-   19
+   18
   ],
-  "instruction": "The kid finished reading and left the red book on the study desk. Put it back on the low bookcase in the bedroom.",
+  "instruction": "Put the books on the study desk away.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
     "book_red"
    ],
-   "added": [],
-   "removed": [],
+   "added": [
+    "kid_book_1",
+    "kid_book_2",
+    "novel_1",
+    "novel_2",
+    "picture_book"
+   ],
+   "removed": [
+    "book_red"
+   ],
    "conditions": [
-    "no_overhang"
+    "storage_place",
+    "referent_clue"
    ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "destination_mug",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "desk_1/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "mug_shelf",
-     "to": {
-      "support": "bookcase_2/top",
-      "xy": [
-       0.86,
-       -0.53
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   },
-   {
-    "id": "destination_duck",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "desk_1/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "shelf_blocker",
-     "to": {
-      "support": "bookcase_2/top",
-      "xy": [
-       1.13,
-       -0.43
-      ],
-      "yaw_deg": 90
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "on",
-     "book_red",
+     "picture_book",
      "bookcase_2/top"
+    ],
+    [
+     "near_start",
+     "kid_book_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_book_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_2",
+     0.03
     ],
     [
      "hand_empty",
@@ -16537,122 +16008,189 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v5_h_dynamic_shelf_taken",
-  "challenge": "while the robot is at the desk, someone puts a mug and the duck on the bookcase top: move the mug to a legal place before shelving",
-  "rationale": "",
+  "oracle_route": "v6_whose_book__picture_book",
+  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/x6_gd_book_put_away__in_4": {
-  "variant": "x6_gd_book_put_away",
+ "T14_shelve_the_book/whose_book__novel": {
+  "variant": "whose_book",
   "category": "task",
   "seeds": [
-   10,
+   12,
    13,
-   14,
-   15,
-   16
+   19
   ],
-  "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+  "instruction": "Put the books on the study desk away.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
     "book_red"
    ],
-   "added": [],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
+   "added": [
+    "kid_book_1",
+    "kid_book_2",
+    "novel",
+    "novel_1",
+    "novel_2"
    ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "book_red",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
+   "removed": [
+    "book_red"
+   ],
+   "conditions": [
+    "storage_place",
+    "referent_clue"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_book_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "on",
-     "book_red",
-     "bookcase_2/top"
+     "novel",
+     "large_shelf_2/shelf_2"
+    ],
+    [
+     "near_start",
+     "kid_book_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_book_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_2",
+     0.03
     ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
     ]
    ]
   },
-  "control": "book_on_desk",
-  "oracle_route": "v6_x6_gd_book_put_away__in_4",
-  "challenge": "the red book is in one of the two low kitchen cabinets (seed decides which)",
-  "rationale": "the location is a disjunction over closed places: inspect them (reference route: the worse order), take the book out, close both doors",
+  "control": "e1_book_ready",
+  "oracle_route": "v6_whose_book__novel",
+  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/x6_gd_book_put_away__in_6": {
-  "variant": "x6_gd_book_put_away",
+ "T14_shelve_the_book/whose_book__both": {
+  "variant": "whose_book",
   "category": "task",
   "seeds": [
    11,
-   12,
-   17,
-   18,
-   19
+   15,
+   17
   ],
-  "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+  "instruction": "Put the books on the study desk away.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
     "book_red"
    ],
-   "added": [],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
+   "added": [
+    "kid_book_1",
+    "kid_book_2",
+    "novel",
+    "novel_1",
+    "novel_2",
+    "picture_book"
    ],
-   "conditions": [],
-   "initial_checks": [
+   "removed": [
+    "book_red"
+   ],
+   "conditions": [
+    "storage_place",
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
     [
      "on",
-     "book_red",
-     "kitchen_cabinet_6/inside_shelf"
+     "picture_book",
+     "bookcase_2/top"
+    ],
+    [
+     "on",
+     "novel",
+     "large_shelf_2/shelf_2"
+    ],
+    [
+     "near_start",
+     "kid_book_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_book_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "novel_2",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
-  "failure_triggers": [
-   {
-    "id": "resource_book_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
+  "control": "e1_book_ready",
+  "oracle_route": "v6_whose_book__both",
+  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_bookcase": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   18,
+   19
   ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -16661,23 +16199,156 @@
      "bookcase_2/top"
     ],
     [
+     "on",
+     "red_book_2",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
     ]
    ]
   },
-  "control": "book_on_desk",
-  "oracle_route": "v6_x6_gd_book_put_away__in_6",
-  "challenge": "the red book is in one of the two low kitchen cabinets (seed decides which)",
-  "rationale": "the location is a disjunction over closed places: inspect them (reference route: the worse order), take the book out, close both doors",
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__on_bookcase",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_other_bookcase": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   13,
+   16,
+   17
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "book_red",
+     "bookcase_2/top"
+    ],
+    [
+     "on",
+     "red_book_2",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__on_other_bookcase",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_tall_shelf": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   15
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "book_red",
+     "bookcase_2/top"
+    ],
+    [
+     "on",
+     "red_book_2",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__on_tall_shelf",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  }
 }

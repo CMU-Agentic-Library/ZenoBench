@@ -1,7 +1,7 @@
 {
- "variants": 116,
- "episodes": 1160,
- "static_ok": 1160,
+ "variants": 107,
+ "episodes": 1070,
+ "static_ok": 1070,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -49,47 +49,46 @@
    "static_ok": 50
   },
   "T12_tidy_toys": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 60,
+   "static_ok": 60
   },
   "T13_breakfast_setup": {
    "episodes": 40,
    "static_ok": 40
   },
   "T15_book_face_up": {
-   "episodes": 40,
-   "static_ok": 40
+   "episodes": 30,
+   "static_ok": 30
   },
   "T16_rolling_pin_at_edge": {
+   "episodes": 30,
+   "static_ok": 30
+  },
+  "T17_hide_and_seek_block": {
    "episodes": 40,
    "static_ok": 40
   },
-  "T17_hide_and_seek_block": {
-   "episodes": 80,
-   "static_ok": 80
-  },
   "T18_check_cabinet_dishes": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T19_recycling": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 40,
+   "static_ok": 40
   },
   "T20_juice_back_to_table": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 30,
+   "static_ok": 30
   },
   "T14_shelve_the_book": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 60,
+   "static_ok": 60
   }
  },
  "categories": {
   "control": 20,
-  "task": 76,
-  "action_task": 7,
-  "action": 13
+  "task": 83,
+  "action_task": 4
  },
- "tasks_sha1": "c0421aa6bbdf8cd7e4c96dfe9633264a27d7f9b4"
+ "tasks_sha1": "5c038078326157fe7083c1be54625aef01d27d64"
 }

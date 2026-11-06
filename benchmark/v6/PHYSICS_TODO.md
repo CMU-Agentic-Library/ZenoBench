@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1160 episodes remain (550 of the 55 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1070 episodes remain (620 of the 62 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -79,6 +79,7 @@
 | T12 | toys_out | control | 0/0 of 10 | - |
 | T12 | duck_in_study | task | 0/0 of 10 | - |
 | T12 | toys_everywhere | task | 0/0 of 10 | - |
+| T12 | bins_capacity | task | 0/0 of 10 | - |
 | T12 | find_all_toys | task | 0/0 of 10 | - |
 | T12 | castle_stays | task | 0/0 of 10 | - |
 | T13 | dishes_on_tv_stand | control | 0/0 of 10 | - |
@@ -87,39 +88,29 @@
 | T13 | finish_the_table | task | 0/0 of 10 | - |
 | T15 | book_free | control | 0/0 of 10 | - |
 | T15 | book_out_of_view | task | 0/0 of 10 | - |
-| T15 | h_task_block_on_book | action | 0/0 of 10 | - |
-| T15 | h_dynamic_book_moved | action | 0/0 of 10 | - |
+| T15 | flip_on_the_shelf | task | 0/0 of 10 | - |
 | T16 | pin_free | control | 0/0 of 10 | - |
 | T16 | pin_out_of_view | task | 0/0 of 10 | - |
-| T16 | h_task_bowl_behind | action | 0/0 of 10 | - |
-| T16 | h_dynamic_bowl_put_behind | action | 0/0 of 10 | - |
+| T16 | everything_near_the_edge | task | 0/0 of 10 | - |
 | T17 | lid_off | control | 0/0 of 10 | - |
-| T17 | lid_on | action | 0/0 of 10 | - |
-| T17 | block_crowded | action | 0/0 of 10 | - |
-| T17 | lid_on_crowded | action | 0/0 of 10 | - |
 | T17 | h_task_lid_elsewhere | task | 0/0 of 10 | - |
-| T17 | h_dynamic_lid_put_on | action_task | 0/0 of 10 | - |
-| T17 | x6_pp_lid_lifted | task | 0/0 of 10 | search of the pot lid |
-| T17 | x6_gd_hide_both_event | task | 0/0 of 10 | - |
+| T17 | hide_both | task | 0/0 of 10 | - |
+| T17 | new_spot_this_time | task | 0/0 of 10 | low cabinet doors |
 | T18 | at_island | control | 0/0 of 10 | low cabinet doors |
-| T18 | m_door_left_open | action | 0/0 of 10 | low cabinet doors |
 | T18 | h_task_two_cabinets | task | 0/0 of 10 | low cabinet doors |
-| T18 | h_dynamic_door_closed | action_task | 0/0 of 10 | low cabinet doors |
 | T18 | x6_gd_bowl_elsewhere__two_places | task | 0/0 of 10 | low cabinet doors |
 | T18 | x6_gd_bowl_elsewhere__three_places | task | 0/0 of 10 | low cabinet doors |
-| T18 | x6_pp_door_reopened | action | 0/0 of 10 | low cabinet doors |
+| T18 | enough_for_dinner | task | 0/0 of 10 | low cabinet doors |
 | T19 | bin_on_bookcase | control | 0/0 of 10 | - |
 | T19 | m_can_in_dining_room | task | 0/0 of 10 | - |
 | T19 | lookalike_bin | task | 0/0 of 10 | - |
-| T19 | h_dynamic_cube_moved | task | 0/0 of 10 | - |
 | T19 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors |
 | T20 | bottle_on_cabinet | control | 0/0 of 10 | juice bottle grasp |
 | T20 | m_bottle_on_tv_stand | task | 0/0 of 10 | juice bottle grasp |
-| T20 | table_full | action | 0/0 of 10 | juice bottle grasp |
-| T20 | h_dynamic_bottle_taken | action_task | 0/0 of 10 | juice bottle grasp |
 | T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp, low cabinet doors |
 | T14 | e1_book_ready | control | 0/0 of 10 | - |
-| T14 | book_on_desk | action | 0/0 of 10 | - |
-| T14 | shelf_taken | action | 0/0 of 10 | - |
-| T14 | h_dynamic_shelf_taken | action | 0/0 of 10 | - |
-| T14 | x6_gd_book_put_away | task | 0/0 of 10 | low cabinet doors |
+| T14 | within_kids_reach | task | 0/0 of 10 | - |
+| T14 | stack_them_stably | task | 0/0 of 10 | - |
+| T14 | homework_stays | task | 0/0 of 10 | - |
+| T14 | whose_book | task | 0/0 of 10 | - |
+| T14 | next_in_series | task | 0/0 of 10 | - |

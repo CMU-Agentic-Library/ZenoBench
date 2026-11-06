@@ -495,7 +495,11 @@ class World:
             return args[0] in self.heating
         if p == "temperature_at_least":
             return self.temp.get(args[0], 20.0) >= float(args[1])
-        if p in ("wiped", "stirred", "hidden", "flipped", "object_rolled", "observed"):
+        if p == "hidden":                        # in a covered container or inside closed furniture
+            n = args[0]
+            return ("hidden", n) in self.flags or bool(self.closed_around(n)) or any(
+                c in self.covered for c in self.chain(n)[1:])
+        if p in ("wiped", "stirred", "flipped", "object_rolled", "observed"):
             return (p, args[0]) in self.flags
         if p == "on_floor":
             return (self.support_of(args[0]) or "").startswith("floor")
