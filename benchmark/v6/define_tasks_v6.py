@@ -579,6 +579,7 @@ def T04(t):
             instruction="A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept "
                         "in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the "
                         "cabinets again.",
+            instruction_zh="有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。",
             challenge="the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the "
                       "cup is in one of the two (seed decides which)",
             rationale="the visible substitute must not end the search: the cabinets are inspected until the cup is "
@@ -763,6 +764,7 @@ def T05(t):
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
             factor="which cabinet holds the preferred item",
             instruction=two_cab,
+            instruction_zh="孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
             challenge="writing things are in the two low cabinets: a pencil in one, the pen in the other (seed "
                       "decides which)",
             rationale="the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are "
@@ -1123,7 +1125,7 @@ def T09(t):
                       "When the pot on the stove is the empty one, use it",
             cases={"in_use": in_use, "free": free}),
         "tomato_in_fridge": dict(
-            base="lid_off", control="lid_off", conditions=["storage_place", "not_in_view"],
+            base="lid_off", control="lid_off", conditions=["storage_place", "not_in_view", "closed_fridge"],
             instruction="Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, "
                         "stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
             instruction_zh="午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
@@ -1342,6 +1344,7 @@ def T12(t):
             may_end_on_floor=[CAR],
             instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on "
                         "the bedroom bookcase, each toy completely inside a bin.",
+            instruction_zh="快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
             factor="which bin is already half full (capacity)",
             challenge="no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed "
                       "decides which); the car is on the living-room floor, the duck on the study desk",
@@ -1410,7 +1413,7 @@ def T13(t):
         "x6_gd_bowl_put_away": dict(
             base="dishes_on_tv_stand", control="bowl_on_cabinet",
             factor="which closed place holds the item",
-            instruction=put_away, goal=g, remove=["bowl_inside_kitchen_cabinet", "plate_inside_kitchen_cabinet"],
+            instruction=put_away, goal=g, instruction_zh="摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。", remove=["bowl_inside_kitchen_cabinet", "plate_inside_kitchen_cabinet"],
             challenge="no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
             rationale="the bowl's location is a disjunction resolved by inspecting both places (reference route: the "
                       "worse order); the cup is set as usual and the doors are closed again",
@@ -1429,6 +1432,7 @@ def T13(t):
             move={b2: P("tv_stand_2/top", 6.9, 0.36)}, goal=two_goal, watch=[BOWL, b2, CUP, MUG, SPOON, s2],
             instruction="Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is "
                         "fine where there is no cup).",
+            instruction_zh="在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
             challenge="two places, two bowls on the TV stand, one cup and the mug; once the first place is set, "
                       "someone takes the mug to the wall cabinet",
             rationale="the goal decomposes into two place settings with an allocation of the cups and bowls; the "
@@ -1457,6 +1461,7 @@ def T14(t):
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             instruction="The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it "
                         "back on the low bookcase in the bedroom, and close the cabinets again.",
+            instruction_zh="孩子把那本红书收进了厨房的一个矮柜里，没放回书架。把它放回卧室的矮书架上，再把柜门关好。",
             factor="which closed place holds the item",
             challenge="the red book is in one of the two low kitchen cabinets (seed decides which)",
             rationale="the location is a disjunction over closed places: inspect them (reference route: the worse "
@@ -1491,6 +1496,7 @@ def T17(t):
             move={F: P("kitchen_island/top", 7.25, 1.85)}, goal=both_goal, watch=[B, F, LID, POT, "oatmeal", "rolling_pin"],
             instruction="We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty "
                         "pot on the stove and put the lid on so they cannot see them.",
+            instruction_zh="我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。",
             challenge="two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the "
                       "TV stand",
             rationale="the goal decomposes into two hides that share the lid (uncover between them); the event moves "
@@ -1525,11 +1531,13 @@ def T18(t):
             cases={"two_places": dict(goal=goal_mw, route=base + mw,
                                       instruction="Grandma wants to know whether there is still a clean plate and bowl "
                                                   "for dinner, in the low wall cabinet or the microwave. Have a look "
-                                                  "and close every door properly afterwards."),
+                                                  "and close every door properly afterwards.",
+                                      instruction_zh="奶奶想知道晚饭还有没有干净的盘子和碗，看看靠墙矮柜和微波炉里有没有。看完把门都关好。"),
                    "three_places": dict(goal=goal_3, route=base + c4 + mw,
                                         instruction="Grandma wants to know whether there is still a clean plate and bowl "
                                                     "for dinner somewhere in the low kitchen cabinets or the microwave. "
-                                                    "Have a look and close every door properly afterwards.")},
+                                                    "Have a look and close every door properly afterwards.",
+                                        instruction_zh="奶奶想知道晚饭还有没有干净的盘子和碗，看看厨房的矮柜和微波炉里有没有。看完把门都关好。")},
             failures=[f_initial("resource", [["on", "bowl_inside_kitchen_cabinet", "kitchen_microwave/inside_floor"]],
                                 fid="resource_bowl_elsewhere")]),
         "x6_pp_door_reopened": dict(
@@ -1558,6 +1566,7 @@ def T19(t):
             instruction="Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and "
                         "the foam packing cube from the delivery lies on the living-room floor; take both to the wide "
                         "storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+            instruction_zh="看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。",
             factor="which closed place holds the item",
             challenge="the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
             rationale="inspect the closed places for the can (reference route: the worse order), then recycle both",
@@ -1581,7 +1590,7 @@ def T20(t):
     take = lambda art: [nav(J), pick(J), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
     return {
         "x6_gd_bottle_put_away": dict(
-            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
+            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal, instruction_zh="有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
             factor="which closed place holds the item",
             remove=["plate_inside_kitchen_cabinet"],
             challenge="the bottle was put away in one of the two low cabinets",
@@ -1618,6 +1627,7 @@ def T11(t):
             instruction="Lunch is over and the apple and the orange are still on the dining table. Put them into the "
                         "fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray "
                         "on the study desk will do.",
+            instruction_zh="午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。",
             challenge="two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes "
                       "the orange to the TV stand",
             rationale="the goal decomposes into one placement per fruit; the event moves the second resource after the "
@@ -1885,6 +1895,9 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "closed_fridge": {"type": "access", "decision": "precondition",
+                      "meaning": "the item is in the closed fridge next to the work spot: open it, take the item, "
+                                 "close it again (the Action-Level part of a Task-Level design)"},
     "disposal_by_state": {"type": "goal_inference", "decision": "decompose",
                           "meaning": "the instruction names kinds of destination (trash, fridge, counter); which "
                                      "object goes where follows from what it is and its state (an empty disposable "
@@ -2015,6 +2028,17 @@ def ext_variant(t, fam, k):
         for key in ("destination", "target"):
             if st["args"].get(key) == old:
                 st["args"][key] = sup
+    # the v5 route may work on right after the pick (the item was within reach of the work spot); from the new
+    # place the robot walks back first
+    for j, st in enumerate(steps):
+        if st["skill"] == "pick" and st["args"].get("object") == x and j + 1 < len(steps):
+            nxt = steps[j + 1]
+            if nxt["skill"] not in ("navigate", "search"):
+                to = next((nxt["args"][k] for k in ("target", "receptacle", "surface", "container", "base")
+                           if nxt["args"].get(k)), None)
+                if to:
+                    steps.insert(j + 1, {"skill": "navigate", "args": {"destination": to}})
+            break
     case = "alt_" + sup.split("/")[0]
     v["since"] = "v6"
     v["note"] = f"{meta.get('challenge') or v.get('note', '')} (here the {x} is on {sup})"

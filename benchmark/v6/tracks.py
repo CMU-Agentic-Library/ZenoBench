@@ -56,6 +56,7 @@ LOCAL_CONDITIONS = {
     "anchor_boxed_in": "move the boxed-in anchor to where the setting fits",
     "destination_full": "move what fills the destination to a legal place, then place",
     "unstable_base": "move the base in from the edge (or stack on the other one)",
+    "closed_fridge": "open the fridge at the work spot, take the item out, close it again",
 }
 
 

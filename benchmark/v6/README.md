@@ -8,7 +8,7 @@ puts each variant in one of four categories.
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
 | variants | 124; each runs seeds 10-19 (1,240 episodes) |
-| categories | control 20 (one per task), Action-Level 15, Task-Level 81, Action + Task 8 (`TRACKS.md`) |
+| categories | control 20 (one per task), Action-Level 15, Task-Level 80, Action + Task 9 (`TRACKS.md`) |
 | static checks | 1,240 / 1,240 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
@@ -54,8 +54,8 @@ Each variant contains the fallback its category is about; the category reads onl
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
 | **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 15 | 150 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 81 | 810 |
-| **Action + Task** | both | 8 | 80 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 80 | 800 |
+| **Action + Task** | both | 9 | 90 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
 call, once or every time. Every challenge comes from the scene (an absent or hidden object, a lid on, a closed
@@ -83,7 +83,11 @@ A goal of a variant's own (close the door again, leave the block on the island) 
 does not by itself make a variant Task-Level.
 
 Status: static (`validate_v6.py` checks that no injected failure is left and every category matches its
-content). Evaluation metrics are not defined yet.
+content). `oracle_check.py` replays every oracle route on a symbolic state (where each object is, the hand, open
+doors, lids, temperatures, the robot's place): each step's preconditions (from the skill contracts, plus an item in
+closed furniture needs the door open, a covered container takes nothing, the robot is near what it handles), the
+dynamic events at their trigger, and at the end the goal (202 / 202 routes; atoms only geometry can decide, such as
+upright or clear_of, are left to the simulation). Evaluation metrics are not defined yet.
 
 ## Commands
 
@@ -94,6 +98,7 @@ python benchmark/v6/validate_v6.py         # STATIC.json: per-episode static che
 python benchmark/v6/report_v6.py           # variant_cards.json, ROUTES.md, SKILL_FIX_LIST.md, PHYSICS_TODO.md
 python benchmark/v6/tracks.py              # TRACKS.md, batches/category_*.json
 python benchmark/v6/success_routes.py      # SUCCESS_ROUTES_zh.md (after VARIANTS_zh.md)
+python benchmark/v6/oracle_check.py        # ORACLE_CHECK.json: every route replayed on a symbolic state, goal tested
 $ISAACLAB_PYTHON benchmark/v6/render_variants.py --task T01   # Isaac Sim start-scene pictures -> ~/Pictures/<task>/<variant>/
 python -m pytest -q benchmark/v6/tests failure_injection
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \

@@ -61,7 +61,7 @@
 | T09 | lid_off | control | 0/0 of 10 | - |
 | T09 | lid_on_spoon_away | action_task | 0/0 of 10 | - |
 | T09 | pot_in_use | task | 0/0 of 10 | - |
-| T09 | tomato_in_fridge | task | 0/0 of 10 | - |
+| T09 | tomato_in_fridge | action_task | 0/0 of 10 | - |
 | T09 | x6_gd_tomato_elsewhere | task | 0/0 of 10 | - |
 | T09 | pot_in_dining_room | task | 0/0 of 10 | - |
 | T10 | can_on_island | control | 0/0 of 10 | - |

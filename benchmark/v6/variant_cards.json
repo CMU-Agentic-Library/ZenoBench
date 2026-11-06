@@ -9471,7 +9471,7 @@
  },
  "T09_tomato_soup/tomato_in_fridge__in_fridge": {
   "variant": "tomato_in_fridge",
-  "category": "task",
+  "category": "action_task",
   "seeds": [
    10,
    12,
@@ -9494,7 +9494,8 @@
    "removed": [],
    "conditions": [
     "storage_place",
-    "not_in_view"
+    "not_in_view",
+    "closed_fridge"
    ],
    "initial_checks": []
   },
@@ -9562,7 +9563,7 @@
  },
  "T09_tomato_soup/tomato_in_fridge__on_island": {
   "variant": "tomato_in_fridge",
-  "category": "task",
+  "category": "action_task",
   "seeds": [
    11,
    14,
@@ -9585,7 +9586,8 @@
    "removed": [],
    "conditions": [
     "storage_place",
-    "not_in_view"
+    "not_in_view",
+    "closed_fridge"
    ],
    "initial_checks": []
   },

@@ -669,7 +669,7 @@
 
 **情况**：马克杯就在眼前，但更想要杯子；杯子收在两个关着的矮柜之一 → 逐个打开找，找完关门
 
-**指令**：A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the cabinets again.
+**指令**：有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。
 
 **成功条件**：
 
@@ -942,7 +942,7 @@
 
 **情况**：两个矮柜里一个放钢笔、一个放铅笔 → 都打开看，优先拿钢笔，关好柜门
 
-**指令**：The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.
+**指令**：孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。
 
 **成功条件**：
 
@@ -1277,7 +1277,7 @@
 **参考调用顺序**：
 
 - 摆法 `far_sponge_tv`：1. `search(object=kitchen_sponge, region=living_room_0_0)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `approach(target=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
-- 摆法 `alt_dining_table_2`：1. `search(object=kitchen_sponge, region=dining_room_0_1)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `approach(target=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `alt_dining_table_2`：1. `search(object=kitchen_sponge, region=dining_room_0_1)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=kitchen_island/top)` → 5. `approach(target=kitchen_island/top)` → 6. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 7. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
 ### wipe_and_sort（Task）
 
@@ -1421,7 +1421,7 @@
 - 摆法 `in_use`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `pick(object=handled_cooking_pot)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.7, 1.725])` → 8. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 - 摆法 `free`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
-### tomato_in_fridge（Task）
+### tomato_in_fridge（Action + Task）
 
 **情况**：汤要用三颗小番茄；岛台上只有两颗，第三颗收在关着的冰箱里（指令没说在哪） → 数一数不够，想到食材放在冰箱，开冰箱拿出来再关好（Action），而不是满屋找（Task）；三颗都在岛台上时去开冰箱是白跑
 
@@ -1720,7 +1720,7 @@
 
 **情况**：两个水果、没有果篮（用托盘）；苹果放好后孩子把橙子拿到电视柜 → 找回橙子放进托盘
 
-**指令**：Lunch is over and the apple and the orange are still on the dining table. Put them into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.
+**指令**：午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。
 
 **成功条件**：
 
@@ -1854,7 +1854,7 @@
 
 **情况**：没有筐，书架上有两个小箱，其中一个已经半满 → 判断哪个还装得下，分开放
 
-**指令**：It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.
+**指令**：快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。
 
 **成功条件**：
 
@@ -2128,7 +2128,7 @@
 
 **情况**：外面没有碗，干净的碗收在靠墙柜或微波炉里 → 逐个打开找
 
-**指令**：Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.
+**指令**：摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。
 
 **成功条件**：
 
@@ -2156,7 +2156,7 @@
 
 **情况**：摆两份：电视柜上有两个碗、一个杯子和马克杯；第一份摆好后有人把马克杯拿走 → 找马克杯摆第二份
 
-**指令**：Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).
+**指令**：在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。
 
 **成功条件**：
 
@@ -2434,7 +2434,7 @@
 
 **情况**：两块积木藏进同一个锅；第一块藏好后孩子把另一块拿走 → 找到再藏
 
-**指令**：We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.
+**指令**：我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。
 
 **成功条件**：
 
@@ -2524,7 +2524,7 @@
 
 **情况**：盘子在靠墙柜，碗在微波炉里 → 两处都查
 
-**指令**：Grandma wants to know whether there is still a clean plate and bowl for dinner, in the low wall cabinet or the microwave. Have a look and close every door properly afterwards.
+**指令**：奶奶想知道晚饭还有没有干净的盘子和碗，看看靠墙矮柜和微波炉里有没有。看完把门都关好。
 
 **成功条件**：
 
@@ -2542,7 +2542,7 @@
 
 **情况**：同上，指令还多提了一个空矮柜 → 三处都查
 
-**指令**：Grandma wants to know whether there is still a clean plate and bowl for dinner somewhere in the low kitchen cabinets or the microwave. Have a look and close every door properly afterwards.
+**指令**：奶奶想知道晚饭还有没有干净的盘子和碗，看看厨房的矮柜和微波炉里有没有。看完把门都关好。
 
 **成功条件**：
 
@@ -2645,7 +2645,7 @@
 
 **情况**：罐子在两个关着的矮柜之一 → 逐个找
 
-**指令**：Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.
+**指令**：看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。
 
 **成功条件**：
 
@@ -2734,7 +2734,7 @@
 
 **情况**：瓶子被收进了两个矮柜之一 → 逐个找
 
-**指令**：Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.
+**指令**：有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。
 
 **成功条件**：
 
@@ -2816,7 +2816,7 @@
 
 **情况**：红书被收进了两个矮柜之一 → 逐个找，拿出来（要推出边缘）
 
-**指令**：The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.
+**指令**：孩子把那本红书收进了厨房的一个矮柜里，没放回书架。把它放回卧室的矮书架上，再把柜门关好。
 
 **成功条件**：
 

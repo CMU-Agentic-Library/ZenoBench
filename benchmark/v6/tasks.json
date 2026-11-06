@@ -131,6 +131,11 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "closed_fridge": {
+   "type": "access",
+   "decision": "precondition",
+   "meaning": "the item is in the closed fridge next to the work spot: open it, take the item, close it again (the Action-Level part of a Task-Level design)"
+  },
   "disposal_by_state": {
    "type": "goal_inference",
    "decision": "decompose",
@@ -16094,6 +16099,7 @@
       ]
      },
      "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。",
      "failures": [
       {
        "id": "resource_cup_in_cabinet",
@@ -16259,6 +16265,7 @@
       ]
      },
      "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。",
      "failures": [
       {
        "id": "resource_cup_in_cabinet",
@@ -20259,6 +20266,7 @@
       "no_pen"
      ],
      "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+     "instruction_zh": "孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
      "goal": {
       "all": [
        [
@@ -20342,6 +20350,7 @@
       "no_pen"
      ],
      "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+     "instruction_zh": "孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
      "goal": {
       "all": [
        [
@@ -30484,6 +30493,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "approach",
        "args": {
         "target": "kitchen_island/top"
@@ -32294,7 +32309,8 @@
      },
      "conditions": [
       "storage_place",
-      "not_in_view"
+      "not_in_view",
+      "closed_fridge"
      ],
      "goal": {
       "all": [
@@ -32520,7 +32536,8 @@
      },
      "conditions": [
       "storage_place",
-      "not_in_view"
+      "not_in_view",
+      "closed_fridge"
      ],
      "goal": {
       "all": [
@@ -34785,8 +34802,10 @@
      ]
     },
     "tomato_in_fridge": {
-     "category": "task",
-     "local": [],
+     "category": "action_task",
+     "local": [
+      "open the fridge at the work spot, take the item out, close it again"
+     ],
      "longer": [
       "not_in_view",
       "storage_place"
@@ -39070,6 +39089,7 @@
       ]
      },
      "instruction": "Lunch is over and the apple and the orange are still on the dining table. Put them into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+     "instruction_zh": "午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。",
      "watch": [
       "apple",
       "orange_2",
@@ -41236,6 +41256,7 @@
       "joint_capacity"
      ],
      "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
+     "instruction_zh": "快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
      "watch": [
       "toy_car",
       "rubber_duck",
@@ -41465,6 +41486,7 @@
       "joint_capacity"
      ],
      "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
+     "instruction_zh": "快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
      "watch": [
       "toy_car",
       "rubber_duck",
@@ -45712,6 +45734,7 @@
       ]
      },
      "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
+     "instruction_zh": "摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。",
      "failures": [
       {
        "id": "resource_bowl_put_away",
@@ -45953,6 +45976,7 @@
       ]
      },
      "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
+     "instruction_zh": "摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。",
      "failures": [
       {
        "id": "resource_bowl_put_away",
@@ -46277,6 +46301,7 @@
       ]
      },
      "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
+     "instruction_zh": "在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
      "watch": [
       "bowl",
       "bowl_kitchen_cabinet",
@@ -46674,6 +46699,7 @@
       ]
      },
      "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
+     "instruction_zh": "在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
      "watch": [
       "bowl",
       "bowl_kitchen_cabinet",
@@ -52449,6 +52475,7 @@
       ]
      },
      "instruction": "We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.",
+     "instruction_zh": "我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。",
      "watch": [
       "wooden_block_b",
       "floor_block",
@@ -52681,6 +52708,7 @@
       ]
      },
      "instruction": "We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.",
+     "instruction_zh": "我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。",
      "watch": [
       "wooden_block_b",
       "floor_block",
@@ -54397,6 +54425,7 @@
       ]
      },
      "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner, in the low wall cabinet or the microwave. Have a look and close every door properly afterwards.",
+     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗，看看靠墙矮柜和微波炉里有没有。看完把门都关好。",
      "failures": [
       {
        "id": "resource_bowl_elsewhere",
@@ -54481,6 +54510,7 @@
       ]
      },
      "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner somewhere in the low kitchen cabinets or the microwave. Have a look and close every door properly afterwards.",
+     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗，看看厨房的矮柜和微波炉里有没有。看完把门都关好。",
      "failures": [
       {
        "id": "resource_bowl_elsewhere",
@@ -56323,6 +56353,7 @@
       ]
      },
      "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+     "instruction_zh": "看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -56417,6 +56448,7 @@
       ]
      },
      "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+     "instruction_zh": "看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -58901,6 +58933,7 @@
       ]
      },
      "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
+     "instruction_zh": "有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
      "failures": [
       {
        "id": "resource_bottle_put_away",
@@ -58977,6 +59010,7 @@
       ]
      },
      "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
+     "instruction_zh": "有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
      "failures": [
       {
        "id": "resource_bottle_put_away",
@@ -60303,6 +60337,7 @@
       ]
      },
      "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+     "instruction_zh": "孩子把那本红书收进了厨房的一个矮柜里，没放回书架。把它放回卧室的矮书架上，再把柜门关好。",
      "failures": [
       {
        "id": "resource_book_put_away",
@@ -60377,6 +60412,7 @@
       ]
      },
      "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+     "instruction_zh": "孩子把那本红书收进了厨房的一个矮柜里，没放回书架。把它放回卧室的矮书架上，再把柜门关好。",
      "failures": [
       {
        "id": "resource_book_put_away",

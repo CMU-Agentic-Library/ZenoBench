@@ -300,6 +300,106 @@
 "v6_variant": "lid_on_spoon_away"
 },
 {
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 12,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 13,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 14,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 15,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 16,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 17,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 18,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
 "task": "T13_breakfast_setup",
 "seed": 10,
 "variant": "no_cup_spoon_boxed_in",
