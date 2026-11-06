@@ -43,15 +43,15 @@ LINK_MAX_SPHERES = {"head_link": 10, "torso_link": 20, "torso_lift_link": 20}
 # the hands work close to objects and to each other (handovers): finer spheres, less inflation
 HAND = ("arm_link_7", "gripper_link", "gripper_camera_link", "gripper_left_finger_link", "gripper_right_finger_link")
 LINK_MIN_SPHERES = {f"{s}_{l}": 10 for s in ("right", "left") for l in HAND}
-# fingers: their collider is the pad box alone (physics.py), and a fitted cover must bulge past its
-# flat tip (lula + growth: 6.3 mm, a pinch near a table "went into" it).  Rows of spheres across
-# the pad's width instead, the tip row tangent to the tip: 3 rows (x), one every FINGER_STEP along
-# z, radius half the pad's thickness plus FINGER_GROW, the outer rows FINGER_OUT past inscribed --
-# 9.9 % of the surface more than 2 mm outside every sphere, 3.6 mm at worst
+# fingers: their collider is the pad box alone (physics.py).  Rows of spheres across the pad's
+# width, one every FINGER_STEP along z, that cover the whole box: the planner must see every point
+# the simulator's pad can touch.  (Rows tangent to the faces left the tip edges 2.3 mm and the tip
+# corners 3.7 mm outside every sphere: fingertips knocked the object on 5 of 49 pick approaches,
+# 11-05.)  The rows' offset across x and their inset from the box's ends are chosen for the least
+# bulge past any face, the radius is the one that covers the box (finger_rows).
 FINGER_ROWS = 3
 FINGER_STEP = 0.009
-FINGER_GROW = 0.0005
-FINGER_OUT = 0.001
+FINGER_SEARCH = 0.00025     # m: grid of the offset / inset search
 # lula's spheres sit inside the surface; every radius of a link grows by the 99th percentile of
 # its surface samples' gap (at most MAX_GROW) so the spheres cover the collider
 MAX_GROW = 0.02
@@ -100,19 +100,41 @@ def link_hulls(stage):
 
 
 def finger_rows(m):
-    """Spheres of a pad box ``m`` (axis aligned in its link frame): FINGER_ROWS rows across x, the
-    tip sphere of each tangent to the box's -z end."""
+    """Spheres of a pad box ``m`` (axis aligned in its link frame) that cover all of it: FINGER_ROWS
+    rows across x (at -xo, ..., xo), each with the same number of spheres along z as rows tangent
+    to the faces one FINGER_STEP apart would have, from b inside the box's -z end to b inside its
+    +z end, on the box's mid-plane in y.  For each (xo, b) on a FINGER_SEARCH grid the radius is the
+    smallest that puts every point of the box's surface inside a sphere; the pair with the least
+    bulge past any face (tip, faces, sides) is taken."""
     import numpy as np
     lo, hi = m.bounds
     if m.volume < 0.98 * float(np.prod(hi - lo)):
         raise RuntimeError("finger collider is not the axis-aligned pad box finger_rows assumes")
-    r = (hi[1] - lo[1]) / 2 + FINGER_GROW
-    xo = (hi[0] - lo[0]) / 2 - (hi[1] - lo[1]) / 2 + FINGER_OUT
-    zt, zb = lo[2] + r, hi[2] - r
-    zs = np.linspace(zt, zb, int(np.ceil((zb - zt) / FINGER_STEP)) + 1)
-    xc, yc = (lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2
-    C = np.array([[xc + x, yc, z] for x in np.linspace(-xo, xo, FINGER_ROWS) for z in zs])
-    return C, np.full(len(C), r)
+    half = (hi - lo) / 2
+    c = (lo + hi) / 2
+    n_z = int(np.ceil((2 * half[2] - 2 * half[1]) / FINGER_STEP)) + 1
+    # the box's surface, every face on a 1 mm grid (its edges and corners included)
+    g = [np.linspace(-h, h, max(2, int(round(2 * h / 0.001)) + 1)) for h in half]
+    pts = []
+    for ax in range(3):
+        o = [i for i in range(3) if i != ax]
+        A, B = np.meshgrid(g[o[0]], g[o[1]], indexing="ij")
+        for sgn in (-1, 1):
+            P = np.zeros((A.size, 3))
+            P[:, o[0]], P[:, o[1]], P[:, ax] = A.ravel(), B.ravel(), sgn * half[ax]
+            pts.append(P)
+    pts = np.unique(np.round(np.vstack(pts), 6), axis=0)
+    best = None
+    for xo in np.arange(0.0, half[0] + 1e-9, FINGER_SEARCH):
+        for b in np.arange(0.0, half[2] / 2 + 1e-9, FINGER_SEARCH):
+            C = np.array([[x, 0.0, z] for x in np.linspace(-xo, xo, FINGER_ROWS)
+                          for z in np.linspace(-half[2] + b, half[2] - b, n_z)])
+            r = float(np.max(np.min(np.linalg.norm(pts[:, None, :] - C[None], axis=2), axis=1)))
+            bulge = max(r - b, r - half[1], xo + r - half[0])
+            if best is None or bulge < best[0]:
+                best = (bulge, C, r)
+    _, C, r = best
+    return C + c, np.full(len(C), r)
 
 
 def fit_spheres(hulls):

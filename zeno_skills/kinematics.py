@@ -56,6 +56,28 @@ TCP_DEPTH = 0.12
 PAD_HALF_WIDTH = 0.014
 PAD_THICKNESS = 0.012
 PAD_TIP = 0.12985 + 0.010 - TCP_DEPTH
+FINGER_JOINT_DEPTH = 0.12985   # finger joints below the gripper link (the finger link's origin)
+
+
+def finger_model_box():
+    """The planner's finger (its collision spheres, robot_sources/curobo/zeno_malo.yml) as a box in
+    the frame of the pad box above: (half width across the closing plane, inner face, outer face --
+    the pad box's are 0 and PAD_THICKNESS from the finger joint outward --, tip below the TCP).  The
+    spheres cover the pad box (tools/build_curobo_robot.py finger_rows), so this box holds it: a
+    grasp height from it keeps the planner's fingers, and with them the simulator's, off the surface."""
+    global _FINGER_BOX
+    if _FINGER_BOX is None:
+        import yaml
+        cfg = yaml.safe_load((ROOT / "robot_sources/curobo/zeno_malo.yml").read_text())
+        sph = cfg["robot_cfg"]["kinematics"]["collision_spheres"]["right_gripper_left_finger_link"]
+        C = np.array([s_["center"] for s_ in sph], float)
+        R = np.array([s_["radius"] for s_ in sph], float)
+        _FINGER_BOX = (float(np.max(np.abs(C[:, 0]) + R)), float(np.min(C[:, 1] - R)),
+                       float(np.max(C[:, 1] + R)), FINGER_JOINT_DEPTH - float(np.min(C[:, 2] - R)) - TCP_DEPTH)
+    return _FINGER_BOX
+
+
+_FINGER_BOX = None
 REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
 STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
 CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
