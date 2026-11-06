@@ -52,23 +52,14 @@ class RectRimPickPolicy(AtomicPolicy):
 
 
 class EdgePickPolicy(AtomicPolicy):
-    """Push a flat object to a free support edge and pinch the overhang."""
+    """Pinch a flat object across its thickness at a side that overhangs its support (the
+    pinch flow, thickness_pinch candidates; sliding it to the edge is expose / slide_to_edge)."""
 
-    def execute(self, name):
-        _require_grasp(self.rig, name, "edge_pinch_after_push")
+    def execute(self, name, *, max_candidates=12):
+        _require_grasp(self.rig, name, "thickness_pinch")
         if self.rig.geo.support_under(name, self.rig.state()) is None:
             raise SkillFailure(f"edge pick {name}: not on an annotated support")
-        return skills.pick_flat(self.rig, name)
-
-
-class FloorCornerPickPolicy(AtomicPolicy):
-    """Pinch the side and top corner of a flat object resting on the floor."""
-
-    def execute(self, name):
-        _require_grasp(self.rig, name, "edge_pinch_after_push")
-        if float(self.rig.geo.bottom(name, self.rig.state())[2]) >= 0.05:
-            raise SkillFailure(f"floor corner pick {name}: object is not on the floor")
-        return skills._corner_pinch(self.rig, name)
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("thickness_pinch",))
 
 
 class PlacePolicy(AtomicPolicy):

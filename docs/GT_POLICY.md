@@ -39,7 +39,7 @@ All these calls can fail. The coordinator decides whether to retry, choose anoth
 
 `PolicySuite` retains the general `pick`, `place`, `open`, `close`, and `navigate`
 entry points, and now exposes route-specific policies in `zeno_skills/policies/`:
-`pick_top`, `pick_round_rim`, `pick_rect_rim`, `pick_edge`, `pick_floor_corner`;
+`pick_top`, `pick_round_rim`, `pick_rect_rim`, `pick_edge` (a thickness pinch);
 `place_surface`, `place_container`, `place_edge`, `place_microwave`;
 `open_handle`, `close_handle`, `open_powered`, `close_powered`;
 `empty_navigate`, `carry_navigate`; and the measured posture policies
@@ -72,7 +72,7 @@ The [verification record](POLICY_VERIFICATION.md) separates 54 scene-verified ro
 
 ## `pick`: object-specific policies
 
-`pick` first reads the asset's `grasps` list. If it is empty, it fails immediately. If a top/rim pinch exists, it tries that first. If the asset also allows `edge_pinch_after_push`, a failed pinch can fall back to the edge route while nothing is held. The selected candidate must admit a reachable base park and approach/lift IK path. After parking, the policy re-reads the object's pose, opens to the annotated width, approaches, closes, lifts, and checks finger separation and object rise. Pinch lifts must raise the object more than 1.5 cm; floor corner pinch requires more than 3 cm. Thus an annotation is a **candidate**, not proof of physical success.
+`pick` first reads the asset's `grasps` list. If it is empty, it fails immediately. Every annotated grasp is a pinch (top, side, rim, thickness) and they all go through one flow: the candidate must admit a reachable base park whose open-hand approach is collision-free, the hand goes there open (two-phase) and closes, leaves the contact and goes to the carry pose, and the fingers and the object's rise decide whether it is held. There is no fallback to another grasp route (the push-then-edge-pinch and the floor corner pinch were removed on 2026-11-05). Thus an annotation is a **candidate**, not proof of physical success. See `docs/skills/pick.md`.
 
 The annotation generator in `zeno_skills/annotations.py:grasp_poses` rotates grasp geometry with the object's current yaw. For top grasps it uses the asset's `offset_xy`, `height`, `close_yaw` and `pre_open`; for round rims it enumerates azimuth and tilt; for rectangular rims it tests four sides and tilt. `zeno_skills/skills.py` then filters these geometric candidates through reachability and collision tests. These parameters differ by object even when two objects use the same branch.
 
@@ -85,9 +85,9 @@ The annotation generator in `zeno_skills/annotations.py:grasp_poses` rotates gra
 | `teddy_bear`, `rubber_duck` | `top_pinch` at distinct off-centre contact points: teddy's crown and the duck's offset top. | No annotated edge fallback. |
 | `breakfast_bowl`, `breakfast_cup`, `breakfast_mug` | `rim_pinch`: sample multiple azimuths/tilts at each object's **own** rim radius and height; pinch the wall below the rim, not across the full body. | Cup, mug and bowl are different sizes/weights; a common rim template does not imply the same grasp pose or outcome. |
 | `fruit_basket` | `rim_pinch` around its larger circular rim. | Reach and holding remain physical constraints. |
-| `serving_tray` | `rim_pinch_rect` tests four rectangular sides and tilt angles. | Has an annotated push/edge fallback. |
+| `serving_tray` | `rim_pinch_rect` tests four rectangular sides and tilt angles. | |
 | `toy_box`, `storage_basket` | `rim_pinch_rect` on their separately sized rectangular rims. | Annotation marks them graspable, but the large/heavy box still has to pass reach, collision and lift checks. |
-| `breakfast_plate`, `notebook`, `book_red`, `book_green`, `book_blue` | Only `edge_pinch_after_push`: choose a free support edge, push until the item overhangs, then approach horizontally from outside and pinch its thickness. | If already on the floor, use the diagonal `corner_pinch`; if no free edge exists on a support, fail. |
+| `breakfast_plate`, `notebook`, `book_red`, `book_green`, `book_blue`, `paperback_book`, `tissue_box` | Only `thickness_pinch`: approach horizontally from outside a side and pinch its thickness; only a side overhanging its support passes the collision check (expose slides it there first). | On the floor, or with no side overhanging: no reachable grasp, pick fails. |
 | `cereal_box` | No `grasps` annotation; `graspable_by_zeno` is false. | `pick` fails immediately rather than inventing a grasp. |
 
 For a surface-supported flat object, `pick_flat` checks which edge is open and has room outside it, how far the object's rotated footprint extends toward that edge, and whether the centre of mass stays inside the support. `push` moves it only as far as needed for a usable overhang. `_edge_pinch` keeps the lower pad outside the support edge, closes on the exposed thickness, lifts, and pulls out. On the floor there is no support edge: `_corner_pinch` contacts a side face and top face diagonally, avoiding a lower finger digging into the floor. Objects on a support with no usable free edge cannot take the floor route.

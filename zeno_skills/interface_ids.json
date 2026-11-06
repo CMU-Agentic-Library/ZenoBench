@@ -25,7 +25,6 @@
   "pick_round_rim": "policy_011",
   "pick_rect_rim": "policy_012",
   "pick_edge": "policy_013",
-  "pick_floor_corner": "policy_014",
   "place_surface": "policy_015",
   "place_container": "policy_016",
   "place_edge": "policy_017",

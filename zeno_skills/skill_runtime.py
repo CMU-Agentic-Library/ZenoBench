@@ -148,7 +148,7 @@ def object_attrs(rig, name, st, values=None):
         "in_container": where if loc == "container" else None,
         "held_by": "right" if held else ("left" if rig.left_held and rig.left_held.get("name") == name else None),
         "held_kind": held.get("kind") if held else None,
-        "flat": "flat" in tags or (bool(grasp_types) and set(grasp_types) == {"edge_pinch_after_push"}),
+        "flat": "flat" in tags or (bool(grasp_types) and set(grasp_types) == {"thickness_pinch"}),
         "tall": bool(size[2] >= 1.3 * min(size[:2]) and t <= 20),
         "lying": bool(lying_state(rig, name, st)[0]),
         "wide_box": bool("rim_pinch_rect" in grasp_types and max(size[:2]) >= 0.22),

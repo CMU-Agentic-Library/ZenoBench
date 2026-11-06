@@ -29,7 +29,6 @@ One right-hand grasp and lift attempt for one annotated object.
 - `round_rim` → `policy_011`
 - `rect_rim` → `policy_012`
 - `edge` → `policy_013`
-- `floor_corner` → `policy_014`
 - `cup_handle` → `policy_055`
 - `cavity` → `policy_048`
 - `moving` → `policy_052`

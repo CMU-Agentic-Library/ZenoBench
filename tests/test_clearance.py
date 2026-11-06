@@ -10,7 +10,7 @@ from zeno_skills.clearance import FREE, FREE_ELSE_STRAIGHT, LEGACY, Allow, Clear
 
 # motions still passed allow=LEGACY (unchecked, not migrated).  Lower it as they move to a real
 # Allow; it must never go up.
-LEGACY_BUDGET = 48
+LEGACY_BUDGET = 39
 
 
 def test_motions_take_allow_not_a_boolean_switch():

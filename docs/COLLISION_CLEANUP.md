@@ -118,16 +118,16 @@ R 类不列。下面只列要动的。
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
 | skills.py:957-964（`_grasp_legs`），1218-1220（`f"pick_{lab}"`） | `_grasp_legs` / `_pick_pinch_core` | `pick_pre_far`：pre 之外再后退、再抬高的接近点 | W | 已删（3b 第一项）：`pick_pre_far`、`pick_pre` 都删了，抓取是一次带接近约束（沿夹爪轴 4 cm 直线）的运动 `pick_grasp`；`_lift_height` 的 7 cm 也删了，离开接触后直接规划到搬运姿态 |
-| skills.py:978-986 | `pick` | pinch 失败 → `pick_flat` | F | 仍在 |
-| skills.py:1002-1019 | `_pick_pinch` | 失败 → 放开腰限重试 → 关掉邻居障碍重试 | F | 仍在 |
-| skills.py:1175-1188 | `_pick_pinch_core` | 找不到 park 后追加旋转的 top pinch | F | 仍在 |
-| skills.py:1221-1222 | `_pick_pinch_core` | 误差 >8 mm 就 `pick_grasp_fix`，同一目标不查再走一次 | F | 已删（11-05，`6466347`，pick 两段式） |
+| skills.py:978-986 | `pick` | pinch 失败 → `pick_flat` | F | 已删（11-05）：`pick_flat` 删掉，平板物体改成标注里的夹厚度捏取（`thickness_pinch`），和其他捏取同一个流程 |
+| skills.py:1002-1019 | `_pick_pinch` | 失败 → 放开腰限重试 → 关掉邻居障碍重试 | F | 已删（11-05）：腰不设限；邻居盒子进的是空操作 `temp_obstacles`，`_pick_pinch_impl` 删掉 |
+| skills.py:1175-1188 | `_pick_pinch_core` | 找不到 park 后追加旋转的 top pinch | F | 已改（11-05）：一开始就排在标注候选后面 |
+| skills.py:1221-1222 | `_pick_pinch_core` | 误差 >8 mm 就 `pick_grasp_fix`，同一目标不查再走一次 | F | 已删（`6466347`，pick 两段式） |
 | skills.py:1235-1244 | `_pick_pinch_core` | `pick_fail_clear`：抓空后抬 8 cm，失败吞掉 | W | 已删（3b 第一项）：只走离开接触段，不吞异常 |
-| skills.py:1430/1455（corner），1538/1554（edge） | `_corner_pinch` / `_edge_pinch_impl` | corner、edge 的 `pre_far` 额外 +3 cm | W | 仍在 |
-| skills.py:1459-1461 | `_corner_pinch` | `corner_grasp_retry` | F | 仍在 |
-| skills.py:1503-1516 | `_edge_pinch` | edge：限腰 → 失败放开重试 | F | 仍在 |
+| skills.py:1430/1455（corner），1538/1554（edge） | `_corner_pinch` / `_edge_pinch_impl` | corner、edge 的 `pre_far` 额外 +3 cm | W | 已删（11-05）：corner、edge 捏取整个删掉 |
+| skills.py:1459-1461 | `_corner_pinch` | `corner_grasp_retry` | F | 已删（11-05） |
+| skills.py:1503-1516 | `_edge_pinch` | edge：限腰 → 失败放开重试 | F | 已删（11-05）：edge 捏取整个删掉 |
 | skills.py:1278，1303-1314 | `push` | push：4 个腕部朝向 × push/drag 两种编排 | F | 仍在（包在 `contact_obstacles` 里）。按步骤 3 的规则：动作前按可行性挑朝向和推/拖，算目标采样，保留 |
-| skills.py:1377-1393 | `pick_flat` | 换边重试 | F | 仍在 |
+| skills.py:1377-1393 | `pick_flat` | 换边重试 | F | 已删（11-05）：`pick_flat` 删掉 |
 
 ### 3.6 open / close（skills.py）
 

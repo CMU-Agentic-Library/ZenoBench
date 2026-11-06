@@ -106,10 +106,6 @@ SYNONYM_GROUPS = [
 
 # Registered policies that no SkillNode path may use, with the measured reason.
 RETIRED_POLICIES = {
-    "policy_014": "Floor corner pinch: with parallel jaws the closing axis across a 2.9 cm flat object lying on "
-                  "the floor runs nearly horizontally over its top face, so the upper pad never presses the top "
-                  "and the lower pad would have to sit below the floor; it held nothing in any of 11 Isaac Sim "
-                  "attempts (notebook, books, toy car). Flat objects on the floor have no pick path.",
     "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach "
                   "was removed (every manipulation skill chooses its own base park).",
     "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "

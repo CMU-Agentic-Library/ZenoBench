@@ -83,10 +83,6 @@
       "policy_id": "policy_013",
       "legacy_dispatcher": null
     },
-    "floor_corner": {
-      "policy_id": "policy_014",
-      "legacy_dispatcher": null
-    },
     "cup_handle": {
       "policy_id": "policy_055",
       "legacy_dispatcher": null

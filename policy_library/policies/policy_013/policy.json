@@ -4,7 +4,7 @@
   "policy_id": "policy_013",
   "legacy_id": "pick_edge",
   "name": "Pick Edge",
-  "description": "先推到桌边，再夹住悬出的平物体",
+  "description": "夹住伸出支撑面边缘的平板物体的厚度（捏取流程，thickness_pinch；推到边是 slide_to_edge）",
   "scope": {
     "unit": "one low-level controller invocation",
     "group": "grasp",
@@ -16,6 +16,12 @@
       "name": "name",
       "kind": "positional_or_keyword",
       "required": true
+    },
+    {
+      "name": "max_candidates",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 12
     }
   ],
   "requires": [
@@ -37,7 +43,7 @@
     "legacy_attribute": "pick_edge",
     "class": "EdgePickPolicy"
   },
-  "availability": "verified",
+  "availability": "callable",
   "skill_contract_paths": [
     "contract_025:pick/flat_overhang_ready",
     "contract_025:pick/flat_edge",
@@ -46,6 +52,5 @@
   "legacy_family_contracts": [
     "contract_002"
   ],
-  "supporting_family_contracts": [],
-  "evidence": "Isaac Sim: pick_edge book_red, 2026-10-01"
+  "supporting_family_contracts": []
 }

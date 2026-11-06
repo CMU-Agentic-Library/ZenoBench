@@ -22,9 +22,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.032500225612106866
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.02825,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/breakfast_plate.usd",
@@ -339,11 +340,6 @@
     "along_offsets": [
      -0.054
     ]
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.025000031050882252
    }
   ],
   "usd": "usd/assets/breakfast_spoon.usd",
@@ -445,11 +441,6 @@
     ],
     "height": 0.021603907043018705,
     "pre_open": 0.03616606622045243
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.04320781408603741
    }
   ],
   "usd": "usd/assets/banana.usd",
@@ -607,11 +598,6 @@
      0.2
     ],
     "pre_open": 0.03
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.06298937579014834
    }
   ],
   "usd": "usd/assets/serving_tray.usd",
@@ -653,9 +639,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.029133945743562366
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.02655,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/notebook.usd",
@@ -694,11 +681,6 @@
     ],
     "height": 0.004942223664802159,
     "pre_open": 0.01687398312753505
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.010208158678303193
    }
   ],
   "usd": "usd/assets/pen.usd",
@@ -742,11 +724,6 @@
      0.0,
      0.054
     ]
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.016543611652227466
    }
   ],
   "usd": "usd/assets/pencil.usd",
@@ -775,9 +752,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.04
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.032,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/book_red.usd",
@@ -806,9 +784,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.05619869095120432
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.04,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/book_green.usd",
@@ -837,9 +816,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.059132225114590625
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.04,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/book_blue.usd",
@@ -877,11 +857,6 @@
     ],
     "height": 0.021977062013781662,
     "pre_open": 0.037706470465390565
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.043954124027563324
    }
   ],
   "usd": "usd/assets/toy_car.usd",
@@ -1497,9 +1472,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.025000000000000005
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.0245,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/paperback_book.usd",
@@ -1528,9 +1504,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.06
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.04,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/tissue_box.usd",
@@ -1573,11 +1550,6 @@
      -0.066,
      0.066
     ]
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.04612967770904141
    }
   ],
   "usd": "usd/assets/rolling_pin.usd",
@@ -1617,11 +1589,6 @@
      0.2
     ],
     "pre_open": 0.03
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.05499999999999999
    }
   ],
   "usd": "usd/assets/shallow_sorting_tray.usd",
@@ -1773,11 +1740,6 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.060000000000000005
-   },
-   {
     "type": "top_pinch",
     "crown": true,
     "round": true,
@@ -1841,11 +1803,6 @@
     ],
     "height": 0.015000000000000003,
     "pre_open": 0.04
-   },
-   {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.035
    }
   ],
   "usd": "usd/assets/kitchen_sponge.usd",

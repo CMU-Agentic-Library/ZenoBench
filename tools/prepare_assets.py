@@ -91,6 +91,10 @@ for _n, _c in CUSTOM_RECORDS.items():
     if "body_fraction" in _c:
         BODY_FRACTION[_n] = _c["body_fraction"]
 GRIPPER_GAP = 0.080          # Zeno Malo pinch gripper: 2 x 0.04 m
+# thickness pinch: the TCP this far inside the pinched side.  The old edge pinch took 2-4.5 cm by
+# the overhang; the planner's fingertip reaches 2.4 cm past the TCP, so a side overhanging its
+# support by about 5.4 cm (EDGE_MIN_OVERHANG 5.5 cm, what expose pushes to) leaves the lower pad clear
+THICKNESS_PINCH_DEPTH = 0.025
 PINCH_MAX = 0.068            # leave >= 6 mm clearance per side
 CROWN = 0.05                 # crown pinch: top slab the pads straddle
 
@@ -307,10 +311,11 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
                         "pre_open": float(min(0.04, width / 2 + 0.012))})
             best = (best_c[0], yaw, width, off, topz)
     min_w = best[2] if best else float("inf")
-    if ext[2] < 0.075 and max(ext[:2]) > GRIPPER_GAP:
-        out.append({"type": "edge_pinch_after_push",
-                    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-                    "thickness": float(ext[2])})
+    if ext[2] < 0.075 and max(ext[:2]) > GRIPPER_GAP and not out:
+        # flat, wider than the gripper and no other pinch: across its thickness at a side
+        out.append({"type": "thickness_pinch", "depth": THICKNESS_PINCH_DEPTH,
+                    "pre_open": float(min(0.04, ext[2] / 2 + 0.012)),
+                    "note": "pads above and below, from outside a side; the side must overhang its support"})
     if name == "breakfast_mug":
         # Collision OBJ is rotated +90 deg about X by the URDF.  Its handle
         # protrudes in object -Y at mid-height, separate from the rim contact.

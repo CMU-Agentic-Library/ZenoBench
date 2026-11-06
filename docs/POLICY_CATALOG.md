@@ -1,10 +1,10 @@
 # Zeno House policy 能力目录
 
-本目录列出 **116 个目标能力**。状态记录的是当前代码与物理验证程度，
+本目录列出 **115 个目标能力**。状态记录的是当前代码与物理验证程度，
 独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`
 以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。
 
-- `verified`（58）：可调用，且对应物理动作通过过 Isaac Sim smoke run。
+- `verified`（57）：可调用，且对应物理动作通过过 Isaac Sim smoke run。
 - `callable`（58）：有独立 OOP 入口，但尚无该入口成功通过 Isaac Sim 的物理验证；部分路线正在调试。
 - `embedded`（0）：动作片段已在较大 policy 内执行，尚无独立入口和结果检查。
 - `planned`（0）：当前没有完成该动作的控制器。
@@ -14,7 +14,7 @@
 `bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。
 
 机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。
-稳定公开 ID 为 `policy_001`–`policy_116`；原描述性名称保留为兼容别名。
+稳定公开 ID 为 `policy_001`–`policy_115`；原描述性名称保留为兼容别名。
 每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。
 `input` 和 `effect` 是能力摘要；每个 policy 被哪些 Skill Contract 路径调用、在路径前后检查哪些 GT 谓词，
 见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../contract_library/README.md)。
@@ -56,8 +56,7 @@
 | `policy_010` | `pick_top` | 按物品标注的顶部接触点夹取 | `object` | `held(object)` | `verified` | pick_top |
 | `policy_011` | `pick_round_rim` | 沿圆形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_round_rim |
 | `policy_012` | `pick_rect_rim` | 沿矩形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_rect_rim；该托盘后续携带时滑脱；单步抓取成功不保证持物移动稳定 |
-| `policy_013` | `pick_edge` | 先推到桌边，再夹住悬出的平物体 | `object` | `held(object)` | `verified` | pick_edge |
-| `policy_014` | `pick_floor_corner` | 从地面平物体侧面和顶部夹角抓取 | `object` | `held(object)` | `callable` | pick_floor_corner；toy_car、地面平书和薄 notebook 均未通过稳定夹持；薄 notebook 接触误差 0.0142 m，但抬升 0 m（runs/repair_floor_notebook_v1）；先执行 prepare_floor_reach 的路径也在关节移动时碰撞（v2）。 |
+| `policy_013` | `pick_edge` | 夹住伸出支撑面边缘的平板物体的厚度（捏取流程，thickness_pinch；推到边是 slide_to_edge） | `object` | `held(object)` | `callable` | pick_edge |
 | `policy_046` | `grasp_articulated_handle` | 抓住门或抽屉把手 | `articulated_target` | `handle_held` | `verified` | grasp_articulated_handle |
 | `policy_047` | `release_articulated_handle` | 完成关节移动后放开把手 | `articulated_target` | `handle_released` | `verified` | release_articulated_handle |
 | `policy_048` | `pick_from_cavity` | 从狭窄腔体正面取物并后撤 | `object, cavity` | `held(object) and outside_cavity` | `verified` | pick_from_cavity；仅验证同一 rig 刚放入杯子的回取路线；预置碗仍无可达抓取记录。中间上方位 TCP 一次短暂偏差 0.182 m，最终接触位偏差 0.0075 m。 |
@@ -236,7 +235,6 @@
 - `pick_top`：Isaac Sim: pick_top toy_block, 2026-10-01
 - `pick_round_rim`：Isaac Sim: pick_round_rim cup, 2026-10-01
 - `pick_rect_rim`：Isaac Sim collect_fruits: serving_tray rim pinch lifted 0.0293 m with both fingers in contact; tray slipped during later carry, runs/verify_callable_rect_tray_v3, 2026-10-01
-- `pick_edge`：Isaac Sim: pick_edge book_red, 2026-10-01
 - `place_surface`：Isaac Sim collect_fruits: apple placed on dining-table support with 0.0139 m XY error and on_support=true, runs/verify_callable_surface_apple, 2026-10-01
 - `place_container`：Isaac Sim collect_fruits: apple placed inside fruit_basket (measured radial offset 0.075 m < 0.143 m), runs/verify_callable_container_apple, 2026-10-01; recycle_and_store: soda_can into 14 cm-rim wide_storage_bin with vertical prelift, 0.000 m bin shift, inside=true, runs/check_tall_bin_prelift/result.json, 2026-10-06
 - `place_edge`：Isaac Sim shelve_books: edge-held book_red released onto desk support, on_support true and tilt 1.1 deg, runs/verify_callable_place_edge, 2026-10-01

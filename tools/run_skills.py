@@ -7,7 +7,7 @@
                "close kitchen_cabinet_6"
 
 Plan steps:  open <art> | close <art> | pick <obj>
-             | pick_top/pick_round_rim/pick_rect_rim/pick_edge/pick_floor_corner <obj>
+             | pick_top/pick_round_rim/pick_rect_rim/pick_edge <obj>
              | place <obj> in:<container>          drop into a container
              | place <obj> <support> [<x> <y>]      free spot on a support (near x, y)
              | place_surface/place_edge <obj> <support> | place_container <obj> <container>
@@ -116,7 +116,7 @@ def main():
                 row["heating_active"] = bool(policies.microwave_start.execute(tok[1]))
             elif tok[0] == "pick":
                 policies.pick.execute(tok[1])
-            elif tok[0] in ("pick_top", "pick_round_rim", "pick_rect_rim", "pick_edge", "pick_floor_corner"):
+            elif tok[0] in ("pick_top", "pick_round_rim", "pick_rect_rim", "pick_edge"):
                 getattr(policies, tok[0]).execute(tok[1])
             elif tok[0] == "prepare_floor_reach":
                 row["tcp_error_m"] = policies.prepare_floor_reach.execute(tok[1])

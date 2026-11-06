@@ -19,7 +19,7 @@ from .interface_ids import CONTRACT_PUBLIC_IDS
 
 from .policies import (
     AtomicPolicy, CarryNavigatePolicy, ClickPolicy, ClosePolicy, ContainerPlacePolicy,
-    EdgePickPolicy, EdgePlacePolicy, EmptyHandNavigatePolicy, FloorCornerPickPolicy,
+    EdgePickPolicy, EdgePlacePolicy, EmptyHandNavigatePolicy,
     HandleClosePolicy, HandleOpenPolicy, LeanForwardPolicy, LowerTorsoPolicy,
     MicrowavePlacePolicy, MicrowaveStartPolicy, NavigatePolicy, OpenPolicy,
     PickPolicy, PoweredDoorClosePolicy, PoweredDoorOpenPolicy, PushFromBehindPolicy,
@@ -95,7 +95,7 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
         ("held(object)", "object lifted"),
         {"success": "object held", "failure": "object may have moved during attempt"},
         {"auto": PickPolicy, "top": TopPinchPickPolicy, "round_rim": RoundRimPickPolicy,
-         "rect_rim": RectRimPickPolicy, "edge": EdgePickPolicy, "floor_corner": FloorCornerPickPolicy,
+         "rect_rim": RectRimPickPolicy, "edge": EdgePickPolicy,
          "cup_handle": PickCupHandlePolicy, "cavity": PickFromCavityPolicy,
          "moving": PickWhileMovingPolicy},
         "held object identity, lift and stable grasp",

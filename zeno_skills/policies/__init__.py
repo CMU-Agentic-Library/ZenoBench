@@ -20,7 +20,7 @@ from .embedded import (GraspArticulatedHandlePolicy, OpenPrismaticDrawerPolicy,
                        ReleaseArticulatedHandlePolicy, SlideToEdgePolicy)
 from .handle_grasp import PickCupHandlePolicy
 from .manipulation import (ContainerPlacePolicy, EdgePickPolicy, EdgePlacePolicy,
-                           FloorCornerPickPolicy, MicrowaveCavityInsertPolicy,
+                           MicrowaveCavityInsertPolicy,
                            MicrowaveCavityReleasePolicy, MicrowaveCavityWithdrawPolicy,
                            MicrowavePlacePolicy, PickPolicy,
                            PlacePolicy, PushPolicy, PushFromBehindPolicy, TopDragPolicy, RectRimPickPolicy,
@@ -136,7 +136,6 @@ class PolicySuite:
         self.pick_round_rim = RoundRimPickPolicy(rig)
         self.pick_rect_rim = RectRimPickPolicy(rig)
         self.pick_edge = EdgePickPolicy(rig)
-        self.pick_floor_corner = FloorCornerPickPolicy(rig)
         self.place_surface = SurfacePlacePolicy(rig)
         self.place_container = ContainerPlacePolicy(rig)
         self.place_edge = EdgePlacePolicy(rig)
@@ -224,7 +223,7 @@ __all__ = [
     "SetWaistPitchPolicy", "LeanForwardPolicy", "StraightenWaistPolicy", "ClickPolicy",
     "OpenPolicy", "ClosePolicy", "HandleOpenPolicy", "HandleClosePolicy", "PoweredDoorOpenPolicy",
     "PoweredDoorClosePolicy", "PickPolicy", "TopPinchPickPolicy", "RoundRimPickPolicy", "RectRimPickPolicy",
-    "EdgePickPolicy", "FloorCornerPickPolicy", "PlacePolicy", "SurfacePlacePolicy", "ContainerPlacePolicy",
+    "EdgePickPolicy", "PlacePolicy", "SurfacePlacePolicy", "ContainerPlacePolicy",
     "EdgePlacePolicy", "MicrowavePlacePolicy", "PushPolicy", "PushFromBehindPolicy", "TopDragPolicy",
     "RightGripperOpenPolicy", "RightGripperClosePolicy", "RightTcpMovePolicy", "RightJointMovePolicy",
     "CarryHeightAdjustPolicy", "BackOffWithLoadPolicy", "BaseRotateInPlacePolicy",

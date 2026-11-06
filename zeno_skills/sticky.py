@@ -280,21 +280,11 @@ class StickyHands:
         if cands:
             g = min(cands, key=lambda c: float(np.linalg.norm(c["p"][:2] - np.array([bx, by]))) +
                     0.3 * c.get("along_rank", 0))
-            return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb, kind="pinch",
+            # a thickness pinch holds a flat object at its side: an edge hold (place_flat)
+            return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb,
+                        kind="edge" if g["kind"] == "thickness_pinch" else "pinch",
                         pre_open=float(g["pre_open"]), source=f"annotated_{g['kind']}")
-        size = np.asarray(asset["size"], float)
         from .kinematics import gripper_rot
-        if size[2] < 0.06 and max(size[:2]) > 0.07:
-            # flat: an edge pinch on the side facing the robot (as _edge_pinch_impl)
-            from .skills import EDGE_GRIP_DEPTH, _half_along, _yaw
-            b = np.asarray(rig.geo.bottom(name, rig.state()), float)
-            n = np.array([bx, by]) - b[:2]
-            n = n / max(1e-9, float(np.linalg.norm(n)))
-            h = _half_along(size, _yaw(quat), n)
-            tcp = np.r_[b[:2] + n * (h - EDGE_GRIP_DEPTH), b[2] + size[2] / 2]
-            R = gripper_rot(-np.r_[n, 0.0], [0, 0, 1.0])
-            return dict(rel_p=R.T @ (pos - tcp), rel_R=R.T @ Rb, kind="edge",
-                        pre_open=min(0.04, float(size[2]) / 2 + 0.012), source="edge_default")
         R = gripper_rot([0, 0, -1.0], [1.0, 0.0, 0.0])
         c = np.asarray(rig.geo.centre(name, rig.state()), float)
         return dict(rel_p=R.T @ (pos - c), rel_R=R.T @ Rb, kind="pinch", pre_open=0.04, source="centred")
@@ -359,17 +349,9 @@ class StickyHands:
         held = {"name": name, "kind": grasp["kind"], "tcp_minus_body": tcp - body, "R": R,
                 "pre_open": grasp["pre_open"]}
         st = rig.state()
-        if grasp["kind"] == "corner":
-            from .skills import _lowest_z
-            held["body_minus_low"] = float(body[2] - _lowest_z(rig, name, st))
-        elif grasp["kind"] == "edge":
-            from .skills import _half_along, _perp, _yaw
-            size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-            n = R[:2, 2] / max(1e-9, float(np.linalg.norm(R[:2, 2])))       # fingers point along -n
-            b = np.asarray(rig.geo.bottom(name, st), float)
-            h = _half_along(size, _yaw(quat), n)
-            held.update(h=h, depth=float(h - n @ (tcp[:2] - b[:2])), lat_half=_half_along(size, _yaw(quat), _perp(n)),
-                        dz=float(tcp[2] - b[2]))
+        if grasp["kind"] == "edge":
+            from .skills import edge_held
+            held.update(edge_held(rig, name, tcp, R))
         rig.held = held
         rig.log("sticky_snap", obj=name, reason=reason, error=error[:200], grasp=grasp["source"],
                 kind=grasp["kind"], reach=reach, moved_m=round(float(np.linalg.norm(body - before)), 3),
