@@ -40,6 +40,9 @@ ATOMS = {
     "not wiped": lambda s: f"`{s}` 没擦过",
     "not on_floor": lambda o: f"{_names(o)} 不在地上",
     "clear_of": lambda o, others, d: f"{_names(o)} 离这些东西都至少 {round(d * 100)} cm：{_names(others)}",
+    "same_arrangement": lambda objs, refs, anchor, ref_anchor, fc, rfc, tol: (
+        f"{_names(objs)} 相对 {anchor} 的摆法（按坐在那里的人的前后左右）和 {_names(refs)} 相对 {ref_anchor} 的一样，"
+        f"误差不超过 {round(tol * 100)} cm"),
     "near_any": lambda o, others, d: f"{_names(o)} 离其中至少一个不超过 {round(d * 100)} cm：{_names(others)}",
     "not near_any": lambda o, others, d: f"{_names(o)} 离这些都超过 {round(d * 100)} cm：{_names(others)}",
     "front_visible": lambda o: f"{_names(o)} 从房间里看得见（前面没有更高的东西挡着）",

@@ -131,6 +131,16 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "goal_by_example": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "what to do is shown by an example in the scene (a set place): copy which things and where, in the frame of the person it is for; a missing kind is replaced by the closest one in the same spot"
+  },
+  "rule_induction": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "several examples follow rules that depend on who they are for (adults: a mug, the kid: a plastic cup); induce the rules and apply the one that fits"
+  },
   "relational_exception": {
    "type": "goal_inference",
    "decision": "decompose",
@@ -43916,8 +43926,8 @@
    "source": [
     "skill_library/tasks.json:breakfast_setup"
    ],
-   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-   "instruction_zh": "摆早餐：餐桌上已经放好勺子了，拿一个碗和一个杯子过来，放在勺子旁边。没有杯子的话用马克杯也行。",
+   "instruction": "Breakfast is soon. Set the place at the dining table.",
+   "instruction_zh": "快吃早饭了，把餐桌上的位子摆好。",
    "scene": {
     "base": "tasks/breakfast_setup",
     "remove": [
@@ -44257,1630 +44267,7 @@
       }
      }
     },
-    "bowl_on_cabinet": {
-     "note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
-     "conditions": [
-      "not_in_view"
-     ],
-     "move": {
-      "bowl": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.68,
-        0.36
-       ],
-       "yaw_deg": 0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "since": "v3",
-     "condition_types": [
-      "search_target"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
-      "derived_from": "bowl_on_cabinet",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.591,
-         0.2722,
-         3.7691,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_cabinet_6/top": [
-        [
-         3.4054,
-         0.3164,
-         3.5926,
-         0.4018
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "bowl"
-       ],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "no_cup_bowl_on_cabinet": {
-     "note": "no cup, and the bowl on the low wall cabinet",
-     "conditions": [
-      "no_cup",
-      "not_in_view"
-     ],
-     "remove": [
-      "cup"
-     ],
-     "move": {
-      "bowl": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.68,
-        0.36
-       ],
-       "yaw_deg": 0
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "since": "v3",
-     "condition_types": [
-      "object_absent",
-      "search_target"
-     ],
-     "decisions": [
-      "alternative",
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v5": {
-      "tier": "medium",
-      "challenge": "no cup, and the bowl on the low wall cabinet",
-      "derived_from": "no_cup_bowl_on_cabinet",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.591,
-         0.2722,
-         3.7691,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_cabinet_6/top": [
-        [
-         3.4054,
-         0.3164,
-         3.5926,
-         0.4018
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1537,
-         7.3367,
-         3.2463,
-         7.4633
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "bowl"
-       ],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "no_cup_spoon_boxed_in": {
-     "note": "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is boxed in by cereal boxes and plates, no room for a bowl or a mug next to it",
-     "difficulty": "hard",
-     "since": "v4",
-     "conditions": [
-      "no_cup",
-      "anchor_boxed_in"
-     ],
-     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "on",
-        "spoon",
-        "dining_table_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "bowl",
-      "cup",
-      "mug",
-      "spoon",
-      "clutter_cereal_a",
-      "clutter_cereal_b",
-      "plate_counter_a",
-      "plate_counter_b",
-      "plate_dining_cabinet"
-     ],
-     "remove": [
-      "cup"
-     ],
-     "move": {
-      "clutter_cereal_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.24
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_dining_cabinet": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.1,
-        7.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "bowl": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        8.0304,
-        0.341
-       ],
-       "yaw_deg": -179.01
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "condition_types": [
-      "object_absent",
-      "anchor_relocation"
-     ],
-     "decisions": [
-      "alternative",
-      "insert"
-     ],
-     "v5": {
-      "tier": "hard",
-      "challenge": "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is boxed in by cereal boxes and plates, no room for a bowl or a mug next to it",
-      "derived_from": "no_cup_spoon_boxed_in",
-      "existing": true,
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.9398,
-         0.2516,
-         8.121,
-         0.4304
-        ],
-        "dx": [
-         -1.28,
-         0.24
-        ],
-        "dy": [
-         -0.03,
-         0.07
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        [
-         3.096,
-         7.496,
-         3.344,
-         7.744
-        ],
-        [
-         2.976,
-         7.756,
-         3.224,
-         8.004
-        ],
-        [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        [
-         2.9293,
-         6.5896,
-         3.1107,
-         6.6305
-        ],
-        [
-         2.911,
-         6.3521,
-         3.089,
-         6.5279
-        ],
-        [
-         2.9537,
-         6.7167,
-         3.0463,
-         6.8433
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "h_dynamic_mug_taken": {
-     "move": {
-      "clutter_cereal_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.24
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_dining_cabinet": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.1,
-        7.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "bowl": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        8.0304,
-        0.341
-       ],
-       "yaw_deg": -179.01
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "remove": [
-      "cup"
-     ],
-     "conditions": [
-      "no_cup",
-      "anchor_boxed_in"
-     ],
-     "failures": [
-      {
-       "id": "destination_v4_no_cup_spoon_boxed_in",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "clutter_cereal_a",
-         "dining_table_2/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_mug",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "bowl"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "mug",
-        "to": {
-         "support": "kitchen_cabinet_6/top",
-         "xy": [
-          3.68,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "on",
-        "spoon",
-        "dining_table_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
-     "watch": [
-      "bowl",
-      "cup",
-      "mug",
-      "spoon",
-      "clutter_cereal_a",
-      "clutter_cereal_b",
-      "plate_counter_a",
-      "plate_counter_b",
-      "plate_dining_cabinet"
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
-     "v5": {
-      "tier": "hard",
-      "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
-      "derived_from": "no_cup_spoon_boxed_in",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.9398,
-         0.2516,
-         8.121,
-         0.4304
-        ],
-        "dx": [
-         -1.28,
-         0.24
-        ],
-        "dy": [
-         -0.03,
-         0.07
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        [
-         3.096,
-         7.496,
-         3.344,
-         7.744
-        ],
-        [
-         2.976,
-         7.756,
-         3.224,
-         8.004
-        ],
-        [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        [
-         2.9293,
-         6.5896,
-         3.1107,
-         6.6305
-        ],
-        [
-         2.911,
-         6.3821,
-         3.089,
-         6.5579
-        ],
-        [
-         2.9537,
-         6.6767,
-         3.0463,
-         6.8033
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "bowl_on_cabinet__alt_dining_table_2": {
-     "note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand) (here the bowl is on dining_table_2/top)",
-     "conditions": [
-      "not_in_view"
-     ],
-     "move": {
-      "bowl": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.3
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "since": "v6",
-     "condition_types": [
-      "search_target"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "v6": {
-      "family": "bowl_on_cabinet",
-      "case": "alt_dining_table_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand) (here the bowl is on dining_table_2/top)",
-      "derived_from": "bowl_on_cabinet",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.611,
-         6.2121,
-         3.7891,
-         6.3879
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -0.7,
-         1.55
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "bowl"
-       ],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "no_cup_bowl_on_cabinet__alt_dining_table_2": {
-     "note": "no cup, and the bowl on the low wall cabinet (here the bowl is on dining_table_2/top)",
-     "conditions": [
-      "no_cup",
-      "not_in_view"
-     ],
-     "remove": [
-      "cup"
-     ],
-     "move": {
-      "bowl": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.3
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "since": "v6",
-     "condition_types": [
-      "object_absent",
-      "search_target"
-     ],
-     "decisions": [
-      "alternative",
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v6": {
-      "family": "no_cup_bowl_on_cabinet",
-      "case": "alt_dining_table_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "no cup, and the bowl on the low wall cabinet (here the bowl is on dining_table_2/top)",
-      "derived_from": "no_cup_bowl_on_cabinet",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.611,
-         6.2121,
-         3.7891,
-         6.3879
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -0.7,
-         1.55
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1537,
-         7.3367,
-         3.2463,
-         7.4633
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "bowl"
-       ],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "h_dynamic_mug_taken__alt_dining_table_2": {
-     "move": {
-      "clutter_cereal_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.24
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_dining_cabinet": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.1,
-        7.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "bowl": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        8.0304,
-        0.341
-       ],
-       "yaw_deg": -179.01
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "remove": [
-      "cup"
-     ],
-     "conditions": [
-      "no_cup",
-      "anchor_boxed_in"
-     ],
-     "failures": [
-      {
-       "id": "destination_v4_no_cup_spoon_boxed_in",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "clutter_cereal_a",
-         "dining_table_2/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_mug",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "bowl"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "mug",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "on",
-        "spoon",
-        "dining_table_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
-     "watch": [
-      "bowl",
-      "cup",
-      "mug",
-      "spoon",
-      "clutter_cereal_a",
-      "clutter_cereal_b",
-      "plate_counter_a",
-      "plate_counter_b",
-      "plate_dining_cabinet"
-     ],
-     "difficulty": "hard",
-     "since": "v6",
-     "note": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug (here the mug is on dining_table_2/top)",
-     "v6": {
-      "family": "h_dynamic_mug_taken",
-      "case": "alt_dining_table_2",
-      "tier": "hard",
-      "hard_category": "dynamic",
-      "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug (here the mug is on dining_table_2/top)",
-      "derived_from": "h_dynamic_mug_taken",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "bowl"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.9398,
-         0.2516,
-         8.121,
-         0.4304
-        ],
-        "dx": [
-         -1.28,
-         0.24
-        ],
-        "dy": [
-         -0.03,
-         0.07
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        [
-         3.096,
-         7.496,
-         3.344,
-         7.744
-        ],
-        [
-         2.976,
-         7.756,
-         3.224,
-         8.004
-        ],
-        [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        [
-         2.9293,
-         6.5896,
-         3.1107,
-         6.6305
-        ],
-        [
-         2.911,
-         6.3821,
-         3.089,
-         6.5579
-        ],
-        [
-         2.9537,
-         6.6767,
-         3.0463,
-         6.8033
-        ],
-        [
-         3.6537,
-         6.2367,
-         3.7463,
-         6.3633
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "x6_pp_spoon_moved__early": {
+    "copy_the_setting__bowl_cup": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
@@ -45890,6 +44277,14 @@
        ],
        "yaw_deg": 0.0
       },
+      "spoon": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.3
+       ],
+       "yaw_deg": 0.0
+      },
       "cup": {
        "support": "tv_stand_2/top",
        "xy": [
@@ -45905,53 +44300,121 @@
         -0.4095
        ],
        "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
       }
      },
-     "failures": [
-      {
-       "id": "resource_spoon",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "bowl"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "spoon",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.6,
-          5.75
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "conditions": [
+      "goal_by_example"
+     ],
+     "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
+     "instruction_zh": "照着桌上摆好的那份，在另一把勺子那里也摆一份。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "add": {
+      "example_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_cup": {
+       "asset": "breakfast_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.55
+       ],
+       "yaw_deg": 180.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "same_arrangement",
+        [
+         "bowl",
+         "cup"
+        ],
+        [
+         "example_bowl",
+         "example_cup"
+        ],
+        "spoon",
+        "example_spoon",
+        [
+         1.0,
+         0.0
+        ],
+        [
+         -1.0,
+         0.0
+        ],
+        0.07
+       ],
+       [
+        "near_start",
+        "example_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_cup",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_spoon",
+        0.03
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "upright",
+        "cup"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bowl",
+      "cup",
+      "example_bowl",
+      "example_cup",
+      "example_spoon",
+      "spoon"
      ],
      "since": "v6",
-     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
      "v6": {
-      "family": "x6_pp_spoon_moved",
-      "case": "early",
-      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-      "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+      "family": "copy_the_setting",
+      "case": "bowl_cup",
+      "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+      "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource, and when (failure timing)",
+      "factor": "what the set place holds and how (seed: bowl with the cup on the right; plate, bowl on it and the mug on the left; bowl and cup, but no cup left in the house)",
       "derived_from": "dishes_on_tv_stand"
      },
      "layout": {
@@ -46027,13 +44490,21 @@
       }
      }
     },
-    "x6_pp_spoon_moved__table_end": {
+    "copy_the_setting__plate_bowl_mug_left": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
        "xy": [
         8.0304,
         0.3409
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.3
        ],
        "yaw_deg": 0.0
       },
@@ -46052,53 +44523,145 @@
         -0.4095
        ],
        "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
       }
      },
-     "failures": [
-      {
-       "id": "resource_spoon",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "cup"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "spoon",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.6,
-          5.75
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "conditions": [
+      "goal_by_example"
+     ],
+     "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
+     "instruction_zh": "照着桌上摆好的那份，在另一把勺子那里也摆一份。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "add": {
+      "example_plate": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_bowl": {
+       "asset": "breakfast_bowl",
+       "support": null,
+       "xy": [
+        3.7,
+        6.36
+       ],
+       "yaw_deg": 0.0,
+       "z": 0.8805
+      },
+      "example_mug": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.19
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.55
+       ],
+       "yaw_deg": 180.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "same_arrangement",
+        [
+         "plate_counter_a",
+         "bowl",
+         "mug"
+        ],
+        [
+         "example_plate",
+         "example_bowl",
+         "example_mug"
+        ],
+        "spoon",
+        "example_spoon",
+        [
+         1.0,
+         0.0
+        ],
+        [
+         -1.0,
+         0.0
+        ],
+        0.07
+       ],
+       [
+        "near_start",
+        "example_plate",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_mug",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_spoon",
+        0.03
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "upright",
+        "mug"
+       ],
+       [
+        "on_top_of",
+        "bowl",
+        "plate_counter_a"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "plate_counter_a",
+      "bowl",
+      "mug",
+      "example_plate",
+      "example_bowl",
+      "example_mug",
+      "example_spoon",
+      "spoon"
      ],
      "since": "v6",
-     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
      "v6": {
-      "family": "x6_pp_spoon_moved",
-      "case": "table_end",
-      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-      "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+      "family": "copy_the_setting",
+      "case": "plate_bowl_mug_left",
+      "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+      "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource, and when (failure timing)",
+      "factor": "what the set place holds and how (seed: bowl with the cup on the right; plate, bowl on it and the mug on the left; bowl and cup, but no cup left in the house)",
       "derived_from": "dishes_on_tv_stand"
      },
      "layout": {
@@ -46174,7 +44737,7 @@
       }
      }
     },
-    "x6_pp_spoon_moved__tv_stand": {
+    "copy_the_setting__no_cup": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
@@ -46184,13 +44747,13 @@
        ],
        "yaw_deg": 0.0
       },
-      "cup": {
-       "support": "tv_stand_2/top",
+      "spoon": {
+       "support": "dining_table_2/top",
        "xy": [
-        7.3928,
-        0.3208
+        2.93,
+        7.3
        ],
-       "yaw_deg": -72.1
+       "yaw_deg": 0.0
       },
       "mug": {
        "support": "bookcase_2/top",
@@ -46199,53 +44762,122 @@
         -0.4095
        ],
        "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
       }
      },
-     "failures": [
-      {
-       "id": "resource_spoon",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "cup"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "spoon",
-        "to": {
-         "support": "tv_stand_2/top",
-         "xy": [
-          7.0,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "conditions": [
+      "goal_by_example"
+     ],
+     "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
+     "instruction_zh": "照着桌上摆好的那份，在另一把勺子那里也摆一份。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "cup",
+      "spoon_target_table"
+     ],
+     "add": {
+      "example_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_cup": {
+       "asset": "breakfast_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "example_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.55
+       ],
+       "yaw_deg": 180.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "same_arrangement",
+        [
+         "bowl",
+         "mug"
+        ],
+        [
+         "example_bowl",
+         "example_cup"
+        ],
+        "spoon",
+        "example_spoon",
+        [
+         1.0,
+         0.0
+        ],
+        [
+         -1.0,
+         0.0
+        ],
+        0.07
+       ],
+       [
+        "near_start",
+        "example_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_cup",
+        0.03
+       ],
+       [
+        "near_start",
+        "example_spoon",
+        0.03
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "upright",
+        "mug"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bowl",
+      "mug",
+      "example_bowl",
+      "example_cup",
+      "example_spoon",
+      "spoon"
      ],
      "since": "v6",
-     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
      "v6": {
-      "family": "x6_pp_spoon_moved",
-      "case": "tv_stand",
-      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-      "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+      "family": "copy_the_setting",
+      "case": "no_cup",
+      "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+      "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource, and when (failure timing)",
+      "factor": "what the set place holds and how (seed: bowl with the cup on the right; plate, bowl on it and the mug on the left; bowl and cup, but no cup left in the house)",
       "derived_from": "dishes_on_tv_stand"
      },
      "layout": {
@@ -46289,38 +44921,9 @@
          -0.03,
          0.07
         ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
        }
       ],
-      "static": {
-       "tv_stand_2/top": [
-        [
-         6.9093,
-         0.3395,
-         7.0907,
-         0.3805
-        ]
-       ]
-      },
+      "static": {},
       "start": {
        "room": "dining_room_0_1",
        "hide": [],
@@ -46330,491 +44933,7 @@
       }
      }
     },
-    "x6_gd_bowl_put_away__in_cabinet": {
-     "move": {
-      "bowl": {
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.5,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "remove": [
-      "bowl_inside_kitchen_cabinet",
-      "plate_inside_kitchen_cabinet"
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ]
-      ]
-     },
-     "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
-     "instruction_zh": "摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。",
-     "failures": [
-      {
-       "id": "resource_bowl_put_away",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl",
-         "kitchen_cabinet_6/inside_shelf"
-        ]
-       ]
-      }
-     ],
-     "since": "v6",
-     "note": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-     "v6": {
-      "family": "x6_gd_bowl_put_away",
-      "case": "in_cabinet",
-      "challenge": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-      "rationale": "the bowl's location is a disjunction resolved by inspecting both places (reference route: the worse order); the cup is set as usual and the doors are closed again",
-      "control": "bowl_on_cabinet",
-      "contrast": null,
-      "factor": "which closed place holds the item",
-      "derived_from": "dishes_on_tv_stand"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "x6_gd_bowl_put_away__in_microwave": {
-     "move": {
-      "bowl": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        1.8,
-        9.5
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
-      "mug": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0551,
-        -0.4095
-       ],
-       "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
-      }
-     },
-     "remove": [
-      "bowl_inside_kitchen_cabinet",
-      "plate_inside_kitchen_cabinet"
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ]
-      ]
-     },
-     "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
-     "instruction_zh": "摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。",
-     "failures": [
-      {
-       "id": "resource_bowl_put_away",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl",
-         "kitchen_microwave/inside_floor"
-        ]
-       ]
-      }
-     ],
-     "since": "v6",
-     "note": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-     "v6": {
-      "family": "x6_gd_bowl_put_away",
-      "case": "in_microwave",
-      "challenge": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-      "rationale": "the bowl's location is a disjunction resolved by inspecting both places (reference route: the worse order); the cup is set as usual and the doors are closed again",
-      "control": "bowl_on_cabinet",
-      "contrast": null,
-      "factor": "which closed place holds the item",
-      "derived_from": "dishes_on_tv_stand"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9774,
-         -0.4804,
-         1.1328,
-         -0.3386
-        ],
-        "dx": [
-         -0.26,
-         0.15
-        ],
-        "dy": [
-         -0.05,
-         0.08
-        ]
-       },
-       {
-        "names": [
-         "spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
-        ],
-        "dx": [
-         -0.1,
-         0.03
-        ],
-        "dy": [
-         -1.87,
-         0.4
-        ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ]
-       ]
-      },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "x6_gd_two_settings__cabinet6": {
+    "finish_the_table__adult_seat": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
@@ -46824,22 +44943,6 @@
        ],
        "yaw_deg": 0.0
       },
-      "bowl_kitchen_cabinet": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        6.9,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
       "mug": {
        "support": "bookcase_2/top",
        "xy": [
@@ -46847,211 +44950,254 @@
         -0.4095
        ],
        "yaw_deg": 61.42
-      },
-      "spoon": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.9797,
-        7.4601
-       ],
-       "yaw_deg": 44.35
       }
      },
-     "goal": {
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "on",
-        "bowl_kitchen_cabinet",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "upright",
-        "bowl_kitchen_cabinet"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ],
-      "any": [
-       [
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "mug",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "upright",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "cup",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "upright",
-         "cup"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "upright",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "upright",
-         "cup"
-        ]
-       ]
-      ]
-     },
-     "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
-     "instruction_zh": "在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
-     "watch": [
-      "bowl",
-      "bowl_kitchen_cabinet",
+     "conditions": [
+      "rule_induction",
+      "referent_clue"
+     ],
+     "instruction": "Set the rest of the places at the table.",
+     "instruction_zh": "把桌上剩下的位子也摆好。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
       "cup",
-      "mug",
       "spoon",
       "spoon_target_table"
      ],
-     "failures": [
-      {
-       "id": "resource_mug",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "cup"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "mug",
-        "to": {
-         "support": "kitchen_cabinet_6/top",
-         "xy": [
-          3.68,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "add": {
+      "e_north_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.55
+       ],
+       "yaw_deg": 180.0
+      },
+      "e_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.7
+       ],
+       "yaw_deg": 180.0
+      },
+      "e_mid_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.51
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_drink": {
+       "asset": "plastic_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_toy": {
+       "asset": "rubber_duck",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.86
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.74
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_2": {
+       "asset": "breakfast_bowl",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.7,
+        0.34
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_2": {
+       "asset": "breakfast_mug",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_cup": {
+       "asset": "plastic_cup",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        6.7
+       ],
+       "yaw_deg": 0.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "near_any",
+        "w_mid_spoon",
+        [
+         "bowl",
+         "bowl_2"
+        ],
+        0.12
+       ],
+       [
+        "near_any",
+        "w_mid_spoon",
+        [
+         "mug",
+         "mug_2"
+        ],
+        0.12
+       ],
+       [
+        "not near_any",
+        "w_mid_spoon",
+        [
+         "kid_cup"
+        ],
+        0.25
+       ],
+       [
+        "near_start",
+        "e_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_toy",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_drink",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bowl",
+      "bowl_2",
+      "mug",
+      "mug_2",
+      "kid_cup",
+      "w_mid_spoon"
      ],
      "since": "v6",
-     "note": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
      "v6": {
-      "family": "x6_gd_two_settings",
-      "case": "cabinet6",
-      "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
-      "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
+      "family": "finish_the_table",
+      "case": "adult_seat",
+      "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+      "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "which places are empty (seed: one adult's, one kid's, or both)",
       "derived_from": "dishes_on_tv_stand"
      },
      "layout": {
@@ -47078,42 +45224,43 @@
        },
        {
         "names": [
-         "spoon"
+         "kid_cup",
+         "mug_2"
         ],
-        "support": "dining_table_2/top",
+        "support": "kitchen_counter_2/top",
         "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
+         -0.3463,
+         7.6367,
+         -0.2537,
+         7.99
         ],
         "dx": [
-         -0.1,
-         0.03
+         -0.16,
+         0.0
         ],
         "dy": [
-         -1.87,
-         0.4
+         -0.65,
+         1.43
         ]
        },
        {
         "names": [
-         "bowl_kitchen_cabinet"
+         "bowl_2"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         6.811,
-         0.2722,
-         6.9891,
-         0.4478
+         7.6109,
+         0.2522,
+         7.7891,
+         0.4279
         ],
         "dx": [
-         -0.15,
-         1.37
+         -0.95,
+         0.57
         ],
         "dy": [
-         -0.05,
-         0.05
+         -0.03,
+         0.07
         ]
        },
        {
@@ -47135,71 +45282,33 @@
          -0.03,
          0.07
         ]
-       },
-       {
-        "names": [
-         "cup"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
-        ],
-        "dx": [
-         -0.67,
-         0.9
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
        }
       ],
       "static": {
-       "dining_table_2/top": [
+       "kitchen_counter_2/top": [
         [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
         ],
         [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
         ],
         [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
         ],
         [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ],
-        [
-         3.611,
-         7.0321,
-         3.7891,
-         7.2079
-        ],
-        [
-         3.5737,
-         7.5567,
-         3.6663,
-         7.6833
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
         ]
        ]
       },
@@ -47212,7 +45321,7 @@
       }
      }
     },
-    "x6_gd_two_settings__cabinet4": {
+    "finish_the_table__kid_seat": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
@@ -47222,22 +45331,6 @@
        ],
        "yaw_deg": 0.0
       },
-      "bowl_kitchen_cabinet": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        6.9,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3928,
-        0.3208
-       ],
-       "yaw_deg": -72.1
-      },
       "mug": {
        "support": "bookcase_2/top",
        "xy": [
@@ -47245,211 +45338,263 @@
         -0.4095
        ],
        "yaw_deg": 61.42
-      },
-      "spoon": {
+      }
+     },
+     "conditions": [
+      "rule_induction",
+      "referent_clue"
+     ],
+     "instruction": "Set the rest of the places at the table.",
+     "instruction_zh": "把桌上剩下的位子也摆好。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "cup",
+      "spoon",
+      "spoon_target_table"
+     ],
+     "add": {
+      "e_north_spoon": {
+       "asset": "breakfast_spoon",
        "support": "dining_table_2/top",
        "xy": [
-        2.9797,
-        7.4601
+        3.7,
+        7.55
        ],
-       "yaw_deg": 44.35
+       "yaw_deg": 180.0
+      },
+      "e_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.7
+       ],
+       "yaw_deg": 180.0
+      },
+      "e_mid_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.51
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_drink": {
+       "asset": "plastic_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_toy": {
+       "asset": "rubber_duck",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.86
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.74
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_2": {
+       "asset": "breakfast_bowl",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.7,
+        0.34
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_2": {
+       "asset": "breakfast_mug",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_cup": {
+       "asset": "plastic_cup",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_mid_toy": {
+       "asset": "toy_car",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        6.54
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
       "all": [
        [
-        "on",
-        "bowl",
-        "dining_table_2/top"
+        "near_any",
+        "w_mid_spoon",
+        [
+         "bowl",
+         "bowl_2"
+        ],
+        0.12
        ],
        [
-        "on",
-        "bowl_kitchen_cabinet",
-        "dining_table_2/top"
+        "near_any",
+        "w_mid_spoon",
+        [
+         "kid_cup"
+        ],
+        0.12
        ],
        [
-        "upright",
-        "bowl"
+        "not near_any",
+        "w_mid_spoon",
+        [
+         "mug",
+         "mug_2"
+        ],
+        0.25
        ],
        [
-        "upright",
-        "bowl_kitchen_cabinet"
+        "near_start",
+        "e_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_toy",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_drink",
+        0.03
        ],
        [
         "hand_empty",
         "right"
        ]
-      ],
-      "any": [
-       [
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "mug",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "upright",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "cup",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "upright",
-         "cup"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "upright",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "grouped",
-         [
-          "bowl_kitchen_cabinet",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon_target_table"
-         ],
-         "dining_table_2/top",
-         0.5
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "upright",
-         "cup"
-        ]
-       ]
       ]
      },
-     "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
-     "instruction_zh": "在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
      "watch": [
       "bowl",
-      "bowl_kitchen_cabinet",
-      "cup",
+      "bowl_2",
       "mug",
-      "spoon",
-      "spoon_target_table"
-     ],
-     "failures": [
-      {
-       "id": "resource_mug",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "cup"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "mug",
-        "to": {
-         "support": "kitchen_cabinet_4/top",
-         "xy": [
-          1.4,
-          0.42
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
+      "mug_2",
+      "kid_cup",
+      "w_mid_spoon"
      ],
      "since": "v6",
-     "note": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
      "v6": {
-      "family": "x6_gd_two_settings",
-      "case": "cabinet4",
-      "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
-      "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
+      "family": "finish_the_table",
+      "case": "kid_seat",
+      "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+      "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "which places are empty (seed: one adult's, one kid's, or both)",
       "derived_from": "dishes_on_tv_stand"
      },
      "layout": {
@@ -47476,42 +45621,43 @@
        },
        {
         "names": [
-         "spoon"
+         "kid_cup",
+         "mug_2"
         ],
-        "support": "dining_table_2/top",
+        "support": "kitchen_counter_2/top",
         "box": [
-         2.9005,
-         7.3821,
-         3.0589,
-         7.5381
+         -0.3463,
+         7.6367,
+         -0.2537,
+         7.99
         ],
         "dx": [
-         -0.1,
-         0.03
+         -0.16,
+         0.0
         ],
         "dy": [
-         -1.87,
-         0.4
+         -0.65,
+         1.43
         ]
        },
        {
         "names": [
-         "bowl_kitchen_cabinet"
+         "bowl_2"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         6.811,
-         0.2722,
-         6.9891,
-         0.4478
+         7.6109,
+         0.2522,
+         7.7891,
+         0.4279
         ],
         "dx": [
-         -0.15,
-         1.37
+         -0.95,
+         0.57
         ],
         "dy": [
-         -0.05,
-         0.05
+         -0.03,
+         0.07
         ]
        },
        {
@@ -47533,71 +45679,465 @@
          -0.03,
          0.07
         ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
+      "start": {
+       "room": "dining_room_0_1",
+       "hide": [],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "finish_the_table__adult_and_kid": {
+     "move": {
+      "bowl": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.0304,
+        0.3409
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0551,
+        -0.4095
+       ],
+       "yaw_deg": 61.42
+      }
+     },
+     "conditions": [
+      "rule_induction",
+      "referent_clue"
+     ],
+     "instruction": "Set the rest of the places at the table.",
+     "instruction_zh": "把桌上剩下的位子也摆好。",
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "cup",
+      "spoon",
+      "spoon_target_table"
+     ],
+     "add": {
+      "e_north_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.55
+       ],
+       "yaw_deg": 180.0
+      },
+      "e_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.7
+       ],
+       "yaw_deg": 180.0
+      },
+      "e_mid_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.51
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_drink": {
+       "asset": "plastic_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.53,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "e_mid_toy": {
+       "asset": "rubber_duck",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.86
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        7.74
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_north_drink": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_2": {
+       "asset": "breakfast_bowl",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.7,
+        0.34
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_2": {
+       "asset": "breakfast_mug",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_cup": {
+       "asset": "plastic_cup",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.3,
+        7.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_mid_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_south_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        5.85
+       ],
+       "yaw_deg": 0.0
+      },
+      "w_south_toy": {
+       "asset": "toy_car",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.93,
+        5.69
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "near_any",
+        "w_mid_spoon",
+        [
+         "bowl",
+         "bowl_2"
+        ],
+        0.12
+       ],
+       [
+        "near_any",
+        "w_mid_spoon",
+        [
+         "mug",
+         "mug_2"
+        ],
+        0.12
+       ],
+       [
+        "not near_any",
+        "w_mid_spoon",
+        [
+         "kid_cup"
+        ],
+        0.25
+       ],
+       [
+        "near_any",
+        "w_south_spoon",
+        [
+         "bowl",
+         "bowl_2"
+        ],
+        0.12
+       ],
+       [
+        "near_any",
+        "w_south_spoon",
+        [
+         "kid_cup"
+        ],
+        0.12
+       ],
+       [
+        "not near_any",
+        "w_south_spoon",
+        [
+         "mug_2"
+        ],
+        0.25
+       ],
+       [
+        "near_start",
+        "e_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_north_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_drink",
+        0.03
+       ],
+       [
+        "near_start",
+        "e_mid_toy",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_spoon",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "w_north_drink",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bowl",
+      "bowl_2",
+      "mug",
+      "mug_2",
+      "kid_cup",
+      "w_mid_spoon",
+      "w_south_spoon"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+     "v6": {
+      "family": "finish_the_table",
+      "case": "adult_and_kid",
+      "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+      "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
+      "control": "dishes_on_tv_stand",
+      "contrast": null,
+      "factor": "which places are empty (seed: one adult's, one kid's, or both)",
+      "derived_from": "dishes_on_tv_stand"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "mug"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.9774,
+         -0.4804,
+         1.1328,
+         -0.3386
+        ],
+        "dx": [
+         -0.26,
+         0.15
+        ],
+        "dy": [
+         -0.05,
+         0.08
+        ]
        },
        {
         "names": [
-         "cup"
+         "kid_cup",
+         "mug_2"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.3463,
+         7.6367,
+         -0.2537,
+         7.99
+        ],
+        "dx": [
+         -0.16,
+         0.0
+        ],
+        "dy": [
+         -0.65,
+         1.43
+        ]
+       },
+       {
+        "names": [
+         "bowl_2"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.3241,
-         0.2528,
-         7.4615,
-         0.3888
+         7.6109,
+         0.2522,
+         7.7891,
+         0.4279
         ],
         "dx": [
-         -0.67,
-         0.9
+         -0.95,
+         0.57
         ],
         "dy": [
          -0.03,
-         0.1
+         0.07
+        ]
+       },
+       {
+        "names": [
+         "bowl"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.9413,
+         0.253,
+         8.1195,
+         0.4287
+        ],
+        "dx": [
+         -1.28,
+         0.24
+        ],
+        "dy": [
+         -0.03,
+         0.07
         ]
        }
       ],
       "static": {
-       "dining_table_2/top": [
+       "kitchen_counter_2/top": [
         [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
         ],
         [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
         ],
         [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
         ],
         [
-         2.9609,
-         7.0121,
-         3.139,
-         7.1879
-        ],
-        [
-         3.1462,
-         7.3452,
-         3.2538,
-         7.4548
-        ],
-        [
-         3.611,
-         7.0321,
-         3.7891,
-         7.2079
-        ],
-        [
-         3.5737,
-         7.5567,
-         3.6663,
-         7.6833
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
         ]
        ]
       },
@@ -47682,20 +46222,12 @@
    "oracle": {
     "dishes_on_tv_stand": "nominal",
     "no_cup": "alternative_mug",
-    "bowl_on_cabinet": "explore_search_bowl",
-    "no_cup_bowl_on_cabinet": "hard_search_bowl_mug",
-    "no_cup_spoon_boxed_in": "hard_move_the_setting",
-    "h_dynamic_mug_taken": "v5_h_dynamic_mug_taken",
-    "bowl_on_cabinet__alt_dining_table_2": "v6_bowl_on_cabinet__alt_dining_table_2",
-    "no_cup_bowl_on_cabinet__alt_dining_table_2": "v6_no_cup_bowl_on_cabinet__alt_dining_table_2",
-    "h_dynamic_mug_taken__alt_dining_table_2": "v6_h_dynamic_mug_taken__alt_dining_table_2",
-    "x6_pp_spoon_moved__early": "v6_x6_pp_spoon_moved__early",
-    "x6_pp_spoon_moved__table_end": "v6_x6_pp_spoon_moved__table_end",
-    "x6_pp_spoon_moved__tv_stand": "v6_x6_pp_spoon_moved__tv_stand",
-    "x6_gd_bowl_put_away__in_cabinet": "v6_x6_gd_bowl_put_away__in_cabinet",
-    "x6_gd_bowl_put_away__in_microwave": "v6_x6_gd_bowl_put_away__in_microwave",
-    "x6_gd_two_settings__cabinet6": "v6_x6_gd_two_settings__cabinet6",
-    "x6_gd_two_settings__cabinet4": "v6_x6_gd_two_settings__cabinet4"
+    "copy_the_setting__bowl_cup": "v6_copy_the_setting__bowl_cup",
+    "copy_the_setting__plate_bowl_mug_left": "v6_copy_the_setting__plate_bowl_mug_left",
+    "copy_the_setting__no_cup": "v6_copy_the_setting__no_cup",
+    "finish_the_table__adult_seat": "v6_finish_the_table__adult_seat",
+    "finish_the_table__kid_seat": "v6_finish_the_table__kid_seat",
+    "finish_the_table__adult_and_kid": "v6_finish_the_table__adult_and_kid"
    },
    "routes": {
     "nominal": {
@@ -47886,12 +46418,7 @@
      ],
      "since": "v3"
     },
-    "explore_search_bowl": {
-     "kind": "explore",
-     "variants": [
-      "bowl_on_cabinet"
-     ],
-     "recovery": "the bowl is not on the TV stand -> search the living room",
+    "v6_copy_the_setting__bowl_cup": {
      "steps": [
       {
        "skill": "look",
@@ -47900,15 +46427,38 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "measure",
        "args": {
-        "destination": "tv_stand_2/top"
+        "object": "example_spoon"
        }
       },
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "tv_stand_2/top"
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.93,
+         7.49
+        ]
        }
       },
       {
@@ -47935,65 +46485,16 @@
         "object": "cup",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "bowl",
-        "region": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
+         3.1,
+         7.3
         ]
        }
       }
      ],
-     "since": "v3"
+     "kind": "v6_oracle",
+     "variant": "copy_the_setting__bowl_cup"
     },
-    "hard_search_bowl_mug": {
-     "kind": "alternative",
-     "variants": [
-      "no_cup_bowl_on_cabinet"
-     ],
-     "recovery": "neither on the TV stand: search the bowl in the living room, then the mug in the bedroom",
+    "v6_copy_the_setting__plate_bowl_mug_left": {
      "steps": [
       {
        "skill": "look",
@@ -48002,43 +46503,21 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "measure",
        "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
+        "object": "example_spoon"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bowl"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "bowl",
-        "region": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
+        "destination": "plate_counter_a"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "bowl"
+        "object": "plate_counter_a"
        }
       },
       {
@@ -48050,125 +46529,12 @@
       {
        "skill": "place",
        "args": {
-        "object": "bowl",
+        "object": "plate_counter_a",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.05,
-         7.1
+         2.93,
+         7.49
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "mug"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "mug",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      }
-     ],
-     "since": "v3"
-    },
-    "hard_move_the_setting": {
-     "kind": "alternative",
-     "variants": [
-      "no_cup_spoon_boxed_in"
-     ],
-     "recovery": "no room by the spoon: carry the spoon to the free part of the table, set the bowl and (no cup) the mug beside it",
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.02,
-         6.61
-        ]
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
        }
       },
       {
@@ -48190,166 +46556,23 @@
        }
       },
       {
-       "skill": "place",
+       "skill": "stack",
        "args": {
         "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.0,
-         6.44
-        ]
+        "base": "plate_counter_a"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "mug"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "mug",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.0,
-         6.78
-        ]
-       }
-      }
-     ],
-     "since": "v4"
-    },
-    "v5_h_dynamic_mug_taken": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.02,
-         6.61
-        ]
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.0,
-         6.47
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "mug",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "mug"
-       },
-       "role": "alternative"
+       }
       },
       {
        "skill": "navigate",
@@ -48363,16 +46586,16 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         6.74
+         3.1,
+         7.66
         ]
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_mug_taken"
+     "kind": "v6_oracle",
+     "variant": "copy_the_setting__plate_bowl_mug_left"
     },
-    "v6_bowl_on_cabinet__alt_dining_table_2": {
+    "v6_copy_the_setting__no_cup": {
      "steps": [
       {
        "skill": "look",
@@ -48381,267 +46604,9 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "measure",
        "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "bowl",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "bowl_on_cabinet__alt_dining_table_2"
-    },
-    "v6_no_cup_bowl_on_cabinet__alt_dining_table_2": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "bowl",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "mug"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "mug",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "no_cup_bowl_on_cabinet__alt_dining_table_2"
-    },
-    "v6_h_dynamic_mug_taken__alt_dining_table_2": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.02,
-         6.61
-        ]
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
+        "object": "example_spoon"
        }
       },
       {
@@ -48668,32 +46633,22 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         6.47
+         2.93,
+         7.49
         ]
        }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "mug",
-        "region": "dining_room_0_1"
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "mug"
-       },
-       "role": "alternative"
+       }
       },
       {
        "skill": "navigate",
@@ -48707,155 +46662,21 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         6.74
-        ]
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "h_dynamic_mug_taken__alt_dining_table_2"
-    },
-    "v6_x6_pp_spoon_moved__early": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         2.98,
-         7.46
-        ]
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
+         3.1,
+         7.3
         ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_spoon_moved__early"
+     "variant": "copy_the_setting__no_cup"
     },
-    "v6_x6_pp_spoon_moved__table_end": {
+    "v6_finish_the_table__adult_seat": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
        }
       },
       {
@@ -48882,643 +46703,28 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.05,
-         7.1
+         2.93,
+         6.89
         ]
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         2.98,
-         7.46
-        ]
-       },
-       "role": "recover"
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_spoon_moved__table_end"
-    },
-    "v6_x6_pp_spoon_moved__tv_stand": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "spoon",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         2.98,
-         7.46
-        ]
-       },
-       "role": "recover"
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_spoon_moved__tv_stand"
-    },
-    "v6_x6_gd_bowl_put_away__in_cabinet": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_gd_bowl_put_away__in_cabinet"
-    },
-    "v6_x6_gd_bowl_put_away__in_microwave": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_microwave",
-        "distance_m": 0.3
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_gd_bowl_put_away__in_microwave"
-    },
-    "v6_x6_gd_two_settings__cabinet6": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.05,
-         7.1
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl_kitchen_cabinet"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "bowl_kitchen_cabinet"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "bowl_kitchen_cabinet",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.7,
-         7.12
-        ]
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "mug",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "dining_table_2/top"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "place",
@@ -49526,34 +46732,21 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.62,
-         7.62
+         3.1,
+         6.7
         ]
-       },
-       "role": "recover"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_two_settings__cabinet6"
+     "variant": "finish_the_table__adult_seat"
     },
-    "v6_x6_gd_two_settings__cabinet4": {
+    "v6_finish_the_table__kid_seat": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
        }
       },
       {
@@ -49580,21 +46773,21 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.05,
-         7.1
+         2.93,
+         6.89
         ]
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup"
+        "destination": "kid_cup"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "cup"
+        "object": "kid_cup"
        }
       },
       {
@@ -49606,74 +46799,72 @@
       {
        "skill": "place",
        "args": {
-        "object": "cup",
+        "object": "kid_cup",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.2,
-         7.4
+         3.1,
+         6.7
         ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "finish_the_table__kid_seat"
+    },
+    "v6_finish_the_table__adult_and_kid": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bowl_kitchen_cabinet"
-       },
-       "role": "recover"
+        "destination": "bowl"
+       }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "bowl_kitchen_cabinet"
-       },
-       "role": "recover"
+        "object": "bowl"
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "dining_table_2/top"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "place",
        "args": {
-        "object": "bowl_kitchen_cabinet",
+        "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.7,
-         7.12
+         2.93,
+         6.89
         ]
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "mug"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "dining_table_2/top"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "place",
@@ -49681,15 +46872,72 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.62,
-         7.62
+         3.1,
+         6.7
         ]
-       },
-       "role": "recover"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl_2",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.93,
+         6.04
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kid_cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kid_cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kid_cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.1,
+         5.85
+        ]
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_two_settings__cabinet4"
+     "variant": "finish_the_table__adult_and_kid"
     }
    },
    "vary": {
@@ -49797,193 +47045,65 @@
       "19": "no_cup"
      }
     },
-    "bowl_on_cabinet": {
-     "origin": "v5",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "bowl_on_cabinet",
-      "bowl_on_cabinet__alt_dining_table_2"
-     ],
-     "seeds": {
-      "10": "bowl_on_cabinet",
-      "11": "bowl_on_cabinet",
-      "12": "bowl_on_cabinet",
-      "13": "bowl_on_cabinet__alt_dining_table_2",
-      "14": "bowl_on_cabinet__alt_dining_table_2",
-      "15": "bowl_on_cabinet",
-      "16": "bowl_on_cabinet",
-      "17": "bowl_on_cabinet__alt_dining_table_2",
-      "18": "bowl_on_cabinet__alt_dining_table_2",
-      "19": "bowl_on_cabinet__alt_dining_table_2"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "no_cup_bowl_on_cabinet": {
-     "origin": "v5",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "no_cup_bowl_on_cabinet",
-      "no_cup_bowl_on_cabinet__alt_dining_table_2"
-     ],
-     "seeds": {
-      "10": "no_cup_bowl_on_cabinet__alt_dining_table_2",
-      "11": "no_cup_bowl_on_cabinet__alt_dining_table_2",
-      "12": "no_cup_bowl_on_cabinet",
-      "13": "no_cup_bowl_on_cabinet__alt_dining_table_2",
-      "14": "no_cup_bowl_on_cabinet",
-      "15": "no_cup_bowl_on_cabinet",
-      "16": "no_cup_bowl_on_cabinet",
-      "17": "no_cup_bowl_on_cabinet__alt_dining_table_2",
-      "18": "no_cup_bowl_on_cabinet",
-      "19": "no_cup_bowl_on_cabinet__alt_dining_table_2"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "no_cup_spoon_boxed_in": {
-     "origin": "v5",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "no_cup_spoon_boxed_in"
-     ],
-     "seeds": {
-      "10": "no_cup_spoon_boxed_in",
-      "11": "no_cup_spoon_boxed_in",
-      "12": "no_cup_spoon_boxed_in",
-      "13": "no_cup_spoon_boxed_in",
-      "14": "no_cup_spoon_boxed_in",
-      "15": "no_cup_spoon_boxed_in",
-      "16": "no_cup_spoon_boxed_in",
-      "17": "no_cup_spoon_boxed_in",
-      "18": "no_cup_spoon_boxed_in",
-      "19": "no_cup_spoon_boxed_in"
-     }
-    },
-    "h_dynamic_mug_taken": {
-     "origin": "v5",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "h_dynamic_mug_taken",
-      "h_dynamic_mug_taken__alt_dining_table_2"
-     ],
-     "seeds": {
-      "10": "h_dynamic_mug_taken__alt_dining_table_2",
-      "11": "h_dynamic_mug_taken__alt_dining_table_2",
-      "12": "h_dynamic_mug_taken__alt_dining_table_2",
-      "13": "h_dynamic_mug_taken__alt_dining_table_2",
-      "14": "h_dynamic_mug_taken",
-      "15": "h_dynamic_mug_taken",
-      "16": "h_dynamic_mug_taken__alt_dining_table_2",
-      "17": "h_dynamic_mug_taken",
-      "18": "h_dynamic_mug_taken",
-      "19": "h_dynamic_mug_taken"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "x6_pp_spoon_moved__early": {
+    "copy_the_setting": {
      "origin": "v6",
      "control": "dishes_on_tv_stand",
      "layouts": [
-      "x6_pp_spoon_moved__early"
+      "copy_the_setting__bowl_cup",
+      "copy_the_setting__plate_bowl_mug_left",
+      "copy_the_setting__no_cup"
      ],
+     "factor": "what the set place holds and how (seed: bowl with the cup on the right; plate, bowl on it and the mug on the left; bowl and cup, but no cup left in the house)",
      "seeds": {
-      "10": "x6_pp_spoon_moved__early",
-      "11": "x6_pp_spoon_moved__early",
-      "12": "x6_pp_spoon_moved__early",
-      "13": "x6_pp_spoon_moved__early",
-      "14": "x6_pp_spoon_moved__early",
-      "15": "x6_pp_spoon_moved__early",
-      "16": "x6_pp_spoon_moved__early",
-      "17": "x6_pp_spoon_moved__early",
-      "18": "x6_pp_spoon_moved__early",
-      "19": "x6_pp_spoon_moved__early"
+      "10": "copy_the_setting__plate_bowl_mug_left",
+      "11": "copy_the_setting__no_cup",
+      "12": "copy_the_setting__bowl_cup",
+      "13": "copy_the_setting__bowl_cup",
+      "14": "copy_the_setting__plate_bowl_mug_left",
+      "15": "copy_the_setting__no_cup",
+      "16": "copy_the_setting__bowl_cup",
+      "17": "copy_the_setting__no_cup",
+      "18": "copy_the_setting__plate_bowl_mug_left",
+      "19": "copy_the_setting__bowl_cup"
      }
     },
-    "x6_pp_spoon_moved__table_end": {
+    "finish_the_table": {
      "origin": "v6",
      "control": "dishes_on_tv_stand",
      "layouts": [
-      "x6_pp_spoon_moved__table_end"
+      "finish_the_table__adult_seat",
+      "finish_the_table__kid_seat",
+      "finish_the_table__adult_and_kid"
      ],
+     "factor": "which places are empty (seed: one adult's, one kid's, or both)",
      "seeds": {
-      "10": "x6_pp_spoon_moved__table_end",
-      "11": "x6_pp_spoon_moved__table_end",
-      "12": "x6_pp_spoon_moved__table_end",
-      "13": "x6_pp_spoon_moved__table_end",
-      "14": "x6_pp_spoon_moved__table_end",
-      "15": "x6_pp_spoon_moved__table_end",
-      "16": "x6_pp_spoon_moved__table_end",
-      "17": "x6_pp_spoon_moved__table_end",
-      "18": "x6_pp_spoon_moved__table_end",
-      "19": "x6_pp_spoon_moved__table_end"
-     }
-    },
-    "x6_pp_spoon_moved__tv_stand": {
-     "origin": "v6",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "x6_pp_spoon_moved__tv_stand"
-     ],
-     "seeds": {
-      "10": "x6_pp_spoon_moved__tv_stand",
-      "11": "x6_pp_spoon_moved__tv_stand",
-      "12": "x6_pp_spoon_moved__tv_stand",
-      "13": "x6_pp_spoon_moved__tv_stand",
-      "14": "x6_pp_spoon_moved__tv_stand",
-      "15": "x6_pp_spoon_moved__tv_stand",
-      "16": "x6_pp_spoon_moved__tv_stand",
-      "17": "x6_pp_spoon_moved__tv_stand",
-      "18": "x6_pp_spoon_moved__tv_stand",
-      "19": "x6_pp_spoon_moved__tv_stand"
-     }
-    },
-    "x6_gd_bowl_put_away": {
-     "origin": "v6",
-     "control": "bowl_on_cabinet",
-     "layouts": [
-      "x6_gd_bowl_put_away__in_cabinet",
-      "x6_gd_bowl_put_away__in_microwave"
-     ],
-     "factor": "which closed place holds the item",
-     "seeds": {
-      "10": "x6_gd_bowl_put_away__in_microwave",
-      "11": "x6_gd_bowl_put_away__in_cabinet",
-      "12": "x6_gd_bowl_put_away__in_cabinet",
-      "13": "x6_gd_bowl_put_away__in_microwave",
-      "14": "x6_gd_bowl_put_away__in_microwave",
-      "15": "x6_gd_bowl_put_away__in_cabinet",
-      "16": "x6_gd_bowl_put_away__in_microwave",
-      "17": "x6_gd_bowl_put_away__in_cabinet",
-      "18": "x6_gd_bowl_put_away__in_microwave",
-      "19": "x6_gd_bowl_put_away__in_cabinet"
-     }
-    },
-    "x6_gd_two_settings": {
-     "origin": "v6",
-     "control": "dishes_on_tv_stand",
-     "layouts": [
-      "x6_gd_two_settings__cabinet6",
-      "x6_gd_two_settings__cabinet4"
-     ],
-     "factor": "where the event takes the resource",
-     "seeds": {
-      "10": "x6_gd_two_settings__cabinet4",
-      "11": "x6_gd_two_settings__cabinet4",
-      "12": "x6_gd_two_settings__cabinet6",
-      "13": "x6_gd_two_settings__cabinet4",
-      "14": "x6_gd_two_settings__cabinet6",
-      "15": "x6_gd_two_settings__cabinet4",
-      "16": "x6_gd_two_settings__cabinet6",
-      "17": "x6_gd_two_settings__cabinet4",
-      "18": "x6_gd_two_settings__cabinet6",
-      "19": "x6_gd_two_settings__cabinet6"
+      "10": "finish_the_table__adult_seat",
+      "11": "finish_the_table__kid_seat",
+      "12": "finish_the_table__adult_seat",
+      "13": "finish_the_table__kid_seat",
+      "14": "finish_the_table__adult_and_kid",
+      "15": "finish_the_table__adult_and_kid",
+      "16": "finish_the_table__adult_seat",
+      "17": "finish_the_table__adult_seat",
+      "18": "finish_the_table__adult_and_kid",
+      "19": "finish_the_table__kid_seat"
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "bowl_on_cabinet": "removed: T13 tests reading the scene (copy_the_setting, finish_the_table), not another search",
+    "no_cup_bowl_on_cabinet": "removed: no_cup and bowl_on_cabinet together, nothing new",
+    "no_cup_spoon_boxed_in": "removed: moving the boxed-in spoon is clearing at the work spot (Action-Level)",
+    "h_dynamic_mug_taken": "removed: no dynamic events in T13 (someone takes the mug)"
+   },
    "v6_dropped": {
     "h_action_ik_and_grasp": "built on an injected action failure that never goes away",
     "e2_from_kitchen": "same as dishes_on_tv_stand but for the layout (object poses / start)",
-    "h_mixed_boxed_in_ik": "same as no_cup_spoon_boxed_in without its injected action failures"
+    "h_mixed_boxed_in_ik": "same as no_cup_spoon_boxed_in without its injected action failures",
+    "bowl_on_cabinet": "removed: T13 tests reading the scene (copy_the_setting, finish_the_table), not another search",
+    "no_cup_bowl_on_cabinet": "removed: no_cup and bowl_on_cabinet together, nothing new",
+    "no_cup_spoon_boxed_in": "removed: moving the boxed-in spoon is clearing at the work spot (Action-Level)",
+    "h_dynamic_mug_taken": "removed: no dynamic events in T13 (someone takes the mug)"
    },
    "v6_tracks": {
     "dishes_on_tv_stand": {
@@ -49998,73 +47118,19 @@
       "no_cup"
      ]
     },
-    "bowl_on_cabinet": {
+    "copy_the_setting": {
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "goal_by_example"
      ]
     },
-    "no_cup_bowl_on_cabinet": {
+    "finish_the_table": {
      "category": "task",
      "local": [],
      "longer": [
-      "no_cup",
-      "not_in_view"
-     ]
-    },
-    "no_cup_spoon_boxed_in": {
-     "category": "action_task",
-     "local": [
-      "move the boxed-in anchor to where the setting fits"
-     ],
-     "longer": [
-      "no_cup"
-     ]
-    },
-    "h_dynamic_mug_taken": {
-     "category": "action_task",
-     "local": [
-      "move the boxed-in anchor to where the setting fits"
-     ],
-     "longer": [
-      "event: resource",
-      "no_cup"
-     ]
-    },
-    "x6_pp_spoon_moved__early": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
-    },
-    "x6_pp_spoon_moved__table_end": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
-    },
-    "x6_pp_spoon_moved__tv_stand": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
-    },
-    "x6_gd_bowl_put_away": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "resource"
-     ]
-    },
-    "x6_gd_two_settings": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
+      "referent_clue",
+      "rule_induction"
      ]
     }
    }

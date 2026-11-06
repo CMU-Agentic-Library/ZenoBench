@@ -21,7 +21,10 @@ looks a goal atom up here first, then in the skill registry.
   place setting, T01);
 * ``visible_from(object, eye, min_fraction)``: seen from a person's eye point: at least ``min_fraction`` of
   sample points on the object's top have a line of sight to the eye that no other object blocks (a toy seen
-  from the bed, T06).
+  from the bed, T06);
+* ``same_arrangement(objects, examples, anchor, example_anchor, facing, example_facing, tol_m)``: each object stands
+  where its example stands, relative to the anchor, in the frame of the person it is for (a place setting copied
+  across the table, T13).
 """
 from __future__ import annotations
 
@@ -212,3 +215,31 @@ def _visible_from(rig, ctx, object, eye, min_fraction=0.5):
     seen = [not any(_segment_hits_box(eye, p, ob) for ob in others) for p in pts]
     frac = sum(seen) / len(seen)
     return frac >= float(min_fraction), f"{frac:.2f} of the top in view"
+
+
+@goal_predicate("same_arrangement", ["objects", "examples", "anchor", "example_anchor", "facing", "example_facing",
+                                     "tol_m"],
+                "Each object's centre, taken relative to the anchor in the frame of a person facing ``facing``, is "
+                "within tol_m of its example's centre relative to example_anchor in the frame facing "
+                "``example_facing`` (forward and left of the person).")
+def _same_arrangement(rig, ctx, objects, examples, anchor, example_anchor, facing, example_facing, tol_m=0.07):
+    st = _state(rig, ctx)
+
+    def centre(o):
+        fp = rig.geo.footprint(o, st)
+        return (fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2
+
+    def local(o, a, fc):
+        (x, y), (ax, ay) = centre(o), centre(a)
+        fx, fy = fc
+        n = math.hypot(fx, fy)
+        fx, fy = fx / n, fy / n
+        dx, dy = x - ax, y - ay
+        return dx * fx + dy * fy, -dx * fy + dy * fx           # forward, left
+    worst = 0.0
+    for o, e in zip(objects, examples):
+        if o not in st["objects"]:
+            return False, f"{o} missing"
+        a, b = local(o, anchor, facing), local(e, example_anchor, example_facing)
+        worst = max(worst, math.hypot(a[0] - b[0], a[1] - b[1]))
+    return worst <= float(tol_m), f"largest offset error {worst:.3f} m"

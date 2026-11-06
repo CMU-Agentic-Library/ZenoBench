@@ -1377,83 +1377,124 @@ def T12(t):
     }
 
 
+def seat_xy(spoon, facing, f, l):
+    """A point of a place setting in the diner's frame: ``f`` forward (away from the diner), ``l`` to the diner's
+    left, from the setting's spoon."""
+    fx, fy = facing
+    return [round(spoon[0] + f * fx - l * fy, 3), round(spoon[1] + f * fy + l * fx, 3)]
+
+
 def T13(t):
-    BOWL, CUP, MUG, SPOON = "bowl", "cup", "mug", "spoon"
-    base = OR(t, "dishes_on_tv_stand")   # look dining, nav tv, look tv, nav bowl, pick bowl, nav dining, place bowl,
-    #                                       nav cup, pick cup, nav dining, place cup
-    spoon_back = lambda pre: base + recs(look("dining_table_2/top"), *pre, nav(SPOON), pick(SPOON),  # noqa: E731
-                                         nav("dining_table_2/top"), place(SPOON, "dining_table_2/top", [2.98, 7.46]))
-    put_away = ("Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them "
-                "next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet "
-                "or the microwave; close whatever you open.")
-    g = copy.deepcopy(t["goal"])
-    g["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_microwave"]]
-    mw = [nav("kitchen_microwave"), S("open", articulated="kitchen_microwave"), look("kitchen_microwave/inside_floor")]
-    take = lambda art: [nav(BOWL), pick(BOWL), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
-    set_rest = [nav("dining_table_2/top"), place(BOWL, "dining_table_2/top", [3.05, 7.1])] + base[at(base, "navigate", destination=CUP):]
-    head = base[:3]
-    b2, s2 = "bowl_kitchen_cabinet", "spoon_target_table"
-    two_goal = {"all": [["on", BOWL, "dining_table_2/top"], ["on", b2, "dining_table_2/top"], ["upright", BOWL],
-                        ["upright", b2], ["hand_empty", "right"]],
-                "any": [[["grouped", [x, c1, SPOON], "dining_table_2/top", 0.5], ["grouped", [y, c2, s2], "dining_table_2/top", 0.5],
-                         ["upright", c1], ["upright", c2]]
-                        for x, y in ((BOWL, b2), (b2, BOWL)) for c1, c2 in ((CUP, MUG), (MUG, CUP))]}
-    two = lambda *sr: base + recs(nav(b2), pick(b2), nav("dining_table_2/top"), place(b2, "dining_table_2/top", [3.7, 7.12]),  # noqa: E731
-                                  S("search", object=MUG, **dict(sr)), nav(MUG), pick(MUG), nav("dining_table_2/top"),
-                                  place(MUG, "dining_table_2/top", [3.62, 7.62]))
+    BOWL, CUP, MUG, SPOON, TABLE = "bowl", "cup", "mug", "spoon", "dining_table_2/top"
+    TABLE_Z = 0.848
+    clear = ["clutter_cereal_a", "clutter_cereal_b", "spoon_target_table"]
+    W, E = (1.0, 0.0), (-1.0, 0.0)               # a diner on the west side faces +x, on the east side -x
+
+    def on_table(asset, spoon, facing, f, l, yaw=0.0):
+        return {"asset": asset, "support": TABLE, "xy": seat_xy(spoon, facing, f, l), "yaw_deg": yaw}
+
+    def fetch(x, spoon, facing, f, l):
+        return [nav(x), pick(x), nav(TABLE), place(x, TABLE, seat_xy(spoon, facing, f, l))]
+    # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
+    # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
+    # the room.  No cup in the house: the mug takes the cup's place.
+    B_SP, A_SP = [2.93, 7.30], [3.70, 6.55]
+    RIGHT = {"bowl": (0.0, 0.19), "cup": (0.17, 0.0)}
+    LEFT = {"plate": (0.0, 0.19), "bowl": (0.0, 0.19), "mug": (0.17, 0.36)}
+    copy_cases = {}
+    for c, pattern, kinds, use in (("bowl_cup", RIGHT, {"bowl": "breakfast_bowl", "cup": "breakfast_cup"},
+                                    {"bowl": BOWL, "cup": CUP}),
+                                   ("plate_bowl_mug_left", LEFT, {"plate": "breakfast_plate", "bowl": "breakfast_bowl",
+                                                                  "mug": "breakfast_mug"},
+                                    {"plate": "plate_counter_a", "bowl": BOWL, "mug": MUG}),
+                                   ("no_cup", RIGHT, {"bowl": "breakfast_bowl", "cup": "breakfast_cup"},
+                                    {"bowl": BOWL, "cup": MUG})):
+        ex = {f"example_{k}": on_table(a, A_SP, E, *pattern[k]) for k, a in kinds.items()}
+        ex["example_spoon"] = on_table("breakfast_spoon", A_SP, E, 0.0, 0.0, 180.0)
+        if "plate" in kinds:                     # the example bowl sits on its plate
+            ex["example_bowl"].update(support=None, z=TABLE_Z + 0.0325)
+        order = [k for k in ("plate", "bowl", "cup", "mug") if k in kinds]
+        route = [look(TABLE), S("measure", object="example_spoon")]
+        for k in order:
+            x = use[k]
+            if k == "bowl" and "plate" in kinds:
+                route += [nav(x), pick(x), nav(TABLE), S("stack", object=x, base=use["plate"])]
+            else:
+                route += fetch(x, B_SP, W, *pattern[k])
+        news, refs = [use[k] for k in order], [f"example_{k}" for k in order]
+        goal = {"all": [["same_arrangement", news, refs, SPOON, "example_spoon", list(W), list(E), 0.07]]
+                + [["near_start", r, 0.03] for r in [*refs, "example_spoon"]]
+                + [["upright", use[k]] for k in order if k in ("bowl", "cup", "mug")]
+                + ([["on_top_of", BOWL, "plate_counter_a"]] if "plate" in kinds else []) + [["hand_empty", "right"]]}
+        copy_cases[c] = dict(add=ex, move={SPOON: {"support": TABLE, "xy": B_SP, "yaw_deg": 0.0}},
+                             remove=clear + ([CUP] if c == "no_cup" else []), goal=goal,
+                             watch=[*news, *refs, "example_spoon", SPOON], route=route)
+    # finish_the_table: some places are set (adults: bowl and mug; the kid: bowl and a plastic cup, a toy beside it);
+    # the empty places (a spoon each) are set by the rule of whoever sits there: a toy beside the spoon means the kid
+    ADULT, KID = {"bowl": (0.0, 0.19), "drink": (0.17, 0.0)}, {"bowl": (0.0, 0.19), "drink": (0.17, 0.0), "toy": (0.0, -0.16)}
+    seats = {"e_north": ([3.70, 7.55], E), "e_mid": ([3.70, 6.70], E), "w_north": ([2.93, 7.55], W),
+             "w_mid": ([2.93, 6.70], W), "w_south": ([2.93, 5.85], W)}
+
+    def set_place(name, kind, toy_asset="rubber_duck"):
+        sp, fc = seats[name]
+        out = {f"{name}_spoon": on_table("breakfast_spoon", sp, fc, 0.0, 0.0, 0.0 if fc == W else 180.0),
+               f"{name}_bowl": on_table("breakfast_bowl", sp, fc, *ADULT["bowl"]),
+               f"{name}_drink": on_table("breakfast_mug" if kind == "adult" else "plastic_cup", sp, fc, *ADULT["drink"])}
+        if kind == "kid":
+            out[f"{name}_toy"] = on_table(toy_asset, sp, fc, *KID["toy"])
+        return out
+    examples = {**set_place("e_north", "adult"), **set_place("e_mid", "kid"), **set_place("w_north", "adult")}
+    stock = {"bowl_2": {"asset": "breakfast_bowl", **P("tv_stand_2/top", 7.70, 0.34)},
+             "mug_2": {"asset": "breakfast_mug", **P("kitchen_counter_2/top", -0.30, 7.70)},
+             "kid_cup": {"asset": "plastic_cup", **P("kitchen_counter_2/top", -0.30, 7.95)}}
+    finish_cases = {}
+    for c, empty in (("adult_seat", {"w_mid": "adult"}), ("kid_seat", {"w_mid": "kid"}),
+                     ("adult_and_kid", {"w_mid": "adult", "w_south": "kid"})):
+        add = {**examples, **stock}
+        goal, route, bowls, mugs = [], [look(TABLE)], [BOWL, "bowl_2"], [MUG, "mug_2"]
+        for name, kind in empty.items():
+            sp, fc = seats[name]
+            add[f"{name}_spoon"] = on_table("breakfast_spoon", sp, fc, 0.0, 0.0)
+            if kind == "kid":
+                add[f"{name}_toy"] = on_table("toy_car", sp, fc, *KID["toy"])
+            drink, avoid = ("kid_cup", mugs) if kind == "kid" else (mugs[0], ["kid_cup"])
+            bowl = bowls.pop(0)
+            if kind == "adult":
+                mugs = mugs[1:]
+            goal += [["near_any", f"{name}_spoon", [BOWL, "bowl_2"], 0.12],
+                     ["near_any", f"{name}_spoon", [drink] if kind == "kid" else [MUG, "mug_2"], 0.12],
+                     ["not near_any", f"{name}_spoon", avoid if kind == "kid" else ["kid_cup"], 0.25]]
+            route += fetch(bowl, sp, fc, *ADULT["bowl"]) + fetch(drink, sp, fc, *ADULT["drink"])
+        set_names = [n for n in examples]
+        finish_cases[c] = dict(add=add, remove=clear + [SPOON, CUP],
+                               goal={"all": goal + [["near_start", n, 0.03] for n in set_names]
+                                     + [["hand_empty", "right"]]},
+                               watch=[BOWL, "bowl_2", MUG, "mug_2", "kid_cup", *[f"{n}_spoon" for n in empty]],
+                               route=route)
     return {
-        "x6_pp_spoon_moved": dict(
-            base="dishes_on_tv_stand", control="dishes_on_tv_stand",
-            factor="where the event takes the resource, and when (failure timing)",
-            challenge="the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the "
-                      "cup is set or already right after the bowl is set",
-            rationale="bowl and cup are in place; only the grouping is broken: bring the spoon back next to them "
-                      "instead of moving the dishes",
-            cases={"early": dict(failures=[f_move("resource", SPOON, P("dining_table_2/top", 3.6, 5.75),
-                                                  ("place", {"object": BOWL}), fid="resource_spoon")],
-                                 route=base[:at(base, "place", object=BOWL) + 1]
-                                 + recs(look("dining_table_2/top"), nav(SPOON), pick(SPOON), nav("dining_table_2/top"),
-                                        place(SPOON, "dining_table_2/top", [2.98, 7.46]))
-                                 + base[at(base, "place", object=BOWL) + 1:]),
-                   "table_end": dict(failures=[f_move("resource", SPOON, P("dining_table_2/top", 3.6, 5.75),
-                                                      ("place", {"object": CUP}), fid="resource_spoon")],
-                                     route=spoon_back([])),
-                   "tv_stand": dict(failures=[f_move("resource", SPOON, P("tv_stand_2/top", 7.0, 0.36),
-                                                     ("place", {"object": CUP}), fid="resource_spoon")],
-                                    route=spoon_back([S("search", object=SPOON, region="living_room_0_0")]))}),
-        "x6_gd_bowl_put_away": dict(
-            base="dishes_on_tv_stand", control="bowl_on_cabinet",
-            factor="which closed place holds the item",
-            instruction=put_away, goal=g, instruction_zh="摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。", remove=["bowl_inside_kitchen_cabinet", "plate_inside_kitchen_cabinet"],
-            challenge="no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-            rationale="the bowl's location is a disjunction resolved by inspecting both places (reference route: the "
-                      "worse order); the cup is set as usual and the doors are closed again",
-            cases={"in_cabinet": dict(move={BOWL: {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}},
-                                      failures=[f_initial("resource", [["on", BOWL, "kitchen_cabinet_6/inside_shelf"]],
-                                                          fid="resource_bowl_put_away")],
-                                      route=head + mw + [S("close", articulated="kitchen_microwave")]
-                                      + open_explore("kitchen_cabinet_6") + take("kitchen_cabinet_6") + set_rest),
-                   "in_microwave": dict(move={BOWL: {"support": "kitchen_microwave/inside_floor", "xy": [1.8, 9.5], "yaw_deg": 0.0}},
-                                        failures=[f_initial("resource", [["on", BOWL, "kitchen_microwave/inside_floor"]],
-                                                            fid="resource_bowl_put_away")],
-                                        route=head + open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")]
-                                        + mw + take("kitchen_microwave") + set_rest)}),
-        "x6_gd_two_settings": dict(
-            base="dishes_on_tv_stand", control="dishes_on_tv_stand",
-            move={b2: P("tv_stand_2/top", 6.9, 0.36)}, goal=two_goal, watch=[BOWL, b2, CUP, MUG, SPOON, s2],
-            instruction="Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is "
-                        "fine where there is no cup).",
-            instruction_zh="在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。",
-            challenge="two places, two bowls on the TV stand, one cup and the mug; once the first place is set, "
-                      "someone takes the mug to the wall cabinet",
-            rationale="the goal decomposes into two place settings with an allocation of the cups and bowls; the "
-                      "event moves the second place's resource after the first setting holds: keep it, find the mug",
-            factor="where the event takes the resource",
-            cases={"cabinet6": dict(failures=[f_move("resource", MUG, P("kitchen_cabinet_6/top", 3.68, 0.36),
-                                                     ("place", {"object": CUP}), fid="resource_mug")],
-                                    route=two(("region", "living_room_0_0"))),
-                   "cabinet4": dict(failures=[f_move("resource", MUG, P("kitchen_cabinet_4/top", 1.4, 0.42),
-                                                     ("place", {"object": CUP}), fid="resource_mug")], route=two())}),
+        "copy_the_setting": dict(
+            base="dishes_on_tv_stand", control="dishes_on_tv_stand", keep_design=[TABLE], conditions=["goal_by_example"],
+            instruction="Set the other place, at the second spoon, the same way as the place that is already set.",
+            instruction_zh="照着桌上摆好的那份，在另一把勺子那里也摆一份。",
+            factor="what the set place holds and how (seed: bowl with the cup on the right; plate, bowl on it and "
+                   "the mug on the left; bowl and cup, but no cup left in the house)",
+            challenge="one place is set across the table; the other has only its spoon; the instruction does not "
+                      "say what to bring",
+            rationale="read the example (which things, where relative to its spoon, stacked or not), copy it at "
+                      "the other spoon in the diner's frame (the other diner faces the other way: left and right "
+                      "flip in the room), and when a kind is missing in the house put the closest one (the mug for "
+                      "the cup) in its place",
+            cases=copy_cases),
+        "finish_the_table": dict(
+            base="dishes_on_tv_stand", control="dishes_on_tv_stand", keep_design=[TABLE], conditions=["rule_induction", "referent_clue"],
+            instruction="Set the rest of the places at the table.",
+            instruction_zh="把桌上剩下的位子也摆好。",
+            factor="which places are empty (seed: one adult's, one kid's, or both)",
+            challenge="three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup "
+                      "and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+            rationale="induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), "
+                      "tell whose empty place it is from the toy beside it, set it by that rule",
+            cases=finish_cases),
     }
 
 
@@ -1900,6 +1941,10 @@ REPLACED = {
     ("T10_trash_the_can", "h_dynamic_can_moved"): "removed: no dynamic events in T10 (someone takes the can)",
     ("T11_collect_fruits", "h_dynamic_basket_taken"): "removed: no dynamic events in T11 (someone takes the basket)",
     ("T12_tidy_toys", "h_dynamic_duck_taken"): "removed: no dynamic events in T12 (the kid takes the duck)",
+    ("T13_breakfast_setup", "bowl_on_cabinet"): "removed: T13 tests reading the scene (copy_the_setting, finish_the_table), not another search",
+    ("T13_breakfast_setup", "no_cup_bowl_on_cabinet"): "removed: no_cup and bowl_on_cabinet together, nothing new",
+    ("T13_breakfast_setup", "no_cup_spoon_boxed_in"): "removed: moving the boxed-in spoon is clearing at the work spot (Action-Level)",
+    ("T13_breakfast_setup", "h_dynamic_mug_taken"): "removed: no dynamic events in T13 (someone takes the mug)",
     ("T10_trash_the_can", "far_can_far"): "removed: can_in_dining_room is the same search",
     ("T09_tomato_soup", "lid_on"): "removed: taking the lid off first is a local precondition (Action); it lives on "
                                    "inside lid_on_spoon_away (Action + Task)",
@@ -1948,6 +1993,13 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "goal_by_example": {"type": "goal_inference", "decision": "decompose",
+                        "meaning": "what to do is shown by an example in the scene (a set place): copy which things "
+                                   "and where, in the frame of the person it is for; a missing kind is replaced by "
+                                   "the closest one in the same spot"},
+    "rule_induction": {"type": "goal_inference", "decision": "decompose",
+                       "meaning": "several examples follow rules that depend on who they are for (adults: a mug, "
+                                  "the kid: a plastic cup); induce the rules and apply the one that fits"},
     "relational_exception": {"type": "goal_inference", "decision": "decompose",
                              "meaning": "objects of one kind are treated differently by how they stand: the blocks "
                                         "built into the kid's castle stay, loose ones are put away"},
@@ -2034,9 +2086,6 @@ SEED_EXT = {
     ('T12_tidy_toys', 'h_action_grasp_and_ik'): 0,
     ('T12_tidy_toys', 'h_mixed_everywhere_ik'): 0,
     ('T12_tidy_toys', 'toys_everywhere'): 0,
-    ('T13_breakfast_setup', 'bowl_on_cabinet'): 0,
-    ('T13_breakfast_setup', 'h_dynamic_mug_taken'): 0,
-    ('T13_breakfast_setup', 'no_cup_bowl_on_cabinet'): 0,
     ('T19_recycling', 'h_action_grasp_and_miss'): 1,
     ('T19_recycling', 'h_dynamic_cube_moved'): 3,
     ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
@@ -2158,8 +2207,7 @@ def make_variant(t, fam, spec, case, cspec):
 # how many places are named), not only in where things are: each case is a variant of its own.  The other
 # multi-case families keep one variant whose seeds choose among layouts (where the resource / substitute /
 # item is, where an event takes it, which bin is full).
-SPLIT = {("T13_breakfast_setup", "x6_pp_spoon_moved"),
-         ("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere")}
+SPLIT = {("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere")}
 
 
 # conditions that are no challenge for the variant's own instruction: it names the substitute itself
@@ -2173,6 +2221,7 @@ TASK_TEXT = {
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
     "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
+    "T13_breakfast_setup": ("Breakfast is soon. Set the place at the dining table.", "快吃早饭了，把餐桌上的位子摆好。"),
 }
 
 

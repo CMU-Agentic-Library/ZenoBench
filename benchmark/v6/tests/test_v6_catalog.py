@@ -59,7 +59,7 @@ def test_seeds_keep_what_the_variant_tests():
                            ("T02_stack_blocks", "crowded_use_another__tight_tv", "wooden_block_b", "oatmeal")):
         t = TASKS[tid]
         assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
-    for tid, vid in (("T13_breakfast_setup", "no_cup_spoon_boxed_in"), ("T20_juice_back_to_table", "table_full")):
+    for tid, vid in (("T20_juice_back_to_table", "table_full"),):
         t = TASKS[tid]
         # what moves is away from the boxed-in / full place: the bowl and the mug elsewhere, the bottle to fetch
         design = {n: m for n, m in t["variants"][vid]["move"].items() if n not in ("bowl", "mug", "juice_bottle")}
@@ -171,11 +171,8 @@ def test_no_injected_action_failure_anywhere():
 def test_events_put_right_at_the_work_spot_are_action_level():
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     for tid, vid in (("T16_rolling_pin_at_edge",
-                     "h_dynamic_bowl_put_behind"), ("T18_check_cabinet_dishes", "x6_pp_door_reopened"),
-                     ("T13_breakfast_setup", "x6_pp_spoon_moved__table_end")):
+                     "h_dynamic_bowl_put_behind"), ("T18_check_cabinet_dishes", "x6_pp_door_reopened")):
         assert cat(tid, vid) == "action", (tid, vid)
-    # taken to another room: searched for, Task-Level
-    assert cat("T13_breakfast_setup", "x6_pp_spoon_moved__tv_stand") == "task"
 
 
 def test_every_layout_has_its_route():

@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1230 episodes remain (580 of the 58 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1160 episodes remain (550 of the 55 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -83,15 +83,8 @@
 | T12 | castle_stays | task | 0/0 of 10 | - |
 | T13 | dishes_on_tv_stand | control | 0/0 of 10 | - |
 | T13 | no_cup | task | 0/0 of 10 | - |
-| T13 | bowl_on_cabinet | task | 0/0 of 10 | - |
-| T13 | no_cup_bowl_on_cabinet | task | 0/0 of 10 | - |
-| T13 | no_cup_spoon_boxed_in | action_task | 0/0 of 10 | - |
-| T13 | h_dynamic_mug_taken | action_task | 0/0 of 10 | - |
-| T13 | x6_pp_spoon_moved__early | action | 0/0 of 10 | - |
-| T13 | x6_pp_spoon_moved__table_end | action | 0/0 of 10 | - |
-| T13 | x6_pp_spoon_moved__tv_stand | task | 0/0 of 10 | - |
-| T13 | x6_gd_bowl_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
-| T13 | x6_gd_two_settings | task | 0/0 of 10 | - |
+| T13 | copy_the_setting | task | 0/0 of 10 | - |
+| T13 | finish_the_table | task | 0/0 of 10 | - |
 | T15 | book_free | control | 0/0 of 10 | - |
 | T15 | book_out_of_view | task | 0/0 of 10 | - |
 | T15 | h_task_block_on_book | action | 0/0 of 10 | - |

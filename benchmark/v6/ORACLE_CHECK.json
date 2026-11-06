@@ -1,6 +1,6 @@
 {
- "routes": 205,
- "ok": 205,
+ "routes": 197,
+ "ok": 197,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1291,129 +1291,57 @@
   },
   {
    "task": "T13_breakfast_setup",
-   "layout": "bowl_on_cabinet",
-   "steps": 13,
+   "layout": "copy_the_setting__bowl_cup",
+   "steps": 10,
    "atoms_checked": 4,
-   "atoms_geometric": 5,
+   "atoms_geometric": 3,
    "problems": [],
-   "variant": "bowl_on_cabinet"
+   "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
-   "layout": "bowl_on_cabinet__alt_dining_table_2",
-   "steps": 13,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "bowl_on_cabinet"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "no_cup_bowl_on_cabinet",
-   "steps": 15,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "no_cup_bowl_on_cabinet"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "no_cup_bowl_on_cabinet__alt_dining_table_2",
-   "steps": 15,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "no_cup_bowl_on_cabinet"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "no_cup_spoon_boxed_in",
-   "steps": 17,
-   "atoms_checked": 5,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "no_cup_spoon_boxed_in"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "h_dynamic_mug_taken",
-   "steps": 17,
-   "atoms_checked": 5,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "h_dynamic_mug_taken"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "h_dynamic_mug_taken__alt_dining_table_2",
-   "steps": 17,
-   "atoms_checked": 5,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "h_dynamic_mug_taken"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "x6_pp_spoon_moved__early",
-   "steps": 16,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "x6_pp_spoon_moved__early"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "x6_pp_spoon_moved__table_end",
-   "steps": 16,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "x6_pp_spoon_moved__table_end"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "x6_pp_spoon_moved__tv_stand",
-   "steps": 17,
-   "atoms_checked": 4,
-   "atoms_geometric": 5,
-   "problems": [],
-   "variant": "x6_pp_spoon_moved__tv_stand"
-  },
-  {
-   "task": "T13_breakfast_setup",
-   "layout": "x6_gd_bowl_put_away__in_cabinet",
-   "steps": 22,
+   "layout": "copy_the_setting__plate_bowl_mug_left",
+   "steps": 14,
    "atoms_checked": 6,
-   "atoms_geometric": 5,
+   "atoms_geometric": 3,
    "problems": [],
-   "variant": "x6_gd_bowl_put_away"
+   "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
-   "layout": "x6_gd_bowl_put_away__in_microwave",
-   "steps": 22,
-   "atoms_checked": 6,
-   "atoms_geometric": 5,
+   "layout": "copy_the_setting__no_cup",
+   "steps": 10,
+   "atoms_checked": 4,
+   "atoms_geometric": 3,
    "problems": [],
-   "variant": "x6_gd_bowl_put_away"
+   "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
-   "layout": "x6_gd_two_settings__cabinet6",
-   "steps": 20,
-   "atoms_checked": 3,
-   "atoms_geometric": 18,
+   "layout": "finish_the_table__adult_seat",
+   "steps": 9,
+   "atoms_checked": 14,
+   "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_two_settings"
+   "variant": "finish_the_table"
   },
   {
    "task": "T13_breakfast_setup",
-   "layout": "x6_gd_two_settings__cabinet4",
-   "steps": 20,
-   "atoms_checked": 3,
-   "atoms_geometric": 18,
+   "layout": "finish_the_table__kid_seat",
+   "steps": 9,
+   "atoms_checked": 14,
+   "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_two_settings"
+   "variant": "finish_the_table"
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "layout": "finish_the_table__adult_and_kid",
+   "steps": 17,
+   "atoms_checked": 17,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "finish_the_table"
   },
   {
    "task": "T15_book_face_up",

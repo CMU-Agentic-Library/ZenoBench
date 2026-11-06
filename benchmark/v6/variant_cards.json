@@ -12270,7 +12270,7 @@
    18,
    19
   ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+  "instruction": "Breakfast is soon. Set the place at the dining table.",
   "initial_conditions": {
    "scene": "tasks/breakfast_setup",
    "start": null,
@@ -12368,7 +12368,7 @@
    18,
    19
   ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+  "instruction": "Breakfast is soon. Set the place at the dining table.",
   "initial_conditions": {
    "scene": "tasks/breakfast_setup",
    "start": null,
@@ -12454,915 +12454,193 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T13_breakfast_setup/bowl_on_cabinet": {
-  "variant": "bowl_on_cabinet",
+ "T13_breakfast_setup/copy_the_setting__bowl_cup": {
+  "variant": "copy_the_setting",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   16,
+   19
+  ],
+  "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
+   ],
+   "added": [
+    "example_bowl",
+    "example_cup",
+    "example_spoon"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "goal_by_example"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "same_arrangement",
+     [
+      "bowl",
+      "cup"
+     ],
+     [
+      "example_bowl",
+      "example_cup"
+     ],
+     "spoon",
+     "example_spoon",
+     [
+      1.0,
+      0.0
+     ],
+     [
+      -1.0,
+      0.0
+     ],
+     0.07
+    ],
+    [
+     "near_start",
+     "example_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "example_cup",
+     0.03
+    ],
+    [
+     "near_start",
+     "example_spoon",
+     0.03
+    ],
+    [
+     "upright",
+     "bowl"
+    ],
+    [
+     "upright",
+     "cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_copy_the_setting__bowl_cup",
+  "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+  "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/copy_the_setting__plate_bowl_mug_left": {
+  "variant": "copy_the_setting",
   "category": "task",
   "seeds": [
    10,
-   11,
-   12,
-   15,
-   16
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "explore_search_bowl",
-  "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/bowl_on_cabinet__alt_dining_table_2": {
-  "variant": "bowl_on_cabinet",
-  "category": "task",
-  "seeds": [
-   13,
    14,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_bowl_on_cabinet__alt_dining_table_2",
-  "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand) (here the bowl is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/no_cup_bowl_on_cabinet": {
-  "variant": "no_cup_bowl_on_cabinet",
-  "category": "task",
-  "seeds": [
-   12,
-   14,
-   15,
-   16,
    18
   ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+  "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
   "initial_conditions": {
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
     "bowl",
+    "cup",
     "mug",
     "spoon"
    ],
-   "added": [],
+   "added": [
+    "example_bowl",
+    "example_mug",
+    "example_plate",
+    "example_spoon"
+   ],
    "removed": [
-    "cup"
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "spoon_target_table"
    ],
    "conditions": [
-    "no_cup",
-    "not_in_view"
+    "goal_by_example"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
+   "all": [
     [
+     "same_arrangement",
      [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
+      "plate_counter_a",
+      "bowl",
       "mug"
      ],
      [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "hard_search_bowl_mug",
-  "challenge": "no cup, and the bowl on the low wall cabinet",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/no_cup_bowl_on_cabinet__alt_dining_table_2": {
-  "variant": "no_cup_bowl_on_cabinet",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   13,
-   17,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "cup"
-   ],
-   "conditions": [
-    "no_cup",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
+      "example_plate",
+      "example_bowl",
+      "example_mug"
      ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_no_cup_bowl_on_cabinet__alt_dining_table_2",
-  "challenge": "no cup, and the bowl on the low wall cabinet (here the bowl is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/no_cup_spoon_boxed_in": {
-  "variant": "no_cup_spoon_boxed_in",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "mug",
-    "plate_counter_a",
-    "plate_counter_b",
-    "plate_dining_cabinet",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "cup"
-   ],
-   "conditions": [
-    "no_cup",
-    "anchor_boxed_in"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "on",
      "spoon",
-     "dining_table_2/top"
+     "example_spoon",
+     [
+      1.0,
+      0.0
+     ],
+     [
+      -1.0,
+      0.0
+     ],
+     0.07
     ],
     [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "hard_move_the_setting",
-  "challenge": "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is boxed in by cereal boxes and plates, no room for a bowl or a mug next to it",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/h_dynamic_mug_taken": {
-  "variant": "h_dynamic_mug_taken",
-  "category": "action_task",
-  "seeds": [
-   14,
-   15,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "mug",
-    "plate_counter_a",
-    "plate_counter_b",
-    "plate_dining_cabinet",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "cup"
-   ],
-   "conditions": [
-    "no_cup",
-    "anchor_boxed_in"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "clutter_cereal_a",
-     "dining_table_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_no_cup_spoon_boxed_in",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_mug",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "bowl"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "mug",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.68,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
+     "near_start",
+     "example_plate",
+     0.03
     ],
     [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
-    ]
-   ],
-   "all": [
+     "near_start",
+     "example_bowl",
+     0.03
+    ],
     [
-     "on",
-     "bowl",
-     "dining_table_2/top"
+     "near_start",
+     "example_mug",
+     0.03
+    ],
+    [
+     "near_start",
+     "example_spoon",
+     0.03
     ],
     [
      "upright",
      "bowl"
     ],
     [
-     "on",
-     "spoon",
-     "dining_table_2/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v5_h_dynamic_mug_taken",
-  "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/h_dynamic_mug_taken__alt_dining_table_2": {
-  "variant": "h_dynamic_mug_taken",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   16
-  ],
-  "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "mug",
-    "plate_counter_a",
-    "plate_counter_b",
-    "plate_dining_cabinet",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "cup"
-   ],
-   "conditions": [
-    "no_cup",
-    "anchor_boxed_in"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "clutter_cereal_a",
-     "dining_table_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_no_cup_spoon_boxed_in",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_mug",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "bowl"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "mug",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.4
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
      "upright",
-     "bowl"
+     "mug"
     ],
     [
-     "on",
-     "spoon",
-     "dining_table_2/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_h_dynamic_mug_taken__alt_dining_table_2",
-  "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug (here the mug is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_pp_spoon_moved__early": {
-  "variant": "x6_pp_spoon_moved__early",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_spoon",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "bowl"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "spoon",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.6,
-       5.75
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
+     "on_top_of",
      "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
+     "plate_counter_a"
     ],
     [
      "hand_empty",
@@ -13371,778 +12649,83 @@
    ]
   },
   "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_x6_pp_spoon_moved__early",
-  "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-  "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+  "oracle_route": "v6_copy_the_setting__plate_bowl_mug_left",
+  "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+  "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T13_breakfast_setup/x6_pp_spoon_moved__table_end": {
-  "variant": "x6_pp_spoon_moved__table_end",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_spoon",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "cup"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "spoon",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.6,
-       5.75
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_x6_pp_spoon_moved__table_end",
-  "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-  "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_pp_spoon_moved__tv_stand": {
-  "variant": "x6_pp_spoon_moved__tv_stand",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_spoon",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "cup"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "spoon",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.0,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_x6_pp_spoon_moved__tv_stand",
-  "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
-  "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_gd_bowl_put_away__in_cabinet": {
-  "variant": "x6_gd_bowl_put_away",
+ "T13_breakfast_setup/copy_the_setting__no_cup": {
+  "variant": "copy_the_setting",
   "category": "task",
   "seeds": [
    11,
-   12,
-   15,
-   17,
-   19
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "bowl",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_bowl_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ]
-   ]
-  },
-  "control": "bowl_on_cabinet",
-  "oracle_route": "v6_x6_gd_bowl_put_away__in_cabinet",
-  "challenge": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-  "rationale": "the bowl's location is a disjunction resolved by inspecting both places (reference route: the worse order); the cup is set as usual and the doors are closed again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_gd_bowl_put_away__in_microwave": {
-  "variant": "x6_gd_bowl_put_away",
-  "category": "task",
-  "seeds": [
-   10,
-   13,
-   14,
-   16,
-   18
-  ],
-  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup. The clean bowls were put away in the low wall cabinet or the microwave; close whatever you open.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "bowl",
-     "kitchen_microwave/inside_floor"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_bowl_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "dining_table_2/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ]
-   ]
-  },
-  "control": "bowl_on_cabinet",
-  "oracle_route": "v6_x6_gd_bowl_put_away__in_microwave",
-  "challenge": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
-  "rationale": "the bowl's location is a disjunction resolved by inspecting both places (reference route: the worse order); the cup is set as usual and the doors are closed again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_gd_two_settings__cabinet6": {
-  "variant": "x6_gd_two_settings",
-  "category": "task",
-  "seeds": [
-   12,
-   14,
-   16,
-   18,
-   19
-  ],
-  "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "bowl_kitchen_cabinet",
-    "cup",
-    "mug",
-    "spoon"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_mug",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "cup"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "mug",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.68,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "bowl",
-     "dining_table_2/top"
-    ],
-    [
-     "on",
-     "bowl_kitchen_cabinet",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "bowl"
-    ],
-    [
-     "upright",
-     "bowl_kitchen_cabinet"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "mug",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
-    ],
-    [
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "cup",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "upright",
-      "cup"
-     ]
-    ],
-    [
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
-    ],
-    [
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "upright",
-      "cup"
-     ]
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_x6_gd_two_settings__cabinet6",
-  "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
-  "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T13_breakfast_setup/x6_gd_two_settings__cabinet4": {
-  "variant": "x6_gd_two_settings",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   13,
    15,
    17
   ],
-  "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
+  "instruction": "Set the other place, at the second spoon, the same way as the place that is already set.",
   "initial_conditions": {
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
     "bowl",
-    "bowl_kitchen_cabinet",
-    "cup",
     "mug",
     "spoon"
    ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
+   "added": [
+    "example_bowl",
+    "example_cup",
+    "example_spoon"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "goal_by_example"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_mug",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "cup"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "mug",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "bowl",
-     "dining_table_2/top"
+     "same_arrangement",
+     [
+      "bowl",
+      "mug"
+     ],
+     [
+      "example_bowl",
+      "example_cup"
+     ],
+     "spoon",
+     "example_spoon",
+     [
+      1.0,
+      0.0
+     ],
+     [
+      -1.0,
+      0.0
+     ],
+     0.07
     ],
     [
-     "on",
-     "bowl_kitchen_cabinet",
-     "dining_table_2/top"
+     "near_start",
+     "example_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "example_cup",
+     0.03
+    ],
+    [
+     "near_start",
+     "example_spoon",
+     0.03
     ],
     [
      "upright",
@@ -14150,140 +12733,455 @@
     ],
     [
      "upright",
-     "bowl_kitchen_cabinet"
+     "mug"
     ],
     [
      "hand_empty",
      "right"
     ]
+   ]
+  },
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_copy_the_setting__no_cup",
+  "challenge": "one place is set across the table; the other has only its spoon; the instruction does not say what to bring",
+  "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/finish_the_table__adult_seat": {
+  "variant": "finish_the_table",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   16,
+   17
+  ],
+  "instruction": "Set the rest of the places at the table.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl",
+    "mug"
    ],
-   "any": [
+   "added": [
+    "bowl_2",
+    "e_mid_bowl",
+    "e_mid_drink",
+    "e_mid_spoon",
+    "e_mid_toy",
+    "e_north_bowl",
+    "e_north_drink",
+    "e_north_spoon",
+    "kid_cup",
+    "mug_2",
+    "w_mid_spoon",
+    "w_north_bowl",
+    "w_north_drink",
+    "w_north_spoon"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup",
+    "spoon",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "rule_induction",
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
     [
+     "near_any",
+     "w_mid_spoon",
      [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
+      "bowl",
+      "bowl_2"
      ],
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "mug",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
+     0.12
     ],
     [
+     "near_any",
+     "w_mid_spoon",
      [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
+      "mug",
+      "mug_2"
      ],
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "cup",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "upright",
-      "cup"
-     ]
+     0.12
     ],
     [
+     "not near_any",
+     "w_mid_spoon",
      [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "cup",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
+      "kid_cup"
      ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "mug",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "cup"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
+     0.25
     ],
     [
-     [
-      "grouped",
-      [
-       "bowl_kitchen_cabinet",
-       "mug",
-       "spoon"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "grouped",
-      [
-       "bowl",
-       "cup",
-       "spoon_target_table"
-      ],
-      "dining_table_2/top",
-      0.5
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "upright",
-      "cup"
-     ]
+     "near_start",
+     "e_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_toy",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_drink",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_x6_gd_two_settings__cabinet4",
-  "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
-  "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
+  "oracle_route": "v6_finish_the_table__adult_seat",
+  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/finish_the_table__kid_seat": {
+  "variant": "finish_the_table",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   19
+  ],
+  "instruction": "Set the rest of the places at the table.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl",
+    "mug"
+   ],
+   "added": [
+    "bowl_2",
+    "e_mid_bowl",
+    "e_mid_drink",
+    "e_mid_spoon",
+    "e_mid_toy",
+    "e_north_bowl",
+    "e_north_drink",
+    "e_north_spoon",
+    "kid_cup",
+    "mug_2",
+    "w_mid_spoon",
+    "w_mid_toy",
+    "w_north_bowl",
+    "w_north_drink",
+    "w_north_spoon"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup",
+    "spoon",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "rule_induction",
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "near_any",
+     "w_mid_spoon",
+     [
+      "bowl",
+      "bowl_2"
+     ],
+     0.12
+    ],
+    [
+     "near_any",
+     "w_mid_spoon",
+     [
+      "kid_cup"
+     ],
+     0.12
+    ],
+    [
+     "not near_any",
+     "w_mid_spoon",
+     [
+      "mug",
+      "mug_2"
+     ],
+     0.25
+    ],
+    [
+     "near_start",
+     "e_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_toy",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_drink",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_finish_the_table__kid_seat",
+  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/finish_the_table__adult_and_kid": {
+  "variant": "finish_the_table",
+  "category": "task",
+  "seeds": [
+   14,
+   15,
+   18
+  ],
+  "instruction": "Set the rest of the places at the table.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl",
+    "mug"
+   ],
+   "added": [
+    "bowl_2",
+    "e_mid_bowl",
+    "e_mid_drink",
+    "e_mid_spoon",
+    "e_mid_toy",
+    "e_north_bowl",
+    "e_north_drink",
+    "e_north_spoon",
+    "kid_cup",
+    "mug_2",
+    "w_mid_spoon",
+    "w_north_bowl",
+    "w_north_drink",
+    "w_north_spoon",
+    "w_south_spoon",
+    "w_south_toy"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup",
+    "spoon",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "rule_induction",
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "near_any",
+     "w_mid_spoon",
+     [
+      "bowl",
+      "bowl_2"
+     ],
+     0.12
+    ],
+    [
+     "near_any",
+     "w_mid_spoon",
+     [
+      "mug",
+      "mug_2"
+     ],
+     0.12
+    ],
+    [
+     "not near_any",
+     "w_mid_spoon",
+     [
+      "kid_cup"
+     ],
+     0.25
+    ],
+    [
+     "near_any",
+     "w_south_spoon",
+     [
+      "bowl",
+      "bowl_2"
+     ],
+     0.12
+    ],
+    [
+     "near_any",
+     "w_south_spoon",
+     [
+      "kid_cup"
+     ],
+     0.12
+    ],
+    [
+     "not near_any",
+     "w_south_spoon",
+     [
+      "mug_2"
+     ],
+     0.25
+    ],
+    [
+     "near_start",
+     "e_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_north_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_drink",
+     0.03
+    ],
+    [
+     "near_start",
+     "e_mid_toy",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_spoon",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "w_north_drink",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_finish_the_table__adult_and_kid",
+  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
+  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T15_book_face_up/book_free": {

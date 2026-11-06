@@ -34,7 +34,7 @@ HERE = Path(__file__).resolve().parent
 NEAR_M = 1.6            # base_near: the robot within reach of the place (the contracts use 1.3 m from the base
                         # centre; the place it navigated to is a point at the support, not the base)
 NEAR_START_M = 0.15
-GEOMETRIC = {"upright", "grouped", "clear_of", "away_from_edge", "front_visible", "squared", "visible_from"}
+GEOMETRIC = {"same_arrangement", "upright", "grouped", "clear_of", "away_from_edge", "front_visible", "squared", "visible_from"}
 
 
 @lru_cache(maxsize=None)

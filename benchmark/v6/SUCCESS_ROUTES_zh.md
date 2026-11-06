@@ -1908,7 +1908,7 @@
 
 ## T13_breakfast_setup
 
-> 摆早餐：餐桌上已经放好勺子了，拿一个碗和一个杯子过来，放在勺子旁边。没有杯子的话用马克杯也行。
+> 快吃早饭了，把餐桌上的位子摆好。
 
 ### dishes_on_tv_stand（对照）
 
@@ -1956,242 +1956,72 @@
 
 1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `navigate(destination=bookcase_2/top)`（换做法） → 10. `look(target=bookcase_2/top)`（换做法） → 11. `pick(object=mug)`（换做法） → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
 
-### bowl_on_cabinet（Task）
+### copy_the_setting（Task）
 
-**情况**：碗不在原处，一开始看不到 → 找碗
+**情况**：“照着桌上摆好的那份，在另一把勺子那里也摆一份”：对面已经摆好一份 → 看懂有哪些东西、各在勺子的什么位置（叠没叠），在另一把勺子那儿照样摆；对面坐的人方向相反，左右要按坐的人来算；家里缺的那种用最接近的代替，放在同一个位置
 
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-
-**参考调用顺序**：
-
-- 摆法 `bowl_on_cabinet`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=cup)` → 5. `pick(object=cup)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 8. `navigate(destination=bowl)` → 9. `search(object=bowl, region=living_room_0_0)` → 10. `navigate(destination=bowl)` → 11. `pick(object=bowl)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])`
-- 摆法 `alt_dining_table_2`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=cup)` → 5. `pick(object=cup)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 8. `navigate(destination=bowl)` → 9. `search(object=bowl, region=dining_room_0_1)` → 10. `navigate(destination=bowl)` → 11. `pick(object=bowl)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])`
-
-### no_cup_bowl_on_cabinet（Task）
-
-**情况**：没杯子（用马克杯），碗也不在原处 → 找碗、换马克杯
+**指令**：照着桌上摆好的那份，在另一把勺子那里也摆一份。
 
 **成功条件**：
 
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
+- 摆法 `bowl_cup`：
+  - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+  - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
+  - `bowl`、`cup` 立着
+  - 手里空着
+- 摆法 `no_cup`：
+  - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+  - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
+  - `bowl`、`mug` 立着
+  - 手里空着
+- 摆法 `plate_bowl_mug_left`：
+  - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 7 cm
+  - `example_plate`、`example_bowl`、`example_mug`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
+  - `bowl`、`mug` 立着
+  - `bowl` 叠在 `plate_counter_a` 上
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `no_cup_bowl_on_cabinet`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `search(object=bowl, region=living_room_0_0)` → 6. `navigate(destination=bowl)` → 7. `pick(object=bowl)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 10. `navigate(destination=cup)` → 11. `navigate(destination=bookcase_2/top)`（换做法） → 12. `look(target=bookcase_2/top)`（换做法） → 13. `pick(object=mug)`（换做法） → 14. `navigate(destination=dining_table_2/top)` → 15. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
-- 摆法 `alt_dining_table_2`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `search(object=bowl, region=dining_room_0_1)` → 6. `navigate(destination=bowl)` → 7. `pick(object=bowl)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 10. `navigate(destination=cup)` → 11. `navigate(destination=bookcase_2/top)`（换做法） → 12. `look(target=bookcase_2/top)`（换做法） → 13. `pick(object=mug)`（换做法） → 14. `navigate(destination=dining_table_2/top)` → 15. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
+- 摆法 `bowl_cup`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=bowl)` → 4. `pick(object=bowl)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 7. `navigate(destination=cup)` → 8. `pick(object=cup)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.1, 7.3])`
+- 摆法 `plate_bowl_mug_left`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=plate_counter_a)` → 4. `pick(object=plate_counter_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=plate_counter_a, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 7. `navigate(destination=bowl)` → 8. `pick(object=bowl)` → 9. `navigate(destination=dining_table_2/top)` → 10. `stack(object=bowl, base=plate_counter_a)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 7.66])`
+- 摆法 `no_cup`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=bowl)` → 4. `pick(object=bowl)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 7. `navigate(destination=mug)` → 8. `pick(object=mug)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 7.3])`
 
-### no_cup_spoon_boxed_in（Action + Task）
+### finish_the_table（Task）
 
-**情况**：没杯子（用马克杯）；勺子被麦片盒和盘子围住，旁边放不下 → 先把勺子挪到有空的地方，再摆碗和马克杯
+**情况**：“把桌上剩下的位子也摆好”：已摆好的三份里大人是碗+马克杯，孩子是碗+塑料杯、旁边放着玩具 → 归纳出两条规律，看空位旁边有没有玩具车判断是谁的位子，按对应规律摆
 
-**指令**：请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。
+**指令**：把桌上剩下的位子也摆好。
 
 **成功条件**：
 
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- `spoon` 在 `dining_table_2/top` 上
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 40 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 40 cm）
+- 摆法 `kid_seat`：
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
+  - `w_mid_spoon` 离这些都超过 25 cm：`mug`、`mug_2`
+  - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `adult_and_kid`：
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+  - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
+  - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+  - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
+  - `w_south_spoon` 离这些都超过 25 cm：`mug_2`
+  - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `adult_seat`：
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+  - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+  - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
+  - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=spoon)` → 4. `pick(object=spoon)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[3.02, 6.61])` → 7. `navigate(destination=tv_stand_2/top)` → 8. `look(target=tv_stand_2/top)` → 9. `navigate(destination=bowl)` → 10. `pick(object=bowl)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.0, 6.44])` → 13. `navigate(destination=bookcase_2/top)`（换做法） → 14. `look(target=bookcase_2/top)`（换做法） → 15. `pick(object=mug)`（换做法） → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.0, 6.78])`
-
-### h_dynamic_mug_taken（Action + Task）
-
-**情况**：勺子被围住要先挪；碗摆好后有人把马克杯拿走 → 已摆好的不动，找马克杯
-
-**指令**：请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- `spoon` 在 `dining_table_2/top` 上
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 40 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 40 cm）
-
-**参考调用顺序**：
-
-- 摆法 `h_dynamic_mug_taken`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=spoon)` → 4. `pick(object=spoon)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[3.02, 6.61])` → 7. `navigate(destination=tv_stand_2/top)` → 8. `look(target=tv_stand_2/top)` → 9. `navigate(destination=bowl)` → 10. `pick(object=bowl)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.0, 6.47])` → 13. `search(object=mug, region=living_room_0_0)`（补救） → 14. `navigate(destination=mug)`（补救） → 15. `pick(object=mug)`（换做法） → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.0, 6.74])`
-- 摆法 `alt_dining_table_2`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=spoon)` → 4. `pick(object=spoon)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[3.02, 6.61])` → 7. `navigate(destination=tv_stand_2/top)` → 8. `look(target=tv_stand_2/top)` → 9. `navigate(destination=bowl)` → 10. `pick(object=bowl)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.0, 6.47])` → 13. `search(object=mug, region=dining_room_0_1)`（补救） → 14. `navigate(destination=mug)`（补救） → 15. `pick(object=mug)`（换做法） → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.0, 6.74])`
-
-### x6_pp_spoon_moved__early（Action）
-
-**情况**：碗刚摆好，孩子就把勺子挪到桌子另一头 → 把勺子挪回来，再摆杯子
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-
-**参考调用顺序**：
-
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `look(target=dining_table_2/top)`（补救） → 9. `navigate(destination=spoon)`（补救） → 10. `pick(object=spoon)`（补救） → 11. `navigate(destination=dining_table_2/top)`（补救） → 12. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[2.98, 7.46])`（补救） → 13. `navigate(destination=cup)` → 14. `pick(object=cup)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
-
-### x6_pp_spoon_moved__table_end（Action）
-
-**情况**：杯子摆好后，勺子被挪到桌子另一头 → 把勺子拿回来
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-
-**参考调用顺序**：
-
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `pick(object=cup)` → 10. `navigate(destination=dining_table_2/top)` → 11. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 12. `look(target=dining_table_2/top)`（补救） → 13. `navigate(destination=spoon)`（补救） → 14. `pick(object=spoon)`（补救） → 15. `navigate(destination=dining_table_2/top)`（补救） → 16. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[2.98, 7.46])`（补救）
-
-### x6_pp_spoon_moved__tv_stand（Task）
-
-**情况**：杯子摆好后，勺子被拿到电视柜 → 找勺子拿回来
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-
-**参考调用顺序**：
-
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `pick(object=cup)` → 10. `navigate(destination=dining_table_2/top)` → 11. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 12. `look(target=dining_table_2/top)`（补救） → 13. `search(object=spoon, region=living_room_0_0)`（补救） → 14. `navigate(destination=spoon)`（补救） → 15. `pick(object=spoon)`（补救） → 16. `navigate(destination=dining_table_2/top)`（补救） → 17. `place(object=spoon, receptacle=dining_table_2/top, hint_xy=[2.98, 7.46])`（补救）
-
-### x6_gd_bowl_put_away（Task）
-
-**情况**：外面没有碗，干净的碗收在靠墙柜或微波炉里 → 逐个打开找
-
-**指令**：摆好餐桌准备吃早饭。勺子已经在桌上了，拿一个碗和一个杯子放在它旁边；没有杯子的话马克杯也行。干净的碗收在靠墙矮柜或者微波炉里，打开的门都要关好。
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl` 立着
-- 手里空着
-- `kitchen_cabinet_6` 关着
-- `kitchen_microwave` 关着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup` 在 `dining_table_2/top` 上
-    - `cup` 立着
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-  - 第 2 组：
-    - `mug` 在 `dining_table_2/top` 上
-    - `mug` 立着
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-
-**参考调用顺序**：
-
-- 摆法 `in_cabinet`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=kitchen_microwave)` → 5. `open(articulated=kitchen_microwave)` → 6. `look(target=kitchen_microwave/inside_floor)` → 7. `close(articulated=kitchen_microwave)` → 8. `navigate(destination=kitchen_cabinet_6)` → 9. `open(articulated=kitchen_cabinet_6)` → 10. `bend()` → 11. `explore_furniture(furniture=kitchen_cabinet_6)` → 12. `straighten()` → 13. `navigate(destination=bowl)` → 14. `pick(object=bowl)` → 15. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 16. `close(articulated=kitchen_cabinet_6)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 19. `navigate(destination=cup)` → 20. `pick(object=cup)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
-- 摆法 `in_microwave`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=kitchen_cabinet_6)` → 5. `open(articulated=kitchen_cabinet_6)` → 6. `bend()` → 7. `explore_furniture(furniture=kitchen_cabinet_6)` → 8. `straighten()` → 9. `close(articulated=kitchen_cabinet_6)` → 10. `navigate(destination=kitchen_microwave)` → 11. `open(articulated=kitchen_microwave)` → 12. `look(target=kitchen_microwave/inside_floor)` → 13. `navigate(destination=bowl)` → 14. `pick(object=bowl)` → 15. `retreat(obstacle=kitchen_microwave, distance_m=0.3)` → 16. `close(articulated=kitchen_microwave)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 19. `navigate(destination=cup)` → 20. `pick(object=cup)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
-
-### x6_gd_two_settings（Task）
-
-**情况**：摆两份：电视柜上有两个碗、一个杯子和马克杯；第一份摆好后有人把马克杯拿走 → 找马克杯摆第二份
-
-**指令**：在餐桌摆两个人的早餐位：每把勺子旁边放一个碗和一个杯子（哪个位置没杯子，就用马克杯）。
-
-**成功条件**：
-
-- `bowl` 在 `dining_table_2/top` 上
-- `bowl_kitchen_cabinet` 在 `dining_table_2/top` 上
-- `bowl`、`bowl_kitchen_cabinet` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - bowl_kitchen_cabinet、mug、spoon_target_table 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - `cup` 立着
-    - `mug` 立着
-  - 第 2 组：
-    - bowl、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - bowl_kitchen_cabinet、cup、spoon_target_table 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - `mug` 立着
-    - `cup` 立着
-  - 第 3 组：
-    - bowl_kitchen_cabinet、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - bowl、mug、spoon_target_table 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - `cup` 立着
-    - `mug` 立着
-  - 第 4 组：
-    - bowl_kitchen_cabinet、mug、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - bowl、cup、spoon_target_table 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
-    - `mug` 立着
-    - `cup` 立着
-
-**参考调用顺序**：
-
-- 摆法 `cabinet6`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `pick(object=cup)` → 10. `navigate(destination=dining_table_2/top)` → 11. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 12. `navigate(destination=bowl_kitchen_cabinet)`（补救） → 13. `pick(object=bowl_kitchen_cabinet)`（补救） → 14. `navigate(destination=dining_table_2/top)`（补救） → 15. `place(object=bowl_kitchen_cabinet, receptacle=dining_table_2/top, hint_xy=[3.7, 7.12])`（补救） → 16. `search(object=mug, region=living_room_0_0)`（补救） → 17. `navigate(destination=mug)`（补救） → 18. `pick(object=mug)`（补救） → 19. `navigate(destination=dining_table_2/top)`（补救） → 20. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.62, 7.62])`（补救）
-- 摆法 `cabinet4`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `pick(object=cup)` → 10. `navigate(destination=dining_table_2/top)` → 11. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])` → 12. `navigate(destination=bowl_kitchen_cabinet)`（补救） → 13. `pick(object=bowl_kitchen_cabinet)`（补救） → 14. `navigate(destination=dining_table_2/top)`（补救） → 15. `place(object=bowl_kitchen_cabinet, receptacle=dining_table_2/top, hint_xy=[3.7, 7.12])`（补救） → 16. `search(object=mug)`（补救） → 17. `navigate(destination=mug)`（补救） → 18. `pick(object=mug)`（补救） → 19. `navigate(destination=dining_table_2/top)`（补救） → 20. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.62, 7.62])`（补救）
+- 摆法 `adult_seat`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=bowl)` → 3. `pick(object=bowl)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])`
+- 摆法 `kid_seat`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=bowl)` → 3. `pick(object=bowl)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 6. `navigate(destination=kid_cup)` → 7. `pick(object=kid_cup)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])`
+- 摆法 `adult_and_kid`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=bowl)` → 3. `pick(object=bowl)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])` → 10. `navigate(destination=bowl_2)` → 11. `pick(object=bowl_2)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=bowl_2, receptacle=dining_table_2/top, hint_xy=[2.93, 6.04])` → 14. `navigate(destination=kid_cup)` → 15. `pick(object=kid_cup)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[3.1, 5.85])`
 
 ---
 
