@@ -1699,49 +1699,67 @@
 
 1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `identify(object=bowl_kitchen_cabinet)`（补救） → 8. `navigate(destination=desk_1/top)`（换做法） → 9. `look(target=desk_1/top)`（换做法） → 10. `navigate(destination=serving_tray)`（换做法） → 11. `place(object=apple, receptacle=serving_tray)`（换做法）
 
-### h_dynamic_basket_taken（Task）
+### leave_one_for_kid（Task）
 
-**情况**：拿苹果时有人把果篮拿走 → 放托盘
+**情况**：指令只说“桌上的水果收起来，给书房写作业的孩子留一个当点心，孩子不爱吃橙子” → 拆成两个子目标：一个不是橙子的水果放到书房书桌，其余放进卧室书架上的果篮（指令没说果篮在哪）
 
-**成功条件**：
-
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `apple` 在 `fruit_basket` 里
-  - 第 2 组：
-    - `apple` 在 `serving_tray` 里
-
-**参考调用顺序**：
-
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=desk_1/top)`（换做法） → 8. `look(target=desk_1/top)`（换做法） → 9. `navigate(destination=serving_tray)`（换做法） → 10. `place(object=apple, receptacle=serving_tray)`（换做法）
-
-### x6_gd_fruits_event（Task）
-
-**情况**：两个水果、没有果篮（用托盘）；苹果放好后孩子把橙子拿到电视柜 → 找回橙子放进托盘
-
-**指令**：午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。
+**指令**：午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。
 
 **成功条件**：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `apple` 在 `fruit_basket` 里
-    - `orange_2` 在 `fruit_basket` 里
-  - 第 2 组：
-    - `apple` 在 `fruit_basket` 里
-    - `orange_2` 在 `serving_tray` 里
-  - 第 3 组：
-    - `apple` 在 `serving_tray` 里
-    - `orange_2` 在 `fruit_basket` 里
-  - 第 4 组：
-    - `apple` 在 `serving_tray` 里
-    - `orange_2` 在 `serving_tray` 里
+- 摆法 `all_three`：
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `apple` 在 `desk_1/top` 上
+      - `lunch_orange` 在 `fruit_basket` 里
+      - `lunch_banana` 在 `fruit_basket` 里
+    - 第 2 组：
+      - `lunch_banana` 在 `desk_1/top` 上
+      - `apple` 在 `fruit_basket` 里
+      - `lunch_orange` 在 `fruit_basket` 里
+- 摆法 `apple_orange`：
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `apple` 在 `desk_1/top` 上
+      - `lunch_orange` 在 `fruit_basket` 里
+- 摆法 `orange_banana`：
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `lunch_banana` 在 `desk_1/top` 上
+      - `lunch_orange` 在 `fruit_basket` 里
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=desk_1/top)`（补救） → 8. `look(target=desk_1/top)`（补救） → 9. `navigate(destination=serving_tray)`（补救） → 10. `place(object=apple, receptacle=serving_tray)`（补救） → 11. `search(object=orange_2, region=living_room_0_0)`（补救） → 12. `navigate(destination=orange_2)`（补救） → 13. `pick(object=orange_2)`（补救） → 14. `navigate(destination=serving_tray)`（补救） → 15. `place(object=orange_2, receptacle=serving_tray)`（补救）
+- 摆法 `apple_orange`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `orange_banana`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=lunch_banana)` → 4. `pick(object=lunch_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=lunch_banana, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `all_three`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)` → 11. `navigate(destination=lunch_banana)` → 12. `pick(object=lunch_banana)` → 13. `navigate(destination=bookcase_2/top)` → 14. `place(object=lunch_banana, receptacle=fruit_basket)`
+
+### fruit_plate_for_guests（Task）
+
+**情况**：指令只说“客人在客厅看电视，用托盘端点水果过去”，没说托盘在哪 → 找到托盘，先把空托盘放到电视柜，再把苹果和橙子一个个放上去（一只手端装满的托盘容易掉，子目标顺序决定能不能做成）
+
+**指令**：客人在客厅看电视，用托盘给他们端点水果过去。
+
+**成功条件**：
+
+- `apple` 在 `fruit_tray` 里
+- `lunch_orange` 在 `fruit_tray` 里
+- `apple` 不在地上
+- `lunch_orange` 不在地上
+- 手里空着
+- 满足下面任意一组：
+  - 第 1 组：
+    - `fruit_tray` 在 `tv_stand_2/top` 上
+  - 第 2 组：
+    - `fruit_tray` 在 `tv_stand_1/top` 上
+
+**参考调用顺序**：
+
+- 摆法 `tray_in_study`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_tray, region=living_room_0_1)` → 3. `navigate(destination=fruit_tray)` → 4. `pick(object=fruit_tray)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 7. `navigate(destination=apple)` → 8. `pick(object=apple)` → 9. `navigate(destination=fruit_tray)` → 10. `place(object=apple, receptacle=fruit_tray)` → 11. `navigate(destination=lunch_orange)` → 12. `pick(object=lunch_orange)` → 13. `navigate(destination=fruit_tray)` → 14. `place(object=lunch_orange, receptacle=fruit_tray)`
+- 摆法 `tray_by_table`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_tray, region=dining_room_0_1)` → 3. `navigate(destination=fruit_tray)` → 4. `pick(object=fruit_tray)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 7. `navigate(destination=apple)` → 8. `pick(object=apple)` → 9. `navigate(destination=fruit_tray)` → 10. `place(object=apple, receptacle=fruit_tray)` → 11. `navigate(destination=lunch_orange)` → 12. `pick(object=lunch_orange)` → 13. `navigate(destination=fruit_tray)` → 14. `place(object=lunch_orange, receptacle=fruit_tray)`
 
 ---
 

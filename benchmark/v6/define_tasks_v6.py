@@ -1610,30 +1610,70 @@ def T20(t):
 
 
 def T11(t):
-    X, BASKET = "apple", "fruit_basket"
-    O = "orange_2"
-    fruit_goal = {"all": [["hand_empty", "right"]],
-                  "any": [[["inside", X, a], ["inside", O, b]] for a in (BASKET, "serving_tray") for b in (BASKET, "serving_tray")]}
-    two = RT(t, "alternative_tray")
-    k = next(i for i, st in enumerate(two) if st.get("expect") == "fail")
-    two = [st for st in two[:k]] + recs(nav("desk_1/top"), look("desk_1/top"), nav("serving_tray"), place(X, "serving_tray"),
-                                        S("search", object=O, region="living_room_0_0"), nav(O), pick(O),
-                                        nav("serving_tray"), place(O, "serving_tray"))
+    X, BASKET, DINING, DESK = "apple", "fruit_basket", "dining_table_2/top", "desk_1/top"
+    OR, BA, TRAY = "lunch_orange", "lunch_banana", "fruit_tray"
+    fruit_at = {OR: {"asset": "orange", "support": DINING, "xy": [3.63, 5.66], "yaw_deg": 0.0},
+                BA: {"asset": "banana", "support": DINING, "xy": [3.30, 5.62], "yaw_deg": 80.0}}
+    find_basket = S("search", object=BASKET, region="bedroom_0_1")
+
+    def to_kid(x):
+        return [nav(x), pick(x), nav(DESK), place(x, DESK, [-0.90, -6.00])]
+
+    def to_basket(x):
+        return [nav(x), pick(x), nav("bookcase_2/top"), place(x, BASKET)]
+    # leave_one_for_kid: the fruit on the table goes away (the basket), one stays for the kid as a snack, on the
+    # study desk; the kid does not like oranges, so the snack is the apple or the banana
+    kid_cases = {}
+    for c, fruits, kid in (("apple_orange", (X, OR), X), ("orange_banana", (OR, BA), BA), ("all_three", (X, OR, BA), X)):
+        ok = [f for f in fruits if f != OR]
+        kid_cases[c] = dict(
+            add={f: fruit_at[f] for f in fruits if f != X},
+            remove=[] if X in fruits else [X],
+            goal={"all": [["hand_empty", "right"]],
+                  "any": [[["on", k, DESK]] + [["inside", f, BASKET] for f in fruits if f != k] for k in ok]},
+            watch=[*fruits, BASKET],
+            route=[look(DINING), find_basket] + to_kid(kid) + [st for f in fruits if f != kid for st in to_basket(f)])
+    # fruit_plate_for_guests: the tray has to end on the TV stand with the fruit on it; carried empty first and
+    # filled there, no loaded tray is ever lifted
+    plate_cases = {}
+    for c, tray_at, region in (("tray_in_study", {"support": DESK, "xy": [-0.90, -6.00], "yaw_deg": 0.0}, "living_room_0_1"),
+                               ("tray_by_table", {"support": "cell_shelf_4/top", "xy": [4.30, 4.42], "yaw_deg": 0.0},
+                                "dining_room_0_1")):
+        plate_cases[c] = dict(
+            add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", **tray_at}},
+            route=[look(DINING), S("search", object=TRAY, region=region), nav(TRAY), pick(TRAY),
+                   nav("tv_stand_2/top"), place(TRAY, "tv_stand_2/top", [7.50, 0.36])]
+            + [st for f in (X, OR) for st in (nav(f), pick(f), nav(TRAY), place(f, TRAY))])
     return {
-        "x6_gd_fruits_event": dict(
-            base="basket_missing", control="basket_missing",
-            add={O: {"asset": "orange", "support": "dining_table_2/top", "xy": [3.63, 5.66], "yaw_deg": 0.0}},
-            goal=fruit_goal, watch=[X, O, "serving_tray"],
-            instruction="Lunch is over and the apple and the orange are still on the dining table. Put them into the "
-                        "fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray "
-                        "on the study desk will do.",
-            instruction_zh="午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。",
-            challenge="two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes "
-                      "the orange to the TV stand",
-            rationale="the goal decomposes into one placement per fruit; the event moves the second resource after the "
-                      "first subgoal holds: keep the apple, find the orange",
-            cases={"": dict(failures=[f_move("resource", O, P("tv_stand_2/top", 7.2, 0.36), ("place", {"object": X}),
-                                             fid="resource_orange")], route=two)}),
+        "leave_one_for_kid": dict(
+            base="fruits_on_table", control="fruits_on_table",
+            conditions=["storage_place", "preference_allocation", "multi_object_goal"],
+            instruction="Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework "
+                        "in the study as a snack. The kid doesn't like oranges.",
+            instruction_zh="午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。",
+            factor="which fruits are on the table (seed: apple and orange, orange and banana, or all three)",
+            challenge="two or three fruits on the dining table; the instruction names neither the basket nor the "
+                      "desk, and which fruit is the snack follows from the kid's dislike",
+            rationale="split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is "
+                      "kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the "
+                      "snack, with apple and banana either",
+            cases=kid_cases),
+        "fruit_plate_for_guests": dict(
+            base="fruits_on_table", control="fruits_on_table", conditions=["subgoal_order", "not_in_view"],
+            remove=["serving_tray"],
+            instruction="The guests are watching TV in the living room. Bring them some fruit on a tray.",
+            instruction_zh="客人在客厅看电视，用托盘给他们端点水果过去。",
+            goal={"all": [["inside", X, TRAY], ["inside", OR, TRAY], ["not on_floor", X], ["not on_floor", OR],
+                          ["hand_empty", "right"]],
+                  "any": [[["on", TRAY, "tv_stand_2/top"]], [["on", TRAY, "tv_stand_1/top"]]]},
+            watch=[X, OR, TRAY],
+            factor="where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+            challenge="the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in "
+                      "front of the guests with the fruit on it",
+            rationale="order the subgoals so that each step is feasible: one hand cannot carry a loaded tray "
+                      "safely, so the empty tray goes to the TV stand first and the fruit is put on it there "
+                      "(filling it beside the fruit and then lifting it risks dropping the fruit)",
+            cases=plate_cases),
     }
 
 
@@ -1847,6 +1887,7 @@ REPLACED = {
     ("T10_trash_the_can", "h_task_can_in_microwave"): "removed: opening the microwave first is a local precondition "
                                                       "(Action); x6_gd_can_put_away is its Task form",
     ("T10_trash_the_can", "h_dynamic_can_moved"): "removed: no dynamic events in T10 (someone takes the can)",
+    ("T11_collect_fruits", "h_dynamic_basket_taken"): "removed: no dynamic events in T11 (someone takes the basket)",
     ("T10_trash_the_can", "far_can_far"): "removed: can_in_dining_room is the same search",
     ("T09_tomato_soup", "lid_on"): "removed: taking the lid off first is a local precondition (Action); it lives on "
                                    "inside lid_on_spoon_away (Action + Task)",
@@ -1895,6 +1936,12 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "preference_allocation": {"type": "goal_inference", "decision": "decompose",
+                              "meaning": "one of the items is set aside for a person; which one follows from what "
+                                         "the instruction says about them (the kid does not like oranges)"},
+    "subgoal_order": {"type": "goal_structure", "decision": "decompose",
+                      "meaning": "the subgoals must be ordered so each step is feasible (the empty tray to its "
+                                 "place first, then the fruit onto it; never lift a loaded tray)"},
     "closed_fridge": {"type": "access", "decision": "precondition",
                       "meaning": "the item is in the closed fridge next to the work spot: open it, take the item, "
                                  "close it again (the Action-Level part of a Task-Level design)"},

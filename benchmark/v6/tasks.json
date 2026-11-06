@@ -131,6 +131,16 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "preference_allocation": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "one of the items is set aside for a person; which one follows from what the instruction says about them (the kid does not like oranges)"
+  },
+  "subgoal_order": {
+   "type": "goal_structure",
+   "decision": "decompose",
+   "meaning": "the subgoals must be ordered so each step is feasible (the empty tray to its place first, then the fruit onto it; never lift a loaded tray)"
+  },
   "closed_fridge": {
    "type": "access",
    "decision": "precondition",
@@ -38843,7 +38853,7 @@
       }
      }
     },
-    "h_dynamic_basket_taken": {
+    "leave_one_for_kid__apple_orange": {
      "move": {
       "apple": {
        "support": "dining_table_2/top",
@@ -38870,41 +38880,63 @@
        "yaw_deg": 179.0
       }
      },
-     "failures": [
-      {
-       "id": "resource_fruit_basket",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "pick",
-        "args": {
-         "object": "apple"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "fruit_basket",
-        "to": {
-         "support": "kitchen_cabinet_4/top",
-         "xy": [
-          1.4,
-          0.42
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
+     "conditions": [
+      "storage_place",
+      "preference_allocation",
+      "multi_object_goal"
      ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "while the robot picks the apple, someone takes the basket away: the serving tray on the study desk is the stated substitute",
-     "v5": {
-      "tier": "hard",
-      "challenge": "while the robot picks the apple, someone takes the basket away: the serving tray on the study desk is the stated substitute",
-      "derived_from": "fruits_on_table",
-      "hard_category": "dynamic"
+     "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
+     "instruction_zh": "午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。",
+     "remove": [],
+     "add": {
+      "lunch_orange": {
+       "asset": "orange",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.63,
+        5.66
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "apple",
+         "desk_1/top"
+        ],
+        [
+         "inside",
+         "lunch_orange",
+         "fruit_basket"
+        ]
+       ]
+      ]
+     },
+     "watch": [
+      "apple",
+      "lunch_orange",
+      "fruit_basket"
+     ],
+     "since": "v6",
+     "note": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+     "v6": {
+      "family": "leave_one_for_kid",
+      "case": "apple_orange",
+      "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+      "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+      "control": "fruits_on_table",
+      "contrast": null,
+      "factor": "which fruits are on the table (seed: apple and orange, orange and banana, or all three)",
+      "derived_from": "fruits_on_table"
      },
      "layout": {
       "clusters": [
@@ -38942,6 +38974,26 @@
         "dy": [
          -0.13,
          0.09
+        ]
+       },
+       {
+        "names": [
+         "lunch_orange"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.596,
+         5.6279,
+         3.664,
+         5.6921
+        ],
+        "dx": [
+         -0.79,
+         0.16
+        ],
+        "dy": [
+         -0.12,
+         0.01
         ]
        },
        {
@@ -38985,24 +39037,34 @@
          3.5475,
          7.2247
         ]
+       ],
+       "desk_1/top": [
+        [
+         -0.931,
+         -6.032,
+         -0.869,
+         -5.968
+        ]
        ]
       },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
-       "look": []
+       "look": [
+        "dining_table_2/top"
+       ]
       }
      }
     },
-    "x6_gd_fruits_event": {
+    "leave_one_for_kid__orange_banana": {
      "move": {
-      "apple": {
-       "support": "dining_table_2/top",
+      "fruit_basket": {
+       "support": "bookcase_2/top",
        "xy": [
-        2.9051,
-        5.6146
+        0.9253,
+        -0.4269
        ],
-       "yaw_deg": -82.88
+       "yaw_deg": -169.8
       },
       "serving_tray": {
        "support": "desk_1/top",
@@ -39013,14 +39075,18 @@
        "yaw_deg": 179.0
       }
      },
-     "remove": [
-      "fruit_basket"
-     ],
      "conditions": [
-      "container_absent"
+      "storage_place",
+      "preference_allocation",
+      "multi_object_goal"
+     ],
+     "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
+     "instruction_zh": "午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。",
+     "remove": [
+      "apple"
      ],
      "add": {
-      "orange_2": {
+      "lunch_orange": {
        "asset": "orange",
        "support": "dining_table_2/top",
        "xy": [
@@ -39028,6 +39094,15 @@
         5.66
        ],
        "yaw_deg": 0.0
+      },
+      "lunch_banana": {
+       "asset": "banana",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        5.62
+       ],
+       "yaw_deg": 80.0
       }
      },
      "goal": {
@@ -39040,102 +39115,53 @@
       "any": [
        [
         [
-         "inside",
-         "apple",
-         "fruit_basket"
+         "on",
+         "lunch_banana",
+         "desk_1/top"
         ],
         [
          "inside",
-         "orange_2",
+         "lunch_orange",
          "fruit_basket"
-        ]
-       ],
-       [
-        [
-         "inside",
-         "apple",
-         "fruit_basket"
-        ],
-        [
-         "inside",
-         "orange_2",
-         "serving_tray"
-        ]
-       ],
-       [
-        [
-         "inside",
-         "apple",
-         "serving_tray"
-        ],
-        [
-         "inside",
-         "orange_2",
-         "fruit_basket"
-        ]
-       ],
-       [
-        [
-         "inside",
-         "apple",
-         "serving_tray"
-        ],
-        [
-         "inside",
-         "orange_2",
-         "serving_tray"
         ]
        ]
       ]
      },
-     "instruction": "Lunch is over and the apple and the orange are still on the dining table. Put them into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
-     "instruction_zh": "午饭吃完了，苹果和橙子还在餐桌上。把它们放进卧室矮书架上的水果篮里；要是篮子不在，书房书桌上的托盘也行。",
      "watch": [
-      "apple",
-      "orange_2",
-      "serving_tray"
-     ],
-     "failures": [
-      {
-       "id": "resource_orange",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "apple"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "orange_2",
-        "to": {
-         "support": "tv_stand_2/top",
-         "xy": [
-          7.2,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
+      "lunch_orange",
+      "lunch_banana",
+      "fruit_basket"
      ],
      "since": "v6",
-     "note": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
+     "note": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
      "v6": {
-      "family": "x6_gd_fruits_event",
-      "case": null,
-      "challenge": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
-      "rationale": "the goal decomposes into one placement per fruit; the event moves the second resource after the first subgoal holds: keep the apple, find the orange",
-      "control": "basket_missing",
+      "family": "leave_one_for_kid",
+      "case": "orange_banana",
+      "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+      "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+      "control": "fruits_on_table",
       "contrast": null,
-      "factor": null,
-      "derived_from": "basket_missing"
+      "factor": "which fruits are on the table (seed: apple and orange, orange and banana, or all three)",
+      "derived_from": "fruits_on_table"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "fruit_basket"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7597,
+         -0.5769,
+         1.0909,
+         -0.2769
+        ],
+        "dx": [
+         -0.04,
+         0.19
+        ]
+       },
        {
         "names": [
          "serving_tray"
@@ -39158,7 +39184,441 @@
        },
        {
         "names": [
-         "orange_2"
+         "lunch_banana",
+         "lunch_orange"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.2416,
+         5.5179,
+         3.664,
+         5.7221
+        ],
+        "dx": [
+         -0.44,
+         0.16
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ],
+       "desk_1/top": [
+        [
+         -0.9962,
+         -6.0423,
+         -0.8038,
+         -5.9577
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "leave_one_for_kid__all_three": {
+     "move": {
+      "apple": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9051,
+        5.6146
+       ],
+       "yaw_deg": -82.88
+      },
+      "fruit_basket": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.9253,
+        -0.4269
+       ],
+       "yaw_deg": -169.8
+      },
+      "serving_tray": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.2783,
+        -5.9936
+       ],
+       "yaw_deg": 179.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "preference_allocation",
+      "multi_object_goal"
+     ],
+     "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
+     "instruction_zh": "午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。",
+     "remove": [],
+     "add": {
+      "lunch_orange": {
+       "asset": "orange",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.63,
+        5.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "lunch_banana": {
+       "asset": "banana",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        5.62
+       ],
+       "yaw_deg": 80.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "apple",
+         "desk_1/top"
+        ],
+        [
+         "inside",
+         "lunch_orange",
+         "fruit_basket"
+        ],
+        [
+         "inside",
+         "lunch_banana",
+         "fruit_basket"
+        ]
+       ],
+       [
+        [
+         "on",
+         "lunch_banana",
+         "desk_1/top"
+        ],
+        [
+         "inside",
+         "apple",
+         "fruit_basket"
+        ],
+        [
+         "inside",
+         "lunch_orange",
+         "fruit_basket"
+        ]
+       ]
+      ]
+     },
+     "watch": [
+      "apple",
+      "lunch_orange",
+      "lunch_banana",
+      "fruit_basket"
+     ],
+     "since": "v6",
+     "note": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+     "v6": {
+      "family": "leave_one_for_kid",
+      "case": "all_three",
+      "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+      "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+      "control": "fruits_on_table",
+      "contrast": null,
+      "factor": "which fruits are on the table (seed: apple and orange, orange and banana, or all three)",
+      "derived_from": "fruits_on_table"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "fruit_basket"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7597,
+         -0.5769,
+         1.0909,
+         -0.2769
+        ],
+        "dx": [
+         -0.04,
+         0.19
+        ]
+       },
+       {
+        "names": [
+         "serving_tray"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.4914,
+         -6.1764,
+         -0.0652,
+         -5.8108
+        ],
+        "dx": [
+         -0.1,
+         0.03
+        ],
+        "dy": [
+         -0.13,
+         0.09
+        ]
+       },
+       {
+        "names": [
+         "lunch_banana",
+         "lunch_orange"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.2416,
+         5.5179,
+         3.664,
+         5.7221
+        ],
+        "dx": [
+         -0.44,
+         0.16
+        ]
+       },
+       {
+        "names": [
+         "apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.8695,
+         5.5799,
+         2.9407,
+         5.6493
+        ],
+        "dx": [
+         -0.07,
+         0.06
+        ],
+        "dy": [
+         -0.07,
+         2.29
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ],
+       "desk_1/top": [
+        [
+         -0.931,
+         -6.032,
+         -0.869,
+         -5.968
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "fruit_plate_for_guests__tray_in_study": {
+     "move": {
+      "apple": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9051,
+        5.6146
+       ],
+       "yaw_deg": -82.88
+      },
+      "fruit_basket": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.9253,
+        -0.4269
+       ],
+       "yaw_deg": -169.8
+      }
+     },
+     "remove": [
+      "serving_tray"
+     ],
+     "conditions": [
+      "subgoal_order",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "apple",
+        "fruit_tray"
+       ],
+       [
+        "inside",
+        "lunch_orange",
+        "fruit_tray"
+       ],
+       [
+        "not on_floor",
+        "apple"
+       ],
+       [
+        "not on_floor",
+        "lunch_orange"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "fruit_tray",
+         "tv_stand_2/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "fruit_tray",
+         "tv_stand_1/top"
+        ]
+       ]
+      ]
+     },
+     "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+     "instruction_zh": "客人在客厅看电视，用托盘给他们端点水果过去。",
+     "watch": [
+      "apple",
+      "lunch_orange",
+      "fruit_tray"
+     ],
+     "add": {
+      "lunch_orange": {
+       "asset": "orange",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.63,
+        5.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "fruit_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "desk_1/top",
+       "xy": [
+        -0.9,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+     "v6": {
+      "family": "fruit_plate_for_guests",
+      "case": "tray_in_study",
+      "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+      "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
+      "control": "fruits_on_table",
+      "contrast": null,
+      "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+      "derived_from": "fruits_on_table"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "fruit_basket"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7597,
+         -0.5769,
+         1.0909,
+         -0.2769
+        ],
+        "dx": [
+         -0.04,
+         0.19
+        ]
+       },
+       {
+        "names": [
+         "fruit_tray"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.035,
+         -6.1,
+         -0.765,
+         -5.9
+        ],
+        "dx": [
+         -0.36,
+         0.73
+        ],
+        "dy": [
+         0.0,
+         0.18
+        ]
+       },
+       {
+        "names": [
+         "lunch_orange"
         ],
         "support": "dining_table_2/top",
         "box": [
@@ -39221,8 +39681,231 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
-       "look": []
+       "hide": [
+        "fruit_tray"
+       ],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "fruit_plate_for_guests__tray_by_table": {
+     "move": {
+      "apple": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9051,
+        5.6146
+       ],
+       "yaw_deg": -82.88
+      },
+      "fruit_basket": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.9253,
+        -0.4269
+       ],
+       "yaw_deg": -169.8
+      }
+     },
+     "remove": [
+      "serving_tray"
+     ],
+     "conditions": [
+      "subgoal_order",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "apple",
+        "fruit_tray"
+       ],
+       [
+        "inside",
+        "lunch_orange",
+        "fruit_tray"
+       ],
+       [
+        "not on_floor",
+        "apple"
+       ],
+       [
+        "not on_floor",
+        "lunch_orange"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "fruit_tray",
+         "tv_stand_2/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "fruit_tray",
+         "tv_stand_1/top"
+        ]
+       ]
+      ]
+     },
+     "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+     "instruction_zh": "客人在客厅看电视，用托盘给他们端点水果过去。",
+     "watch": [
+      "apple",
+      "lunch_orange",
+      "fruit_tray"
+     ],
+     "add": {
+      "lunch_orange": {
+       "asset": "orange",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.63,
+        5.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "fruit_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "cell_shelf_4/top",
+       "xy": [
+        4.3,
+        4.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+     "v6": {
+      "family": "fruit_plate_for_guests",
+      "case": "tray_by_table",
+      "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+      "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
+      "control": "fruits_on_table",
+      "contrast": null,
+      "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+      "derived_from": "fruits_on_table"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "fruit_basket"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7597,
+         -0.5769,
+         1.0909,
+         -0.2769
+        ],
+        "dx": [
+         -0.04,
+         0.19
+        ]
+       },
+       {
+        "names": [
+         "fruit_tray"
+        ],
+        "support": "cell_shelf_4/top",
+        "box": [
+         4.165,
+         4.32,
+         4.435,
+         4.52
+        ],
+        "dx": [
+         -0.75,
+         0.76
+        ],
+        "dy": [
+         -0.04,
+         0.09
+        ]
+       },
+       {
+        "names": [
+         "lunch_orange"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.596,
+         5.6279,
+         3.664,
+         5.6921
+        ],
+        "dx": [
+         -0.79,
+         0.16
+        ],
+        "dy": [
+         -0.12,
+         0.01
+        ]
+       },
+       {
+        "names": [
+         "apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.8695,
+         5.5799,
+         2.9407,
+         5.6493
+        ],
+        "dx": [
+         -0.07,
+         0.06
+        ],
+        "dy": [
+         -0.07,
+         2.29
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "fruit_tray"
+       ],
+       "look": [
+        "dining_table_2/top"
+       ]
       }
      }
     }
@@ -39261,8 +39944,11 @@
     "fruits_on_table": "nominal",
     "basket_missing": "alternative_tray",
     "basket_gone_bowl_there": "v5x_basket_gone_bowl_there",
-    "h_dynamic_basket_taken": "v5_h_dynamic_basket_taken",
-    "x6_gd_fruits_event": "v6_x6_gd_fruits_event"
+    "leave_one_for_kid__apple_orange": "v6_leave_one_for_kid__apple_orange",
+    "leave_one_for_kid__orange_banana": "v6_leave_one_for_kid__orange_banana",
+    "leave_one_for_kid__all_three": "v6_leave_one_for_kid__all_three",
+    "fruit_plate_for_guests__tray_in_study": "v6_fruit_plate_for_guests__tray_in_study",
+    "fruit_plate_for_guests__tray_by_table": "v6_fruit_plate_for_guests__tray_by_table"
    },
    "routes": {
     "nominal": {
@@ -39401,77 +40087,6 @@
      ],
      "since": "v3"
     },
-    "v5_h_dynamic_basket_taken": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "apple"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "apple"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "desk_1/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "serving_tray"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "apple",
-        "receptacle": "serving_tray"
-       },
-       "role": "alternative"
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_basket_taken"
-    },
     "v5x_basket_gone_bowl_there": {
      "kind": "v5_skill_coverage",
      "variants": [
@@ -39555,18 +40170,19 @@
      "since": "v4",
      "edited_from": "hard_tray_not_bowl"
     },
-    "v6_x6_gd_fruits_event": {
+    "v6_leave_one_for_kid__apple_orange": {
      "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
       {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_basket",
+        "region": "bedroom_0_1"
        }
       },
       {
@@ -39584,84 +40200,415 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.9,
+         -6.0
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "lunch_orange"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_orange"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bookcase_2/top"
        }
       },
       {
+       "skill": "place",
+       "args": {
+        "object": "lunch_orange",
+        "receptacle": "fruit_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "leave_one_for_kid__apple_orange"
+    },
+    "v6_leave_one_for_kid__orange_banana": {
+     "steps": [
+      {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/top"
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_basket",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "lunch_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_banana"
        }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "desk_1/top"
-       },
-       "role": "recover"
+       }
       },
       {
-       "skill": "look",
+       "skill": "place",
        "args": {
-        "target": "desk_1/top"
-       },
-       "role": "recover"
+        "object": "lunch_banana",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.9,
+         -6.0
+        ]
+       }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "serving_tray"
-       },
-       "role": "recover"
+        "destination": "lunch_orange"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_orange"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "lunch_orange",
+        "receptacle": "fruit_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "leave_one_for_kid__orange_banana"
+    },
+    "v6_leave_one_for_kid__all_three": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_basket",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
       },
       {
        "skill": "place",
        "args": {
         "object": "apple",
-        "receptacle": "serving_tray"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "orange_2",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.9,
+         -6.0
+        ]
+       }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "orange_2"
-       },
-       "role": "recover"
+        "destination": "lunch_orange"
+       }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "orange_2"
-       },
-       "role": "recover"
+        "object": "lunch_orange"
+       }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "serving_tray"
-       },
-       "role": "recover"
+        "destination": "bookcase_2/top"
+       }
       },
       {
        "skill": "place",
        "args": {
-        "object": "orange_2",
-        "receptacle": "serving_tray"
-       },
-       "role": "recover"
+        "object": "lunch_orange",
+        "receptacle": "fruit_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "lunch_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_banana"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "lunch_banana",
+        "receptacle": "fruit_basket"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_fruits_event"
+     "variant": "leave_one_for_kid__all_three"
+    },
+    "v6_fruit_plate_for_guests__tray_in_study": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_tray",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "fruit_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "fruit_tray",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.5,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "lunch_orange"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_orange"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "lunch_orange",
+        "receptacle": "fruit_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "fruit_plate_for_guests__tray_in_study"
+    },
+    "v6_fruit_plate_for_guests__tray_by_table": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_tray",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "fruit_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "fruit_tray",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.5,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "lunch_orange"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "lunch_orange"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "lunch_orange",
+        "receptacle": "fruit_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "fruit_plate_for_guests__tray_by_table"
     }
    },
    "vary": {
@@ -39765,53 +40712,60 @@
       "19": "basket_gone_bowl_there"
      }
     },
-    "h_dynamic_basket_taken": {
-     "origin": "v5",
+    "leave_one_for_kid": {
+     "origin": "v6",
      "control": "fruits_on_table",
      "layouts": [
-      "h_dynamic_basket_taken"
+      "leave_one_for_kid__apple_orange",
+      "leave_one_for_kid__orange_banana",
+      "leave_one_for_kid__all_three"
      ],
+     "factor": "which fruits are on the table (seed: apple and orange, orange and banana, or all three)",
      "seeds": {
-      "10": "h_dynamic_basket_taken",
-      "11": "h_dynamic_basket_taken",
-      "12": "h_dynamic_basket_taken",
-      "13": "h_dynamic_basket_taken",
-      "14": "h_dynamic_basket_taken",
-      "15": "h_dynamic_basket_taken",
-      "16": "h_dynamic_basket_taken",
-      "17": "h_dynamic_basket_taken",
-      "18": "h_dynamic_basket_taken",
-      "19": "h_dynamic_basket_taken"
+      "10": "leave_one_for_kid__orange_banana",
+      "11": "leave_one_for_kid__all_three",
+      "12": "leave_one_for_kid__all_three",
+      "13": "leave_one_for_kid__apple_orange",
+      "14": "leave_one_for_kid__apple_orange",
+      "15": "leave_one_for_kid__orange_banana",
+      "16": "leave_one_for_kid__apple_orange",
+      "17": "leave_one_for_kid__apple_orange",
+      "18": "leave_one_for_kid__orange_banana",
+      "19": "leave_one_for_kid__all_three"
      }
     },
-    "x6_gd_fruits_event": {
+    "fruit_plate_for_guests": {
      "origin": "v6",
-     "control": "basket_missing",
+     "control": "fruits_on_table",
      "layouts": [
-      "x6_gd_fruits_event"
+      "fruit_plate_for_guests__tray_in_study",
+      "fruit_plate_for_guests__tray_by_table"
      ],
-     "factor": null,
+     "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
      "seeds": {
-      "10": "x6_gd_fruits_event",
-      "11": "x6_gd_fruits_event",
-      "12": "x6_gd_fruits_event",
-      "13": "x6_gd_fruits_event",
-      "14": "x6_gd_fruits_event",
-      "15": "x6_gd_fruits_event",
-      "16": "x6_gd_fruits_event",
-      "17": "x6_gd_fruits_event",
-      "18": "x6_gd_fruits_event",
-      "19": "x6_gd_fruits_event"
+      "10": "fruit_plate_for_guests__tray_by_table",
+      "11": "fruit_plate_for_guests__tray_by_table",
+      "12": "fruit_plate_for_guests__tray_in_study",
+      "13": "fruit_plate_for_guests__tray_by_table",
+      "14": "fruit_plate_for_guests__tray_in_study",
+      "15": "fruit_plate_for_guests__tray_in_study",
+      "16": "fruit_plate_for_guests__tray_in_study",
+      "17": "fruit_plate_for_guests__tray_by_table",
+      "18": "fruit_plate_for_guests__tray_in_study",
+      "19": "fruit_plate_for_guests__tray_by_table"
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "h_dynamic_basket_taken": "removed: no dynamic events in T11 (someone takes the basket)"
+   },
    "v6_dropped": {
     "h_action_grasp_and_ik": "built on an injected action failure that never goes away",
     "e2_from_kitchen": "same as fruits_on_table but for the layout (object poses / start)",
     "m_grasp_apple": "only injected action failures",
     "m_ik_basket": "only injected action failures",
-    "h_mixed_bowl_there_grasp": "same as basket_gone_bowl_there without its injected action failures"
+    "h_mixed_bowl_there_grasp": "same as basket_gone_bowl_there without its injected action failures",
+    "h_dynamic_basket_taken": "removed: no dynamic events in T11 (someone takes the basket)"
    },
    "v6_tracks": {
     "fruits_on_table": {
@@ -39833,19 +40787,21 @@
       "decoy_destination"
      ]
     },
-    "h_dynamic_basket_taken": {
+    "leave_one_for_kid": {
      "category": "task",
      "local": [],
      "longer": [
-      "event: resource"
+      "multi_object_goal",
+      "preference_allocation",
+      "storage_place"
      ]
     },
-    "x6_gd_fruits_event": {
+    "fruit_plate_for_guests": {
      "category": "task",
      "local": [],
      "longer": [
-      "container_absent",
-      "event: resource"
+      "not_in_view",
+      "subgoal_order"
      ]
     }
    }

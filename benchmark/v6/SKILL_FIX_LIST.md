@@ -7,7 +7,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
-| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 15 | carry: paperback_book slipped out of the hand while carrying it |
+| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 14 | carry: paperback_book slipped out of the hand while carrying it |
 | navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 9 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
@@ -33,8 +33,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | regrasp | book_red | 0 | 10 | 100% | grasp miss 10 | T14 | 0 | edge pinch book_red: overhang only -0.026 m |
 | navigate | kitchen_cabinet_6/top | 284 | 8 | 3% | carry slip 8 | T04 | 5 | carry: cup_counter_b slipped out of the hand while carrying it |
 | pick | kitchen_sponge | 82 | 8 | 9% | grasp miss 8 | T08 | 3 | pick kitchen_sponge: not held (lift 0.000 m) |
-| place | apple | 73 | 8 | 10% | IK / reach / base pose 8 | T11 | 1 | place_pre: no IK solution reaches apple from this base pose |
-| look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 2 | face desk_1/top: turning in place would hit furniture |
+| place | apple | 73 | 8 | 10% | IK / reach / base pose 8 | T11 | 2 | place_pre: no IK solution reaches apple from this base pose |
+| look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 1 | face desk_1/top: turning in place would hit furniture |
 | arrange |  | 2 | 8 | 80% | IK / reach / base pose 5, other 2, placement result 1 | T13 | 0 | SUBSKILL_FAILED: pick_object(object=cup): no IK for pick_lift |
 | pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 0 | pick from cavity oatmeal: front approach missed by 0.163 m |
 | pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 3 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
@@ -82,13 +82,15 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid, T06/display_row |
 | pick | foil_takeout_tray | T07/vessel_decides_appliance |
 | pick | fridge_tomato | T09/tomato_in_fridge |
+| pick | fruit_tray | T11/fruit_plate_for_guests |
 | pick | glass_food_container | T07/vessel_decides_appliance |
 | pick | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
 | pick | leftovers | T10/after_dinner_clear |
+| pick | lunch_banana | T11/leave_one_for_kid |
+| pick | lunch_orange | T11/fruit_plate_for_guests, T11/leave_one_for_kid |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
 | pick | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
-| pick | orange_2 | T11/x6_gd_fruits_event |
 | pick | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | pick | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | pick | pencil_2 | T05/all_pens |
@@ -100,13 +102,15 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | place | floor_block | T06/display_row |
 | place | foil_takeout_tray | T07/vessel_decides_appliance |
+| place | fruit_tray | T11/fruit_plate_for_guests |
 | place | glass_food_container | T07/vessel_decides_appliance |
 | place | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
 | place | leftovers | T10/after_dinner_clear |
+| place | lunch_banana | T11/leave_one_for_kid |
+| place | lunch_orange | T11/fruit_plate_for_guests, T11/leave_one_for_kid |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
 | place | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
-| place | orange_2 | T11/x6_gd_fruits_event |
 | place | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | place | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | place | pencil_2 | T05/all_pens |

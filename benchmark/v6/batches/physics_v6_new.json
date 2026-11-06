@@ -2872,72 +2872,142 @@
 {
 "task": "T11_collect_fruits",
 "seed": 10,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__orange_banana",
+"route": "v6_leave_one_for_kid__orange_banana",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 11,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__all_three",
+"route": "v6_leave_one_for_kid__all_three",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 12,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__all_three",
+"route": "v6_leave_one_for_kid__all_three",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 13,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__apple_orange",
+"route": "v6_leave_one_for_kid__apple_orange",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 14,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__apple_orange",
+"route": "v6_leave_one_for_kid__apple_orange",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 15,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__orange_banana",
+"route": "v6_leave_one_for_kid__orange_banana",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 16,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__apple_orange",
+"route": "v6_leave_one_for_kid__apple_orange",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 17,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__apple_orange",
+"route": "v6_leave_one_for_kid__apple_orange",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 18,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__orange_banana",
+"route": "v6_leave_one_for_kid__orange_banana",
+"family": "leave_one_for_kid"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 19,
-"variant": "x6_gd_fruits_event",
-"route": "v6_x6_gd_fruits_event",
-"family": "x6_gd_fruits_event"
+"variant": "leave_one_for_kid__all_three",
+"route": "v6_leave_one_for_kid__all_three",
+"family": "leave_one_for_kid"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "fruit_plate_for_guests__tray_by_table",
+"route": "v6_fruit_plate_for_guests__tray_by_table",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "fruit_plate_for_guests__tray_by_table",
+"route": "v6_fruit_plate_for_guests__tray_by_table",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 12,
+"variant": "fruit_plate_for_guests__tray_in_study",
+"route": "v6_fruit_plate_for_guests__tray_in_study",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 13,
+"variant": "fruit_plate_for_guests__tray_by_table",
+"route": "v6_fruit_plate_for_guests__tray_by_table",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 14,
+"variant": "fruit_plate_for_guests__tray_in_study",
+"route": "v6_fruit_plate_for_guests__tray_in_study",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 15,
+"variant": "fruit_plate_for_guests__tray_in_study",
+"route": "v6_fruit_plate_for_guests__tray_in_study",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 16,
+"variant": "fruit_plate_for_guests__tray_in_study",
+"route": "v6_fruit_plate_for_guests__tray_in_study",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 17,
+"variant": "fruit_plate_for_guests__tray_by_table",
+"route": "v6_fruit_plate_for_guests__tray_by_table",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 18,
+"variant": "fruit_plate_for_guests__tray_in_study",
+"route": "v6_fruit_plate_for_guests__tray_in_study",
+"family": "fruit_plate_for_guests"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"variant": "fruit_plate_for_guests__tray_by_table",
+"route": "v6_fruit_plate_for_guests__tray_by_table",
+"family": "fruit_plate_for_guests"
 },
 {
 "task": "T12_tidy_toys",

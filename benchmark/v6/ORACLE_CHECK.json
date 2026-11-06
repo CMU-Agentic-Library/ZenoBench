@@ -1,6 +1,6 @@
 {
- "routes": 202,
- "ok": 202,
+ "routes": 205,
+ "ok": 205,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1129,21 +1129,48 @@
   },
   {
    "task": "T11_collect_fruits",
-   "layout": "h_dynamic_basket_taken",
+   "layout": "leave_one_for_kid__apple_orange",
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "h_dynamic_basket_taken"
+   "variant": "leave_one_for_kid"
   },
   {
    "task": "T11_collect_fruits",
-   "layout": "x6_gd_fruits_event",
-   "steps": 15,
-   "atoms_checked": 9,
+   "layout": "leave_one_for_kid__orange_banana",
+   "steps": 10,
+   "atoms_checked": 3,
    "atoms_geometric": 0,
    "problems": [],
-   "variant": "x6_gd_fruits_event"
+   "variant": "leave_one_for_kid"
+  },
+  {
+   "task": "T11_collect_fruits",
+   "layout": "leave_one_for_kid__all_three",
+   "steps": 14,
+   "atoms_checked": 7,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "leave_one_for_kid"
+  },
+  {
+   "task": "T11_collect_fruits",
+   "layout": "fruit_plate_for_guests__tray_in_study",
+   "steps": 14,
+   "atoms_checked": 7,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "fruit_plate_for_guests"
+  },
+  {
+   "task": "T11_collect_fruits",
+   "layout": "fruit_plate_for_guests__tray_by_table",
+   "steps": 14,
+   "atoms_checked": 7,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "fruit_plate_for_guests"
   },
   {
    "task": "T12_tidy_toys",

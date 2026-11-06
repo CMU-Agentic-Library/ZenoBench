@@ -18,7 +18,7 @@ Variants per task:
 | Task-Level | 5 | 4 | 5 | 6 | 7 | 5 | 5 | 4 | 3 | 6 | 4 | 5 | 6 | 1 | 1 | 3 | 3 | 4 | 2 | 1 |
 | Action + Task |  | 1 |  |  | 1 |  |  |  | 2 |  |  |  | 2 |  |  | 1 | 1 |  | 1 |  |
 
-Removed with the injected action failures: 113 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
+Removed with the injected action failures: 114 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
 
 ## Variants
 
@@ -91,8 +91,8 @@ Removed with the injected action failures: 113 variants (21 had nothing else, 61
 | T11 | fruits_on_table | Control | - | - | 1 |
 | T11 | basket_missing | Task-Level | - | container_absent | 1 |
 | T11 | basket_gone_bowl_there | Task-Level | - | decoy_destination | 1 |
-| T11 | h_dynamic_basket_taken | Task-Level | - | event: resource | 1 |
-| T11 | x6_gd_fruits_event | Task-Level | - | container_absent; event: resource | 1 |
+| T11 | leave_one_for_kid | Task-Level | - | multi_object_goal; preference_allocation; storage_place | 3 |
+| T11 | fruit_plate_for_guests | Task-Level | - | not_in_view; subgoal_order | 2 |
 | T12 | toys_out | Control | - | - | 1 |
 | T12 | duck_in_study | Task-Level | - | not_in_view | 2 |
 | T12 | toys_everywhere | Task-Level | - | joint_capacity | 2 |

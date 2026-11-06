@@ -11018,22 +11018,16 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T11_collect_fruits/h_dynamic_basket_taken": {
-  "variant": "h_dynamic_basket_taken",
+ "T11_collect_fruits/leave_one_for_kid__apple_orange": {
+  "variant": "leave_one_for_kid",
   "category": "task",
   "seeds": [
-   10,
-   11,
-   12,
    13,
    14,
-   15,
    16,
-   17,
-   18,
-   19
+   17
   ],
-  "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -11042,133 +11036,135 @@
     "fruit_basket",
     "serving_tray"
    ],
-   "added": [],
+   "added": [
+    "lunch_orange"
+   ],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "storage_place",
+    "preference_allocation",
+    "multi_object_goal"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_fruit_basket",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "apple"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "fruit_basket",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "inside",
-      "apple",
-      "fruit_basket"
-     ]
-    ],
-    [
-     [
-      "inside",
-      "apple",
-      "serving_tray"
-     ]
-    ]
-   ],
    "all": [
     [
      "hand_empty",
      "right"
     ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "apple",
+      "desk_1/top"
+     ],
+     [
+      "inside",
+      "lunch_orange",
+      "fruit_basket"
+     ]
+    ]
    ]
   },
   "control": "fruits_on_table",
-  "oracle_route": "v5_h_dynamic_basket_taken",
-  "challenge": "while the robot picks the apple, someone takes the basket away: the serving tray on the study desk is the stated substitute",
-  "rationale": "",
+  "oracle_route": "v6_leave_one_for_kid__apple_orange",
+  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T11_collect_fruits/x6_gd_fruits_event": {
-  "variant": "x6_gd_fruits_event",
+ "T11_collect_fruits/leave_one_for_kid__orange_banana": {
+  "variant": "leave_one_for_kid",
   "category": "task",
   "seeds": [
    10,
+   15,
+   18
+  ],
+  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
+  "initial_conditions": {
+   "scene": "tasks/collect_fruits",
+   "start": null,
+   "moved": [
+    "fruit_basket",
+    "serving_tray"
+   ],
+   "added": [
+    "lunch_banana",
+    "lunch_orange"
+   ],
+   "removed": [
+    "apple"
+   ],
+   "conditions": [
+    "storage_place",
+    "preference_allocation",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "lunch_banana",
+      "desk_1/top"
+     ],
+     [
+      "inside",
+      "lunch_orange",
+      "fruit_basket"
+     ]
+    ]
+   ]
+  },
+  "control": "fruits_on_table",
+  "oracle_route": "v6_leave_one_for_kid__orange_banana",
+  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T11_collect_fruits/leave_one_for_kid__all_three": {
+  "variant": "leave_one_for_kid",
+  "category": "task",
+  "seeds": [
    11,
    12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
    19
   ],
-  "instruction": "Lunch is over and the apple and the orange are still on the dining table. Put them into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
    "moved": [
     "apple",
+    "fruit_basket",
     "serving_tray"
    ],
    "added": [
-    "orange_2"
+    "lunch_banana",
+    "lunch_orange"
    ],
-   "removed": [
-    "fruit_basket"
-   ],
+   "removed": [],
    "conditions": [
-    "container_absent"
+    "storage_place",
+    "preference_allocation",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_orange",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "apple"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "orange_2",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.2,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -11179,58 +11175,204 @@
    "any": [
     [
      [
-      "inside",
+      "on",
       "apple",
+      "desk_1/top"
+     ],
+     [
+      "inside",
+      "lunch_orange",
       "fruit_basket"
      ],
      [
       "inside",
-      "orange_2",
-      "fruit_basket"
-     ]
-    ],
-    [
-     [
-      "inside",
-      "apple",
-      "fruit_basket"
-     ],
-     [
-      "inside",
-      "orange_2",
-      "serving_tray"
-     ]
-    ],
-    [
-     [
-      "inside",
-      "apple",
-      "serving_tray"
-     ],
-     [
-      "inside",
-      "orange_2",
+      "lunch_banana",
       "fruit_basket"
      ]
     ],
     [
      [
-      "inside",
-      "apple",
-      "serving_tray"
+      "on",
+      "lunch_banana",
+      "desk_1/top"
      ],
      [
       "inside",
-      "orange_2",
-      "serving_tray"
+      "apple",
+      "fruit_basket"
+     ],
+     [
+      "inside",
+      "lunch_orange",
+      "fruit_basket"
      ]
     ]
    ]
   },
-  "control": "basket_missing",
-  "oracle_route": "v6_x6_gd_fruits_event",
-  "challenge": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
-  "rationale": "the goal decomposes into one placement per fruit; the event moves the second resource after the first subgoal holds: keep the apple, find the orange",
+  "control": "fruits_on_table",
+  "oracle_route": "v6_leave_one_for_kid__all_three",
+  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
+  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T11_collect_fruits/fruit_plate_for_guests__tray_in_study": {
+  "variant": "fruit_plate_for_guests",
+  "category": "task",
+  "seeds": [
+   12,
+   14,
+   15,
+   16,
+   18
+  ],
+  "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+  "initial_conditions": {
+   "scene": "tasks/collect_fruits",
+   "start": null,
+   "moved": [
+    "apple",
+    "fruit_basket"
+   ],
+   "added": [
+    "fruit_tray",
+    "lunch_orange"
+   ],
+   "removed": [
+    "serving_tray"
+   ],
+   "conditions": [
+    "subgoal_order",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "apple",
+     "fruit_tray"
+    ],
+    [
+     "inside",
+     "lunch_orange",
+     "fruit_tray"
+    ],
+    [
+     "not on_floor",
+     "apple"
+    ],
+    [
+     "not on_floor",
+     "lunch_orange"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "fruit_tray",
+      "tv_stand_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "fruit_tray",
+      "tv_stand_1/top"
+     ]
+    ]
+   ]
+  },
+  "control": "fruits_on_table",
+  "oracle_route": "v6_fruit_plate_for_guests__tray_in_study",
+  "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+  "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T11_collect_fruits/fruit_plate_for_guests__tray_by_table": {
+  "variant": "fruit_plate_for_guests",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   13,
+   17,
+   19
+  ],
+  "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+  "initial_conditions": {
+   "scene": "tasks/collect_fruits",
+   "start": null,
+   "moved": [
+    "apple",
+    "fruit_basket"
+   ],
+   "added": [
+    "fruit_tray",
+    "lunch_orange"
+   ],
+   "removed": [
+    "serving_tray"
+   ],
+   "conditions": [
+    "subgoal_order",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "apple",
+     "fruit_tray"
+    ],
+    [
+     "inside",
+     "lunch_orange",
+     "fruit_tray"
+    ],
+    [
+     "not on_floor",
+     "apple"
+    ],
+    [
+     "not on_floor",
+     "lunch_orange"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "fruit_tray",
+      "tv_stand_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "fruit_tray",
+      "tv_stand_1/top"
+     ]
+    ]
+   ]
+  },
+  "control": "fruits_on_table",
+  "oracle_route": "v6_fruit_plate_for_guests__tray_by_table",
+  "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
+  "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/toys_out": {

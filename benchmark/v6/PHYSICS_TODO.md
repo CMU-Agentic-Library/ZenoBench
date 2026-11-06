@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1240 episodes remain (570 of the 57 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1240 episodes remain (580 of the 58 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -74,8 +74,8 @@
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
 | T11 | basket_gone_bowl_there | task | 0/0 of 10 | - |
-| T11 | h_dynamic_basket_taken | task | 0/0 of 10 | - |
-| T11 | x6_gd_fruits_event | task | 0/0 of 10 | - |
+| T11 | leave_one_for_kid | task | 0/0 of 10 | - |
+| T11 | fruit_plate_for_guests | task | 0/0 of 10 | - |
 | T12 | toys_out | control | 0/0 of 10 | - |
 | T12 | duck_in_study | task | 0/0 of 10 | - |
 | T12 | toys_everywhere | task | 0/0 of 10 | - |
