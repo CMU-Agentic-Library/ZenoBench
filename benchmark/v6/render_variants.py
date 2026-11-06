@@ -259,8 +259,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             yield g
     PUT = ("on", "inside", "fully_inside", "on_top_of", "temperature_at_least", "covered")
     names = lambda x: [x] if isinstance(x, str) else list(x)  # noqa: E731
+    stay = {n for at in atoms(goal) if at[0] == "near_start" for n in names(at[1])}
     for at in atoms(goal):                       # the goal allows it, the route uses another (another mug)
-        if at[0] in PUT:
+        if at[0] in PUT and not set(names(at[1])) & stay:     # a castle block on another one stays put
             for n in names(at[1]):
                 if n in objs and n not in role:
                     role[n] = "alt"
@@ -352,17 +353,23 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
                 and not sup_of(n).endswith("/inside_shelf"):
             by_sup.setdefault(sup_of(n), []).append(n)
     for sp, names in by_sup.items():
-        if not sp:
-            continue
-        try:
-            eye, c = support_eye(sp)
-        except Exception:
-            p0 = pos(names[0])
-            eye, c = around(p0, 0.8, 0.6), p0
+        if sp:
+            try:
+                eye, c = support_eye(sp)
+            except Exception:
+                p0 = pos(names[0])
+                eye, c = around(p0, 0.8, 0.6), p0
+        else:                                    # on the floor (a block castle): around them, what lies near too
+            pts = [pos(n) for n in names]
+            c = [sum(p[k] for p in pts) / len(pts) for k in range(3)]
+            eye = around(c, 1.0, 0.9)
+            names = names + [n for n, r in role.items() if r == "take" and n in objs and not sup_of(n)
+                             and n not in names and math.dist(pos(n)[:2], c[:2]) < 0.8]
         img = shot(eye, c)
         kinds = sorted({LABEL[role[n]] for n in names})
-        views.append((sp.replace("/", "_"), stars(names), img,
-                      f"{sp} 上的{'、'.join(kinds)}的东西：{'、'.join(names)}"))
+        where = sp or "地上"
+        views.append(((sp or "floor_" + names[0]).replace("/", "_"), stars(names), img,
+                      f"{where} 的{'、'.join(kinds)}的东西：{'、'.join(names)}"))
         shown.update(names)
     for at in atoms(goal):                       # a surface that must be left alone (the clean table: not wiped)
         if at[0] == "not wiped" and at[1] not in shown:

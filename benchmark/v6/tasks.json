@@ -131,6 +131,11 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "relational_exception": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "objects of one kind are treated differently by how they stand: the blocks built into the kid's castle stay, loose ones are put away"
+  },
   "preference_allocation": {
    "type": "goal_inference",
    "decision": "decompose",
@@ -40811,8 +40816,8 @@
    "source": [
     "skill_library/tasks.json:tidy_toys"
    ],
-   "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom.",
-   "instruction_zh": "快到睡觉时间了，把孩子的玩具小车和小黄鸭收进卧室的储物筐里。",
+   "instruction": "It is nearly bedtime. Put the kid's toys away.",
+   "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。",
    "scene": {
     "base": "tasks/tidy_toys",
     "remove": [
@@ -40946,8 +40951,6 @@
      "conditions": [
       "joint_capacity"
      ],
-     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
-     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
      "goal": {
       "any": [
        [
@@ -41209,305 +41212,6 @@
       }
      }
     },
-    "h_dynamic_duck_taken": {
-     "move": {
-      "rubber_duck": {
-       "support": "desk_1/top",
-       "xy": [
-        -0.95,
-        -6.02
-       ],
-       "yaw_deg": 128.7
-      }
-     },
-     "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        0.84,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "toy_tray": {
-       "asset": "shallow_sorting_tray",
-       "support": "bookcase_2/top",
-       "xy": [
-        1.13,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "stored_block_1": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.375
-       ],
-       "yaw_deg": 0
-      }
-     },
-     "remove": [
-      "storage_basket"
-     ],
-     "conditions": [
-      "joint_capacity"
-     ],
-     "failures": [
-      {
-       "id": "capacity_v4_toys_everywhere",
-       "kind": "capacity",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "toy_bin_small",
-         "bookcase_2/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_rubber_duck",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "toy_car"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "rubber_duck",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small"
-       ],
-       [
-        "upright",
-        "toy_bin_small"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
-     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "toy_bin_small",
-      "toy_tray"
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
-     "v5": {
-      "tier": "hard",
-      "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
-      "derived_from": "toys_everywhere",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_tray"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.53,
-         1.265,
-         -0.33
-        ],
-        "dy": [
-         -0.07,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.0038,
-         -6.0757,
-         -0.8962,
-         -5.9643
-        ],
-        "dx": [
-         -0.39,
-         0.86
-        ],
-        "dy": [
-         -0.24,
-         0.0
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "duck_in_study__alt_dining_table_2": {
      "note": "the duck was left on the study desk (here the rubber_duck is on dining_table_2/top)",
      "conditions": [
@@ -41602,8 +41306,6 @@
      "conditions": [
       "joint_capacity"
      ],
-     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
-     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
      "goal": {
       "any": [
        [
@@ -41889,7 +41591,7 @@
       }
      }
     },
-    "h_dynamic_duck_taken__alt_tv_stand_2": {
+    "find_all_toys__car_duck": {
      "move": {
       "rubber_duck": {
        "support": "desk_1/top",
@@ -41900,216 +41602,42 @@
        "yaw_deg": 128.7
       }
      },
+     "conditions": [
+      "goal_items_unstated",
+      "not_in_view",
+      "multi_object_goal"
+     ],
      "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
+      "kitchen_sponge": {
+       "asset": "kitchen_sponge",
+       "support": "dining_table_2/top",
        "xy": [
-        0.84,
-        -0.43
+        3.5,
+        7.2
        ],
        "yaw_deg": 0.0
-      },
-      "toy_tray": {
-       "asset": "shallow_sorting_tray",
-       "support": "bookcase_2/top",
-       "xy": [
-        1.13,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "stored_block_1": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.375
-       ],
-       "yaw_deg": 0
       }
      },
-     "remove": [
-      "storage_basket"
-     ],
-     "conditions": [
-      "joint_capacity"
-     ],
-     "failures": [
-      {
-       "id": "capacity_v4_toys_everywhere",
-       "kind": "capacity",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "toy_bin_small",
-         "bookcase_2/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_rubber_duck",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "toy_car"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "rubber_duck",
-        "to": {
-         "support": "tv_stand_2/top",
-         "xy": [
-          7.0,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
      "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ]
-      ],
       "all": [
        [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small"
+        "inside",
+        "toy_car",
+        "storage_basket"
        ],
        [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small"
+        "inside",
+        "rubber_duck",
+        "storage_basket"
        ],
        [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small"
+        "near_start",
+        "kitchen_sponge",
+        0.03
        ],
        [
         "upright",
-        "toy_bin_small"
+        "storage_basket"
        ],
        [
         "hand_empty",
@@ -42117,82 +41645,264 @@
        ]
       ]
      },
-     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
-     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
      "watch": [
       "toy_car",
       "rubber_duck",
-      "toy_bin_small",
-      "toy_tray"
+      "kitchen_sponge",
+      "storage_basket"
      ],
-     "difficulty": "hard",
      "since": "v6",
-     "note": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck (here the rubber_duck is on tv_stand_2/top)",
+     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
      "v6": {
-      "family": "h_dynamic_duck_taken",
-      "case": "alt_tv_stand_2",
-      "tier": "hard",
-      "hard_category": "dynamic",
-      "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck (here the rubber_duck is on tv_stand_2/top)",
-      "derived_from": "h_dynamic_duck_taken",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "find_all_toys",
+      "case": "car_duck",
+      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
+      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
+      "derived_from": "toys_out"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_tray"
+         "rubber_duck"
         ],
-        "support": "bookcase_2/top",
+        "support": "desk_1/top",
         "box": [
-         0.73,
-         -0.53,
-         1.265,
-         -0.33
+         -1.0038,
+         -6.0757,
+         -0.8962,
+         -5.9643
+        ],
+        "dx": [
+         -0.39,
+         0.86
+        ],
+        "dy": [
+         -0.24,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.455,
+         7.17,
+         3.545,
+         7.23
+        ],
+        "dx": [
+         0.0,
+         0.28
+        ],
+        "dy": [
+         -1.66,
+         0.71
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [
+        "rubber_duck",
+        "toy_car"
+       ],
+       "look": []
+      }
+     }
+    },
+    "find_all_toys__car_duck_bear": {
+     "move": {
+      "rubber_duck": {
+       "support": "large_shelf_3/shelf_1",
+       "xy": [
+        -1.75,
+        5.65
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "goal_items_unstated",
+      "not_in_view",
+      "multi_object_goal"
+     ],
+     "add": {
+      "kitchen_sponge": {
+       "asset": "kitchen_sponge",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.5,
+        7.2
+       ],
+       "yaw_deg": 0.0
+      },
+      "teddy_bear": {
+       "asset": "teddy_bear",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        6.8
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "teddy_bear",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "kitchen_sponge",
+        0.03
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "teddy_bear",
+      "kitchen_sponge",
+      "storage_basket"
+     ],
+     "since": "v6",
+     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
+     "v6": {
+      "family": "find_all_toys",
+      "case": "car_duck_bear",
+      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
+      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge",
+         "teddy_bear"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.2472,
+         6.72,
+         3.545,
+         7.23
+        ],
+        "dx": [
+         0.0,
+         0.28
+        ],
+        "dy": [
+         -1.21,
+         0.71
+        ]
+       },
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "large_shelf_3/shelf_1",
+        "box": [
+         -1.795,
+         5.6171,
+         -1.705,
+         5.6829
+        ],
+        "dx": [
+         -0.32,
+         0.34
         ],
         "dy": [
          -0.07,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.0038,
-         -6.0757,
-         -0.8962,
-         -5.9643
-        ],
-        "dx": [
-         -0.39,
-         0.86
-        ],
-        "dy": [
-         -0.24,
-         0.0
+         0.06
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
-       "hide": [],
+       "hide": [
+        "rubber_duck",
+        "teddy_bear",
+        "toy_car"
+       ],
        "look": []
       }
      }
     },
-    "x6_gd_bins_capacity__left_full": {
+    "find_all_toys__all_four": {
      "move": {
       "rubber_duck": {
        "support": "desk_1/top",
@@ -42203,152 +41913,70 @@
        "yaw_deg": 128.7
       }
      },
-     "remove": [
-      "storage_basket"
-     ],
      "conditions": [
-      "joint_capacity"
-     ],
-     "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
-     "instruction_zh": "快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "toy_bin_small",
-      "toy_bin_small_2"
-     ],
-     "may_end_on_floor": [
-      "toy_car"
+      "goal_items_unstated",
+      "not_in_view",
+      "multi_object_goal"
      ],
      "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
+      "kitchen_sponge": {
+       "asset": "kitchen_sponge",
+       "support": "dining_table_2/top",
        "xy": [
-        0.84,
-        -0.43
+        3.5,
+        7.2
        ],
        "yaw_deg": 0.0
       },
-      "toy_bin_small_2": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
+      "teddy_bear": {
+       "asset": "teddy_bear",
+       "support": "dining_table_2/top",
        "xy": [
-        1.13,
-        -0.43
+        3.3,
+        6.8
        ],
        "yaw_deg": 0.0
       },
-      "stored_block_1": {
+      "stray_block": {
        "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
+       "support": "tv_stand_2/top",
        "xy": [
-        0.762,
-        -0.485
+        7.4,
+        0.36
        ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.375
-       ],
-       "yaw_deg": 0
+       "yaw_deg": 0.0
       }
      },
      "goal": {
       "all": [
        [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
+        "inside",
         "toy_car",
-        "toy_bin_small_2"
+        "storage_basket"
        ],
        [
-        "fully_inside",
+        "inside",
         "rubber_duck",
-        "toy_bin_small"
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "teddy_bear",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "stray_block",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "kitchen_sponge",
+        0.03
        ],
        [
         "upright",
-        "toy_bin_small"
-       ],
-       [
-        "upright",
-        "toy_bin_small_2"
+        "storage_basket"
        ],
        [
         "hand_empty",
@@ -42356,43 +41984,28 @@
        ]
       ]
      },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "teddy_bear",
+      "stray_block",
+      "kitchen_sponge",
+      "storage_basket"
+     ],
      "since": "v6",
-     "note": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
      "v6": {
-      "family": "x6_gd_bins_capacity",
-      "case": "left_full",
-      "challenge": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
-      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
-      "control": "toys_everywhere",
+      "family": "find_all_toys",
+      "case": "all_four",
+      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
+      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
+      "control": "toys_out",
       "contrast": null,
-      "factor": "which bin is already half full (capacity)",
+      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
       "derived_from": "toys_out"
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_bin_small_2"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         1.24,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
        {
         "names": [
          "rubber_duck"
@@ -42412,247 +42025,84 @@
          -0.24,
          0.0
         ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "x6_gd_bins_capacity__right_full": {
-     "move": {
-      "rubber_duck": {
-       "support": "desk_1/top",
-       "xy": [
-        -0.95,
-        -6.02
-       ],
-       "yaw_deg": 128.7
-      }
-     },
-     "remove": [
-      "storage_basket"
-     ],
-     "conditions": [
-      "joint_capacity"
-     ],
-     "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
-     "instruction_zh": "快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "toy_bin_small",
-      "toy_bin_small_2"
-     ],
-     "may_end_on_floor": [
-      "toy_car"
-     ],
-     "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        0.84,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "toy_bin_small_2": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        1.13,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "stored_block_1": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.052,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.052,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.052,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.208,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.208,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.208,
-        -0.375
-       ],
-       "yaw_deg": 0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small_2"
-       ],
-       [
-        "fully_inside",
-        "toy_car",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "rubber_duck",
-        "toy_bin_small_2"
-       ],
-       [
-        "upright",
-        "toy_bin_small_2"
-       ],
-       [
-        "upright",
-        "toy_bin_small"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "since": "v6",
-     "note": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
-     "v6": {
-      "family": "x6_gd_bins_capacity",
-      "case": "right_full",
-      "challenge": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
-      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
-      "control": "toys_everywhere",
-      "contrast": null,
-      "factor": "which bin is already half full (capacity)",
-      "derived_from": "toys_out"
-     },
-     "layout": {
-      "clusters": [
+       },
        {
         "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_bin_small_2"
+         "kitchen_sponge",
+         "teddy_bear"
         ],
-        "support": "bookcase_2/top",
+        "support": "dining_table_2/top",
         "box": [
-         0.73,
-         -0.515,
-         1.24,
-         -0.345
+         3.2472,
+         6.72,
+         3.545,
+         7.23
+        ],
+        "dx": [
+         0.0,
+         0.28
         ],
         "dy": [
-         -0.09,
-         0.09
+         -1.21,
+         0.71
         ]
        },
        {
         "names": [
-         "rubber_duck"
+         "stray_block"
         ],
-        "support": "desk_1/top",
+        "support": "tv_stand_2/top",
         "box": [
-         -1.0038,
-         -6.0757,
-         -0.8962,
-         -5.9643
+         7.375,
+         0.335,
+         7.425,
+         0.385
         ],
         "dx": [
-         -0.39,
-         0.86
+         -0.72,
+         0.93
         ],
         "dy": [
-         -0.24,
-         0.0
+         -0.11,
+         0.02
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
-       "hide": [],
+       "hide": [
+        "rubber_duck",
+        "stray_block",
+        "teddy_bear",
+        "toy_car"
+       ],
        "look": []
       }
      }
     },
-    "x6_pp_duck_moved__dining": {
+    "castle_stays__tall_two_loose": {
      "move": {
       "rubber_duck": {
        "support": "tv_stand_2/top",
@@ -42663,43 +42113,141 @@
        "yaw_deg": 128.67
       }
      },
-     "failures": [
-      {
-       "id": "resource_duck",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "toy_car"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "rubber_duck",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.05,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.1,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        4.7,
+        1.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.35,
+        1.45
+       ],
+       "yaw_deg": 0.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_1",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_2",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_3",
+        0.03
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "on_top_of",
+        "castle_block_3",
+        "castle_block_2"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3",
+      "loose_block_1",
+      "loose_block_2",
+      "storage_basket"
      ],
      "since": "v6",
-     "note": "once the car is in the basket, the kid carries the duck to another room (dining table or study desk)",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
      "v6": {
-      "family": "x6_pp_duck_moved",
-      "case": "dining",
-      "challenge": "once the car is in the basket, the kid carries the duck to another room (dining table or study desk)",
-      "rationale": "the car subgoal holds; the duck must be found where it went: keep the car, search the duck",
+      "family": "castle_stays",
+      "case": "tall_two_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
       "control": "toys_out",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
       "derived_from": "toys_out"
      },
      "layout": {
@@ -42733,7 +42281,7 @@
       }
      }
     },
-    "x6_pp_duck_moved__study": {
+    "castle_stays__short_one_loose": {
      "move": {
       "rubber_duck": {
        "support": "tv_stand_2/top",
@@ -42744,43 +42292,251 @@
        "yaw_deg": 128.67
       }
      },
-     "failures": [
-      {
-       "id": "resource_duck",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "toy_car"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "rubber_duck",
-        "to": {
-         "support": "desk_1/top",
-         "xy": [
-          -0.95,
-          -6.02
-         ],
-         "yaw_deg": 128.7
-        }
-       }
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.05,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        4.7,
+        1.3
+       ],
+       "yaw_deg": 0.0
       }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_1",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "loose_block_1",
+      "storage_basket"
      ],
      "since": "v6",
-     "note": "once the car is in the basket, the kid carries the duck to another room (dining table or study desk)",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
      "v6": {
-      "family": "x6_pp_duck_moved",
-      "case": "study",
-      "challenge": "once the car is in the basket, the kid carries the duck to another room (dining table or study desk)",
-      "rationale": "the car subgoal holds; the duck must be found where it went: keep the car, search the duck",
+      "family": "castle_stays",
+      "case": "short_one_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
       "control": "toys_out",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         6.7405,
+         0.3135,
+         6.8481,
+         0.4249
+        ],
+        "dx": [
+         -0.08,
+         1.51
+        ],
+        "dy": [
+         -0.06,
+         0.07
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "castle_stays__tall_none_loose": {
+     "move": {
+      "rubber_duck": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        6.7943,
+        0.3692
+       ],
+       "yaw_deg": 128.67
+      }
+     },
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.05,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.1,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_3",
+        0.03
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "on_top_of",
+        "castle_block_3",
+        "castle_block_2"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3",
+      "storage_basket"
+     ],
+     "since": "v6",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+     "v6": {
+      "family": "castle_stays",
+      "case": "tall_none_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
       "derived_from": "toys_out"
      },
      "layout": {
@@ -42850,14 +42606,14 @@
     "toys_out": "v5x_toys_out",
     "duck_in_study": "explore_search_duck",
     "toys_everywhere": "hard_allocate_by_size",
-    "h_dynamic_duck_taken": "v5_h_dynamic_duck_taken",
     "duck_in_study__alt_dining_table_2": "v6_duck_in_study__alt_dining_table_2",
     "toys_everywhere__alt_dining_table_2": "v6_toys_everywhere__alt_dining_table_2",
-    "h_dynamic_duck_taken__alt_tv_stand_2": "v6_h_dynamic_duck_taken__alt_tv_stand_2",
-    "x6_gd_bins_capacity__left_full": "v6_x6_gd_bins_capacity__left_full",
-    "x6_gd_bins_capacity__right_full": "v6_x6_gd_bins_capacity__right_full",
-    "x6_pp_duck_moved__dining": "v6_x6_pp_duck_moved__dining",
-    "x6_pp_duck_moved__study": "v6_x6_pp_duck_moved__study"
+    "find_all_toys__car_duck": "v6_find_all_toys__car_duck",
+    "find_all_toys__car_duck_bear": "v6_find_all_toys__car_duck_bear",
+    "find_all_toys__all_four": "v6_find_all_toys__all_four",
+    "castle_stays__tall_two_loose": "v6_castle_stays__tall_two_loose",
+    "castle_stays__short_one_loose": "v6_castle_stays__short_one_loose",
+    "castle_stays__tall_none_loose": "v6_castle_stays__tall_none_loose"
    },
    "routes": {
     "nominal": {
@@ -43117,106 +42873,6 @@
      ],
      "since": "v4"
     },
-    "v5_h_dynamic_duck_taken": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_tray"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_tray"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small"
-       }
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_duck_taken"
-    },
     "v5x_toys_out": {
      "kind": "v5_skill_coverage",
      "variants": [
@@ -43472,300 +43128,8 @@
      "kind": "v6_seed_extension",
      "variant": "toys_everywhere__alt_dining_table_2"
     },
-    "v6_h_dynamic_duck_taken__alt_tv_stand_2": {
+    "v6_find_all_toys__car_duck": {
      "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_tray"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_tray"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small"
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "h_dynamic_duck_taken__alt_tv_stand_2"
-    },
-    "v6_x6_gd_bins_capacity__left_full": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small_2"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small_2"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_bin_small_2"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "living_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_gd_bins_capacity__left_full"
-    },
-    "v6_x6_gd_bins_capacity__right_full": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small_2"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "living_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small_2"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small_2"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_gd_bins_capacity__right_full"
-    },
-    "v6_x6_pp_duck_moved__dining": {
-     "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "bedroom_0_1"
-       }
-      },
       {
        "skill": "explore_room",
        "args": {
@@ -43801,20 +43165,120 @@
        "skill": "search",
        "args": {
         "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "find_all_toys__car_duck"
+    },
+    "v6_find_all_toys__car_duck_bear": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "bathroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "teddy_bear",
         "region": "dining_room_0_1"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "rubber_duck"
+        "destination": "teddy_bear"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "rubber_duck"
+        "object": "teddy_bear"
        }
       },
       {
@@ -43826,27 +43290,16 @@
       {
        "skill": "place",
        "args": {
-        "object": "rubber_duck",
+        "object": "teddy_bear",
         "receptacle": "storage_basket"
        }
-      },
-      {
-       "skill": "nod",
-       "args": {},
-       "role": "recover"
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_duck_moved__dining"
+     "variant": "find_all_toys__car_duck_bear"
     },
-    "v6_x6_pp_duck_moved__study": {
+    "v6_find_all_toys__all_four": {
      "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "bedroom_0_1"
-       }
-      },
       {
        "skill": "explore_room",
        "args": {
@@ -43883,8 +43336,7 @@
        "args": {
         "object": "rubber_duck",
         "region": "living_room_0_1"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
@@ -43912,13 +43364,333 @@
        }
       },
       {
-       "skill": "nod",
-       "args": {},
-       "role": "recover"
+       "skill": "search",
+       "args": {
+        "object": "teddy_bear",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "teddy_bear"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "teddy_bear"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "teddy_bear",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "stray_block",
+        "region": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "stray_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "stray_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "stray_block",
+        "receptacle": "storage_basket"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_duck_moved__study"
+     "variant": "find_all_toys__all_four"
+    },
+    "v6_castle_stays__tall_two_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_1",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_2",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__tall_two_loose"
+    },
+    "v6_castle_stays__short_one_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_1",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__short_one_loose"
+    },
+    "v6_castle_stays__tall_none_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__tall_none_loose"
     }
    },
    "vary": {
@@ -44042,77 +43814,61 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "h_dynamic_duck_taken": {
-     "origin": "v5",
+    "find_all_toys": {
+     "origin": "v6",
      "control": "toys_out",
      "layouts": [
-      "h_dynamic_duck_taken",
-      "h_dynamic_duck_taken__alt_tv_stand_2"
+      "find_all_toys__car_duck",
+      "find_all_toys__car_duck_bear",
+      "find_all_toys__all_four"
      ],
+     "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
      "seeds": {
-      "10": "h_dynamic_duck_taken",
-      "11": "h_dynamic_duck_taken__alt_tv_stand_2",
-      "12": "h_dynamic_duck_taken",
-      "13": "h_dynamic_duck_taken__alt_tv_stand_2",
-      "14": "h_dynamic_duck_taken__alt_tv_stand_2",
-      "15": "h_dynamic_duck_taken",
-      "16": "h_dynamic_duck_taken",
-      "17": "h_dynamic_duck_taken__alt_tv_stand_2",
-      "18": "h_dynamic_duck_taken__alt_tv_stand_2",
-      "19": "h_dynamic_duck_taken"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "x6_gd_bins_capacity": {
-     "origin": "v6",
-     "control": "toys_everywhere",
-     "layouts": [
-      "x6_gd_bins_capacity__left_full",
-      "x6_gd_bins_capacity__right_full"
-     ],
-     "factor": "which bin is already half full (capacity)",
-     "seeds": {
-      "10": "x6_gd_bins_capacity__left_full",
-      "11": "x6_gd_bins_capacity__left_full",
-      "12": "x6_gd_bins_capacity__right_full",
-      "13": "x6_gd_bins_capacity__right_full",
-      "14": "x6_gd_bins_capacity__right_full",
-      "15": "x6_gd_bins_capacity__right_full",
-      "16": "x6_gd_bins_capacity__left_full",
-      "17": "x6_gd_bins_capacity__left_full",
-      "18": "x6_gd_bins_capacity__left_full",
-      "19": "x6_gd_bins_capacity__right_full"
+      "10": "find_all_toys__all_four",
+      "11": "find_all_toys__all_four",
+      "12": "find_all_toys__car_duck_bear",
+      "13": "find_all_toys__car_duck",
+      "14": "find_all_toys__car_duck_bear",
+      "15": "find_all_toys__car_duck",
+      "16": "find_all_toys__car_duck",
+      "17": "find_all_toys__car_duck_bear",
+      "18": "find_all_toys__car_duck",
+      "19": "find_all_toys__all_four"
      }
     },
-    "x6_pp_duck_moved": {
+    "castle_stays": {
      "origin": "v6",
      "control": "toys_out",
      "layouts": [
-      "x6_pp_duck_moved__dining",
-      "x6_pp_duck_moved__study"
+      "castle_stays__tall_two_loose",
+      "castle_stays__short_one_loose",
+      "castle_stays__tall_none_loose"
      ],
-     "factor": "where the event takes the resource",
+     "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
      "seeds": {
-      "10": "x6_pp_duck_moved__dining",
-      "11": "x6_pp_duck_moved__study",
-      "12": "x6_pp_duck_moved__dining",
-      "13": "x6_pp_duck_moved__study",
-      "14": "x6_pp_duck_moved__dining",
-      "15": "x6_pp_duck_moved__study",
-      "16": "x6_pp_duck_moved__study",
-      "17": "x6_pp_duck_moved__study",
-      "18": "x6_pp_duck_moved__dining",
-      "19": "x6_pp_duck_moved__dining"
+      "10": "castle_stays__tall_two_loose",
+      "11": "castle_stays__tall_two_loose",
+      "12": "castle_stays__tall_two_loose",
+      "13": "castle_stays__tall_none_loose",
+      "14": "castle_stays__tall_none_loose",
+      "15": "castle_stays__short_one_loose",
+      "16": "castle_stays__short_one_loose",
+      "17": "castle_stays__tall_none_loose",
+      "18": "castle_stays__short_one_loose",
+      "19": "castle_stays__tall_two_loose"
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "h_dynamic_duck_taken": "removed: no dynamic events in T12 (the kid takes the duck)"
+   },
    "v6_dropped": {
     "e2_from_kitchen": "same as toys_out but for the layout (object poses / start)",
     "m_grasp_car": "only injected action failures",
     "m_ik_duck_place": "only injected action failures",
     "h_action_grasp_and_ik": "same as toys_everywhere without its injected action failures",
-    "h_mixed_everywhere_ik": "same as toys_everywhere without its injected action failures"
+    "h_mixed_everywhere_ik": "same as toys_everywhere without its injected action failures",
+    "h_dynamic_duck_taken": "removed: no dynamic events in T12 (the kid takes the duck)"
    },
    "v6_tracks": {
     "toys_out": {
@@ -44134,26 +43890,21 @@
       "joint_capacity"
      ]
     },
-    "h_dynamic_duck_taken": {
+    "find_all_toys": {
      "category": "task",
      "local": [],
      "longer": [
-      "event: resource",
-      "joint_capacity"
+      "goal_items_unstated",
+      "multi_object_goal",
+      "not_in_view"
      ]
     },
-    "x6_gd_bins_capacity": {
+    "castle_stays": {
      "category": "task",
      "local": [],
      "longer": [
-      "joint_capacity"
-     ]
-    },
-    "x6_pp_duck_moved": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
+      "multi_object_goal",
+      "relational_exception"
      ]
     }
    }

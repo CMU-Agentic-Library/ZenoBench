@@ -176,7 +176,6 @@ def test_events_put_right_at_the_work_spot_are_action_level():
         assert cat(tid, vid) == "action", (tid, vid)
     # taken to another room: searched for, Task-Level
     assert cat("T13_breakfast_setup", "x6_pp_spoon_moved__tv_stand") == "task"
-    assert cat("T12_tidy_toys", "x6_pp_duck_moved") == "task"
 
 
 def test_every_layout_has_its_route():

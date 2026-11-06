@@ -141,8 +141,9 @@ class World:
             if m == n or not p["xy"] or not o["xy"] or p["z"] is None or o["z"] is None or p["z"] >= o["z"] - 0.005:
                 continue
             d = math.dist(o["xy"], p["xy"])
-            if d < 0.16 and (best is None or d < best[0]):
-                best = (d, m)
+            key = (round(d, 2), -p["z"])               # the nearest, and of a stack the one just below
+            if d < 0.16 and (best is None or key < best[0]):
+                best = (key, m)
         if not best:
             return ("sup", None)
         m = best[1]

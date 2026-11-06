@@ -1763,11 +1763,11 @@
 
 ## T12_tidy_toys
 
-> 快到睡觉时间了，把孩子的玩具小车和小黄鸭收进卧室的储物筐里。
+> 快到睡觉时间了，把孩子的玩具收起来。
 
 ### toys_out（对照）
 
-**情况**：小车在客厅地上，鸭子在电视柜 → 都放进筐
+**情况**：小车在客厅地上，鸭子在电视柜 → 都放进卧室的储物筐
 
 **成功条件**：
 
@@ -1782,7 +1782,7 @@
 
 ### duck_in_study（Task）
 
-**情况**：鸭子落在别处 → 找鸭子
+**情况**：鸭子落在别处，开局看不到 → 找鸭子
 
 **成功条件**：
 
@@ -1799,8 +1799,6 @@
 ### toys_everywhere（Task）
 
 **情况**：没有储物筐，只有一个半满的小箱和一个浅托盘；鸭子也不在原处 → 量尺寸分配，并找鸭子
-
-**指令**：快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。
 
 **成功条件**：
 
@@ -1831,92 +1829,80 @@
 - 摆法 `toys_everywhere`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
 - 摆法 `alt_dining_table_2`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=dining_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
 
-### h_dynamic_duck_taken（Task）
+### find_all_toys（Task）
 
-**情况**：没有筐，要按尺寸分配；小车放好后孩子把鸭子拿走 → 小车不动，找鸭子
-
-**指令**：快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。
+**情况**：玩具散在好几个房间，指令没说有几个；餐桌上有块黄海绵像积木但不是玩具 → 把各房间找遍，认出哪些是玩具，全放进筐，海绵别动（找到一两个就停算失败）
 
 **成功条件**：
 
-- `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `toy_bin_small` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - 第 2 组：
-    - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
-  - 第 3 组：
-    - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - 第 4 组：
-    - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
-
-**参考调用顺序**：
-
-- 摆法 `h_dynamic_duck_taken`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `navigate(destination=dining_table_2/top)`（补救） → 11. `look(target=dining_table_2/top)`（补救） → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
-- 摆法 `alt_tv_stand_2`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `navigate(destination=tv_stand_2/top)`（补救） → 11. `look(target=tv_stand_2/top)`（补救） → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
-
-### x6_gd_bins_capacity（Task）
-
-**情况**：没有筐，书架上有两个小箱，其中一个已经半满 → 判断哪个还装得下，分开放
-
-**指令**：快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。
-
-**成功条件**：
-
-- 摆法 `left_full`：
-  - `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `toy_car` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `toy_bin_small`、`toy_bin_small_2` 立着
+- 摆法 `all_four`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `teddy_bear` 在 `storage_basket` 里
+  - `stray_block` 在 `storage_basket` 里
+  - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - `storage_basket` 立着
   - 手里空着
-- 摆法 `right_full`：
-  - `stored_block_1` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `stored_block_2` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `stored_block_3` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `stored_block_4` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `stored_block_5` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `stored_block_6` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - `rubber_duck` 完全在 `toy_bin_small_2` 里（没有露出边沿）
-  - `toy_bin_small_2`、`toy_bin_small` 立着
+- 摆法 `car_duck_bear`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `teddy_bear` 在 `storage_basket` 里
+  - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - `storage_basket` 立着
+  - 手里空着
+- 摆法 `car_duck`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - `storage_basket` 立着
   - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `left_full`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_bin_small_2)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_bin_small_2)` → 9. `place(object=toy_car, receptacle=toy_bin_small_2)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
-- 摆法 `right_full`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_bin_small_2)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_bin_small)` → 9. `place(object=toy_car, receptacle=toy_bin_small)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small_2)` → 14. `drop(object=rubber_duck, container=toy_bin_small_2)`
+- 摆法 `car_duck`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `search(object=rubber_duck, region=living_room_0_1)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)`
+- 摆法 `car_duck_bear`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `search(object=rubber_duck, region=bathroom_0_1)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)` → 11. `search(object=teddy_bear, region=dining_room_0_1)` → 12. `navigate(destination=teddy_bear)` → 13. `pick(object=teddy_bear)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=teddy_bear, receptacle=storage_basket)`
+- 摆法 `all_four`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `search(object=rubber_duck, region=living_room_0_1)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)` → 11. `search(object=teddy_bear, region=dining_room_0_1)` → 12. `navigate(destination=teddy_bear)` → 13. `pick(object=teddy_bear)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=teddy_bear, receptacle=storage_basket)` → 16. `search(object=stray_block, region=living_room_0_0)` → 17. `navigate(destination=stray_block)` → 18. `pick(object=stray_block)` → 19. `navigate(destination=storage_basket)` → 20. `place(object=stray_block, receptacle=storage_basket)`
 
-### x6_pp_duck_moved（Task）
+### castle_stays（Task）
 
-**情况**：小车放进筐后孩子把鸭子拿到别的房间 → 小车不动，找鸭子
+**情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐
+
+**指令**：快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。
 
 **成功条件**：
 
-- `toy_car` 在 `storage_basket` 里
-- `rubber_duck` 在 `storage_basket` 里
-- `storage_basket` 立着
-- 手里空着
+- 摆法 `tall_two_loose`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `loose_block_1` 在 `storage_basket` 里
+  - `loose_block_2` 在 `storage_basket` 里
+  - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+  - `castle_block_2` 叠在 `castle_block_1` 上
+  - `castle_block_3` 叠在 `castle_block_2` 上
+  - `storage_basket` 立着
+  - 手里空着
+- 摆法 `short_one_loose`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `loose_block_1` 在 `storage_basket` 里
+  - `castle_block_1`、`castle_block_2` 没被挪动（离开局位置不超过 3 cm）
+  - `castle_block_2` 叠在 `castle_block_1` 上
+  - `storage_basket` 立着
+  - 手里空着
+- 摆法 `tall_none_loose`：
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+  - `castle_block_2` 叠在 `castle_block_1` 上
+  - `castle_block_3` 叠在 `castle_block_2` 上
+  - `storage_basket` 立着
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=dining_room_0_1)`（补救） → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `nod()`（补救）
-- 摆法 `study`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=living_room_0_1)`（补救） → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `nod()`（补救）
+- 摆法 `tall_two_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `navigate(destination=rubber_duck)` → 7. `pick(object=rubber_duck)` → 8. `navigate(destination=storage_basket)` → 9. `place(object=rubber_duck, receptacle=storage_basket)` → 10. `navigate(destination=loose_block_1)` → 11. `pick(object=loose_block_1)` → 12. `navigate(destination=storage_basket)` → 13. `place(object=loose_block_1, receptacle=storage_basket)` → 14. `navigate(destination=loose_block_2)` → 15. `pick(object=loose_block_2)` → 16. `navigate(destination=storage_basket)` → 17. `place(object=loose_block_2, receptacle=storage_basket)`
+- 摆法 `short_one_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `navigate(destination=rubber_duck)` → 7. `pick(object=rubber_duck)` → 8. `navigate(destination=storage_basket)` → 9. `place(object=rubber_duck, receptacle=storage_basket)` → 10. `navigate(destination=loose_block_1)` → 11. `pick(object=loose_block_1)` → 12. `navigate(destination=storage_basket)` → 13. `place(object=loose_block_1, receptacle=storage_basket)`
+- 摆法 `tall_none_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `pick(object=toy_car)` → 4. `navigate(destination=storage_basket)` → 5. `place(object=toy_car, receptacle=storage_basket)` → 6. `navigate(destination=rubber_duck)` → 7. `pick(object=rubber_duck)` → 8. `navigate(destination=storage_basket)` → 9. `place(object=rubber_duck, receptacle=storage_basket)`
 
 ---
 

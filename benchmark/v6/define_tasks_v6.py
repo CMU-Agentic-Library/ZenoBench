@@ -1309,60 +1309,71 @@ def T10(t):
 
 
 def T12(t):
-    CAR, DUCK, BASKET = "toy_car", "rubber_duck", "storage_basket"
-    base = OR(t, "toys_out")         # explore, explore, nav car, pick, nav basket, place, nav duck, pick, nav basket, place, nod
-    k = at(base, "navigate", destination=DUCK)
-    ev = t["variants"]["toys_everywhere"]
-    bins = {"left": (0.84, -0.43), "right": (1.13, -0.43)}
-    names = {"left": "toy_bin_small", "right": "toy_bin_small_2"}
+    CAR, DUCK, BASKET, LIVING = "toy_car", "rubber_duck", "storage_basket", "living_room_0_0"
+    BEAR, BLOCK, SPONGE = "teddy_bear", "stray_block", "kitchen_sponge"
 
-    def half_full(side):
-        """the six stored blocks in the ``side`` bin (two columns, the duck's gap in the middle)"""
-        x0, y0 = bins[side]
-        return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": 0.718,
-                                          "xy": [round(x0 + dx, 3), round(y0 + dy, 3)], "yaw_deg": 0}
-                for i, (dx, dy) in enumerate((a, b) for a in (-0.078, 0.078) for b in (-0.055, 0.0, 0.055))}
+    def put_away(x):
+        return [nav(x), pick(x), nav(BASKET), place(x, BASKET)]
 
-    def cap_case(full):
-        empty = "right" if full == "left" else "left"
-        add = {names["left"]: {"asset": "small_storage_bin", "support": "bookcase_2/top", "xy": list(bins["left"]), "yaw_deg": 0.0},
-               names["right"]: {"asset": "small_storage_bin", "support": "bookcase_2/top", "xy": list(bins["right"]), "yaw_deg": 0.0},
-               **half_full(full)}
-        goal = {"all": [["fully_inside", f"stored_block_{i}", names[full]] for i in range(1, 7)]
-                + [["fully_inside", CAR, names[empty]], ["fully_inside", DUCK, names[full]], ["upright", names[full]],
-                   ["upright", names[empty]], ["hand_empty", "right"]]}
-        route = [nav("bookcase_2/top"), look("bookcase_2/top"), S("measure", object=names["left"]),
-                 S("measure", object=names["right"]), S("explore_room", room="living_room_0_0"), nav(CAR), pick(CAR),
-                 nav(names[empty]), place(CAR, names[empty]), S("search", object=DUCK, region="living_room_0_1"),
-                 nav(DUCK), pick(DUCK), nav(names[full]), S("drop", object=DUCK, container=names[full])]
-        return dict(add=add, goal=goal, route=route)
-    moved = lambda region: base[:k] + recs(S("search", object=DUCK, region=region)) + base[k:]  # noqa: E731
+    def found(x, region):
+        return [S("search", object=x, region=region)] + put_away(x)
+    in_basket = lambda xs: [["inside", x, BASKET] for x in xs]  # noqa: E731
+    # find_all_toys: the toys are spread over the house and the instruction does not say which or how many; a
+    # sponge on the dining table looks like a toy block and is not one
+    spots = {DUCK: (P("desk_1/top", -0.95, -6.02, 128.7), "living_room_0_1"),
+             "duck_bath": (P("large_shelf_3/shelf_1", -1.75, 5.65), "bathroom_0_1"),
+             BEAR: (P("dining_table_2/top", 3.30, 6.80), "dining_room_0_1"),
+             BLOCK: (P("tv_stand_2/top", 7.40, 0.36), LIVING)}
+    all_cases = {}
+    for c, toys in (("car_duck", {DUCK: DUCK}), ("car_duck_bear", {DUCK: "duck_bath", BEAR: BEAR}),
+                    ("all_four", {DUCK: DUCK, BEAR: BEAR, BLOCK: BLOCK})):
+        add = {SPONGE: {"asset": "kitchen_sponge", **P("dining_table_2/top", 3.50, 7.20)}}
+        add.update({x: {"asset": "wooden_block" if x == BLOCK else x, **spots[k][0]} for x, k in toys.items() if x != DUCK})
+        all_cases[c] = dict(
+            move={DUCK: spots[toys[DUCK]][0]}, add=add,
+            goal={"all": in_basket([CAR, *toys]) + [["near_start", SPONGE, 0.03], ["upright", BASKET],
+                                                    ["hand_empty", "right"]]},
+            watch=[CAR, *toys, SPONGE, BASKET],
+            route=[S("explore_room", room=LIVING)] + put_away(CAR)
+            + [st for x, k in toys.items() for st in found(x, spots[k][1])])
+    # castle_stays: the kid's block castle on the living-room floor stays built; loose blocks next to it go away
+    def floor(x, y, z=0.0):
+        return {"asset": "wooden_block", "support": None, "z": z, "xy": [x, y], "yaw_deg": 0.0}
+    castle_cases = {}
+    for c, levels, loose in (("tall_two_loose", 3, 2), ("short_one_loose", 2, 1), ("tall_none_loose", 3, 0)):
+        tower = [f"castle_block_{i + 1}" for i in range(levels)]
+        strays = [f"loose_block_{i + 1}" for i in range(loose)]
+        add = {b: floor(5.00, 1.00, 0.05 * i) for i, b in enumerate(tower)}
+        add.update({b: floor(*xy) for b, xy in zip(strays, ((4.70, 1.30), (5.35, 1.45)))})
+        castle_cases[c] = dict(
+            add=add,
+            goal={"all": in_basket([CAR, DUCK, *strays]) + [["near_start", b, 0.03] for b in tower]
+                  + [["on_top_of", tower[i + 1], tower[i]] for i in range(levels - 1)]
+                  + [["upright", BASKET], ["hand_empty", "right"]]},
+            watch=[CAR, DUCK, *tower, *strays, BASKET],
+            route=[S("explore_room", room=LIVING)] + put_away(CAR) + put_away(DUCK)
+            + [st for b in strays for st in put_away(b)])
     return {
-        "x6_gd_bins_capacity": dict(
-            conditions=["joint_capacity"], base="toys_out", control="toys_everywhere",
-            remove=[BASKET], move={DUCK: copy.deepcopy(ev["move"][DUCK])}, watch=[CAR, DUCK, names["left"], names["right"]],
-            may_end_on_floor=[CAR],
-            instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on "
-                        "the bedroom bookcase, each toy completely inside a bin.",
-            instruction_zh="快到睡觉时间了。把孩子的玩具车和小黄鸭收进卧室书架上的两个小玩具筐里，每个玩具都要整个放进筐里。",
-            factor="which bin is already half full (capacity)",
-            challenge="no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed "
-                      "decides which); the car is on the living-room floor, the duck on the study desk",
-            rationale="the half-full bin only has room for the duck (between the block columns), the car needs the "
-                      "empty bin: allocate by remaining capacity, which flips with the seed",
-            cases={"left_full": cap_case("left"), "right_full": cap_case("right")}),
-        "x6_pp_duck_moved": dict(
-            base="toys_out", control="toys_out",
-            factor="where the event takes the resource",
-            challenge="once the car is in the basket, the kid carries the duck to another room (dining table or "
-                      "study desk)",
-            rationale="the car subgoal holds; the duck must be found where it went: keep the car, search the duck",
-            cases={"dining": dict(failures=[f_move("resource", DUCK, P("dining_table_2/top", 3.7, 6.3),
-                                                   ("place", {"object": CAR}), fid="resource_duck")],
-                                  route=moved("dining_room_0_1")),
-                   "study": dict(failures=[f_move("resource", DUCK, P("desk_1/top", -0.95, -6.02, 128.7),
-                                                  ("place", {"object": CAR}), fid="resource_duck")],
-                                 route=moved("living_room_0_1"))}),
+        "find_all_toys": dict(
+            base="toys_out", control="toys_out", conditions=["goal_items_unstated", "not_in_view", "multi_object_goal"],
+            factor="which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
+            challenge="the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, "
+                      "dining table, TV stand); a yellow sponge on the dining table is not a toy",
+            rationale="the instruction does not list the toys: search the rooms until every toy is found, tell toys "
+                      "from look-alikes (leave the sponge), put each into the basket; stopping after the first few "
+                      "fails",
+            cases=all_cases),
+        "castle_stays": dict(
+            base="toys_out", control="toys_out", conditions=["relational_exception", "multi_object_goal"],
+            instruction="It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid "
+                        "built; the kid wants to keep building it tomorrow.",
+            instruction_zh="快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+            factor="how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+            challenge="a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind "
+                      "beside it, the car and the duck",
+            rationale="the same kind of object is treated by its relation: blocks in the tower stay where they are, "
+                      "loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+            cases=castle_cases),
     }
 
 
@@ -1888,6 +1899,7 @@ REPLACED = {
                                                       "(Action); x6_gd_can_put_away is its Task form",
     ("T10_trash_the_can", "h_dynamic_can_moved"): "removed: no dynamic events in T10 (someone takes the can)",
     ("T11_collect_fruits", "h_dynamic_basket_taken"): "removed: no dynamic events in T11 (someone takes the basket)",
+    ("T12_tidy_toys", "h_dynamic_duck_taken"): "removed: no dynamic events in T12 (the kid takes the duck)",
     ("T10_trash_the_can", "far_can_far"): "removed: can_in_dining_room is the same search",
     ("T09_tomato_soup", "lid_on"): "removed: taking the lid off first is a local precondition (Action); it lives on "
                                    "inside lid_on_spoon_away (Action + Task)",
@@ -1936,6 +1948,9 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "relational_exception": {"type": "goal_inference", "decision": "decompose",
+                             "meaning": "objects of one kind are treated differently by how they stand: the blocks "
+                                        "built into the kid's castle stay, loose ones are put away"},
     "preference_allocation": {"type": "goal_inference", "decision": "decompose",
                               "meaning": "one of the items is set aside for a person; which one follows from what "
                                          "the instruction says about them (the kid does not like oranges)"},
@@ -2017,7 +2032,6 @@ SEED_EXT = {
     ('T10_trash_the_can', 'h_dynamic_can_moved'): 1,
     ('T12_tidy_toys', 'duck_in_study'): 0,
     ('T12_tidy_toys', 'h_action_grasp_and_ik'): 0,
-    ('T12_tidy_toys', 'h_dynamic_duck_taken'): 1,
     ('T12_tidy_toys', 'h_mixed_everywhere_ik'): 0,
     ('T12_tidy_toys', 'toys_everywhere'): 0,
     ('T13_breakfast_setup', 'bowl_on_cabinet'): 0,
@@ -2158,6 +2172,7 @@ NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
 TASK_TEXT = {
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
+    "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
 }
 
 

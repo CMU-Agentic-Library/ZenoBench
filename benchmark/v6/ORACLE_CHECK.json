@@ -1219,57 +1219,57 @@
   },
   {
    "task": "T12_tidy_toys",
-   "layout": "h_dynamic_duck_taken",
+   "layout": "find_all_toys__car_duck",
+   "steps": 10,
+   "atoms_checked": 4,
+   "atoms_geometric": 1,
+   "problems": [],
+   "variant": "find_all_toys"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "layout": "find_all_toys__car_duck_bear",
    "steps": 15,
-   "atoms_checked": 15,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "problems": [],
-   "variant": "h_dynamic_duck_taken"
+   "variant": "find_all_toys"
   },
   {
    "task": "T12_tidy_toys",
-   "layout": "h_dynamic_duck_taken__alt_tv_stand_2",
-   "steps": 15,
-   "atoms_checked": 15,
+   "layout": "find_all_toys__all_four",
+   "steps": 20,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "problems": [],
-   "variant": "h_dynamic_duck_taken"
+   "variant": "find_all_toys"
   },
   {
    "task": "T12_tidy_toys",
-   "layout": "x6_gd_bins_capacity__left_full",
-   "steps": 14,
-   "atoms_checked": 9,
-   "atoms_geometric": 2,
-   "problems": [],
-   "variant": "x6_gd_bins_capacity"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "x6_gd_bins_capacity__right_full",
-   "steps": 14,
-   "atoms_checked": 9,
-   "atoms_geometric": 2,
-   "problems": [],
-   "variant": "x6_gd_bins_capacity"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "x6_pp_duck_moved__dining",
-   "steps": 12,
-   "atoms_checked": 3,
+   "layout": "castle_stays__tall_two_loose",
+   "steps": 17,
+   "atoms_checked": 10,
    "atoms_geometric": 1,
    "problems": [],
-   "variant": "x6_pp_duck_moved"
+   "variant": "castle_stays"
   },
   {
    "task": "T12_tidy_toys",
-   "layout": "x6_pp_duck_moved__study",
-   "steps": 12,
-   "atoms_checked": 3,
+   "layout": "castle_stays__short_one_loose",
+   "steps": 13,
+   "atoms_checked": 7,
    "atoms_geometric": 1,
    "problems": [],
-   "variant": "x6_pp_duck_moved"
+   "variant": "castle_stays"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "layout": "castle_stays__tall_none_loose",
+   "steps": 9,
+   "atoms_checked": 8,
+   "atoms_geometric": 1,
+   "problems": [],
+   "variant": "castle_stays"
   },
   {
    "task": "T13_breakfast_setup",
