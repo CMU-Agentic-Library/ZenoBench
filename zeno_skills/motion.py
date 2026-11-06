@@ -161,7 +161,10 @@ def box_spheres(lo, hi, n_max=HELD_SPHERES):
 
 class _Locks:
     """In-place rewrite of locked joints' fixed transforms (cuRobo's own
-    update_locked_joints re-parses the URDF: seconds per call)."""
+    update_locked_joints re-parses the URDF: seconds per call).  A joint that mimics a locked one
+    (a gripper's right finger mimics its left finger axis) is locked with it: cuRobo fixed it at
+    its leader's lock value, and it follows the leader's value (multiplier * v + offset) unless
+    ``set`` is given its own."""
 
     def __init__(self, models, lock, urdf):
         joints = {j.get("name"): j for j in ET.parse(urdf).getroot().findall("joint")}
@@ -170,20 +173,29 @@ class _Locks:
             kc = m.kinematics_config
             if all(kc.fixed_transforms.data_ptr() != x.fixed_transforms.data_ptr() for x in self.models):
                 self.models.append(kc)
-        self.entries = {}
+        self.entries, self.values, self.followers = {}, {}, {}
         for name, v0 in lock.items():
-            j = joints[name]
-            child = j.find("child").get("link")
-            axis = np.array([float(x) for x in j.find("axis").get("xyz").split()]) if j.find("axis") is not None \
-                else np.zeros(3)
-            typ = j.get("type")
-            per = []
-            for kc in self.models:
-                i = kc.link_name_to_idx_map[child]
-                F0 = kc.fixed_transforms[i].cpu().numpy().astype(float)
-                per.append((kc, i, F0 @ np.linalg.inv(self._motion(typ, axis, v0))))
-            self.entries[name] = (typ, axis, per)
-        self.values = dict(lock)
+            self._entry(joints[name], v0)
+            for j in joints.values():
+                m = j.find("mimic")
+                if m is not None and m.get("joint") == name:
+                    mult, off = float(m.get("multiplier", 1.0)), float(m.get("offset", 0.0))
+                    self._entry(j, mult * v0 + off)
+                    self.followers.setdefault(name, []).append((j.get("name"), mult, off))
+
+    def _entry(self, j, v0):
+        name = j.get("name")
+        child = j.find("child").get("link")
+        axis = np.array([float(x) for x in j.find("axis").get("xyz").split()]) if j.find("axis") is not None \
+            else np.zeros(3)
+        typ = j.get("type")
+        per = []
+        for kc in self.models:
+            i = kc.link_name_to_idx_map[child]
+            F0 = kc.fixed_transforms[i].cpu().numpy().astype(float)
+            per.append((kc, i, F0 @ np.linalg.inv(self._motion(typ, axis, v0))))
+        self.entries[name] = (typ, axis, per)
+        self.values[name] = float(v0)
 
     @staticmethod
     def _motion(typ, axis, v):
@@ -196,6 +208,11 @@ class _Locks:
 
     def set(self, values):
         import torch
+        values = dict(values)
+        for name, fs in self.followers.items():
+            if name in values:
+                for f, mult, off in fs:
+                    values.setdefault(f, mult * float(values[name]) + off)
         for name, v in values.items():
             v = float(v)
             if abs(self.values.get(name, 1e9) - v) < 1e-7:
@@ -1140,14 +1157,11 @@ class Motion:
         rigidly on its TCP (where it sits in the hand now).  The base column has no spheres (its
         collider is off): its footprint is checked on the annotated boxes (WorldModel)."""
         import torch
-        model, names, link_of = self._monitor_model()
+        model, names, link_of, _ = self._monitor_model()
+        self._mon_set(rig)
         rows = []
-        head = rig.head_q()
-        fingers = {}
-        for side, f in (("right", rig.fingers()), ("left", rig.left_fingers())):
-            fingers[f"{side}_gripper_left_finger_axis"], fingers[f"{side}_gripper_right_finger_axis"] = map(float, f[:2])
         for qr, ql in postures:
-            vals = {"base_x": 0.0, "base_y": 0.0, "base_yaw": 0.0, **head, **fingers}
+            vals = {"base_x": 0.0, "base_y": 0.0, "base_yaw": 0.0}
             vals.update(zip(rig.kin.names, np.asarray(qr, float)))
             vals.update(zip(rig.left_kin.names[2:], np.asarray(ql, float)[-7:]))
             rows.append([float(vals.get(n, 0.0)) for n in names])
@@ -1315,8 +1329,9 @@ class Motion:
 
     # ------------------------------------------------------------- contact monitor
     def _monitor_model(self):
-        """Whole-robot kinematics (base, both arms, head, fingers: nothing locked) for the
-        contact monitor, apart from the arm solvers so their locks are never touched."""
+        """Whole-robot kinematics (base, both arms) for the contact monitor and the base check,
+        apart from the arm solvers so their locks are never touched; the head and finger joints
+        are locked in the robot config, set to the robot's values before each use (_mon_set)."""
         if getattr(self, "_mon", None) is None:
             import yaml
             from curobo.cuda_robot_model.cuda_robot_model import CudaRobotModel
@@ -1330,8 +1345,17 @@ class Motion:
             kc = model.kinematics_config
             by_idx = {v: k for k, v in kc.link_name_to_idx_map.items()}
             links = [by_idx.get(int(i), str(i)) for i in kc.link_sphere_idx_map.cpu().numpy()]
-            self._mon = (model, list(model.joint_names), links)
+            self._mon = (model, list(model.joint_names), links, _Locks([model], k["lock_joints"], k["urdf_path"]))
         return self._mon
+
+    def _mon_set(self, rig):
+        """The monitor model's head and both fingers of each hand where the robot has them (they
+        are locked joints there: values for them in a joint row were dropped, the fingers stood
+        fully open and the head straight ahead)."""
+        vals = dict(rig.head_q())
+        for side, f in (("right", rig.fingers()), ("left", rig.left_fingers())):
+            vals[f"{side}_gripper_left_finger_axis"], vals[f"{side}_gripper_right_finger_axis"] = map(float, f[:2])
+        self._monitor_model()[3].set(vals)
 
     def _entity(self, c):
         """The name a contact with collider ``c`` is reported under: the object or part, else the
@@ -1414,14 +1438,12 @@ class Motion:
         when this returns."""
         import torch
         from curobo.geom.sdf.world import CollisionQueryBuffer
-        model, names, links = self._monitor_model()
+        model, names, links, _ = self._monitor_model()
+        self._mon_set(rig)
         bx, by, byaw = rig.base_pose()
         vals = {"base_x": bx, "base_y": by, "base_yaw": math.radians(byaw)}
         vals.update(zip(rig.kin.names, rig.q()))
         vals.update(zip(rig.left_kin.names[2:], rig.left_q()[2:]))
-        vals.update(rig.head_q())
-        for side, f in (("right", rig.fingers()), ("left", rig.left_fingers())):
-            vals[f"{side}_gripper_left_finger_axis"], vals[f"{side}_gripper_right_finger_axis"] = map(float, f[:2])
         q = torch.tensor([[float(vals.get(n, 0.0)) for n in names]], device="cuda", dtype=torch.float32)
         sph = model.get_state(q).link_spheres_tensor.view(1, 1, -1, 4).contiguous()
         carried = sorted({h["name"] for h in (rig.held, getattr(rig, "left_held", None))
