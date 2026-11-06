@@ -10846,7 +10846,7 @@
    18,
    19
   ],
-  "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+  "instruction": "Lunch is over and the apple is still on the dining table. Put it away.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -10906,7 +10906,7 @@
    18,
    19
   ],
-  "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+  "instruction": "Lunch is over and the apple is still on the dining table. Put it away.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -10969,7 +10969,7 @@
    18,
    19
   ],
-  "instruction": "Put the apple from the dining table into the fruit basket on the bedroom bookcase; if the basket is not there, put it on the serving tray on the study desk.",
+  "instruction": "Lunch is over and the apple is still on the dining table. Put it away.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,

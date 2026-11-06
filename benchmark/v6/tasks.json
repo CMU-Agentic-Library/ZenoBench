@@ -38452,8 +38452,8 @@
    "source": [
     "skill_library/tasks.json:collect_fruits"
    ],
-   "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
-   "instruction_zh": "午饭吃完了，苹果还在餐桌上。把它收进卧室矮书架上的果篮里；果篮不在的话，就放进书桌上的托盘里。",
+   "instruction": "Lunch is over and the apple is still on the dining table. Put it away.",
+   "instruction_zh": "午饭吃完了，苹果还在餐桌上，把它收起来。",
    "scene": {
     "base": "tasks/collect_fruits",
     "remove": [
@@ -38712,8 +38712,6 @@
      "conditions": [
       "decoy_destination"
      ],
-     "instruction": "Put the apple from the dining table into the fruit basket on the bedroom bookcase; if the basket is not there, put it on the serving tray on the study desk.",
-     "instruction_zh": "请把餐桌上的苹果放进卧室书架的果篮；若果篮不在，就放进书桌的托盘。",
      "watch": [
       "apple",
       "serving_tray",

@@ -2153,8 +2153,21 @@ NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
                    ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"]}
 
 
+# a task whose v5 instruction spelled out every place and fallback: one short instruction for the task and all of
+# its v5 variants (where things go is for the robot to work out)
+TASK_TEXT = {
+    "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
+                           "午饭吃完了，苹果还在餐桌上，把它收起来。"),
+}
+
+
 def build_task(t: dict) -> dict:
     t = copy.deepcopy(t)
+    if t["task_id"] in TASK_TEXT:
+        t["instruction"], t["instruction_zh"] = TASK_TEXT[t["task_id"]]
+        for v in t["variants"].values():
+            v.pop("instruction", None)
+            v.pop("instruction_zh", None)
     fams = FAMILIES[t["task_id"]](t) if t["task_id"] in FAMILIES else {}
     if t["task_id"] in LONG:
         fams.update(LONG[t["task_id"]](t))
