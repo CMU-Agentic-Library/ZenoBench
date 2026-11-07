@@ -158,29 +158,19 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             from benchmark.planners import load_policy
             pol = load_policy(policy)
             report["stop_reason"] = "budget"     # max_calls reached without the planner ending the episode
-            if hasattr(pol, "attach"):
-                pol.attach(out)                  # where a planner keeps its own step log (vlm_steps.jsonl)
-            menu = registry.menu(track) if registry is not None else task.get("skill_menu")
-            if menu is None:                     # a catalog without its own menu (v6): the built-in skills
-                from skill_ext import SkillRegistry
-                menu = SkillRegistry.default().menu("fixed")
-            pol.reset(task_instruction=task["instruction"], skills=menu)
+            pol.reset(task_instruction=task["instruction"],
+                      skills=registry.menu(track) if registry is not None else task.get("skill_menu"))
             for i in range(max_calls or profile_max_calls(prof, task)):
                 obs = ep.observation("path", f"step{i}")
                 t0 = time.time()
                 act = pol.next_call(obs)
                 planner_s = round(time.time() - t0, 2)
                 if act is None:
-                    err = getattr(pol, "error", None)
-                    report["stop_reason"] = "planner_error" if err else "planner_done"
-                    if err:
-                        report["planner_error"] = err
+                    report["stop_reason"] = "planner_done"
                     break
                 before = state_summary(rig, task)
                 t1 = time.time()
                 _, record = ep.call({"contract": act["skill"], "args": act.get("args", {})})
-                print("CALL", i, record.get("action"), "OK" if record.get("success") else
-                      f"FAIL {record.get('error_code')}: {record.get('error')}", flush=True)
                 log_row({"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": record,
                          "planner_note": act.get("note", ""), "planner_s": planner_s,
                          "wall_s": round(time.time() - t1, 1), "tick": rig.tick, "state_before": before,
