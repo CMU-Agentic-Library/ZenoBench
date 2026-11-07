@@ -263,8 +263,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     for at in atoms(goal):                       # the goal allows it, the route uses another (another mug)
         if at[0] in PUT and not set(names(at[1])) & stay:     # a castle block on another one stays put
             for n in names(at[1]):
-                if n in objs and n not in role:
-                    role[n] = "alt"
+                if n in objs and n not in role:     # already where the goal wants it: it stays (the juice in the fridge)
+                    role[n] = "keep" if at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
     for at in atoms(goal):                       # what the place is judged against (the coffee drinker's mug)
         if at[0] == "near_any":
             for n in at[2]:
