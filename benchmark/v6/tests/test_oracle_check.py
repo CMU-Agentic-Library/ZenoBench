@@ -72,3 +72,14 @@ def test_cup_on_the_desk_beside_the_bed_passes():
                               **({"receptacle": "desk_1/top", "hint_xy": [0.20, -2.95]}
                                  if s["args"].get("receptacle") == "bookcase_3/top" else {})}) for s in st]
     assert edited("T28", "cup_on_counter", to_desk) == []
+
+
+@pytest.mark.parametrize("tid,vid", [("T21", "no_tissue_sponge_away"), ("T28", "his_cup_put_away"),
+                                     ("T30", "not_enough_bowls")])
+def test_dependent_decisions_need_a_new_plan(tid, vid):
+    """the control's route, fixed before the episode, does not solve a dependent-decisions variant (with the gate)"""
+    t = TASKS[tid]
+    m = t["v6_variants"][vid]
+    lid, ctl = m["layouts"][0], t["v6_variants"][m["control"]]["layouts"][0]
+    assert check(t, lid, gate=True)["problems"] == []
+    assert edited(tid, lid, lambda st: copy.deepcopy(t["routes"][t["oracle"][ctl]]["steps"])) != []

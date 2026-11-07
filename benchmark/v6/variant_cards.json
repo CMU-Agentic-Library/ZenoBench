@@ -16878,6 +16878,63 @@
   "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T21_bring_tissues/no_tissue_sponge_away": {
+  "variant": "no_tissue_sponge_away",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "spare_sponge"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_absent",
+    "item_put_away",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "spare_sponge",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_no_tissue_sponge_away",
+  "challenge": "no tissues in the house and nothing to wipe with in sight; a dry sponge is kept in the low wall cabinet",
+  "rationale": "each decision rests on what the last one found: the tissues are not where they are kept, so something else that wipes; nothing like that is out, so where such things are kept; take it out, close the door",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T22_put_away_shopping/juice_on_table": {
   "variant": "juice_on_table",
   "category": "control",
@@ -18073,13 +18130,18 @@
      "guest_juice"
     ],
     [
-     "on",
-     "guest_cup",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "guest_cup"
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
     ],
     [
      "hand_empty",
@@ -18135,32 +18197,21 @@
      "guest_juice"
     ],
     [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
+     "count_on_at_least",
      [
-      "on",
       "cup_counter_b",
-      "tv_stand_2/top"
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
      ],
-     [
-      "upright",
-      "cup_counter_b"
-     ]
+     "tv_stand_2/top",
+     1
     ],
     [
-     [
-      "on",
-      "cup_kitchen_cabinet",
-      "tv_stand_2/top"
-     ],
-     [
-      "upright",
-      "cup_kitchen_cabinet"
-     ]
+     "hand_empty",
+     "right"
     ]
    ]
   },
@@ -18214,13 +18265,18 @@
      "cold_juice"
     ],
     [
-     "on",
-     "guest_cup",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "guest_cup"
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
     ],
     [
      "near_start",
@@ -18287,13 +18343,18 @@
      "cold_juice"
     ],
     [
-     "on",
-     "guest_cup",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "guest_cup"
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
     ],
     [
      "is_closed",
@@ -18356,22 +18417,19 @@
      "guest_juice"
     ],
     [
-     "on",
-     "guest_cup",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "guest_cup"
-    ],
-    [
-     "on",
-     "guest_cup_2",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "guest_cup_2"
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "guest_cup_2",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
     ],
     [
      "hand_empty",
@@ -18429,13 +18487,12 @@
      "guest_juice"
     ],
     [
-     "on",
-     "kid_cup",
-     "tv_stand_2/top"
-    ],
-    [
-     "upright",
-     "kid_cup"
+     "count_on_at_least",
+     [
+      "kid_cup"
+     ],
+     "tv_stand_2/top",
+     1
     ],
     [
      "near_start",
@@ -19526,6 +19583,80 @@
   "rationale": "his bed is the one with his bear: the cup goes next to that bed",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T28_cup_to_bedside/his_cup_put_away": {
+  "variant": "his_cup_put_away",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "counter_mug",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "item_put_away",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "kid_cup",
+     [
+      "bookcase_3/top",
+      "desk_1/top"
+     ]
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "counter_mug",
+     0.03
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_his_cup_put_away",
+  "challenge": "on the counter a china cup and a mug, neither of them his; his plastic cup was put away in the low cabinet",
+  "rationale": "each decision rests on what the last one found: the cups in sight are not his (not any cup will do), so his was put away: look in the cabinet, take it, close the door",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T28_cup_to_bedside/cup_out_of_view": {
   "variant": "cup_out_of_view",
   "category": "task",
@@ -20094,13 +20225,16 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "soup_bowl_1",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "soup_bowl_1"
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     1
     ],
     [
      "hand_empty",
@@ -20161,7 +20295,11 @@
      [
       "soup_bowl_1",
       "soup_bowl_2",
-      "soup_bowl_3"
+      "soup_bowl_3",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
      ],
      "kitchen_island/top",
      3
@@ -20176,6 +20314,76 @@
   "oracle_route": "v6_how_many",
   "challenge": "three spoons laid out at the dining table; three clean bowls on the cabinet",
   "rationale": "as many bowls as places at the table: three",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/not_enough_bowls": {
+  "variant": "not_enough_bowls",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "seat_spoon_1",
+    "seat_spoon_2",
+    "seat_spoon_3",
+    "soup_bowl_1",
+    "stove_soup"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "item_put_away",
+    "not_in_view",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     3
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_not_enough_bowls",
+  "challenge": "three spoons laid out at the dining table; one clean bowl on the cabinet, one inside it, the others in the small kitchen",
+  "rationale": "each decision rests on what the last one found: three places, so three bowls; one is out, so look where bowls are kept (the cabinet: one more, close the door); still one short, so the other kitchen",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T30_bowls_for_soup/clean_one": {
@@ -20213,13 +20421,16 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "soup_bowl_1",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "soup_bowl_1"
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     1
     ],
     [
      "near_start",
@@ -20272,13 +20483,16 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "soup_bowl_1",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "soup_bowl_1"
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     1
     ],
     [
      "is_closed",
@@ -20336,13 +20550,18 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "spare_mug",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "spare_mug"
+     "count_on_at_least",
+     [
+      "spare_mug",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "kitchen_island/top",
+     1
     ],
     [
      "hand_empty",
@@ -20391,13 +20610,16 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "soup_bowl_1",
-     "kitchen_island/top"
-    ],
-    [
-     "upright",
-     "soup_bowl_1"
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     1
     ],
     [
      "near_start",

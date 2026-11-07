@@ -2736,6 +2736,20 @@
 - 摆法 `kid_north`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 7.45])`
 - 摆法 `kid_south`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 6.4])`
 
+### no_tissue_sponge_away（Task）
+
+**情况**：家里没纸巾，外面也没有能擦的东西，干海绵收在矮柜里 → 纸巾不在老地方 → 换能擦的东西 → 外面没有 → 去收纳的地方找，拿出来关好门
+
+**成功条件**：
+
+- `spare_sponge` 在 `dining_table_2/top` 上
+- `kitchen_cabinet_4` 关着
+- 手里空着
+
+**参考调用顺序**：
+
+1. `look(target=tv_stand_2/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `navigate(destination=spare_sponge)` → 9. `pick(object=spare_sponge)` → 10. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 11. `close(articulated=kitchen_cabinet_4)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
+
 ---
 
 ## T22_put_away_shopping
@@ -3053,8 +3067,8 @@
 **成功条件**：
 
 - `guest_juice` 在 `tv_stand_2/top` 上
-- `guest_juice`、`guest_cup` 立着
-- `guest_cup` 在 `tv_stand_2/top` 上
+- `guest_juice` 立着
+- 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - 手里空着
 
 **参考调用顺序**：
@@ -3069,14 +3083,8 @@
 
 - `guest_juice` 在 `tv_stand_2/top` 上
 - `guest_juice` 立着
+- 这 6 件中至少 1 件还在 `tv_stand_2/top` 上：`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup_counter_b` 在 `tv_stand_2/top` 上
-    - `cup_counter_b` 立着
-  - 第 2 组：
-    - `cup_kitchen_cabinet` 在 `tv_stand_2/top` 上
-    - `cup_kitchen_cabinet` 立着
 
 **参考调用顺序**：
 
@@ -3091,8 +3099,8 @@
 **成功条件**：
 
 - `cold_juice` 在 `tv_stand_2/top` 上
-- `cold_juice`、`guest_cup` 立着
-- `guest_cup` 在 `tv_stand_2/top` 上
+- `cold_juice` 立着
+- 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
 - `breakfast_fridge` 关着
 - 手里空着
@@ -3108,8 +3116,8 @@
 **成功条件**：
 
 - `cold_juice` 在 `tv_stand_2/top` 上
-- `cold_juice`、`guest_cup` 立着
-- `guest_cup` 在 `tv_stand_2/top` 上
+- `cold_juice` 立着
+- 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - `breakfast_fridge` 关着
 - 手里空着
 
@@ -3126,9 +3134,8 @@
 **成功条件**：
 
 - `guest_juice` 在 `tv_stand_2/top` 上
-- `guest_juice`、`guest_cup`、`guest_cup_2` 立着
-- `guest_cup` 在 `tv_stand_2/top` 上
-- `guest_cup_2` 在 `tv_stand_2/top` 上
+- `guest_juice` 立着
+- 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - 手里空着
 
 **参考调用顺序**：
@@ -3144,8 +3151,8 @@
 **成功条件**：
 
 - `guest_juice` 在 `tv_stand_2/top` 上
-- `guest_juice`、`kid_cup` 立着
-- `kid_cup` 在 `tv_stand_2/top` 上
+- `guest_juice` 立着
+- 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`kid_cup`
 - `guest_cup` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -3411,6 +3418,22 @@
 - 摆法 `east`：1. `navigate(destination=kid_cup)` → 2. `pick(object=kid_cup)` → 3. `look(target=mattress_2/top)` → 4. `navigate(destination=bookcase_3/top)` → 5. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
 - 摆法 `south`：1. `navigate(destination=kid_cup)` → 2. `pick(object=kid_cup)` → 3. `look(target=mattress_1/top)` → 4. `navigate(destination=cell_shelf_2/top)` → 5. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.42, -10.8])`
 
+### his_cup_put_away（Task）
+
+**情况**：台面上有瓷杯和马克杯，都不是他的；他的塑料杯收在矮柜里 → 看到的杯子不是他的 → 推断收起来了 → 打开矮柜找，拿出来关好门
+
+**成功条件**：
+
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+- `kid_cup` 立着
+- `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
+- `kitchen_cabinet_4` 关着
+- 手里空着
+
+**参考调用顺序**：
+
+1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `navigate(destination=kid_cup)` → 8. `pick(object=kid_cup)` → 9. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 10. `close(articulated=kitchen_cabinet_4)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
+
 ### cup_out_of_view（Task）
 
 **情况**：杯子落在餐桌上，看不到 → 先找
@@ -3554,8 +3577,7 @@
 
 **成功条件**：
 
-- `soup_bowl_1` 在 `kitchen_island/top` 上
-- `soup_bowl_1` 立着
+- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - 手里空着
 
 **参考调用顺序**：
@@ -3568,12 +3590,26 @@
 
 **成功条件**：
 
-- 这 3 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
+- 这 7 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - 手里空着
 
 **参考调用顺序**：
 
 1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=soup_bowl_2)` → 7. `pick(object=soup_bowl_2)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 10. `navigate(destination=soup_bowl_3)` → 11. `pick(object=soup_bowl_3)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+
+### not_enough_bowls（Task）
+
+**情况**：餐桌摆了三把勺子；柜上只有一个碗，柜里一个，另一个厨房还有 → 要三个 → 外面只有一个 → 打开柜子再拿一个、关门 → 还差一个 → 去另一个厨房找
+
+**成功条件**：
+
+- 这 5 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+- `kitchen_cabinet_6` 关着
+- 手里空着
+
+**参考调用顺序**：
+
+1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `navigate(destination=bowl_inside_kitchen_cabinet)` → 12. `pick(object=bowl_inside_kitchen_cabinet)` → 13. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 14. `close(articulated=kitchen_cabinet_6)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=bowl_inside_kitchen_cabinet, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 17. `search(object=bowl_kitchen_cabinet, region=kitchen_0_1)` → 18. `navigate(destination=bowl_kitchen_cabinet)` → 19. `pick(object=bowl_kitchen_cabinet)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=bowl_kitchen_cabinet, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
 
 ### clean_one（Task）
 
@@ -3581,8 +3617,7 @@
 
 **成功条件**：
 
-- `soup_bowl_1` 在 `kitchen_island/top` 上
-- `soup_bowl_1` 立着
+- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - `full_bowl` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -3596,8 +3631,7 @@
 
 **成功条件**：
 
-- `soup_bowl_1` 在 `kitchen_island/top` 上
-- `soup_bowl_1` 立着
+- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - `kitchen_cabinet_4` 关着
 - 手里空着
 
@@ -3611,8 +3645,7 @@
 
 **成功条件**：
 
-- `spare_mug` 在 `kitchen_island/top` 上
-- `spare_mug` 立着
+- 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
 - 手里空着
 
 **参考调用顺序**：
@@ -3625,8 +3658,7 @@
 
 **成功条件**：
 
-- `soup_bowl_1` 在 `kitchen_island/top` 上
-- `soup_bowl_1` 立着
+- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
 - `spare_plate` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 

@@ -1,7 +1,7 @@
 {
- "variants": 167,
- "episodes": 1670,
- "static_ok": 1670,
+ "variants": 170,
+ "episodes": 1700,
+ "static_ok": 1700,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -85,8 +85,8 @@
    "static_ok": 60
   },
   "T21_bring_tissues": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T22_put_away_shopping": {
    "episodes": 60,
@@ -113,22 +113,22 @@
    "static_ok": 60
   },
   "T28_cup_to_bedside": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T29_clear_table_for_dinner": {
    "episodes": 60,
    "static_ok": 60
   },
   "T30_bowls_for_soup": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   }
  },
  "categories": {
   "control": 30,
-  "task": 133,
+  "task": 136,
   "action_task": 4
  },
- "tasks_sha1": "1e08254082a054c359cbfa7506e2a129d463a81d"
+ "tasks_sha1": "93029527b3410673cd56e6b899483ec724c90e9e"
 }

@@ -46,8 +46,8 @@ def scene(base):
 
 
 class World:
-    def __init__(self, task, lid):
-        self.task, self.lid = task, lid
+    def __init__(self, task, lid, gate=False):
+        self.task, self.lid, self.gate = task, lid, gate
         self.ann, raw = scene(task["scene"]["base"])
         v = task["variants"][lid]
         self.supports = {s["name"]: s for s in raw["supports"]}
@@ -107,6 +107,12 @@ class World:
         self.heating = set()
         self.flags = set()                      # ("wiped", s), ("stirred", c), ("hidden", o), ("observed", x), ...
         self.problems = []
+        if gate:                                # what the robot sees from its start: the start room in plain sight
+            st = (v.get("layout") or {}).get("start") or {}
+            room = st.get("room") or self.room_of(raw["robot"]["xy"])
+            for n in self.obj:
+                if n not in (st.get("hide") or []) and self.plain(n) and self.room_of(self.obj[n]["xy"]) == room:
+                    self.flags.add(("observed", n))
 
     # ------------------------------------------------------------------ helpers
     def tags(self, n):
@@ -226,6 +232,30 @@ class World:
                 return f
         return None
 
+    def room_of(self, xy):
+        if xy is None:
+            return None
+        x, y = xy
+        for r, info in self.rooms.items():
+            for (ax, ay), (bx, by), (cx, cy) in info["triangles"]:
+                d = (by - cy) * (ax - cx) + (cx - bx) * (ay - cy)
+                if abs(d) < 1e-12:
+                    continue
+                u = ((by - cy) * (x - cx) + (cx - bx) * (y - cy)) / d
+                w = ((cy - ay) * (x - cx) + (ax - cx) * (y - cy)) / d
+                if u >= 0 and w >= 0 and u + w <= 1:
+                    return r
+        return None
+
+    def plain(self, n):
+        """in plain sight: not in closed furniture, not under a lid"""
+        return not self.closed_around(n) and not any(c in self.covered for c in self.chain(n)[1:])
+
+    def need_seen(self, i, s, n):
+        """the benchmark's gate: an object argument must have been observed"""
+        if self.gate and n in self.obj and ("observed", n) not in self.flags and self.hand != n:
+            self.bad(i, s, f"{n} was never observed")
+
     def see(self, t):
         """A look at a place: it and what stands there in plain sight (not in closed furniture, not under a lid)."""
         self.flags.add(("observed", t))
@@ -275,7 +305,10 @@ class World:
         a, k = s["args"], s["skill"]
         if k == "navigate":
             d = a["destination"]
+            self.need_seen(i, s, d)
             self.at, self.at_name = self.xy(d), d
+            if self.gate and self.at is not None:   # arrived: what stands there is in view
+                self.see(self.support_of(d) or d if d in self.obj else d)
             if self.at is None:
                 self.bad(i, s, f"unknown destination {d}")
         elif k in ("search",):
@@ -293,6 +326,9 @@ class World:
                 self.open.discard(f)
         elif k == "explore_room":
             self.at, self.at_name = None, None
+            for n in self.obj:
+                if self.plain(n) and self.room_of(self.obj[n]["xy"]) == a.get("room"):
+                    self.flags.add(("observed", n))
         elif k in ("look", "inspect", "identify", "measure"):
             t = a.get("target") or a.get("receptacle") or a.get("object")
             if k == "inspect":
@@ -302,6 +338,7 @@ class World:
             self.need_near(i, s, a["target"])
         elif k == "pick":
             n = a["object"]
+            self.need_seen(i, s, n)
             self.need_empty(i, s)
             if n not in self.obj:
                 return self.bad(i, s, f"{n} is not in the scene")
@@ -533,8 +570,8 @@ class World:
         return fails, any_ok, groups, checked, unchecked
 
 
-def check(task, lid):
-    w = World(task, lid)
+def check(task, lid, gate=False):
+    w = World(task, lid, gate)
     v = task["variants"][lid]
     steps = task["routes"][task["oracle"][lid]]["steps"]
     fires = {}

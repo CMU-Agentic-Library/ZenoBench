@@ -1,6 +1,6 @@
 {
- "routes": 265,
- "ok": 265,
+ "routes": 268,
+ "ok": 268,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1857,6 +1857,15 @@
    "variant": "the_kids_side"
   },
   {
+   "task": "T21_bring_tissues",
+   "layout": "no_tissue_sponge_away",
+   "steps": 13,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "no_tissue_sponge_away"
+  },
+  {
    "task": "T22_put_away_shopping",
    "layout": "juice_on_table",
    "steps": 7,
@@ -2032,7 +2041,7 @@
    "layout": "drink_on_island",
    "steps": 8,
    "atoms_checked": 3,
-   "atoms_geometric": 2,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "drink_on_island"
   },
@@ -2040,8 +2049,8 @@
    "task": "T25_drink_for_guest",
    "layout": "cup_elsewhere",
    "steps": 9,
-   "atoms_checked": 4,
-   "atoms_geometric": 3,
+   "atoms_checked": 3,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "cup_elsewhere"
   },
@@ -2050,7 +2059,7 @@
    "layout": "cold_one",
    "steps": 12,
    "atoms_checked": 5,
-   "atoms_geometric": 2,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "cold_one"
   },
@@ -2059,7 +2068,7 @@
    "layout": "drink_in_fridge",
    "steps": 13,
    "atoms_checked": 4,
-   "atoms_geometric": 2,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "drink_in_fridge"
   },
@@ -2067,8 +2076,8 @@
    "task": "T25_drink_for_guest",
    "layout": "two_guests",
    "steps": 12,
-   "atoms_checked": 4,
-   "atoms_geometric": 3,
+   "atoms_checked": 3,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "two_guests"
   },
@@ -2077,7 +2086,7 @@
    "layout": "little_guest",
    "steps": 8,
    "atoms_checked": 4,
-   "atoms_geometric": 2,
+   "atoms_geometric": 1,
    "problems": [],
    "variant": "little_guest"
   },
@@ -2254,6 +2263,15 @@
   },
   {
    "task": "T28_cup_to_bedside",
+   "layout": "his_cup_put_away",
+   "steps": 12,
+   "atoms_checked": 5,
+   "atoms_geometric": 1,
+   "problems": [],
+   "variant": "his_cup_put_away"
+  },
+  {
+   "task": "T28_cup_to_bedside",
    "layout": "cup_out_of_view",
    "steps": 6,
    "atoms_checked": 2,
@@ -2338,7 +2356,7 @@
    "layout": "bowl_on_cabinet",
    "steps": 4,
    "atoms_checked": 2,
-   "atoms_geometric": 1,
+   "atoms_geometric": 0,
    "problems": [],
    "variant": "bowl_on_cabinet"
   },
@@ -2353,10 +2371,19 @@
   },
   {
    "task": "T30_bowls_for_soup",
+   "layout": "not_enough_bowls",
+   "steps": 21,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "problems": [],
+   "variant": "not_enough_bowls"
+  },
+  {
+   "task": "T30_bowls_for_soup",
    "layout": "clean_one",
    "steps": 5,
    "atoms_checked": 3,
-   "atoms_geometric": 1,
+   "atoms_geometric": 0,
    "problems": [],
    "variant": "clean_one"
   },
@@ -2365,7 +2392,7 @@
    "layout": "bowl_put_away",
    "steps": 11,
    "atoms_checked": 3,
-   "atoms_geometric": 1,
+   "atoms_geometric": 0,
    "problems": [],
    "variant": "bowl_put_away"
   },
@@ -2374,7 +2401,7 @@
    "layout": "no_bowl",
    "steps": 5,
    "atoms_checked": 2,
-   "atoms_geometric": 1,
+   "atoms_geometric": 0,
    "problems": [],
    "variant": "no_bowl"
   },
@@ -2383,7 +2410,7 @@
    "layout": "bowl_not_plate",
    "steps": 5,
    "atoms_checked": 3,
-   "atoms_geometric": 1,
+   "atoms_geometric": 0,
    "problems": [],
    "variant": "bowl_not_plate"
   }
