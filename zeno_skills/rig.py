@@ -1138,3 +1138,24 @@ class Rig:
             w.append_data(cv2.imdecode(buf, cv2.IMREAD_COLOR)[..., ::-1])
         w.close()
         return path
+
+
+def set_down_length(kin, q_p, step=0.004):
+    """The straight a load is set down along (place's set-down): pick's lift off the same support
+    reversed.  From the set-down solution q_p straight up as the lift would go (Rig._leave_contact
+    with lifts_off: at least LEAVE_GAP of rise, then on until the robot and its load are LEAVE_GAP
+    clear of the world, plus LEAVE_MARGIN).  (m from the set-down pose to the straight's start, the
+    joint waypoints from q_p up to it), or (None, ...) when the arm runs out of IK or still touches
+    at LEAVE_MAX.  ``kin`` with the load in its collision model (Rig._planning, Motion.carrying)."""
+    p, R = kin.tcp(np.asarray(q_p, float))
+    scene, kin.scene = kin.scene, None
+    try:
+        qs, _ = kin.cart_path(np.asarray(q_p, float), p + np.array([0.0, 0.0, LEAVE_MAX]), R, step=step)
+    finally:
+        kin.scene = scene
+    qs = list(qs) if qs else []
+    n, clear = Rig._exit_length(kin, q_p, qs, touching=lambda q: kin.tcp(q)[0][2] - p[2] < LEAVE_GAP or
+                                kin.near(q, LEAVE_GAP))
+    if not clear or n == 0:
+        return None, qs[:n]
+    return float(np.linalg.norm(kin.tcp(qs[n - 1])[0] - p)), qs[:n]

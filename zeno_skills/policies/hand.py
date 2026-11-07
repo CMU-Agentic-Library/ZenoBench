@@ -61,61 +61,11 @@ def object_top(rig, name, st=None):
 
 
 class DropIntoPolicy(AtomicPolicy):
-    """Hold the object 5 cm above the container rim, centred, and let go."""
+    """Let the held object go over a container's opening (skills.drop_into)."""
 
-    def execute(self, name, container, *, clearance_m=0.05):
-        rig = self.rig
-        _require_held(rig, name, "drop")
-        ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
-        if not ca:
-            raise SkillFailure(f"drop {name}: {container} is not a container")
-        st = rig.state()
-        cb = np.asarray(rig.geo.bottom(container, st), float)
-        rim_z = float(cb[2] + ca["rim_height"])
-        # already held over the opening (after hover): just let go
-        fp = rig.geo.footprint(name, st)
-        inner = float(ca.get("rim_radius", 0.0)) or 0.5 * float(min(rig.ann.asset_of(rig.ann.objects[container])["size"][:2]))
-        centre = np.array([(fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2])
-        low = float(skills._lowest_z(rig, name, st))
-        if np.linalg.norm(centre - cb[:2]) < 0.6 * inner and rim_z < low < rim_z + 0.25:
-            rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
-            rig.caption = f"DROP {name} into {container}"
-            return self._release(name, container)
-        from .tooluse import stow_load
-        stow_load(rig)
-        st = rig.state()
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        hang = float(body[2] - skills._lowest_z(rig, name, st))
-        off = tcp - body
-        # one relay pose, the load centred clearance_m above the rim; the planner takes it there
-        # (the container is an obstacle and the load is in the collision model)
-        body_goal = np.array([cb[0], cb[1], rim_z + clearance_m + hang])
-        found = skills.park_over(rig, "drop", body_goal, off, R)
-        if found is None:
-            raise SkillFailure(f"drop {name}: no base pose above {container} (rejected: {_park_diag()})")
-        park, p, Rg = found
-        skills._goto_park(rig, park)
-        rig.caption = f"DROP {name} into {container}"
-        with skills.fingers_checked(rig):
-            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", allow=FREE_ELSE_STRAIGHT,
-                        smooth=True, q_hint=park[3][0])
-        skills.check_held(rig, "drop_above")
-        return self._release(name, container)
-
-    def _release(self, name, container):
-        rig = self.rig
-        rig.grip(rig.held.get("pre_open", 0.04), 40)
-        rig.held = None
-        # let go above the opening: up out of whatever the hand still touches (the collision model
-        # decides how far); the next skill plans on from there
-        rig.leave([0, 0, 1], "drop_retreat", LEAVE_CONTACT, step=0.01)
-        rig.step(PHYSICS_HZ)
-        ok, why = rig.geo.inside(name, container, rig.state())
-        rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)
-        if not ok:
-            raise SkillFailure(f"drop {name} into {container}: {why}")
-        return True
+    def execute(self, name, container):
+        _require_held(self.rig, name, "drop")
+        return skills.drop_into(self.rig, name, container)
 
 
 class StackOnPolicy(AtomicPolicy):

@@ -184,7 +184,7 @@ def find_park_set(kin, world, target_sets, set_cost, **kw):
 def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.45, 1.0, 0.05),
                yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
                score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
-               check=None, carry=False, ride_set=None):
+               check=None, carry=False, ride_set=None, unfold=True):
     """Return ((x, y, yaw_deg, qs), k) or None, k the target sequence of target_sets it serves.
     ``ride_set``: as ``ride``, for the sequence k: callable(k, x, y, yaw_deg, q_last) -> bool.
 
@@ -205,6 +205,8 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
              base ride (e.g. following an opening door).
     check:   optional callable(x, y, yaw_deg, qs) -> bool, a further test of the
              joint solutions at this park (the base is set to it).
+    unfold:  False when ``check`` tests the unfold itself (to a pose the targets do not list:
+             a set-down's straight starts where the collision model says, place._park_check).
     """
     cands = []
     for k, targets in enumerate(target_sets):
@@ -284,7 +286,7 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
         if check is not None and not check(x, y, yaw, qs):
             LAST_PARK_DIAG["check"] = LAST_PARK_DIAG.get("check", 0) + 1
             continue
-        if travel_q is not None and cost >= 0 and not _unfolds(kin, travel_q, qs[0], targets[0], carry):
+        if unfold and travel_q is not None and cost >= 0 and not _unfolds(kin, travel_q, qs[0], targets[0], carry):
             LAST_PARK_DIAG["unfold"] += 1
             continue                    # the arm cannot unfold to the first target here
         if (ride is not None and not ride(x, y, yaw, qs[-1])) or \

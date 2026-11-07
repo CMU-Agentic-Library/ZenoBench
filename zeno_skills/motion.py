@@ -713,28 +713,95 @@ class Motion:
             self._attach_held(self.arms[side], None, None, None)
             self.cull_at = None
 
+    def held_in_tcp(self, kin, q, name):
+        """4x4 of ``name``'s box frame (_box_of) in ``kin``'s TCP frame at q, both at their synced
+        poses: how the hand holds it.  Taken at the real base, it stays valid for a park search
+        that moves the base (carrying, released)."""
+        frame, _, _ = self._box_of(name)
+        p, R = kin.tcp(np.asarray(q, float))
+        T_tcp = np.eye(4)
+        T_tcp[:3, :3], T_tcp[:3, 3] = R, p
+        return np.linalg.inv(T_tcp) @ G.world_pose(frame, self.body_pose.get)
+
     def _attach_held(self, arm, kin, q, h):
         """Spheres of the held object ``h`` (box_spheres of its box, in the TCP frame at q) on
         the arm's held link; None (or a bimanual hold): the link emptied.  Returns the name."""
         name = None if h is None or h.get("kind") == "bimanual" else h.get("name")
+        if name is None or not self.by_owner.get(f"object:{name}"):
+            self._attach_rel(arm, None, None)
+            return None
+        self._attach_rel(arm, name, self.held_in_tcp(kin, q, name))
+        return name
+
+    def _attach_rel(self, arm, name, M):
+        """Spheres of ``name``'s box on the arm's held link, the box frame at M in the TCP frame
+        (held_in_tcp); None: the link emptied."""
         sph = None
-        if name is not None and self.by_owner.get(f"object:{name}"):
-            frame, lo, hi = self._box_of(name)
-            T_obj = G.world_pose(frame, self.body_pose.get)
-            p, R = kin.tcp(np.asarray(q, float))
-            T_tcp = np.eye(4)
-            T_tcp[:3, :3], T_tcp[:3, 3] = R, p
-            M = np.linalg.inv(T_tcp) @ T_obj
+        if name is not None:
+            _, lo, hi = self._box_of(name)
             b = box_spheres(lo, hi)
             sph = np.full((HELD_SPHERES, 4), [0.0, 0.0, 0.0, -100.0])
             sph[:len(b), :3] = b[:, :3] @ M[:3, :3].T + M[:3, 3]
             sph[:len(b), 3] = b[:, 3]
-        else:
-            name = None
         if sph is not None or self._held_sph.get(arm.side) is not None:
             self._set_held_spheres(arm, sph)
         self._held_sph[arm.side] = sph
-        return name
+
+    @contextmanager
+    def carrying(self, side, name, M):
+        """Queries inside take ``side``'s hand holding ``name`` with its box frame at M in the TCP
+        frame (held_in_tcp): a park search checks the legs of a place with the load in the hand,
+        as Rig._planning (scope) has it when they are executed."""
+        arm = self.arms[side]
+        self._attach_rel(arm, name, M)
+        try:
+            yield
+        finally:
+            self._attach_rel(arm, None, None)
+            self.cull_at = None
+
+    @contextmanager
+    def empty_hand(self, side):
+        """Queries inside take ``side``'s hand empty, what it held gone (a drop: let go in the air,
+        it falls into the container, out of the way of the hand's tuck)."""
+        sph = self._held_sph.get(side)
+        self._attach_rel(self.arms[side], None, None)
+        try:
+            yield
+        finally:
+            if sph is not None:
+                self._set_held_spheres(self.arms[side], sph)
+                self._held_sph[side] = sph
+            self.cull_at = None
+
+    @contextmanager
+    def released(self, side, name, T_frame):
+        """Queries inside take ``name`` let go by ``side``'s hand: an obstacle with its box frame
+        (_box_of) at the world pose T_frame (where the place sets it down), the hand empty.  A park
+        search checks what follows the release (the pull-out, the tuck) as it will be executed."""
+        owner = f"object:{name}"
+        frame, _, _ = self._box_of(name)
+        D = np.asarray(T_frame, float) @ np.linalg.inv(G.world_pose(frame, self.body_pose.get))
+        bodies = {c.body for c in self.by_owner.get(owner, [])}
+        saved = {b: self.body_pose.get(b) for b in bodies}
+        held = self.held[side]
+        sph = self._held_sph.get(side)
+        moved = {b: D @ T for b, T in saved.items() if T is not None}
+        self.body_pose.update(moved)
+        self._put_poses(moved)
+        self.held[side] = held - {owner}
+        self._attach_rel(self.arms[side], None, None)
+        self.cull_at = None
+        try:
+            yield
+        finally:
+            self.body_pose.update({b: T for b, T in saved.items() if T is not None})
+            self._put_poses({b: T for b, T in saved.items() if T is not None})
+            self.held[side] = held
+            if sph is not None:
+                self._set_held_spheres(self.arms[side], sph)
+                self._held_sph[side] = sph
+            self.cull_at = None
 
     def _set_held_spheres(self, arm, sph):
         """Write the held link's spheres (None: emptied) into every robot model of the arm."""

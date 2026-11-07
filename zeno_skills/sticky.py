@@ -44,7 +44,6 @@ import math
 
 import numpy as np
 
-from .clearance import FREE_ELSE_STRAIGHT
 from .evaluator import quat_R
 from .physics import ASSET
 
@@ -238,8 +237,8 @@ class StickyHands:
     def drop_caught(self, name, before):
         """A pinch that also caught what the object stood in (an apple pinched against its
         basket's wall) would, once welded, carry that along for good: a physical grasp slips
-        off it sooner or later.  Let go, lift the open hand clear, snap the object alone."""
-        from .rig import SkillFailure
+        off it sooner or later.  Let go, plan the open hand to the travel posture (Rig.tuck), snap
+        the object alone."""
         rig = self.rig
         caught = caught_neighbours(rig, name, before, rig.state())
         if not caught:
@@ -247,13 +246,7 @@ class StickyHands:
         rig.log("sticky_caught", obj=name, caught=caught)
         rig.grip(0.04, 40)                               # the weld goes first (fingers open)
         rig.held = None
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        for up in (0.15, 0.10, 0.06):
-            try:
-                rig.move_to(tcp + np.array([0, 0, up]), R, step=0.005, label="sticky_clear", allow=FREE_ELSE_STRAIGHT)
-                break
-            except SkillFailure:
-                continue
+        rig.tuck()
         rig.step(60)                                     # the neighbour settles back
         return self.snap(name, "caught_neighbour", "pinch also lifted " + ", ".join(o for o, _ in caught))
 
@@ -376,10 +369,9 @@ class StickyHands:
 
     def place(self, name, receptacle, hint, before, error):
         """Set ``name`` down on / in ``receptacle``: the targets are found first (nothing found, the
-        object stays as it is), then the hand lets go (the weld goes first) and lifts clear, the
-        object is set level at a target the hand is not over and settles; the next target when it
+        object stays as it is), then the hand lets go (the weld goes first) and is planned to the
+        travel posture (Rig.tuck), the object is set level at a target the hand is not over and settles; the next target when it
         does not end up there (fell off, toppled)."""
-        from .rig import SkillFailure
         rig = self.rig
         obj0 = (before or {}).get("objects", {}).get(name) or {}
         # the orientation the place started with (still in the hand), not where a failed release left it
@@ -399,14 +391,7 @@ class StickyHands:
         if rig.held is not None and rig.held.get("name") == name:
             rig.grip(0.04, 40)
             rig.held = None
-            tcp, Rt = rig.kin.tcp(rig.q_cmd)
-            for up in (0.10, 0.05):
-                try:
-                    rig.move_to(tcp + np.array([0, 0, up]), Rt, step=0.005, label="sticky_clear",
-                                allow=FREE_ELSE_STRAIGHT)
-                    break
-                except SkillFailure:
-                    continue
+            rig.tuck()                                   # the open hand to the travel posture, planned
         # spots under the hand last (it stays where the attempt left it)
         tcp, _ = rig.kin.tcp(rig.q())
         reach = 0.5 * float(np.hypot(size[0], size[1])) + 0.08

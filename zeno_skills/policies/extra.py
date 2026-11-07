@@ -24,7 +24,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
+from ..clearance import FREE, FREE_ELSE_STRAIGHT, LEGACY
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
@@ -379,7 +379,7 @@ class HoverOverPolicy(AtomicPolicy):
         park, goal, Rg = found
         skills._goto_park(rig, park)
         with skills.fingers_checked(rig):
-            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE_ELSE_STRAIGHT, smooth=True,
+            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE, smooth=True,
                         q_hint=park[3][0])
         skills.check_held(rig, "hover")
         rig.step(30)
