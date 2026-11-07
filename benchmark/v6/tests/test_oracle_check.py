@@ -74,8 +74,8 @@ def test_cup_on_the_desk_beside_the_bed_passes():
     assert edited("T28", "cup_on_counter", to_desk) == []
 
 
-DEPENDENT = [("T21", "tissue_or_sponge"), ("T27", "shelf_full_or_not"), ("T28", "where_his_cup_is"),
-             ("T30", "bowls_in_cabinet")]
+DEPENDENT = [("T21", "tissue_or_sponge"), ("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
+             ("T28", "where_his_cup_is"), ("T30", "bowls_in_cabinet")]
 
 
 @pytest.mark.parametrize("tid,vid", DEPENDENT)
@@ -83,12 +83,16 @@ def test_dependent_decisions_branch_on_what_is_found(tid, vid):
     """the layouts look the same from the start; each layout's route fails on the other (with the gate): what the
     robot finds while working decides its later steps"""
     from benchmark.v6.plan_dependence import route, run, start_view
+    import itertools
     t = TASKS[tid]
-    a, b = t["v6_variants"][vid]["layouts"]
-    room = t["variants"][a]["layout"]["start"]["room"]
-    assert start_view(t, a, room) == start_view(t, b, room)
-    assert run(t, a, route(t, a))[0] and run(t, b, route(t, b))[0]
-    assert not run(t, b, route(t, a))[0] and not run(t, a, route(t, b))[0]
+    lids = t["v6_variants"][vid]["layouts"]
+    assert all(run(t, x, route(t, x))[0] for x in lids)
+    pairs = [(a, b) for a, b in itertools.combinations(lids, 2)
+             if start_view(t, a, t["variants"][a]["layout"]["start"]["room"])
+             == start_view(t, b, t["variants"][a]["layout"]["start"]["room"])]
+    assert pairs, "no two layouts look the same from the start"
+    for a, b in pairs:
+        assert not run(t, b, route(t, a))[0] and not run(t, a, route(t, b))[0], (a, b)
 
 
 def test_search_looks_only_in_its_room():
@@ -96,3 +100,26 @@ def test_search_looks_only_in_its_room():
     steps = TASKS["T23"]["routes"][TASKS["T23"]["oracle"][lid]]["steps"]
     wrong = [dict(s, args={**s["args"], "region": "kitchen_0_0"}) if s["skill"] == "search" else s for s in steps]
     assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T23", lid, lambda st: wrong))
+
+
+def test_reference_routes_pass_the_gate():
+    """every reference route looks before it uses what it has not seen"""
+    bad = [(t["task_id"][:3], lid) for t, lid in routes() if check(t, lid, gate=True)["problems"]]
+    assert bad == []
+
+
+@pytest.mark.parametrize("tid,vid,kinds", [("T25", "cups_for_two", ("breakfast_cup", "breakfast_mug", "plastic_cup")),
+                                           ("T30", "bowls_in_cabinet", ("breakfast_bowl", "breakfast_cup",
+                                                                         "breakfast_mug", "plastic_cup"))])
+def test_every_vessel_in_the_house_counts(tid, vid, kinds):
+    """no hidden whitelist: every cup / mug (/ bowl) in the layout is one the goal's counts accept, so another
+    reasonable vessel the robot finds does not fail it (the first kind always; the others where the layout falls
+    back on them: a mug only when the bowls run short)"""
+    from benchmark.v6.oracle_check import World
+    t = TASKS[tid]
+    for lid in t["v6_variants"][vid]["layouts"]:
+        w = World(t, lid)
+        counted = {n for a in t["variants"][lid]["goal"]["all"] if a[0].startswith("count_on") for n in a[1]}
+        fallback = any(w.obj[n]["asset"] != kinds[0] for n in counted if n in w.obj)   # mugs allowed here?
+        vessels = {n for n, o in w.obj.items() if o["asset"] in (kinds if fallback else kinds[:1])}
+        assert vessels <= counted, (lid, sorted(vessels - counted))

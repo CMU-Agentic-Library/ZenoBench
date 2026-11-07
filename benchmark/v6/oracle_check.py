@@ -316,9 +316,12 @@ class World:
         elif k in ("search",):                   # the skill sweeps the supports and cabinets of one room
             o = a.get("object")
             room = a.get("region") or self.room_of(self.at)
-            if o in self.obj and self.room_of(self.obj[o]["xy"]) == room and self.hand != o:
+            under_lid = o in self.obj and any(c in self.covered for c in self.chain(o)[1:])
+            if o in self.obj and self.room_of(self.obj[o]["xy"]) == room and self.hand != o and not under_lid:
                 self.at, self.at_name = self.xy(o), o
                 self.flags.add(("observed", o))
+            elif o in self.obj and under_lid:
+                self.bad(i, s, f"search: {o} is under a lid, out of sight")
             elif o in self.obj:
                 self.bad(i, s, f"search: {o} is not in {room} (it is in {self.room_of(self.obj[o]['xy'])})")
         elif k == "explore_furniture":
@@ -560,6 +563,9 @@ class World:
                 return False
             return any(r in self.obj and math.dist(self.obj[n]["xy"], self.obj[r]["xy"]) - self.half(n) - self.half(r)
                        <= dist for r in refs)
+        if p == "count_on_at_most":
+            objs, sup, k = many(args[0]), args[1], int(args[2])
+            return sum(1 for n in objs if n in self.obj and self._holds("on", [n, sup])) <= k
         if p == "count_on_at_least":
             objs, sup, k = many(args[0]), args[1], int(args[2])
             return sum(1 for n in objs if n in self.obj and self._holds("on", [n, sup])) >= k
@@ -570,7 +576,8 @@ class World:
         groups = [[(a, self.holds(a)) for a in grp] for grp in g.get("any", [])]
         fails = [a for a, h in rows if h is False]
         any_ok = not groups or any(all(h is not False for _, h in grp) for grp in groups)
-        unchecked = sum(1 for _, h in rows if h is None) + sum(1 for grp in groups for _, h in grp if h is None)
+        self.unchecked_atoms = [a for a, h in rows if h is None] + [a for grp in groups for a, h in grp if h is None]
+        unchecked = len(self.unchecked_atoms)
         checked = sum(1 for _, h in rows if h is not None) + sum(1 for grp in groups for _, h in grp if h is not None)
         return fails, any_ok, groups, checked, unchecked
 
@@ -599,7 +606,31 @@ def check(task, lid, gate=False):
         probs.append({"step": None, "skill": "goal", "problem": "no any-group holds: " + " | ".join(
             ", ".join(f"{a}={h}" for a, h in grp) for grp in groups)})
     return {"task": task["task_id"], "layout": lid, "steps": len(steps), "atoms_checked": checked,
-            "atoms_geometric": unchecked, "problems": probs}
+            "atoms_geometric": unchecked, "geometric_atoms": [" ".join(map(str, a)) for a in w.unchecked_atoms],
+            "problems": probs}
+
+
+def observe_first(task, lid, tries=12):
+    """Make a reference route legal under the benchmark's observation gate: before the first call that names an
+    object the robot has not seen, go to where it stands and look (an object on the floor: explore its room).
+    Returns the number of observation steps added."""
+    added = 0
+    for _ in range(tries):
+        res = check(task, lid, gate=True)
+        p = next((x for x in res["problems"] if "was never observed" in x["problem"]), None)
+        if p is None:
+            return added
+        n = p["problem"].split(" was never observed")[0]
+        w = World(task, lid)
+        sup = w.support_of(n)
+        steps = task["routes"][task["oracle"][lid]]["steps"]
+        if sup and not sup.startswith("floor") and sup in w.supports:
+            ins = [{"skill": "navigate", "args": {"destination": sup}}, {"skill": "look", "args": {"target": sup}}]
+        else:
+            ins = [{"skill": "explore_room", "args": {"room": w.room_of(w.obj[n]["xy"])}}]
+        steps[p["step"]:p["step"]] = ins
+        added += len(ins)
+    return added
 
 
 def main():

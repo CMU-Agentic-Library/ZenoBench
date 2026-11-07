@@ -172,22 +172,24 @@ def t21():
             instruction_zh="孩子吃饭把汤洒了，拿点纸巾给他。"),
         "tissue_or_sponge": fam(
             "tissue_on_tv_stand", ["resource_absent", "item_put_away", "dependent_decisions"],
-            "whether the low cabinet holds the tissues (seed): what the robot finds there decides the rest",
-            "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or "
-            "nothing (both look the same until the door is open)",
-            "the usual place is empty, so look where such things are kept; the cabinet then decides: tissues -> "
-            "bring them (the sponge was only a fallback); empty -> the sponge does the wiping",
-            {"in_cabinet": dict(add={TIS: on("tissue_box", f"{C4}/inside_shelf", 1.40, 0.42),
-                                     "spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
-                                watch=[TIS, "spare_sponge", "soup_bowl"],
-                                goal={"all": [["on", TIS, T2], ["not on", "spare_sponge", T2], ["is_closed", C4], H]},
-                                route=[look(TV)] + explore(C4) + from_closed(TIS, C4)
-                                + [nav(T2), place(TIS, T2, [3.30, 6.65])]),
-             "cabinet_empty": dict(add={"spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
-                                   watch=["spare_sponge", "soup_bowl"],
-                                   goal={"all": [["on", "spare_sponge", T2], ["is_closed", C4], H]},
-                                   route=[look(TV)] + explore(C4) + [S("close", articulated=C4)]
-                                   + to_table("spare_sponge"))}),
+            "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet "
+            "looks the same until its door is open",
+            "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall "
+            "cabinets, or nowhere",
+            "the usual place is empty, so look where such things are kept; each cabinet decides the next step: "
+            "tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the "
+            "sponge does the wiping",
+            {c: dict(add={**({TIS: on("tissue_box", f"{cab}/inside_shelf", *xy)} if cab else {}),
+                          "spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
+                     remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
+                     watch=([TIS] if cab else []) + ["spare_sponge", "soup_bowl"],
+                     goal={"all": ([["on", TIS, T2], ["not on", "spare_sponge", T2]] if cab else
+                                   [["on", "spare_sponge", T2]]) + [["is_closed", C4], ["is_closed", C6], H]},
+                     route=[look(TV)] + explore(C4)
+                     + (from_closed(TIS, C4) if cab == C4 else [S("close", articulated=C4)] + explore(C6)
+                        + (from_closed(TIS, C6) if cab == C6 else [S("close", articulated=C6)]))
+                     + ([nav(T2), place(TIS, T2, [3.30, 6.65])] if cab else to_table("spare_sponge")))
+             for c, cab, xy in (("in_first", C4, (1.40, 0.42)), ("in_second", C6, (3.50, 0.36)), ("none", None, None))}),
     }
     return t, fams
 
@@ -203,6 +205,16 @@ def t22():
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     pantry = {"old_snack": on("snack_carton", f"{C6}/inside_shelf", 3.35, 0.36)}
     no_dishes = ["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"]
+    TRAY = "west_tray"
+    SHELVES = [f"bookcase_{i}/{sh}" for i in (1, 2, 3, 4) for sh in ("shelf_0", "shelf_1", "top")] + \
+        [f"large_shelf_{i}/shelf_{k}" for i, n in ((1, 5), (2, 4), (3, 4), (4, 5), (5, 4), (6, 4)) for k in range(n)] + \
+        ["large_shelf_6/top"]                                 # where books are kept (every bookcase and shelf)
+    BK = ["bookcase_1/top", "bookcase_1/shelf_1"]          # the bookcase in the west dining room
+
+    def inside_tray(asset, dx, dy):
+        """lying in the serving tray on the west dining table (table top 0.71 m, tray floor 1 cm up)"""
+        return {"asset": asset, "support": None, "z": 0.72, "xy": [round(-8.00 + dx, 3), round(7.40 + dy, 3)],
+                "yaw_deg": 0.0}
     snack_away = [nav(C6), S("open", articulated=C6), S("inspect", receptacle=C6), nav(SN), pick(SN), nav(C6),
                   place(SN, f"{C6}/inside_shelf", [3.60, 0.36]), S("close", articulated=C6)]
     fams = {
@@ -260,6 +272,27 @@ def t22():
                       goal={"all": jgoal + [["inside", A, BASKET], ["on", SN, f"{C6}/inside_shelf"],
                                             ["is_closed", C6], H]},
                       route=[look(T2)] + fridge([J]) + [look(ISL)] + into(A, BASKET) + snack_away)}),
+        "tray_elsewhere": fam(
+            "juice_on_table", ["container_absent", "not_in_view", "destination_full", "dependent_decisions"],
+            "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+            "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining "
+            "room: with an orange in it, or with four books lying flat over its floor",
+            "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies "
+            "on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); "
+            "books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+            {c: dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
+                          TRAY: on("serving_tray", T1, -8.00, 7.40), **on_tray},
+                     watch=[J, A, TRAY, *on_tray],
+                     goal={"all": jgoal + [["fully_inside", A, TRAY], ["not on_floor", TRAY]]
+                           + [["on_any", b, SHELVES] for b in on_tray if b.startswith("tray_book")] + [H]},
+                     route=fridge([J]) + [S("search", object=TRAY, region="dining_room_0_0"), look(TRAY)]
+                     + [x for k, b in enumerate(sorted(n for n in on_tray if n.startswith("tray_book")))
+                        for x in (nav(b), pick(b), nav(BK[k // 2]), place(b, BK[k // 2], [-9.59, 6.52 + 0.30 * (k % 2)]))]
+                     + into(A, TRAY))
+             for c, on_tray in (("orange_in_it", {"tray_orange": inside_tray("orange", -0.12, 0.08)}),
+                                ("books_on_it", {f"tray_book_{k + 1}": inside_tray("book_blue", dx, dy)
+                                                 for k, (dx, dy) in enumerate(((-0.10, -0.075), (0.10, -0.075),
+                                                                               (-0.10, 0.075), (0.10, 0.075)))}))}),
     }
     return t, fams
 
@@ -411,6 +444,29 @@ def t25():
                   "to drink.", "客人在客厅坐着，给他拿点喝的。", "drink_on_island", ctl,
                   {"all": serve() + [H]}, fetch(J, TV, [7.30, 0.36]) + fetch(CUP, TV, [7.55, 0.36]), [J, CUP])
     in_fridge = lambda n: {"asset": "juice_bottle", **P(FS, 5.90, 3.30)}  # noqa: E731
+    MUGS = ["mug_dining_cabinet", "mug_shelf", "mug_counter"]       # the dining room's mugs: the fallback
+
+    def cups_goal(n_tv, n_in):
+        """exactly two cups by the guests, as many ordinary ones as the house has (up to two), the ones there stay"""
+        mine = [f"tv_cup_{k + 1}" for k in range(n_tv)] + [f"stock_cup_{k + 1}" for k in range(n_in)]
+        return [["count_on_at_least", mine + MUGS, TV, 2], ["count_on_at_most", mine + MUGS, TV, 2],
+                ["count_on_at_least", mine, TV, min(2, len(mine))]] + \
+            [["near_start", f"tv_cup_{k + 1}", 0.03] for k in range(n_tv)]
+
+    def cups_route(n_tv, n_in):
+        need, out, hints = 2 - n_tv, [], [7.55, 7.05]
+        if need <= 0:
+            return out
+        out += explore(C4)
+        take = min(need, n_in)
+        for k in range(take):
+            x = f"stock_cup_{k + 1}"
+            out += (from_closed(x, C4) if k == take - 1 else [nav(x), pick(x)]) + [nav(TV), place(x, TV, [hints[k], 0.36])]
+        if take == 0:
+            out += [S("close", articulated=C4)]
+        for k in range(take, need):
+            out += [S("search", object="mug_shelf", region="dining_room_0_1")] + fetch("mug_shelf", TV, [hints[k], 0.36])
+        return out
     fams = {
         "cup_elsewhere": fam(
             "drink_on_island", ["not_in_view"], "the seed's layout only",
@@ -442,6 +498,29 @@ def t25():
                       route=[look(ISL), nav(FR), S("open", articulated=FR), nav("cold_juice"), pick("cold_juice"),
                              S("retreat", obstacle=FR, distance_m=0.3), S("close", articulated=FR), nav(TV),
                              place("cold_juice", TV, [7.30, 0.36])] + fetch(CUP, TV, [7.55, 0.36]))}),
+        "cups_for_two": fam(
+            "drink_on_island", ["count_from_scene", "item_put_away", "resource_absent", "dependent_decisions"],
+            "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, "
+            "0 + 2, 2 + 1); the last two look the same until the door is open",
+            "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two "
+            "cups; the house's only other cups are mugs in the dining room",
+            "two decisions on what is found: what stands by the guests says how many cups are missing; what the "
+            "cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; "
+            "exactly two cups in the end, the ones already there left where they are",
+            {c: dict(add={J: on("juice_bottle", ISL, 7.30, 1.80),
+                          **{f"tv_cup_{k + 1}": on("breakfast_cup", TV, x, 0.36) for k, x in enumerate((7.80, 8.05)[:n_tv])},
+                          **{f"stock_cup_{k + 1}": on("breakfast_cup", f"{C4}/inside_shelf", x, 0.42)
+                             for k, x in enumerate((1.25, 1.55)[:n_in])}},
+                     remove=["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"],
+                     watch=[J, *[f"tv_cup_{k + 1}" for k in range(n_tv)], *[f"stock_cup_{k + 1}" for k in range(n_in)]],
+                     goal={"all": [["on", J, TV], ["upright", J]] + cups_goal(n_tv, n_in) + [["is_closed", C4], H]},
+                     route=[look(TV)] + fetch(J, TV, [7.30, 0.36]) + cups_route(n_tv, n_in))
+             for c, n_tv, n_in in (("one_there", 1, 1), ("none_one_inside", 0, 1), ("none_two_inside", 0, 2),
+                                   ("two_there", 2, 1))},
+            instruction="Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup "
+                        "each. What is already on their table need not be brought again; if there are not enough "
+                        "ordinary cups, a mug will do.",
+            instruction_zh="两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。"),
         "two_guests": fam(
             "drink_on_island", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
             "two guests; one bottle of juice and two cups on the island",
@@ -536,8 +615,6 @@ def t27():
                   "晚饭吃完了，把剩菜收进冰箱。", "rice_on_table", ctl, {"all": rg + [H]}, fridge([R]), [R],
                   remove=["clutter_cereal_a", "clutter_cereal_b", "handled_cooking_pot", "pot_lid"])
     rice = {R: on("glass_food_container", T2, 3.30, 6.70)}
-    kept = {"old_leftovers": on("glass_food_container", FS, 5.77, 3.17), "fridge_juice_1": on("juice_bottle", FS, 6.03, 3.17),
-            "fridge_juice_2": on("juice_bottle", FS, 6.03, 3.43)}
     fams = {
         "which_is_leftover": fam(
             "rice_on_table", ["disposal_by_state"], "the seed's layout only",
@@ -568,22 +645,6 @@ def t27():
             "find the fridge first, then put the rice in",
             {"": dict(add=rice, start=[3.80, 4.90, 180.0],
                       route=[look(T2), S("explore_room", room="living_room_0_0")] + fridge([R]))}),
-        "shelf_full_or_not": fam(
-            "rice_on_table", ["destination_full", "category_rule", "dependent_decisions"],
-            "whether the fridge shelf has room (seed): seen only when the door is open",
-            "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in "
-            "one layout of two a cereal box in the last free corner (someone put it there)",
-            "what the open fridge shows decides the rest: room -> put the rice in; full -> what may leave is what "
-            "does not need the cold (the cereal box, onto the island or a counter, not the floor); the leftovers and "
-            "the juice stay in",
-            {c: dict(add={**rice, **kept, **extra}, watch=[R, *kept, *extra],
-                     goal={"all": rg + [["on", n, FS] for n in kept]
-                           + ([["not on", "fridge_cereal", FS], ["not on_floor", "fridge_cereal"]] if extra else []) + [H]},
-                     route=[look(T2), nav(FR), S("open", articulated=FR), look(FS)]
-                     + ([nav("fridge_cereal"), pick("fridge_cereal"), nav(ISL), place("fridge_cereal", ISL, [6.80, 1.75])]
-                        if extra else [])
-                     + [nav(R), pick(R), nav(FR), place(R, FS, [5.77, 3.43]), S("close", articulated=FR)])
-             for c, extra in (("room", {}), ("full", {"fridge_cereal": on("cereal_box", FS, 5.77, 3.43)}))}),
         "fruit_stays_out": fam(
             "rice_on_table", ["category_rule"], "the seed's layout only",
             "the box of rice, the fruit basket with an apple and a box of cereal on the table",
@@ -791,8 +852,9 @@ def t30():
                         from_closed("soup_bowl_2", C6) + [nav(ISL), place("soup_bowl_2", ISL, [7.85, 1.75])]
                         + fetch("spare_mug", ISL, [8.05, 1.75])))
              for c, n in (("two_inside", 2), ("one_inside", 1))},
-            instruction="The soup is almost ready. Bring bowls over for serving it.",
-            instruction_zh="汤快好了，拿碗过来准备盛。"),
+            instruction="The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, "
+                        "a mug will do.",
+            instruction_zh="汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。"),
         "clean_one": fam(
             "bowl_on_cabinet", ["referent_clue"], "the seed's layout only",
             "two bowls on the cabinet: one still has oatmeal in it, the other is empty",

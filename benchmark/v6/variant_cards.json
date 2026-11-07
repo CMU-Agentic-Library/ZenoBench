@@ -16878,15 +16878,14 @@
   "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T21_bring_tissues/tissue_or_sponge__in_cabinet": {
+ "T21_bring_tissues/tissue_or_sponge__in_first": {
   "variant": "tissue_or_sponge",
   "category": "task",
   "seeds": [
-   11,
-   12,
+   10,
    13,
-   15,
-   16
+   14,
+   15
   ],
   "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
   "initial_conditions": {
@@ -16899,7 +16898,10 @@
     "spare_sponge",
     "tissue"
    ],
-   "removed": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
    "conditions": [
     "resource_absent",
     "item_put_away",
@@ -16925,26 +16927,91 @@
      "kitchen_cabinet_4"
     ],
     [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "tissue_on_tv_stand",
-  "oracle_route": "v6_tissue_or_sponge__in_cabinet",
-  "challenge": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
-  "rationale": "the usual place is empty, so look where such things are kept; the cabinet then decides: tissues -> bring them (the sponge was only a fallback); empty -> the sponge does the wiping",
+  "oracle_route": "v6_tissue_or_sponge__in_first",
+  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T21_bring_tissues/tissue_or_sponge__cabinet_empty": {
+ "T21_bring_tissues/tissue_or_sponge__in_second": {
   "variant": "tissue_or_sponge",
   "category": "task",
   "seeds": [
-   10,
-   14,
+   11,
    17,
-   18,
    19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "spare_sponge",
+    "tissue"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "resource_absent",
+    "item_put_away",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "not on",
+     "spare_sponge",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_tissue_or_sponge__in_second",
+  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_or_sponge__none": {
+  "variant": "tissue_or_sponge",
+  "category": "task",
+  "seeds": [
+   12,
+   16,
+   18
   ],
   "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
   "initial_conditions": {
@@ -16956,7 +17023,10 @@
     "soup_bowl",
     "spare_sponge"
    ],
-   "removed": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
    "conditions": [
     "resource_absent",
     "item_put_away",
@@ -16977,15 +17047,19 @@
      "kitchen_cabinet_4"
     ],
     [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "tissue_on_tv_stand",
-  "oracle_route": "v6_tissue_or_sponge__cabinet_empty",
-  "challenge": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
-  "rationale": "the usual place is empty, so look where such things are kept; the cabinet then decides: tissues -> bring them (the sponge was only a fallback); empty -> the sponge does the wiping",
+  "oracle_route": "v6_tissue_or_sponge__none",
+  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T22_put_away_shopping/juice_on_table": {
@@ -17397,6 +17471,323 @@
   "oracle_route": "v6_two_spots",
   "challenge": "the juice on the dining table; a second bag was emptied on the island: an apple and a box of snacks there, the basket next to them",
   "rationale": "the shopping is in two places: find both, put each item away",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/tray_elsewhere__orange_in_it": {
+  "variant": "tray_elsewhere",
+  "category": "action_task",
+  "seeds": [
+   12,
+   14,
+   15,
+   16,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "tray_orange",
+    "west_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "container_absent",
+    "not_in_view",
+    "destination_full",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "fully_inside",
+     "bought_apple",
+     "west_tray"
+    ],
+    [
+     "not on_floor",
+     "west_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_tray_elsewhere__orange_in_it",
+  "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+  "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/tray_elsewhere__books_on_it": {
+  "variant": "tray_elsewhere",
+  "category": "action_task",
+  "seeds": [
+   10,
+   11,
+   13,
+   17,
+   18
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "tray_book_1",
+    "tray_book_2",
+    "tray_book_3",
+    "tray_book_4",
+    "west_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "container_absent",
+    "not_in_view",
+    "destination_full",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "fully_inside",
+     "bought_apple",
+     "west_tray"
+    ],
+    [
+     "not on_floor",
+     "west_tray"
+    ],
+    [
+     "on_any",
+     "tray_book_1",
+     [
+      "bookcase_1/shelf_0",
+      "bookcase_1/shelf_1",
+      "bookcase_1/top",
+      "bookcase_2/shelf_0",
+      "bookcase_2/shelf_1",
+      "bookcase_2/top",
+      "bookcase_3/shelf_0",
+      "bookcase_3/shelf_1",
+      "bookcase_3/top",
+      "bookcase_4/shelf_0",
+      "bookcase_4/shelf_1",
+      "bookcase_4/top",
+      "large_shelf_1/shelf_0",
+      "large_shelf_1/shelf_1",
+      "large_shelf_1/shelf_2",
+      "large_shelf_1/shelf_3",
+      "large_shelf_1/shelf_4",
+      "large_shelf_2/shelf_0",
+      "large_shelf_2/shelf_1",
+      "large_shelf_2/shelf_2",
+      "large_shelf_2/shelf_3",
+      "large_shelf_3/shelf_0",
+      "large_shelf_3/shelf_1",
+      "large_shelf_3/shelf_2",
+      "large_shelf_3/shelf_3",
+      "large_shelf_4/shelf_0",
+      "large_shelf_4/shelf_1",
+      "large_shelf_4/shelf_2",
+      "large_shelf_4/shelf_3",
+      "large_shelf_4/shelf_4",
+      "large_shelf_5/shelf_0",
+      "large_shelf_5/shelf_1",
+      "large_shelf_5/shelf_2",
+      "large_shelf_5/shelf_3",
+      "large_shelf_6/shelf_0",
+      "large_shelf_6/shelf_1",
+      "large_shelf_6/shelf_2",
+      "large_shelf_6/shelf_3",
+      "large_shelf_6/top"
+     ]
+    ],
+    [
+     "on_any",
+     "tray_book_2",
+     [
+      "bookcase_1/shelf_0",
+      "bookcase_1/shelf_1",
+      "bookcase_1/top",
+      "bookcase_2/shelf_0",
+      "bookcase_2/shelf_1",
+      "bookcase_2/top",
+      "bookcase_3/shelf_0",
+      "bookcase_3/shelf_1",
+      "bookcase_3/top",
+      "bookcase_4/shelf_0",
+      "bookcase_4/shelf_1",
+      "bookcase_4/top",
+      "large_shelf_1/shelf_0",
+      "large_shelf_1/shelf_1",
+      "large_shelf_1/shelf_2",
+      "large_shelf_1/shelf_3",
+      "large_shelf_1/shelf_4",
+      "large_shelf_2/shelf_0",
+      "large_shelf_2/shelf_1",
+      "large_shelf_2/shelf_2",
+      "large_shelf_2/shelf_3",
+      "large_shelf_3/shelf_0",
+      "large_shelf_3/shelf_1",
+      "large_shelf_3/shelf_2",
+      "large_shelf_3/shelf_3",
+      "large_shelf_4/shelf_0",
+      "large_shelf_4/shelf_1",
+      "large_shelf_4/shelf_2",
+      "large_shelf_4/shelf_3",
+      "large_shelf_4/shelf_4",
+      "large_shelf_5/shelf_0",
+      "large_shelf_5/shelf_1",
+      "large_shelf_5/shelf_2",
+      "large_shelf_5/shelf_3",
+      "large_shelf_6/shelf_0",
+      "large_shelf_6/shelf_1",
+      "large_shelf_6/shelf_2",
+      "large_shelf_6/shelf_3",
+      "large_shelf_6/top"
+     ]
+    ],
+    [
+     "on_any",
+     "tray_book_3",
+     [
+      "bookcase_1/shelf_0",
+      "bookcase_1/shelf_1",
+      "bookcase_1/top",
+      "bookcase_2/shelf_0",
+      "bookcase_2/shelf_1",
+      "bookcase_2/top",
+      "bookcase_3/shelf_0",
+      "bookcase_3/shelf_1",
+      "bookcase_3/top",
+      "bookcase_4/shelf_0",
+      "bookcase_4/shelf_1",
+      "bookcase_4/top",
+      "large_shelf_1/shelf_0",
+      "large_shelf_1/shelf_1",
+      "large_shelf_1/shelf_2",
+      "large_shelf_1/shelf_3",
+      "large_shelf_1/shelf_4",
+      "large_shelf_2/shelf_0",
+      "large_shelf_2/shelf_1",
+      "large_shelf_2/shelf_2",
+      "large_shelf_2/shelf_3",
+      "large_shelf_3/shelf_0",
+      "large_shelf_3/shelf_1",
+      "large_shelf_3/shelf_2",
+      "large_shelf_3/shelf_3",
+      "large_shelf_4/shelf_0",
+      "large_shelf_4/shelf_1",
+      "large_shelf_4/shelf_2",
+      "large_shelf_4/shelf_3",
+      "large_shelf_4/shelf_4",
+      "large_shelf_5/shelf_0",
+      "large_shelf_5/shelf_1",
+      "large_shelf_5/shelf_2",
+      "large_shelf_5/shelf_3",
+      "large_shelf_6/shelf_0",
+      "large_shelf_6/shelf_1",
+      "large_shelf_6/shelf_2",
+      "large_shelf_6/shelf_3",
+      "large_shelf_6/top"
+     ]
+    ],
+    [
+     "on_any",
+     "tray_book_4",
+     [
+      "bookcase_1/shelf_0",
+      "bookcase_1/shelf_1",
+      "bookcase_1/top",
+      "bookcase_2/shelf_0",
+      "bookcase_2/shelf_1",
+      "bookcase_2/top",
+      "bookcase_3/shelf_0",
+      "bookcase_3/shelf_1",
+      "bookcase_3/top",
+      "bookcase_4/shelf_0",
+      "bookcase_4/shelf_1",
+      "bookcase_4/top",
+      "large_shelf_1/shelf_0",
+      "large_shelf_1/shelf_1",
+      "large_shelf_1/shelf_2",
+      "large_shelf_1/shelf_3",
+      "large_shelf_1/shelf_4",
+      "large_shelf_2/shelf_0",
+      "large_shelf_2/shelf_1",
+      "large_shelf_2/shelf_2",
+      "large_shelf_2/shelf_3",
+      "large_shelf_3/shelf_0",
+      "large_shelf_3/shelf_1",
+      "large_shelf_3/shelf_2",
+      "large_shelf_3/shelf_3",
+      "large_shelf_4/shelf_0",
+      "large_shelf_4/shelf_1",
+      "large_shelf_4/shelf_2",
+      "large_shelf_4/shelf_3",
+      "large_shelf_4/shelf_4",
+      "large_shelf_5/shelf_0",
+      "large_shelf_5/shelf_1",
+      "large_shelf_5/shelf_2",
+      "large_shelf_5/shelf_3",
+      "large_shelf_6/shelf_0",
+      "large_shelf_6/shelf_1",
+      "large_shelf_6/shelf_2",
+      "large_shelf_6/shelf_3",
+      "large_shelf_6/top"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_tray_elsewhere__books_on_it",
+  "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+  "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T23_pick_up_dropped/spoon_on_floor": {
@@ -18425,6 +18816,387 @@
   "rationale": "drinks are kept in the fridge: open it, take the juice, close it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T25_drink_for_guest/cups_for_two__one_there": {
+  "variant": "cups_for_two",
+  "category": "task",
+  "seeds": [
+   10,
+   17,
+   19
+  ],
+  "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_juice",
+    "stock_cup_1",
+    "tv_cup_1"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "item_put_away",
+    "resource_absent",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "tv_cup_1",
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_most",
+     [
+      "tv_cup_1",
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_least",
+     [
+      "tv_cup_1",
+      "stock_cup_1"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "near_start",
+     "tv_cup_1",
+     0.03
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cups_for_two__one_there",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cups_for_two__none_one_inside": {
+  "variant": "cups_for_two",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   16
+  ],
+  "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_juice",
+    "stock_cup_1"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "item_put_away",
+    "resource_absent",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_most",
+     [
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_least",
+     [
+      "stock_cup_1"
+     ],
+     "tv_stand_2/top",
+     1
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cups_for_two__none_one_inside",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cups_for_two__none_two_inside": {
+  "variant": "cups_for_two",
+  "category": "task",
+  "seeds": [
+   13,
+   18
+  ],
+  "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_juice",
+    "stock_cup_1",
+    "stock_cup_2"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "item_put_away",
+    "resource_absent",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "stock_cup_1",
+      "stock_cup_2",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_most",
+     [
+      "stock_cup_1",
+      "stock_cup_2",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_least",
+     [
+      "stock_cup_1",
+      "stock_cup_2"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cups_for_two__none_two_inside",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cups_for_two__two_there": {
+  "variant": "cups_for_two",
+  "category": "task",
+  "seeds": [
+   12,
+   15
+  ],
+  "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_juice",
+    "stock_cup_1",
+    "tv_cup_1",
+    "tv_cup_2"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "item_put_away",
+    "resource_absent",
+    "dependent_decisions"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "tv_cup_1",
+      "tv_cup_2",
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_most",
+     [
+      "tv_cup_1",
+      "tv_cup_2",
+      "stock_cup_1",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "count_on_at_least",
+     [
+      "tv_cup_1",
+      "tv_cup_2",
+      "stock_cup_1"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "near_start",
+     "tv_cup_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_cup_2",
+     0.03
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cups_for_two__two_there",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T25_drink_for_guest/two_guests": {
   "variant": "two_guests",
   "category": "task",
@@ -19284,152 +20056,6 @@
   "oracle_route": "v6_fridge_out_of_view",
   "challenge": "the robot starts in the dining room; the fridge stands in the open kitchen, out of view",
   "rationale": "find the fridge first, then put the rice in",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T27_leftovers_to_fridge/shelf_full_or_not__room": {
-  "variant": "shelf_full_or_not",
-  "category": "action_task",
-  "seeds": [
-   10,
-   12,
-   13,
-   18,
-   19
-  ],
-  "instruction": "Dinner is over. Put the leftovers in the fridge.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "fridge_juice_1",
-    "fridge_juice_2",
-    "leftover_rice",
-    "old_leftovers"
-   ],
-   "removed": [],
-   "conditions": [
-    "destination_full",
-    "category_rule",
-    "dependent_decisions"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "leftover_rice",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ],
-    [
-     "on",
-     "old_leftovers",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "on",
-     "fridge_juice_1",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "on",
-     "fridge_juice_2",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "rice_on_table",
-  "oracle_route": "v6_shelf_full_or_not__room",
-  "challenge": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-  "rationale": "what the open fridge shows decides the rest: room -> put the rice in; full -> what may leave is what does not need the cold (the cereal box, onto the island or a counter, not the floor); the leftovers and the juice stay in",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T27_leftovers_to_fridge/shelf_full_or_not__full": {
-  "variant": "shelf_full_or_not",
-  "category": "action_task",
-  "seeds": [
-   11,
-   14,
-   15,
-   16,
-   17
-  ],
-  "instruction": "Dinner is over. Put the leftovers in the fridge.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "fridge_cereal",
-    "fridge_juice_1",
-    "fridge_juice_2",
-    "leftover_rice",
-    "old_leftovers"
-   ],
-   "removed": [],
-   "conditions": [
-    "destination_full",
-    "category_rule",
-    "dependent_decisions"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "leftover_rice",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ],
-    [
-     "on",
-     "old_leftovers",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "on",
-     "fridge_juice_1",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "on",
-     "fridge_juice_2",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "not on",
-     "fridge_cereal",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "not on_floor",
-     "fridge_cereal"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "rice_on_table",
-  "oracle_route": "v6_shelf_full_or_not__full",
-  "challenge": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-  "rationale": "what the open fridge shows decides the rest: room -> put the rice in; full -> what may leave is what does not need the cold (the cereal box, onto the island or a counter, not the floor); the leftovers and the juice stay in",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T27_leftovers_to_fridge/fruit_stays_out": {
@@ -20585,7 +21211,7 @@
    16,
    19
   ],
-  "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+  "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -20656,7 +21282,7 @@
    17,
    18
   ],
-  "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+  "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

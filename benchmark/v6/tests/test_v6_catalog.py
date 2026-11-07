@@ -305,7 +305,7 @@ def test_new_base_tasks():
                       for i in TASKS[tid]["v6_variants"].values())
         cats = sorted(x["category"] for x in tr.values())
         assert cats.count("control") == 1 and "action" not in cats, tid
-        assert len(cats) == 6 + chained and cats.count("action_task") <= chained, tid
+        assert 6 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid   # added or replacing
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

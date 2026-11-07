@@ -50,6 +50,7 @@ ATOMS = {
     "front_visible": lambda o: f"{_names(o)} 从房间里看得见（前面没有更高的东西挡着）",
     "flipped": lambda o: f"{_names(o)} 翻过面",
     "object_rolled": lambda o: f"{_names(o)} 滚过",
+    "count_on_at_most": lambda objs, s, k: f"这 {len(objs)} 件中最多 {k} 件在 `{s}` 上：{_names(objs)}",
     "count_on_at_least": lambda objs, s, k: f"这 {len(objs)} 件中至少 {k} 件还在 `{s}` 上：{_names(objs)}",
     "squared": lambda o: f"{_names(o)} 摆正（和台面边平行，偏差不超过 5°）",
     "visible_from": lambda o, eye, frac=0.5: (f"{_names(o)} 从 ({eye[0]}, {eye[1]}, 高 {eye[2]} m) 这个位置看得见"

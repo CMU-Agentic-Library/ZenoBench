@@ -13,6 +13,8 @@ looks a goal atom up here first, then in the skill registry.
   (a toy on display, not hidden behind boxes, T06);
 * ``count_on_at_least(objects, support, k)``: at least k of the listed objects are on the support
   (the table was not cleared to make room, T20);
+* ``count_on_at_most(objects, support, k)``: at most k of them on the support (exactly two cups for two
+  guests, with count_on_at_least; T25);
 * ``count_inside_at_most(objects, container, k)``: at most k of the listed objects are inside the
   container;
 * ``fully_inside(object, container)``: inside and not sticking out over the rim (a container's real
@@ -146,6 +148,14 @@ def _count_on_at_least(rig, ctx, objects, support, k):
     st = _state(rig, ctx)
     on = [o for o in objects if o in st["objects"] and rig.geo.on(o, support, st)[0]]
     return len(on) >= int(k), f"{len(on)} on {support}: {on}"
+
+
+@goal_predicate("count_on_at_most", ["objects", "support", "k"],
+                "At most k of the listed objects rest on the support (no more than was asked for).")
+def _count_on_at_most(rig, ctx, objects, support, k):
+    st = _state(rig, ctx)
+    on = [o for o in objects if o in st["objects"] and rig.geo.on(o, support, st)[0]]
+    return len(on) <= int(k), f"{len(on)} on {support}: {on}"
 
 
 @goal_predicate("count_inside_at_most", ["objects", "container", "k"],

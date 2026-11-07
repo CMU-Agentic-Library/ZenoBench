@@ -1,6 +1,6 @@
 {
- "routes": 273,
- "ok": 273,
+ "routes": 278,
+ "ok": 278,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -8,6 +8,7 @@
    "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "overhang_ready"
   },
@@ -17,6 +18,14 @@
    "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "table_seats"
   },
@@ -26,6 +35,14 @@
    "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "table_seats"
   },
@@ -35,6 +52,14 @@
    "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "table_seats"
   },
@@ -44,6 +69,14 @@
    "steps": 8,
    "atoms_checked": 15,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "which_table"
   },
@@ -53,6 +86,14 @@
    "steps": 8,
    "atoms_checked": 15,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "which_table"
   },
@@ -62,6 +103,13 @@
    "steps": 10,
    "atoms_checked": 15,
    "atoms_geometric": 5,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a"
+   ],
    "problems": [],
    "variant": "which_table"
   },
@@ -71,6 +119,13 @@
    "steps": 10,
    "atoms_checked": 15,
    "atoms_geometric": 5,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a"
+   ],
    "problems": [],
    "variant": "which_table"
   },
@@ -80,6 +135,14 @@
    "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "no_room_fallback"
   },
@@ -89,6 +152,14 @@
    "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "no_room_fallback"
   },
@@ -98,6 +169,13 @@
    "steps": 9,
    "atoms_checked": 11,
    "atoms_geometric": 5,
+   "geometric_atoms": [
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "no_room_fallback"
   },
@@ -107,6 +185,14 @@
    "steps": 8,
    "atoms_checked": 13,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "reader_seat"
   },
@@ -116,6 +202,14 @@
    "steps": 8,
    "atoms_checked": 13,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "reader_seat"
   },
@@ -125,6 +219,14 @@
    "steps": 8,
    "atoms_checked": 13,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
    "problems": [],
    "variant": "reader_seat"
   },
@@ -134,6 +236,7 @@
    "steps": 9,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_book"
   },
@@ -143,6 +246,7 @@
    "steps": 9,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_book"
   },
@@ -152,6 +256,7 @@
    "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "clear"
   },
@@ -161,6 +266,9 @@
    "steps": 9,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "crowded_use_another"
   },
@@ -170,6 +278,9 @@
    "steps": 9,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "crowded_use_another"
   },
@@ -179,6 +290,9 @@
    "steps": 7,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "crowded_use_another"
   },
@@ -188,6 +302,7 @@
    "steps": 12,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "third_toy_elsewhere"
   },
@@ -197,6 +312,7 @@
    "steps": 12,
    "atoms_checked": 19,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "third_toy_elsewhere"
   },
@@ -206,6 +322,20 @@
    "steps": 18,
    "atoms_checked": 23,
    "atoms_geometric": 12,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge floor_block 0.05",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge floor_block 0.05",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+   ],
    "problems": [],
    "variant": "tower_for_kid"
   },
@@ -215,6 +345,20 @@
    "steps": 18,
    "atoms_checked": 23,
    "atoms_geometric": 12,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge floor_block 0.05",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge floor_block 0.05",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+   ],
    "problems": [],
    "variant": "tower_for_kid"
   },
@@ -224,6 +368,12 @@
    "steps": 18,
    "atoms_checked": 11,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+   ],
    "problems": [],
    "variant": "tower_for_kid_duck"
   },
@@ -233,6 +383,12 @@
    "steps": 18,
    "atoms_checked": 11,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+   ],
    "problems": [],
    "variant": "tower_for_kid_duck"
   },
@@ -242,6 +398,12 @@
    "steps": 24,
    "atoms_checked": 15,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge floor_block 0.05",
+    "away_from_edge floor_block 0.05"
+   ],
    "problems": [],
    "variant": "block_put_away"
   },
@@ -251,6 +413,12 @@
    "steps": 24,
    "atoms_checked": 15,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge floor_block 0.05",
+    "away_from_edge floor_block 0.05"
+   ],
    "problems": [],
    "variant": "block_put_away"
   },
@@ -260,6 +428,7 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "large_only"
   },
@@ -269,6 +438,7 @@
    "steps": 16,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "small_bin_or_bedroom_bin"
   },
@@ -278,6 +448,7 @@
    "steps": 16,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "three_containers_bedroom"
   },
@@ -287,6 +458,7 @@
    "steps": 15,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_bin_by_contents"
   },
@@ -296,6 +468,7 @@
    "steps": 12,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_bin_by_contents"
   },
@@ -305,6 +478,7 @@
    "steps": 17,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_bin_substitute"
   },
@@ -314,6 +488,7 @@
    "steps": 17,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_bin_substitute"
   },
@@ -323,6 +498,7 @@
    "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "utensils_apart"
   },
@@ -332,6 +508,7 @@
    "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "utensils_apart"
   },
@@ -341,6 +518,10 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "cup_available"
   },
@@ -350,6 +531,10 @@
    "steps": 7,
    "atoms_checked": 3,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "no_cup"
   },
@@ -359,6 +544,10 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "no_cup_mug_away"
   },
@@ -368,6 +557,10 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "no_cup_mug_away"
   },
@@ -377,6 +570,12 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "upright oatmeal",
+    "upright pot_lid",
+    "upright cup_counter_b",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "h_task_spot_taken"
   },
@@ -386,6 +585,20 @@
    "steps": 10,
    "atoms_checked": 9,
    "atoms_geometric": 12,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug",
+    "clear_of cup_counter_b ['mug'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "clear_of cup_counter_b ['mug_dining_cabinet'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_shelf",
+    "clear_of cup_counter_b ['mug_shelf'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_counter",
+    "clear_of cup_counter_b ['mug_counter'] 0.03"
+   ],
    "problems": [],
    "variant": "two_guests"
   },
@@ -395,6 +608,20 @@
    "steps": 10,
    "atoms_checked": 9,
    "atoms_geometric": 12,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright mug",
+    "clear_of cup_counter_b ['mug'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "clear_of cup_counter_b ['mug_dining_cabinet'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_shelf",
+    "clear_of cup_counter_b ['mug_shelf'] 0.03",
+    "upright cup_counter_b",
+    "upright mug_counter",
+    "clear_of cup_counter_b ['mug_counter'] 0.03"
+   ],
    "problems": [],
    "variant": "two_guests"
   },
@@ -404,6 +631,12 @@
    "steps": 6,
    "atoms_checked": 5,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
+   ],
    "problems": [],
    "variant": "hot_tea_mug"
   },
@@ -413,6 +646,12 @@
    "steps": 6,
    "atoms_checked": 5,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
+   ],
    "problems": [],
    "variant": "hot_tea_mug"
   },
@@ -422,6 +661,9 @@
    "steps": 18,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright cup_counter_b"
+   ],
    "problems": [],
    "variant": "x6_gd_cup_in_cabinets"
   },
@@ -431,6 +673,9 @@
    "steps": 18,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright cup_counter_b"
+   ],
    "problems": [],
    "variant": "x6_gd_cup_in_cabinets"
   },
@@ -440,6 +685,7 @@
    "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "e1_pencil_asked"
   },
@@ -449,6 +695,7 @@
    "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_pen_pencil_away"
   },
@@ -458,6 +705,7 @@
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "h_task_pencil_in_cabinet"
   },
@@ -467,6 +715,7 @@
    "steps": 3,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "check_desk_first"
   },
@@ -476,6 +725,7 @@
    "steps": 3,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "check_desk_first"
   },
@@ -485,6 +735,7 @@
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "all_pens"
   },
@@ -494,6 +745,7 @@
    "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "all_pens"
   },
@@ -503,6 +755,7 @@
    "steps": 20,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "all_pens"
   },
@@ -512,6 +765,7 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "homework_ready"
   },
@@ -521,6 +775,7 @@
    "steps": 12,
    "atoms_checked": 15,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "homework_ready"
   },
@@ -530,6 +785,7 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "homework_ready"
   },
@@ -539,6 +795,7 @@
    "steps": 10,
    "atoms_checked": 27,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "pens_per_notebook"
   },
@@ -548,6 +805,7 @@
    "steps": 15,
    "atoms_checked": 20,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "pens_per_notebook"
   },
@@ -557,6 +815,9 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "errand_combined"
   },
@@ -566,6 +827,9 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "errand_combined"
   },
@@ -575,6 +839,7 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_pen_or_pencil_cabinets"
   },
@@ -584,6 +849,7 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_pen_or_pencil_cabinets"
   },
@@ -593,6 +859,7 @@
    "steps": 5,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "free"
   },
@@ -602,6 +869,7 @@
    "steps": 6,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "occupied"
   },
@@ -611,6 +879,7 @@
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "occupied_block_away"
   },
@@ -620,6 +889,7 @@
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "occupied_block_away"
   },
@@ -629,6 +899,17 @@
    "steps": 14,
    "atoms_checked": 4,
    "atoms_geometric": 9,
+   "geometric_atoms": [
+    "squared wooden_block_a",
+    "squared wooden_block_b",
+    "squared floor_block",
+    "front_visible wooden_block_a",
+    "front_visible wooden_block_b",
+    "front_visible floor_block",
+    "clear_of wooden_block_a ['wooden_block_b', 'floor_block'] 0.03",
+    "clear_of wooden_block_b ['wooden_block_a', 'floor_block'] 0.03",
+    "clear_of floor_block ['wooden_block_a', 'wooden_block_b'] 0.03"
+   ],
    "problems": [],
    "variant": "display_row"
   },
@@ -638,6 +919,17 @@
    "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 9,
+   "geometric_atoms": [
+    "squared wooden_block_a",
+    "squared wooden_block_b",
+    "squared floor_block",
+    "front_visible wooden_block_a",
+    "front_visible wooden_block_b",
+    "front_visible floor_block",
+    "clear_of wooden_block_a ['wooden_block_b', 'floor_block'] 0.03",
+    "clear_of wooden_block_b ['wooden_block_a', 'floor_block'] 0.03",
+    "clear_of floor_block ['wooden_block_a', 'wooden_block_b'] 0.03"
+   ],
    "problems": [],
    "variant": "display_row"
   },
@@ -647,6 +939,14 @@
    "steps": 6,
    "atoms_checked": 6,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b",
+    "upright juice_bottle",
+    "upright clutter_cereal_c"
+   ],
    "problems": [],
    "variant": "display_spot_or_tv"
   },
@@ -656,6 +956,14 @@
    "steps": 6,
    "atoms_checked": 6,
    "atoms_geometric": 6,
+   "geometric_atoms": [
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b",
+    "upright juice_bottle",
+    "upright clutter_cereal_c"
+   ],
    "problems": [],
    "variant": "display_spot_or_tv"
   },
@@ -665,6 +973,12 @@
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
+    "upright bedside_box_1",
+    "upright bedside_box_2",
+    "upright bedside_box_3"
+   ],
    "problems": [],
    "variant": "seen_from_bed"
   },
@@ -674,6 +988,11 @@
    "steps": 7,
    "atoms_checked": 4,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
+    "upright bedside_box_1",
+    "upright bedside_box_2"
+   ],
    "problems": [],
    "variant": "seen_from_bed"
   },
@@ -683,6 +1002,7 @@
    "steps": 9,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "microwave_works"
   },
@@ -692,6 +1012,7 @@
    "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "microwave_broken"
   },
@@ -701,6 +1022,7 @@
    "steps": 16,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "broken_oatmeal_away"
   },
@@ -710,6 +1032,7 @@
    "steps": 16,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "broken_oatmeal_away"
   },
@@ -719,6 +1042,7 @@
    "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "microwave_holds_pot"
   },
@@ -728,6 +1052,7 @@
    "steps": 9,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "vessel_decides_appliance"
   },
@@ -737,6 +1062,7 @@
    "steps": 11,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "vessel_decides_appliance"
   },
@@ -746,6 +1072,7 @@
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "vessel_decides_appliance"
   },
@@ -755,6 +1082,7 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "vessel_decides_appliance"
   },
@@ -764,6 +1092,7 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "vessel_decides_appliance"
   },
@@ -773,6 +1102,7 @@
    "steps": 21,
    "atoms_checked": 6,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "two_portions"
   },
@@ -782,6 +1112,7 @@
    "steps": 21,
    "atoms_checked": 6,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "two_portions"
   },
@@ -791,6 +1122,7 @@
    "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "sponge_on_island"
   },
@@ -800,6 +1132,7 @@
    "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "far_sponge_tv"
   },
@@ -809,6 +1142,7 @@
    "steps": 7,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "far_sponge_tv"
   },
@@ -818,6 +1152,12 @@
    "steps": 17,
    "atoms_checked": 12,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "upright soda_can",
+    "upright mug",
+    "upright juice_bottle",
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "wipe_and_sort"
   },
@@ -827,6 +1167,12 @@
    "steps": 17,
    "atoms_checked": 12,
    "atoms_geometric": 4,
+   "geometric_atoms": [
+    "upright soda_can",
+    "upright mug",
+    "upright juice_bottle",
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "wipe_and_sort"
   },
@@ -836,6 +1182,7 @@
    "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "return_sponge_home"
   },
@@ -845,6 +1192,7 @@
    "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "return_sponge_home"
   },
@@ -854,6 +1202,7 @@
    "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "return_sponge_home"
   },
@@ -863,6 +1212,7 @@
    "steps": 5,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_surface"
   },
@@ -872,6 +1222,7 @@
    "steps": 9,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_surface"
   },
@@ -881,6 +1232,7 @@
    "steps": 14,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lid_off"
   },
@@ -890,6 +1242,7 @@
    "steps": 18,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lid_on_spoon_away"
   },
@@ -899,6 +1252,7 @@
    "steps": 18,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lid_on_spoon_away"
   },
@@ -908,6 +1262,9 @@
    "steps": 20,
    "atoms_checked": 11,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright soup_pot"
+   ],
    "problems": [],
    "variant": "pot_in_use"
   },
@@ -917,6 +1274,9 @@
    "steps": 15,
    "atoms_checked": 11,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright soup_pot"
+   ],
    "problems": [],
    "variant": "pot_in_use"
   },
@@ -926,6 +1286,7 @@
    "steps": 25,
    "atoms_checked": 11,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tomato_in_fridge"
   },
@@ -935,6 +1296,7 @@
    "steps": 14,
    "atoms_checked": 11,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tomato_in_fridge"
   },
@@ -944,6 +1306,7 @@
    "steps": 19,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_tomato_elsewhere"
   },
@@ -953,6 +1316,7 @@
    "steps": 19,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_tomato_elsewhere"
   },
@@ -962,6 +1326,7 @@
    "steps": 22,
    "atoms_checked": 8,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "pot_in_dining_room"
   },
@@ -971,6 +1336,7 @@
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "can_on_island"
   },
@@ -980,6 +1346,7 @@
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "can_in_dining_room"
   },
@@ -989,6 +1356,7 @@
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "can_in_dining_room"
   },
@@ -998,6 +1366,9 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kids_can"
+   ],
    "problems": [],
    "variant": "keep_kids_can"
   },
@@ -1007,6 +1378,9 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kids_can"
+   ],
    "problems": [],
    "variant": "keep_kids_can"
   },
@@ -1016,6 +1390,7 @@
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "trash_moved"
   },
@@ -1025,6 +1400,7 @@
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "trash_moved"
   },
@@ -1034,6 +1410,7 @@
    "steps": 20,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "after_dinner_clear"
   },
@@ -1043,6 +1420,9 @@
    "steps": 19,
    "atoms_checked": 7,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "after_dinner_clear"
   },
@@ -1052,6 +1432,9 @@
    "steps": 16,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "after_dinner_clear"
   },
@@ -1061,6 +1444,9 @@
    "steps": 17,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "guests_coming"
   },
@@ -1070,6 +1456,7 @@
    "steps": 13,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "guests_coming"
   },
@@ -1079,6 +1466,9 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright used_mug"
+   ],
    "problems": [],
    "variant": "guests_coming"
   },
@@ -1088,6 +1478,7 @@
    "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_can_put_away"
   },
@@ -1097,6 +1488,7 @@
    "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_can_put_away"
   },
@@ -1106,6 +1498,7 @@
    "steps": 7,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fruits_on_table"
   },
@@ -1115,6 +1508,7 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "basket_missing"
   },
@@ -1124,6 +1518,7 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "basket_gone_bowl_there"
   },
@@ -1133,6 +1528,7 @@
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "leave_one_for_kid"
   },
@@ -1142,6 +1538,7 @@
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "leave_one_for_kid"
   },
@@ -1151,6 +1548,7 @@
    "steps": 14,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "leave_one_for_kid"
   },
@@ -1160,6 +1558,7 @@
    "steps": 14,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fruit_plate_for_guests"
   },
@@ -1169,6 +1568,7 @@
    "steps": 14,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fruit_plate_for_guests"
   },
@@ -1178,6 +1578,9 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "toys_out"
   },
@@ -1187,6 +1590,9 @@
    "steps": 12,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "duck_in_study"
   },
@@ -1196,6 +1602,9 @@
    "steps": 12,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "duck_in_study"
   },
@@ -1205,6 +1614,9 @@
    "steps": 14,
    "atoms_checked": 15,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright toy_bin_small"
+   ],
    "problems": [],
    "variant": "toys_everywhere"
   },
@@ -1214,6 +1626,9 @@
    "steps": 14,
    "atoms_checked": 15,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright toy_bin_small"
+   ],
    "problems": [],
    "variant": "toys_everywhere"
   },
@@ -1223,6 +1638,10 @@
    "steps": 14,
    "atoms_checked": 9,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright toy_bin_small",
+    "upright toy_bin_small_2"
+   ],
    "problems": [],
    "variant": "bins_capacity"
   },
@@ -1232,6 +1651,10 @@
    "steps": 14,
    "atoms_checked": 9,
    "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright toy_bin_small_2",
+    "upright toy_bin_small"
+   ],
    "problems": [],
    "variant": "bins_capacity"
   },
@@ -1241,6 +1664,9 @@
    "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "find_all_toys"
   },
@@ -1250,6 +1676,9 @@
    "steps": 15,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "find_all_toys"
   },
@@ -1259,6 +1688,9 @@
    "steps": 20,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "find_all_toys"
   },
@@ -1268,6 +1700,9 @@
    "steps": 17,
    "atoms_checked": 11,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "castle_stays"
   },
@@ -1277,6 +1712,9 @@
    "steps": 13,
    "atoms_checked": 8,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "castle_stays"
   },
@@ -1286,6 +1724,9 @@
    "steps": 9,
    "atoms_checked": 9,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
    "problems": [],
    "variant": "castle_stays"
   },
@@ -1295,6 +1736,13 @@
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 5,
+   "geometric_atoms": [
+    "upright bowl",
+    "upright cup",
+    "grouped ['bowl', 'cup', 'spoon'] dining_table_2/top 0.5",
+    "upright mug",
+    "grouped ['bowl', 'mug', 'spoon'] dining_table_2/top 0.5"
+   ],
    "problems": [],
    "variant": "dishes_on_tv_stand"
   },
@@ -1304,60 +1752,85 @@
    "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 5,
+   "geometric_atoms": [
+    "upright bowl",
+    "upright cup",
+    "grouped ['bowl', 'cup', 'spoon'] dining_table_2/top 0.5",
+    "upright mug",
+    "grouped ['bowl', 'mug', 'spoon'] dining_table_2/top 0.5"
+   ],
    "problems": [],
    "variant": "no_cup"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "copy_the_setting__bowl_cup",
-   "steps": 10,
+   "steps": 12,
    "atoms_checked": 4,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "same_arrangement ['bowl', 'cup'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "upright bowl",
+    "upright cup"
+   ],
    "problems": [],
    "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "copy_the_setting__plate_bowl_mug_left",
-   "steps": 14,
+   "steps": 20,
    "atoms_checked": 6,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "same_arrangement ['plate_counter_a', 'bowl', 'mug'] ['example_plate', 'example_bowl', 'example_mug'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "upright bowl",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "copy_the_setting__no_cup",
-   "steps": 10,
+   "steps": 14,
    "atoms_checked": 4,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "same_arrangement ['bowl', 'mug'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "upright bowl",
+    "upright mug"
+   ],
    "problems": [],
    "variant": "copy_the_setting"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "finish_the_table__adult_seat",
-   "steps": 9,
+   "steps": 13,
    "atoms_checked": 14,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "finish_the_table"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "finish_the_table__kid_seat",
-   "steps": 9,
+   "steps": 13,
    "atoms_checked": 14,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "finish_the_table"
   },
   {
    "task": "T13_breakfast_setup",
    "layout": "finish_the_table__adult_and_kid",
-   "steps": 17,
+   "steps": 23,
    "atoms_checked": 17,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "finish_the_table"
   },
@@ -1367,6 +1840,7 @@
    "steps": 3,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "book_free"
   },
@@ -1376,6 +1850,7 @@
    "steps": 3,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "book_out_of_view"
   },
@@ -1385,6 +1860,7 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "flip_on_the_shelf"
   },
@@ -1394,6 +1870,7 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "flip_on_the_shelf"
   },
@@ -1403,6 +1880,9 @@
    "steps": 3,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "away_from_edge rolling_pin 0.06"
+   ],
    "problems": [],
    "variant": "pin_free"
   },
@@ -1412,6 +1892,9 @@
    "steps": 3,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "away_from_edge rolling_pin 0.06"
+   ],
    "problems": [],
    "variant": "pin_out_of_view"
   },
@@ -1421,6 +1904,11 @@
    "steps": 6,
    "atoms_checked": 4,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "away_from_edge rolling_pin 0.06",
+    "away_from_edge edge_mug 0.06",
+    "upright edge_mug"
+   ],
    "problems": [],
    "variant": "everything_near_the_edge"
   },
@@ -1430,6 +1918,11 @@
    "steps": 6,
    "atoms_checked": 4,
    "atoms_geometric": 3,
+   "geometric_atoms": [
+    "away_from_edge rolling_pin 0.06",
+    "away_from_edge oatmeal 0.06",
+    "upright oatmeal"
+   ],
    "problems": [],
    "variant": "everything_near_the_edge"
   },
@@ -1439,6 +1932,9 @@
    "steps": 3,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "away_from_edge rolling_pin 0.06"
+   ],
    "problems": [],
    "variant": "everything_near_the_edge"
   },
@@ -1448,6 +1944,7 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lid_off"
   },
@@ -1457,6 +1954,7 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "h_task_lid_elsewhere"
   },
@@ -1466,6 +1964,7 @@
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "hide_both"
   },
@@ -1475,6 +1974,7 @@
    "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "hide_both"
   },
@@ -1484,6 +1984,7 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "new_spot_this_time"
   },
@@ -1493,6 +1994,7 @@
    "steps": 4,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "at_island"
   },
@@ -1502,6 +2004,7 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "h_task_two_cabinets"
   },
@@ -1511,6 +2014,7 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_bowl_elsewhere__two_places"
   },
@@ -1520,6 +2024,7 @@
    "steps": 12,
    "atoms_checked": 6,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_bowl_elsewhere__three_places"
   },
@@ -1529,24 +2034,27 @@
    "steps": 4,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "enough_for_dinner"
   },
   {
    "task": "T18_check_cabinet_dishes",
    "layout": "enough_for_dinner__one_short",
-   "steps": 8,
+   "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "enough_for_dinner"
   },
   {
    "task": "T18_check_cabinet_dishes",
    "layout": "enough_for_dinner__two_short",
-   "steps": 12,
+   "steps": 16,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "enough_for_dinner"
   },
@@ -1556,6 +2064,7 @@
    "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bin_on_bookcase"
   },
@@ -1565,6 +2074,7 @@
    "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "m_can_in_dining_room"
   },
@@ -1574,6 +2084,7 @@
    "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "m_can_in_dining_room"
   },
@@ -1583,6 +2094,7 @@
    "steps": 17,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lookalike_bin"
   },
@@ -1592,6 +2104,7 @@
    "steps": 17,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "lookalike_bin"
   },
@@ -1601,6 +2114,7 @@
    "steps": 24,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_can_put_away"
   },
@@ -1610,6 +2124,7 @@
    "steps": 24,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "x6_gd_can_put_away"
   },
@@ -1619,6 +2134,9 @@
    "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright juice_bottle"
+   ],
    "problems": [],
    "variant": "bottle_on_cabinet"
   },
@@ -1628,6 +2146,9 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright juice_bottle"
+   ],
    "problems": [],
    "variant": "m_bottle_on_tv_stand"
   },
@@ -1637,6 +2158,9 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright juice_bottle"
+   ],
    "problems": [],
    "variant": "m_bottle_on_tv_stand"
   },
@@ -1646,6 +2170,9 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright juice_bottle"
+   ],
    "problems": [],
    "variant": "x6_gd_bottle_put_away"
   },
@@ -1655,6 +2182,9 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright juice_bottle"
+   ],
    "problems": [],
    "variant": "x6_gd_bottle_put_away"
   },
@@ -1664,6 +2194,7 @@
    "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "e1_book_ready"
   },
@@ -1673,6 +2204,7 @@
    "steps": 6,
    "atoms_checked": 15,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "within_kids_reach"
   },
@@ -1682,6 +2214,7 @@
    "steps": 6,
    "atoms_checked": 15,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "within_kids_reach"
   },
@@ -1691,6 +2224,7 @@
    "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "stack_them_stably"
   },
@@ -1700,6 +2234,7 @@
    "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "stack_them_stably"
   },
@@ -1709,6 +2244,7 @@
    "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "stack_them_stably"
   },
@@ -1718,6 +2254,9 @@
    "steps": 9,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright desk_mug"
+   ],
    "problems": [],
    "variant": "homework_stays"
   },
@@ -1727,6 +2266,7 @@
    "steps": 5,
    "atoms_checked": 6,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "whose_book"
   },
@@ -1736,6 +2276,7 @@
    "steps": 5,
    "atoms_checked": 6,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "whose_book"
   },
@@ -1745,6 +2286,7 @@
    "steps": 9,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "whose_book"
   },
@@ -1754,6 +2296,7 @@
    "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "next_in_series"
   },
@@ -1763,6 +2306,7 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "next_in_series"
   },
@@ -1772,6 +2316,7 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "next_in_series"
   },
@@ -1781,6 +2326,7 @@
    "steps": 4,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_on_tv_stand"
   },
@@ -1790,6 +2336,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_out_of_view"
   },
@@ -1799,6 +2346,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_table"
   },
@@ -1808,6 +2356,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_table"
   },
@@ -1817,6 +2366,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_tissue"
   },
@@ -1826,6 +2376,7 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_put_away"
   },
@@ -1835,6 +2386,7 @@
    "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_put_away"
   },
@@ -1844,6 +2396,7 @@
    "steps": 4,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "the_kids_side"
   },
@@ -1853,60 +2406,85 @@
    "steps": 4,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "the_kids_side"
   },
   {
    "task": "T21_bring_tissues",
-   "layout": "tissue_or_sponge__in_cabinet",
+   "layout": "tissue_or_sponge__in_first",
    "steps": 12,
-   "atoms_checked": 4,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_or_sponge"
   },
   {
    "task": "T21_bring_tissues",
-   "layout": "tissue_or_sponge__cabinet_empty",
-   "steps": 11,
-   "atoms_checked": 3,
+   "layout": "tissue_or_sponge__in_second",
+   "steps": 18,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "tissue_or_sponge"
+  },
+  {
+   "task": "T21_bring_tissues",
+   "layout": "tissue_or_sponge__none",
+   "steps": 17,
+   "atoms_checked": 4,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "tissue_or_sponge"
   },
   {
    "task": "T22_put_away_shopping",
    "layout": "juice_on_table",
-   "steps": 7,
+   "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "juice_on_table"
   },
   {
    "task": "T22_put_away_shopping",
    "layout": "by_kind",
-   "steps": 19,
+   "steps": 21,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "by_kind"
   },
   {
    "task": "T22_put_away_shopping",
    "layout": "eat_now",
-   "steps": 11,
+   "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "eat_now"
   },
   {
    "task": "T22_put_away_shopping",
    "layout": "basket_missing",
-   "steps": 11,
+   "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "basket_missing"
   },
@@ -1916,6 +2494,9 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "not_shopping"
   },
@@ -1925,8 +2506,35 @@
    "steps": 21,
    "atoms_checked": 6,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
    "problems": [],
    "variant": "two_spots"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "tray_elsewhere__orange_in_it",
+   "steps": 15,
+   "atoms_checked": 5,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "tray_elsewhere"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "tray_elsewhere__books_on_it",
+   "steps": 31,
+   "atoms_checked": 9,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "tray_elsewhere"
   },
   {
    "task": "T23_pick_up_dropped",
@@ -1934,15 +2542,17 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "spoon_on_floor"
   },
   {
    "task": "T23_pick_up_dropped",
    "layout": "by_kind",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "by_kind"
   },
@@ -1952,6 +2562,7 @@
    "steps": 5,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "belongs_on_floor"
   },
@@ -1961,6 +2572,7 @@
    "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "dropped_out_of_view"
   },
@@ -1970,6 +2582,7 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "only_this_room"
   },
@@ -1979,15 +2592,17 @@
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "dropped_in_two_rooms"
   },
   {
    "task": "T24_snack_for_kid",
    "layout": "apple_on_table",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "apple_on_table"
   },
@@ -1997,6 +2612,7 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_apples_for_him"
   },
@@ -2006,42 +2622,47 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "dinner_soon"
   },
   {
    "task": "T24_snack_for_kid",
    "layout": "fruit_out_of_view",
-   "steps": 6,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fruit_out_of_view"
   },
   {
    "task": "T24_snack_for_kid",
    "layout": "where_is_he__study",
-   "steps": 5,
+   "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "where_is_he"
   },
   {
    "task": "T24_snack_for_kid",
    "layout": "where_is_he__bedroom",
-   "steps": 5,
+   "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "where_is_he"
   },
   {
    "task": "T24_snack_for_kid",
    "layout": "two_kids",
-   "steps": 8,
+   "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "two_kids"
   },
@@ -2051,6 +2672,9 @@
    "steps": 8,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
    "problems": [],
    "variant": "drink_on_island"
   },
@@ -2060,26 +2684,83 @@
    "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
    "problems": [],
    "variant": "cup_elsewhere"
   },
   {
    "task": "T25_drink_for_guest",
    "layout": "cold_one",
-   "steps": 12,
+   "steps": 14,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright cold_juice"
+   ],
    "problems": [],
    "variant": "cold_one"
   },
   {
    "task": "T25_drink_for_guest",
    "layout": "drink_in_fridge",
-   "steps": 13,
+   "steps": 15,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright cold_juice"
+   ],
    "problems": [],
    "variant": "drink_in_fridge"
+  },
+  {
+   "task": "T25_drink_for_guest",
+   "layout": "cups_for_two__one_there",
+   "steps": 16,
+   "atoms_checked": 7,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
+   "problems": [],
+   "variant": "cups_for_two"
+  },
+  {
+   "task": "T25_drink_for_guest",
+   "layout": "cups_for_two__none_one_inside",
+   "steps": 21,
+   "atoms_checked": 6,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
+   "problems": [],
+   "variant": "cups_for_two"
+  },
+  {
+   "task": "T25_drink_for_guest",
+   "layout": "cups_for_two__none_two_inside",
+   "steps": 20,
+   "atoms_checked": 6,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
+   "problems": [],
+   "variant": "cups_for_two"
+  },
+  {
+   "task": "T25_drink_for_guest",
+   "layout": "cups_for_two__two_there",
+   "steps": 5,
+   "atoms_checked": 8,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
+   "problems": [],
+   "variant": "cups_for_two"
   },
   {
    "task": "T25_drink_for_guest",
@@ -2087,6 +2768,9 @@
    "steps": 12,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
    "problems": [],
    "variant": "two_guests"
   },
@@ -2096,15 +2780,19 @@
    "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright guest_juice"
+   ],
    "problems": [],
    "variant": "little_guest"
   },
   {
    "task": "T26_kids_things_to_room",
    "layout": "car_in_living_room",
-   "steps": 5,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "car_in_living_room"
   },
@@ -2114,24 +2802,27 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "whose"
   },
   {
    "task": "T26_kids_things_to_room",
    "layout": "scattered",
-   "steps": 13,
+   "steps": 14,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "scattered"
   },
   {
    "task": "T26_kids_things_to_room",
    "layout": "where_in_room",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "where_in_room"
   },
@@ -2141,6 +2832,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bear_to_bed"
   },
@@ -2150,6 +2842,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "two_bedrooms"
   },
@@ -2159,15 +2852,17 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "two_bedrooms"
   },
   {
    "task": "T27_leftovers_to_fridge",
    "layout": "rice_on_table",
-   "steps": 7,
+   "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "rice_on_table"
   },
@@ -2177,6 +2872,7 @@
    "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_is_leftover"
   },
@@ -2186,6 +2882,9 @@
    "steps": 12,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright leftover_soup"
+   ],
    "problems": [],
    "variant": "two_leftovers"
   },
@@ -2195,6 +2894,9 @@
    "steps": 13,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright leftover_soup"
+   ],
    "problems": [],
    "variant": "two_leftovers"
   },
@@ -2204,6 +2906,7 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "still_eating"
   },
@@ -2213,26 +2916,9 @@
    "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fridge_out_of_view"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "shelf_full_or_not__room",
-   "steps": 9,
-   "atoms_checked": 6,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "shelf_full_or_not"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "shelf_full_or_not__full",
-   "steps": 13,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "problems": [],
-   "variant": "shelf_full_or_not"
   },
   {
    "task": "T27_leftovers_to_fridge",
@@ -2240,15 +2926,19 @@
    "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "fruit_stays_out"
   },
   {
    "task": "T28_cup_to_bedside",
    "layout": "cup_on_counter",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "cup_on_counter"
   },
@@ -2258,6 +2948,9 @@
    "steps": 5,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "which_cup"
   },
@@ -2267,24 +2960,33 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "cup_put_away"
   },
   {
    "task": "T28_cup_to_bedside",
    "layout": "which_bed__east",
-   "steps": 5,
+   "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "which_bed"
   },
   {
    "task": "T28_cup_to_bedside",
    "layout": "which_bed__south",
-   "steps": 5,
+   "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "which_bed"
   },
@@ -2294,6 +2996,9 @@
    "steps": 5,
    "atoms_checked": 4,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "where_his_cup_is"
   },
@@ -2303,6 +3008,9 @@
    "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "where_his_cup_is"
   },
@@ -2312,6 +3020,9 @@
    "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
    "problems": [],
    "variant": "cup_out_of_view"
   },
@@ -2321,6 +3032,7 @@
    "steps": 2,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "already_there"
   },
@@ -2330,6 +3042,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "car_on_table"
   },
@@ -2339,6 +3052,7 @@
    "steps": 5,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "belongs_on_table"
   },
@@ -2348,6 +3062,7 @@
    "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "homework_on_table"
   },
@@ -2357,6 +3072,7 @@
    "steps": 13,
    "atoms_checked": 7,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "several"
   },
@@ -2366,6 +3082,7 @@
    "steps": 2,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "nothing_to_clear"
   },
@@ -2375,6 +3092,7 @@
    "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_table"
   },
@@ -2384,6 +3102,7 @@
    "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "which_table"
   },
@@ -2393,6 +3112,7 @@
    "steps": 4,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bowl_on_cabinet"
   },
@@ -2402,6 +3122,7 @@
    "steps": 13,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "how_many"
   },
@@ -2411,6 +3132,7 @@
    "steps": 20,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bowls_in_cabinet"
   },
@@ -2420,6 +3142,7 @@
    "steps": 20,
    "atoms_checked": 4,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bowls_in_cabinet"
   },
@@ -2429,6 +3152,7 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "clean_one"
   },
@@ -2438,6 +3162,7 @@
    "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bowl_put_away"
   },
@@ -2447,6 +3172,7 @@
    "steps": 5,
    "atoms_checked": 2,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "no_bowl"
   },
@@ -2456,6 +3182,7 @@
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
+   "geometric_atoms": [],
    "problems": [],
    "variant": "bowl_not_plate"
   }

@@ -47160,6 +47160,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47236,6 +47248,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "plate_counter_a"
        }
       },
@@ -47265,6 +47289,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47285,6 +47321,18 @@
        "args": {
         "object": "bowl",
         "base": "plate_counter_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -47337,6 +47385,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47361,6 +47421,18 @@
          2.93,
          7.49
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -47407,6 +47479,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47431,6 +47515,18 @@
          2.93,
          6.89
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -47477,6 +47573,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47501,6 +47609,18 @@
          2.93,
          6.89
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
        }
       },
       {
@@ -47547,6 +47667,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl"
        }
       },
@@ -47571,6 +47703,18 @@
          2.93,
          6.89
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -47629,6 +47773,18 @@
          2.93,
          6.04
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
        }
       },
       {
@@ -52213,6 +52369,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_3/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_3/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl_kitchen_cabinet"
        }
       },
@@ -52272,6 +52440,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_3/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_3/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bowl_kitchen_cabinet"
        }
       },
@@ -52296,6 +52476,18 @@
          3.5,
          0.36
         ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_1/top"
        }
       },
       {
@@ -59852,11 +60044,15 @@
       }
      }
     },
-    "tissue_or_sponge__in_cabinet": {
+    "tissue_or_sponge__in_first": {
      "conditions": [
       "resource_absent",
       "item_put_away",
       "dependent_decisions"
+     ],
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
      ],
      "add": {
       "tissue": {
@@ -59913,6 +60109,10 @@
         "kitchen_cabinet_4"
        ],
        [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -59924,15 +60124,15 @@
       "soup_bowl"
      ],
      "since": "v6",
-     "note": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
+     "note": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
      "v6": {
       "family": "tissue_or_sponge",
-      "case": "in_cabinet",
-      "challenge": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
-      "rationale": "the usual place is empty, so look where such things are kept; the cabinet then decides: tissues -> bring them (the sponge was only a fallback); empty -> the sponge does the wiping",
+      "case": "in_first",
+      "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+      "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
       "control": "tissue_on_tv_stand",
       "contrast": null,
-      "factor": "whether the low cabinet holds the tissues (seed): what the robot finds there decides the rest",
+      "factor": "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet looks the same until its door is open",
       "derived_from": "bare"
      },
      "move": {},
@@ -60030,11 +60230,201 @@
       }
      }
     },
-    "tissue_or_sponge__cabinet_empty": {
+    "tissue_or_sponge__in_second": {
      "conditions": [
       "resource_absent",
       "item_put_away",
       "dependent_decisions"
+     ],
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
+     ],
+     "add": {
+      "tissue": {
+       "asset": "tissue_box",
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.5,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": "kitchen_island/top",
+       "xy": [
+        8.0,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "soup_bowl": {
+       "asset": "oatmeal_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        6.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "meal_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.14
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "tissue",
+        "dining_table_2/top"
+       ],
+       [
+        "not on",
+        "spare_sponge",
+        "dining_table_2/top"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "tissue",
+      "spare_sponge",
+      "soup_bowl"
+     ],
+     "since": "v6",
+     "note": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+     "v6": {
+      "family": "tissue_or_sponge",
+      "case": "in_second",
+      "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+      "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
+      "control": "tissue_on_tv_stand",
+      "contrast": null,
+      "factor": "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet looks the same until its door is open",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "meal_spoon"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.0093,
+         7.1195,
+         3.1907,
+         7.1604
+        ],
+        "dx": [
+         -0.21,
+         0.0
+        ],
+        "dy": [
+         -1.61,
+         0.78
+        ]
+       },
+       {
+        "names": [
+         "soup_bowl"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.011,
+         6.862,
+         3.189,
+         7.038
+        ],
+        "dx": [
+         -0.21,
+         0.0
+        ],
+        "dy": [
+         -1.35,
+         0.9
+        ]
+       },
+       {
+        "names": [
+         "spare_sponge"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.955,
+         1.77,
+         8.045,
+         1.83
+        ],
+        "dx": [
+         -1.4,
+         0.2
+        ],
+        "dy": [
+         0.0,
+         0.14
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         3.23,
+         6.605,
+         3.37,
+         6.695
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "tv_stand_2/top"
+       ]
+      }
+     }
+    },
+    "tissue_or_sponge__none": {
+     "conditions": [
+      "resource_absent",
+      "item_put_away",
+      "dependent_decisions"
+     ],
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
      ],
      "add": {
       "spare_sponge": {
@@ -60077,6 +60467,10 @@
         "kitchen_cabinet_4"
        ],
        [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -60087,15 +60481,15 @@
       "soup_bowl"
      ],
      "since": "v6",
-     "note": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
+     "note": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
      "v6": {
       "family": "tissue_or_sponge",
-      "case": "cabinet_empty",
-      "challenge": "no tissues on the TV stand; a dry sponge on the island; the low wall cabinet holds the tissues, or nothing (both look the same until the door is open)",
-      "rationale": "the usual place is empty, so look where such things are kept; the cabinet then decides: tissues -> bring them (the sponge was only a fallback); empty -> the sponge does the wiping",
+      "case": "none",
+      "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
+      "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
       "control": "tissue_on_tv_stand",
       "contrast": null,
-      "factor": "whether the low cabinet holds the tissues (seed): what the robot finds there decides the rest",
+      "factor": "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet looks the same until its door is open",
       "derived_from": "bare"
      },
      "move": {},
@@ -60222,8 +60616,9 @@
     "tissue_put_away__in_6": "v6_tissue_put_away__in_6",
     "the_kids_side__kid_north": "v6_the_kids_side__kid_north",
     "the_kids_side__kid_south": "v6_the_kids_side__kid_south",
-    "tissue_or_sponge__in_cabinet": "v6_tissue_or_sponge__in_cabinet",
-    "tissue_or_sponge__cabinet_empty": "v6_tissue_or_sponge__cabinet_empty"
+    "tissue_or_sponge__in_first": "v6_tissue_or_sponge__in_first",
+    "tissue_or_sponge__in_second": "v6_tissue_or_sponge__in_second",
+    "tissue_or_sponge__none": "v6_tissue_or_sponge__none"
    },
    "routes": {
     "nominal": {
@@ -60710,7 +61105,7 @@
      "kind": "v6_oracle",
      "variant": "the_kids_side__kid_south"
     },
-    "v6_tissue_or_sponge__in_cabinet": {
+    "v6_tissue_or_sponge__in_first": {
      "steps": [
       {
        "skill": "look",
@@ -60788,9 +61183,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "tissue_or_sponge__in_cabinet"
+     "variant": "tissue_or_sponge__in_first"
     },
-    "v6_tissue_or_sponge__cabinet_empty": {
+    "v6_tissue_or_sponge__in_second": {
      "steps": [
       {
        "skill": "look",
@@ -60833,6 +61228,150 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tissue"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tissue"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_6",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tissue",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.3,
+         6.65
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tissue_or_sponge__in_second"
+    },
+    "v6_tissue_or_sponge__none": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "spare_sponge"
        }
       },
@@ -60861,7 +61400,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "tissue_or_sponge__cabinet_empty"
+     "variant": "tissue_or_sponge__none"
     }
    },
    "vary": {},
@@ -61007,21 +61546,22 @@
      "origin": "v6",
      "control": "tissue_on_tv_stand",
      "layouts": [
-      "tissue_or_sponge__in_cabinet",
-      "tissue_or_sponge__cabinet_empty"
+      "tissue_or_sponge__in_first",
+      "tissue_or_sponge__in_second",
+      "tissue_or_sponge__none"
      ],
-     "factor": "whether the low cabinet holds the tissues (seed): what the robot finds there decides the rest",
+     "factor": "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet looks the same until its door is open",
      "seeds": {
-      "10": "tissue_or_sponge__cabinet_empty",
-      "11": "tissue_or_sponge__in_cabinet",
-      "12": "tissue_or_sponge__in_cabinet",
-      "13": "tissue_or_sponge__in_cabinet",
-      "14": "tissue_or_sponge__cabinet_empty",
-      "15": "tissue_or_sponge__in_cabinet",
-      "16": "tissue_or_sponge__in_cabinet",
-      "17": "tissue_or_sponge__cabinet_empty",
-      "18": "tissue_or_sponge__cabinet_empty",
-      "19": "tissue_or_sponge__cabinet_empty"
+      "10": "tissue_or_sponge__in_first",
+      "11": "tissue_or_sponge__in_second",
+      "12": "tissue_or_sponge__none",
+      "13": "tissue_or_sponge__in_first",
+      "14": "tissue_or_sponge__in_first",
+      "15": "tissue_or_sponge__in_first",
+      "16": "tissue_or_sponge__none",
+      "17": "tissue_or_sponge__in_second",
+      "18": "tissue_or_sponge__none",
+      "19": "tissue_or_sponge__in_second"
      }
     }
    },
@@ -61957,6 +62497,602 @@
        ]
       }
      }
+    },
+    "tray_elsewhere__orange_in_it": {
+     "conditions": [
+      "container_absent",
+      "not_in_view",
+      "destination_full",
+      "dependent_decisions"
+     ],
+     "add": {
+      "bought_juice": {
+       "asset": "juice_bottle",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "bought_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        7.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "west_tray": {
+       "asset": "serving_tray",
+       "support": "dining_table_1/top",
+       "xy": [
+        -8.0,
+        7.4
+       ],
+       "yaw_deg": 0.0
+      },
+      "tray_orange": {
+       "asset": "orange",
+       "support": null,
+       "z": 0.72,
+       "xy": [
+        -8.12,
+        7.48
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "bought_juice",
+        "breakfast_fridge/inside_shelf"
+       ],
+       [
+        "upright",
+        "bought_juice"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "fully_inside",
+        "bought_apple",
+        "west_tray"
+       ],
+       [
+        "not on_floor",
+        "west_tray"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bought_juice",
+      "bought_apple",
+      "west_tray",
+      "tray_orange"
+     ],
+     "since": "v6",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+     "v6": {
+      "family": "tray_elsewhere",
+      "case": "orange_in_it",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+      "control": "juice_on_table",
+      "contrast": null,
+      "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "tray_orange",
+         "west_tray"
+        ],
+        "support": "dining_table_1/top",
+        "box": [
+         -8.21,
+         7.2209,
+         -7.79,
+         7.5792
+        ],
+        "dx": [
+         0.0,
+         0.29
+        ],
+        "dy": [
+         -0.34,
+         1.26
+        ]
+       },
+       {
+        "names": [
+         "bought_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.2691,
+         6.968,
+         3.3309,
+         7.032
+        ],
+        "dx": [
+         -0.47,
+         0.0
+        ],
+        "dy": [
+         -1.46,
+         0.91
+        ]
+       },
+       {
+        "names": [
+         "bought_juice"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.271,
+         6.671,
+         3.329,
+         6.729
+        ],
+        "dx": [
+         -0.47,
+         0.0
+        ],
+        "dy": [
+         -1.16,
+         1.21
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_1/top": [
+        [
+         -8.2047,
+         7.3463,
+         -7.9953,
+         7.5539
+        ],
+        [
+         -7.8993,
+         8.1799,
+         -7.7606,
+         8.3197
+        ],
+        [
+         -8.3347,
+         8.0461,
+         -8.1681,
+         8.1947
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "west_tray"
+       ],
+       "look": []
+      }
+     }
+    },
+    "tray_elsewhere__books_on_it": {
+     "conditions": [
+      "container_absent",
+      "not_in_view",
+      "destination_full",
+      "dependent_decisions"
+     ],
+     "add": {
+      "bought_juice": {
+       "asset": "juice_bottle",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "bought_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        7.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "west_tray": {
+       "asset": "serving_tray",
+       "support": "dining_table_1/top",
+       "xy": [
+        -8.0,
+        7.4
+       ],
+       "yaw_deg": 0.0
+      },
+      "tray_book_1": {
+       "asset": "book_blue",
+       "support": null,
+       "z": 0.72,
+       "xy": [
+        -8.1,
+        7.325
+       ],
+       "yaw_deg": 0.0
+      },
+      "tray_book_2": {
+       "asset": "book_blue",
+       "support": null,
+       "z": 0.72,
+       "xy": [
+        -7.9,
+        7.325
+       ],
+       "yaw_deg": 0.0
+      },
+      "tray_book_3": {
+       "asset": "book_blue",
+       "support": null,
+       "z": 0.72,
+       "xy": [
+        -8.1,
+        7.475
+       ],
+       "yaw_deg": 0.0
+      },
+      "tray_book_4": {
+       "asset": "book_blue",
+       "support": null,
+       "z": 0.72,
+       "xy": [
+        -7.9,
+        7.475
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "bought_juice",
+        "breakfast_fridge/inside_shelf"
+       ],
+       [
+        "upright",
+        "bought_juice"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "fully_inside",
+        "bought_apple",
+        "west_tray"
+       ],
+       [
+        "not on_floor",
+        "west_tray"
+       ],
+       [
+        "on_any",
+        "tray_book_1",
+        [
+         "bookcase_1/shelf_0",
+         "bookcase_1/shelf_1",
+         "bookcase_1/top",
+         "bookcase_2/shelf_0",
+         "bookcase_2/shelf_1",
+         "bookcase_2/top",
+         "bookcase_3/shelf_0",
+         "bookcase_3/shelf_1",
+         "bookcase_3/top",
+         "bookcase_4/shelf_0",
+         "bookcase_4/shelf_1",
+         "bookcase_4/top",
+         "large_shelf_1/shelf_0",
+         "large_shelf_1/shelf_1",
+         "large_shelf_1/shelf_2",
+         "large_shelf_1/shelf_3",
+         "large_shelf_1/shelf_4",
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3",
+         "large_shelf_3/shelf_0",
+         "large_shelf_3/shelf_1",
+         "large_shelf_3/shelf_2",
+         "large_shelf_3/shelf_3",
+         "large_shelf_4/shelf_0",
+         "large_shelf_4/shelf_1",
+         "large_shelf_4/shelf_2",
+         "large_shelf_4/shelf_3",
+         "large_shelf_4/shelf_4",
+         "large_shelf_5/shelf_0",
+         "large_shelf_5/shelf_1",
+         "large_shelf_5/shelf_2",
+         "large_shelf_5/shelf_3",
+         "large_shelf_6/shelf_0",
+         "large_shelf_6/shelf_1",
+         "large_shelf_6/shelf_2",
+         "large_shelf_6/shelf_3",
+         "large_shelf_6/top"
+        ]
+       ],
+       [
+        "on_any",
+        "tray_book_2",
+        [
+         "bookcase_1/shelf_0",
+         "bookcase_1/shelf_1",
+         "bookcase_1/top",
+         "bookcase_2/shelf_0",
+         "bookcase_2/shelf_1",
+         "bookcase_2/top",
+         "bookcase_3/shelf_0",
+         "bookcase_3/shelf_1",
+         "bookcase_3/top",
+         "bookcase_4/shelf_0",
+         "bookcase_4/shelf_1",
+         "bookcase_4/top",
+         "large_shelf_1/shelf_0",
+         "large_shelf_1/shelf_1",
+         "large_shelf_1/shelf_2",
+         "large_shelf_1/shelf_3",
+         "large_shelf_1/shelf_4",
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3",
+         "large_shelf_3/shelf_0",
+         "large_shelf_3/shelf_1",
+         "large_shelf_3/shelf_2",
+         "large_shelf_3/shelf_3",
+         "large_shelf_4/shelf_0",
+         "large_shelf_4/shelf_1",
+         "large_shelf_4/shelf_2",
+         "large_shelf_4/shelf_3",
+         "large_shelf_4/shelf_4",
+         "large_shelf_5/shelf_0",
+         "large_shelf_5/shelf_1",
+         "large_shelf_5/shelf_2",
+         "large_shelf_5/shelf_3",
+         "large_shelf_6/shelf_0",
+         "large_shelf_6/shelf_1",
+         "large_shelf_6/shelf_2",
+         "large_shelf_6/shelf_3",
+         "large_shelf_6/top"
+        ]
+       ],
+       [
+        "on_any",
+        "tray_book_3",
+        [
+         "bookcase_1/shelf_0",
+         "bookcase_1/shelf_1",
+         "bookcase_1/top",
+         "bookcase_2/shelf_0",
+         "bookcase_2/shelf_1",
+         "bookcase_2/top",
+         "bookcase_3/shelf_0",
+         "bookcase_3/shelf_1",
+         "bookcase_3/top",
+         "bookcase_4/shelf_0",
+         "bookcase_4/shelf_1",
+         "bookcase_4/top",
+         "large_shelf_1/shelf_0",
+         "large_shelf_1/shelf_1",
+         "large_shelf_1/shelf_2",
+         "large_shelf_1/shelf_3",
+         "large_shelf_1/shelf_4",
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3",
+         "large_shelf_3/shelf_0",
+         "large_shelf_3/shelf_1",
+         "large_shelf_3/shelf_2",
+         "large_shelf_3/shelf_3",
+         "large_shelf_4/shelf_0",
+         "large_shelf_4/shelf_1",
+         "large_shelf_4/shelf_2",
+         "large_shelf_4/shelf_3",
+         "large_shelf_4/shelf_4",
+         "large_shelf_5/shelf_0",
+         "large_shelf_5/shelf_1",
+         "large_shelf_5/shelf_2",
+         "large_shelf_5/shelf_3",
+         "large_shelf_6/shelf_0",
+         "large_shelf_6/shelf_1",
+         "large_shelf_6/shelf_2",
+         "large_shelf_6/shelf_3",
+         "large_shelf_6/top"
+        ]
+       ],
+       [
+        "on_any",
+        "tray_book_4",
+        [
+         "bookcase_1/shelf_0",
+         "bookcase_1/shelf_1",
+         "bookcase_1/top",
+         "bookcase_2/shelf_0",
+         "bookcase_2/shelf_1",
+         "bookcase_2/top",
+         "bookcase_3/shelf_0",
+         "bookcase_3/shelf_1",
+         "bookcase_3/top",
+         "bookcase_4/shelf_0",
+         "bookcase_4/shelf_1",
+         "bookcase_4/top",
+         "large_shelf_1/shelf_0",
+         "large_shelf_1/shelf_1",
+         "large_shelf_1/shelf_2",
+         "large_shelf_1/shelf_3",
+         "large_shelf_1/shelf_4",
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3",
+         "large_shelf_3/shelf_0",
+         "large_shelf_3/shelf_1",
+         "large_shelf_3/shelf_2",
+         "large_shelf_3/shelf_3",
+         "large_shelf_4/shelf_0",
+         "large_shelf_4/shelf_1",
+         "large_shelf_4/shelf_2",
+         "large_shelf_4/shelf_3",
+         "large_shelf_4/shelf_4",
+         "large_shelf_5/shelf_0",
+         "large_shelf_5/shelf_1",
+         "large_shelf_5/shelf_2",
+         "large_shelf_5/shelf_3",
+         "large_shelf_6/shelf_0",
+         "large_shelf_6/shelf_1",
+         "large_shelf_6/shelf_2",
+         "large_shelf_6/shelf_3",
+         "large_shelf_6/top"
+        ]
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bought_juice",
+      "bought_apple",
+      "west_tray",
+      "tray_book_1",
+      "tray_book_2",
+      "tray_book_3",
+      "tray_book_4"
+     ],
+     "since": "v6",
+     "note": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+     "v6": {
+      "family": "tray_elsewhere",
+      "case": "books_on_it",
+      "challenge": "juice and an apple on the dining table; no fruit basket; a serving tray on the table in the west dining room: with an orange in it, or with four books lying flat over its floor",
+      "rationale": "the basket is missing, so find something else that holds fruit (the tray in the other room); what lies on it decides the rest: an orange -> the apple goes in beside it (fruit shares the tray, nothing to move); books over the floor -> the books back on the bookcase there, then the apple; the juice into the fridge",
+      "control": "juice_on_table",
+      "contrast": null,
+      "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "tray_book_1",
+         "tray_book_2",
+         "tray_book_3",
+         "tray_book_4",
+         "west_tray"
+        ],
+        "support": "dining_table_1/top",
+        "box": [
+         -8.21,
+         7.2209,
+         -7.79,
+         7.5792
+        ],
+        "dx": [
+         0.0,
+         0.29
+        ],
+        "dy": [
+         -0.34,
+         1.26
+        ]
+       },
+       {
+        "names": [
+         "bought_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.2691,
+         6.968,
+         3.3309,
+         7.032
+        ],
+        "dx": [
+         -0.47,
+         0.0
+        ],
+        "dy": [
+         -1.46,
+         0.91
+        ]
+       },
+       {
+        "names": [
+         "bought_juice"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.271,
+         6.671,
+         3.329,
+         6.729
+        ],
+        "dx": [
+         -0.47,
+         0.0
+        ],
+        "dy": [
+         -1.16,
+         1.21
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_1/top": [
+        [
+         -8.2047,
+         7.3463,
+         -7.9953,
+         7.5539
+        ],
+        [
+         -7.8993,
+         8.1799,
+         -7.7606,
+         8.3197
+        ],
+        [
+         -8.3347,
+         8.0461,
+         -8.1681,
+         8.1947
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "west_tray"
+       ],
+       "look": []
+      }
+     }
     }
    },
    "watch": [
@@ -61990,7 +63126,9 @@
     "eat_now": "v6_eat_now",
     "basket_missing": "v6_basket_missing",
     "not_shopping": "v6_not_shopping",
-    "two_spots": "v6_two_spots"
+    "two_spots": "v6_two_spots",
+    "tray_elsewhere__orange_in_it": "v6_tray_elsewhere__orange_in_it",
+    "tray_elsewhere__books_on_it": "v6_tray_elsewhere__books_on_it"
    },
    "routes": {
     "nominal": {
@@ -62009,6 +63147,18 @@
        "skill": "open",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -62060,6 +63210,18 @@
        "skill": "open",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -62196,6 +63358,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "bought_juice"
        }
       },
@@ -62273,6 +63447,18 @@
        "skill": "open",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -62540,6 +63726,328 @@
      ],
      "kind": "v6_oracle",
      "variant": "two_spots"
+    },
+    "v6_tray_elsewhere__orange_in_it": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_juice",
+        "receptacle": "breakfast_fridge/inside_shelf",
+        "hint_xy": [
+         5.78,
+         3.18
+        ]
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "west_tray",
+        "region": "dining_room_0_0"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "west_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "west_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_apple",
+        "receptacle": "west_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tray_elsewhere__orange_in_it"
+    },
+    "v6_tray_elsewhere__books_on_it": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_juice",
+        "receptacle": "breakfast_fridge/inside_shelf",
+        "hint_xy": [
+         5.78,
+         3.18
+        ]
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "west_tray",
+        "region": "dining_room_0_0"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "west_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tray_book_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tray_book_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tray_book_1",
+        "receptacle": "bookcase_1/top",
+        "hint_xy": [
+         -9.59,
+         6.52
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tray_book_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tray_book_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tray_book_2",
+        "receptacle": "bookcase_1/top",
+        "hint_xy": [
+         -9.59,
+         6.819999999999999
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tray_book_3"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tray_book_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_1/shelf_1"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tray_book_3",
+        "receptacle": "bookcase_1/shelf_1",
+        "hint_xy": [
+         -9.59,
+         6.52
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tray_book_4"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tray_book_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_1/shelf_1"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tray_book_4",
+        "receptacle": "bookcase_1/shelf_1",
+        "hint_xy": [
+         -9.59,
+         6.819999999999999
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "west_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_apple",
+        "receptacle": "west_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tray_elsewhere__books_on_it"
     }
    },
    "vary": {},
@@ -62677,6 +64185,27 @@
       "18": "two_spots",
       "19": "two_spots"
      }
+    },
+    "tray_elsewhere": {
+     "origin": "v6",
+     "control": "juice_on_table",
+     "layouts": [
+      "tray_elsewhere__orange_in_it",
+      "tray_elsewhere__books_on_it"
+     ],
+     "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+     "seeds": {
+      "10": "tray_elsewhere__books_on_it",
+      "11": "tray_elsewhere__books_on_it",
+      "12": "tray_elsewhere__orange_in_it",
+      "13": "tray_elsewhere__books_on_it",
+      "14": "tray_elsewhere__orange_in_it",
+      "15": "tray_elsewhere__orange_in_it",
+      "16": "tray_elsewhere__orange_in_it",
+      "17": "tray_elsewhere__books_on_it",
+      "18": "tray_elsewhere__books_on_it",
+      "19": "tray_elsewhere__orange_in_it"
+     }
     }
    },
    "v6_replaced": {},
@@ -62722,6 +64251,17 @@
      "local": [],
      "longer": [
       "goal_items_unstated",
+      "not_in_view"
+     ]
+    },
+    "tray_elsewhere": {
+     "category": "action_task",
+     "local": [
+      "move what fills the destination to a legal place, then place"
+     ],
+     "longer": [
+      "container_absent",
+      "dependent_decisions",
       "not_in_view"
      ]
     }
@@ -63367,6 +64907,12 @@
        "skill": "pick",
        "args": {
         "object": "dropped_block"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -64790,6 +66336,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "snack_apple"
        }
       },
@@ -64918,6 +66476,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "snack_apple"
        }
       },
@@ -64950,6 +66520,18 @@
     },
     "v6_where_is_he__study": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -64994,6 +66576,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "snack_apple"
        }
       },
@@ -65032,6 +66626,18 @@
     },
     "v6_two_kids": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -65744,6 +67350,678 @@
       }
      }
     },
+    "cups_for_two__one_there": {
+     "conditions": [
+      "count_from_scene",
+      "item_put_away",
+      "resource_absent",
+      "dependent_decisions"
+     ],
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "tv_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.8,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.25,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "tv_cup_1",
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_most",
+        [
+         "tv_cup_1",
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_least",
+        [
+         "tv_cup_1",
+         "stock_cup_1"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "near_start",
+        "tv_cup_1",
+        0.03
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "tv_cup_1",
+      "stock_cup_1"
+     ],
+     "since": "v6",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "v6": {
+      "family": "cups_for_two",
+      "case": "one_there",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.771,
+         7.329,
+         1.829
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         0.0,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "tv_cup_1"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.7462,
+         0.3052,
+         7.8538,
+         0.4148
+        ],
+        "dx": [
+         -1.09,
+         0.51
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       }
+      ],
+      "static": {
+       "tv_stand_2/top": [
+        [
+         7.271,
+         0.331,
+         7.329,
+         0.389
+        ],
+        [
+         7.4962,
+         0.3052,
+         7.6038,
+         0.4148
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "tv_stand_2/top"
+       ]
+      }
+     }
+    },
+    "cups_for_two__none_one_inside": {
+     "conditions": [
+      "count_from_scene",
+      "item_put_away",
+      "resource_absent",
+      "dependent_decisions"
+     ],
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.25,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_most",
+        [
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_least",
+        [
+         "stock_cup_1"
+        ],
+        "tv_stand_2/top",
+        1
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "stock_cup_1"
+     ],
+     "since": "v6",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "v6": {
+      "family": "cups_for_two",
+      "case": "none_one_inside",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.771,
+         7.329,
+         1.829
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         0.0,
+         0.14
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "tv_stand_2/top"
+       ]
+      }
+     }
+    },
+    "cups_for_two__none_two_inside": {
+     "conditions": [
+      "count_from_scene",
+      "item_put_away",
+      "resource_absent",
+      "dependent_decisions"
+     ],
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.25,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_cup_2": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.55,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "stock_cup_1",
+         "stock_cup_2",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_most",
+        [
+         "stock_cup_1",
+         "stock_cup_2",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_least",
+        [
+         "stock_cup_1",
+         "stock_cup_2"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "stock_cup_1",
+      "stock_cup_2"
+     ],
+     "since": "v6",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "v6": {
+      "family": "cups_for_two",
+      "case": "none_two_inside",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.771,
+         7.329,
+         1.829
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         0.0,
+         0.14
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "tv_stand_2/top"
+       ]
+      }
+     }
+    },
+    "cups_for_two__two_there": {
+     "conditions": [
+      "count_from_scene",
+      "item_put_away",
+      "resource_absent",
+      "dependent_decisions"
+     ],
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "tv_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.8,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "tv_cup_2": {
+       "asset": "breakfast_cup",
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.05,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_cup_1": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.25,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "tv_cup_1",
+         "tv_cup_2",
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_most",
+        [
+         "tv_cup_1",
+         "tv_cup_2",
+         "stock_cup_1",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "count_on_at_least",
+        [
+         "tv_cup_1",
+         "tv_cup_2",
+         "stock_cup_1"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "near_start",
+        "tv_cup_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "tv_cup_2",
+        0.03
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "tv_cup_1",
+      "tv_cup_2",
+      "stock_cup_1"
+     ],
+     "since": "v6",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "v6": {
+      "family": "cups_for_two",
+      "case": "two_there",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.771,
+         7.329,
+         1.829
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         0.0,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "tv_cup_1",
+         "tv_cup_2"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.7462,
+         0.3052,
+         8.1038,
+         0.4148
+        ],
+        "dx": [
+         -1.09,
+         0.26
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       }
+      ],
+      "static": {
+       "tv_stand_2/top": [
+        [
+         7.271,
+         0.331,
+         7.329,
+         0.389
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "tv_stand_2/top"
+       ]
+      }
+     }
+    },
     "two_guests": {
      "conditions": [
       "count_from_scene",
@@ -66078,6 +68356,10 @@
     "cup_elsewhere": "v6_cup_elsewhere",
     "cold_one": "v6_cold_one",
     "drink_in_fridge": "v6_drink_in_fridge",
+    "cups_for_two__one_there": "v6_cups_for_two__one_there",
+    "cups_for_two__none_one_inside": "v6_cups_for_two__none_one_inside",
+    "cups_for_two__none_two_inside": "v6_cups_for_two__none_two_inside",
+    "cups_for_two__two_there": "v6_cups_for_two__two_there",
     "two_guests": "v6_two_guests",
     "little_guest": "v6_little_guest"
    },
@@ -66236,6 +68518,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "cold_juice"
        }
       },
@@ -66331,6 +68625,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "cold_juice"
        }
       },
@@ -66402,6 +68708,439 @@
      ],
      "kind": "v6_oracle",
      "variant": "drink_in_fridge"
+    },
+    "v6_cups_for_two__one_there": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_4",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "stock_cup_1",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.55,
+         0.36
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cups_for_two__one_there"
+    },
+    "v6_cups_for_two__none_one_inside": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_4",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "stock_cup_1",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.55,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug_shelf",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.05,
+         0.36
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cups_for_two__none_one_inside"
+    },
+    "v6_cups_for_two__none_two_inside": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "stock_cup_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "stock_cup_1",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.55,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "stock_cup_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "stock_cup_2"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_4",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "stock_cup_2",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.05,
+         0.36
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cups_for_two__none_two_inside"
+    },
+    "v6_cups_for_two__two_there": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cups_for_two__two_there"
     },
     "v6_two_guests": {
      "steps": [
@@ -66657,6 +69396,29 @@
       "19": "drink_in_fridge"
      }
     },
+    "cups_for_two": {
+     "origin": "v6",
+     "control": "drink_on_island",
+     "layouts": [
+      "cups_for_two__one_there",
+      "cups_for_two__none_one_inside",
+      "cups_for_two__none_two_inside",
+      "cups_for_two__two_there"
+     ],
+     "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+     "seeds": {
+      "10": "cups_for_two__one_there",
+      "11": "cups_for_two__none_one_inside",
+      "12": "cups_for_two__two_there",
+      "13": "cups_for_two__none_two_inside",
+      "14": "cups_for_two__none_one_inside",
+      "15": "cups_for_two__two_there",
+      "16": "cups_for_two__none_one_inside",
+      "17": "cups_for_two__one_there",
+      "18": "cups_for_two__none_two_inside",
+      "19": "cups_for_two__one_there"
+     }
+    },
     "two_guests": {
      "origin": "v6",
      "control": "drink_on_island",
@@ -66726,6 +69488,16 @@
      "longer": [
       "not_in_view",
       "storage_place"
+     ]
+    },
+    "cups_for_two": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "count_from_scene",
+      "dependent_decisions",
+      "item_put_away",
+      "resource_absent"
      ]
     },
     "two_guests": {
@@ -67586,6 +70358,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "kids_basket"
@@ -67659,6 +70437,12 @@
        "skill": "pick",
        "args": {
         "object": "living_car"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
        }
       },
       {
@@ -67746,6 +70530,12 @@
        "skill": "pick",
        "args": {
         "object": "living_car"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
        }
       },
       {
@@ -68727,281 +71517,6 @@
       }
      }
     },
-    "shelf_full_or_not__room": {
-     "conditions": [
-      "destination_full",
-      "category_rule",
-      "dependent_decisions"
-     ],
-     "add": {
-      "leftover_rice": {
-       "asset": "glass_food_container",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.3,
-        6.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "old_leftovers": {
-       "asset": "glass_food_container",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        5.77,
-        3.17
-       ],
-       "yaw_deg": 0.0
-      },
-      "fridge_juice_1": {
-       "asset": "juice_bottle",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        6.03,
-        3.17
-       ],
-       "yaw_deg": 0.0
-      },
-      "fridge_juice_2": {
-       "asset": "juice_bottle",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        6.03,
-        3.43
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on",
-        "leftover_rice",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "is_closed",
-        "breakfast_fridge"
-       ],
-       [
-        "on",
-        "old_leftovers",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "on",
-        "fridge_juice_1",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "on",
-        "fridge_juice_2",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "leftover_rice",
-      "old_leftovers",
-      "fridge_juice_1",
-      "fridge_juice_2"
-     ],
-     "since": "v6",
-     "note": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-     "v6": {
-      "family": "shelf_full_or_not",
-      "case": "room",
-      "challenge": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-      "rationale": "what the open fridge shows decides the rest: room -> put the rice in; full -> what may leave is what does not need the cold (the cereal box, onto the island or a counter, not the floor); the leftovers and the juice stay in",
-      "control": "rice_on_table",
-      "contrast": null,
-      "factor": "whether the fridge shelf has room (seed): seen only when the door is open",
-      "derived_from": "bare"
-     },
-     "move": {},
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "leftover_rice"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.22,
-         6.645,
-         3.38,
-         6.755
-        ],
-        "dx": [
-         -0.42,
-         0.0
-        ],
-        "dy": [
-         -1.14,
-         1.19
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
-    "shelf_full_or_not__full": {
-     "conditions": [
-      "destination_full",
-      "category_rule",
-      "dependent_decisions"
-     ],
-     "add": {
-      "leftover_rice": {
-       "asset": "glass_food_container",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.3,
-        6.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "old_leftovers": {
-       "asset": "glass_food_container",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        5.77,
-        3.17
-       ],
-       "yaw_deg": 0.0
-      },
-      "fridge_juice_1": {
-       "asset": "juice_bottle",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        6.03,
-        3.17
-       ],
-       "yaw_deg": 0.0
-      },
-      "fridge_juice_2": {
-       "asset": "juice_bottle",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        6.03,
-        3.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "fridge_cereal": {
-       "asset": "cereal_box",
-       "support": "breakfast_fridge/inside_shelf",
-       "xy": [
-        5.77,
-        3.43
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on",
-        "leftover_rice",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "is_closed",
-        "breakfast_fridge"
-       ],
-       [
-        "on",
-        "old_leftovers",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "on",
-        "fridge_juice_1",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "on",
-        "fridge_juice_2",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "not on",
-        "fridge_cereal",
-        "breakfast_fridge/inside_shelf"
-       ],
-       [
-        "not on_floor",
-        "fridge_cereal"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "leftover_rice",
-      "old_leftovers",
-      "fridge_juice_1",
-      "fridge_juice_2",
-      "fridge_cereal"
-     ],
-     "since": "v6",
-     "note": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-     "v6": {
-      "family": "shelf_full_or_not",
-      "case": "full",
-      "challenge": "the box of rice on the table; on the fridge shelf a box of older leftovers and two juice bottles, and in one layout of two a cereal box in the last free corner (someone put it there)",
-      "rationale": "what the open fridge shows decides the rest: room -> put the rice in; full -> what may leave is what does not need the cold (the cereal box, onto the island or a counter, not the floor); the leftovers and the juice stay in",
-      "control": "rice_on_table",
-      "contrast": null,
-      "factor": "whether the fridge shelf has room (seed): seen only when the door is open",
-      "derived_from": "bare"
-     },
-     "move": {},
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "leftover_rice"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.22,
-         6.645,
-         3.38,
-         6.755
-        ],
-        "dx": [
-         -0.42,
-         0.0
-        ],
-        "dy": [
-         -1.14,
-         1.19
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "dining_table_2/top"
-       ]
-      }
-     }
-    },
     "fruit_stays_out": {
      "conditions": [
       "category_rule"
@@ -69163,8 +71678,6 @@
     "two_leftovers__soup_on_stove": "v6_two_leftovers__soup_on_stove",
     "still_eating": "v6_still_eating",
     "fridge_out_of_view": "v6_fridge_out_of_view",
-    "shelf_full_or_not__room": "v6_shelf_full_or_not__room",
-    "shelf_full_or_not__full": "v6_shelf_full_or_not__full",
     "fruit_stays_out": "v6_fruit_stays_out"
    },
    "routes": {
@@ -69184,6 +71697,18 @@
        "skill": "open",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -69588,165 +72113,6 @@
      "kind": "v6_oracle",
      "variant": "fridge_out_of_view"
     },
-    "v6_shelf_full_or_not__room": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_fridge/inside_shelf"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "leftover_rice"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "leftover_rice"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "leftover_rice",
-        "receptacle": "breakfast_fridge/inside_shelf",
-        "hint_xy": [
-         5.77,
-         3.43
-        ]
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "breakfast_fridge"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "shelf_full_or_not__room"
-    },
-    "v6_shelf_full_or_not__full": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_fridge/inside_shelf"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "fridge_cereal"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "fridge_cereal"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "fridge_cereal",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         6.8,
-         1.75
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "leftover_rice"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "leftover_rice"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_fridge"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "leftover_rice",
-        "receptacle": "breakfast_fridge/inside_shelf",
-        "hint_xy": [
-         5.77,
-         3.43
-        ]
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "breakfast_fridge"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "shelf_full_or_not__full"
-    },
     "v6_fruit_stays_out": {
      "steps": [
       {
@@ -69924,27 +72290,6 @@
       "19": "fridge_out_of_view"
      }
     },
-    "shelf_full_or_not": {
-     "origin": "v6",
-     "control": "rice_on_table",
-     "layouts": [
-      "shelf_full_or_not__room",
-      "shelf_full_or_not__full"
-     ],
-     "factor": "whether the fridge shelf has room (seed): seen only when the door is open",
-     "seeds": {
-      "10": "shelf_full_or_not__room",
-      "11": "shelf_full_or_not__full",
-      "12": "shelf_full_or_not__room",
-      "13": "shelf_full_or_not__room",
-      "14": "shelf_full_or_not__full",
-      "15": "shelf_full_or_not__full",
-      "16": "shelf_full_or_not__full",
-      "17": "shelf_full_or_not__full",
-      "18": "shelf_full_or_not__room",
-      "19": "shelf_full_or_not__room"
-     }
-    },
     "fruit_stays_out": {
      "origin": "v6",
      "control": "rice_on_table",
@@ -70001,16 +72346,6 @@
      "local": [],
      "longer": [
       "not_in_view"
-     ]
-    },
-    "shelf_full_or_not": {
-     "category": "action_task",
-     "local": [
-      "move what fills the destination to a legal place, then place"
-     ],
-     "longer": [
-      "category_rule",
-      "dependent_decisions"
      ]
     },
     "fruit_stays_out": {
@@ -71297,6 +73632,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kid_cup"
        }
       },
@@ -71445,6 +73792,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kid_cup"
        }
       },
@@ -71483,6 +73842,18 @@
     },
     "v6_which_bed__south": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -73618,8 +75989,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
+     "instruction_zh": "汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
@@ -73807,8 +76178,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛。",
+     "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
+     "instruction_zh": "汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",

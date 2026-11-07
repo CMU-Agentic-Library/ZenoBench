@@ -8802,8 +8802,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 10,
-"variant": "tissue_or_sponge__cabinet_empty",
-"route": "v6_tissue_or_sponge__cabinet_empty",
+"variant": "tissue_or_sponge__in_first",
+"route": "v6_tissue_or_sponge__in_first",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8812,8 +8812,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 11,
-"variant": "tissue_or_sponge__in_cabinet",
-"route": "v6_tissue_or_sponge__in_cabinet",
+"variant": "tissue_or_sponge__in_second",
+"route": "v6_tissue_or_sponge__in_second",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8822,8 +8822,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 12,
-"variant": "tissue_or_sponge__in_cabinet",
-"route": "v6_tissue_or_sponge__in_cabinet",
+"variant": "tissue_or_sponge__none",
+"route": "v6_tissue_or_sponge__none",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8832,8 +8832,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 13,
-"variant": "tissue_or_sponge__in_cabinet",
-"route": "v6_tissue_or_sponge__in_cabinet",
+"variant": "tissue_or_sponge__in_first",
+"route": "v6_tissue_or_sponge__in_first",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8842,8 +8842,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 14,
-"variant": "tissue_or_sponge__cabinet_empty",
-"route": "v6_tissue_or_sponge__cabinet_empty",
+"variant": "tissue_or_sponge__in_first",
+"route": "v6_tissue_or_sponge__in_first",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8852,8 +8852,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 15,
-"variant": "tissue_or_sponge__in_cabinet",
-"route": "v6_tissue_or_sponge__in_cabinet",
+"variant": "tissue_or_sponge__in_first",
+"route": "v6_tissue_or_sponge__in_first",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8862,8 +8862,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 16,
-"variant": "tissue_or_sponge__in_cabinet",
-"route": "v6_tissue_or_sponge__in_cabinet",
+"variant": "tissue_or_sponge__none",
+"route": "v6_tissue_or_sponge__none",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8872,8 +8872,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 17,
-"variant": "tissue_or_sponge__cabinet_empty",
-"route": "v6_tissue_or_sponge__cabinet_empty",
+"variant": "tissue_or_sponge__in_second",
+"route": "v6_tissue_or_sponge__in_second",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8882,8 +8882,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 18,
-"variant": "tissue_or_sponge__cabinet_empty",
-"route": "v6_tissue_or_sponge__cabinet_empty",
+"variant": "tissue_or_sponge__none",
+"route": "v6_tissue_or_sponge__none",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -8892,8 +8892,8 @@
 {
 "task": "T21_bring_tissues",
 "seed": 19,
-"variant": "tissue_or_sponge__cabinet_empty",
-"route": "v6_tissue_or_sponge__cabinet_empty",
+"variant": "tissue_or_sponge__in_second",
+"route": "v6_tissue_or_sponge__in_second",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -10698,6 +10698,106 @@
 "profile": "sticky_snap/gt",
 "category": "task",
 "v6_variant": "drink_in_fridge"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 10,
+"variant": "cups_for_two__one_there",
+"route": "v6_cups_for_two__one_there",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 11,
+"variant": "cups_for_two__none_one_inside",
+"route": "v6_cups_for_two__none_one_inside",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 12,
+"variant": "cups_for_two__two_there",
+"route": "v6_cups_for_two__two_there",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 13,
+"variant": "cups_for_two__none_two_inside",
+"route": "v6_cups_for_two__none_two_inside",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 14,
+"variant": "cups_for_two__none_one_inside",
+"route": "v6_cups_for_two__none_one_inside",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 15,
+"variant": "cups_for_two__two_there",
+"route": "v6_cups_for_two__two_there",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 16,
+"variant": "cups_for_two__none_one_inside",
+"route": "v6_cups_for_two__none_one_inside",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 17,
+"variant": "cups_for_two__one_there",
+"route": "v6_cups_for_two__one_there",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 18,
+"variant": "cups_for_two__none_two_inside",
+"route": "v6_cups_for_two__none_two_inside",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
+},
+{
+"task": "T25_drink_for_guest",
+"seed": 19,
+"variant": "cups_for_two__one_there",
+"route": "v6_cups_for_two__one_there",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "cups_for_two"
 },
 {
 "task": "T25_drink_for_guest",

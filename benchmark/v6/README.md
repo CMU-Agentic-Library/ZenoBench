@@ -7,9 +7,9 @@ step of reasoning each), removes every injected action failure, and puts each va
 | | |
 |---|---|
 | base tasks | 30: T01-T20 from v5, T21-T30 new in v6 (`new_tasks_v6.py`); one house, 10 rooms, existing assets only |
-| variants | 171; each runs seeds 10-19 (1,710 episodes) |
-| categories | control 30 (one per task), Action-Level 0, Task-Level 136, Action + Task 5 (`TRACKS.md`) |
-| static checks | 1,710 / 1,710 episodes |
+| variants | 172; each runs seeds 10-19 (1,720 episodes) |
+| categories | control 30 (one per task), Action-Level 0, Task-Level 137, Action + Task 5 (`TRACKS.md`) |
+| static checks | 1,720 / 1,720 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
@@ -54,7 +54,7 @@ Each variant contains the fallback its category is about; the category reads onl
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 30 | 300 |
 | **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`); none left as a variant of its own (TAMPAgent covers clearing a blocker), only inside Action + Task | 0 | 0 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 136 | 1360 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 137 | 1370 |
 | **Action + Task** | both | 5 | 50 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
@@ -86,27 +86,35 @@ Status: static (`validate_v6.py` checks that no injected failure is left and eve
 content). `oracle_check.py` replays every oracle route on a symbolic state (where each object is, the hand, open
 doors, lids, temperatures, the robot's place): each step's preconditions (from the skill contracts, plus an item in
 closed furniture needs the door open, a covered container takes nothing, the robot is near what it handles), the
-dynamic events at their trigger, and at the end the goal (273 / 273 routes; atoms only geometry can decide, such as
+dynamic events at their trigger, and at the end the goal (278 / 278 routes, all of them also under the benchmark's observation gate; atoms only geometry can decide, such as
 upright or clear_of, are left to the simulation). Evaluation metrics are not defined yet.
 
-`plan_dependence.py` asks which variants need information the robot only gets while it works. It replays every
-layout on the symbolic state with the benchmark's observation gate (an object argument must have been seen: the
-start room in plain sight, then what a look, an explore, an arrival or a search of the right room shows). A plan
-passes when every step is legal and every symbolic goal atom holds; geometric atoms are counted apart. (1) Fixed
-plans: the control's route, another layout's, any other route of the task. A pass shows a fixed sequence exists
-across layouts, so the variant may lack a planning branch and gets a closer look; it is not proof that nothing
-needs observing. (2) Hidden-state branches: two layouts of a variant that look the same from the start but differ
-in what is hidden, where each layout's route fails on the other. The audit lists what may tell the answer without
-looking: instance names with a meaning (`full_bowl`), and the env_service ready message, which sends the planner
-the variant (with the layout) and its conditions.
+Reference routes look before they use what the robot has not seen: when the catalog is built,
+`oracle_check.observe_first` puts a walk to the object's support and a look (an object on the floor: an
+explore of its room) before the first call that names an object not yet seen, so every route passes the gate.
+
+`plan_dependence.py` screens the catalog for fixed plans and information dependence (report:
+`PLAN_DEPENDENCE_zh.md`). It replays layouts on the symbolic state with the observation gate; `search` keeps to
+its room, opens that room's closed cabinets and does not see under a lid. A plan passes when every step is legal
+and every symbolic goal atom holds, process requirements included; geometric atoms are listed apart, and passing is
+not a physics validation. It moves the control's route to every other variant, moves routes between the layouts of
+a variant and asks whether one of them passes all layouts, and finds hidden-state branches (two layouts the same
+before the key observation, each route failing on the other). Each failure is classified (unknown object, resource
+missing, not observed, argument mismatch, goal not met). A fixed sequence that passes means one exists across the
+layouts, not that the variant needs no observation; nothing is removed on these results. The leakage audit checks
+what reaches a planner; the env_service ready message sends the variant (with the layout), its conditions and the
+seed.
 
 Goals accept every way that does what the person asked: `on_any` (either counter, the bookcase or the desk by the
 bed), `count_on_at_least` over the house's own bowls and cups; and a process requirement is checked as one:
 `never_picked` (the castle, the homework, a bowl in use are never lifted, not just back in place at the end).
-Four variants chain decisions on hidden state (`dependent_decisions`): the layouts look the same from the start, and
-what the robot finds on arrival or behind a door decides the later subgoals, resources or order (the tissues or the
-sponge, his cup on the counter or in the cabinet, three bowls or two and a mug, the fridge shelf with room or filled
-by a cereal box that can leave); nothing has to fail first.
+Five variants chain decisions on hidden state (`dependent_decisions`): the layouts look the same before the key
+observation, and what the robot finds on arrival or behind a door decides the later subgoals, resources or order
+(the tissues in the first cabinet, the second or nowhere and then the sponge; the tray in the other room with an
+orange or covered by books; the cups the guests still lack from the cabinet or a mug from the dining room; his cup
+on the counter or in the cabinet; three bowls or two and a mug); the reference route may look first, nothing has to
+fail first. `never_picked` holds when the objects were never lifted; it does not show they were never pushed or
+that a structure never fell during the episode.
 
 ## Commands
 
@@ -130,6 +138,8 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 * `VARIANTS_zh.md` - every variant in plain Chinese: the situation, what the robot does, what the seed chooses.
 * `SUCCESS_ROUTES_zh.md` - every variant's success conditions (goal atoms, in Chinese) and reference skill call
   order (oracle route, one per layout).
+* `PLAN_DEPENDENCE_zh.md` - fixed-route transfer and information dependence (symbolic screening), the hard
+  variants' key observations, hidden facts and plan forks, the leakage audit.
 * `TRACKS.md` - the four categories, counts per task, every variant with its local fallback and longer-horizon change.
 * `variant_cards.json` - per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
   control, oracle route, challenge / rationale, success criteria.

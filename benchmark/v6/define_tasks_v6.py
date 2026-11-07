@@ -2631,6 +2631,15 @@ def build() -> dict:
                 c = info.get("control")
                 ctl = t["v6_variants"][c]["layouts"][0] if c in t["v6_variants"] else None
                 v["layout"] = layout_spec(t, lid, reg, ctl)
+    from benchmark.v6.oracle_check import observe_first
+    for t in out["tasks"]:                       # reference routes look before they use what was not seen
+        for info in t["v6_variants"].values():
+            c = info.get("control")
+            ctl = t["v6_variants"][c]["layouts"][0] if c in t["v6_variants"] else None
+            for lid in info["layouts"]:
+                if observe_first(t, lid):
+                    t["variants"][lid]["layout"] = layout_spec(t, lid, reg, ctl)
+                    observe_first(t, lid)
     apply_tracks(out)
     return out
 

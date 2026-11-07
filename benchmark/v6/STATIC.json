@@ -1,7 +1,7 @@
 {
- "variants": 171,
- "episodes": 1710,
- "static_ok": 1710,
+ "variants": 172,
+ "episodes": 1720,
+ "static_ok": 1720,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -89,8 +89,8 @@
    "static_ok": 70
   },
   "T22_put_away_shopping": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T23_pick_up_dropped": {
    "episodes": 60,
@@ -101,16 +101,16 @@
    "static_ok": 60
   },
   "T25_drink_for_guest": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T26_kids_things_to_room": {
    "episodes": 60,
    "static_ok": 60
   },
   "T27_leftovers_to_fridge": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T28_cup_to_bedside": {
    "episodes": 70,
@@ -127,8 +127,8 @@
  },
  "categories": {
   "control": 30,
-  "task": 136,
+  "task": 137,
   "action_task": 5
  },
- "tasks_sha1": "ff96f13619fd211136a5777c70bf14b182128187"
+ "tasks_sha1": "617353520d2b9c6cda60575d31e5a3cc3aaf3051"
 }
