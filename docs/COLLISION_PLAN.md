@@ -173,7 +173,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3：3a ✓ ──► 3b 第 1、2 项 ✓ ──► 6.1 pick（暂停）──► 6.2 place ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪**：6.2 place，先按 6.2 的设计重写 `place()`（开工前的问题都已定：抽出段沿夹爪轴、放下位姿留 `LEAVE_GAP`、托盘当支撑面其余 drop、书推满交给 push、`_carry_bottom_z` 保留）。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
+**现在在哪**：6.2 place，支撑面、托盘、drop 已改完并通过针对性检查（见 6.2"进度"），剩下：抽出段只在真穿进物体时走离开接触、书走同一流程（删 `place_flat`），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
 
 ### 6.1 pick（暂停）
 
@@ -219,13 +219,13 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 **删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`（手指在碰撞模型里，放下段、抽出段的检查已经覆盖）、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、写死的 `PLACE_APPROACH`、松手后沿放下反方向的 `place_retreat`、放下段起点的 `FINGERS_KW`（持物时豁免本来不生效，换成自由空间写清楚）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（改成看持物的几何）。`_carry_bottom_z` 的避障抬高 6.2 保留，等底盘规划器能换搬运高度再删（第 7 节、第 9 节）。
 
-**已知的 place 失败**（重写后逐个复查）：
+**进度（11-07）：** 支撑面、托盘、drop、hover、sticky 按上面的设计改完（`9f5d71c`）；书还走 `place_flat`。针对性检查 39 个 episode（`/data/zenobench/place62/targeted`，种子 10、11）：34/39，同一批在 11-06 全量里 24/39；10 个由败转成，没有由成转败。place、drop、hover 本身零失败，剩下 5 个失败 11-06 也失败，都不在 place 上（T03 far_small_and_large ×2 擀面杖抬起前已不在手里、P15 s11 pick 差 1.0 cm 停下、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒没倒进去）。36 次 place：松手时间隙中位 4.9 mm（最小 1.5 mm，沿口捏的碗下垂），放下段中位 1.9 cm、最长 3.0 cm；落点误差最大的是 T09 竖着吊放的勺子（6.9、4.7 cm，以前 9–12 cm）。放下段、抽出段、收臂上的真实意外接触 3 次（都是贴着刚放下的物体或台面，冲量 < 0.06）；`tuck_blocked` 从 8 次到 0。覆盖率：新函数都跑到了；没跑到的是 `place_flat` 和 sticky 的 `place` / `drop_caught`（place 没失败过，sticky 的退路一次都没触发）。
 
-- 放完收不回臂、底盘开不走（停车点验证加抽出段和收臂就是为它）：T12 toys_everywhere ×2（玩具车放进书架上的托盘，s10 收起姿态在这个停车点本身穿进场景 8.3 mm，s11 从松手姿态规划不过去，接着找小黄鸭的地方全被跳过，`/data/zenobench/t12_car/rerun`）、T13 no_cup s10（碗放到餐桌后，`/data/zenobench/approach73`）。
-- 放进容器规划失败：T12 toys_out ×2 车放进储物篮 `place_drop`；T19 bin_on_bookcase ×2、T12 toys_everywhere s11 `drop_above` 带倾角规划不出来；T03 far_small_and_large s11 擀面杖放进杯子找不到停车点（改成 drop 后预计会倒在杯外，等第 7 节的按几何分流）。
-- T20 table_full s10：沿口捏的碗搬运中在手里移了 6.1 cm，`place_down` 规划失败。
-- T09 lid_off：竖着吊放的细长物体松手倒下，落点离目标 9–12 cm（放置关系的选择）。
-- `place_down` 的 fallback：在全部 place 上复查（左臂收起姿态改到底盘柱子以内之后，以前多是左臂压到桌面）。
+**已知的 place 问题：**
+
+- 抽出段开头的离开接触（`place_pull_out_contact`）按"离开周围 `LEAVE_GAP`"判断，手指张开后本来就离物体几毫米，所以 36 次里 18 次走了 1.5–5.6 cm 的不查碰撞的离开段，剩下的才查。打算：只有起点真的穿进物体（`kin.free` 不成立）时才走离开接触，否则整段查碰撞。
+- T03 far_small_and_large：擀面杖放进杯子，改成 drop 后预计会倒在杯外（这次 pick 先失败了，没走到），等第 7 节的按几何分流。
+- `carry_in`（pick 之后去搬运姿态）退回直线时擦到桌面：T20 table_full s11，7 次接触，属于 6.1 第 6 项。
 
 **常数**：第 8 节标 6.2 的。
 
@@ -295,7 +295,7 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 常数 | 问题 | 什么时候处理 |
 |---|---|---|
-| `PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm | 沿用旧的放下、层板插入距离，没有出处 | 6.2：`PLACE_APPROACH` 由碰撞模型量的放下段取代；`SHELF_APPROACH` 等层板放置单独定时 |
+| `PLACE_APPROACH` 5 cm | place 已不用（放下段由碰撞模型量）；只剩 wipe 的按压直线在用，没有出处 | 6.3（wipe） |
 | 容器松手高度：place 沿口上 3 cm、`drop_above` 5 cm；按沿口分流的 `rim > 0.12` | 两处不同、拍定；分流阈值没有出处 | 6.2：松手高度合成一个、写出处；分流阈值删掉（托盘按标注） |
 | `PICK_LEAVE_CHECK` 3 cm | 和执行不一致（6.1 第 7 项）。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
 | `PICK_REACH_TOL` 5 mm、`GRIP_CLOSED_BY` 3 mm | 依据是一批运行的分布（`pick_checks_1105`）；`PICK_REACH_TOL` 和 `follow` 收尾的 0.01 rad 不一致（6.1 第 1 项） | 6.1 |
