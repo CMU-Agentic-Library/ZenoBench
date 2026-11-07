@@ -155,7 +155,7 @@ def state_summary(rig, task):
 # ----------------------------------------------------------------- the episode
 class Episode:
     def __init__(self, task: dict, cfg: dict, profile: dict, out_dir, *, video=False, images=True,
-                 image_dir=None, video_path=None, video_res=(540, 960), video_stride=4):
+                 image_dir=None, video_path=None, video_res=(540, 960), video_stride=8):
         """``cfg``: benchmark.scene.episode_config(task, seed, variant).  ``out_dir`` receives the
         episode annotation; ``image_dir`` (optional) the first-person image of every top-level call.
 

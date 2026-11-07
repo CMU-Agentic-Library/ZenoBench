@@ -62,7 +62,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--plan", nargs="+", required=True)
     ap.add_argument("--res", nargs=2, type=int, default=[720, 1280])
-    ap.add_argument("--stride", type=int, default=4)
+    ap.add_argument("--stride", type=int, default=8)
     ap.add_argument("--no-video", action="store_true")
     ap.add_argument("--start-base", nargs=3, type=float, metavar=("X", "Y", "YAW_DEG"),
                     help="optional robot base start pose for a local policy smoke run")
