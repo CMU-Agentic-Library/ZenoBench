@@ -245,7 +245,9 @@ class World:
                 w = ((cy - ay) * (x - cx) + (ax - cx) * (y - cy)) / d
                 if u >= 0 and w >= 0 and u + w <= 1:
                     return r
-        return None
+        # in a gap between the room polygons (a doorway, against a wall): the nearest room within 0.5 m
+        d, r = min((math.dist(p, xy), r) for r, info in self.rooms.items() for t in info["triangles"] for p in t)
+        return r if d <= 0.5 else None
 
     def plain(self, n):
         """in plain sight: not in closed furniture, not under a lid"""
@@ -311,11 +313,14 @@ class World:
                 self.see(self.support_of(d) or d if d in self.obj else d)
             if self.at is None:
                 self.bad(i, s, f"unknown destination {d}")
-        elif k in ("search",):
+        elif k in ("search",):                   # the skill sweeps the supports and cabinets of one room
             o = a.get("object")
-            if o in self.obj:
+            room = a.get("region") or self.room_of(self.at)
+            if o in self.obj and self.room_of(self.obj[o]["xy"]) == room and self.hand != o:
                 self.at, self.at_name = self.xy(o), o
                 self.flags.add(("observed", o))
+            elif o in self.obj:
+                self.bad(i, s, f"search: {o} is not in {room} (it is in {self.room_of(self.obj[o]['xy'])})")
         elif k == "explore_furniture":
             f = a["furniture"]
             self.at, self.at_name = self.xy(f), f

@@ -398,5 +398,105 @@
 "profile": "benchmark",
 "category": "action_task",
 "v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 10,
+"variant": "shelf_full_or_not__room",
+"route": "v6_shelf_full_or_not__room",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 11,
+"variant": "shelf_full_or_not__full",
+"route": "v6_shelf_full_or_not__full",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 12,
+"variant": "shelf_full_or_not__room",
+"route": "v6_shelf_full_or_not__room",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 13,
+"variant": "shelf_full_or_not__room",
+"route": "v6_shelf_full_or_not__room",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 14,
+"variant": "shelf_full_or_not__full",
+"route": "v6_shelf_full_or_not__full",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 15,
+"variant": "shelf_full_or_not__full",
+"route": "v6_shelf_full_or_not__full",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 16,
+"variant": "shelf_full_or_not__full",
+"route": "v6_shelf_full_or_not__full",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 17,
+"variant": "shelf_full_or_not__full",
+"route": "v6_shelf_full_or_not__full",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 18,
+"variant": "shelf_full_or_not__room",
+"route": "v6_shelf_full_or_not__room",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
+},
+{
+"task": "T27_leftovers_to_fridge",
+"seed": 19,
+"variant": "shelf_full_or_not__room",
+"route": "v6_shelf_full_or_not__room",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "shelf_full_or_not"
 }
 ]

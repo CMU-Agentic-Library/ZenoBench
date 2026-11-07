@@ -296,14 +296,16 @@ def test_t01_which_table():
 
 
 def test_new_base_tasks():
-    """T21-T30: a control and five Task-Level variants each (six with a dependent-decisions one), no Action-Level,
-    no dynamic event, Chinese text."""
+    """T21-T30: a control and five Task-Level variants each, plus a dependent-decisions one in some (Action + Task
+    when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
     for k in range(21, 31):
         tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
         tr = TASKS[tid]["v6_tracks"]
         chained = sum("dependent_decisions" in (TASKS[tid]["variants"][i["layouts"][0]].get("conditions") or [])
                       for i in TASKS[tid]["v6_variants"].values())
-        assert sorted(x["category"] for x in tr.values()) == ["control"] + ["task"] * (5 + chained), tid
+        cats = sorted(x["category"] for x in tr.values())
+        assert cats.count("control") == 1 and "action" not in cats, tid
+        assert len(cats) == 6 + chained and cats.count("action_task") <= chained, tid
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

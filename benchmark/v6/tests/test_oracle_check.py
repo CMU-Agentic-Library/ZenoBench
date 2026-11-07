@@ -74,12 +74,25 @@ def test_cup_on_the_desk_beside_the_bed_passes():
     assert edited("T28", "cup_on_counter", to_desk) == []
 
 
-@pytest.mark.parametrize("tid,vid", [("T21", "no_tissue_sponge_away"), ("T28", "his_cup_put_away"),
-                                     ("T30", "not_enough_bowls")])
-def test_dependent_decisions_need_a_new_plan(tid, vid):
-    """the control's route, fixed before the episode, does not solve a dependent-decisions variant (with the gate)"""
+DEPENDENT = [("T21", "tissue_or_sponge"), ("T27", "shelf_full_or_not"), ("T28", "where_his_cup_is"),
+             ("T30", "bowls_in_cabinet")]
+
+
+@pytest.mark.parametrize("tid,vid", DEPENDENT)
+def test_dependent_decisions_branch_on_what_is_found(tid, vid):
+    """the layouts look the same from the start; each layout's route fails on the other (with the gate): what the
+    robot finds while working decides its later steps"""
+    from benchmark.v6.plan_dependence import route, run, start_view
     t = TASKS[tid]
-    m = t["v6_variants"][vid]
-    lid, ctl = m["layouts"][0], t["v6_variants"][m["control"]]["layouts"][0]
-    assert check(t, lid, gate=True)["problems"] == []
-    assert edited(tid, lid, lambda st: copy.deepcopy(t["routes"][t["oracle"][ctl]]["steps"])) != []
+    a, b = t["v6_variants"][vid]["layouts"]
+    room = t["variants"][a]["layout"]["start"]["room"]
+    assert start_view(t, a, room) == start_view(t, b, room)
+    assert run(t, a, route(t, a))[0] and run(t, b, route(t, b))[0]
+    assert not run(t, b, route(t, a))[0] and not run(t, a, route(t, b))[0]
+
+
+def test_search_looks_only_in_its_room():
+    lid = "dropped_in_two_rooms"
+    steps = TASKS["T23"]["routes"][TASKS["T23"]["oracle"][lid]]["steps"]
+    wrong = [dict(s, args={**s["args"], "region": "kitchen_0_0"}) if s["skill"] == "search" else s for s in steps]
+    assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T23", lid, lambda st: wrong))

@@ -1,7 +1,7 @@
 {
- "variants": 170,
- "episodes": 1700,
- "static_ok": 1700,
+ "variants": 171,
+ "episodes": 1710,
+ "static_ok": 1710,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -109,8 +109,8 @@
    "static_ok": 60
   },
   "T27_leftovers_to_fridge": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T28_cup_to_bedside": {
    "episodes": 70,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "task": 136,
-  "action_task": 4
+  "action_task": 5
  },
- "tasks_sha1": "93029527b3410673cd56e6b899483ec724c90e9e"
+ "tasks_sha1": "ff96f13619fd211136a5777c70bf14b182128187"
 }

@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1700 episodes remain (1150 of the 115 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1710 episodes remain (1160 of the 116 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -120,7 +120,7 @@
 | T21 | no_tissue | task | 0/0 of 10 | - |
 | T21 | tissue_put_away | task | 0/0 of 10 | low cabinet doors |
 | T21 | the_kids_side | task | 0/0 of 10 | - |
-| T21 | no_tissue_sponge_away | task | 0/0 of 10 | low cabinet doors |
+| T21 | tissue_or_sponge | task | 0/0 of 10 | low cabinet doors |
 | T22 | juice_on_table | control | 0/0 of 10 | - |
 | T22 | by_kind | task | 0/0 of 10 | low cabinet doors |
 | T22 | eat_now | task | 0/0 of 10 | - |
@@ -156,12 +156,13 @@
 | T27 | two_leftovers | task | 0/0 of 10 | - |
 | T27 | still_eating | task | 0/0 of 10 | - |
 | T27 | fridge_out_of_view | task | 0/0 of 10 | - |
+| T27 | shelf_full_or_not | action_task | 0/0 of 10 | - |
 | T27 | fruit_stays_out | task | 0/0 of 10 | - |
 | T28 | cup_on_counter | control | 0/0 of 10 | - |
 | T28 | which_cup | task | 0/0 of 10 | - |
 | T28 | cup_put_away | task | 0/0 of 10 | low cabinet doors |
 | T28 | which_bed | task | 0/0 of 10 | - |
-| T28 | his_cup_put_away | task | 0/0 of 10 | low cabinet doors |
+| T28 | where_his_cup_is | task | 0/0 of 10 | low cabinet doors |
 | T28 | cup_out_of_view | task | 0/0 of 10 | - |
 | T28 | already_there | task | 0/0 of 10 | - |
 | T29 | car_on_table | control | 0/0 of 10 | - |
@@ -172,7 +173,7 @@
 | T29 | which_table | task | 0/0 of 10 | - |
 | T30 | bowl_on_cabinet | control | 0/0 of 10 | - |
 | T30 | how_many | task | 0/0 of 10 | - |
-| T30 | not_enough_bowls | task | 0/0 of 10 | low cabinet doors |
+| T30 | bowls_in_cabinet | task | 0/0 of 10 | low cabinet doors |
 | T30 | clean_one | task | 0/0 of 10 | - |
 | T30 | bowl_put_away | task | 0/0 of 10 | low cabinet doors |
 | T30 | no_bowl | task | 0/0 of 10 | - |
