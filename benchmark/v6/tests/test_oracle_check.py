@@ -47,3 +47,28 @@ def test_missing_place_fails_the_goal():
     p = broken("T10", "after_dinner_clear__rubbish_leftovers",
                lambda i, s: s["skill"] == "place" and s["args"]["object"] == "leftovers")
     assert any(x["skill"] == "goal" or "holding" in x["problem"] for x in p)
+
+
+def edited(tid, lid, edit):
+    t = copy.deepcopy(TASKS[tid])
+    r = t["oracle"][lid]
+    t["routes"][r]["steps"] = edit(t["routes"][r]["steps"])
+    return check(t, lid)["problems"]
+
+
+def test_castle_taken_apart_and_rebuilt_fails():
+    """never_picked is a process requirement: lifting the top block and putting it back is not keeping the castle"""
+    top = "castle_block_3"
+    lift = [{"skill": "navigate", "args": {"destination": top}}, {"skill": "pick", "args": {"object": top}},
+            {"skill": "stack", "args": {"object": top, "base": "castle_block_2"}}]
+    p = edited("T12", "castle_stays__tall_two_loose", lambda st: lift + st)
+    assert any(x["skill"] == "goal" and "never_picked" in x["problem"] for x in p)
+
+
+def test_cup_on_the_desk_beside_the_bed_passes():
+    """on_any: the desk beside bed 1 does what was asked as well as the low bookcase"""
+    def to_desk(st):
+        return [dict(s, args={**s["args"], **({"destination": "desk_1/top"} if s["args"].get("destination") == "bookcase_3/top" else {}),
+                              **({"receptacle": "desk_1/top", "hint_xy": [0.20, -2.95]}
+                                 if s["args"].get("receptacle") == "bookcase_3/top" else {})}) for s in st]
+    assert edited("T28", "cup_on_counter", to_desk) == []

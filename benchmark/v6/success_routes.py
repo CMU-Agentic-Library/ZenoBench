@@ -43,6 +43,8 @@ ATOMS = {
     "same_arrangement": lambda objs, refs, anchor, ref_anchor, fc, rfc, tol: (
         f"{_names(objs)} 相对 {anchor} 的摆法（按坐在那里的人的前后左右）和 {_names(refs)} 相对 {ref_anchor} 的一样，"
         f"误差不超过 {round(tol * 100)} cm"),
+    "never_picked": lambda o: f"过程要求：整局都没拿起过 {_names(o)}（拆了再搭回去不算）",
+    "on_any": lambda o, sups: f"{_names(o)} 在其中任一处上：{'、'.join(f'`{x}`' for x in sups)}",
     "near_any": lambda o, others, d: f"{_names(o)} 离其中至少一个不超过 {round(d * 100)} cm：{_names(others)}",
     "not near_any": lambda o, others, d: f"{_names(o)} 离这些都超过 {round(d * 100)} cm：{_names(others)}",
     "front_visible": lambda o: f"{_names(o)} 从房间里看得见（前面没有更高的东西挡着）",

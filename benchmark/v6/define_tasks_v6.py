@@ -1373,6 +1373,7 @@ def T12(t):
         castle_cases[c] = dict(
             add=add,
             goal={"all": in_basket([CAR, DUCK, *strays]) + [["near_start", b, 0.03] for b in tower]
+                  + [["never_picked", list(tower)]]
                   + [["on_top_of", tower[i + 1], tower[i]] for i in range(levels - 1)]
                   + [["upright", BASKET], ["hand_empty", "right"]]},
             watch=[CAR, DUCK, *tower, *strays, BASKET],
@@ -1649,7 +1650,8 @@ def T14(t):
             instruction="The kid finished reading. Tidy up his desk; he will go on with his homework tomorrow.",
             instruction_zh="孩子看完书了，把他的书桌收拾一下。作业他明天还要接着写。",
             goal={"all": [["on", B, CASE], ["on", "desk_mug", "kitchen_counter_2/top"], ["upright", "desk_mug"],
-                          ["near_start", "homework", 0.03], ["near_start", "hw_pencil", 0.03], ["hand_empty", "right"]]},
+                          ["near_start", "homework", 0.03], ["near_start", "hw_pencil", 0.03],
+                          ["never_picked", ["homework", "hw_pencil"]], ["hand_empty", "right"]]},
             watch=[B, "desk_mug", "homework", "hw_pencil"],
             factor="the seed's layout only",
             challenge="the desk holds the finished book, a used mug and the open homework with its pencil",

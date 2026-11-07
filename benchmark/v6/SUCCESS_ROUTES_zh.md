@@ -1899,7 +1899,7 @@
 
 ### castle_stays（Task）
 
-**情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐
+**情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动（过程要求：整局不能拿起塔上的积木，拆了再搭回去不算），散着的积木和小车、鸭子收进筐
 
 **指令**：快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。
 
@@ -1911,6 +1911,7 @@
   - `loose_block_1` 在 `storage_basket` 里
   - `loose_block_2` 在 `storage_basket` 里
   - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+  - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`、`castle_block_3`（拆了再搭回去不算）
   - `castle_block_2` 叠在 `castle_block_1` 上
   - `castle_block_3` 叠在 `castle_block_2` 上
   - `storage_basket` 立着
@@ -1920,6 +1921,7 @@
   - `rubber_duck` 在 `storage_basket` 里
   - `loose_block_1` 在 `storage_basket` 里
   - `castle_block_1`、`castle_block_2` 没被挪动（离开局位置不超过 3 cm）
+  - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`（拆了再搭回去不算）
   - `castle_block_2` 叠在 `castle_block_1` 上
   - `storage_basket` 立着
   - 手里空着
@@ -1927,6 +1929,7 @@
   - `toy_car` 在 `storage_basket` 里
   - `rubber_duck` 在 `storage_basket` 里
   - `castle_block_1`、`castle_block_2`、`castle_block_3` 没被挪动（离开局位置不超过 3 cm）
+  - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`、`castle_block_3`（拆了再搭回去不算）
   - `castle_block_2` 叠在 `castle_block_1` 上
   - `castle_block_3` 叠在 `castle_block_2` 上
   - `storage_basket` 立着
@@ -2572,7 +2575,7 @@
 
 ### homework_stays（Task）
 
-**情况**：“把书桌收拾一下，作业他明天还要接着写”：书桌上有看完的书、用过的马克杯、摊开的作业本和铅笔 → 书回书架，杯子回厨房，作业原样不动
+**情况**：“把书桌收拾一下，作业他明天还要接着写”：书桌上有看完的书、用过的马克杯、摊开的作业本和铅笔 → 书回书架，杯子回厨房，作业原样不动（过程要求：整局不拿起作业本和铅笔）
 
 **指令**：孩子看完书了，把他的书桌收拾一下。作业他明天还要接着写。
 
@@ -2582,6 +2585,7 @@
 - `desk_mug` 在 `kitchen_counter_2/top` 上
 - `desk_mug` 立着
 - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
+- 过程要求：整局都没拿起过 `homework`、`hw_pencil`（拆了再搭回去不算）
 - 手里空着
 
 **参考调用顺序**：
@@ -2851,7 +2855,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - 手里空着
 
 **参考调用顺序**：
@@ -2864,7 +2868,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - `dropped_block` 在 `toy_box` 里
 - 手里空着
 
@@ -2878,7 +2882,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -2892,7 +2896,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - 手里空着
 
 **参考调用顺序**：
@@ -2907,7 +2911,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - `living_car` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -2923,7 +2927,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在 `kitchen_counter_2/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
 - `dropped_pencil` 在 `desk_1/top` 上
 - 手里空着
 
@@ -3294,13 +3298,14 @@
 
 ### still_eating（Task）
 
-**情况**：一碗燕麦前摆着勺子，有人还在吃 → 不收，只收剩饭
+**情况**：一碗燕麦前摆着勺子，有人还在吃 → 不收，也不拿起来（过程要求），只收剩饭
 
 **成功条件**：
 
 - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
 - `breakfast_fridge` 关着
 - `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
+- 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
 - 手里空着
 
 **参考调用顺序**：
@@ -3348,7 +3353,7 @@
 
 **成功条件**：
 
-- `kid_cup` 在 `bookcase_3/top` 上
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
 - `kid_cup` 立着
 - 手里空着
 
@@ -3362,7 +3367,7 @@
 
 **成功条件**：
 
-- `kid_cup` 在 `bookcase_3/top` 上
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
 - `kid_cup` 立着
 - `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
@@ -3377,7 +3382,7 @@
 
 **成功条件**：
 
-- `kid_cup` 在 `bookcase_3/top` 上
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
 - `kid_cup` 立着
 - `kitchen_cabinet_4` 关着
 - 手里空着
@@ -3392,12 +3397,12 @@
 
 **成功条件**：
 
-- 摆法 `east`：
-  - `kid_cup` 在 `bookcase_3/top` 上
-  - `kid_cup` 立着
-  - 手里空着
 - 摆法 `south`：
   - `kid_cup` 在 `cell_shelf_2/top` 上
+  - `kid_cup` 立着
+  - 手里空着
+- 摆法 `east`：
+  - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
   - `kid_cup` 立着
   - 手里空着
 
@@ -3412,7 +3417,7 @@
 
 **成功条件**：
 
-- `kid_cup` 在 `bookcase_3/top` 上
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
 - `kid_cup` 立着
 - 手里空着
 
@@ -3426,7 +3431,7 @@
 
 **成功条件**：
 
-- `kid_cup` 在 `bookcase_3/top` 上
+- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
 - `kid_cup` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 

@@ -249,7 +249,8 @@ def t23():
     START = (-1.20, 9.40, 0.0)                       # the small kitchen with the counter
     ctl = {"note": "a spoon on the kitchen floor; the spoons are kept on the kitchen counter",
            "add": {SP: floor("breakfast_spoon", -0.85, 7.70, 30.0)}}
-    sgoal = [["on", SP, COUNTER]]
+    # either kitchen counter is where a spoon belongs (the kitchen's two counters stand 1.7 m apart)
+    sgoal = [["on_any", SP, [COUNTER, "kitchen_counter_1/top"]]]
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
                   {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, [-0.10, 7.60]), [SP], start=START)
@@ -534,7 +535,7 @@ def t27():
             "a portion someone is still eating is not a leftover: only the rice",
             {"": dict(add={**rice, "eating_bowl": on("oatmeal_bowl", T2, 3.05, 7.30),
                            "eating_spoon": on("breakfast_spoon", T2, 3.05, 7.49)},
-                      watch=[R, "eating_bowl"], goal={"all": rg + [["near_start", "eating_bowl", 0.03], H]},
+                      watch=[R, "eating_bowl"], goal={"all": rg + [["near_start", "eating_bowl", 0.03], ["never_picked", ["eating_bowl"]], H]},
                       route=[look(T2)] + fridge([R]))}),
         "fridge_out_of_view": fam(
             "rice_on_table", ["not_in_view"], "the seed's layout only",
@@ -560,11 +561,12 @@ def t28():
     KC = "kid_cup"
     BEAR = {"bed_bear": on("teddy_bear", "mattress_1/top", -0.20, -4.20)}
     side = "bookcase_3/top"
+    SIDES = [side, "desk_1/top"]                     # beside bed 1: the low bookcase (0.7 m) or the desk (0.4 m)
     ctl = {"note": "the kid's plastic cup on the kitchen counter; his bed has the teddy bear on it",
            "add": {KC: on("plastic_cup", COUNTER, -0.20, 7.60), **BEAR}}
     t = base_task("T28_cup_to_bedside", "ZB-T28", "The kid is going to bed. Bring his cup to his bedside.",
                   "孩子要睡了，把他的水杯拿到床边。", "cup_on_counter", ctl,
-                  {"all": [["on", KC, side], ["upright", KC], H]}, fetch(KC, side, [2.10, -4.88]), [KC])
+                  {"all": [["on_any", KC, SIDES], ["upright", KC], H]}, fetch(KC, side, [2.10, -4.88]), [KC])
     to_side = fetch(KC, side, [2.10, -4.88])
     fams = {
         "which_cup": fam(
@@ -574,7 +576,7 @@ def t28():
             {"": dict(add={KC: on("plastic_cup", COUNTER, -0.20, 7.60), "counter_mug": on("breakfast_mug", COUNTER, -0.30, 9.00),
                            **BEAR},
                       watch=[KC, "cup_counter_b", "counter_mug"],
-                      goal={"all": [["on", KC, side], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
+                      goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
                                     ["near_start", "counter_mug", 0.03], H]},
                       route=[look(COUNTER)] + to_side)}),
         "cup_put_away": fam(
@@ -582,7 +584,7 @@ def t28():
             "the cup was put away in the low wall cabinet",
             "look in the cabinet, take the cup, close the door",
             {"": dict(add={KC: on("plastic_cup", f"{C4}/inside_shelf", 1.40, 0.42), **BEAR},
-                      goal={"all": [["on", KC, side], ["upright", KC], ["is_closed", C4], H]},
+                      goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["is_closed", C4], H]},
                       route=explore(C4) + from_closed(KC, C4) + [nav(side), place(KC, side, [2.10, -4.88])])}),
         "which_bed": fam(
             "cup_on_counter", ["referent_clue"], "which bed is his (seed: the teddy bear on one of the two beds)",
@@ -606,7 +608,7 @@ def t28():
             "the cup already stands by his bed",
             "the goal already holds: check and leave it",
             {"": dict(add={KC: on("plastic_cup", side, 2.10, -4.88), **BEAR},
-                      goal={"all": [["on", KC, side], ["near_start", KC, 0.03], H]},
+                      goal={"all": [["on_any", KC, SIDES], ["near_start", KC, 0.03], H]},
                       route=[nav(side), look(side)])}),
     }
     return t, fams

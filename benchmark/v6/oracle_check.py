@@ -312,6 +312,7 @@ class World:
                 self.bad(i, s, f"{', '.join(on)} lies on {n}")
             self.put(n, ("hand",))
             self.hand = n
+            self.flags.add(("picked", n))
         elif k in ("place", "drop", "stack"):
             n = a["object"]
             tgt = a.get("receptacle") or a.get("container") or a.get("base")
@@ -506,6 +507,10 @@ class World:
         if p == "near_start":
             return all(n in self.obj and self.obj[n]["xy"] is not None and self.loc[n][0] != "hand"
                        and math.dist(self.obj[n]["xy"], self.start[n]) <= NEAR_START_M for n in many(args[0]))
+        if p == "never_picked":
+            return not any(("picked", n) in self.flags for n in many(args[0]))
+        if p == "on_any":
+            return any(self._holds("on", [args[0], sup]) for sup in args[1])
         if p == "near_any":
             n, refs = args[0], args[1]
             dist = float(args[2]) if len(args) > 2 else 0.3

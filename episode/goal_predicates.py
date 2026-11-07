@@ -24,7 +24,10 @@ looks a goal atom up here first, then in the skill registry.
   from the bed, T06);
 * ``same_arrangement(objects, examples, anchor, example_anchor, facing, example_facing, tol_m)``: each object stands
   where its example stands, relative to the anchor, in the frame of the person it is for (a place setting copied
-  across the table, T13).
+  across the table, T13);
+* ``never_picked(objects)``: a process requirement: none of them was held at any time in the episode (the castle
+  stays built the whole time, not taken apart and built again; T12, T14, T27);
+* ``on_any(object, supports)``: on one of several supports that all do what the person asked (T23, T28).
 """
 from __future__ import annotations
 
@@ -176,6 +179,31 @@ def _near_any(rig, ctx, object, others, max_dist_m):
     d = min((_gap(fp, rig.geo.footprint(o, st)) for o in others if o in st["objects"] and o != object),
             default=math.inf)
     return d <= float(max_dist_m), f"nearest at {d:.3f} m"
+
+
+@goal_predicate("never_picked", ["objects"],
+                "A process requirement, not an end state: the robot never held any of the objects during the "
+                "episode (a castle taken apart and built again, or homework lifted and put back, does not count).")
+def _never_picked(rig, ctx, objects):
+    names = objects if isinstance(objects, list) else [objects]
+    start = (ctx.get("before") or {}).get("events", 0)
+    held = sorted({e.get("obj") for e in rig.events[start:]
+                   if e.get("label") == "pick_result" and e.get("obj") in names and e.get("held")})
+    return not held, f"picked up: {', '.join(held)}" if held else "never picked up"
+
+
+@goal_predicate("on_any", ["object", "supports"],
+                "The object is on at least one of the listed supports (several places would do what the person "
+                "asked, e.g. the bookcase or the desk beside the bed).")
+def _on_any(rig, ctx, object, supports):
+    from zeno_skills.predicates import REGISTRY
+    why = []
+    for s in supports:
+        ok, d = REGISTRY["on"].evaluate(rig, ctx, object=object, support=s)
+        if ok:
+            return True, f"on {s}"
+        why.append(f"{s}: {d}")
+    return False, "; ".join(why)
 
 
 def _segment_hits_box(p0, p1, box, t_max=0.97):

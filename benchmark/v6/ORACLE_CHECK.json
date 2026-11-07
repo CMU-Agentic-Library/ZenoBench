@@ -1266,7 +1266,7 @@
    "task": "T12_tidy_toys",
    "layout": "castle_stays__tall_two_loose",
    "steps": 17,
-   "atoms_checked": 10,
+   "atoms_checked": 11,
    "atoms_geometric": 1,
    "problems": [],
    "variant": "castle_stays"
@@ -1275,7 +1275,7 @@
    "task": "T12_tidy_toys",
    "layout": "castle_stays__short_one_loose",
    "steps": 13,
-   "atoms_checked": 7,
+   "atoms_checked": 8,
    "atoms_geometric": 1,
    "problems": [],
    "variant": "castle_stays"
@@ -1284,7 +1284,7 @@
    "task": "T12_tidy_toys",
    "layout": "castle_stays__tall_none_loose",
    "steps": 9,
-   "atoms_checked": 8,
+   "atoms_checked": 9,
    "atoms_geometric": 1,
    "problems": [],
    "variant": "castle_stays"
@@ -1716,7 +1716,7 @@
    "task": "T14_shelve_the_book",
    "layout": "homework_stays",
    "steps": 9,
-   "atoms_checked": 5,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "problems": [],
    "variant": "homework_stays"
@@ -2184,7 +2184,7 @@
    "task": "T27_leftovers_to_fridge",
    "layout": "still_eating",
    "steps": 8,
-   "atoms_checked": 4,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "problems": [],
    "variant": "still_eating"

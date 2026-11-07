@@ -42700,6 +42700,14 @@
         0.03
        ],
        [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2",
+         "castle_block_3"
+        ]
+       ],
+       [
         "on_top_of",
         "castle_block_2",
         "castle_block_1"
@@ -42849,6 +42857,13 @@
         0.03
        ],
        [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2"
+        ]
+       ],
+       [
         "on_top_of",
         "castle_block_2",
         "castle_block_1"
@@ -42989,6 +43004,14 @@
         "near_start",
         "castle_block_3",
         0.03
+       ],
+       [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2",
+         "castle_block_3"
+        ]
        ],
        [
         "on_top_of",
@@ -56070,6 +56093,13 @@
         0.03
        ],
        [
+        "never_picked",
+        [
+         "homework",
+         "hw_pencil"
+        ]
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -62285,9 +62315,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "dropped_spoon",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_2/top",
+         "kitchen_counter_1/top"
+        ]
        ],
        [
         "inside",
@@ -62374,9 +62407,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "dropped_spoon",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_2/top",
+         "kitchen_counter_1/top"
+        ]
        ],
        [
         "near_start",
@@ -62508,9 +62544,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "dropped_spoon",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_2/top",
+         "kitchen_counter_1/top"
+        ]
        ],
        [
         "near_start",
@@ -62598,9 +62637,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "dropped_spoon",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_2/top",
+         "kitchen_counter_1/top"
+        ]
        ],
        [
         "on",
@@ -62681,9 +62723,12 @@
    "goal": {
     "all": [
      [
-      "on",
+      "on_any",
       "dropped_spoon",
-      "kitchen_counter_2/top"
+      [
+       "kitchen_counter_2/top",
+       "kitchen_counter_1/top"
+      ]
      ],
      [
       "hand_empty",
@@ -68001,6 +68046,12 @@
         0.03
        ],
        [
+        "never_picked",
+        [
+         "eating_bowl"
+        ]
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -69152,9 +69203,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "kid_cup",
-        "bookcase_3/top"
+        [
+         "bookcase_3/top",
+         "desk_1/top"
+        ]
        ],
        [
         "upright",
@@ -69321,9 +69375,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "kid_cup",
-        "bookcase_3/top"
+        [
+         "bookcase_3/top",
+         "desk_1/top"
+        ]
        ],
        [
         "upright",
@@ -69764,9 +69821,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "kid_cup",
-        "bookcase_3/top"
+        [
+         "bookcase_3/top",
+         "desk_1/top"
+        ]
        ],
        [
         "near_start",
@@ -69850,9 +69910,12 @@
    "goal": {
     "all": [
      [
-      "on",
+      "on_any",
       "kid_cup",
-      "bookcase_3/top"
+      [
+       "bookcase_3/top",
+       "desk_1/top"
+      ]
      ],
      [
       "upright",
