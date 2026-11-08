@@ -174,7 +174,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3：3a ✓ ──► 3b 第 1、2 项 ✓ ──► 6.1 pick（暂停）──► 6.2 place ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪**：6.2 place，支撑面、托盘、drop 已改完，11-07 全量 140/170（见 6.2"进度"）。pick / place 已按 `MOTION_ARCHITECTURE.md` 改成"停车点搜索做整份计划（到搬运姿态 / 收臂）、执行照着走"（第 9 节第 3 步，11-08，6 个针对性 5/6，失败的是书的旧 `place_flat`），剩下：新接口的 `find_park`（第 4 步）、书走同一流程（删 `place_flat`，11-07 试过一版 4/10，已回滚），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
+**现在在哪**：6.2 place，支撑面、托盘、drop 已改完，11-07 全量 140/170（见 6.2"进度"）。pick / place 已按 `MOTION_ARCHITECTURE.md` 改成"停车点搜索做整份计划（到搬运姿态 / 收臂）、执行照着走"（第 9 节第 3 步，11-08，6 个针对性 5/6，失败的是书的旧 `place_flat`），第 4 步新接口的 `find_park`（`park_search.py`）也已接上 pick / place（11-08，T20 s10、T01 s11、T09、T13、T12 过；搬运段带 5 mm 持物余量），剩下：持物去搬运姿态的规划慢（单次 8–14 s，搜索比旧版慢一倍）、书走同一流程（删 `place_flat`，11-07 试过一版 4/10，已回滚），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
 
 ### 6.1 pick（暂停）
 

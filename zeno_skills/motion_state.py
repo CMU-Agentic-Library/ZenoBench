@@ -21,10 +21,13 @@ SIDES = ("right", "left")
 
 @dataclass(frozen=True)
 class Held:
-    """An object in a hand: its box frame (Motion._box_of) in the TCP frame (Motion.held_in_tcp)."""
+    """An object in a hand: its box frame (Motion._box_of) in the TCP frame (Motion.held_in_tcp).
+    ``pad``: m its collision spheres are grown by -- a hold a plan assumes (taken from where the
+    object stood before the hand closed) rather than one measured in the hand."""
     name: str
     T_tcp_obj: np.ndarray
     kind: str = "pinch"              # pinch / edge / corner / bimanual
+    pad: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -87,9 +90,11 @@ class Segment:
 
 @dataclass(frozen=True)
 class Failure:
-    """Why a primitive or a plan could not be made (what a park search counts, what a skill reports)."""
+    """Why a primitive or a plan could not be made (what a park search counts, what a skill reports).
+    ``info``: what it measured on the way (a plan builder's time per stage)."""
     why: str
     segment: str = ""
+    info: Mapping = field(default_factory=dict)
 
     def __bool__(self):
         return False
@@ -99,6 +104,7 @@ class Failure:
 class Plan:
     segments: tuple
     goal: int = 0                    # which goal of the skill's goal set it serves
+    info: Mapping = field(default_factory=dict)   # a builder's time per stage (stage_s)
 
 
 # --------------------------------------------------------------------- new states from a state

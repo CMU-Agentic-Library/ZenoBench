@@ -32,6 +32,7 @@ from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure, relay_approach)
+from .park_search import Problem, find_park as find_skill_park
 from .run import observe, run
 from .skill_plans import PLACE_STAGES, plan_pick, plan_place
 from .sticky import SHUT, note_grasp, rest_R, welded
@@ -531,7 +532,7 @@ def _relay_check(rig, goal, plans, travel_q):
     a solution of the straight's start): the motion to it made the way it is executed
     (rig.relay_approach), from the posture the arm is in at that park, kept in ``plans`` under
     _park_key for Rig.move_relay.  Only the pick in the microwave still uses it (step 6.4); the
-    rest plans the whole skill (skill_plans, _pick_plan_check, _place_plan_check)."""
+    rest plans the whole skill (skill_plans, park_search)."""
     kin = rig.kin
 
     def check(x, y, yaw, qs):
@@ -570,28 +571,40 @@ def _grasp_of(name, g):
             "pre_open": float(g["pre_open"]), "kind": "edge" if g["kind"] == "thickness_pinch" else "pinch"}
 
 
-def _pick_plan_check(rig, name, g, shared, plans, arrive_q):
-    """find_park check of the pinch g: the whole pick as it will run from this park
-    (skill_plans.plan_pick: from the posture the arm arrives in -- where it is when _goto_park does
-    not drive, else ``arrive_q`` -- the hand opened to the grasp's width), kept in ``plans``
-    under _park_key for the execution.  ``shared``: the State now and the carry goal set, made at
-    the first park checked and kept for the other candidates."""
-    kin = rig.kin
-    grasp = _grasp_of(name, g)
-    u, L = _grasp_approach(g)
+PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
-    def check(x, y, yaw, qs):
-        if "state" not in shared:
-            shared["state"], shared["carry_goals"] = observe(rig), _carry_goal_set(rig, name)
-        s0 = with_width(shared["state"], kin.side, g["pre_open"])
-        s = with_arm(at_base(s0, (x, y, yaw)), rig.q_cmd if _at_park(rig, x, y, yaw) else arrive_q, kin.side)
-        plan = plan_pick(kin, s, grasp, u, L, shared["carry_goals"], q_hint=qs[0], step=APPROACH_STEP)
-        if isinstance(plan, Failure):
-            _diag(plan)
-            return False
-        plans[_park_key(x, y, yaw, qs)] = plan
-        return True
-    return check
+
+def _pick_find_park(rig, name, cands, near, fridge_shelf):
+    """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
+    the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
+    relay pose the ranking solves), and a park counts when the whole pick plans from it
+    (skill_plans.plan_pick, from the posture the arm arrives in, the hand opened to the
+    candidate's width).  (Found or None, diag, the carry goal set)."""
+    kin = rig.kin
+    state = observe(rig)
+    carry_goals = _carry_goal_set(rig, name)
+    goals = []
+    for i, g in enumerate(cands):
+        u, L = _grasp_approach(g)
+        start = np.asarray(g["p"], float) - L * np.asarray(u, float) / np.linalg.norm(u)
+        goals.append(((start, np.asarray(g["p"], float), np.asarray(g["p"], float) + [0, 0, PICK_LEAVE_CHECK]),
+                      (start, np.asarray(g["R"], float)), PICK_CAND_COST * i))
+
+    def build(s, k, q_rank):
+        g = cands[k]
+        return plan_pick(kin, with_width(s, kin.side, g["pre_open"]), _grasp_of(name, g), *_grasp_approach(g),
+                         carry_goals, q_hint=q_rank, step=APPROACH_STEP)
+
+    travel = _travel_q(rig)
+    arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
+    if fridge_shelf:
+        # the fridge shelf behind its door: its open side first (a known good park)
+        problem = Problem(tuple(goals), build, arrive, travel, near=rig.base_pose()[:2], prefer=(near,),
+                          label=f"pick {name}")
+    else:
+        problem = Problem(tuple(goals), build, arrive, travel, near=near, label=f"pick {name}")
+    found, diag = find_skill_park(rig, problem, state)
+    return found, diag, carry_goals
 
 
 def _pick_run(rig, name, g, park, plan, carry_goals):
@@ -631,6 +644,11 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
             rig.focus_z = None
             raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
 
+    def before_close(rig):
+        rig.caption = f"PICK {name}: close gripper"
+        if kin.motion is not None and kin.motion.by_owner.get(f"object:{name}"):
+            out["T_obj0"], out["q_grasp"] = kin.motion.object_frames()[name], rig.q_cmd.copy()
+
     def after_close(rig):
         f = rig.fingers()
         if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
@@ -651,16 +669,23 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
             # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
             rig.held.update(edge_held(rig, name, tcp0, R))
         out["tcp0"] = tcp0
+        if "T_obj0" in out:
+            # the hold a plan assumes (the load where it stood, the hand where it closed) against the
+            # hold measured now: what skill_plans.HELD_POSE_MARGIN stands for
+            rig.sync_world()
+            p_g, R_g = kin.tcp(out["q_grasp"])
+            T_g = np.eye(4)
+            T_g[:3, :3], T_g[:3, 3] = R_g, p_g
+            planned = np.linalg.inv(T_g) @ out["T_obj0"]
+            measured = kin.motion.held_in_tcp(kin, rig.q_cmd, name)
+            rig.log("held_offset", obj=name, kind=g["kind"],
+                    offset_m=round(float(np.linalg.norm(measured[:3, 3] - planned[:3, 3])), 4),
+                    turn_deg=round(math.degrees(_turn(planned[:3, :3], measured[:3, :3])), 2))
         rig.caption = f"PICK {name}: lift"
-
-    def caption(text):
-        def set_(rig):
-            rig.caption = f"PICK {name}: {text}"
-        return set_
 
     watch = lambda: _watching(rig, name)
     hooks = {"pick_reach": {"around": watch}, "pick_grasp": {"around": watch, "after": after_grasp},
-             "pick_close": {"before": caption("close gripper"), "after": after_close},
+             "pick_close": {"before": before_close, "after": after_close},
              "carry_in": {"after": lambda rig: check_held(rig, "carry_in")}}
     try:
         run(rig, plan, rebuild, hooks)
@@ -1372,21 +1397,22 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         # off-centre pinch points of a long object let it swing in the hand:
         # prefer the centre, use the others when it is out of reach
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
-    park, g, plans = None, None, {}
-    # the whole pick as it will run, to the carry pose (skill_plans.plan_pick: from the posture the
-    # arm arrives in, each segment from where the one before ends), its plan kept for the execution
-    # (run.run).  In the microwave (step 6.4) the reach-in alone (_relay_check, Rig.move_relay).
-    arrive_q = retrieval_q if in_microwave and retrieval_q is not None else _travel_q(rig)
+    park, g, plans, plan, carry_goals = None, None, {}, None, None
     use_plan = not in_microwave
+    if use_plan:
+        # every grasp candidate is one goal of the park search (park_search.find_park), and a park
+        # is one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
+        found, diag, carry_goals = _pick_find_park(rig, name, cands[:max_candidates] + extra, search_near,
+                                                   fridge_shelf)
+        if found is not None:
+            g = (cands[:max_candidates] + extra)[found.k]
+            park, plan = (found.x, found.y, found.yaw, None), found.plan
+    # in the microwave (step 6.4) the reach-in alone (_relay_check, Rig.move_relay), candidate by candidate
+    arrive_q = retrieval_q if in_microwave and retrieval_q is not None else _travel_q(rig)
     LAST_RELAY_DIAG.clear()
-    # what every candidate's plan starts from, read when the first park is checked
-    shared = {}
-    for g in cands[:max_candidates] + extra:
-        if use_plan:
-            check = _pick_plan_check(rig, name, g, shared, plans, arrive_q)
-        else:
-            reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
-            check = _relay_check(rig, reach_in, plans, arrive_q)
+    for g in ([] if use_plan else cands[:max_candidates] + extra):
+        reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
+        check = _relay_check(rig, reach_in, plans, arrive_q)
         with _hand_opened(rig, g["pre_open"]):
             park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
                              max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
@@ -1400,7 +1426,8 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         from .planner import LAST_PARK_DIAG
         getattr(rig, "log", lambda *a, **k: None)("pick_no_park", obj=name, pos=[round(float(v), 3) for v in pos],
                 quat=[round(float(v), 3) for v in quat], n_cands=len(cands),
-                diag={k: v for k, v in LAST_PARK_DIAG.items() if v}, relay=dict(LAST_RELAY_DIAG))
+                diag=diag if use_plan else {k: v for k, v in LAST_PARK_DIAG.items() if v},
+                relay=None if use_plan else dict(LAST_RELAY_DIAG))
         raise SkillFailure(f"pick {name}: no reachable grasp from any base pose")
     x, y, yaw, _ = park
     rig.log("pick_park", obj=name, kind=g["kind"], park=[round(x, 3), round(y, 3), round(yaw, 1)],
@@ -1423,8 +1450,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
     note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
     if use_plan:
-        tcp0 = _pick_run(rig, name, g, park, plans.get(_park_key(*park)),
-                         shared.get("carry_goals") or _carry_goal_set(rig, name))
+        tcp0 = _pick_run(rig, name, g, park, plan, carry_goals)
         return _pick_judged(rig, name, g, tcp0, pos)
     rig.grip(g["pre_open"], 40)
     # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
@@ -1903,26 +1929,6 @@ def place(rig, name, support, xy=None, spots=None):
     return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
 
 
-def _place_plan_check(rig, state, open_w, travel_q, plans):
-    """find_park check of a set-down at qs[0] (the base set to the park): the whole place as it
-    will run from this park (skill_plans.plan_place: from the posture the arm arrives in, the
-    load's tilt held, the set-down, the release, the pull-out and the tuck, each from where the
-    one before ends), kept in ``plans`` under _park_key for the execution."""
-    kin = rig.kin
-
-    def check(x, y, yaw, qs):
-        s = with_arm(at_base(state, (x, y, yaw)), rig.q_cmd if _at_park(rig, x, y, yaw) else travel_q, kin.side)
-        p, R = kin.tcp(qs[0])
-        plan = plan_place(kin, s, p, R, open_w, R[:, 2], pick_approach(), (kin.rest, kin.drive), q_p=qs[0],
-                          step=APPROACH_STEP)
-        if isinstance(plan, Failure):
-            _diag(plan)
-            return False
-        plans[_park_key(x, y, yaw, qs)] = plan
-        return True
-    return check
-
-
 def _place_run(rig, name, s, p, R, open_w, plan):
     """Run the place's plan (run.run) to set ``name`` down at (p, R), the pose re-measured after
     the drive: a plan made for a set-down pose off it by more than HINT_REACH / HINT_TURN (the
@@ -1995,11 +2001,11 @@ def _set_down(rig, name, s, spots, tray=None):
         R_lvl = rest_R(q_obj) @ R_obj.T
         relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
                              -float(asset["origin_to_bottom_center"][2])))
-    search_near, q_start, travel_q = rig.base_pose(), rig.q_cmd, _travel_q(rig)
+    search_near, travel_q = rig.base_pose(), _travel_q(rig)
     if math.hypot(search_near[0] - spots[0][0], search_near[1] - spots[0][1]) > 1.0:
         # far from the target: rank parks by reach to the target, not by
         # distance from here (all tries were spent near a corner 1.4 m away)
-        search_near, q_start = None, None
+        search_near = None
     # the set-down poses (the relay pose): every spot, relation and wrist turn is one goal
     goals, leg_sets, cost = [], [], []
     for rank, spot in enumerate(spots):
@@ -2012,23 +2018,23 @@ def _set_down(rig, name, s, spots, tray=None):
                 cost.append(PLACE_SPOT_COST * rank + PLACE_YAW_COST * abs(deg) / 45.0 +
                             (PLACE_TILTED_COST if levelled is None and len(relations) > 1 else 0.0))
     open_w = float(rig.held.get("pre_open", 0.04))
-    plans = {}
-    LAST_RELAY_DIAG.clear()
-    base_state = observe(rig)
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    with _carrying(rig, name):
-        found = find_park_set(kin, rig.world, leg_sets, cost, near=search_near, max_tries=120,
-                              q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(), carry=True,
-                              check=_place_plan_check(rig, base_state, open_w, travel_q, plans), unfold=False)
+    rests = (kin.rest, kin.drive)
+
+    # every set-down pose is one goal of the park search (park_search.find_park), and a park is one
+    # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
+    def build(st, k, q_rank):
+        p_k, R_k = leg_sets[k][0][0], leg_sets[k][0][1]
+        return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, q_seed=q_rank,
+                          step=APPROACH_STEP)
+    problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
+                      lambda x, y, yaw: rig.q_cmd.copy(), travel_q, near=search_near, label=f"place {name}")
+    found, diag = find_skill_park(rig, problem, observe(rig))
     if found is None:
-        from .planner import LAST_PARK_DIAG
         raise SkillFailure(f"place {name}: no spot of {len(spots)} on {s['name']} reachable "
-                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} }; "
-                           f"plans: {dict(LAST_RELAY_DIAG)})")
-    park, k = found
+                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
+    park, k, plan = (found.x, found.y, found.yaw, None), found.k, found.plan
     spot, R, levelled, deg, hang = goals[k]
     x, y, yaw, _ = park
-    plan = plans.get(_park_key(*park))
     reach = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_reach"), None)
     L = None if reach is None else reach.info.get("set_down_m")
     rig.log("place_park", obj=name, park=[round(x, 3), round(y, 3), round(yaw, 1)], spot=[round(v, 3) for v in spot],

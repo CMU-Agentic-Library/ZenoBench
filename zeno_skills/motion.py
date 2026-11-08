@@ -734,16 +734,16 @@ class Motion:
         self._attach_rel(arm, name, self.held_in_tcp(kin, q, name))
         return name
 
-    def _attach_rel(self, arm, name, M):
+    def _attach_rel(self, arm, name, M, pad=0.0):
         """Spheres of ``name``'s box on the arm's held link, the box frame at M in the TCP frame
-        (held_in_tcp); None: the link emptied."""
+        (held_in_tcp), their radii ``pad`` larger; None: the link emptied."""
         sph = None
         if name is not None:
             _, lo, hi = self._box_of(name)
             b = box_spheres(lo, hi)
             sph = np.full((HELD_SPHERES, 4), [0.0, 0.0, 0.0, -100.0])
             sph[:len(b), :3] = b[:, :3] @ M[:3, :3].T + M[:3, 3]
-            sph[:len(b), 3] = b[:, 3]
+            sph[:len(b), 3] = b[:, 3] + pad
         if sph is not None or self._held_sph.get(arm.side) is not None:
             self._set_held_spheres(arm, sph)
         self._held_sph[arm.side] = sph
@@ -892,7 +892,7 @@ class Motion:
                 else:
                     self.held[s_] = (was - sim_owners) | self._held_owners(h.name)
                     if h.kind != "bimanual" and self.by_owner.get(f"object:{h.name}"):
-                        self._attach_rel(self.arms[s_], h.name, np.asarray(h.T_tcp_obj, float))
+                        self._attach_rel(self.arms[s_], h.name, np.asarray(h.T_tcp_obj, float), h.pad)
                     else:
                         self._attach_rel(self.arms[s_], None, None)
             self.cull_at = None

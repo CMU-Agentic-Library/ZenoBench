@@ -7,6 +7,9 @@ grasp, the carry goal set, the approach length) comes in as arguments."""
 
 from __future__ import annotations
 
+import time
+from dataclasses import replace
+
 import numpy as np
 
 from .clearance import FREE, LEAVE_CONTACT, closing
@@ -19,6 +22,12 @@ FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load i
 PICK_STAGES = ("pick_open", "pick_reach", "pick_grasp", "pick_close", "pick_lift", "carry_in")
 PLACE_STAGES = ("place_reach", "place_down", "place_release", "place_pull_out", "tuck")
 TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}
+# m the load's spheres grow by on a pick's carry planned before the close (the hold assumed from where
+# the load stood; the hand moves it a little closing): T01 overhang_ready 11-08, a carry planned with
+# no room collided by 0 mm once the book sat in the hand.  The carry only (the lift measures the
+# contact with the hold as assumed).  First value, to be set from the logged held_offset (planned vs
+# measured hold) of the targeted runs.
+HELD_POSE_MARGIN = 0.005
 
 
 def T_of(R, p):
@@ -79,7 +88,12 @@ def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_hint, step):
     q = state.q(kin.side)
     segs = []
     s = state
+    # a carry planned after a close in this same plan rides on an assumed hold (HELD_POSE_MARGIN);
+    # one built after the real close (run's rebuild from pick_lift / carry_in) on the measured one
+    assumed = ("carry_in",) if i0 <= PICK_STAGES.index("pick_close") else ()
+    times = {}
     for stage in PICK_STAGES[i0:]:
+        t0 = time.time()
         if stage == "pick_open":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", float(grasp["pre_open"]), 40, False))
         elif stage == "pick_reach":
@@ -97,17 +111,21 @@ def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_hint, step):
             seg = _contact(kin, s, Spec(allow=LEAVE_CONTACT), [0.0, 0.0, 1.0], "off_support", stage, 0.002, q,
                            steps_per_wp=6, smooth=True)
         else:                                               # carry_in
-            with query(kin, s, FREE_LOAD):
-                goals, how = carry_goals(s, q)
-            seg = free_leg(kin, s, FREE_LOAD, goals, stage, step=how.get("step", 0.01), q_from=q) \
+            h = s.held(kin.side)
+            sc = s if h is None or h.pad or stage not in assumed else \
+                holding(s, kin.side, replace(h, pad=HELD_POSE_MARGIN))
+            with query(kin, sc, FREE_LOAD):
+                goals, how = carry_goals(sc, q)
+            seg = free_leg(kin, sc, FREE_LOAD, goals, stage, step=how.get("step", 0.01), q_from=q) \
                 if goals.goals else Failure("no carry goal", stage)
             seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=how.get("steps_per_wp", 4),
                                                              smooth=how.get("smooth", False))
+        times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return seg
+            return Failure(seg.why, seg.segment, {"stage_s": times})
         segs.append(seg)
         q = seg.q_end
-    return Plan(tuple(segs))
+    return Plan(tuple(segs), info={"stage_s": times})
 
 
 # ------------------------------------------------------------------------------------- place
@@ -135,19 +153,20 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
 
 
 def plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start="place_reach", q_p=None,
-               step=0.003):
+               step=0.003, q_seed=None):
     """The set-down of what the hand holds at (p, R) from ``state``: the free leg to the set-down's
     start (the load's tilt held; the set-down's length set_down_length, from ``q_p``, the park
-    search's solution of (p, R), or one solved here), the set-down straight down, let go (the load
+    search's solution of (p, R), or one solved here -- ``q_seed`` first among its seeds), the
+    set-down straight down, let go (the load
     falls LEAVE_GAP onto the support: released), the pull-out of length out_len along u_out (the
     gripper axis back; a hand that starts in the load -- in the model after the release -- first
     out of that contact, near_world), the tuck to the first free of ``rest_goals`` (the fold, the
     hanging posture).  From ``start`` on.  Plan or Failure."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q_p, step)
+        return _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q_p, step, q_seed)
 
 
-def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q_p, step):
+def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q_p, step, q_seed=None):
     i0 = PLACE_STAGES.index(start)
     p, R = np.asarray(p, float), np.asarray(R, float)
     q = state.q(kin.side)
@@ -158,7 +177,7 @@ def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q
         if stage == "place_reach":
             if q_p is None:
                 with query(kin, s, FREE_LOAD):
-                    q_p, ok = kin.ik_global(p, R, seeds=[q])
+                    q_p, ok = kin.ik_global(p, R, seeds=([q_seed] if q_seed is not None else []) + [q])
                 if not ok:
                     return Failure("no collision-free IK at the set-down pose", stage)
             L, why = set_down_length(kin, s, FREE_LOAD, q_p)

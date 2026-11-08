@@ -33,6 +33,9 @@ def test_pick_without_microwave_uses_generic_grasp_search(monkeypatch):
         base_pose=lambda: (0.0, 0.0, 0.0),
     )
     monkeypatch.setattr(skills, "find_park", lambda *args, **kwargs: None)
+    monkeypatch.setattr(skills, "observe", lambda rig: None)
+    monkeypatch.setattr(skills, "_carry_goal_set", lambda rig, name: None)
+    monkeypatch.setattr(skills, "find_skill_park", lambda *args, **kwargs: (None, {}))
 
     with pytest.raises(SkillFailure, match="no reachable grasp"):
         skills._pick_pinch(rig, "apple", max_candidates=1)

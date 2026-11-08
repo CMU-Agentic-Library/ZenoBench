@@ -1,6 +1,6 @@
 # 运动规划的分层设计（草案）
 
-**状态：** 设计；第 9 节第 1–3 步已实现（2026-11-07 / 08），pick / place 在用（微波炉里取物、书的 `place_flat` 除外），第 4 步起未实现。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
+**状态：** 设计；第 9 节第 1–4 步已实现（2026-11-07 / 08），pick / place 在用（微波炉里取物、书的 `place_flat` 除外），第 5 步起未做。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
 
 ## 1. 为什么要改
 
@@ -201,6 +201,12 @@ Rig.run(plan, state):
 第 3 步已做（11-08）：`zeno_skills/skill_plans.py`（`plan_pick`：张手 → 到伸入段起点 → 伸入 → 合爪（`holding`）→ 抬起（`off_support`）→ 去搬运姿态（`PoseSet`，保持倾角）；`plan_place`：到放下段起点 → 放下 → 松手（`released`，手张到抓取宽度）→ 抽出（起点在物体里时先 `place_pull_out_contact`）→ 收臂（收起，碰就下垂）；`set_down_length` 用原语重写）；`run.py`（`holds`、`execute`、`run`：每段前 `observe`、复核、不成立就用技能给的 `rebuild` 从这段重做剩下的，做不出来 SkillFailure；技能自己的步骤挂 hooks）。`skills.py`：pick 的停车点检查 `_pick_plan_check`、执行 `_pick_run`（hooks：伸入时盯物体、到位检查、合爪判断和登记持物、搬运后 `check_held`），结果判断拆成 `_pick_judged`；place 的检查 `_place_plan_check`、执行 `_place_run`（重新测量偏 > `HINT_REACH` 就从当前状态重做整份计划，取代原来"偏 2 cm 整套重做"）。删了 `_place_check`、`rig.set_down_length`；`_relay_check` / `Rig.move_relay` / `relay_approach` 只剩微波炉里取物用（6.4）。抬起段不再减半 / 不抬，搬运段不再 `FREE_ELSE_STRAIGHT` / `carry_pose_kept`（pick 里；navigate / place 前的 `_carry_pose` 还是旧的）。单测 `tests/test_skill_plans.py`（8 个）。
 
 针对性检查（11-08，`/data/zenobench/plan1107`，11-07 全量的 6 个直线失败）：5/6。98 段里 91 段原样走计划，7 段执行时重做、都成：T01 抬起段重量 2.0 cm（计划 3.0）、接着搬运段碰了重做；T13、T20 ×2 物体在手里偏 3.9–4.6 mm 整份 place 重做；T20 ×2 松手后手指真卡在瓶子里，重量出 1.9 cm 的离开段，接着抽出。T01 s11 失败在书的旧 `place_flat`：搬运姿态由计划选、和以前不同，`place_flat` 换了停车点，它不查碰撞的 `flat_push` 卡住差 16 cm，书倒（52°）——书进新流程是待办。查出并修了一处建模错误：松手后模型里的手没张开（还是拿着时的宽度），手指"穿进"刚放下的物体，计划里多出 3–6 cm 的离开段、执行时再撤掉；修后重跑 T09 s11 28/28 段原样、T20 s10 11/11 段原样（重新测量偏 4.6 mm 先重做了一次），都成。
+
+第 4 步已做（11-08）：`zeno_skills/park_search.py`（`Problem`（goals、build、arrive、travel、near、prefer）、`find_park`：候选 → 够得着 + 底盘柱体（逐个，每个目标最多 `MAX_PER_GOAL`）→ 行驶姿态整机（批量 `base_depths`）→ 可达场（`base_reachable`，一次）→ 批量运动学 IK 排序（中继位姿换到各候选底盘系、不查碰撞，按关节余量、可操作度、代价）→ 按顺序 `build`，第一个做出整份计划的胜出（`BUILD_S` 20 s、`BUILD_MAX` 60）→ 胜出者 `_drivable` 精确底盘路径；日志 `park_search` 带每项计数、构造失败原因和每段耗时 `stage_s`）。pick 的所有抓取候选合成一个目标集合（每个排名 `PICK_CAND_COST`），取代逐个候选找停车点（`COLLISION_CLEANUP` 3.5、`COLLISION_PLAN` 6.1 第 8 项）；冰箱层板的种子停车点走 `prefer`。place 的 `find_park_set` 换成同一个 `Problem`。删了 `_pick_plan_check`、`_place_plan_check`；旧的 `planner.find_park` 留给微波炉取物和其他技能。
+
+搬运段余量（11-08）：`Held.pad` 放大手里物体的碰撞球；pick 计划里合爪前就规划的搬运段带 `HELD_POSE_MARGIN`（5 mm），执行时从实测持物重做的不带，抬起段不带（只给搬运段加，用户定）。起因 T01 s11：搜索出的搬运路径余量为 0，执行前复核在第 34/75 个路点"手里的书 0 mm 碰"，从当前状态重做 cuRobo `FINETUNE_TRAJOPT_FAIL`。`held_offset` 日志（计划假设的持物 vs 合爪后实测）在 sticky 下是 0–0.2 mm、0–0.15°（合爪即焊住），所以那次碰撞不是持物偏了，更像规划器查轨迹和执行前 `path_free` 按 0.05 rad 插值查之间的差；余量留出这层缓冲。`physical`（不焊）下要按实测偏差再定。
+
+第 4 步针对性检查（`/data/zenobench/park1108`）：第一轮 3/6——T20 ×2 找不到停车点（构造预算 8 个太少，前 8 个里 5 个伸入段直线进柜子会碰）、T01 搬运段如上；预算改按时间、加搬运余量后重跑 T20 s10、T01 s11 都成（T20 构造 14 个找到）。T09、T13、T12 第一轮就成；T20 s11 改后没重跑。搜索耗时：pick 18–22 s（旧版 T20 约 9 s），`stage_s` 显示大头是持物去搬运姿态的规划（单次 8–14 s），待查。
 
 **静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，本地开关 `.claude/audit_paused`，97b3f76）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后删掉开关文件。
 

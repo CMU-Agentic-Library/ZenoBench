@@ -62,7 +62,10 @@ def holds(kin, state, seg):
         return None
     with query(kin, state, seg.spec):
         if not kin.path_free([q] + list(seg.qs)):
-            return "its path collides now"
+            # where along it and into what
+            at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
+            what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"
+            return "its path collides now" + (what or " (between waypoints)")
     return None
 
 
