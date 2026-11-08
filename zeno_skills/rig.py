@@ -15,14 +15,11 @@ import numpy as np
 from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
+from .primitives import LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
 RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
-LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its load) still touches it
-LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
-LEAVE_MAX = 0.06          # m: ...and no further; still touching there, the rest is the logged straight fallback
-ON_LINE = 0.005           # m: a TCP this close to an approach line (and on it before its end) goes straight along it
 HINT_REACH = 0.001        # m: a q_hint whose TCP is this close to a planned leg's goal is its joint goal as it is
 HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
 PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a park search's plan starts is
@@ -808,26 +805,8 @@ class Rig:
 
     @staticmethod
     def _exit_length(kin, start, qs, touching=None):
-        """(how many of the straight waypoints ``qs`` the contact segment takes, whether it ends
-        clear): up to LEAVE_MARGIN of TCP travel past the first clear one -- clear all along that
-        margin -- or up to LEAVE_MAX, or all of them.  ``touching(q)``: still in the contact
-        (default: within LEAVE_GAP of the world)."""
-        touching = touching or (lambda q: kin.near(q, LEAVE_GAP))
-        if not touching(start):
-            return 0, True
-        p0 = kin.tcp(start)[0]
-        since = None                       # TCP travel where the current clear stretch began
-        for i, q in enumerate(qs):
-            d = float(np.linalg.norm(kin.tcp(q)[0] - p0))
-            if d > LEAVE_MAX:
-                return i, False
-            if touching(q):
-                since = None
-                continue
-            since = d if since is None else since
-            if d - since >= LEAVE_MARGIN:
-                return i + 1, True
-        return len(qs), since is not None
+        """primitives.exit_length (the one measure of a contact's extent)."""
+        return exit_length(kin, start, qs, touching)
 
     def _from_contact(self, kin, allow):
         """A from_contact Allow (clearance.LEAVE_CONTACT) with what ``kin``'s hand and its load touch

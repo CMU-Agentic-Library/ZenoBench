@@ -492,6 +492,9 @@ class _Arm:
         return st.link_spheres_tensor.view(-1, 4)
 
 
+SIDES_ = ("right", "left")
+
+
 class Motion:
     @_timed("init_s")
     def __init__(self, stage, ann, robot_cfg=ROBOT_CFG):
@@ -633,11 +636,7 @@ class Motion:
         for side, h in (("right", load(rig, "right")), ("left", load(rig, "left"))):
             if h is None or h.get("name") not in self.ann.objects:
                 continue
-            owners = {f"object:{h['name']}"}
-            box = self._owner_box(f"object:{h['name']}")
-            for name in self.ann.objects:          # its contents ride along
-                if name != h["name"] and self._inside(self._owner_box(f"object:{name}"), box, pad=0.02):
-                    owners.add(f"object:{name}")
+            owners = self._held_owners(h["name"])
             for s_ in (("right", "left") if h.get("kind") == "bimanual" else (side,)):
                 self.held[s_] |= owners
         for side, kin, q in (("right", rig.kin, rig.q_cmd), ("left", rig.left_kin, np.r_[rig.q_cmd[:2], rig.left_q_cmd])):
@@ -671,7 +670,9 @@ class Motion:
         vals = {}
         if rig is None:
             return vals
-        if hasattr(rig, "head_q"):
+        if getattr(self, "head_override", None) is not None:
+            vals.update(self.head_override)
+        elif hasattr(rig, "head_q"):
             vals.update(rig.head_q())
         for side, read in (("right", "fingers"), ("left", "left_fingers")):
             if side in self.hand_width:
@@ -801,6 +802,117 @@ class Motion:
             if sph is not None:
                 self._set_held_spheres(self.arms[side], sph)
                 self._held_sph[side] = sph
+            self.cull_at = None
+
+    def _held_owners(self, name):
+        """The owners a hand holding ``name`` carries: it and what is inside its box (its contents)."""
+        owners = {f"object:{name}"}
+        box = self._owner_box(f"object:{name}")
+        for other in self.ann.objects:
+            if other != name and self._inside(self._owner_box(f"object:{other}"), box, pad=0.02):
+                owners.add(f"object:{other}")
+        return owners
+
+    def object_frames(self):
+        """{name: 4x4 world pose of its box frame (_box_of)} at the synced poses (State.objects)."""
+        out = {}
+        for name in self.ann.objects:
+            if self.by_owner.get(f"object:{name}"):
+                frame, _, _ = self._box_of(name)
+                out[name] = G.world_pose(frame, self.body_pose.get)
+        return out
+
+    def _part_poses(self, name, q):
+        """{body: 4x4} of part ``name``'s colliders at joint value q (as _live_poses)."""
+        a = next(a for a in self.ann.articulated if a["name"] == name)
+        q0 = self.part_q0.get(name, q)
+        M = self.ann.motion(a, q) @ np.linalg.inv(self.ann.motion(a, q0))
+        return {c.body: M @ self.body0[c.body] for c in self.by_owner.get(f"part:{name}", [])}
+
+    @contextmanager
+    def query(self, kin, state, spec):
+        """Queries of ``kin``'s arm inside take the world and the robot as ``state`` has them and
+        the collision rules of ``spec`` (docs/MOTION_ARCHITECTURE.md 4.4): the base, the other
+        arm, the head and finger locks, what each hand holds (on its held link, not an obstacle to
+        it), objects and parts where the state puts them, and kin.coll_kw from the spec.  Only
+        what differs from the synced world is changed, and everything is put back after.  The
+        first form over the per-purpose contexts (hand_open, carrying, released, scope)."""
+        side = kin.side
+        other_attr = "left_q" if side == "right" else "right_q"
+        scene = kin.scene
+        saved = {"base": (kin.base_p.copy(), kin.base_R.copy()), "kw": kin.coll_kw,
+                 "other": getattr(scene, other_attr, None) if scene is not None else None,
+                 "width": dict(self.hand_width), "head": getattr(self, "head_override", None),
+                 "held": {s_: set(v) for s_, v in self.held.items()},
+                 "sph": dict(self._held_sph)}
+        moved = {}
+        try:
+            x, y, yaw = state.base
+            kin.set_base((x, y, 0.0), math.radians(yaw))
+            if scene is not None:
+                setattr(scene, other_attr, np.r_[np.asarray(state.q_right, float)[:2], state.q_left]
+                        if side == "right" else np.asarray(state.q_right, float))
+            self.hand_width = {s_: h.width for s_, h in state.hands.items()}
+            self.head_override = dict(state.head) if state.head else None
+            kw = {k: v for k, v in (kin.coll_kw or {}).items() if k not in ("ignore_fingers", "exempt_targets")}
+            kw["ignore_fingers"] = not spec.fingers
+            kw["exempt_targets"] = bool(spec.exempt)
+            kin.coll_kw = kw
+            # objects and parts the state has elsewhere than the synced world
+            for name, T in state.objects.items():
+                owner = f"object:{name}"
+                if not self.by_owner.get(owner):
+                    continue
+                frame, _, _ = self._box_of(name)
+                T0 = G.world_pose(frame, self.body_pose.get)
+                if np.allclose(T0, T, atol=1e-6):
+                    continue
+                D = np.asarray(T, float) @ np.linalg.inv(T0)
+                for b in {c.body for c in self.by_owner[owner]}:
+                    if self.body_pose.get(b) is not None:
+                        moved.setdefault(b, self.body_pose.get(b))
+                        self.body_pose.update({b: D @ self.body_pose.get(b)})
+            for name, q in state.parts.items():
+                if not self.by_owner.get(f"part:{name}"):
+                    continue
+                for b, T_b in self._part_poses(name, q).items():
+                    if not np.allclose(self.body_pose.get(b), T_b, atol=1e-6):
+                        moved.setdefault(b, self.body_pose.get(b))
+                        self.body_pose.update({b: T_b})
+            self._put_poses({b: self.body_pose.get(b) for b in moved})
+            # what each hand holds: not an obstacle to that arm, its box on the held link
+            for s_ in SIDES_:
+                h = state.held(s_)
+                was = saved["held"].get(s_, set())
+                sim = load(self.rig, s_) if getattr(self, "rig", None) is not None else None
+                sim_owners = self._held_owners(sim["name"]) if sim and sim.get("name") in self.ann.objects else set()
+                if h is None:
+                    self.held[s_] = was - sim_owners
+                    self._attach_rel(self.arms[s_], None, None)
+                else:
+                    self.held[s_] = (was - sim_owners) | self._held_owners(h.name)
+                    if h.kind != "bimanual" and self.by_owner.get(f"object:{h.name}"):
+                        self._attach_rel(self.arms[s_], h.name, np.asarray(h.T_tcp_obj, float))
+                    else:
+                        self._attach_rel(self.arms[s_], None, None)
+            self.cull_at = None
+            yield
+        finally:
+            kin.base_p, kin.base_R = saved["base"]
+            kin.coll_kw = saved["kw"]
+            if scene is not None:
+                setattr(scene, other_attr, saved["other"])
+            self.hand_width = saved["width"]
+            self.head_override = saved["head"]
+            self.held = saved["held"]
+            if moved:
+                self.body_pose.update(moved)
+                self._put_poses(moved)
+            for s_ in SIDES_:
+                sph = saved["sph"].get(s_)
+                if sph is not None or self._held_sph.get(s_) is not None:
+                    self._set_held_spheres(self.arms[s_], sph)
+                    self._held_sph[s_] = sph
             self.cull_at = None
 
     def _set_held_spheres(self, arm, sph):

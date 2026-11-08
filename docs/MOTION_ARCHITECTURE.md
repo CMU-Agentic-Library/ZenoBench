@@ -1,6 +1,6 @@
 # 运动规划的分层设计（草案）
 
-**状态：** 设计，未实现（2026-11-07）。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
+**状态：** 设计；第 9 节第 1、2 步已实现（2026-11-07），其余未实现。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
 
 ## 1. 为什么要改
 
@@ -110,9 +110,9 @@ class Spec:
 | `free_leg` | 起点关节角；目标是关节角、位姿或位姿集合 | 自由空间运动：关节直线 / TCP 直线，不通就规划（位姿；再不通到目标的 IK 解）；集合用批量 IK 选关节走得最少的；`hold_tilt` 时保持倾角 | `_move_path`、`move_to_any`、`joint_path`、`tuck` 的规划部分 |
 | `straight` | 起点关节角、终点位姿 | 查碰撞的 TCP 直线，从给定的关节角出发 | `cart_path` 的各种包装、`_approach_path` 的直线部分 |
 | `contact_extent` | 起点、方向 u、"还在碰"的判据 | 沿 u 量接触持续多远：离开周围 `LEAVE_GAP` 再加 `LEAVE_MARGIN`，最多 `LEAVE_MAX` | `_exit_length` 的三种用法、`set_down_length` |
-| `contact_segment` | 起点、方向、量好的长度、`Allow` | 不查碰撞的接触段（进入或离开） | `leave` / `_leave_contact`、`_approach` 的接触段 |
+| `contact_segment` | `contact_extent` 量出的接触（`Extent`）、`Spec`（其 `allow` 是接触的 Allow） | 不查碰撞的接触段（进入或离开） | `leave` / `_leave_contact`、`_approach` 的接触段 |
 
-"还在碰"的判据写成具名函数（离周围不到 `LEAVE_GAP`；物体离开支撑面：再加"上升不到 `LEAVE_GAP`"；终点碰：不 free），不再各处手写。
+"还在碰"的判据写成具名函数，签名都是 `(kin, q_from) -> touching(q)`：`near_world`（离周围不到 `LEAVE_GAP`）、`off_support`（物体离开支撑面：再加"上升不到 `LEAVE_GAP`"）、`in_world`（终点碰：不 free），不再各处手写。`contact_extent` 沿 u 求运动学直线到 IK 求得到的地方（最多 `LEAVE_MAX`），在上面量；到头还碰就是 Failure（不减半、不跳过）。
 
 ## 6. 技能计划
 
@@ -195,6 +195,8 @@ Rig.run(plan, state):
 6. 其他技能改到时（`COLLISION_PLAN.md` 6.3、6.4）逐个迁；全部迁完删旧入口和 `_find_park` 的开关；`Motion.query` 里的上下文管理器换成直接实现。
 
 不一次全改：基线整体变，倒退分不清来源（原则 4）。
+
+**进度（11-07）：** 第 1、2 步已做：`zeno_skills/motion_state.py`（`State`、`Hand`、`Held`、`Spec`、`Segment`、`Failure`、`Plan` 和 `at_base`、`with_arm`、`with_width`、`holding`、`released`、`with_object`）；`zeno_skills/primitives.py`（四个原语、`Joint` / `Pose` / `PoseSet` 目标、`Extent`、三个"还在碰"判据、`exit_length`；`LEAVE_GAP`、`LEAVE_MARGIN`、`LEAVE_MAX`、`ON_LINE` 从 `rig.py` 搬来，`rig.py` 从这里 import，`Rig._exit_length` 转调 `exit_length`）；`Motion.query`（包一层：底盘、另一只手臂、头和手指的锁定值、手里的东西挂上 / 不当障碍、物体和部件按 State 挪、`coll_kw` 由 Spec 给，退出全部复原；`Motion.object_frames`、`_held_owners`、`_part_poses`）；`zeno_skills/run.py` 先有 `observe(rig)`。单测 `tests/test_primitives.py`（15 个）。仿真里对比过（`/data/zenobench/statequery`，T20 s10 第一次 pick 后拿着瓶子）：按观测状态、手张开、瓶子放下、底盘挪开四种情况，`query` 和原来的上下文各 150 个姿态的 `free`、`near` 0 处不一致，查完全部复原；左手持物、部件挪动还没对比过。还没有调用方：pick / place 仍走 `move_relay`。
 
 **静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，本地开关 `.claude/audit_paused`，97b3f76）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后删掉开关文件。
 
