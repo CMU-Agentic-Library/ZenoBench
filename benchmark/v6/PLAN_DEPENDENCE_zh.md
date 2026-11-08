@@ -98,20 +98,28 @@ T30：
 ## 泄露审计
 
 **检查了**：
-- env_service 开局消息；
+- env_service 返回给 planner 的 `initial_task`：只有任务名、指令、profile 和观察。worker 开局消息里的 episode 元数据（variant、conditions、seed）只在 worker 和 server 之间传，写进 `config.json`，`check_task` 在这一局结束后才返回；
 - run_episode 的 recovery planner 输入：指令、技能列表、观察；
-- benchmark profile 的 `gt_objects`、`task_status`、`mask_feedback`；
+- benchmark profile 的 `gt_objects`、`task_status`、`mask_feedback`、`anonymize_names`；
 - 静态已知地点：只有家具和房间，没有物体；
 - 指令：不含 variant 或布局名，每个布局的指令相同。例外是 T01 `which_book`，指令本身就是线索（客人说昨晚在哪儿看的书），这是设计如此；
 - oracle 路线和配置注释：以上面向 planner 的字段里都没有。
 
-**发现一处泄露**：`env_service/worker.py` 开局发给 HTTP planner 的 `episode` 元数据，包含 variant 名（带布局名）、conditions 和 seed；如果 planner 手里有 `tasks.json`，用 seed 就能查出布局。这个文件是 muqingj 的，需要他改成只发指令和观察，元数据只留在 `config.json`。
+**结果：没有泄露。** 上一版报告说 `env_service/worker.py` 的开局消息把 variant 和 seed 发给了 planner，这是审计脚本的误报：那条消息只到 server，server 不转发。审计现在直接检查 server 返回给 planner 的字段。
 
-**另外**：72 个 variant 的物体实例名带含义（比如 `full_bowl`、`spare_mug`、`stock_cup_1`）。planner 看到的 `visible_objects` 用的就是实例名，所以应该在观察层把实例名匿名化，比如统一成“类别_编号”。这一项也在 muqingj 的代码里。
+**物体名字匿名化（已做）**：72 个 variant 的物体实例名带含义（比如 `full_bowl`、`spare_mug`、`stock_cup_1`）。三个 benchmark profile 现在打开 `observation.anonymize_names`（`episode/names.py`）：
+- planner 看到的每个物体都叫“类别_编号”，比如 `mug_2`。编号顺序由这一局的 `config_hash` 决定，所以编号本身也不带信息；
+- 所有面向 planner 的字段都换：观察、调用结果、遮罩后的反馈、手里拿的东西、温度；
+- planner 发来的调用先把别名换回真实名字再执行；
+- planner 猜一个真实实例名，会被当成未知名字拒绝，返回里显示 `<unknown>`，不会借此暴露对应的别名；
+- 地点（房间、家具、台面、电器）名字不变，它们本来就是静态地图；
+- 日志保留真实名字：`calls.jsonl` 里 `args` 是 planner 发的，`feedback.args` 是实际执行的；每局目录多一个 `names.json`（别名到真实名字），给评测用；
+- 内部按参考路线回放的 planner（scripted、fixed、retry）不受影响。
+
+验证：T09 `x6_gd_tomato_elsewhere` seed 10，在物理 benchmark profile 下用别名回放参考路线，19 步全部成功，目标达成。27 个被隐藏的实例名在 planner 收到的观察里一次都没出现。猜真实名字的那一步被拒。
 
 ## 还没做的
 
 - **物理验证**：172 个 variant 都只做了静态检查和符号检查。新物品和新动作的抓取、放置都没验证，包括托盘上平铺的书、柜内的杯子和碗、冰箱等。
 - **几何条件**：283 个几何条件，加上 `fully_inside` 的“完全放得进”，要等仿真来判断。
 - **真实 planner 对照**：完整观测 / 缺少关键观测 / 固定计划三组对照实验，要等有 planner 和物理之后再做。
-- **泄露修复和名字匿名化**：见上文，需要 muqingj 改。

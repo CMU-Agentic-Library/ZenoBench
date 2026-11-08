@@ -131,20 +131,14 @@
   "own_route_fails_with_gate": [],
   "geometric_atoms_unchecked": 283,
   "leakage_checked": [
-   "env_service ready message",
+   "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
-   "benchmark profiles: gt_objects, task_status, mask_feedback",
+   "benchmark profiles: gt_objects, task_status, mask_feedback, anonymize_names",
    "static known places (no objects)",
    "instructions: no variant / layout name, the same for every layout (except INSTRUCTION_CLUES, where the person's words are the clue)",
    "oracle routes and configuration notes: not in any planner-facing field above"
   ],
-  "leaks": [
-   {
-    "where": "env_service/worker.py, ready message to the HTTP planner",
-    "what": "episode metadata: variant (with the layout name), conditions, seed (with tasks.json the seed names the layout)",
-    "fix": "send the planner the instruction and the observation only; keep the metadata in config.json"
-   }
-  ],
+  "leaks": [],
   "names_may_tell": {
    "T01 no_room_fallback": [
     "clutter_cereal_a",

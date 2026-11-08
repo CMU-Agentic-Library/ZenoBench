@@ -154,6 +154,7 @@ def state_summary(rig, task):
 
 # ----------------------------------------------------------------- the episode
 class Episode:
+    names = None              # episode/names.py NameMap when the profile anonymizes object names
     def __init__(self, task: dict, cfg: dict, profile: dict, out_dir, *, video=False, images=True,
                  image_dir=None, video_path=None, video_res=(540, 960), video_stride=8):
         """``cfg``: benchmark.scene.episode_config(task, seed, variant).  ``out_dir`` receives the
@@ -216,6 +217,13 @@ class Episode:
         self.initial_positions = {n: [round(v, 3) for v in self.start["objects"][n]["pos"]]
                                   for n in task.get("watch", []) if n in self.start["objects"]}
         self.runner, self.observer = self._make_runner(image_dir)
+        self.names = None                                 # observation.anonymize_names: episode/names.py
+        if profile["observation"]["anonymize_names"]:
+            from episode.names import NameMap
+            from benchmark.observation import static_places
+            self.names = NameMap({n: o["asset"] for n, o in rig.ann.objects.items()}, cfg["config_hash"],
+                                 reserved=static_places(rig.ann))
+            (out_dir / "names.json").write_text(json.dumps(self.names.real, indent=1, sort_keys=True))
         self.last_result = None
         self.n_obs = 0
         self.image_dir = Path(image_dir) if image_dir else None
@@ -270,7 +278,13 @@ class Episode:
             out["task_status"] = self.goal_status()
         if ob["last_result"]:
             out["last_result"] = self.last_result
+        if self.names is not None:                        # images carry no names (base64 is left alone)
+            out = {k: (v if k == "images" else self.names.public(v)) for k, v in out.items()}
         return out
+
+    def public(self, value):
+        """A planner-facing value with the instance names replaced (no-op unless anonymize_names)."""
+        return value if self.names is None else self.names.public(value)
 
     def _images(self, encode, tag):
         from PIL import Image
@@ -335,19 +349,29 @@ class Episode:
         return flat_goal(evaluate_goal(self.rig, self.task["goal"], self.start)[1])
 
     # -- calls ----------------------------------------------------------------------
-    def call(self, call) -> tuple[dict, dict]:
-        """(result for the planner, record for the log).  The record is the unmasked result plus,
+    def call(self, call, internal=False) -> tuple[dict, dict]:
+        """(result for the planner, record for the log).  ``internal``: the caller is the harness itself
+        (a scripted route in real instance names), not a planner; with ``anonymize_names`` a planner's
+        call is in aliases and is mapped back first.  The record is the unmasked result plus,
         for the evaluation only: the action text, the selected policy path, every measured check,
         the objects in view after the call and ``eval`` (benchmark.metrics.call_eval: the chain
         down to the deepest failed nested call)."""
         from benchmark.metrics import call_eval
         from zeno_skills.skill_runtime import ContractError
         res = None
+        planner_args = call.get("args", {}) if isinstance(call, dict) else None
         if not isinstance(call, dict) or not isinstance(call.get("contract"), str) \
                 or not isinstance(call.get("args", {}), dict):
             out = error_result(call, "BAD_CALL", 'expected {"contract": "<verb>", "args": {...}}')
         else:
-            out = self._validate(call)
+            out = None
+            if self.names is not None and not internal:
+                try:
+                    call = dict(call, args=self.names.private(call.get("args", {})))
+                except KeyError:
+                    call = dict(call, args=self.names.scrub(call.get("args", {})))
+                    out = error_result(call, "INPUT_UNKNOWN", "an argument names no object or place the robot knows")
+            out = out or self._validate(call)
             if out is None:
                 try:
                     res = self.runner.run(call["contract"], dict(call.get("args", {})))
@@ -365,12 +389,15 @@ class Episode:
                       eval=call_eval(res.asdict() if hasattr(res, "asdict") else vars(res)) if res is not None else
                       {"failed_substep": [action], "leaf_code": out["error_code"], "leaf_error": out["error"],
                        "failed_checks": []})
+        if self.names is not None and not internal:
+            record["planner_args"] = planner_args             # the aliases as sent; ``args``: as executed
         public = out
         if self.profile["execution"]["mask_feedback"] and self.observer is not None:
             allow = set()
             for v in (call.get("args") or {}).values() if isinstance(call, dict) else ():
                 allow |= set(v) if isinstance(v, list) else {v} if isinstance(v, str) else set()
             public = self.observer.mask(out, allow)
+        public = self.public(public)
         self.last_result = public
         return public, record
 

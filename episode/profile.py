@@ -59,6 +59,7 @@ DEFAULTS = {
         "robot": {"base_pose": True, "held": True, "room": False, "temperatures": "none"},
         "task_status": True,              # every goal clause, true or false now
         "last_result": False,             # the previous contract result, repeated
+        "anonymize_names": False,         # objects as <category>_<k>, never their instance names (episode/names.py)
     },
     "evaluation": {
         "drops_fail": False,              # a watched object that ended on the floor fails the task
@@ -156,7 +157,8 @@ def _validate(p):
         leaks = [k for k, on in (("observation.gt_objects", ob["gt_objects"]),
                                  ("observation.task_status", ob["task_status"]),
                                  ('observation.robot.temperatures: "all"', ob["robot"]["temperatures"] == "all"),
-                                 ("execution.mask_feedback: false", not ex["mask_feedback"])) if on]
+                                 ("execution.mask_feedback: false", not ex["mask_feedback"]),
+                                 ("observation.anonymize_names: false", not ob["anonymize_names"])) if on]
         if leaks:
             raise ProfileError("execution.gate hides unobserved objects, but " + ", ".join(leaks) +
                                " shows them; set allow_leak: true to run it anyway")
