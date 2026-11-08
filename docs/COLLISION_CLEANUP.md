@@ -55,13 +55,9 @@ R 类不列。
 
 | 位置 | 内容 | 类 |
 |---|---|---|
-| `place` / `slots_blocked` | 手写的指缝和邻物过滤（手指已在碰撞模型里） | F |
-| `place` | 放到支撑面后物体还高 1.5 cm 以上，就用 `held_vertical_move` 再往下放到差 6 mm（`place_lower_to_contact`） | W |
-| `place` | 台面的 `place_down` 规划不出来走直线 fallback（`FREE_ELSE_STRAIGHT`） | F |
-| `place` | 停车点搜索里接近起点写的是 `FINGERS_KW`（豁免目标），手里有东西时豁免本来不生效，写法误导 | X |
 | `place` | 柜里层板：按门轴位置猜开口朝向，`search_near` 加手写偏置；离目标超过 1 m 就不按距离排序 | S |
 | `place` | `kind == "corner"` 的分支（corner 捏取已删，死代码） | — |
-| `place` | 放下高度：物体底面 + 6 mm，再 + 1 cm；`PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm 拍定 | 常数 |
+| `place` | `free_spots` 的 3 cm 网格、邻物余量 7 / 4.5 / 2 cm 和柜台内缩 4 cm 拍定（放下高度、`PLACE_APPROACH` 已不用） | 常数 |
 
 ### 3.3 `place_flat`（skills.py）
 
@@ -81,8 +77,7 @@ R 类不列。
 
 | 位置 | 内容 | 类 |
 |---|---|---|
-| `DropIntoPolicy.execute`、`HoverOverPolicy.execute` | `drop_above`、`hover_above` 规划不出来走直线 fallback（`FREE_ELSE_STRAIGHT`） | F |
-| 同上 | 停车点验证不看松手后能不能收臂 | — |
+| `HoverOverPolicy.execute` | 停车点验证不看之后能不能收臂（drop 已查，`_drop_check`） | — |
 
 ### 3.5 pick（skills.py）
 

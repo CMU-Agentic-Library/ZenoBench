@@ -25,6 +25,14 @@ LEAVE_MAX = 0.06          # m: ...and no further; still touching there, the rest
 ON_LINE = 0.005           # m: a TCP this close to an approach line (and on it before its end) goes straight along it
 HINT_REACH = 0.001        # m: a q_hint whose TCP is this close to a planned leg's goal is its joint goal as it is
 HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
+# A follow ends when the arm has arrived or has stopped, not at a joint tolerance: 0.01 rad of one
+# joint is 8 mm at the hand 0.8 m out, and the reach checks after it (skills.PICK_REACH_TOL, 5 mm)
+# then took a hand still closing in for a blocked one (T06 s10 6.8 mm, T10 s11 7.9 mm, the mug of
+# T14 shelf_taken s11 6 mm at its set-down, 11-06/11-07).
+SETTLE_TCP = 0.001        # m: arrived -- a fifth of PICK_REACH_TOL; settled reaches err 0.1-0.4 mm (pick612_verify)
+SETTLE_STILL = 0.002      # m/s: stopped -- the TCP moving slower than this over SETTLE_WINDOW (blocked, or
+                          # held off by the drives' steady error); a hand closing a 5 mm error moves 10+ mm/s
+SETTLE_WINDOW = 10        # physics ticks the stop is measured over (one turning point of a wobble is not a stop)
 FREE_SPACE_KW = {"exempt_targets": False}   # coll_kw of free space: the fingers checked, no target exempted
 FINGERS_KW = {}           # coll_kw of a park search's approach target: the fingers checked, the object at it exempted
                           # (where the approach's contact segment begins is the collision model's call at the time)
@@ -369,9 +377,24 @@ class Rig:
             fraction = min(1.0, max(0.0, (progress - times[segment]) / segment_times[segment]))
             self.q_cmd = points[segment] + fraction * (points[segment + 1] - points[segment])
             self.step(1)
+        self._settle(settle, tol)
+
+    def _settle(self, settle, tol):
+        """After a follow's last command: step (2 ticks at a time, ``settle`` times at most) until the
+        arm has arrived -- the TCP within SETTLE_TCP of where q_cmd puts it and no joint off by
+        ``tol`` -- or has stopped: the TCP moved less than SETTLE_STILL over the last SETTLE_WINDOW
+        ticks.  What is left of the error then is the caller's to judge (a reach check: blocked)."""
+        target = self.kin.tcp(self.q_cmd)[0]
+        span = max(1, SETTLE_WINDOW // 2)
+        seen = []
         for _ in range(settle):
-            if np.max(np.abs(self.q() - self.q_cmd)) < tol:
-                break
+            q = self.q()
+            tcp = self.kin.tcp(q)[0]
+            if np.linalg.norm(tcp - target) < SETTLE_TCP and np.max(np.abs(q - self.q_cmd)) < tol:
+                return
+            seen.append(tcp)
+            if len(seen) > span and np.linalg.norm(tcp - seen[-1 - span]) < SETTLE_STILL * 2 * span / PHYSICS_HZ:
+                return
             self.step(2)
 
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
@@ -385,10 +408,7 @@ class Rig:
             need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * PHYSICS_HZ))
             self.q_cmd = q
             self.step(max(steps_per_wp, need))
-        for _ in range(settle):
-            if np.max(np.abs(self.q() - self.q_cmd)) < tol:
-                break
-            self.step(2)
+        self._settle(settle, tol)
 
     # ------------------------------------------------------------ arm motions
     # Every arm motion has two ways (docs/COLLISION_PLAN.md principle 2): collision-checked, the
@@ -1142,20 +1162,30 @@ class Rig:
 
 def set_down_length(kin, q_p, step=0.004):
     """The straight a load is set down along (place's set-down): pick's lift off the same support
-    reversed.  From the set-down solution q_p straight up as the lift would go (Rig._leave_contact
-    with lifts_off: at least LEAVE_GAP of rise, then on until the robot and its load are LEAVE_GAP
-    clear of the world, plus LEAVE_MARGIN).  (m from the set-down pose to the straight's start, the
-    joint waypoints from q_p up to it), or (None, ...) when the arm runs out of IK or still touches
-    at LEAVE_MAX.  ``kin`` with the load in its collision model (Rig._planning, Motion.carrying)."""
+    reversed.  The lift measured as pick measures it (Rig._leave_contact with lifts_off), from where
+    it would start: the load on the support, LEAVE_GAP below the set-down pose q_p -- at least
+    LEAVE_GAP of rise, then on until the robot and its load are LEAVE_GAP clear of the world, plus
+    LEAVE_MARGIN, at most LEAVE_MAX -- and the part of it above q_p.  (Measured from q_p itself the
+    forced rise came on top of the gap: the straight's start stood LEAVE_GAP higher than the lift's
+    end.)  (m from the set-down pose to the straight's start, the joint waypoints above q_p up to
+    it), or (None, ...) when the arm runs out of IK or still touches at LEAVE_MAX.  ``kin`` with the
+    load in its collision model (Rig._planning, Motion.carrying)."""
     p, R = kin.tcp(np.asarray(q_p, float))
+    up = np.array([0.0, 0.0, 1.0])
     scene, kin.scene = kin.scene, None
     try:
-        qs, _ = kin.cart_path(np.asarray(q_p, float), p + np.array([0.0, 0.0, LEAVE_MAX]), R, step=step)
+        down, _ = kin.cart_path(np.asarray(q_p, float), p - LEAVE_GAP * up, R, step=step)
+        q_c = np.asarray(down[-1], float) if down else None
+        qs = kin.cart_path(q_c, p + (LEAVE_MAX - LEAVE_GAP) * up, R, step=step)[0] if q_c is not None else []
     finally:
         kin.scene = scene
     qs = list(qs) if qs else []
-    n, clear = Rig._exit_length(kin, q_p, qs, touching=lambda q: kin.tcp(q)[0][2] - p[2] < LEAVE_GAP or
+    if q_c is None:
+        return None, []
+    z_c = kin.tcp(q_c)[0][2]
+    n, clear = Rig._exit_length(kin, q_c, qs, touching=lambda q: kin.tcp(q)[0][2] - z_c < LEAVE_GAP or
                                 kin.near(q, LEAVE_GAP))
-    if not clear or n == 0:
-        return None, qs[:n]
-    return float(np.linalg.norm(kin.tcp(qs[n - 1])[0] - p)), qs[:n]
+    above = [q for q in qs[:n] if kin.tcp(q)[0][2] > p[2] + 1e-4]
+    if not clear or not above:
+        return None, above
+    return float(np.linalg.norm(kin.tcp(above[-1])[0] - p)), above

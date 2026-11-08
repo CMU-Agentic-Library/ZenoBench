@@ -1697,9 +1697,10 @@ def place(rig, name, support, xy=None, spots=None):
 def _place_check(rig, name, M, open_w, travel_q, legs):
     """find_park check of a set-down at qs[0] (the base set to the park): the set-down straight
     (set_down_length) from a free start, reachable from the travel posture with the load's tilt
-    held; then, the load let go there (Motion.released) and the hand open to its grasp width, the
-    pull-out straight and the tuck from its end.  Each passing park's (set-down start, set-down
-    length, pull-out end) goes into ``legs``, the hints of the execution."""
+    held; then, the load let go there and settled the LEAVE_GAP it falls onto the support
+    (Motion.released) and the hand open to its grasp width, the pull-out straight and the tuck from
+    its end.  Each passing park's (set-down start, set-down length, pull-out end) goes into
+    ``legs``, the hints of the execution."""
     kin = rig.kin
     motion = kin.motion
 
@@ -1721,7 +1722,9 @@ def _place_check(rig, name, M, open_w, travel_q, legs):
                 return True
             T = np.eye(4)
             T[:3, :3], T[:3, 3] = R, p
-            with motion.released(kin.side, name, T @ M), motion.hand_open(kin.side, open_w):
+            settled = T @ M
+            settled[2, 3] -= LEAVE_GAP          # let go, it falls the gap onto the support
+            with motion.released(kin.side, name, settled), motion.hand_open(kin.side, open_w):
                 out, ok = kin.cart_path(q_p, p + pick_approach() * R[:, 2], R, 0.01)
                 if not ok:
                     return False
@@ -1810,18 +1813,28 @@ def _set_down(rig, name, s, spots, tray=None):
             pos=np.round(body_now, 4).tolist())
     q_p = park_qs[0] if moved < 0.02 else None
     if moved >= 0.02 or L is None:
-        q_s = q_o = None
+        # aimed elsewhere: the park's checks again at the new set-down pose, here (the load as it
+        # hangs now, the carry posture as the travel posture), not the set-down length alone
+        legs_now = {}
+        M_now = kin.motion.held_in_tcp(kin, rig.q_cmd, name) \
+            if kin.motion is not None and rig.held.get("kind") != "bimanual" else None
+        check = _place_check(rig, name, M_now, open_w, rig.q_cmd, legs_now)
         with rig._planning(kin, rig.q_cmd, keep_held=True), rig._fingers_checked(kin):
-            q, ok = kin.ik_global(p, R, seeds=[rig.q_cmd])
-            L = set_down_length(kin, q)[0] if ok else None
-        if L is None:
-            raise SkillFailure(f"place {name}: no set-down at the re-measured pose")
+            q_p, ok = kin.ik_global(p, R, seeds=[rig.q_cmd])
+            ok = bool(ok) and check(*rig.base_pose(), [q_p])
+            q_s, L, q_o = next(iter(legs_now.values()), (None, None, None)) if ok else (None, None, None)
+            if ok and L is None:          # no collision model (minimal rigs): the length alone
+                L = set_down_length(kin, q_p)[0]
+        if not ok or L is None:
+            raise SkillFailure(f"place {name}: the set-down at the re-measured pose (moved {moved:.3f} m) "
+                               f"fails the park's checks")
     with rig._fingers_checked(kin):
         rig.caption = f"PLACE {name}: set down"
         err = rig.move_to(p, R, step=0.003, steps_per_wp=8, label="place_down", smooth=True,
                           approach=(np.array([0.0, 0.0, -1.0]), L, q_s), allow=FREE, free=FREE, q_hint=q_p)
-        if err > 0.03:
-            raise SkillFailure(f"place {name}: hand blocked at the support ({err:.3f} m)")
+        if err > PICK_REACH_TOL:
+            # the set-down is checked free all the way: stopped short, something is in the way
+            raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
         check_held(rig, "place_down")
         rig.caption = f"PLACE {name}: release"
         kind = rig.held["kind"]
@@ -1836,17 +1849,28 @@ def _set_down(rig, name, s, spots, tray=None):
         # length (pick_approach); then on to the next relay pose, the travel posture (an open
         # hand left where it let go held a spoon standing between its fingers, T09, and one left
         # over a tray kept the base from moving, T12)
-        # pull-out.  Let go, the load may settle against a finger (a rim-held cup pivots onto the
-        # one inside it, T13): out of that contact first as the lift leaves its support (Rig.leave:
-        # only what the hand touches at the start may be touched), the rest of the pull-out checked
+        # pull-out: the reach-in reversed, the whole straight checked as pick checks its reach-in
+        # (the park search checked it with the load settled where it falls).  Only when the open
+        # hand really is in the load -- let go, it may settle against a finger (a rim-held cup
+        # pivots onto the one inside it, T13) -- out of that contact first (Rig.leave: only what
+        # the hand touches at the start may be touched).  Not on "within LEAVE_GAP": open fingers
+        # stand a few mm off what they let go, and half the pull-outs left unchecked (11-07)
         tcp_r, R_r = kin.tcp(rig.q_cmd)
         u = R_r[:, 2]
-        rig.leave(u, "place_pull_out_contact", LEAVE_CONTACT)
+        rig.sync_world()
+        with rig._planning(kin, rig.q_cmd):
+            stuck = kin.scene is not None and not kin.free(rig.q_cmd)
+            if stuck:
+                rig.log("place_pull_out_stuck", obj=name, why=kin.explain(rig.q_cmd))
+        if stuck:
+            rig.leave(u, "place_pull_out_contact", LEAVE_CONTACT)
         rest = pick_approach() - float((kin.tcp(rig.q_cmd)[0] - tcp_r) @ u)
         if rest > ON_LINE:
             rig.move_to(tcp_r + pick_approach() * u, R_r, step=0.004, label="place_pull_out", smooth=True,
                         approach=(u, rest, None), allow=FREE, free=FREE, q_hint=q_o)
-        rig.tuck()
+        # the next relay pose, the travel posture: checked at the park, so not reaching it is a failure
+        if not rig.tuck():
+            raise SkillFailure(f"place {name}: no travel posture reachable after the pull-out")
     rig.step(90)
     rig.focus_z = None
     st = rig.state()

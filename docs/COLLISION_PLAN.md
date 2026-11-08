@@ -173,13 +173,13 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3：3a ✓ ──► 3b 第 1、2 项 ✓ ──► 6.1 pick（暂停）──► 6.2 place ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪**：6.2 place，支撑面、托盘、drop 已改完并通过针对性检查（见 6.2"进度"），剩下：抽出段只在真穿进物体时走离开接触、书走同一流程（删 `place_flat`），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
+**现在在哪**：6.2 place，支撑面、托盘、drop 已改完并通过针对性检查（见 6.2"进度"），剩下：11-07 那批对称性修改的针对性检查（放下段到位容差已知会误判，见"已知的 place 问题"）、书走同一流程（删 `place_flat`，11-07 试过一版 4/10，已回滚），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
 
 ### 6.1 pick（暂停）
 
 范围：`pick` 从选停车点到抓起后到达搬运姿态为止；微波炉腔体取物和双手平抬在 6.4。物理步骤见 `skills/pick.md`。验证都在 `sticky/gt` 下。恢复时按下面的顺序：
 
-1. **到位检查误判"被挡住"**（T06 s10 occupied_block_away 差 6.8 mm、T10 s11 can_in_dining_room 差 7.9 mm，同一张桌子 (3.7, 6.3)）：物体没动、没有真实接触、模型里抓取位姿也不碰。`follow` 收尾在关节误差 < 0.01 rad 就停（手臂 0.8 m 上约 8 mm），到位门槛 `PICK_REACH_TOL` 是 5 mm。修法方向：等到 TCP 误差 < 门槛或关节不再动，停住了还超门槛才算被挡。暂不改（11-06 定）。
+1. **到位检查误判"被挡住"**（T06 s10 occupied_block_away 差 6.8 mm、T10 s11 can_in_dining_room 差 7.9 mm，同一张桌子 (3.7, 6.3)）：物体没动、没有真实接触、模型里抓取位姿也不碰。`follow` 收尾在关节误差 < 0.01 rad 就停（手臂 0.8 m 上约 8 mm），到位门槛 `PICK_REACH_TOL` 是 5 mm。**已改（11-07）**：`Rig._settle`（`follow`、`follow_smooth` 共用）等到 TCP 离指令位姿 < `SETTLE_TCP`（1 mm）或 TCP 停下（`SETTLE_WINDOW` 10 tick 里速度 < `SETTLE_STILL` 2 mm/s），上限仍是 300 tick；停住了还超门槛才算被挡。所有手臂运动收尾都会多等一会儿，全量里看耗时。11-07 三个误判过的 episode 全过（`/data/zenobench/settle1107`：T06 s10、T10 s11、T14 shelf_taken s11），pick 伸入段误差 0.1–0.5 mm；持物时驱动有稳态误差，停在"停下"上：mug_shelf 放下段 4.1 mm（门槛 5 mm，余量小）、搬运姿态 4–10 mm。
 2. **真被挡住**：T13 s11 no_cup_bowl_on_cabinet，差 5.8 cm，马克杯被推 1.66 mm，左手指和杯子有真实接触。
 3. **找不到停车点**：T02 s11 far_crowded（木块 b，前置条件 `grasp_clearance` 也不满足）；P16 两个种子 empty 里拿樱桃番茄。
 4. **翻书**（T15 book_free ×2、P05）：`FlipFlatPolicy` 要的是"夹住、不抬"，pick 抓完就去搬运姿态、书整本离开桌面。把 pick 拆成"抓住"和"拿起"两段，翻书只用前一段。随 6.2（书、翻书）一起做。
@@ -217,13 +217,15 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 | 书 | 夹厚度时夹爪水平，抽出段也是水平的：下面那根手指要从书底下沿夹爪轴抽出来，所以被夹的边要伸出支撑面边缘。这一条由抽出段的碰撞检查自己保证，不另写伸出量。竖直放下（上面有隔层的不做）。"把书推满到支撑面上"交给 push（6.3） |
 | 容器（托盘以外，drop） | `place(name, "in:<容器>")` 和 `DropIntoPolicy` 走同一个流程：中继位姿是松手位姿（物体在沿口上方、开口里），没有放下段；手指里已经空了，抽出段为 0，直接规划收臂。两处的松手高度（place 沿口上 3 cm、`drop_above` 5 cm）合成一个（第 8 节）。去掉 `drop_above` / `hover_above` 的直线 fallback，停车点验证加收臂 |
 
-**删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`（手指在碰撞模型里，放下段、抽出段的检查已经覆盖）、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、写死的 `PLACE_APPROACH`、松手后沿放下反方向的 `place_retreat`、放下段起点的 `FINGERS_KW`（持物时豁免本来不生效，换成自由空间写清楚）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（改成看持物的几何）。`_carry_bottom_z` 的避障抬高 6.2 保留，等底盘规划器能换搬运高度再删（第 7 节、第 9 节）。
+**删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`（手指在碰撞模型里，放下段、抽出段的检查已经覆盖）、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、写死的 `PLACE_APPROACH`、松手后沿放下反方向的 `place_retreat`、放下段起点的 `FINGERS_KW`（持物时豁免本来不生效，换成自由空间写清楚）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（放书按 `kind == "edge"` 认可以保留，11-07 定：标记来自抓取标注，是数据）。`_carry_bottom_z` 的避障抬高 6.2 保留，等底盘规划器能换搬运高度再删（第 7 节、第 9 节）。
 
 **进度（11-07）：** 支撑面、托盘、drop、hover、sticky 按上面的设计改完（`9f5d71c`）；书还走 `place_flat`。针对性检查 39 个 episode（`/data/zenobench/place62/targeted`，种子 10、11）：34/39，同一批在 11-06 全量里 24/39；10 个由败转成，没有由成转败。place、drop、hover 本身零失败，剩下 5 个失败 11-06 也失败，都不在 place 上（T03 far_small_and_large ×2 擀面杖抬起前已不在手里、P15 s11 pick 差 1.0 cm 停下、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒没倒进去）。36 次 place：松手时间隙中位 4.9 mm（最小 1.5 mm，沿口捏的碗下垂），放下段中位 1.9 cm、最长 3.0 cm；落点误差最大的是 T09 竖着吊放的勺子（6.9、4.7 cm，以前 9–12 cm）。放下段、抽出段、收臂上的真实意外接触 3 次（都是贴着刚放下的物体或台面，冲量 < 0.06）；`tuck_blocked` 从 8 次到 0。覆盖率：新函数都跑到了；没跑到的是 `place_flat` 和 sticky 的 `place` / `drop_caught`（place 没失败过，sticky 的退路一次都没触发）。
 
 **已知的 place 问题：**
 
-- 抽出段开头的离开接触（`place_pull_out_contact`）按"离开周围 `LEAVE_GAP`"判断，手指张开后本来就离物体几毫米，所以 36 次里 18 次走了 1.5–5.6 cm 的不查碰撞的离开段，剩下的才查。打算：只有起点真的穿进物体（`kin.free` 不成立）时才走离开接触，否则整段查碰撞。
+- 抽出段开头的离开接触（`place_pull_out_contact`）按"离开周围 `LEAVE_GAP`"判断，手指张开后本来就离物体几毫米，所以 36 次里 18 次走了 1.5–5.6 cm 的不查碰撞的离开段，剩下的才查。**已改（11-07，未跑）**：只有起点真的穿进物体（`kin.free` 不成立，记 `place_pull_out_stuck`）时才走离开接触，否则整段查碰撞。同一次还改了和 pick 不对称的几处：放下段从物体贴着支撑面的位置量（以前从放下位姿量，起点高约 5 mm）；停车点验证的抽出段让物体先落下 `LEAVE_GAP`；重新测量偏 2 cm 以上时整套验证重做（以前只重量放下段）；放下段到位容差 3 cm → `PICK_REACH_TOL`（11-07 41 次最大 3.0 mm）；收臂失败判 place 失败（以前吞掉）。
+- 书（11-07 试过，已回滚）：按 `kind == "edge"` 认书，放下位姿是支撑面开放边缘上的一组（手正对边缘从外面伸进来，被夹的边伸出去，伸出量从"规划器下指尖过边缘 `LEAVE_GAP`"到"中心在边缘里 `COM_MARGIN`"按 3 cm 网格取），删 `place_flat`、`edge_held`、搬运多抬的 6 cm。用过 `place_flat` 的 10 个 episode 4/10（11-06 是 9/10）：成功的书落点误差 0.5–2 mm；5 个书的 place 找不到停车点（每个边缘位置只剩一档伸出，`_place_check` 拒掉 59–113 个有 IK 的停车点，没记是哪项检查拒的）。整套改动存在 `/data/zenobench/place62/books/working_tree_with_books.patch`（含当时其余未提交的改动），结果在 `/data/zenobench/place62/books/run/`。再做时先给 `_place_check` 的每个失败出口计数。
+- 放下段到位容差收到 `PICK_REACH_TOL`（5 mm）后，T14 shelf_taken s11 的 mug_shelf 放下段停在差 6 mm 处判失败：`follow` 在关节误差 < 0.01 rad 就停，和 6.1 第 1 项同一个问题，11-07 一起改了（`Rig._settle`），重跑过了 4.1 mm。
 - T03 far_small_and_large：擀面杖放进杯子，改成 drop 后预计会倒在杯外（这次 pick 先失败了，没走到），等第 7 节的按几何分流。
 - `carry_in`（pick 之后去搬运姿态）退回直线时擦到桌面：T20 table_full s11，7 次接触，属于 6.1 第 6 项。
 
@@ -298,7 +300,8 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | `PLACE_APPROACH` 5 cm | place 已不用（放下段由碰撞模型量）；只剩 wipe 的按压直线在用，没有出处 | 6.3（wipe） |
 | 容器松手高度：place 沿口上 3 cm、`drop_above` 5 cm；按沿口分流的 `rim > 0.12` | 两处不同、拍定；分流阈值没有出处 | 6.2：松手高度合成一个、写出处；分流阈值删掉（托盘按标注） |
 | `PICK_LEAVE_CHECK` 3 cm | 和执行不一致（6.1 第 7 项）。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
-| `PICK_REACH_TOL` 5 mm、`GRIP_CLOSED_BY` 3 mm | 依据是一批运行的分布（`pick_checks_1105`）；`PICK_REACH_TOL` 和 `follow` 收尾的 0.01 rad 不一致（6.1 第 1 项） | 6.1 |
+| `PICK_REACH_TOL` 5 mm、`GRIP_CLOSED_BY` 3 mm | 依据是一批运行的分布（`pick_checks_1105`）（`follow` 收尾 11-07 改成等 TCP 到 1 mm 或停下，`Rig._settle`） | 6.1 |
+| `SETTLE_STILL` 2 mm/s、`SETTLE_WINDOW` 10 tick | "停下"的判据，按收敛速度估的（5 mm 误差收敛时 10 mm/s 以上），没测过 | 第一次全量后看 `reach` 的误差和收尾耗时 |
 | `LEAVE_GAP` 5 mm、`LEAVE_MARGIN` 1 cm、`LEAVE_MAX` 6 cm、`ON_LINE` 5 mm | 拍定 | `Rig.leave` 改提前停止时（第 10 节） |
 | `TARGET_PAD` 3 cm | 豁免盒子的边距；豁免本身要取消 | 随豁免一起删（步骤 4，6.5） |
 | `PAD_FLOOR_GAP = 0.022 - PAD_TIP` 里的 0.022 | 字面量，`tools/prepare_assets.py` 里还有一份 | 6.1，从夹爪几何推导 |
