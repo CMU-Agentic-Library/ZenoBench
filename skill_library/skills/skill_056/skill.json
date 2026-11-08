@@ -25,7 +25,7 @@
   "seconds": {
    "type": "positive_number",
    "required": true,
-   "description": "How long to wait.",
+   "description": "How long to wait, at most 600 s.",
    "default": 5.0
   }
  },

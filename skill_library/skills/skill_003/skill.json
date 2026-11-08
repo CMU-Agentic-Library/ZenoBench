@@ -19,7 +19,7 @@
  "description": "Rotate the base in place until it faces the target (heading error <= 20 deg).",
  "use_when": "The target is beside or behind the robot and only the heading must change.",
  "not_to_be_confused_with": {
-  "look": "look moves the head only; face moves the whole base."
+  "look": "look aims the head camera and turns the base only when the target is beyond the head's range; face always turns the base."
  },
  "inputs": {
   "target": {
@@ -87,26 +87,18 @@
  ],
  "policy_paths": [
   {
-   "path_id": "rotate_empty",
+   "path_id": "already_facing",
    "when": [
-    "not robot.right_held",
-    "not robot.left_held",
-    "robot.right_arm_stowed"
+    "target.bearing_abs_deg <= 2"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [],
-   "chain": [
-    "policy_099($target) as heading",
-    "policy_036(#heading.delta_yaw_deg)"
-   ],
-   "policies": [
-    "policy_036",
-    "policy_099"
-   ],
-   "note": "Tucked and empty: the measured in-place rotation primitive."
+   "chain": [],
+   "policies": [],
+   "note": "The heading error is already under 2 deg: nothing moves."
   },
   {
-   "path_id": "rotate_loaded",
+   "path_id": "rotate",
    "when": [
     "always (default path)"
    ],
@@ -118,7 +110,7 @@
    "policies": [
     "policy_066"
    ],
-   "note": "With a load or unfolded arm: slower turn with grasp checks."
+   "note": "An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower."
   }
  ],
  "relations": {

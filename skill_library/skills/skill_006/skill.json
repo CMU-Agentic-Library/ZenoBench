@@ -14,7 +14,7 @@
   "noun": "torso",
   "arguments": []
  },
- "description": "Raise the torso lift to its top travel height.",
+ "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)",
  "use_when": "After a crouch, before driving or reaching high.",
  "not_to_be_confused_with": {
   "lift": "lift raises a held object, stand raises the body.",

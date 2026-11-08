@@ -17,7 +17,7 @@
  },
  "outputs": {
   "size_m": {
-   "type": "xy",
+   "type": "xyz",
    "description": "World-frame size [dx, dy, dz] in metres."
   }
  },

@@ -52,23 +52,14 @@ class RectRimPickPolicy(AtomicPolicy):
 
 
 class EdgePickPolicy(AtomicPolicy):
-    """Push a flat object to a free support edge and pinch the overhang."""
+    """Pinch a flat object across its thickness at a side that overhangs its support (the
+    pinch flow, thickness_pinch candidates; sliding it to the edge is expose / slide_to_edge)."""
 
-    def execute(self, name):
-        _require_grasp(self.rig, name, "edge_pinch_after_push")
+    def execute(self, name, *, max_candidates=12):
+        _require_grasp(self.rig, name, "thickness_pinch")
         if self.rig.geo.support_under(name, self.rig.state()) is None:
             raise SkillFailure(f"edge pick {name}: not on an annotated support")
-        return skills.pick_flat(self.rig, name)
-
-
-class FloorCornerPickPolicy(AtomicPolicy):
-    """Pinch the side and top corner of a flat object resting on the floor."""
-
-    def execute(self, name):
-        _require_grasp(self.rig, name, "edge_pinch_after_push")
-        if float(self.rig.geo.bottom(name, self.rig.state())[2]) >= 0.05:
-            raise SkillFailure(f"floor corner pick {name}: object is not on the floor")
-        return skills._corner_pinch(self.rig, name)
+        return skills._pick_pinch(self.rig, name, max_candidates, kinds=("thickness_pinch",))
 
 
 class PlacePolicy(AtomicPolicy):
@@ -163,7 +154,10 @@ class PushPolicy(AtomicPolicy):
             raise SkillFailure("push: right hand must be empty")
         surface = self.rig.ann.support(support) if isinstance(support, str) else support
         actual = self.rig.geo.support_under(name, self.rig.state())
-        if actual is None or actual["name"] != surface["name"]:
+        if surface is None or actual is None:
+            # the support binding is None when the object rests on nothing annotated
+            raise SkillFailure(f"push {name}: object is not on an annotated support")
+        if actual["name"] != surface["name"]:
             raise SkillFailure(f"push {name}: object is not on {surface['name']}")
         n = np.asarray(direction, dtype=float)
         if n.shape != (2,) or not np.isfinite(n).all() or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):
@@ -180,7 +174,9 @@ def _contact_direction(rig, name, support, direction, distance):
         raise SkillFailure(f"contact motion: unknown object {name}")
     surface = rig.ann.support(support) if isinstance(support, str) else support
     actual = rig.geo.support_under(name, rig.state())
-    if actual is None or actual["name"] != surface["name"]:
+    if surface is None or actual is None:
+        raise SkillFailure(f"contact motion {name}: object is not on an annotated support")
+    if actual["name"] != surface["name"]:
         raise SkillFailure(f"contact motion {name}: object is not on {surface['name']}")
     n = np.asarray(direction, dtype=float)
     if n.shape != (2,) or not np.all(np.isfinite(n)) or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):

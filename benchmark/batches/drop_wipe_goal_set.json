@@ -1,0 +1,74 @@
+[
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "can_on_island",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bin_on_bookcase",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "route": "hard_allocate_by_size",
+  "variant": "toys_everywhere",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "small_and_large",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "hard_search_approach",
+  "variant": "far_sponge_tv",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "hard_proactive",
+  "variant": "island_cluttered",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "sponge_on_island",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "nominal_from_tv_stand",
+  "variant": "sponge_on_tv_stand",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

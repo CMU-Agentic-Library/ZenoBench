@@ -1,6 +1,6 @@
 # contract_051 — Heat food
 
-Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).
+Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.
 
 Paired SkillNode: `skill_043` (`heat-food`).
 

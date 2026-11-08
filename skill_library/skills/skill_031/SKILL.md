@@ -54,7 +54,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - Next step: `pick` (`skill_017`) (enables) — pinch the overhang
 - Next step: `flip` (`skill_028`) (then) — turn the object over
-- Fallback on failure: `approach` (`skill_002`) (repair) — no base pose reaches behind the object
+- Fallback on failure: `pull` (`skill_030`) (recover) — no base pose reaches behind the object
 - Is a fallback for: `pick` (`skill_017`) (repair) — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
 
 ## Failure

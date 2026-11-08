@@ -27,6 +27,12 @@ cover"; this script scores how a planner behaved.  Definitions: README,
   recov_*   of the episodes with >= 1 failure of that class, the share that succeeded (n shown)
   repeat    share of pre + exec failures followed by the same call with the same arguments
   drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
+  contacts  robot link / obstacle contacts the motion did not allow, per episode (contact monitor,
+            zeno_skills/clearance.py; a metric only, it fails nothing); n = episodes that recorded it
+  fallbacks free-space legs that found no collision-free path and made their old unchecked straight
+            move, per episode (clearance.FREE_ELSE_STRAIGHT)
+  disturbed objects nobody held that the robot moved > 2 cm or tipped > 20 deg, per episode, with the
+            motion that did it (contact monitor; a pushed object never shows up as a contact)
 N/A: no sample for that ratio.
 
 Quantitative protocol (benchmark/protocol.py; section "Quantitative protocol (12 metrics)", ``protocol`` and
@@ -163,6 +169,13 @@ def episode_metrics(r, task, verified_refs):
         if sum((a_ - b_) ** 2 for a_, b_ in zip(p0, p1)) ** 0.5 > SIDE_EFFECT_M:
             side.append(n)
     m["side"] = side
+    contacts = r.get("contacts") or {}
+    m["contacts"] = contacts.get("unexpected") if contacts.get("checks") else None
+    m["contacts_by_skill"] = contacts.get("by_skill", {})
+    m["fallbacks"] = contacts.get("fallback") if "fallback" in contacts else None
+    m["fallbacks_by_leg"] = contacts.get("fallback_by_leg", {})
+    m["disturbed"] = contacts.get("disturbed") if "disturbed" in contacts else None
+    m["disturbed_by_leg"] = contacts.get("disturbed_by_leg", {})
     m["stop_reason"] = r.get("stop_reason")
     m["budget"] = r.get("stop_reason") == "budget"
     return m
@@ -221,6 +234,12 @@ def aggregate(eps):
     out["drops"] = sum(m["dropped"] for _, m in done)
     out["side"] = mean([len(m["side"]) for _, m in done])
     out["budget"] = sum(m["budget"] for _, m in done)
+    seen = [m["contacts"] for _, m in done if m["contacts"] is not None]
+    out["contacts"], out["contacts_n"] = mean(seen), len(seen)
+    seen = [m["fallbacks"] for _, m in done if m["fallbacks"] is not None]
+    out["fallbacks"], out["fallbacks_n"] = mean(seen), len(seen)
+    seen = [m["disturbed"] for _, m in done if m["disturbed"] is not None]
+    out["disturbed"], out["disturbed_n"] = mean(seen), len(seen)
     return out
 
 
@@ -241,7 +260,32 @@ COLS = [("n", 0, None), ("incomplete", 0, None), ("SR", 1, None), ("SR_task", 1,
         ("unseen", 0, None), ("ghost", 0, None), ("not_in_view", 0, None), ("pre", 0, None), ("exec", 0, None),
         ("invalid", 0, None), ("recov_gate", 1, "recov_gate_n"), ("recov_pre", 1, "recov_pre_n"),
         ("recov_exec", 1, "recov_exec_n"), ("repeat", 1, "repeat_n"), ("drops", 0, None), ("side", 0, None),
-        ("budget", 0, None)]
+        ("budget", 0, None), ("contacts", 0, "contacts_n"), ("fallbacks", 0, "fallbacks_n"),
+        ("disturbed", 0, "disturbed_n")]
+
+
+def contact_table(eps):
+    """Unexpected contacts per skill, clearance fallbacks and disturbed objects per motion, summed over the episodes."""
+    out = []
+    for key, title, note, col in (
+            ("contacts_by_skill", "Unexpected contacts by skill",
+             "Contact monitor (zeno_skills/clearance.py): robot links found inside the world that the "
+             "motion did not allow; each new link / obstacle pair counts once.", "Skill"),
+            ("fallbacks_by_leg", "Clearance fallbacks by motion",
+             "Free-space legs (FREE_ELSE_STRAIGHT) with no collision-free path: they made their old "
+             "unchecked straight move.", "Motion"),
+            ("disturbed_by_leg", "Disturbed objects by motion",
+             "Objects nobody held that moved > 2 cm or tipped > 20 deg during the motion (contact "
+             "monitor); the object being picked up and what rides in a held one are left out.", "Motion")):
+        total, n_eps = defaultdict(int), defaultdict(int)
+        for _, m in eps:
+            for k, n in (m.get(key) or {}).items():
+                total[k] += n
+                n_eps[k] += 1
+        if total:
+            out += [f"## {title}", "", note, "", f"| {col} | Count | Episodes |", "|---|---|---|"] + [
+                f"| {k} | {total[k]} | {n_eps[k]} |" for k in sorted(total, key=lambda k: -total[k])] + [""]
+    return out
 
 
 def table(groups, keys):
@@ -388,7 +432,8 @@ def main():
           + (f" ({len(not_counted)} runs of another configuration not counted)" if not_counted else "") + ". "
           "Column definitions: README, *Evaluation*; N/A = no sample; (n) = denominator.", "", PLANNER_NOTE, "",
           "## By planner", ""] + table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"]) + [
-          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + [""] + spec["markdown"] + ["", "## Episodes", "",
+          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + [""] + contact_table(eps) + spec["markdown"] + [
+          "", "## Episodes", "",
           "| Task | Seed | Variant | Tier | Planner | Route | S | GC | Skill ok | Calls / L_ref | Gate u/g/v | Pre / exec / invalid (repeat) | Stop | Side effects |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r, m in sorted(eps, key=lambda x: (x[0]["task_id"], x[0].get("planner"), str(x[0].get("route")), x[0]["seed"])):

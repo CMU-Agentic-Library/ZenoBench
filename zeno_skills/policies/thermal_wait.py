@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 
 from .base import AtomicPolicy
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 
@@ -20,7 +21,7 @@ class WaitForTemperaturePolicy(AtomicPolicy):
         thermal = getattr(rig, "thermal", None)
         if thermal is None or name not in thermal.temperatures_c:
             raise SkillFailure(f"wait for temperature: {name} has no configured thermal state")
-        # 120 simulation steps correspond to one simulated second in this rig.
+        # PHYSICS_HZ simulation steps are one simulated second.
         for _ in range(math.ceil(timeout)):
             actual = float(thermal.temperatures_c[name])
             if actual >= target:
@@ -29,7 +30,7 @@ class WaitForTemperaturePolicy(AtomicPolicy):
                 return actual
             if not thermal.active:
                 raise SkillFailure("wait for temperature: heating stopped before target")
-            rig.step(120)
+            rig.step(PHYSICS_HZ)
         actual = float(thermal.temperatures_c[name])
         if actual < target:
             raise SkillFailure(f"wait for temperature: {actual:.1f} C below {target:.1f} C")

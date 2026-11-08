@@ -17,10 +17,11 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact
 from ..evaluator import quat_R
-from ..planner import find_park
+from ..planner import find_park, find_park_set
 from ..predicates import memory, objects_inside
-from ..rig import Dropped, SkillFailure
+from ..rig import FINGERS_KW, Dropped, SkillFailure
 
 
 def _park_diag():
@@ -34,7 +35,6 @@ def stow_load(rig, min_bottom_z=None):
     ``min_bottom_z`` keeps the load above a rim (a pour must not drop the cup
     from above the pot back to the low carry height)."""
     if rig.held is not None:
-        skills._back_off(rig, dist=0.25)
         skills._carry_pose(rig, min_bottom_z=min_bottom_z)
         skills.check_held(rig, "stow_load")
 
@@ -51,8 +51,15 @@ def _tcp_for_body(R_goal, body_goal, body_in_tcp):
     return body_goal - R_goal @ body_in_tcp
 
 
+WIPE_INSETS = (0.08, 0.045)   # m in from a support edge a wipe strip runs (the second when objects line the first)
+WIPE_STEP = 0.10              # m between strip centres sampled along an edge
+WIPE_STRIPS = 8               # cheapest free strips in the park goal set (x 4 sponge yaws)
+WIPE_DIST_COST = 0.3          # park cost per m from the robot to a strip's centre
+WIPE_INSET_COST = 0.05        # park cost of the closer-to-the-edge inset
+
+
 class WipeSurfacePolicy(AtomicPolicy):
-    """Wipe a 30 cm strip of a support next to the robot with a held sponge.
+    """Wipe a free 30 cm strip along an edge of a support with a held sponge.
 
     The arm presses the sponge and holds still while the holonomic base
     translates along the strip. The sponge bottom is pressed 1 mm below the surface; coverage is the
@@ -65,79 +72,80 @@ class WipeSurfacePolicy(AtomicPolicy):
             raise SkillFailure(f"wipe: {tool} is not right-held")
         s = rig.ann.support(support)
         st = rig.state()
-        x, y, yaw = rig.base_pose()
+        x, y, _ = rig.base_pose()
         x0, y0, x1, y1 = s["aabb_xy"]
-        # the strip runs along the robot-side edge, 8 cm in: fingers-down
-        # reach at counter height ends ~10 cm past the edge
-        # the edge nearest the robot sets the inward direction (not the
-        # offset to the centre: from behind a long counter that pointed along it)
-        edges = [(abs(x - x0), np.array([1.0, 0.0])), (abs(x1 - x), np.array([-1.0, 0.0])),
-                 (abs(y - y0), np.array([0.0, 1.0])), (abs(y1 - y), np.array([0.0, -1.0]))]
         size = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["size"], float)
         width = float(min(size[:2]))
-        best = None
-        # 8 cm in; when objects stand along that line, a strip closer to the edge (4.5 cm in); when the
-        # nearest edge is lined with objects, the next nearest edge (the base re-parks for the strip below)
-        for _, inward, inset, shift in [(d, e, i, sh) for d, e in sorted(edges, key=lambda e: e[0])
-                                        for i in (0.08, 0.045) for sh in np.linspace(-0.4, 0.4, 9)]:
-            if best is not None and (inset != best[3] or inward is not best[4]):
-                break
+        # the strips are sampled over the whole support, along each edge (fingers-down reach at
+        # counter height ends ~10 cm past an edge): 8 cm in, or 4.5 cm when objects stand on that
+        # line; the cheapest free ones (nearest the robot) go into the goal set
+        strips = []
+        for inward in (np.array([1.0, 0.0]), np.array([-1.0, 0.0]), np.array([0.0, 1.0]), np.array([0.0, -1.0])):
             along = np.array([-inward[1], inward[0]])
-            near = np.array([min(max(x, x0 + inset), x1 - inset), min(max(y, y0 + inset), y1 - inset)])
-            k = 0 if inward[0] else 1                                   # onto this edge's line
-            near[k] = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
-            c = near + along * shift
-            a, b = c - along * length / 2, c + along * length / 2
-            if not all(x0 + 0.03 <= p[0] <= x1 - 0.03 and y0 + 0.03 <= p[1] <= y1 - 0.03 for p in (a, b)):
-                continue
-            lo = np.minimum(a, b) - width / 2
-            hi = np.maximum(a, b) + width / 2
-            box = [lo[0], lo[1], hi[0], hi[1], s["z"], s["z"] + 0.2]       # _overlaps_objects order
-            if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
-                continue
-            score = abs(shift)
-            if best is None or score < best[0]:
-                best = (score, a, b, inset, inward)
-        if best is None:
-            raise SkillFailure(f"wipe {support}: no free strip near the robot")
-        _, a, b, _, inward = best
-        along = np.array([-inward[1], inward[0]])
+            k = 0 if inward[0] else 1                       # the edge's line is x (k = 0) or y = const
+            lo, hi = ((y0, y1) if k == 0 else (x0, x1))
+            for inset in WIPE_INSETS:
+                line = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
+                for t in np.arange(lo + 0.03 + length / 2, hi - 0.03 - length / 2 + 1e-6, WIPE_STEP):
+                    c = np.array([line, t]) if k == 0 else np.array([t, line])
+                    a, b = c - along * length / 2, c + along * length / 2
+                    box_lo = np.minimum(a, b) - width / 2
+                    box_hi = np.maximum(a, b) + width / 2
+                    box = [box_lo[0], box_lo[1], box_hi[0], box_hi[1], s["z"], s["z"] + 0.2]   # _overlaps_objects order
+                    if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
+                        continue
+                    cost = WIPE_DIST_COST * math.hypot(c[0] - x, c[1] - y) + (WIPE_INSET_COST if inset != WIPE_INSETS[0] else 0.0)
+                    strips.append((cost, a, b))
+        strips.sort(key=lambda t: t[0])
+        strips = strips[:WIPE_STRIPS]
+        if not strips:
+            raise SkillFailure(f"wipe {support}: no free strip")
         stow_load(rig)
         tcp, R, body_in_tcp, _ = _held_frame(rig, tool)
         body, _ = rig.obj_pose(tool)
         st = rig.state()                     # after stow_load lifted it
         hang = float(body[2] - skills._lowest_z(rig, tool, st))
         z_body = s["z"] - 0.001 + hang      # light press: a 3 mm press dragged the sponge out of the pinch
-        pts = [a + (b - a) * u for u in np.linspace(0, 1, 7)]
-        lane = [pts if k % 2 == 0 else pts[::-1] for k in range(passes)]
         rig.sync_world()
         rig.kin.coll_kw = {"ignore_fingers": True}
         # A long fingers-down stroke at counter height has almost no IK; the
         # base is holonomic, so the arm holds the pressed pose and the base
         # translates along the strip (one IK solution, a straight stroke).
+        # Strip x sponge yaw (it does not matter) is one goal set of the park search.
+        goals, leg_sets, cost = [], [], []
+        for c_strip, a, b in strips:
+            for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):
+                Rk = Rotation.from_euler("z", psi).as_matrix() @ R
+                goals.append((a, b, Rk))
+                press = _tcp_for_body(Rk, np.r_[a, z_body], body_in_tcp)
+                # the press and the start of its straight approach down (fingers checked)
+                leg_sets.append([(press + np.array([0, 0, skills.PLACE_APPROACH]), Rk, FINGERS_KW), (press, Rk)])
+                cost.append(c_strip)
+
+        def stroke_clear(k, x, y, yaw, q_last):
+            stroke = goals[k][1] - goals[k][0]
+            return all(rig.world.footprint_clear(x + stroke[0] * u, y + stroke[1] * u, math.radians(yaw))
+                       for u in np.linspace(0, 1, 7))
+        found = find_park_set(rig.kin, rig.world, leg_sets, cost, near=rig.base_pose(), max_tries=80,
+                              q_start=rig.q_cmd, travel_q=skills._travel_q(rig), ride_set=stroke_clear)
+        if found is None:
+            raise SkillFailure(f"wipe {support}: no base pose reaches any of {len(strips)} free strips "
+                               f"{[np.round((a_ + b_) / 2, 2).tolist() for _, a_, b_ in strips]} "
+                               f"(rejected: {_park_diag()})")
+        park, k = found
+        a, b, R = goals[k]
+        legs = leg_sets[k]
         stroke = b - a
         rig.log("wipe_plan", strip=[np.round(a, 3).tolist(), np.round(b, 3).tolist()], z_body=round(float(z_body), 4),
                 body_in_tcp=np.round(body_in_tcp, 4).tolist(), tcp_R=np.round(R, 3).tolist(),
-                base=[round(v, 3) for v in rig.base_pose()])
-        park, R0 = None, R
-        for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):     # sponge yaw does not matter
-            R = Rotation.from_euler("z", psi).as_matrix() @ R0
-            legs = [(_tcp_for_body(R, np.r_[a, z_body + 0.06], body_in_tcp), R),
-                    (_tcp_for_body(R, np.r_[a, z_body], body_in_tcp), R)]
-
-            def stroke_clear(x, y, yaw, q_last):
-                return all(rig.world.footprint_clear(x + stroke[0] * u, y + stroke[1] * u, math.radians(yaw))
-                           for u in np.linspace(0, 1, 7))
-            park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=80, q_start=rig.q_cmd,
-                             travel_q=skills._travel_q(rig), ride=stroke_clear)
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"wipe {support}: no base pose reaches the strip (rejected: {_park_diag()})")
+                base=[round(v, 3) for v in rig.base_pose()], strips=len(strips), goals=len(leg_sets), chosen=k)
         skills._goto_park(rig, park)
         rig.caption = f"WIPE {support} with {tool}"
-        rig.move_to(*legs[0], step=0.01, label="wipe_above", collision=False, smooth=True)
-        rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", collision=False)
+        # one motion onto the strip: planned with the fingers, straight down at its end, the sponge
+        # pressed on (its contact segment by the collision model)
+        rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", smooth=True, q_hint=park[3][1],
+                    approach=(np.array([0.0, 0.0, -1.0]), skills.PLACE_APPROACH, park[3][0]),
+                    allow=into_contact(held_on=(support.split("/")[0],)))
         n_cells = max(1, int(round(length / 0.02)))
         covered = np.zeros(n_cells, bool)
         px, py, pyaw = rig.base_pose()
@@ -160,7 +168,7 @@ class WipeSurfacePolicy(AtomicPolicy):
                 mark()
         skills.check_held(rig, "wipe")
         t, R1 = rig.kin.tcp(rig.q_cmd)
-        rig.move_to(t + np.array([0, 0, 0.08]), R1, step=0.01, label="wipe_lift", collision=False)
+        rig.move_to(t + np.array([0, 0, 0.08]), R1, step=0.01, label="wipe_lift", allow=LEGACY)
         cov = float(covered.mean())
         memory(rig)["wiped"][support] = max(cov, memory(rig)["wiped"].get(support, 0.0))
         rig.log("wipe_result", tool=tool, support=support, coverage=round(cov, 3),
@@ -253,14 +261,15 @@ class StirContainerPolicy(AtomicPolicy):
         rig.caption = f"STIR {container} with {tool}"
         t0, R0 = rig.kin.tcp(rig.q_cmd)
         try:            # a short lift first when the arm allows; "above" itself was planned reachable
-            rig.move_to(t0 + np.array([0, 0, 0.05]), R0, step=0.01, label="stir_raise", collision=False)
+            rig.move_to(t0 + np.array([0, 0, 0.05]), R0, step=0.01, label="stir_raise", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure as exc:
             if rig.held is None:
                 raise
             rig.log("stir_raise_skipped", reason=str(exc))
-        rig.move_to(above, R_goal, step=0.005, steps_per_wp=5, label="stir_above", collision=False, smooth=True,
+        rig.move_to(above, R_goal, step=0.005, steps_per_wp=5, label="stir_above",
+                    allow=FREE_ELSE_STRAIGHT, smooth=True,
                     q_hint=park[3][0])
-        rig.move_to(tcp_for_tip(0.0), R_goal, step=0.003, steps_per_wp=5, label="stir_dip", collision=False)
+        rig.move_to(tcp_for_tip(0.0), R_goal, step=0.003, steps_per_wp=5, label="stir_dip", allow=LEGACY)
         swept, prev = 0.0, None
         rim_top = cb[2] + ca["rim_height"]
         tip_index = int(np.argmax([np.linalg.norm(e) for e in ends_tcp]))
@@ -273,7 +282,7 @@ class StirContainerPolicy(AtomicPolicy):
                 inside=bool(memory(rig).get("dipped", {}).get(container)))
         if turns <= 0:
             rig.step(90)
-            rig.move_to(above, R_goal, step=0.005, label="dip_out", collision=False)
+            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=LEAVE_CONTACT)
             skills.check_held(rig, "dip")
             if not memory(rig).get("dipped", {}).get(container):
                 raise SkillFailure(f"dip {container}: the tip did not get below the rim inside")
@@ -281,7 +290,7 @@ class StirContainerPolicy(AtomicPolicy):
         for th in np.linspace(0, 2 * math.pi * turns, int(16 * turns) + 1)[1:]:
             try:
                 rig.move_to(tcp_for_tip(th), R_goal, step=0.004, steps_per_wp=4, label="stir_circle",
-                            collision=False)
+                            allow=LEGACY)
             except SkillFailure as exc:
                 if rig.held is None:
                     raise
@@ -298,7 +307,7 @@ class StirContainerPolicy(AtomicPolicy):
                 swept += abs((ang - prev + math.pi) % (2 * math.pi) - math.pi)
             prev = ang if inside else None
         skills.check_held(rig, "stir")
-        rig.move_to(above, R_goal, step=0.005, label="stir_out", collision=False)
+        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=LEAVE_CONTACT)
         n_turns = swept / (2 * math.pi)
         memory(rig)["stirred"][container] = max(n_turns, memory(rig)["stirred"].get(container, 0.0))
         rig.log("stir_result", tool=tool, container=container, turns=round(n_turns, 2))
@@ -455,7 +464,7 @@ class PourIntoPolicy(AtomicPolicy):
             # use the planned (verified) pose and pour direction
             rig.log("pour_over_planned", measured=np.round(goal, 3).tolist())
             goal, R, u, lip_xy = planned_goal, planned_R, planned_u, planned_lip
-        rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="pour_over", collision=False, smooth=True)
+        rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="pour_over", allow=FREE_ELSE_STRAIGHT, smooth=True)
         skills.check_held(rig, "pour_over")
         q_over = rig.q_cmd.copy()
         axis = np.cross([0, 0, 1.0], np.r_[u, 0.0])
@@ -469,7 +478,8 @@ class PourIntoPolicy(AtomicPolicy):
             # largest planned angle (the straight tilt path can lose its IK branch)
             hint = park[3][1] if planned_tilt and len(park[3]) > 1 and abs(ang - planned_tilt) < 1e-6 else None
             try:
-                rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=5, label="pour_tilt", collision=False, smooth=True,
+                rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=5, label="pour_tilt",
+                            allow=FREE_ELSE_STRAIGHT, smooth=True,
                             q_hint=hint)
             except SkillFailure as exc:
                 rig.log("pour_tilt_limit", deg=float(ang), reason=str(exc))
@@ -479,7 +489,8 @@ class PourIntoPolicy(AtomicPolicy):
                 # (verified) tilt configuration is reachable in joint space
                 ang = float(planned_tilt)
                 try:
-                    rig.follow(rig.joint_path(park[3][1], "pour_tilt_planned", check=False), steps_per_wp=8)
+                    rig.follow(rig.joint_path(park[3][1], "pour_tilt_planned",
+                                              allow=FREE_ELSE_STRAIGHT), steps_per_wp=8)
                     skills.check_held(rig, "pour_tilt_planned")
                 except Dropped:
                     raise
@@ -510,7 +521,7 @@ class PourIntoPolicy(AtomicPolicy):
                 for a_ in (reached - 12.0, reached):
                     goal_k, Rk = tilted(goal, R, u, lip_xy, a_)
                     try:
-                        rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=3, label="pour_rock", collision=False)
+                        rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=3, label="pour_rock", allow=FREE_ELSE_STRAIGHT)
                     except SkillFailure:
                         break
                 rig.step(60)
@@ -520,13 +531,14 @@ class PourIntoPolicy(AtomicPolicy):
         try:
             for ang in np.arange(reached - 10.0, -1e-6, -10.0):
                 goal_k, Rk = tilted(goal, R, u, lip_xy, ang)
-                rig.move_to(goal_k, Rk, step=0.002, steps_per_wp=8, label="pour_return", collision=False, smooth=True)
+                rig.move_to(goal_k, Rk, step=0.002, steps_per_wp=8, label="pour_return",
+                            allow=FREE_ELSE_STRAIGHT, smooth=True)
         except SkillFailure as exc:
             if rig.held is None:
                 raise
             # no straight IK back from the planned tilt: retrace in joint space
             rig.log("pour_return_joint", reason=str(exc))
-            rig.follow(rig.joint_path(q_over, "pour_return", check=False), steps_per_wp=10)
+            rig.follow(rig.joint_path(q_over, "pour_return", allow=FREE_ELSE_STRAIGHT), steps_per_wp=10)
         skills.check_held(rig, "pour_return")
         rig.step(60)
         moved = [n for n in items if rig.geo.inside(n, target, rig.state())[0]]

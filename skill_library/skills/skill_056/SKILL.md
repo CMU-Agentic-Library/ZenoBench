@@ -19,7 +19,7 @@ Something must happen over time (cooling, settling) and the robot should not act
 
 ## Inputs
 
-- `seconds` (`positive_number`, default 5.0): How long to wait.
+- `seconds` (`positive_number`, default 5.0): How long to wait, at most 600 s.
 
 ## Applicability
 

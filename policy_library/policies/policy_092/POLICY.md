@@ -14,7 +14,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 ## Execute inputs
 
 - `place`: positional_or_keyword; required
-- `max_tries`: keyword_only; optional
 
 ## Binding and status
 
@@ -22,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).navigate_to_place.execute(...)`
 - Class: `NavigateToPlacePolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_059:empty/pick_each_inside, contract_061:restore/dispatch_pick_place
+- Skill Contract paths: contract_009:navigate/drive, contract_059:empty/pick_each_inside, contract_061:restore/dispatch_pick_place
 
 ## Recorded evidence
 

@@ -20,7 +20,7 @@ Food or a drink must cool in the refrigerator.
 ## Inputs
 
 - `food` (`object_ref`): The food item with thermal state.
-- `appliance` (`appliance_ref`, default 'breakfast_fridge'): The refrigerator.
+- `appliance` (`appliance_ref`): The refrigerator.
 - `temp_c` (`number`, default 8.0): Maximum temperature in degC.
 
 ## Outputs

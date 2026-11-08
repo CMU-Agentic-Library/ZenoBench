@@ -30,11 +30,72 @@ FINGER_OPEN = 0.04          # m per finger (8 cm max gap)
 # compact right-arm fold (hand 0.29 m to the side, 0.33 m ahead), not used
 COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
 
-# default left-arm travel posture; Rig can command all seven left joints
-LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
+# Drive posture of either arm: hanging straight down at the side, joints 2 and 4 just off their
+# limits, every arm sphere inside the 0.52 m base column.  Narrower than the elbow-out tuck (the
+# right hand 0.67 m from the base centre): navigate offers it to the base planner as a detour
+# posture for the stretches the tuck does not fit (the dining room, T13/T19/T20 on 2026-11-02),
+# the tuck being the arrival posture it passes to without a swing elsewhere.
+DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
+# left-arm travel posture (the left kin's rest): the upper arm back along the side, the forearm down,
+# the hand at 0.8 m.  Searched on the cuRobo sphere model (11-05) for every left sphere inside the
+# base column (collision.BASE_HALF) with the waist upright and bowed 0.2 rad (8 mm inside), its
+# lowest point 0.17 m above the floor with the torso all the way down, 4 mm clear of the torso, head
+# and the right arm (rest and hanging), the hand off the chest (x <= 0.2 m), then moved off the
+# joint limits it pressed on.  The inherited fold (3ccd5e99: joints 1, 2, 4 = 0.2, 0.35, 2.3) held the
+# hand 17 cm out in front of the column: parks near a counter were refused and a torso lowered to
+# set a load down pressed it onto the table (docs/COLLISION_PLAN.md, left arm fold).
+LEFT_ARM_FOLD = {"left_arm_joint_1": -1.249, "left_arm_joint_2": 0.047, "left_arm_joint_3": -0.035,
+                 "left_arm_joint_4": 2.038, "left_arm_joint_5": 1.52, "left_arm_joint_6": 0.09,
+                 "left_arm_joint_7": -0.312}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
 TCP_DEPTH = 0.12
+# a finger's collider is its pad box alone (physics.py fix_robot: x +-0.014, y 0..0.012 outward from
+# the finger joint, z -0.010..0.045 on the finger link, the finger joints 0.12985 below the gripper
+# link): half its width across the closing plane, its thickness, and its tip below the TCP
+PAD_HALF_WIDTH = 0.014
+PAD_THICKNESS = 0.012
+PAD_TIP = 0.12985 + 0.010 - TCP_DEPTH
+FINGER_JOINT_DEPTH = 0.12985   # finger joints below the gripper link (the finger link's origin)
+
+
+def finger_model_box():
+    """The planner's finger (its collision spheres, robot_sources/curobo/zeno_malo.yml) as a box in
+    the frame of the pad box above: (half width across the closing plane, inner face, outer face --
+    the pad box's are 0 and PAD_THICKNESS from the finger joint outward --, tip below the TCP).  The
+    spheres cover the pad box (tools/build_curobo_robot.py finger_rows), so this box holds it: a
+    grasp height from it keeps the planner's fingers, and with them the simulator's, off the surface."""
+    global _FINGER_BOX
+    if _FINGER_BOX is None:
+        C, R = _finger_spheres()
+        _FINGER_BOX = (float(np.max(np.abs(C[:, 0]) + R)), float(np.min(C[:, 1] - R)),
+                       float(np.max(C[:, 1] + R)), FINGER_JOINT_DEPTH - float(np.min(C[:, 2] - R)) - TCP_DEPTH)
+    return _FINGER_BOX
+
+
+def finger_model_length():
+    """The planner's finger along the gripper axis, tip to root (its collision spheres' extent on the
+    finger link's z; 6.3 cm over the 5.5 cm pad box): all of the hand that reaches into what a grasp
+    closes on -- the palm stays outside it."""
+    C, R = _finger_spheres()
+    return float(np.max(C[:, 2] + R) - np.min(C[:, 2] - R))
+
+
+def _finger_spheres():
+    """(centres, radii) of a finger's collision spheres in its link frame (robot config)."""
+    global _FINGER_SPH
+    if _FINGER_SPH is None:
+        import yaml
+        cfg = yaml.safe_load((ROOT / "robot_sources/curobo/zeno_malo.yml").read_text())
+        sph = cfg["robot_cfg"]["kinematics"]["collision_spheres"]["right_gripper_left_finger_link"]
+        _FINGER_SPH = (np.array([s_["center"] for s_ in sph], float), np.array([s_["radius"] for s_ in sph], float))
+    return _FINGER_SPH
+
+
+_FINGER_BOX = None
+_FINGER_SPH = None
+REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
+STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
 CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
 
 
@@ -59,6 +120,16 @@ def tilt(Ra, Rb):
 def max_tilt(kin, R0, qs):
     """Largest tilt from R0 of the TCP along the joint waypoints qs."""
     return max((tilt(R0, kin.tcp(q)[1]) for q in qs), default=0.0)
+
+
+def tips_over(kin, qa, qb):
+    """The straight joint interpolation qa -> qb tilts a held object past CARRY_TILT while the goal
+    pose itself does not: such a move is planned with the tilt held instead."""
+    qa, qb = np.asarray(qa, float), np.asarray(qb, float)
+    R0 = kin.tcp(qa)[1]
+    k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+    dense = [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+    return max_tilt(kin, R0, dense[::10] + [qb]) > CARRY_TILT and tilt(R0, kin.tcp(qb)[1]) <= CARRY_TILT
 
 
 def manipulability(kin, q):
@@ -139,11 +210,14 @@ class ArmKin:
         posture = ([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0] if side == "right" else
                    [0.0, 0.0, 0.2, 0.35, 0.0, 2.3, 0.0, 0.0, 0.0])
         self.posture = np.clip(np.array(posture), self.lo, self.hi)
-        # Travel (tucked) posture = the same elbow-out posture.  (A compact fold
-        # close to the chest was tried: it put every pick on another IK branch
-        # and the fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps
-        # it for reference.)
-        self.rest = self.posture.copy()
+        # Travel (tucked) posture: the right arm's is the same elbow-out posture (a compact fold
+        # close to the chest was tried: it put every pick on another IK branch and the
+        # fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps it for reference); the
+        # left arm's is LEFT_ARM_FOLD, inside the base column (its posture above stays the
+        # working-pose IK seed).
+        self.rest = self.posture.copy() if side == "right" else np.clip(
+            np.r_[0.0, 0.0, [LEFT_ARM_FOLD[n] for n in self.names[2:]]], self.lo, self.hi)
+        self.drive = np.clip(np.array(DRIVE_Q), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):
@@ -207,19 +281,52 @@ class ArmKin:
         return self._motion().ik(self, np.asarray(p_t, float), R_t, [np.asarray(q0, float)], False,
                                  self._other_q(), self.coll_kw, local=True)
 
+    def ik_set(self, goals, q0, weights=None):
+        """Per goal (p, R) of a goal set: an IK solution near q0 (per-joint ``weights`` on the
+        distance), collision-free when there is a scene, else None (Motion.ik_set: every goal in
+        one batched call)."""
+        P = np.array([np.asarray(p, float) for p, _ in goals])
+        Rs = [np.asarray(R, float) for _, R in goals]
+        return self._motion().ik_set(self, P, Rs, np.asarray(q0, float), self.scene is not None,
+                                     self._other_q(), self.coll_kw, weights=weights)
+
     def free(self, q):
         if self.scene is None:
             return True
         return self._motion().free(self, q, self._other_q(), self.coll_kw)
+
+    def near(self, q, gap):
+        """Whether q comes within ``gap`` m of the world (motion.Motion.near)."""
+        if self.scene is None:
+            return False
+        return self._motion().near(self, q, gap, self._other_q(), self.coll_kw)
+
+    def explain(self, q):
+        """What q runs into: its deepest colliding links (motion.Motion.explain)."""
+        if self.scene is None:
+            return ""
+        return self._motion().explain(self, q, self._other_q(), self.coll_kw)
 
     def segment_free(self, qa, qb):
         if self.scene is None:
             return True
         return self._motion().segment_free(self, qa, qb, self._other_q(), self.coll_kw)
 
+    def path_free(self, qs):
+        """Every joint segment between consecutive waypoints of ``qs`` collision-free (one query)."""
+        if self.scene is None:
+            return True
+        return self._motion().path_free(self, qs, self._other_q(), self.coll_kw)
+
+    def path_free_only(self, qs, names):
+        """The arm without its fingers clear of the objects ``names`` along ``qs`` (Motion.path_free_only)."""
+        if self.scene is None:
+            return True
+        return self._motion().path_free_only(self, qs, names, self._other_q(), self.coll_kw)
+
     def ik_global(self, p_t, R_t, seeds=None):
         """cuRobo's multi-seed IK (collision-aware unless scene is None); seeds first."""
-        seeds = list(seeds or []) + [self.posture]
+        seeds = [np.asarray(s, float) for s in (seeds or [])] + [self.posture]
         return self._motion().ik(self, np.asarray(p_t, float), R_t, seeds, self.scene is not None,
                                  self._other_q(), self.coll_kw)
 
@@ -233,10 +340,11 @@ class ArmKin:
         holds the tilt of an object in the hand."""
         return self._motion().plan(self, q0, q1, self._other_q(), self.coll_kw, carry=carry)
 
-    def plan_to(self, q0, p_goal, R_goal, carry=False):
-        """Constrained trajectory for a blocked Cartesian leg (Motion.plan_to)."""
+    def plan_to(self, q0, p_goal, R_goal, carry=False, q_goal=None):
+        """Planned trajectory for a blocked Cartesian leg, ending at the pose or at ``q_goal``
+        (Motion.plan_to): (qs, "pose" | "joint") or (None, status)."""
         return self._motion().plan_to(self, np.asarray(q0, float), self.tcp(q0)[0], np.asarray(p_goal, float),
-                                      R_goal, self._other_q(), self.coll_kw, carry=carry)
+                                      R_goal, self._other_q(), self.coll_kw, carry=carry, q_goal=q_goal)
 
     def clearance(self, Q, targets=()):
         """Per row of Q: the arm's distance to the world (m, capped; Motion.clearance)."""

@@ -9,10 +9,15 @@ from zeno_skills.rig import Rig
 
 
 class FakeRig:
+    held = None
+    _vmax, _carrying, _settle = Rig._vmax, Rig._carrying, Rig._settle
+
     def __init__(self):
-        self.kin = SimpleNamespace(names=ArmKin().names)
+        # the TCP stands in for _settle's arrival check: q() follows q_cmd exactly here
+        self.kin = SimpleNamespace(names=ArmKin().names, tcp=lambda q: (np.asarray(q, float)[:3], np.eye(3)))
         self.q_cmd = np.zeros(len(self.kin.names))
         self.grip_cmd = 0.04
+        self.clear = SimpleNamespace(executing=lambda: None)
         self.commands = []
         self.grip_commands = []
 
@@ -57,3 +62,39 @@ def test_gradual_grip_reaches_target_without_an_initial_jump():
     assert commands[0] > 0.039
     assert commands[-1] == 0.0
     assert np.all(np.diff(commands) <= 1e-9)
+
+
+class SettleRig(FakeRig):
+    """The arm closes on q_cmd at ``rate`` of the remaining error per tick, stopping ``stuck`` short."""
+
+    def __init__(self, start, rate, stuck=0.0):
+        super().__init__()
+        self.actual, self.rate, self.stuck = np.asarray(start, float), rate, stuck
+
+    def step(self, n=1):
+        for _ in range(n):
+            gap = self.q_cmd - self.actual
+            if np.linalg.norm(gap) > self.stuck:
+                self.actual = self.actual + self.rate * gap
+            self.commands.append(self.q_cmd.copy())
+
+    def q(self):
+        return self.actual.copy()
+
+
+def test_settle_waits_past_the_joint_tolerance_until_the_hand_arrives():
+    from zeno_skills.rig import SETTLE_TCP
+    start = np.zeros(9)
+    start[0] = -0.008                          # 8 mm off at the TCP, inside the old 0.01 rad stop
+    rig = SettleRig(start, rate=0.02)
+    rig._settle(150, 0.01)
+    assert np.linalg.norm(rig.q()[:3] - rig.q_cmd[:3]) < SETTLE_TCP
+
+
+def test_settle_stops_when_the_hand_is_held_short():
+    start = np.zeros(9)
+    start[0] = -0.03
+    rig = SettleRig(start, rate=0.05, stuck=0.007)   # blocked 7 mm short
+    rig._settle(150, 0.01)
+    assert len(rig.commands) < 2 * 150                 # stopped, did not wait out the budget
+    assert np.linalg.norm(rig.q()[:3] - rig.q_cmd[:3]) > 0.005   # the error is left for the reach check

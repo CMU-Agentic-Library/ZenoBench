@@ -20,6 +20,8 @@ A Contract call:
 
 from __future__ import annotations
 
+import contextlib
+
 import json
 import math
 from dataclasses import dataclass, field
@@ -29,6 +31,7 @@ import numpy as np
 
 from .predicates import (REGISTRY, atom_text, before_snapshot, entity_kind, entity_point, held_name,
                          lid_on, lids, lying_state, objects_inside, objects_on_support, tilt_deg, type_satisfies)
+from .kinematics import REST_TOL, STOWED_TOL
 from .rig import SkillFailure
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -145,7 +148,7 @@ def object_attrs(rig, name, st, values=None):
         "in_container": where if loc == "container" else None,
         "held_by": "right" if held else ("left" if rig.left_held and rig.left_held.get("name") == name else None),
         "held_kind": held.get("kind") if held else None,
-        "flat": "flat" in tags or (bool(grasp_types) and set(grasp_types) == {"edge_pinch_after_push"}),
+        "flat": "flat" in tags or (bool(grasp_types) and set(grasp_types) == {"thickness_pinch"}),
         "tall": bool(size[2] >= 1.3 * min(size[:2]) and t <= 20),
         "lying": bool(lying_state(rig, name, st)[0]),
         "wide_box": bool("rim_pinch_rect" in grasp_types and max(size[:2]) >= 0.22),
@@ -155,6 +158,7 @@ def object_attrs(rig, name, st, values=None):
         "is_container": bool(asset.get("container")), "is_lid": "lid" in tags,
         "lid": lid, "contents": contents,
         "initial_support": (getattr(rig, "memory", {}) or {}).get("initial_support", {}).get(name) or obj.get("support"),
+        "initial_xy": (getattr(rig, "memory", {}) or {}).get("initial_xy", {}).get(name),
         "xy": [float(bottom[0]), float(bottom[1])], "bearing_abs_deg": _bearing(rig, name, st),
     }
     if sup is not None:
@@ -286,10 +290,12 @@ def appliance_attrs(rig, name, st, values=None):
 def robot_attrs(rig):
     r = held_name(rig, "right")
     l = held_name(rig, "left")
-    stowed = float(np.max(np.abs(rig.q()[2:] - rig.kin.rest[2:]))) < 0.10
+    stowed = float(np.max(np.abs(rig.q()[2:] - rig.kin.rest[2:]))) < STOWED_TOL
+    # what the direct base primitives (policy_036 / policy_037) require: empty, and arm, torso and waist at rest
+    ready = rig.held is None and float(np.max(np.abs(rig.q() - rig.kin.rest))) <= REST_TOL
     return {"right_held": r is not None, "left_held": l is not None, "right_object": r, "left_object": l,
             "right_kind": rig.held.get("kind") if rig.held else None, "both_hold_same": r is not None and r == l,
-            "right_arm_stowed": stowed}
+            "right_arm_stowed": stowed, "base_ready": ready}
 
 
 SLOT_VALIDATORS = {
@@ -346,6 +352,36 @@ def bind_nouns(rig, contract, values):
     return nouns
 
 
+def entity_top_z(rig, name, st=None):
+    """World height of an entity's top: an object's box top, a support's surface,
+    else its representative point."""
+    st = st or rig.state()
+    kind, rec = entity_kind(rig.ann, name)
+    if kind == "object":
+        return float(rig.geo.bottom(name, st)[2]) + float(rig.ann.asset_of(rig.ann.objects[name])["size"][2])
+    if kind == "support":
+        return float(rec["z"])
+    return float(entity_point(rig, name, st)[2])
+
+
+def resolve_near(rig, verb, values):
+    """``near`` names a reference entity in place of a number the planner would
+    have to compute: place puts the object on the free spot closest to it (it
+    becomes ``hint_xy``); lift / lower measure ``height_m`` above its top (it
+    becomes the world height the policies and predicates use)."""
+    near = values.get("near")
+    if near is None:
+        return
+    if verb == "place":
+        if values.get("hint_xy") is not None:
+            raise ContractError("INPUT_UNKNOWN", "place: give either hint_xy or near, not both")
+        if values.get("pass_by") is not None:
+            raise ContractError("INPUT_UNKNOWN", "place: near cannot be combined with pass_by")
+        values["hint_xy"] = [round(float(v), 3) for v in entity_point(rig, near)[:2]]
+    elif verb in ("lift", "lower"):
+        values["height_m"] = round(entity_top_z(rig, near) + float(values["height_m"]), 3)
+
+
 # ----------------------------------------------------------------- value resolution
 def resolve_value(v, values, nouns, outputs):
     if isinstance(v, str):
@@ -380,6 +416,8 @@ def condition_holds(cond, nouns):
         return val is not None and val <= ref
     if op == "truthy":
         return bool(val)
+    if op == "set":
+        return val is not None
     if op == "falsy":
         return not val
     raise ValueError(op)
@@ -434,6 +472,13 @@ class SkillContractRunner:
 
     # -------------------------------------------------------------
     def run(self, key, args: dict, depth=0) -> SkillResult:
+        """One skill call.  It runs with fresh collision settings (``rig.clear.skill``): whatever
+        the previous skill set on the arms does not carry over."""
+        clear = getattr(self.rig, "clear", None)
+        with clear.skill(self.contract(key)["verb"]) if clear is not None else contextlib.nullcontext():
+            return self._run(key, args, depth)
+
+    def _run(self, key, args: dict, depth=0) -> SkillResult:
         c = self.contract(key)
         rig = self.rig
         values = {}
@@ -457,6 +502,9 @@ class SkillContractRunner:
         ctx = {"before": before_snapshot(rig)}
         try:
             nouns = bind_nouns(rig, c, values)
+            if values.get("near") is not None:
+                resolve_near(rig, c["verb"], values)
+                nouns["args"] = dict(values)
             res.bound_nouns = {k: {f: v for f, v in d.items() if not isinstance(v, (list, dict)) or len(str(v)) < 300}
                                for k, d in nouns.items() if k != "args"}
             failed = self._check(c["requires"], values, nouns, ctx, res.preconditions)
@@ -609,12 +657,18 @@ class SkillContractRunner:
             record = {"policy": pid, "args": [a if isinstance(a, (str, int, float, bool)) else "<value>" for a in args]}
             res.policy_steps.append(record)
             self.rig.log("policy_start", policy=pid)
-            out = getattr(suite, pid).execute(*args, **kwargs)
+            try:
+                out = getattr(suite, pid).execute(*args, **kwargs)
+            except ValueError as exc:
+                # an argument outside the policy's range: a refused call with measurements, not an internal error
+                raise ContractError("POLICY_FAILED", f"{pid}: {exc}") from exc
             record["success"] = True
             if step.get("as"):
                 outputs[step["as"]] = out if isinstance(out, dict) else {"value": out}
             if isinstance(out, dict):
                 outputs.setdefault("_last", {}).update(out)
+            elif out is not None:
+                outputs.setdefault("_last", {})["value"] = out
 
     def _outputs(self, c, outputs, values, nouns, ctx):
         rig = self.rig
@@ -648,9 +702,11 @@ class SkillContractRunner:
                 v = [float(x) for x in rig.geo.bottom(values["object"], rig.state())[:2]]
             elif name == "lid":
                 v = nouns.get("container", {}).get("lid")
-            elif name == "moved":
+            elif name == "moved" and ("support" in nouns or "container" in nouns):
                 v = [n for n in (nouns.get("support", {}).get("objects") or nouns.get("container", {}).get("contents") or [])]
-            elif name in ("contents", "seen", "visited", "found_on", "coverage", "turns"):
+            elif name in ("moved", "coverage", "turns"):
+                v = last.get("value")
+            elif name in ("contents", "seen", "visited", "found_on"):
                 v = last.get(name)
             else:
                 v = None

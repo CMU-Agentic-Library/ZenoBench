@@ -22,6 +22,7 @@ import numpy as np
 import trimesh
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 # EmbodiedGen checkout (only needed for --convert, which uses its URDF->USD converter)
 REPO = Path(os.environ.get("EMBODIEDGEN_ROOT", ROOT.parent / "EmbodiedGen"))
 GEN = ROOT / "assets" / "asset3d"
@@ -64,6 +65,13 @@ LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", 
 # footprint keeps the uniform scale from SPECS
 THICKNESS = {"book_red": 0.040}
 
+# the open hand's palm over a top pinch: the right gripper's palm and camera collision spheres
+# (the cuRobo model the planner checks the grasp pose with) must stay this far above the object
+# (rig.LEAVE_GAP: closer, the robot still touches it)
+ROBOT_YML = ROOT / "robot_sources" / "curobo" / "zeno_malo.yml"
+ROBOT_URDF = ROOT / "robot_sources" / "zeno_malo_description-master" / "zeno_malo_mobile.urdf"
+PALM_LINKS = ("right_gripper_link", "right_gripper_camera_link")
+
 # containers whose mesh has a carry handle above the body: fraction of the
 # total height that is the body (walls stop there)
 BODY_FRACTION = {"fruit_basket": 0.58}
@@ -83,6 +91,10 @@ for _n, _c in CUSTOM_RECORDS.items():
     if "body_fraction" in _c:
         BODY_FRACTION[_n] = _c["body_fraction"]
 GRIPPER_GAP = 0.080          # Zeno Malo pinch gripper: 2 x 0.04 m
+# thickness pinch: the TCP this far inside the pinched side.  The old edge pinch took 2-4.5 cm by
+# the overhang; the planner's fingertip reaches 2.4 cm past the TCP, so a side overhanging its
+# support by about 5.4 cm (EDGE_MIN_OVERHANG 5.5 cm, what expose pushes to) leaves the lower pad clear
+THICKNESS_PINCH_DEPTH = 0.025
 PINCH_MAX = 0.068            # leave >= 6 mm clearance per side
 CROWN = 0.05                 # crown pinch: top slab the pads straddle
 
@@ -146,6 +158,47 @@ def container_profile(mesh, kind, wall=0.007, body_fraction=1.0):
         bands.append([round(za, 4), round(zb, 4), round(ro - wall / 2, 4)])
     return {"shape": "round", "bands": bands, "rim_height": round(h, 4),
             "rim_radius": bands[-1][2] if bands else None}
+
+
+def palm_spheres():
+    """(n, 4) palm and camera collision spheres of the right gripper (PALM_LINKS) in its TCP frame:
+    centres relative to the TCP, z along the fingers' opposite (up for a top pinch), y the
+    closing direction; radius."""
+    import yaml
+    from scipy.spatial.transform import Rotation
+    from zeno_skills.kinematics import TCP_DEPTH
+    cs = yaml.safe_load(ROBOT_YML.read_text())["robot_cfg"]["kinematics"]["collision_spheres"]
+    joints = {j.get("name"): j for j in ET.parse(ROBOT_URDF).getroot().iter("joint")}
+    out = []
+    for link in PALM_LINKS:
+        R, t = np.eye(3), np.zeros(3)
+        if link != "right_gripper_link":
+            o = joints[link.replace("_link", "_joint")].find("origin")
+            R = Rotation.from_euler("xyz", [float(x) for x in o.get("rpy").split()]).as_matrix()
+            t = np.array([float(x) for x in o.get("xyz").split()])
+        for sph in cs[link]:
+            out.append(np.r_[R @ np.asarray(sph["center"], float) + t + [0.0, 0.0, TCP_DEPTH], sph["radius"]])
+    return np.array(out)
+
+
+def palm_floor(v, bottom_z, tcp_xy, close_yaws, gap):
+    """Lowest TCP height above the bottom at which no palm sphere (grown by ``gap``) reaches a
+    vertex of ``v`` (mesh frame), for a top pinch at ``tcp_xy`` closing along each of
+    ``close_yaws`` (all of them: the pick may take any)."""
+    S = palm_spheres()
+    need = -np.inf
+    for c in close_yaws:
+        y = np.array([math.cos(c), math.sin(c), 0.0])
+        z = np.array([0.0, 0.0, 1.0])
+        R = np.column_stack((np.cross(y, z), y, z))          # kinematics.gripper_rot, fingers down
+        for s in S:
+            ctr = R @ s[:3]
+            r = s[3] + gap
+            rho2 = ((v[:, :2] - (tcp_xy + ctr[:2])) ** 2).sum(1)
+            under = rho2 < r * r
+            if under.any():
+                need = max(need, float((v[under, 2] - bottom_z - ctr[2] + np.sqrt(r * r - rho2[under])).max()))
+    return need
 
 
 def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
@@ -258,10 +311,11 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
                         "pre_open": float(min(0.04, width / 2 + 0.012))})
             best = (best_c[0], yaw, width, off, topz)
     min_w = best[2] if best else float("inf")
-    if ext[2] < 0.075 and max(ext[:2]) > GRIPPER_GAP:
-        out.append({"type": "edge_pinch_after_push",
-                    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-                    "thickness": float(ext[2])})
+    if ext[2] < 0.075 and max(ext[:2]) > GRIPPER_GAP and not out:
+        # flat, wider than the gripper and no other pinch: across its thickness at a side
+        out.append({"type": "thickness_pinch", "depth": THICKNESS_PINCH_DEPTH,
+                    "pre_open": float(min(0.04, ext[2] / 2 + 0.012)),
+                    "note": "pads above and below, from outside a side; the side must overhang its support"})
     if name == "breakfast_mug":
         # Collision OBJ is rotated +90 deg about X by the URDF.  Its handle
         # protrudes in object -Y at mid-height, separate from the rim contact.
@@ -273,6 +327,21 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
         out.append(CUSTOM_RECORDS[name]["top_grasp"])
     if "handle_grasp" in CUSTOM_RECORDS.get(name, {}):
         out.append(CUSTOM_RECORDS[name]["handle_grasp"])
+    # the palm stays above the object: half the height put the palm of a top pinch 2.4 cm into a
+    # soda can, and the hand stopped that much short of the grasp (planner 6.2 measurement)
+    from zeno_skills.rig import LEAVE_GAP
+    square = abs(ext[0] - ext[1]) < 0.01 and max(ext[:2]) < 0.075     # annotations: extra_rotations
+    for g in out:
+        if g["type"] != "top_pinch" or "close_yaw" not in g:
+            continue
+        flips = np.radians(np.arange(0, 360, 45)) if g.get("round") else \
+            np.radians([0, 90, 180, 270]) if square else np.radians([0, 180])
+        y0 = g["close_yaw"]
+        along = np.array([-math.sin(y0), math.cos(y0)])
+        floor = max(palm_floor(mesh.vertices, b[0, 2], c0 + np.asarray(g["offset_xy"]) + along * a,
+                               y0 + flips, LEAVE_GAP) for a in g.get("along_offsets", [0.0]))
+        if floor > g["height"]:
+            g["height"] = float(floor)
     return out, min_w
 
 

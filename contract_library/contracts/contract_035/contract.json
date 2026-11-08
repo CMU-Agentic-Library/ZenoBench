@@ -6,7 +6,7 @@
  "verb": "brace",
  "noun": "object",
  "name": "Brace an object with the left hand",
- "description": "Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
+ "description": "Pinch an object resting on a support (a container, or any object with a top or handle pinch) with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -146,7 +146,6 @@
       "op": "in",
       "value": [
        "support",
-       "floor",
        "container"
       ]
      }
@@ -162,7 +161,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "Only an object standing in the open (not behind an appliance or cabinet door)."
+    "note": "Only an object standing in the open on a support (not on the floor, not behind an appliance or cabinet door)."
    }
   ]
  },

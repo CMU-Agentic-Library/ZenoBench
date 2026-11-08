@@ -79,6 +79,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `chill` (`skill_044`) (enables) — the fridge must be closed while cooling
 - Next step: `navigate` (`skill_001`) (then) — the robot leaves
 - Fallback on failure: `retreat` (`skill_004`) (recover) — the door swing hits the base
+- Is a fallback for: `press` (`skill_042`) (repair) — the start key was refused because the microwave door is open
 - Is a fallback for: `heat` (`skill_043`) (repair) — the microwave door is open
 - Is a fallback for: `chill` (`skill_044`) (repair) — the fridge door is open
 

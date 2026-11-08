@@ -1,6 +1,6 @@
 # contract_032 — Lower a held object
 
-Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
+Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).
 
 Paired SkillNode: `skill_024` (`lower-object`).
 
@@ -15,6 +15,6 @@ Paired SkillNode: `skill_024` (`lower-object`).
 
 ## Policy paths
 
-- `descend` when always: `policy_093($object, $height_m)`
+- `descend` when always: `policy_093($object, $height_m, down_only=True)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

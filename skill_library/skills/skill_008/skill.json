@@ -14,7 +14,7 @@
   "noun": "waist",
   "arguments": []
  },
- "description": "Return the waist pitch to upright.",
+ "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)",
  "use_when": "After a bend, before driving or carrying.",
  "not_to_be_confused_with": {
   "stand": "stand raises the torso; straighten undoes a waist bend."

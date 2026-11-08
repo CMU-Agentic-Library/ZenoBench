@@ -152,13 +152,14 @@
   ],
   "fallback": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
+    "skill_id": "skill_030",
+    "verb": "pull",
     "when": "no base pose reaches behind the object",
     "bind": {
-     "target": "$object"
+     "object": "$object"
     },
-    "type": "repair"
+    "reason": "dragging it toward the base brings its far side into reach",
+    "type": "recover"
    }
   ],
   "fallback_for": [

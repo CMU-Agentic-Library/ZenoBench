@@ -1,6 +1,6 @@
 # contract_029 — Release an object
 
-Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
+Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls.
 
 Paired SkillNode: `skill_021` (`release-object`).
 

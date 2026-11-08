@@ -21,7 +21,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).plan_heading.execute(...)`
 - Class: `PlanHeadingPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_011:face/rotate_empty
 
 ## Recorded evidence
 

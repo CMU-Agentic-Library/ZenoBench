@@ -28,7 +28,7 @@
  "outputs": {
   "moved_m": {
    "type": "number",
-   "description": "Measured displacement along the direction."
+   "description": "Measured horizontal displacement of the object (any direction)."
   }
  },
  "requires": [

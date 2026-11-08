@@ -55,19 +55,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_030($obstacle)`
 - The microwave's measured hinge-clearance pose (also when loaded).
 
-### `bimanual_or_left_load` — when robot.left_held
+### `away` — when always (default path)
 
 1. `policy_067($obstacle, $distance_m)`
-
-### `loaded` — when robot.right_held
-
-1. `policy_035($distance_m)`
-- Straight reverse with the right-hand load.
-
-### `empty` — when always (default path)
-
-1. `policy_100($obstacle, $distance_m) as plan`
-2. `policy_037(#plan.forward_m)`
+- Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower.
 
 ## Relations
 

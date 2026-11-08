@@ -6,7 +6,7 @@
  "verb": "restore",
  "noun": "object",
  "name": "Restore an object to its place",
- "description": "Return an object to the support it occupied at the start of the episode.",
+ "description": "Return an object to the spot it occupied at the start of the episode (the free spot of its starting support closest to it); also works when it was only moved along that support. Success is judged on the support, not the exact spot.",
  "group": "multi_object",
  "inputs": {
   "object": {
@@ -22,13 +22,6 @@
    "args": {
     "hand": "right"
    }
-  },
-  {
-   "pred": "at_initial_place",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true
   }
  ],
  "ensures": [
@@ -58,22 +51,6 @@
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "all paths"
-  },
-  {
-   "predicate": "not at_initial_place(object=$object)",
-   "name": "at_initial_place",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true,
-   "meaning": "Object is back on the support it occupied when the episode started.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "initial_scene_annotation"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "all paths"
@@ -168,7 +145,9 @@
        "$object",
        "@object.initial_support"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "hint": "@object.initial_xy"
+      }
      }
     ],
     "requires": [],

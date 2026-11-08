@@ -22,6 +22,8 @@ from scipy.spatial.transform import Rotation
 from .base import AtomicPolicy
 from .. import skills
 from ..annotations import rz
+from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import lid_on, tilt_deg
 from ..rig import SkillFailure
@@ -59,69 +61,11 @@ def object_top(rig, name, st=None):
 
 
 class DropIntoPolicy(AtomicPolicy):
-    """Hold the object 5 cm above the container rim, centred, and let go."""
+    """Let the held object go over a container's opening (skills.drop_into)."""
 
-    def execute(self, name, container, *, clearance_m=0.05):
-        rig = self.rig
-        _require_held(rig, name, "drop")
-        ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
-        if not ca:
-            raise SkillFailure(f"drop {name}: {container} is not a container")
-        st = rig.state()
-        cb = np.asarray(rig.geo.bottom(container, st), float)
-        rim_z = float(cb[2] + ca["rim_height"])
-        # already held over the opening (after hover): just let go
-        fp = rig.geo.footprint(name, st)
-        inner = float(ca.get("rim_radius", 0.0)) or 0.5 * float(min(rig.ann.asset_of(rig.ann.objects[container])["size"][:2]))
-        centre = np.array([(fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2])
-        low = float(skills._lowest_z(rig, name, st))
-        if np.linalg.norm(centre - cb[:2]) < 0.6 * inner and rim_z < low < rim_z + 0.25:
-            rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
-            rig.caption = f"DROP {name} into {container}"
-            return self._release(name, container)
-        from .tooluse import stow_load
-        stow_load(rig)
-        st = rig.state()
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        hang = float(body[2] - skills._lowest_z(rig, name, st))
-        off = tcp - body
-        body_goal = np.array([cb[0], cb[1], rim_z + clearance_m + hang])
-        legs = [(body_goal + off + np.array([0, 0, 0.06]), R), (body_goal + off, R)]
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=150, q_start=rig.q_cmd,
-                         travel_q=skills._travel_q(rig))
-        if park is None:
-            raise SkillFailure(f"drop {name}: no base pose above {container} (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        # rise first so the load never sweeps through the rim
-        low = float(rig.geo.bottom(name, rig.state())[2])
-        if low < rim_z + clearance_m:
-            t, R1 = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t + np.array([0, 0, rim_z + clearance_m + 0.04 - low]), R1, step=0.005,
-                        label="drop_prelift", collision=False)
-        rig.caption = f"DROP {name} into {container}"
-        for p, Rg in legs:
-            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", collision=False, smooth=True)
-        skills.check_held(rig, "drop_above")
-        return self._release(name, container)
-
-    def _release(self, name, container):
-        rig = self.rig
-        rig.grip(rig.held.get("pre_open", 0.04), 40)
-        rig.held = None
-        t, R1 = rig.kin.tcp(rig.q_cmd)
-        try:
-            rig.move_to(t + np.array([0, 0, 0.06]), R1, step=0.01, label="drop_retreat", collision=False)
-        except SkillFailure as exc:
-            rig.log("drop_retreat_short", reason=str(exc))
-        rig.step(120)
-        ok, why = rig.geo.inside(name, container, rig.state())
-        rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)
-        if not ok:
-            raise SkillFailure(f"drop {name} into {container}: {why}")
-        return True
+    def execute(self, name, container):
+        _require_held(self.rig, name, "drop")
+        return skills.drop_into(self.rig, name, container)
 
 
 class StackOnPolicy(AtomicPolicy):
@@ -168,9 +112,9 @@ class RotateHeldPolicy(AtomicPolicy):
             if not all(rig.kin.ik_global(stage, Rk, seeds=[rig.q_cmd])[1] for Rk in Rs[-1:]):
                 continue                     # the final orientation has no IK here
             try:
-                rig.move_to(stage, R, step=0.005, label="rotate_clear", collision=False)
+                rig.move_to(stage, R, step=0.005, label="rotate_clear", allow=FREE_ELSE_STRAIGHT)
                 for Rk in Rs:
-                    rig.move_to(stage, Rk, step=0.005, steps_per_wp=4, label="rotate_held", collision=False,
+                    rig.move_to(stage, Rk, step=0.005, steps_per_wp=4, label="rotate_held", allow=FREE_ELSE_STRAIGHT,
                                 smooth=True)
                     skills.check_held(rig, "rotate_held")
                 done = True
@@ -218,7 +162,7 @@ class RegraspPolicy(AtomicPolicy):
             rig.grip(rig.held.get("pre_open", 0.04), 60, gradual=True)
             rig.held = None
             t, R = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t + np.array([0, 0, 0.06]), R, step=0.005, label="regrasp_clear", collision=False)
+            rig.move_to(t + np.array([0, 0, 0.06]), R, step=0.005, label="regrasp_clear", allow=LEAVE_CONTACT)
         else:
             x, y, _ = rig.base_pose()
             hint = (min(max(x, x0 + 0.12), x1 - 0.12), min(max(y, y0 + 0.12), y1 - 0.12))
@@ -283,7 +227,7 @@ class LeftSteadyPolicy(AtomicPolicy):
         rig.caption = f"STEADY {name} with the left hand"
         rig.left_grip(chosen["pre_open"], 30)
         rig.move_left_to(chosen["p"] + np.array([0, 0, 0.08]), chosen["R"], label="steady_pre")
-        rig.move_left_to(chosen["p"], chosen["R"], label="steady_grasp", collision=False)
+        rig.move_left_to(chosen["p"], chosen["R"], label="steady_grasp", allow=LEGACY)
         rig.left_grip(0.0, 100)
         f = rig.left_fingers()
         after, _ = rig.obj_pose(name)
@@ -310,7 +254,7 @@ class ReleaseInPlacePolicy(AtomicPolicy):
             rig.held = None
             t, R = rig.kin.tcp(rig.q_cmd)
             try:
-                rig.move_to(t + 0.06 * R[:, 2], R, step=0.005, label="release_back", collision=False)
+                rig.move_to(t + 0.06 * R[:, 2], R, step=0.005, label="release_back", allow=LEAVE_CONTACT)
             except SkillFailure as exc:
                 rig.log("release_back_short", reason=str(exc))
         else:
@@ -320,7 +264,7 @@ class ReleaseInPlacePolicy(AtomicPolicy):
             rig.left_held = None
             t, R = rig.left_kin.tcp(rig.left_q())
             try:
-                rig.move_left_to(t + 0.06 * R[:, 2], R, label="left_release_back", collision=False)
+                rig.move_left_to(t + 0.06 * R[:, 2], R, label="left_release_back", allow=LEAVE_CONTACT)
             except SkillFailure as exc:
                 rig.log("left_release_back_short", reason=str(exc))
         rig.step(60)
@@ -368,7 +312,7 @@ class FlipFlatPolicy(AtomicPolicy):
         for deg in np.arange(step_deg, release_deg + 1e-6, step_deg):
             Rot = Rotation.from_rotvec(k * math.radians(deg)).as_matrix()
             try:
-                rig.move_to(pivot + Rot @ v0, Rot @ R0, step=0.004, steps_per_wp=4, label="flip_arc", collision=False,
+                rig.move_to(pivot + Rot @ v0, Rot @ R0, step=0.004, steps_per_wp=4, label="flip_arc", allow=LEGACY,
                             smooth=True)
             except SkillFailure as exc:
                 rig.log("flip_arc_limit", deg=float(deg), reason=str(exc))
@@ -391,7 +335,7 @@ class FlipFlatPolicy(AtomicPolicy):
                 Rot = Rotation.from_rotvec(k * math.radians(deg)).as_matrix()
                 try:
                     rig.move_to(pivot + Rot @ v0 + a * 0.01, R_end, step=0.004, steps_per_wp=4, label="flip_push",
-                                collision=False, smooth=True)
+                                allow=LEGACY, smooth=True)
                 except SkillFailure as exc:
                     rig.log("flip_push_limit", deg=float(deg), reason=str(exc))
                     break
@@ -402,7 +346,7 @@ class FlipFlatPolicy(AtomicPolicy):
                 for d in (0.12, 0.08, 0.05):
                     try:
                         rig.move_to(t + a * d, R1, step=0.004, steps_per_wp=4, label="flip_push_straight",
-                                    collision=False)
+                                    allow=LEGACY)
                         pushed = 100.0
                         break
                     except SkillFailure as exc:
@@ -418,7 +362,7 @@ class FlipFlatPolicy(AtomicPolicy):
                             rig.log("flip_push_base", d=d)
                             pushed = 100.0
                             break
-                rig.step(120)
+                rig.step(PHYSICS_HZ)
                 up = quat_R(rig.obj_pose(name)[1])[:, 2]
                 pushed = pushed if up[2] < -0.5 else min(pushed, PAST_VERTICAL_DEG - 1.0)
             rig.log("flip_push", released_deg=reached, pushed_deg=pushed)
@@ -427,7 +371,7 @@ class FlipFlatPolicy(AtomicPolicy):
             reached = pushed
         t, R1 = rig.kin.tcp(rig.q_cmd)
         try:
-            rig.move_to(t - 0.08 * (-R1[:, 2]), R1, step=0.005, label="flip_withdraw", collision=False)
+            rig.move_to(t - 0.08 * (-R1[:, 2]), R1, step=0.005, label="flip_withdraw", allow=LEAVE_CONTACT)
         except SkillFailure as exc:
             rig.log("flip_withdraw_short", reason=str(exc))
         rig.step(150)
@@ -437,7 +381,7 @@ class FlipFlatPolicy(AtomicPolicy):
             pushed = False
             for d in (0.10, 0.06, 0.03):
                 try:
-                    rig.move_to(t + a * d, R1, step=0.004, steps_per_wp=4, label="flip_finish_push", collision=False)
+                    rig.move_to(t + a * d, R1, step=0.004, steps_per_wp=4, label="flip_finish_push", allow=LEGACY)
                     pushed = True
                     break
                 except SkillFailure as exc:
@@ -454,7 +398,7 @@ class FlipFlatPolicy(AtomicPolicy):
             t, R1 = rig.kin.tcp(rig.q_cmd)
             for up in (0.08, 0.04):
                 try:
-                    rig.move_to(t + np.array([0, 0, up]), R1, step=0.005, label="flip_clear", collision=False)
+                    rig.move_to(t + np.array([0, 0, up]), R1, step=0.005, label="flip_clear", allow=FREE_ELSE_STRAIGHT)
                     break
                 except SkillFailure:
                     continue
@@ -488,12 +432,12 @@ class CoverWithLidPolicy(AtomicPolicy):
 class SetHeldHeightPolicy(AtomicPolicy):
     """Move the held object vertically until its bottom is at ``height_m``."""
 
-    def execute(self, name, height_m, *, tolerance=0.02):
+    def execute(self, name, height_m, *, tolerance=0.02, down_only=False):
         rig = self.rig
         _require_held(rig, name, "set height")
         bottom = float(rig.geo.bottom(name, rig.state())[2])
         dz = float(height_m) - bottom
-        if abs(dz) <= tolerance:
+        if abs(dz) <= tolerance or (down_only and dz > 0):
             return bottom
         skills.held_vertical_move(rig, dz, "held_height")
         skills.check_held(rig, "held_height")

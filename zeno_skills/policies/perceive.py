@@ -28,6 +28,17 @@ from ..predicates import (entity_footprint, entity_kind, entity_point, memory, o
                           objects_on_support)
 from ..rig import SkillFailure
 
+# Exploration (ExploreRoomPolicy, ExploreFurniturePolicy); inherited, unmeasured: docs/COLLISION_PLAN.md §8.
+COVER_MIN_AREA = 0.05           # m^2: a support smaller than this is not a room-coverage target
+COVER_Z = (0.3, 1.6)            # m: support layers between these heights are (horizontal surfaces in sight)
+COVER_MIN_CLEARANCE = 0.3       # m of free height above a layer for it to count
+COVER_OK = 0.75                 # fraction of the targets a room exploration must see
+VIEW_TURNS = (0.0, 180.0)       # deg the base turns at each room viewpoint (look both ways)
+SWEEP_YAWS = (-1.0, -0.5, 0.0, 0.5, 1.0)   # rad: head yaws of a sweep...
+SWEEP_PITCH = 0.3               # rad: ...at this pitch (positive looks down)...
+SWEEP_STEPS = 50                # ...each reached in this many ticks
+VIEW_TRIES = 3                  # navigates a furniture exploration may try per view it wants
+
 
 def drive_head(rig, yaw, pitch, steps=90):
     rig.head_cmd = np.array([float(yaw), float(pitch)])
@@ -99,8 +110,8 @@ class ExploreRoomPolicy(AtomicPolicy):
         for s_ in rig.ann.supports:
             x0, y0, x1, y1 = s_["aabb_xy"]
             c = ((x0 + x1) / 2, (y0 + y1) / 2)
-            if room_of(rig.ann.rooms, c) == room and (x1 - x0) * (y1 - y0) > 0.05 and 0.3 <= s_["z"] <= 1.6 \
-                    and s_.get("clearance", 1.0) >= 0.3:
+            if room_of(rig.ann.rooms, c) == room and (x1 - x0) * (y1 - y0) > COVER_MIN_AREA and COVER_Z[0] <= s_["z"] <= COVER_Z[1] \
+                    and s_.get("clearance", 1.0) >= COVER_MIN_CLEARANCE:
                 targets.setdefault("furniture:" + s_["furniture"], []).append(
                     (np.array([c[0], c[1], s_["z"]]), s_["name"]))
         if not getattr(rig, "static_explore", False):
@@ -130,7 +141,7 @@ class ExploreRoomPolicy(AtomicPolicy):
             order.append(nxt)
             rest.remove(nxt)
             x, y = nxt[0], nxt[1]
-        seen = set()
+        seen, viewed = set(), set()
         visited = 0
         for pose in order:
             try:
@@ -139,16 +150,16 @@ class ExploreRoomPolicy(AtomicPolicy):
                 rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
                 continue
             visited += 1
-            for turn in (0.0, 180.0):           # look both ways from each viewpoint
+            for turn in VIEW_TURNS:
                 if turn:
                     bx, by, byaw = rig.base_pose()
-                    rig.sync_world()
-                    if not rig.world.footprint_clear(bx, by, math.radians(byaw + turn)):
+                    try:
+                        skills.straight_base_move(rig, (bx, by, byaw + turn), f"explore_{room}_turn")
+                    except SkillFailure:
                         continue
-                    rig.drive_base([(bx, by, byaw + turn)])
-                for yaw in (-1.0, -0.5, 0.0, 0.5, 1.0):
-                    drive_head(rig, yaw, 0.3, steps=50)       # positive pitch looks down
-                    record_view(rig)
+                for yaw in SWEEP_YAWS:
+                    drive_head(rig, yaw, SWEEP_PITCH, steps=SWEEP_STEPS)
+                    viewed.update(record_view(rig))
                     for k, pts in targets.items():
                         if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
                             seen.add(k)
@@ -158,9 +169,11 @@ class ExploreRoomPolicy(AtomicPolicy):
         furniture = sorted(k.split(":", 1)[1] for k in seen if k.startswith("furniture:"))
         rig.log("explore_result", room=room, coverage=round(cov, 3), views=visited, targets=len(targets),
                 furniture=furniture)
-        if cov < 0.75:
+        if cov < COVER_OK:
             raise SkillFailure(f"explore {room}: coverage {cov:.2f}")
-        return {"coverage": cov, "seen": sorted(k for k in seen if not k.startswith("furniture:")),
+        # every object that came into view (the coverage targets hold no objects in the benchmark)
+        objects = viewed | {k for k in seen if not k.startswith("furniture:")}
+        return {"coverage": cov, "seen": sorted(objects),
                 "furniture": furniture}
 
 
@@ -242,7 +255,7 @@ class ExploreFurniturePolicy(AtomicPolicy):
             views.append((x, y))
         tw = {n: float(v) for n, v in zip(rig.kin.names[:2], rig.q()[:2])}
         for pose in standoff_poses(rig, furniture):
-            if len(seen) == len(targets) or len(views) - here >= max_views or tries >= 3 * max_views:
+            if len(seen) == len(targets) or len(views) - here >= max_views or tries >= VIEW_TRIES * max_views:
                 break
             if any(math.hypot(pose[0] - vx, pose[1] - vy) < min_spacing for vx, vy in views):
                 continue
@@ -271,11 +284,10 @@ class ExploreFurniturePolicy(AtomicPolicy):
 
 class SearchObjectPolicy(AtomicPolicy):
     """Look for an object at candidate places in order of distance until it is
-    seen.  Candidates are the supports and container interiors of the region
-    (a room, or the robot's room).  Closed cabinets are opened, inspected and
-    closed again."""
+    seen.  Candidates are the supports of the region (a room, or the robot's room), grouped by
+    furniture; at each the head is aimed at every support, highest first."""
 
-    def execute(self, name, region=None, *, max_places=8):
+    def execute(self, name, region=None):
         rig = self.rig
         from ..evaluator import room_of
         from .base_motion import NavigateToPlacePolicy
@@ -293,11 +305,11 @@ class SearchObjectPolicy(AtomicPolicy):
             math.hypot((s["aabb_xy"][0] + s["aabb_xy"][2]) / 2 - x, (s["aabb_xy"][1] + s["aabb_xy"][3]) / 2 - y)
             for s in furniture[f]))
         visited = []
-        for f in order[:max_places]:
+        for f in order:
             visited.append(f)
             try:
                 NavigateToPlacePolicy(rig).execute(f if f in {s.get("furniture") for s in rig.ann.supports}
-                                                   else furniture[f][0]["name"], max_tries=3)
+                                                   else furniture[f][0]["name"])
             except SkillFailure as exc:
                 rig.log("search_skip", place=f, reason=str(exc))
                 continue

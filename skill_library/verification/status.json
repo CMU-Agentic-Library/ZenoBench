@@ -7,12 +7,6 @@
    "failure": ""
   },
   {
-   "id": "c_approach_moving",
-   "success": true,
-   "steps": "2/2",
-   "failure": ""
-  },
-  {
    "id": "c_tray_moving",
    "success": true,
    "steps": "5/5",
@@ -226,24 +220,13 @@
    ],
    "evidence": "b_books: `base_near(place=book_red)` distance 0.67 m"
   },
-  "approach": {
-   "status": "verified",
-   "paths_passed": [
-    "park",
-    "reach_on_the_move"
-   ],
-   "paths": [
-    "reach_on_the_move",
-    "park"
-   ],
-   "evidence": "c_approach_moving: `reachable(target=dining_table_2/top)` [2.863, 5.681, 0.952]"
-  },
   "face": {
    "status": "verified",
    "paths_passed": [
     "rotate_loaded"
    ],
    "paths": [
+    "already_facing",
     "rotate_empty",
     "rotate_loaded"
    ],
@@ -260,7 +243,8 @@
     "microwave_door_sweep",
     "bimanual_or_left_load",
     "loaded",
-    "empty"
+    "empty",
+    "untucked"
    ],
    "evidence": "k_body: `base_clear_of(place=kitchen_island, distance_m=0.6)` distance 0.62 m"
   },
@@ -787,8 +771,7 @@
    "status": "failed",
    "paths_passed": [],
    "paths": [
-    "pick_each_inside",
-    "pour_out"
+    "pick_each_inside"
    ],
    "evidence": "k_empty_hide: pick cherry_tomato_1: not held (lift 0.000 m)"
   },

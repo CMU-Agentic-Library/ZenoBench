@@ -11,8 +11,9 @@ import numpy as np
 from .base import AtomicPolicy
 from .embedded import SlideToEdgePolicy
 from .. import skills
+from ..clearance import FREE, FREE_ELSE_STRAIGHT
 from ..kinematics import gripper_rot
-from ..planner import plan_path
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure, Dropped
 
 
@@ -62,7 +63,7 @@ def check_bimanual_hold(rig, name, label):
     ):
         tcp, _ = kin.tcp(q)
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(held["tcp_minus_body"]))
-        if slip > 0.06 or float(fingers.sum()) < 0.004:
+        if slip > 0.05 or float(fingers.sum()) < 0.004:
             rig.log("bimanual_slip", side=side, obj=name, slip_m=round(float(slip), 4),
                     fingers=fingers.tolist())
             raise SkillFailure(f"{label}: {side} grasp slipped from {name}")
@@ -314,37 +315,29 @@ def _grasp_both(rig, name, pairs, label):
     if torso_target is None:
         skills.navigate(rig, pose, label=label+"_park")
     else:
-        # lower the torso 35 cm back from the park, in free space (lowered at
-        # the park the tucked arm reached over the table and the tuck stalled),
-        # then roll straight in without re-tucking
-        from .posture import SetTorsoHeightPolicy, SetWaistPitchPolicy
+        # arrive with the torso lowered and both hands at their pre-grasps (lowered at the
+        # park the tucked arm reached over the table and the tuck stalled): solve them for
+        # the park at that posture; the base plan takes the posture where that is clear
         yaw_r = math.radians(pose[2])
-        pre = (pose[0] - 0.35 * math.cos(yaw_r), pose[1] - 0.35 * math.sin(yaw_r), pose[2])
-        skills.navigate(rig, pre, label=label+"_pre_park")
-        SetTorsoHeightPolicy(rig).execute(torso_target)
-        SetWaistPitchPolicy(rig).execute(waist_target)
-        # joints are base-relative: solve both pre-grasps for the park pose and
-        # take them here, so the hands ride in at grasp height above the table
+        posture = rig.q_cmd.copy()
+        posture[0] = torso_target
+        if waist_target is not None:
+            posture[1] = waist_target
         rig.kin.set_base((pose[0], pose[1], 0.0), yaw_r)
         rig.left_kin.set_base((pose[0], pose[1], 0.0), yaw_r)
         rp = right.get("pre", right["p"] + np.array([0, 0, 0.08]))
         lp = left.get("pre", left["p"] + np.array([0, 0, 0.08]))
-        qr = _fixed_torso_ik(rig.kin, rp, right["R"], rig.q_cmd)
-        ql = _fixed_torso_ik(rig.left_kin, lp, left["R"], np.r_[rig.q_cmd[:2], rig.left_q_cmd])
+        qr = _fixed_torso_ik(rig.kin, rp, right["R"], posture)
+        ql = _fixed_torso_ik(rig.left_kin, lp, left["R"], np.r_[posture[:2], rig.left_q_cmd])
         rig.sync_world()
         if qr is None or ql is None:
             raise SkillFailure(f"{label}: pre-grasps not solvable at the lowered posture")
-        rig.follow_both(qr, ql, label=label + "_arms_ready")
-        rig.sync_world()
-        if not all(rig.world.footprint_clear(pre[0] + (pose[0] - pre[0]) * u, pre[1] + (pose[1] - pre[1]) * u, yaw_r)
-                   for u in np.linspace(0.0, 1.0, 6)):
-            raise SkillFailure(f"{label}: straight approach to the shared park is blocked")
-        rig.drive_base([pose], speed=0.08, turn=0.3, ramp=0.6)
+        skills.navigate(rig, pose, label=label + "_park", arrive=(qr, ql[2:]))
     rig.sync_world()
     p0, _ = rig.obj_pose(name)
     rig.log("bimanual_grasp_targets", obj=name, body=p0.round(4).tolist(),
             right=right["p"].round(4).tolist(), left=left["p"].round(4).tolist())
-    right_open = rig.grip(right["pre_open"], 120)
+    right_open = rig.grip(right["pre_open"], PHYSICS_HZ)
     rig.log("bimanual_right_open", obj=name, fingers=right_open.round(4).tolist(),
             tcp=rig.kin.tcp(rig.q())[0].round(4).tolist())
     if right_open.min() < right["pre_open"]-0.008:
@@ -384,12 +377,12 @@ def _grasp_both(rig, name, pairs, label):
                 right_tcp=rig.kin.tcp(rig.q())[0].round(4).tolist(),
                 left_tcp=rig.left_kin.tcp(rig.left_q())[0].round(4).tolist())
         rig.grip_cmd = rig.left_grip_cmd = 0.0
-        rig.step(120)
+        rig.step(PHYSICS_HZ)
         rig.log("bimanual_contact_posture", torso=rig.q_cmd[:2].round(4).tolist(),
                 right_q=rig.q_cmd.round(3).tolist(),
                 left_q=np.r_[rig.q_cmd[:2], rig.left_q_cmd].round(3).tolist())
         _lift_together(rig, right["p"], right["R"], left["p"], left["R"], 0.04)
-    rig.step(120)  # prove both fingers keep contact after the object has settled
+    rig.step(PHYSICS_HZ)  # prove both fingers keep contact after the object has settled
     p1, _ = rig.obj_pose(name)
     rf, lf = rig.fingers(), rig.left_fingers()
     rig.log("bimanual_lift_check", obj=name, lift_m=round(float(p1[2]-p0[2]), 4),
@@ -438,16 +431,14 @@ class BimanualCarryPolicy(AtomicPolicy):
         rig = self.rig
         check_bimanual_hold(rig, name, "bimanual_carry_start")
         rig.sync_world()
-        path = plan_path(rig.world, rig.base_pose(), pose, margin=0.18)
-        if path is None:
-            raise SkillFailure(f"bimanual carry: no base path to {pose}")
+        path = skills.plan_drive(rig, pose, "bimanual_carry")
         counter = 0
         def check_step(_progress, _pose):
             nonlocal counter
             counter += 1
             if counter % 60 == 0:
                 check_bimanual_hold(rig, name, "bimanual_carry")
-        rig.drive_base(path, speed=0.12, turn=0.25, ramp=1.2, on_step=check_step)
+        rig.drive_base(path, speed=0.12, turn=0.25, ramp=1.2, on_step=check_step, allow=FREE)
         check_bimanual_hold(rig, name, "bimanual_carry_end")
         x, y, yaw = rig.base_pose()
         error = math.hypot(x-pose[0], y-pose[1])
@@ -540,7 +531,7 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
         rig.left_grip(g["pre_open"], 30)
         rig.move_left_to(pre, g["R"], label="handover_left_pre")
         rig.move_left_to(g["p"], g["R"], label="handover_left_contact")
-        fingers = rig.left_grip(0.0, 120)
+        fingers = rig.left_grip(0.0, PHYSICS_HZ)
         if float(fingers.sum()) < 0.005:
             raise SkillFailure("handover: left fingers did not contact object")
         before, _ = rig.obj_pose(name)
@@ -552,7 +543,8 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
         rtcp, rR = rig.kin.tcp(rig.q_cmd)
         for d in (0.06, 0.03):
             try:
-                rig.move_to(rtcp + np.array([0, 0, d]), rR, step=0.004, label="handover_right_clear", collision=False)
+                rig.move_to(rtcp + np.array([0, 0, d]), rR, step=0.004, label="handover_right_clear",
+                            allow=FREE_ELSE_STRAIGHT)
                 break
             except SkillFailure:
                 continue
@@ -628,7 +620,7 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
                 try:
                     # follow the planned joints exactly: a free IK re-solve bent the
                     # waist and left the left arm's plan (same torso) unreachable
-                    rig.follow(rig.joint_path(qr, "handover_present_across", check=False), steps_per_wp=6)
+                    rig.follow(rig.joint_path(qr, "handover_present_across", allow=FREE_ELSE_STRAIGHT), steps_per_wp=6)
                     skills.check_held(rig, "handover_present_across")
                 except Dropped:
                     raise
@@ -683,6 +675,6 @@ class OpenDoorWhileLeftHoldsPolicy(AtomicPolicy):
         body, _ = rig.obj_pose(object_name)
         tcp, _ = rig.left_kin.tcp(rig.left_q())
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(left["tcp_minus_body"]))
-        if slip > 0.06 or rig.left_fingers().min() < 0.002:
+        if slip > 0.05 or float(rig.left_fingers().sum()) < 0.004:
             raise SkillFailure("open door while left holds: left grasp slipped")
         return q

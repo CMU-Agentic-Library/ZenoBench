@@ -16,7 +16,7 @@
    "pitch_rad"
   ]
  },
- "description": "Pitch the waist forward to extend the reach over a deep surface.",
+ "description": "Pitch the waist forward to extend the reach over a deep surface. A held object pitches forward with the body by the same angle.",
  "use_when": "A target is just beyond arm reach over a counter and leaning forward helps.",
  "not_to_be_confused_with": {
   "crouch": "crouch lowers the torso; bend tilts the waist."
@@ -25,7 +25,7 @@
   "pitch_rad": {
    "type": "positive_number",
    "required": false,
-   "description": "Forward pitch in rad (max 0.69); omit for the maximum."
+   "description": "Forward pitch in rad, 0.1 to 0.69; omit for the maximum."
   }
  },
  "required_inputs": [],
@@ -37,13 +37,11 @@
  "preconditions": [],
  "postconditions": [
   {
-   "predicate": "waist_bent(min_pitch_rad=0.2)",
-   "name": "waist_bent",
-   "args": {
-    "min_pitch_rad": 0.2
-   },
-   "negated": false,
-   "meaning": "Waist pitched forward by at least the given angle.",
+   "predicate": "not waist_straight()",
+   "name": "waist_straight",
+   "args": {},
+   "negated": true,
+   "meaning": "Must be false: Waist pitch within 0.05 rad of upright.",
    "kind": "fluent",
    "gt_sources": [
     "waist_joint"
@@ -55,10 +53,23 @@
   "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
   "checks": [
    {
-    "predicate": "waist_bent(min_pitch_rad=0.2)",
+    "predicate": "not waist_straight()",
+    "name": "waist_straight",
+    "args": {},
+    "negated": true,
+    "meaning": "Must be false: Waist pitch within 0.05 rad of upright.",
+    "kind": "fluent",
+    "gt_sources": [
+     "waist_joint"
+    ],
+    "checked": "after the policy chain on live GT state; the action is reported only if true",
+    "scope": "all paths"
+   },
+   {
+    "predicate": "waist_bent(min_pitch_rad=$pitch_rad)",
     "name": "waist_bent",
     "args": {
-     "min_pitch_rad": 0.2
+     "min_pitch_rad": "$pitch_rad"
     },
     "negated": false,
     "meaning": "Waist pitched forward by at least the given angle.",
@@ -67,7 +78,22 @@
      "waist_joint"
     ],
     "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
+    "scope": "path to_pitch"
+   },
+   {
+    "predicate": "waist_bent(min_pitch_rad=0.6)",
+    "name": "waist_bent",
+    "args": {
+     "min_pitch_rad": 0.6
+    },
+    "negated": false,
+    "meaning": "Waist pitched forward by at least the given angle.",
+    "kind": "fluent",
+    "gt_sources": [
+     "waist_joint"
+    ],
+    "checked": "after the policy chain on live GT state; the action is reported only if true",
+    "scope": "path full"
    }
   ]
  },
@@ -80,10 +106,25 @@
   {
    "path_id": "to_pitch",
    "when": [
-    "args.pitch_rad"
+    "args.pitch_rad is given"
    ],
    "extra_preconditions": [],
-   "extra_postconditions": [],
+   "extra_postconditions": [
+    {
+     "predicate": "waist_bent(min_pitch_rad=$pitch_rad)",
+     "name": "waist_bent",
+     "args": {
+      "min_pitch_rad": "$pitch_rad"
+     },
+     "negated": false,
+     "meaning": "Waist pitched forward by at least the given angle.",
+     "kind": "fluent",
+     "gt_sources": [
+      "waist_joint"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true"
+    }
+   ],
    "chain": [
     "policy_007($pitch_rad)"
    ],
@@ -98,7 +139,22 @@
     "always (default path)"
    ],
    "extra_preconditions": [],
-   "extra_postconditions": [],
+   "extra_postconditions": [
+    {
+     "predicate": "waist_bent(min_pitch_rad=0.6)",
+     "name": "waist_bent",
+     "args": {
+      "min_pitch_rad": 0.6
+     },
+     "negated": false,
+     "meaning": "Waist pitched forward by at least the given angle.",
+     "kind": "fluent",
+     "gt_sources": [
+      "waist_joint"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true"
+    }
+   ],
    "chain": [
     "policy_008()"
    ],
@@ -120,24 +176,24 @@
     "type": "then"
    },
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the target was just out of reach",
+    "skill_id": "skill_017",
+    "verb": "pick",
+    "when": "the object lies deep on the surface",
     "bind": {},
     "reason": "extra reach",
     "type": "then"
    }
   ],
   "fallback": [],
-  "fallback_for": [
+  "fallback_for": [],
+  "alternative": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the target is just beyond the arm envelope",
-    "type": "recover"
+    "skill_id": "skill_005",
+    "verb": "crouch",
+    "when": "the target is low rather than far away",
+    "bind": {}
    }
-  ],
-  "alternative": []
+  ]
  },
  "failure": {
   "codes": [

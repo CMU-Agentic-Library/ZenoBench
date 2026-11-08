@@ -17,7 +17,7 @@
    "radius_m"
   ]
  },
- "description": "Push several objects on one support toward their centroid until they form a cluster (radius 12 cm), without grasping them.",
+ "description": "Push several objects on one support toward their centroid until they all lie within radius_m of it, without grasping them.",
  "use_when": "Several small objects on one support must be gathered into a cluster.",
  "not_to_be_confused_with": {
   "arrange": "arrange picks and places; sweep only pushes.",

@@ -16,6 +16,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - `name`: positional_or_keyword; required
 - `height_m`: positional_or_keyword; required
 - `tolerance`: keyword_only; optional
+- `down_only`: keyword_only; optional
 
 ## Binding and status
 

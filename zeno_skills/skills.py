@@ -24,111 +24,142 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from .annotations import rz
+from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing, lifting
 from .evaluator import quat_R
-from .kinematics import gripper_rot
-from .planner import find_park, joint_reachable, plan_path, torque_ratio
-from .rig import Dropped, SkillFailure
-from .sticky import note_grasp, rest_R, welded
+from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
+from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
+from .planner import find_park, find_park_set, joint_reachable, torque_ratio
+from .motion_state import Failure, at_base, with_arm, with_width
+from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
+                  SkillFailure, relay_approach)
+from .park_search import Problem, find_park as find_skill_park
+from .run import observe, run
+from .skill_plans import plan_pick, plan_place
+from .sticky import SHUT, note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
-EDGE_GRIP_DEPTH = 0.045       # edge pinch: TCP up to this far inside the gripped edge
-EDGE_PAD_CLEAR = 0.025        # ... but the lower pad stays this far outside the support edge
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
 PLACE_LEVEL_MIN = 5.0        # deg: a held object tilted more than this is levelled for the place
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
 PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
+# the open hand reached the grasp pose within this, else it was stopped short (blocked) and does
+# not close: reach errors 0.1-0.4 mm in benchmark/runs/pick612_verify, 34.6 mm where a finger
+# rode on a mug's wall (T13 no_cup, fingers_cover_1105)
+PICK_REACH_TOL = 0.005
+APPROACH_STEP = 0.003         # m between the waypoints of a reach-in / set-down straight (the search's plan and its execution)
+# each finger closed at least this far from the opening it was given, and stopped short of shut:
+# it met the object (a finger left at the opening touched nothing -- [0.0102, 0.04] on T13's mug,
+# welded and carried as held)
+GRIP_CLOSED_BY = 0.003
+PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
+# m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
+# vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
+PAD_FLOOR_GAP = 0.022 - PAD_TIP
+PLACE_APPROACH = 0.05         # m: wipe's press straight (tooluse); place measures its set-down (skill_plans.set_down_length)
 
 
 # ---------------------------------------------------------------- navigation
+SAME_POSTURE = 0.02           # rad: postures no joint of which differs by more are one (no swing, no chain step);
+                              # inherited from the base plan's posture chain (ea47359), unmeasured
+AT_PARK_M = 0.02              # m and deg: a base this close to a park is at it (no drive); inherited, unmeasured
+AT_PARK_DEG = 2.0
+BLOCKED_PROBE_M = 0.4         # m toward the goal a blocked base plan is probed at, per posture (diagnostic only)
+CARRY_SPOTS = ((0.35, -0.10), (0.40, -0.25), (0.45, -0.15), (0.45, -0.30))   # base-frame TCP xy, m
+CARRY_SPOT_COST = 2.0         # rad of joint travel a carry spot 1 m off the first (the body's centre line) costs
+CARRY_RISE = 0.15             # m: carry heights from the lowest allowed up to this much higher
+CARRY_YAWS = 8                # hand turns about the world vertical tried at each carry spot (the load stays level)
+CARRY_BODY_W = 3.0            # torso and waist off upright count this many times an arm joint's travel
+
+
+def _carry_goals(base, tcp, R, z_lo):
+    """The carry goal set at base pose ``base`` (x, y, yaw_deg) for a load held at (tcp, R): the
+    CARRY_SPOTS at heights from z_lo (the TCP's lowest) up, the hand turned about the world
+    vertical in CARRY_YAWS steps.  (goals [(p, R)], cost per goal)."""
+    zs = sorted({round(z, 3) for z in (z_lo, max(z_lo, tcp[2]), z_lo + CARRY_RISE)})
+    x, y, yaw = base
+    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    turns = [Rotation.from_euler("z", 2 * math.pi * k / CARRY_YAWS).as_matrix() @ R for k in range(CARRY_YAWS)]
+    goals, cost = [], []
+    for lx, ly in CARRY_SPOTS:
+        for z in zs:
+            for Rk in turns:
+                goals.append((np.array([x + c * lx - s * ly, y + s * lx + c * ly, z]), Rk))
+                cost.append(CARRY_SPOT_COST * math.hypot(lx - CARRY_SPOTS[0][0], ly - CARRY_SPOTS[0][1]))
+    return goals, cost
+
+
+def _carry_ref(kin, q):
+    """(posture, per-joint weights) the carry goal set's IK solutions are sought near and scored
+    from: q with the body upright -- torso up, waist straight (a pick leaves them where it reached
+    from; bent forward, the carry posture blocked every park beside the counter)."""
+    upright = np.asarray(q, float).copy()
+    upright[0], upright[1] = float(kin.hi[0]), 0.0
+    return upright, np.r_[CARRY_BODY_W, CARRY_BODY_W, np.ones(len(upright) - 2)]
+
+
+def _carry_goal_set(rig, name):
+    """carry_goals for skill_plans.plan_pick: at a State with ``name`` held and the hand at q, the
+    carry goal set of _carry_pose (its spots from the base, heights from the load's bottom up to
+    CARRY_Z, the turns about the vertical), sought near the upright body (_carry_ref); a container
+    on a rim pinch slower and smooth (it swings out of the pads on a fast sweep)."""
+    from .primitives import PoseSet
+    from .skill_plans import held_frame
+    kin = rig.kin
+    frame, lo, hi = kin.motion._box_of(name)
+    corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+    rim = bool(rig.ann.asset_of(rig.ann.objects[name]).get("container"))
+
+    def carry_goals(state, q):
+        held = state.held(kin.side)
+        tcp, R = kin.tcp(np.asarray(q, float))
+        T = held_frame(kin, q, held)
+        hang = max(0.0, float(tcp[2] - (corners @ T[:3, :3].T + T[:3, 3])[:, 2].min()))
+        goals, cost = _carry_goals(state.base, tcp, R, CARRY_Z + hang)
+        upright, weights = _carry_ref(kin, q)
+        return PoseSet(tuple(goals), tuple(cost), upright, weights), \
+            {"step": 0.005 if rim else 0.01, "steps_per_wp": 6 if rim else 4, "smooth": rim}
+    return carry_goals
+
+
 def _carry_pose(rig, min_bottom_z=None):
-    """Held object: lift to CARRY_Z (floor picks) and bring it next to the
-    body so the arm does not stick out through doorways.  The held object's box
-    is planned clear of the world on the way (a lifted pot lid was swept into its pot)."""
-    with rig.held_collision():
-        _carry_moves(rig, min_bottom_z)
-
-
-def _carry_moves(rig, min_bottom_z):
+    """Held object: bring it in front of the body, near its centre line (held out to the side,
+    objects caught on door frames), its bottom at least CARRY_Z (floor picks) or ``min_bottom_z``
+    up and not lowered.  The carry spots and heights are one goal set (Rig.move_to_any, _carry_goals),
+    each with the hand turned about the world vertical through the TCP in CARRY_YAWS steps (a level
+    load does not care where it faces; the grasp's own heading may need the arm on another IK
+    branch): the planner takes the load there with its tilt held and the load in the collision
+    model."""
     rig.sync_world()
-    low_load = float(rig.geo.bottom(rig.held["name"], rig.state())[2]) < 0.30
-    if low_load and (rig.q_cmd[0] < rig.kin.hi[0] - 0.05 or abs(rig.q_cmd[1]) > 0.05):
-        # only after a floor pick (load near the floor): straightening a deep
-        # waist bend swung a rim-held bowl taken out of the microwave
-        # stand up with the load first (after a floor pick the torso is down
-        # and the arm alone cannot lift the load to carry height)
-        try:
-            # slowly, torso first then waist: a fast 0.57 rad waist swing threw
-            # a rim-held bowl out of the pinch
-            for j, v in ((0, float(rig.kin.hi[0])), (1, 0.0)):
-                q_goal = rig.q_cmd.copy()
-                q_goal[j] = v
-                if abs(rig.q_cmd[j] - v) > 0.01:
-                    rig.follow(rig.joint_path(q_goal, "carry_stand_up"), steps_per_wp=12)
-                    check_held(rig, "carry_stand_up")
-        except Dropped:
-            raise
-        except SkillFailure as exc:
-            rig.log("carry_stand_up_short", reason=str(exc))
     tcp, R = rig.kin.tcp(rig.q_cmd)
-    rig.kin.coll_kw = {"ignore_fingers": True}
+    # the fingers in the model too: a carry planned without them dragged them through the island
+    # right after a pick (P15), the load left behind
+    rig.kin.coll_kw = {}
     hang = max(0.0, tcp[2] - float(rig.geo.bottom(rig.held["name"], rig.state())[2]))
     if min_bottom_z is not None and rig.held.get("kind") == "edge":
-        min_bottom_z += 0.06       # an edge-held book droops: its free end needs more clearance
-    target_bottom_z = max(CARRY_Z, min_bottom_z or 0.0)
-    up = tcp + np.array([0, 0, max(0.06, target_bottom_z + hang - tcp[2])])
-    for p, coll in ((up, True), (up, False), (tcp + np.array([0, 0, 0.03]), False)):
-        try:
-            rig.move_to(p, R, step=0.005, steps_per_wp=5, label="carry_up", collision=coll)
-            break
-        except SkillFailure:
-            continue
-    # bring the hand in front of the body, near its centre line (base frame
-    # x 0.35, y -0.10): held out to the side, objects caught on door frames
-    x, y, yaw = rig.base_pose()
-    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-    tcp, R = rig.kin.tcp(rig.q_cmd)
-    low_ok = min_bottom_z is None or 0.6 - hang >= min_bottom_z       # the 0.6 m fallback must respect the minimum
-    options = ((0.35, -0.10, tcp[2]),) + (((0.35, -0.10, 0.6),) if low_ok else ()) + ((0.40, -0.25, tcp[2]),)
-    # lower (but still above the requested bottom) and further out: a can
-    # held high with no IK at the first options stayed out at the side for
-    # the whole drive and the place then swung it out of the pinch
-    z_min = tcp[2] if min_bottom_z is None else max(min_bottom_z + hang + 0.01, 0.0)
-    options += tuple((lx, ly, z) for z in sorted({round(min(tcp[2], max(z_min, zz)), 3) for zz in (0.95, 0.85)},
-                                                   reverse=True)
-                     for lx, ly in ((0.35, -0.10), (0.45, -0.15), (0.45, -0.30)))
+        # an edge-held book droops further on the way: its free end needs more clearance (step 3c:
+        # the droop goes into the held object's model with place_flat)
+        min_bottom_z += 0.06
+    goals, cost = _carry_goals(rig.base_pose(), tcp, R, max(CARRY_Z, min_bottom_z or 0.0) + hang)
+    if any(np.linalg.norm(p - tcp) < 0.01 and
+           np.linalg.norm(Rotation.from_matrix(Rg @ R.T).as_rotvec()) < 0.05 for p, Rg in goals):
+        return                # already at a carry spot (a skill brought it there before its park search)
     rim = bool(rig.ann.asset_of(rig.ann.objects[rig.held["name"]]).get("container"))
-
-    def bring_in():
-        for lx, ly, z in options:
-            w = np.array([x + c * lx - s * ly, y + s * lx + c * ly, z])
-            try:
-                # a rim-pinched bowl swings out of the pads on a fast sweep
-                rig.move_to(w, R, step=0.005 if rim else 0.01, steps_per_wp=6 if rim else 4, label="carry_in",
-                            smooth=rim)
-                check_held(rig, "carry_in")
-                return True
-            except Dropped:
-                raise
-            except SkillFailure:
-                continue
-        return False
-    if bring_in():
-        return
-    # far out at the side (a side pick): straight up first, then half-way in
-    goal0 = np.array([x + c * 0.35 + s * 0.10, y + s * 0.35 - c * 0.10, tcp[2]])
-    for via in (tcp + np.array([0, 0, 0.08]), 0.5 * (tcp + goal0), 0.5 * (tcp + goal0) + np.array([0, 0, 0.08])):
-        try:
-            rig.move_to(via, R, step=0.005, steps_per_wp=6, label="carry_in_via", smooth=True)
-            check_held(rig, "carry_in_via")
-        except Dropped:
-            raise
-        except SkillFailure:
-            continue
-        if bring_in():
-            return
-    rig.log("carry_in_failed", tcp=np.round(tcp, 3).tolist())
+    upright, weights = _carry_ref(rig.kin, rig.q_cmd)
+    try:
+        # a rim-pinched bowl swings out of the pads on a fast sweep
+        rig.move_to_any(goals, step=0.005 if rim else 0.01, steps_per_wp=6 if rim else 4, label="carry_in",
+                        allow=FREE_ELSE_STRAIGHT, smooth=rim, cost=cost, prefer=upright, weights=weights)
+    except Dropped:
+        raise
+    except SkillFailure as exc:
+        # no carry spot the planner takes the load to from here (the arm left on an IK branch
+        # none of them is on, e.g. after a far pick: step 3b makes pick choose a branch that joins
+        # the carry pose): nothing has moved, and the load rides as it is -- the base planner
+        # checks the whole robot with it (navigate, relocate)
+        rig.log("carry_pose_kept", reason=str(exc))
+    check_held(rig, "carry_in")
 
 
 def check_held(rig, label):
@@ -154,78 +185,6 @@ def check_held(rig, label):
         rig.held = None
         rig.grip(0.04, 20)
         raise Dropped(f"{label}: {h['name']} slipped out of the hand while carrying it")
-
-
-def _load_near_furniture(rig, margin=0.02):
-    """Is the held object above a support surface (within ``margin``)?"""
-    st = rig.state()
-    name = rig.held["name"]
-    c = rig.geo.centre(name, st)
-    low = float(_lowest_z(rig, name, st))
-    for s in rig.ann.supports:
-        if str(s.get("category")) == "floor" or s["z"] < 0.05:
-            continue
-        x0, y0, x1, y1 = s["aabb_xy"]
-        if x0 - margin <= c[0] <= x1 + margin and y0 - margin <= c[1] <= y1 + margin and low < s["z"] + 0.30:
-            return True
-    return False
-
-
-def _back_off(rig, dist=0.35):
-    """Holding something next to furniture: first reverse straight out, so
-    turning in place does not sweep the object into the furniture (or a TV)."""
-    rig.sync_world()
-    x, y, yaw = rig.base_pose()
-    c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-    for d in (dist, 0.2, 0.1):
-        tx, ty = x - c * d, y - s * d
-        if all(rig.world.footprint_clear(x - c * u, y - s * u, math.radians(yaw)) for u in np.linspace(0.05, d, 4)):
-            rig.drive_base([(tx, ty, yaw)], speed=0.2)
-            bx, by, _ = rig.base_pose()
-            return max(0.0, (x - bx) * c + (y - by) * s)
-    return 0.0
-
-
-def _clear_for_tuck(rig):
-    """Move the base (shift up to 0.35 m and/or turn up to 90 deg) to the
-    nearest pose where the rest posture is collision-free and the base path
-    and the current arm posture stay clear on the way."""
-    rig.sync_world()
-    x, y, yaw = rig.base_pose()
-    kw = rig.kin.coll_kw
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    cands = []
-    for d in (0.0, 0.15, 0.25, 0.35):
-        for ang in (range(0, 360, 45) if d else [0]):
-            for dyaw in (0, 30, -30, 60, -60, 90, -90):
-                if d == 0 and dyaw == 0:
-                    continue
-                tx = x + d * math.cos(math.radians(ang))
-                ty = y + d * math.sin(math.radians(ang))
-                cands.append((d + 0.004 * abs(dyaw), tx, ty, yaw + dyaw))
-    cands.sort()
-    try:
-        for _, tx, ty, tyaw in cands:
-            ok = True
-            for u in np.linspace(0.25, 1.0, 4):
-                px, py, pyaw = x + (tx - x) * u, y + (ty - y) * u, yaw + (tyaw - yaw) * u
-                if not rig.world.footprint_clear(px, py, math.radians(pyaw)):
-                    ok = False
-                    break
-                rig.kin.set_base((px, py, 0.0), math.radians(pyaw))
-                if u < 1.0 and rig.kin.penetration(rig.q_cmd) > 0.06:
-                    ok = False             # do not sweep a deeply colliding arm further in
-                    break
-            if ok and rig.kin.free(rig.kin.rest):
-                rig.kin.set_base((x, y, 0.0), math.radians(yaw))
-                rig.drive_base([(tx, ty, tyaw)], speed=0.15, turn=0.4)
-                rig.log("tuck_clearance_move", to=[round(tx, 3), round(ty, 3), round(tyaw, 1)])
-                return True
-        return False
-    finally:
-        rig.kin.coll_kw = kw
-        bx, by, byaw = rig.base_pose()
-        rig.kin.set_base((bx, by, 0.0), math.radians(byaw))
 
 
 def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True):
@@ -255,9 +214,9 @@ def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True)
         try:
             if pull > 0:
                 rig.move_to(stage, R, step=step, steps_per_wp=5,
-                            label=f"{label}_stage", collision=False, smooth=True, q_hint=q_stage)
+                            label=f"{label}_stage", allow=FREE_ELSE_STRAIGHT, smooth=True, q_hint=q_stage)
                 check_held(rig, f"{label}_stage")
-            rig.move_to(goal, R_goal, step=step, steps_per_wp=5, label=label, collision=False, smooth=True)
+            rig.move_to(goal, R_goal, step=step, steps_per_wp=5, label=label, allow=FREE_ELSE_STRAIGHT, smooth=True)
             check_held(rig, label)
             return goal
         except SkillFailure as exc:
@@ -277,84 +236,278 @@ def check_left_held(rig, label):
     body, _ = rig.obj_pose(h["name"])
     slip = abs(float(np.linalg.norm(tcp-body))-float(np.linalg.norm(h["tcp_minus_body"])))
     fingers = rig.left_fingers()
-    if slip > 0.06 or float(fingers.sum()) < 0.004:
+    if slip > 0.05 or float(fingers.sum()) < 0.004:
         rig.log("left_dropped", obj=h["name"], during=label, slip_m=round(slip, 3),
                 fingers=fingers.round(4).tolist())
         rig.left_held = None
         raise Dropped(f"{label}: {h['name']} slipped from the left hand")
 
 
-def navigate(rig, pose, label="navigate", min_bottom_z=None):
-    """Tuck (or carry the held object), plan an A* path, drive (slower and
-    with gentler turns while carrying)."""
+def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
+    """Drive to ``pose`` on a whole-body base plan (relocate).  Empty-handed the arm folds first
+    where it stands when the arm planner finds a way (else where the base plan finds room) and
+    drives folded, hanging both arms at the side only along the stretches the fold does not fit
+    (the planner's choice, travel_postures); with a load in a hand it is brought into the carry
+    pose first, the arms stay as they are and the base drives slower (Rig.drive_base caps the speed by
+    what the hands hold).  ``arrive``: the arm posture to arrive in instead of the
+    fold (right-arm joints, or (right, left))."""
     if rig.held is None:
-        # just opened a door beside the base: reverse straight out first, so
-        # the turn onto the route does not brush the open door back (a fridge
-        # door was pushed from 60 to 45 deg open while turning away)
-        x0, y0, _ = rig.base_pose()
-        rig.sync_world()
-        near_door = np.inf
-        pts_ = np.array([[x0, y0, 0.6], [x0, y0, 1.0]])
-        for a_ in rig.ann.articulated:
-            q_, qc_, qo_ = rig.joint(a_["name"]), a_["closed_q"], a_["open_q"]
-            if a_["type"] != "revolute" or abs(q_ - qc_) < 0.2 * abs(qo_ - qc_):
-                continue
-            T_ = rig.ann.part_pose(a_, q_)
-            loc_ = (pts_ - T_[:3, 3]) @ T_[:3, :3]
-            for lo_, hi_ in a_.get("part_boxes") or [a_["part_box"]]:
-                d_ = np.linalg.norm(np.maximum(np.maximum(np.asarray(lo_) - loc_, loc_ - np.asarray(hi_)), 0.0), axis=1)
-                near_door = min(near_door, float(d_.min()))
-        if near_door < 0.75:
-            moved = _back_off(rig, dist=0.30)
-            rig.log("navigate_back_from_door", door_dist=round(near_door, 3), moved_m=round(moved, 3))
-        if not rig.tuck():
-            # The hand is still over furniture (e.g. just released into a bin on
-            # a shelf): reverse the base out first, then fold in free space.
-            moved = _back_off(rig, dist=0.35)
-            rig.log("tuck_after_back_off", moved_m=round(moved, 3))
-            if not (moved > 0.05 and rig.tuck()):
-                # e.g. parked along a wall with the right elbow toward it:
-                # shift/turn the base to where the folded arm is free
-                if not (_clear_for_tuck(rig) and rig.tuck()):
-                    raise SkillFailure(f"{label}: cannot fold the arm without hitting something")
+        rig.tuck()              # where the arm planner cannot fold it here, the base plan does (relocate)
     else:
-        # reverse out first: lifting straight up next to furniture can hit
-        # whatever stands on it (the TV on the TV stand knocked objects out).
-        # Only when the load is over a surface: a needless reverse
-        # and return drive swung a rim-held bowl out of its pinch.
-        if _load_near_furniture(rig):
-            _back_off(rig)
         _carry_pose(rig, min_bottom_z=min_bottom_z)
         if min_bottom_z is not None:
             bottom_z = float(rig.geo.bottom(rig.held["name"], rig.state())[2])
             rig.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(min_bottom_z), 3))
         check_held(rig, "carry_up")
-    rig.sync_world()
-    path = None
-    loaded = rig.held is not None or rig.left_held is not None
-    for margin in ((0.15, 0.10, 0.06) if loaded else ()):   # the carried object sticks out
-        path = plan_path(rig.world, rig.base_pose(), pose, margin=margin)
-        if path is not None:
-            rig.log("carry_clearance", margin=margin)
-            break
-    if path is None:
-        path = plan_path(rig.world, rig.base_pose(), pose)
-    if path is None:
-        raise SkillFailure(f"{label}: no base path to {pose}")
-    rig.log("path", waypoints=[[round(v, 2) for v in w] for w in path])
-    if rig.held is None and rig.left_held is None:
-        rig.drive_base(path)
-    elif rig.held is None:
-        check_left_held(rig, "left_carry_start")
-        rig.drive_base(path, speed=0.17, turn=0.30, ramp=1.2)
-        check_left_held(rig, "left_carry_end")
+    _fold_left(rig)
+    rest = _rest_posture(rig)
+    if arrive is None:
+        end = rest
+    elif isinstance(arrive, tuple):
+        end = (np.asarray(arrive[0], float), np.asarray(arrive[1], float)[-7:])
     else:
-        obj = rig.ann.asset_of(rig.ann.objects[rig.held["name"]])
-        if obj.get("container"):
-            rig.drive_base(path, speed=0.17, turn=0.30, ramp=1.2)
-        else:
-            rig.drive_base(path, speed=0.25, turn=0.5)
+        end = (np.asarray(arrive, float), rest[1])
+    relocate(rig, pose, travel_postures(rig, rest, end), label=label)
+    if rig.held is not None:
         check_held(rig, "carry")
+    if rig.left_held is not None:
+        check_left_held(rig, "left_carry")
+
+
+def base_reachable(rig, poses):
+    """Per base pose (x, y, yaw_deg): whether the column's inscribed circle can drive there from
+    where the robot stands -- one field over all of them (base_planner.distance_field rooted at the
+    robot; it is symmetric), the cheap test that base_planner.plan makes first, for a goal set.
+    Over the whole scene, as plan has it (relocate's area): a route may leave the box around the
+    start and the poses (T12 s11: bookcase to desk_1 through the doorway)."""
+    from . import base_planner as bp
+    x, y, _ = rig.base_pose()
+    cells = [(int(round((p[0] - x) / bp.RES)), int(round((p[1] - y) / bp.RES))) for p in poses]
+    rig.sync_world()
+    a = scene_area(rig.world)
+    bounds = (min(int(math.floor((a[0] - x) / bp.RES)), 0, *[c[0] for c in cells]),
+              min(int(math.floor((a[1] - y) / bp.RES)), 0, *[c[1] for c in cells]),
+              max(int(math.ceil((a[2] - x) / bp.RES)), 0, *[c[0] for c in cells]),
+              max(int(math.ceil((a[3] - y) / bp.RES)), 0, *[c[1] for c in cells]))
+    D, i0, j0 = bp.distance_field(rig.world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
+    return reached_cells(D, i0, j0, cells)
+
+
+def reached_cells(D, i0, j0, cells):
+    """Per lattice cell: the field D reaches it or one of its 8 neighbours -- a goal cell counts as
+    passable, as base_planner.plan has it (the goal pose is checked on its own; a park beside
+    furniture may sit in a cell the inscribed circle does not clear)."""
+    out = []
+    for i, j in cells:
+        win = D[max(0, i - i0 - 1):i - i0 + 2, max(0, j - j0 - 1):j - j0 + 2]
+        out.append(bool(np.isfinite(win).any()))
+    return out
+
+
+def travel_postures(rig, rest, end):
+    """navigate's posture chain: the fold, the hanging detour (empty-handed: both arms at the side,
+    kin.drive), the arrival.  Where the arrival is the fold the planner passes to it without a
+    swing and hangs only where the path needs it (base_planner.Lattice.skip)."""
+    hang = rest if rig.held is not None or rig.left_held is not None else (rig.kin.drive, rig.left_kin.drive[2:])
+    return [("fold", rest), ("hang", hang), ("arrive", end)]
+
+
+def posture_sets(rig, postures):
+    """For base_planner.plan: (sphere sets per posture, per switch a few sets for the lattice,
+    per switch the sets every DENSE of motion) of postures [(right, left)]."""
+    from . import base_planner
+    motion = rig.kin.motion
+    sets = motion.body_spheres(rig, postures)
+    switches, dense = [], []
+    for (ra, la), (rb, lb) in zip(postures[:-1], postures[1:]):
+        us = np.linspace(0, 1, base_planner.SWITCH_FINE)
+        fine = motion.body_spheres(rig, [(ra + (rb - ra) * u, la + (lb - la) * u) for u in us])
+        switches.append(fine[np.round(np.linspace(0, len(fine) - 1, base_planner.SWITCH_SAMPLES)).astype(int)])
+        dense.append(base_planner.dense_sets(fine))
+    return sets, switches, dense
+
+
+def _rest_posture(rig):
+    """(right, left) travel posture: each empty arm folded, an arm with a load as it is."""
+    return (rig.kin.rest.copy() if rig.held is None else rig.q_cmd.copy(),
+            rig.left_kin.rest[2:].copy() if rig.left_held is None else rig.left_q_cmd.copy())
+
+
+def relocate(rig, goal, postures=(), label="relocate", **drive):
+    """Move the base to ``goal`` (x, y, yaw_deg; None: as little as possible) on a whole-body plan
+    (base_planner): the arms leave their current posture and pass through ``postures`` -- [(name,
+    (right, left))] -- in order, each switch made where the base stands clear of everything with
+    the arms anywhere between the two postures (a straight joint move).
+    Nothing near the start or goal is exempt.  ``drive``: drive_base speeds.  SkillFailure when
+    there is no such plan."""
+    from .clearance import FREE
+    steps, chain = _base_plan(rig, goal, postures, label)
+    for st in steps:
+        if st.kind == "drive":
+            rig.log("path", target=label, posture=chain[st.mode][0],
+                    waypoints=[[round(v, 2) for v in w] for w in st.path[1:]])
+            rig.drive_base(st.path[1:], allow=FREE, **drive)
+        else:
+            name, (qr, ql) = chain[st.mode + 1]
+            rig.swing(qr, ql, f"{label}_{name}")
+
+
+def _base_plan(rig, goal, postures, label):
+    """relocate's plan: ([base_planner.Step], the posture chain), or SkillFailure."""
+    from . import base_planner
+    rig.sync_world()
+    motion = rig.kin.motion
+    if motion is None:
+        raise SkillFailure(f"{label}: no whole-body model (cuRobo) to plan the base with")
+    chain = [("start", (rig.q_cmd.copy(), rig.left_q_cmd.copy()))]
+    for name, (qr, ql) in postures:
+        qr, ql = np.asarray(qr, float), np.asarray(ql, float)[-7:]
+        if np.max(np.abs(qr - chain[-1][1][0])) < SAME_POSTURE and np.max(np.abs(ql - chain[-1][1][1])) < SAME_POSTURE:
+            continue
+        chain.append((name, (qr, ql)))
+    sets, switches, dense = posture_sets(rig, [c[1] for c in chain])
+    import time
+    t0 = time.perf_counter()
+    area = scene_area(rig.world)
+    with motion.base_world(area[:2], area[2:]):
+        steps, lat = base_planner.plan(lambda poses, sph: motion.base_depths(rig, poses, sph), rig.base_pose(),
+                                       goal, sets, switches, area=area, footprint=rig.world.footprints_clear,
+                                       passable=rig.world.circles_clear, dense_switches=dense)
+    rig.log("base_plan", target=label, goal=None if goal is None else [round(float(v), 3) for v in goal],
+            postures=[c[0] for c in chain], poses_checked=lat.evaluated, found=steps is not None,
+            expanded=getattr(lat, "expanded", 0), rounds=getattr(lat, "rounds", 0),
+            seconds=round(time.perf_counter() - t0, 2),
+            start_footprint=bool(rig.world.footprint_clear(*rig.base_pose()[:2], math.radians(rig.base_pose()[2]))),
+            why=lat.why, tol0=round(lat.tol0, 4), visited=getattr(lat, "visited", None) if steps is None else None)
+    if steps is None:
+        hit = None
+        if goal is not None and "goal pose" in (lat.why or ""):
+            hit = motion.base_explain(rig, (goal[0], goal[1], math.radians(goal[2])), sets[-1])
+        elif lat.tol0 > 0:
+            x, y, yaw = rig.base_pose()
+            hit = motion.base_explain(rig, (x, y, math.radians(yaw)), sets[0])
+        if goal is not None:
+            x, y, yaw = rig.base_pose()
+            d = np.array(goal[:2]) - [x, y]
+            p_ = np.array([x, y]) + d / max(np.linalg.norm(d), 1e-9) * BLOCKED_PROBE_M
+            for m, (name, _) in enumerate(chain):
+                rig.log("base_plan_probe", target=label, posture=name,
+                        hit=motion.base_explain(rig, (p_[0], p_[1], math.radians(yaw)), sets[m]),
+                        footprint=bool(rig.world.footprint_clear(p_[0], p_[1], math.radians(yaw))))
+        rig.log("base_plan_blocked", target=label, hit=hit)
+        raise SkillFailure(f"{label}: {lat.why}" + (f" ({hit[0][0]} in {hit[0][1]} {hit[0][2]} mm)" if hit else ""))
+    return steps, chain
+
+
+def poses_clear(rig, poses):
+    """The base poses [(x, y, yaw_deg)] where the arms and what the hands hold stand clear of the
+    world in the posture navigate arrives in (each empty arm folded, a loaded one as it is): goals
+    the base planner accepts (the caller checks the footprint).  All of them without cuRobo."""
+    from . import base_planner
+    motion = rig.kin.motion
+    if motion is None or not poses:
+        return list(poses)
+    rig.sync_world()
+    d = motion.base_depths(rig, np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses]),
+                           motion.body_spheres(rig, [_rest_posture(rig)]))[0]
+    return [p for p, dp in zip(poses, d) if dp <= base_planner.DEPTH_TOL]
+
+
+def scene_area(world):
+    """(x0, y0, x1, y1) the base may drive in: the annotated furniture's extent."""
+    B = world.B[world.B[:, 2] > -0.5]
+    return float(B[:, 0].min()), float(B[:, 1].min()), float(B[:, 3].max()), float(B[:, 4].max())
+
+
+def plan_drive(rig, goal, label="drive"):
+    """Waypoints [(x, y, yaw_deg)] after the start of a whole-body base path to ``goal`` with the
+    arms as they are (for callers that drive it themselves); SkillFailure when there is none."""
+    steps, _ = _base_plan(rig, goal, (), label)
+    return [w for st in steps for w in st.path[1:]]
+
+
+def straight_base_move(rig, target, label, **drive):
+    """Drive straight to ``target`` (x, y, yaw_deg) -- a turn in place, a sidestep: the motion the
+    caller asks for, not a search -- after checking the whole robot (arms as they are, what the
+    hands hold, base column) along it; it may not sink deeper than it starts.  SkillFailure
+    (nothing moves) when it is blocked."""
+    from . import base_planner
+    from .clearance import FREE
+    rig.sync_world()
+    motion = rig.kin.motion
+    x, y, yaw = rig.base_pose()
+    tx, ty, tyaw = target
+    tyaw = yaw + (tyaw - yaw + 180.0) % 360.0 - 180.0
+    if motion is not None:
+        sph = motion.body_spheres(rig, [(rig.q_cmd, rig.left_q_cmd)])
+        poses = base_planner.segment((x, y, math.radians(yaw)), (tx, ty, math.radians(tyaw)),
+                                     float(np.max(np.hypot(sph[0][:, 0], sph[0][:, 1]))))
+        us = np.linspace(0, 1, len(poses))
+        d = motion.base_depths(rig, poses, sph)[0]
+        low = rig.world.footprints_clear(poses)
+        bad = (d > d[0] + base_planner.DEPTH_TOL) | ~low
+        bad[0] = False
+        if bad.any():
+            k = int(np.argmax(bad))
+            raise SkillFailure(f"{label}: blocked {us[k] * 100:.0f}% of the way (" +
+                               (f"{d[k] * 1000:.0f} mm into the world)" if d[k] > d[0] + base_planner.DEPTH_TOL else "base footprint)"))
+    rig.drive_base([(tx, ty, tyaw)], allow=FREE, **drive)
+
+
+def drive_to(rig, goal, label="drive_to", **drive):
+    """The base to ``goal`` on a whole-body plan, the arms as they are (relocate)."""
+    relocate(rig, goal, (), label=label, **drive)
+
+
+def fold_where_possible(rig, label="fold"):
+    """Fold the right arm: where it stands when the arm planner finds a way (Rig.tuck), else after
+    the least base move that lets it fold straight (relocate without a goal).  Whether it is folded."""
+    if rig.tuck(hang=False):
+        return True
+    try:
+        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label)
+    except SkillFailure as exc:
+        rig.log("fold_blocked", reason=str(exc)[:200])
+        return False
+    return True
+
+
+def _swing_arm(rig, side, arm_q, label):
+    """Move one arm's joints (torso and waist kept) to ``arm_q``: straight in joint space when
+    that is clear, else a cuRobo trajectory.  False (logged) when neither exists."""
+    kin = rig.kin if side == "right" else rig.left_kin
+    start = rig.q_cmd.copy() if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+    goal = np.r_[start[:2], np.asarray(arm_q, float)[2:]]
+    if np.max(np.abs(goal - start)) < SAME_POSTURE:
+        return True
+    rig.clear.motion(label, FREE, side=side)
+    if kin.segment_free(start, goal):
+        vias = [goal]
+    else:
+        vias, status = kin.plan(start, goal)
+        if vias is None:
+            rig.log(f"{label}_blocked", side=side, status=str(status))
+            return False
+    if side == "right":
+        rig.follow(rig.joint_path_via(vias))
+    else:
+        qs, qa = [], start
+        for qb in vias:
+            qs += rig._dense(qa, np.asarray(qb, float))
+            qa = qb
+        rig.left_follow(qs)
+    rig.log(label, side=side)
+    return True
+
+
+def _fold_left(rig):
+    """An empty left arm left out (a brace, a hold released) folds to its travel posture
+    before the base drives: straight when that is clear, else a cuRobo trajectory; when
+    neither exists it stays where it is."""
+    if rig.left_held is not None:
+        return
+    rig.sync_world()
+    _swing_arm(rig, "left", rig.left_kin.rest, "left_fold")
 
 
 def _travel_q(rig):
@@ -364,9 +517,189 @@ def _travel_q(rig):
 
 def _goto_park(rig, park, min_bottom_z=None):
     x, y, yaw, _ = park
-    bx, by, byaw = rig.base_pose()
-    if math.hypot(x - bx, y - by) > 0.02 or abs((yaw - byaw + 180) % 360 - 180) > 2:
+    if not _at_park(rig, x, y, yaw):
         navigate(rig, (x, y, yaw), min_bottom_z=min_bottom_z)
+
+
+def _at_park(rig, x, y, yaw):
+    """The base already at the park (_goto_park does not drive: the arm stays as it is)."""
+    bx, by, byaw = rig.base_pose()
+    return math.hypot(x - bx, y - by) <= AT_PARK_M and abs((yaw - byaw + 180) % 360 - 180) <= AT_PARK_DEG
+
+
+def _relay_check(rig, goal, plans, travel_q):
+    """find_park check of a relay pose entered straight, ``goal`` (x, y, yaw, qs) -> (p, R, u, L,
+    a solution of the straight's start): the motion to it made the way it is executed
+    (rig.relay_approach), from the posture the arm is in at that park, kept in ``plans`` under
+    _park_key for Rig.move_relay.  Only the pick in the microwave still uses it (step 6.4); the
+    rest plans the whole skill (skill_plans, park_search)."""
+    kin = rig.kin
+
+    def check(x, y, yaw, qs):
+        if kin.motion is None:
+            return True
+        p, R, u, L, q_hint = goal(x, y, yaw, qs)
+        q_from = rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else np.asarray(travel_q, float)
+        with rig._fingers_checked(kin):
+            plan, why = relay_approach(kin, q_from, p, R, u, L, carry=rig._carrying(), step=APPROACH_STEP,
+                                       q_hint=q_hint)
+        if plan is None:
+            reason = why.split(":")[0]
+            LAST_RELAY_DIAG[reason] = LAST_RELAY_DIAG.get(reason, 0) + 1
+            return False
+        plan["q_from"] = q_from
+        plans[_park_key(x, y, yaw, qs)] = plan
+        return True
+    return check
+
+
+LAST_RELAY_DIAG: dict = {}    # why _relay_check turned parks down, by reason (for failure messages)
+
+
+def _diag(fail):
+    """Count a plan that could not be made at a park, by segment and reason (LAST_RELAY_DIAG)."""
+    key = f"{fail.segment}: {fail.why.split(' (')[0]}"
+    LAST_RELAY_DIAG[key] = LAST_RELAY_DIAG.get(key, 0) + 1
+
+
+def _turn(Ra, Rb):
+    return math.acos(np.clip((np.trace(np.asarray(Ra).T @ np.asarray(Rb)) - 1) / 2, -1.0, 1.0))
+
+
+def _grasp_of(name, g):
+    return {"name": name, "p": np.asarray(g["p"], float), "R": np.asarray(g["R"], float),
+            "pre_open": float(g["pre_open"]), "kind": "edge" if g["kind"] == "thickness_pinch" else "pinch"}
+
+
+PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
+
+
+def _pick_find_park(rig, name, cands, near, fridge_shelf):
+    """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
+    the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
+    relay pose the ranking solves), and a park counts when the whole pick plans from it
+    (skill_plans.plan_pick, from the posture the arm arrives in, the hand opened to the
+    candidate's width).  (Found or None, diag, the carry goal set)."""
+    kin = rig.kin
+    state = observe(rig)
+    carry_goals = _carry_goal_set(rig, name)
+    goals = []
+    for i, g in enumerate(cands):
+        u, L = _grasp_approach(g)
+        start = np.asarray(g["p"], float) - L * np.asarray(u, float) / np.linalg.norm(u)
+        goals.append(((start, np.asarray(g["p"], float), np.asarray(g["p"], float) + [0, 0, PICK_LEAVE_CHECK]),
+                      (start, np.asarray(g["R"], float)), PICK_CAND_COST * i))
+
+    def build(s, k, q_rank):
+        g = cands[k]
+        return plan_pick(kin, with_width(s, kin.side, g["pre_open"]), _grasp_of(name, g), *_grasp_approach(g),
+                         carry_goals, q_hint=q_rank, step=APPROACH_STEP)
+
+    travel = _travel_q(rig)
+    arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
+    if fridge_shelf:
+        # the fridge shelf behind its door: its open side first (a known good park)
+        problem = Problem(tuple(goals), build, arrive, travel, near=rig.base_pose()[:2], prefer=(near,),
+                          label=f"pick {name}")
+    else:
+        problem = Problem(tuple(goals), build, arrive, travel, near=near, label=f"pick {name}")
+    found, diag = find_skill_park(rig, problem, state)
+    return found, diag, carry_goals
+
+
+def _pick_run(rig, name, g, park, plan, carry_goals):
+    """Run the pick's plan from the park (run.run).  A grasp re-read off the one planned for
+    (HINT_REACH / HINT_TURN) has the plan made again from here first.  Between the segments the
+    pick's own steps: the object watched on the way in, the reach checked, the pinch judged and
+    the load registered as held, the carry checked.  Returns the TCP where the hand closed."""
+    kin = rig.kin
+    grasp = _grasp_of(name, g)
+    u, L = _grasp_approach(g)
+    planned = next((sg for sg in plan.segments if sg.name == "pick_grasp"), None) if plan is not None else None
+    if planned is None or np.linalg.norm(planned.target[1] - grasp["p"]) > HINT_REACH or \
+            _turn(planned.target[2], grasp["R"]) > HINT_TURN:
+        rig.log("pick_plan_again", obj=name, why="no plan" if planned is None else "the grasp moved")
+        plan = plan_pick(kin, observe(rig), grasp, u, L, carry_goals, step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
+    reach = next((sg for sg in plan.segments if sg.name == "pick_reach" and sg.qs), None)
+    hint0 = None if reach is None else reach.q_end
+    out = {}
+
+    def rebuild(state, frm):
+        hint = None if hint0 is None else rig._goal(grasp["p"] - L * np.asarray(u) / np.linalg.norm(u),
+                                                    grasp["R"], hint0)
+        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_hint=hint, step=APPROACH_STEP)
+
+    def after_grasp(rig):
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - grasp["p"]))
+        if kin.motion is not None:
+            # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
+            rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
+                    hits=kin.motion.contacts_by_owner(kin, rig.q_cmd, kin._other_q()))
+        if err > PICK_REACH_TOL:
+            # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
+            rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
+            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+            rig.focus_z = None
+            raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
+
+    def before_close(rig):
+        rig.caption = f"PICK {name}: close gripper"
+        if kin.motion is not None and kin.motion.by_owner.get(f"object:{name}"):
+            out["T_obj0"], out["q_grasp"] = kin.motion.object_frames()[name], rig.q_cmd.copy()
+
+    def after_close(rig):
+        f = rig.fingers()
+        if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
+            # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
+            # with an open hand clear of the neighbours; nothing is held, so nothing is welded
+            rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False,
+                    why="not pinched")
+            rig.grip(0.04, 60)
+            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+            rig.focus_z = None
+            raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+                               f"opened to {g['pre_open']:.3f})")
+        # held from here (and welded, under sticky hands): the hand's pose as it stands
+        tcp0, R = kin.tcp(rig.q())
+        rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
+                    "pre_open": g["pre_open"]}
+        if g["kind"] == "thickness_pinch":
+            # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
+            rig.held.update(edge_held(rig, name, tcp0, R))
+        out["tcp0"] = tcp0
+        if "T_obj0" in out:
+            # the hold a plan assumes (the load where it stood, the hand where it closed) against the
+            # hold measured now: what skill_plans.HELD_POSE_MARGIN stands for
+            rig.sync_world()
+            p_g, R_g = kin.tcp(out["q_grasp"])
+            T_g = np.eye(4)
+            T_g[:3, :3], T_g[:3, 3] = R_g, p_g
+            planned = np.linalg.inv(T_g) @ out["T_obj0"]
+            measured = kin.motion.held_in_tcp(kin, rig.q_cmd, name)
+            rig.log("held_offset", obj=name, kind=g["kind"],
+                    offset_m=round(float(np.linalg.norm(measured[:3, 3] - planned[:3, 3])), 4),
+                    turn_deg=round(math.degrees(_turn(planned[:3, :3], measured[:3, :3])), 2))
+        rig.caption = f"PICK {name}: lift"
+
+    watch = lambda: _watching(rig, name)
+    hooks = {"pick_reach": {"around": watch}, "pick_grasp": {"around": watch, "after": after_grasp},
+             "pick_close": {"before": before_close, "after": after_close},
+             "carry_in": {"after": lambda rig: check_held(rig, "carry_in")}}
+    try:
+        run(rig, plan, rebuild, hooks)
+    except Dropped as exc:
+        raise SkillFailure(f"pick {name}: not held ({exc})")
+    return out["tcp0"]
+
+
+def _park_key(x, y, yaw, qs):
+    """Key of what a find_park check stored for one candidate: the base pose AND its solution --
+    find_park_set checks one base pose for several goals (spots, wrist turns), and keyed by the
+    pose alone the last goal checked there overwrote the plan and set-down length of the chosen
+    one (T05 pen: the set-down planned for a goal 4.7 cm and 135 deg off, 11-07)."""
+    return (x, y, yaw, tuple(np.round(np.asarray(qs[0], float), 9)))
 
 
 # ---------------------------------------------------------------- articulated
@@ -441,7 +774,7 @@ def _ride(rig, a, goal, lead=0.03, rate=0.25):
             rig.log("ride_done", q=q)
             return True
         target = q + sign * lead if sign * (goal - (q + sign * lead)) > 0 else goal + sign * 0.02
-        cmd += float(np.clip(target - cmd, -rate / 120, rate / 120))
+        cmd += float(np.clip(target - cmd, -rate / PHYSICS_HZ, rate / PHYSICS_HZ))
         M = ann.motion(a, cmd) @ Minv0
         p = M[:3, :3] @ np.array([x0, y0, 0.0]) + M[:3, 3]
         rig.set_base(p[0], p[1], yaw0 + math.degrees(math.atan2(M[1, 0], M[0, 0])))
@@ -519,9 +852,7 @@ def _move_articulated(rig, name, goal, verb):
     rig.log(f"{verb}_park", park=[round(x, 3), round(y, 3), round(yaw, 1)], hook_side="far" if flip else "near",
             tilt_deg=round(math.degrees(tilt)), grasp=grasp)
     rig.caption = f"{verb.upper()} {a['category']}: go to handle"
-    bx, by, byaw = rig.base_pose()
-    if math.hypot(x - bx, y - by) > 0.02 or abs((yaw - byaw + 180) % 360 - 180) > 2:
-        navigate(rig, (x, y, yaw))
+    _goto_park(rig, park)
     rig.kin.coll_kw = {"hand_touches_part": True}
     q_now = rig.joint(name)
     rig.log(f"{verb}_at_park", q_before=q0, q_now=q_now)
@@ -530,7 +861,7 @@ def _move_articulated(rig, name, goal, verb):
         rig.sync_world()
         p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
         bx, by, byaw = rig.base_pose()
-        if abs(q_now - q_prev) < 0.05 and math.hypot(x - bx, y - by) <= 0.02:
+        if abs(q_now - q_prev) < 0.05 and math.hypot(x - bx, y - by) <= AT_PARK_M:
             # Only a brush of the base nudged it: stay, and solve the handle
             # IK afresh from the real base pose instead of reusing stale hints.
             park_qs = (None, None, None)
@@ -556,7 +887,7 @@ def _move_articulated(rig, name, goal, verb):
         rig.kin.coll_kw = {"hand_touches_part": True} if lab == "handle" else APPROACH_KW
         rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "handle" else 3, label=f"{verb}_{lab}", q_hint=qh)
     rig.kin.coll_kw = {"hand_touches_part": True}
-    f = rig.grip(0.0, 120)
+    f = rig.grip(0.0, PHYSICS_HZ)
     # closed on the bar: both fingers stopped by it (thin arched pulls: ~5 mm)
     if not (f.min() > min(0.004, 0.3 * t) and max(0.6 * t, t - 0.007) < f.sum() < t + 0.03):
         raise SkillFailure(f"{verb} {name}: handle not grasped, fingers {f.round(4).tolist()}")
@@ -573,15 +904,15 @@ def _move_articulated(rig, name, goal, verb):
     # the hand is free already: back off as far as the arm allows, then up
     for back in (0.14, 0.08, 0.04):
         try:
-            rig.move_to(p - back * appr, R, step=0.006, steps_per_wp=4, label=f"{verb}_back", collision=False)
+            rig.move_to(p - back * appr, R, step=0.006, steps_per_wp=4, label=f"{verb}_back", allow=LEAVE_CONTACT)
             rig.move_to(p - back * appr + np.array([0, 0, 0.12]), R, step=0.01, label=f"{verb}_up",
-                        collision=False)
+                        allow=FREE_ELSE_STRAIGHT)
             break
         except SkillFailure as e:
             rig.log("retreat_short", back=back, reason=str(e))
     else:                                 # no straight retreat: at least lift the open hand off the handle
         try:
-            rig.move_to(p + np.array([0, 0, 0.08]), R, step=0.005, label=f"{verb}_up", collision=False)
+            rig.move_to(p + np.array([0, 0, 0.08]), R, step=0.005, label=f"{verb}_up", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure as e:
             rig.log("retreat_short", back=0.0, reason=str(e))
     rig.step(60)
@@ -631,6 +962,7 @@ def _move_with_retry_impl(rig, name, goal, verb):
             rig._failed_art_parks = {}
         rig._failed_art_parks.setdefault(name, []).append(last[1])
         rig.log(f"{verb}_retry_other_park", failed_park=[round(v, 3) for v in last[1]])
+        rig.grip(0.04, 40)              # let go of the handle before the arm folds away from it
         rig.tuck()
         return _move_articulated(rig, name, goal, verb)
 
@@ -724,7 +1056,7 @@ def _push_close(rig, name):
     for (tp, tR), lab, st, qh in zip(legs, ("pre_high", "pre", "contact"), (0.02, 0.01, 0.004), park[3]):
         rig.kin.coll_kw = {"hand_touches_part": True} if lab == "contact" else APPROACH_KW
         rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "contact" else 3, label=f"close_push_{lab}",
-                    q_hint=qh, collision=lab != "contact")
+                    q_hint=qh, allow=LEGACY if lab == "contact" else FREE)
     rig.kin.coll_kw = {"hand_touches_part": True}
     _ride(rig, a, goal)
     rig.step(30)
@@ -733,7 +1065,7 @@ def _push_close(rig, name):
     n_now = (rig.ann.motion(a, q) @ np.linalg.inv(rig.ann.motion(a, q0)))[:3, :3] @ normal
     for back in (0.12, 0.06):
         try:
-            rig.move_to(p_now + n_now * back, R_now, step=0.006, label="close_push_back", collision=False)
+            rig.move_to(p_now + n_now * back, R_now, step=0.006, label="close_push_back", allow=LEAVE_CONTACT)
             break
         except SkillFailure as e:
             rig.log("retreat_short", back=back, reason=str(e))
@@ -860,98 +1192,124 @@ def _overlaps_objects(rig, box, exclude, st, margin=0.02):
 
 
 # ---------------------------------------------------------------- pick
-def _grasp_legs(g):
-    appr = -g["R"][:, 2]
-    p = g["p"]
-    if g["kind"] == "top_pinch" and p[2] > 0.92:
-        # a high top pinch (a lid knob on the hob): fingers-down reach ends
-        # near 1.0 m, so approach from 5 cm instead of 12 cm above
-        return [(p - 0.05 * appr, g["R"]), (p - 0.025 * appr, g["R"]), (p, g["R"])]
-    return [(p - 0.08 * appr + np.array([0, 0, 0.04]), g["R"]), (p - 0.04 * appr, g["R"]), (p, g["R"])]
+def _grasp_approach(g):
+    """(u, L): a pinch closes in along the gripper axis u, the last L straight: one finger length and
+    LEAVE_MARGIN (pick_approach).  At the grasp only the fingers reach into what the hand closes on
+    (between a mug's walls, around a toy car's sides), along the gripper axis, so backed out by a
+    finger length they are out of it and the free motion before the line ends in the open.  At the
+    4 cm it used to be the fingertips stayed 2 cm inside a mug's rim (a rim pinch 3.5 cm deep): the
+    free leg had to bring the open hand round the rim, the planner found that once in nine tries,
+    and the park search took the one (P11, T04 no_cup kitchen mug, 2026-11-06)."""
+    return -g["R"][:, 2], pick_approach()
 
 
-def _lift_height(g):
-    return 0.045 if g["kind"] == "top_pinch" and g["p"][2] > 0.92 else 0.07
+def pick_approach():
+    """m of a pinch's straight approach: the planner's finger length (finger_model_length) and LEAVE_MARGIN."""
+    return finger_model_length() + LEAVE_MARGIN
+
+
+def _grasp_targets(g):
+    """find_park's targets of a pinch: the start of its straight approach and the grasp, both free
+    space (the open fingers checked, the object an obstacle: the hand closes where it already
+    stands), and the lift out of it (the fingers checked, the object exempt: it is in the hand
+    then).  Each with its own rule: nothing rides on the arm's coll_kw."""
+    u, L = _grasp_approach(g)
+    return [(g["p"] - L * u, g["R"], FREE_SPACE_KW), (g["p"], g["R"], FREE_SPACE_KW),
+            (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"], FINGERS_KW)]
+
+
+def _pinch_candidates(rig, obj, pos, quat, kinds, surface_z):
+    """The annotated pinches of ``obj`` at (pos, quat), and after them a square block's pinches
+    across its other pair of faces; each with ``idx``, its place in that list (the same candidate
+    at another pose of the object), a top pinch's TCP raised so its pads clear ``surface_z``."""
+    cands = rig.ann.grasp_poses(obj, pos, quat, kinds=kinds)
+    extra = []
+    if "top_pinch" in kinds and hasattr(rig.ann, "asset_of"):
+        extra = [c for c in rig.ann.grasp_poses(obj, pos, quat, kinds=("top_pinch",), extra_rotations=True)
+                 if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
+                            for c0 in cands)]
+    for i, c in enumerate(cands + extra):
+        c["idx"] = i
+        if c["kind"] == "top_pinch":
+            c["p"] = _pads_clear_of(c, surface_z)
+    return cands, extra
+
+
+def _surface_under(rig, name, st):
+    """The surface a pinch's pads must clear under ``name``: the annotated support it rests on, or
+    the lowest point of its box where that is higher (a container's floor).  Not the box's bottom
+    face: a curved spoon's box hangs 4.7 mm below the island it lies on, and pads 2 mm above that
+    face went into the island.  With no annotated support (the floor) the highest static collider
+    under it below its centre, where that is above its box's lowest point: T12's toy car on a rug,
+    its box 3.6 mm into the rug's collider, was pinched with the fingers in the rug (Motion.static_top)."""
+    o = st["objects"][name]
+    size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
+    c = rig.geo.centre(name, st)
+    low = float(c[2] - 0.5 * np.abs(quat_R(o["quat"])[2, :]) @ size)
+    sup = rig.geo.support_under(name, st)
+    if sup is not None:
+        return max(low, float(sup["z"]))
+    motion = getattr(rig.kin, "motion", None)
+    top = None
+    if motion is not None and hasattr(motion, "static_top"):
+        fp = rig.geo.footprint(name, st)
+        top = motion.static_top(fp[:2], fp[2:], float(c[2]))
+    return low if top is None else max(low, top)
+
+
+def _pads_clear_of(g, floor_z):
+    """A top pinch's TCP raised, where needed, so the lowest corner of its open fingers as the
+    planner has them (finger_model_box: the spheres' box, which holds the pad box; opened to
+    g["pre_open"] per finger, in the pinch's orientation: a tilted one dips a corner) stays
+    PAD_FLOOR_GAP above the surface at floor_z (_surface_under)."""
+    w = float(g["pre_open"])
+    half_w, y_in, y_out, tip = finger_model_box()
+    corners = np.array([[sx * half_w, sy * (w + t), -tip]
+                        for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+    low = float((corners @ np.asarray(g["R"], float).T)[:, 2].min())
+    p = np.asarray(g["p"], float).copy()
+    p[2] = max(p[2], floor_z + PAD_FLOOR_GAP - low)
+    return p
+
+
+@contextmanager
+def _hand_opened(rig, width):
+    """Collision queries inside see the right hand opened to ``width`` (Motion.hand_open)."""
+    motion = getattr(rig.kin, "motion", None)
+    if motion is None or not hasattr(motion, "hand_open"):
+        yield
+        return
+    with motion.hand_open("right", width):
+        yield
+
+
+def _watching(rig, name):
+    """rig.clear.watch(name), nothing in minimal rig stubs."""
+    clear = getattr(rig, "clear", None)
+    return clear.watch(name) if clear is not None and hasattr(clear, "watch") else nullcontext()
 
 
 def pick(rig, name, max_candidates=12):
-    """Pinch grasp if the asset has one; flat objects wider than the gripper
-    are pushed over a support edge and pinched at the overhang."""
+    """Pinch grasp from the asset's annotation, one flow for every kind (top, side, rim, thickness):
+    a flat object wider than the gripper is pinched across its thickness at a side that overhangs
+    its support -- sliding it there is expose's job, not pick's.  (The edge pinch's own flow, the
+    push inside pick and the floor corner pinch are gone, 2026-11-05.)"""
     obj = rig.ann.objects[name]
-    kinds = [g["type"] for g in rig.ann.asset_of(obj)["grasps"]]
-    if not kinds:
+    if not rig.ann.asset_of(obj)["grasps"]:
         raise SkillFailure(f"pick {name}: asset '{obj['asset']}' has no Zeno-feasible grasp annotation")
-    if any(k != "edge_pinch_after_push" for k in kinds):
-        try:
-            return _pick_pinch(rig, name, max_candidates)
-        except SkillFailure as e:
-            if "edge_pinch_after_push" not in kinds or rig.held is not None \
-                    or not getattr(rig, "auto_recovery", True):
-                raise
-            rig.log("pick_fallback", obj=name, reason=str(e), to="push_then_edge_pinch")
-    return pick_flat(rig, name)
+    return _pick_pinch(rig, name, max_candidates)
 
 
-def _pick_pinch(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect")):
-    """Pinch pick; above table height the waist stays nearly upright (a
-    40-degree bow at a counter drove the forearm into it and knocked the
-    object before the grasp)."""
-    pos, _ = rig.obj_pose(name)
-    if not hasattr(rig.kin, "names"):          # minimal rig stubs in unit tests
-        return _pick_pinch_impl(rig, name, max_candidates, kinds)
-    widx = rig.kin.names.index("waist_pitch_joint")
-    hi = float(rig.kin.hi[widx])
-    sup = rig.geo.support_under(name, rig.state())
-    inside = sup is not None and (sup.get("category") == "cabinet_inside" or "/inside" in sup["name"])
-    if pos[2] <= 0.5 or inside or hi <= 0.2:  # cavities and shelves need the bow to reach in
-        return _pick_pinch_impl(rig, name, max_candidates, kinds)
-    rig.kin.hi[widx] = 0.2
-    try:
-        return _pick_pinch_impl(rig, name, max_candidates, kinds)
-    except SkillFailure as exc:
-        if "no reachable grasp" not in str(exc):
-            raise
-        rig.log("pick_waist_relaxed", obj=name)
-    finally:
-        rig.kin.hi[widx] = hi
-    try:
-        return _pick_pinch_impl(rig, name, max_candidates, kinds)   # high knobs need the bow
-    except SkillFailure as exc:
-        if "no reachable grasp" not in str(exc):
-            raise
-        # last resort: neighbours as whole boxes over-constrain a pick from a
-        # tight cluster at a counter edge; the finger slots are still checked
-        rig.log("pick_neighbours_relaxed", obj=name)
-        return _pick_pinch_impl(rig, name, max_candidates, kinds, use_neighbours=False)
+PINCH_KINDS = ("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect", "thickness_pinch")
 
 
-def _neighbour_boxes(rig, name, st, radius=0.30):
-    """Loose objects next to a pick target that stand taller than its grasp
-    height: the forearm must not hit them (a stalled arm 7 cm short of a can
-    in a cluster).  The target, its contents and lid are excluded."""
-    from .predicates import lid_on
-    c = rig.geo.centre(name, st)
-    z_grasp = float(rig.geo.bottom(name, st)[2])
-    from .annotations import _tilted
-    if _tilted(st["objects"][name]["quat"]):
-        z_grasp = float(c[2])        # lying on its side: pinched across its centre
-    a = rig.ann.asset_of(rig.ann.objects[name])
-    out = []
-    for o in rig.ann.objects:
-        if o == name or (rig.held is not None and o == rig.held["name"]):
-            continue
-        if a.get("container") and (rig.geo.inside(o, name, st)[0] or lid_on(rig, name, o, st)[0]):
-            continue
-        fp = rig.geo.footprint(o, st)
-        d = math.hypot(max(fp[0] - c[0], 0, c[0] - fp[2]), max(fp[1] - c[1], 0, c[1] - fp[3]))
-        if d > radius:
-            continue
-        b = float(rig.geo.bottom(o, st)[2])
-        top = b + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2])
-        if top < z_grasp + 0.04:
-            continue
-        out.append([fp[0] - 0.005, fp[1] - 0.005, b, fp[2] + 0.005, fp[3] + 0.005, top + 0.005])
-    return out
+def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS):
+    """Pinch pick over the whole waist range, the neighbours in the collision model as they are.
+    (The waist used to be capped at 0.2 rad above table height -- a 40-degree bow at a counter
+    drove the forearm into an object the arm model then lacked -- and the cap lifted, then the
+    neighbour boxes dropped, when no grasp was reachable: 7 and 2 times in the 11-04 full run.
+    The arm, its fingers and every object are in the planner's world now.)"""
+    return _pick_pinch_core(rig, name, max_candidates, kinds)
 
 
 class ContactUnreachable(SkillFailure):
@@ -999,45 +1357,16 @@ def contact_obstacles(rig, name, label):
         yield boxes
 
 
-def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect"),
-                     use_neighbours=True):
-    world = getattr(rig, "world", None)
-    if world is None or not hasattr(world, "temp_obstacles"):          # minimal rig stubs in unit tests
-        return _pick_pinch_core(rig, name, max_candidates, kinds)
-    boxes = _neighbour_boxes(rig, name, rig.state()) if use_neighbours else []
-    if boxes:
-        rig.log("pick_neighbour_obstacles", obj=name, n=len(boxes))
-        with rig.world.temp_obstacles(boxes):
-            return _pick_pinch_core(rig, name, max_candidates, kinds)
-    return _pick_pinch_core(rig, name, max_candidates, kinds)
-
-
-def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect")):
+def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
     obj = rig.ann.objects[name]
     pos, quat = rig.obj_pose(name)
     st = rig.state()
     floor_z = float(rig.geo.bottom(name, st)[2])
-    cands = rig.ann.grasp_poses(obj, pos, quat, kinds=kinds)
+    surface_z = _surface_under(rig, name, st)
+    cands, extra = _pinch_candidates(rig, obj, pos, quat, kinds, surface_z)
     if not cands:
         raise SkillFailure(f"pick {name}: no pinch grasp annotated")
-    # a finger slot occupied by a neighbour jams the finger before it closes
-    # (the arm model ignores the fingers); keep the pinches whose slots are free
-    from .predicates import slot_blocker, _neighbour_boxes
-    try:
-        st_ = rig.state()
-        nb = _neighbour_boxes(rig, name, st_)
-        free = [g for g in cands if slot_blocker(rig, name, g, st_, nb) is None]
-        if free and len(free) < len(cands):
-            rig.log("pick_free_slots", obj=name, kept=len(free), of=len(cands))
-            cands = free
-    except Exception as exc:      # minimal rigs in unit tests
-        rig.log("pick_free_slots_skipped", reason=str(exc)) if hasattr(rig, "log") else None
-    for g in cands:              # pads must not dig into the surface below
-        if g["kind"] == "top_pinch":
-            g["p"] = g["p"].copy()
-            g["p"][2] = max(g["p"][2], floor_z + 0.022)
     rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
     rig.focus_z = float(pos[2])
     bx, by, _ = rig.base_pose()
     # A fridge shelf is recessed behind its door. The robot's post-opening
@@ -1068,90 +1397,106 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         # off-centre pinch points of a long object let it swing in the hand:
         # prefer the centre, use the others when it is out of reach
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
-    park, g = None, None
-    for g in cands[:max_candidates]:
-        lift = [(g["p"] + np.array([0, 0, _lift_height(g)]), g["R"])]
-        park = find_park(rig.kin, rig.world, _grasp_legs(g) + lift, near=search_near,
-                         max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
-                         q_start=retrieval_q if in_microwave and retrieval_q is not None else
-                                 None if in_microwave or fridge_shelf else rig.q_cmd,
-                         travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig))
+    park, g, plans, plan, carry_goals = None, None, {}, None, None
+    use_plan = not in_microwave
+    if use_plan:
+        # every grasp candidate is one goal of the park search (park_search.find_park), and a park
+        # is one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
+        found, diag, carry_goals = _pick_find_park(rig, name, cands[:max_candidates] + extra, search_near,
+                                                   fridge_shelf)
+        if found is not None:
+            g = (cands[:max_candidates] + extra)[found.k]
+            park, plan = (found.x, found.y, found.yaw, None), found.plan
+    # in the microwave (step 6.4) the reach-in alone (_relay_check, Rig.move_relay), candidate by candidate
+    arrive_q = retrieval_q if in_microwave and retrieval_q is not None else _travel_q(rig)
+    LAST_RELAY_DIAG.clear()
+    for g in ([] if use_plan else cands[:max_candidates] + extra):
+        reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
+        check = _relay_check(rig, reach_in, plans, arrive_q)
+        with _hand_opened(rig, g["pre_open"]):
+            park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
+                             max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
+                             q_start=retrieval_q if in_microwave and retrieval_q is not None else
+                                     None if in_microwave or fridge_shelf else rig.q_cmd,
+                             travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig),
+                             check=check, unfold=False)
         if park:
             break
-    if park is None and "top_pinch" in kinds and hasattr(rig.ann, "asset_of"):
-        # a square block can also be pinched across its other pair of faces
-        extra = [c for c in rig.ann.grasp_poses(obj, pos, quat, kinds=("top_pinch",), extra_rotations=True)
-                 if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
-                            for c0 in cands)]
-        for g in extra:
-            g["p"] = g["p"].copy()
-            g["p"][2] = max(g["p"][2], floor_z + 0.022)
-            lift = [(g["p"] + np.array([0, 0, _lift_height(g)]), g["R"])]
-            park = find_park(rig.kin, rig.world, _grasp_legs(g) + lift, near=search_near, max_tries=120,
-                             q_start=rig.q_cmd, travel_q=_travel_q(rig))
-            if park:
-                rig.log("pick_rotated_pinch", obj=name)
-                break
     if park is None:
         from .planner import LAST_PARK_DIAG
         getattr(rig, "log", lambda *a, **k: None)("pick_no_park", obj=name, pos=[round(float(v), 3) for v in pos],
                 quat=[round(float(v), 3) for v in quat], n_cands=len(cands),
-                diag={k: v for k, v in LAST_PARK_DIAG.items() if v})
+                diag=diag if use_plan else {k: v for k, v in LAST_PARK_DIAG.items() if v},
+                relay=None if use_plan else dict(LAST_RELAY_DIAG))
         raise SkillFailure(f"pick {name}: no reachable grasp from any base pose")
-    x, y, yaw, park_qs = park
+    x, y, yaw, _ = park
     rig.log("pick_park", obj=name, kind=g["kind"], park=[round(x, 3), round(y, 3), round(yaw, 1)],
             floor=bool(floor_z < 0.05))
     rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
     if in_microwave and retrieval_q is not None:
-        rig.sync_world()
-        rig.follow(rig.joint_path(retrieval_q, "microwave_pick_safe"))
-        rig.drive_base([(x, y, yaw)], speed=0.2)
+        relocate(rig, (x, y, yaw), [("microwave_pick_safe", (retrieval_q, rig.left_q_cmd.copy()))],
+                 label="microwave_pick_safe", speed=0.2)
         rig.sync_world()
     else:
         _goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    pos, quat = rig.obj_pose(name)          # re-read after driving
-    g2 = [c for c in rig.ann.grasp_poses(obj, pos, quat) if c["kind"] == g["kind"]
-          and np.linalg.norm(c["p"] - g["p"]) < 0.03 and np.allclose(c["R"], g["R"], atol=1e-3)]
-    if g2:
-        p2 = g2[0]["p"].copy()
-        p2[2] = max(p2[2], g["p"][2]) if g["kind"] == "top_pinch" else p2[2]
-        g = dict(g2[0], p=p2)
+    # re-read after driving (the drive may have knocked it): the same candidate at the object's
+    # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
+    # tolerance dropped every re-read of an object turned by a tenth of a degree)
+    pos, quat = rig.obj_pose(name)
+    now_c, now_x = _pinch_candidates(rig, obj, pos, quat, kinds, _surface_under(rig, name, rig.state()))
+    g = next((c for c in now_c + now_x if c["idx"] == g["idx"]), g)
     rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in pos],
             quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
-    note_grasp(rig, name, g["p"], g["R"], "pinch", g["pre_open"])
+    note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
+    if use_plan:
+        tcp0 = _pick_run(rig, name, g, park, plan, carry_goals)
+        return _pick_judged(rig, name, g, tcp0, pos)
     rig.grip(g["pre_open"], 40)
-    for (tp, tR), lab, st_, spw, qh in zip(_grasp_legs(g), ("pre_far", "pre", "grasp"), (0.02, 0.005, 0.003),
-                                           (3, 3, 4), park_qs):
-        err = rig.move_to(tp, tR, step=st_, steps_per_wp=spw, label=f"pick_{lab}", q_hint=qh, smooth=True)
-    if err > 0.008:                     # round objects pop out of an off-centre pinch
-        rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", collision=False, smooth=True)
+    # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
+    # object in the collision model, nothing exempt; planned to end straight along the gripper
+    # axis, no fallback: a hand that cannot get there open without touching is a grasp (or a park)
+    # that does not work.  2: the fingers close where the hand stands.
+    # the object is watched every tick on the way (the monitor's checks miss a knock, plan section 5)
+    with rig._fingers_checked(rig.kin), _watching(rig, name):
+        err = rig.move_relay(g["p"], g["R"], *_grasp_approach(g), plan=plans.get(_park_key(*park)),
+                             step=APPROACH_STEP, steps_per_wp=4, label="pick_grasp", smooth=True)
+    if rig.kin.motion is not None:
+        # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
+        rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
+                hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
+    if err > PICK_REACH_TOL:
+        # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
+        rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
+        rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+        rig.focus_z = None
+        raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
     rig.caption = f"PICK {name}: close gripper"
-    rig.grip(0.0, 120, gradual=True)
-    rig.caption = f"PICK {name}: lift"
-    rig.move_to(g["p"] + np.array([0, 0, _lift_height(g)]), g["R"], step=0.002, steps_per_wp=6, label="pick_lift",
-                collision=False, smooth=True)
-    rig.step(40)
-    after, _ = rig.obj_pose(name)
+    rig.clear.motion("pick_close", closing(name), follows=False)
+    rig.grip(0.0, PHYSICS_HZ, gradual=True)
     f = rig.fingers()
-    held = bool(f.min() > 0.003) and after[2] - pos[2] > 0.015
-    rig.log("pick_result", obj=name, kind=g["kind"], lift_m=round(float(after[2] - pos[2]), 4),
-            fingers=f.round(4).tolist(), held=held)
-    rig.focus_z = None
-    if not held:
-        # leave the failed grasp with an open hand clear of the neighbours:
-        # fingers closed beside a crowding bowl stopped at 5 mm, so the next
-        # push could not make its fist (3/4)
+    if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
+        # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
+        # with an open hand clear of the neighbours (fingers closed beside a crowding bowl stopped
+        # at 5 mm, so the next push could not make its fist); nothing is held, so nothing is welded
+        rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False, why="not pinched")
         rig.grip(0.04, 60)
-        t_, R_ = rig.kin.tcp(rig.q_cmd)
-        try:
-            rig.move_to(t_ + np.array([0, 0, 0.08]), R_, step=0.005, label="pick_fail_clear", collision=False)
-        except SkillFailure:
-            pass
-        raise SkillFailure(f"pick {name}: not held (lift {after[2] - pos[2]:.3f} m)")
-    tcp, R = rig.kin.tcp(rig.q_cmd)
-    rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp - after, "R": R, "pre_open": g["pre_open"]}
+        rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+        rig.focus_z = None
+        raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+                           f"opened to {g['pre_open']:.3f})")
+    # held from here -- and welded, under sticky hands: the load is in the arm's collision model
+    # (off its support: the contact exit ends once it is clear), and whether it came along is
+    # judged at the next relay pose, the carry.  The hand's pose as it stands, not as commanded
+    # (the held frame and the rise measured from it)
+    tcp0, R = rig.kin.tcp(rig.q())
+    rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
+                "pre_open": g["pre_open"]}
+    if g["kind"] == "thickness_pinch":
+        # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
+        rig.held.update(edge_held(rig, name, tcp0, R))
+    rig.caption = f"PICK {name}: lift"
+    rig.leave([0, 0, 1], "pick_lift", LEAVE_CONTACT, step=0.002, steps_per_wp=6, lifts_off=True)
     if in_microwave:
         # Lift alone leaves most of the bowl behind the door plane. Withdraw
         # horizontally through the front before moving the base away.
@@ -1162,6 +1507,32 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
             target[1] = y
             rig.move_to(target, R, step=0.004, steps_per_wp=5, label=label)
             check_held(rig, label)
+    try:
+        _carry_pose(rig)
+    except Dropped as exc:
+        raise SkillFailure(f"pick {name}: not held ({exc})")
+    return _pick_judged(rig, name, g, tcp0, pos)
+
+
+def _pick_judged(rig, name, g, tcp0, pos):
+    """Did the pick bring ``name`` along to the carry pose (the hand at tcp0 when it closed, the
+    object at pos before)?  SkillFailure, the hand opened, when not."""
+    after, _ = rig.obj_pose(name)
+    tcp, _ = rig.kin.tcp(rig.q())
+    rise, lift = float(tcp[2] - tcp0[2]), float(after[2] - pos[2])
+    f = rig.fingers()
+    # it came along: the fingers not shut, and a sticky-hands weld holds it (as check_held has it)
+    # or the object up with the hand (a carry pose kept where the arm stood checks the contact
+    # exit's few cm).  A weld alone is not held: it carries what slid out of the pads (fingers
+    # [0, 0], T13 no_cup mug, T09 spoon), and `holding` judges the fingers
+    held = bool(f.min() > 0.003) and (welded(rig, "right", name) or rise < 0.01 or lift > 0.5 * rise)
+    rig.log("pick_result", obj=name, kind=g["kind"], lift_m=round(lift, 4), hand_rise_m=round(rise, 4),
+            fingers=f.round(4).tolist(), held=held)
+    rig.focus_z = None
+    if not held:
+        rig.held = None
+        rig.grip(0.04, 60)
+        raise SkillFailure(f"pick {name}: not held (lift {lift:.3f} m, hand {rise:.3f} m)")
     return True
 
 
@@ -1230,10 +1601,10 @@ def push(rig, name, s, n, distance, label="PUSH", enough=None, *, mode=None):
             rig.kin.coll_kw = {"ignore_fingers": True}
             rig.grip(0.0, 30)
             rig.move_to(*legs[0], step=0.02, label="push_above", q_hint=park[3][0])
-        rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{selected_mode}_down", collision=False)
+        rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{selected_mode}_down", allow=LEGACY)
         rig.caption = f"{label} {name}: " + ("slide along the surface" if selected_mode == "push" else "drag it along")
-        rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="push_slide", collision=False)
-        rig.move_to(*legs[3], step=0.01, label="push_up", collision=False)
+        rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="push_slide", allow=LEGACY)
+        rig.move_to(*legs[3], step=0.01, label="push_up", allow=LEGACY)
         b2 = geo.bottom(name, rig.state())
         step_moved = float(n @ (b2[:2] - b[:2]))
         moved = float(n @ (b2[:2] - b0[:2]))
@@ -1244,149 +1615,6 @@ def push(rig, name, s, n, distance, label="PUSH", enough=None, *, mode=None):
     rig.focus_z = None
     rig.grip(0.04, 40)            # leave the hand open for whatever comes next
     return moved
-
-
-def pick_flat(rig, name):
-    """Flat object wider than the gripper (plate, book, notebook): push it
-    until it overhangs a free support edge (centre of mass still on the
-    support), then pinch the overhang between the pads, approaching
-    horizontally from outside the edge."""
-    geo = rig.geo
-    st = rig.state()
-    size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-    s = geo.support_under(name, st)
-    if s is None:
-        if geo.bottom(name, st)[2] < 0.05:
-            return _corner_pinch(rig, name)
-        raise SkillFailure(f"pick {name}: flat object not on an annotated support: no edge to push it over")
-    b = geo.bottom(name, st)
-    yaw = _yaw(st["objects"][name]["quat"])
-    edges = []
-    for n in _open_edges(rig, s):
-        h = _half_along(size, yaw, n)
-        o = min(0.08, h - COM_MARGIN)
-        if o < EDGE_MIN_OVERHANG:
-            continue
-        over = float(n @ b[:2]) + h - _edge_coord(s, n)
-        edges.append((max(0.0, o - over), n, o))
-    edges.sort(key=lambda e: e[0])
-    if not getattr(rig, "auto_recovery", True):
-        # no automatic slide-to-edge (that is the explicit expose skill): pinch
-        # the edge that overhangs most, as the object lies now
-        rig.log("flat_edges", obj=name, support=s["name"], edges=[[round(e[0], 3), e[1].tolist()] for e in edges],
-                auto_push=False)
-        if not edges:
-            raise SkillFailure(f"pick {name}: no free edge of {s['name']} it can overhang")
-        return _edge_pinch(rig, name, s, edges[0][1], attempt=True)
-    rig.log("flat_edges", obj=name, support=s["name"], edges=[[round(e[0], 3), e[1].tolist()] for e in edges])
-    if not edges:
-        raise SkillFailure(f"pick {name}: no free edge of {s['name']} it can overhang")
-    last = None
-    for need, n, o in edges[:3]:
-        try:
-            st = rig.state()
-            b = geo.bottom(name, st)
-            h = _half_along(size, _yaw(st["objects"][name]["quat"]), n)
-            over = float(n @ b[:2]) + h - _edge_coord(s, n)
-            if over < o - 0.012:
-                push(rig, name, s, n, o - over + 0.005, label="PUSH (edge pinch)",
-                     enough=EDGE_MIN_OVERHANG + 0.005 - over)
-            return _edge_pinch(rig, name, s, n)
-        except SkillFailure as e:
-            last = e
-            rig.log("edge_failed", obj=name, dir=n.tolist(), reason=str(e))
-            if rig.held is not None:
-                raise
-    raise last
-
-
-def _corner_pinch(rig, name):
-    """Flat object on the floor (book, notebook): no edge to push it over, so
-    pinch it diagonally.  The lower pad presses one side face just above the
-    floor (up and in), the upper pad the top face d further in; the closing
-    axis is tilted ~atan(d/t) from vertical, inside the rubber pads' friction
-    cone (mu 2 -> 63 deg).  The TCP sits back along the approach so the lower
-    pad meets the side face with its tip and never digs into the floor."""
-    geo = rig.geo
-    st = rig.state()
-    size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-    t = size[2]
-    reach = 0.075                                       # contact spacing inside the 8 cm opening
-    if t > reach - 0.005:
-        raise SkillFailure(f"corner pinch {name}: {t:.3f} m thick, the gripper opens {reach:.3f}")
-    d = min(0.055, math.sqrt(reach ** 2 - t ** 2))
-    b = np.array(geo.bottom(name, st), float)
-    # the measured lowest point (rotated box), never below the floor it rests on
-    b[2] = max(float(_lowest_z(rig, name, st)), 0.0) if b[2] < 0.05 else float(_lowest_z(rig, name, st))
-    rig.log("corner_pinch_measure", obj=name, bottom_z=round(float(b[2]), 4), thickness=round(float(t), 4))
-    yaw = _yaw(st["objects"][name]["quat"])
-    cands = []
-    for k in range(4):                                  # the four sides of the object
-        n = np.array([math.cos(yaw + k * math.pi / 2), math.sin(yaw + k * math.pi / 2)])
-        h = _half_along(size, yaw, n)
-        # lower pad on the side face 1.6 cm up (its open tip would touch the
-        # floor at the very edge), upper pad on the top face d further in
-        # heights relative to the measured bottom: the resting collider can sit
-        # a few mm off z = 0, and absolute heights then pinch above the object
-        low = np.r_[b[:2] + n * (h + 0.003), max(0.012, b[2] + 0.016)]
-        up = np.r_[b[:2] + n * (h - d), b[2] + t]
-        c = (up - low) / np.linalg.norm(up - low)
-        a = np.r_[-n * t, -d] / math.hypot(t, d)        # into the object and down
-        tcp = (low + up) / 2 - a * 0.022
-        R = gripper_rot(a, c)
-        legs = [(tcp - a * 0.12 + np.array([0, 0, 0.03]), R), (tcp - a * 0.04, R), (tcp, R)]
-        lift = tcp + np.array([0, 0, 0.10])
-        bx, by, _ = rig.base_pose()
-        cands.append((math.hypot(tcp[0] - bx, tcp[1] - by), n, legs, lift, R))
-    cands.sort(key=lambda c_: c_[0])
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    park = None
-    for _, n, legs, lift, R in cands:
-        # the lift is left out of the park search: it rides the torso up and
-        # its straight line breaks the IK chain of the tilted approach
-        park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=150,
-                         q_start=rig.q_cmd, travel_q=_travel_q(rig))
-        if park:
-            break
-    if park is None:
-        raise SkillFailure(f"corner pinch {name}: no base pose reaches any side")
-    rig.log("corner_pinch_park", obj=name, side=n.round(3).tolist(), park=[round(v, 3) for v in park[:3]],
-            d=round(d, 3))
-    note_grasp(rig, name, legs[2][0], R, "corner", 0.04)
-    rig.caption = f"PICK {name}: corner pinch from the floor (torso down)"
-    rig.focus_z = 0.1
-    _goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    rig.grip(0.04, 40)
-    rig.move_to(*legs[0], step=0.02, label="corner_pre_far", q_hint=park[3][0])
-    rig.move_to(*legs[1], step=0.005, steps_per_wp=3, label="corner_pre", collision=False)
-    contact_error = rig.move_to(*legs[2], step=0.003, steps_per_wp=4,
-                                label="corner_grasp", collision=False)
-    if contact_error > 0.02:
-        contact_error = rig.move_to(*legs[2], step=0.002, steps_per_wp=8,
-                                    label="corner_grasp_retry", collision=False, smooth=True)
-    if contact_error > 0.02:
-        raise SkillFailure(f"corner pinch {name}: contact pose missed by {contact_error:.3f} m")
-    rig.caption = f"PICK {name}: close across the edge and the top face"
-    rig.grip(0.0, 140)
-    rig.caption = f"PICK {name}: lift"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="corner_lift", collision=False)
-    rig.step(40)
-    st2 = rig.state()
-    b2 = geo.bottom(name, st2)
-    f = rig.fingers()
-    held = bool(f.min() > 0.003) and b2[2] - b[2] > 0.03
-    rig.log("pick_result", obj=name, kind="corner_pinch", lift_m=round(float(b2[2] - b[2]), 4),
-            fingers=f.round(4).tolist(), held=held)
-    rig.focus_z = None
-    if not held:
-        raise SkillFailure(f"corner pinch {name}: not held (lift {b2[2] - b[2]:.3f} m)")
-    tcp_now, R_now = rig.kin.tcp(rig.q_cmd)
-    body, _ = rig.obj_pose(name)
-    rig.held = {"name": name, "kind": "corner", "tcp_minus_body": tcp_now - body, "R": R_now, "pre_open": 0.04,
-                "body_minus_low": float(body[2] - _lowest_z(rig, name, st2))}
-    return True
 
 
 def _lowest_z(rig, name, st):
@@ -1400,96 +1628,20 @@ def _lowest_z(rig, name, st):
     return float((np.asarray(o["pos"]) + corners @ R.T)[:, 2].min())
 
 
-def _edge_pinch(rig, name, s, n, attempt=False):
-    """Edge pinch.  With ``rig.edge_pinch_upright_waist`` (off by default; the
-    planning benchmark sets it) the waist stays nearly upright at table height,
-    as in _pick_pinch: a solution with the torso fully lowered and the waist
-    bowed 0.39 rad drove the chest into the island edge (the waist stalled at
-    0.22, the TCP 11 cm short, 4/4 direct picks of the paperback at the
-    island's front edge).  Without such a park the full waist range is used."""
-    if not getattr(rig, "edge_pinch_upright_waist", False) or not hasattr(rig.kin, "names") or s["z"] <= 0.5:
-        return _edge_pinch_impl(rig, name, s, n, attempt)
-    widx = rig.kin.names.index("waist_pitch_joint")
-    hi = float(rig.kin.hi[widx])
-    rig.kin.hi[widx] = min(hi, 0.2)
-    try:
-        return _edge_pinch_impl(rig, name, s, n, attempt)
-    except SkillFailure as exc:
-        if "no base pose reaches" not in str(exc):
-            raise
-        rig.log("edge_pinch_waist_relaxed", obj=name)
-    finally:
-        rig.kin.hi[widx] = hi
-    return _edge_pinch_impl(rig, name, s, n, attempt)
-
-
-def _edge_pinch_impl(rig, name, s, n, attempt=False):
-    """``attempt``: pinch even when the measured overhang is short of
-    EDGE_MIN_OVERHANG (the lower pad then meets the support edge: a physical
-    failure the caller recovers from with expose), as long as the object
-    reaches past the edge at all."""
-    geo = rig.geo
+def edge_held(rig, name, tcp, R):
+    """``rig.held`` fields of a flat object pinched across its thickness at a side (the gripper axis
+    along -n, n the side's outward normal): kind "edge", the object's half length along n ``h``, the
+    TCP's ``depth`` inside the side, the half width across ``lat_half`` and the TCP's height ``dz``
+    above the object's bottom -- what place_flat lays it down by."""
     st = rig.state()
+    _, quat = rig.obj_pose(name)
     size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-    b = geo.bottom(name, st)
-    yaw = _yaw(st["objects"][name]["quat"])
-    h = _half_along(size, yaw, n)
-    over = float(n @ b[:2]) + h - _edge_coord(s, n)
-    if over < EDGE_MIN_OVERHANG - 0.01 and not (attempt and over > 0.005):
-        raise SkillFailure(f"edge pinch {name}: overhang only {over:.3f} m")
-    n3 = np.r_[n, 0.0]
-    depth = max(0.02, min(EDGE_GRIP_DEPTH, over - EDGE_PAD_CLEAR))
-    tcp = np.r_[b[:2] + n * (h - depth), b[2] + size[2] / 2]
-    R = gripper_rot(-n3, [0, 0, 1.0])
-    pre_open = min(0.04, size[2] / 2 + 0.012)
-    legs = [(tcp + n3 * 0.12 + np.array([0, 0, 0.03]), R), (tcp + n3 * 0.05, R), (tcp, R)]
-    lift = tcp + np.array([0, 0, 0.04])
-    pull = lift + n3 * 0.12
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    park = find_park(rig.kin, rig.world, legs + [(lift, R), (pull, R)], near=rig.base_pose(), max_tries=150,
-                     q_start=rig.q_cmd, travel_q=_travel_q(rig))
-    if park is None:
-        raise SkillFailure(f"edge pinch {name}: no base pose reaches the overhang")
-    rig.log("edge_pinch_park", obj=name, park=[round(v, 3) for v in park[:3]], overhang=round(over, 3))
-    note_grasp(rig, name, tcp, R, "edge", pre_open)
-    rig.caption = f"PICK {name}: edge pinch (approach from outside the edge)"
-    rig.focus_z = s["z"]
-    _goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    rig.grip(pre_open, 40)
-    rig.move_to(*legs[0], step=0.02, label="edge_pre_far", q_hint=park[3][0])
-    rig.move_to(*legs[1], step=0.005, steps_per_wp=3, label="edge_pre", collision=False)
-    rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="edge_grasp", collision=False)
-    rig.caption = f"PICK {name}: pinch the overhang"
-    rig.grip(0.0, 120)
-    # the pinched point in the object's frame: a flat object held at its
-    # overhang pivots on the support edge, so its bottom centre rises far less
-    # than the hand does (book_red: 15 mm of a 40 mm lift, right at the old
-    # threshold) even when the pinch holds
-    p0, q0 = rig.obj_pose(name)
-    pinch_local = quat_R(q0).T @ (tcp - p0)
-    rig.caption = f"PICK {name}: lift and pull out"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", collision=False)
-    rig.step(40)
-    b2 = geo.bottom(name, rig.state())
-    p1, q1 = rig.obj_pose(name)
-    rise = float((p1 + quat_R(q1) @ pinch_local)[2] - tcp[2])
-    f = rig.fingers()
-    held = bool(f.min() > 0.003) and rise > 0.015
-    rig.log("pick_result", obj=name, kind="edge_pinch", lift_m=round(float(b2[2] - b[2]), 4),
-            pinch_rise_m=round(rise, 4), fingers=f.round(4).tolist(), held=held)
-    if not held:
-        raise SkillFailure(f"edge pinch {name}: not held (pinched edge rose {rise:.3f} m)")
-    rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", collision=False)
-    rig.focus_z = None
-    tcp_now, R_now = rig.kin.tcp(rig.q_cmd)
-    body, _ = rig.obj_pose(name)
-    b3 = geo.bottom(name, rig.state())
-    rig.held = {"name": name, "kind": "edge", "tcp_minus_body": tcp_now - body, "R": R_now, "pre_open": pre_open,
-                "h": h, "depth": depth, "lat_half": _half_along(size, yaw, _perp(n)),
-                "dz": float(tcp_now[2] - b3[2])}
-    return True
+    n = np.asarray(R, float)[:2, 2]
+    n = n / max(1e-9, float(np.linalg.norm(n)))
+    b = np.asarray(rig.geo.bottom(name, st), float)
+    h = _half_along(size, _yaw(quat), n)
+    return {"kind": "edge", "h": h, "depth": float(h - n @ (np.asarray(tcp, float)[:2] - b[:2])),
+            "lat_half": _half_along(size, _yaw(quat), _perp(n)), "dz": float(tcp[2] - b[2])}
 
 
 # ---------------------------------------------------------------- place
@@ -1553,26 +1705,8 @@ def insert_microwave_cavity(rig, name, support):
             body=body.round(3).tolist())
     rig.caption = f"PLACE {name}: carry to microwave front"
     rig.focus_z = s["z"]
-    # The open door occupies the robot's carry corridor at bowl height.
-    # Keep the bowl's bottom above the appliance roof while the base moves;
-    # the staged arm trajectory lowers it in front of the cavity afterwards.
-    # A carry above the roof (cavity top + 8 cm) is out of reach for a
-    # rim-held bowl; instead come in straight along the park heading from
-    # 45 cm behind it, so the bowl approaches the cavity front beside the open
-    # door rather than sweeping across it.
-    yaw_r = math.radians(park[2])
-    f = np.array([math.cos(yaw_r), math.sin(yaw_r)])
-    pre = (park[0] - 0.45 * f[0], park[1] - 0.45 * f[1], park[2])
-    rig.sync_world()
-    straight = all(rig.world.footprint_clear(park[0] - u * f[0], park[1] - u * f[1], yaw_r)
-                   for u in np.linspace(0.0, 0.45, 6))
-    if straight and plan_path(rig.world, rig.base_pose(), pre) is not None:
-        rig.log("microwave_load_straight_in", pre=[round(v, 3) for v in pre])
-        navigate(rig, pre)
-        check_held(rig, "microwave_load_pre")
-        rig.drive_base([park[:3]], speed=0.08, turn=0.3, ramp=1.0)
-    else:
-        _goto_park(rig, park, min_bottom_z=cavity[5] + 0.08)
+    # the whole-body base plan keeps the carried bowl clear of the open door
+    _goto_park(rig, park, min_bottom_z=cavity[5] + 0.08)
     check_held(rig, "microwave_load_carry")
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
@@ -1595,7 +1729,7 @@ def insert_microwave_cavity(rig, name, support):
                               radii=np.arange(0.45, 0.80, 0.05), q_start=None, travel_q=None)
         if near_park is not None and math.hypot(near_park[0] - park[0], near_park[1] - park[1]) < 0.25:
             rig.log("microwave_load_repark", park=[round(v, 3) for v in near_park[:3]])
-            rig.drive_base([near_park[:3]], speed=0.06, turn=0.3, ramp=0.8)
+            drive_to(rig, near_park[:3], label="microwave_load_repark", speed=0.06, turn=0.3, ramp=0.8)
             replanned = near_park
         elif shift < 0.08:
             rig.log("microwave_load_original_entry", shift_m=round(shift, 3))
@@ -1610,7 +1744,7 @@ def insert_microwave_cavity(rig, name, support):
         # IK- and collision-checked): the in-between check against the walls
         # rejected every joint path for some rim grasps
         rig.move_to(point, orient, step=step, steps_per_wp=6, label=label, q_hint=hint,
-                    collision=label != "microwave_insert")
+                    allow=LEGACY if label == "microwave_insert" else FREE)
         check_held(rig, label)
     actual_body, _ = rig.obj_pose(name)
     if not (cavity[0] < actual_body[0] < cavity[3] and cavity[1] < actual_body[1] < cavity[4]):
@@ -1660,18 +1794,14 @@ def withdraw_microwave_cavity(rig, name):
         raise SkillFailure(f"microwave withdraw {name}: hand left release pose")
     try:
         rig.move_to(corrected[1][0] + np.array([0, 0, 0.06]), R, step=0.003,
-                    label="microwave_release_up", collision=False)
+                    label="microwave_release_up", allow=LEAVE_CONTACT)
         rig.move_to(corrected[0][0] + np.array([0, 0, 0.06]), R, step=0.004,
-                    label="microwave_retreat", collision=False)
+                    label="microwave_retreat", allow=FREE_ELSE_STRAIGHT)
     except SkillFailure as e:
         rig.log("retreat_short", reason=str(e))
     # This arm pose cleared the actual open door during loading. Reuse it as
     # the travel pose when coming back to retrieve the bowl after heating.
     rig.microwave_retrieval_q = rig.q_cmd.copy()
-    moved = _back_off(rig, dist=0.35)
-    rig.log("microwave_load_clear", base=[round(v, 3) for v in rig.base_pose()], reversed_m=round(moved, 3))
-    if moved < 0.08:
-        raise SkillFailure(f"microwave withdraw {name}: base could not reverse clear of the cavity")
     tcp, _ = rig.kin.tcp(rig.q())
     if tcp[1] >= stage["cavity"][1] - 0.02:
         raise SkillFailure(f"microwave withdraw {name}: hand is still at the cavity opening")
@@ -1700,481 +1830,336 @@ def place_microwave(rig, name, support):
     return withdraw_microwave_cavity(rig, name)
 
 
-def place(rig, name, support, xy=None):
-    """Put the held object down.  support = "in:<container>" (dropped from
-    just above the rim of deep containers), or a support surface at xy
-    (see place_on for choosing xy)."""
-    if rig.held is None or rig.held["name"] != name:
-        raise SkillFailure(f"place {name}: not holding it")
-    if not support.startswith("in:") and rig.ann.support(support).get("furniture") == "kitchen_microwave":
-        return place_microwave(rig, name, support)
-    if rig.held["kind"] == "edge" and not support.startswith("in:"):
-        return place_flat(rig, name, support, xy)
-    obj = rig.ann.objects[name]
-    asset = rig.ann.asset_of(obj)
-    geo = rig.geo
-    container = None
-    if support.startswith("in:"):
-        container = support[3:]
-        ca = rig.ann.asset_of(rig.ann.objects[container])
-        st = rig.state()
-        cb = geo.bottom(container, st)
-        rim = ca["container"]["rim_height"]
-        # deep containers (toy box, basket): release 3 cm above the rim
-        # instead of lowering the wrist between the walls
-        drop = rim > 0.12
-        floor = cb[2] + (rim + 0.03 if drop else 0.013)
-        s = {"name": support, "z": float(floor)}
-        c = geo.centre(container, st)
-        container_start = np.asarray(rig.obj_pose(container)[0], float)
-        xy = (float(c[0]), float(c[1]))
-        # drop on the robot's side of the opening, still well inside the walls:
-        # the centre of a bin deep on a table is out of reach
-        bxy = np.array(rig.base_pose()[:2])
-        toward = bxy - np.asarray(c[:2], float)
-        if drop and np.linalg.norm(toward) > 1e-6:     # deep bins only: a shallow basket's wall got pushed
-            toward /= np.linalg.norm(toward)
-            cfp = geo.footprint(container, st)
-            inner = 0.5 * min(cfp[2] - cfp[0], cfp[3] - cfp[1]) - 0.015
-            osz = rig.ann.asset_of(rig.ann.objects[name])["size"]
-            room = inner - 0.5 * math.hypot(osz[0], osz[1]) - 0.02
-            if room > 0.01:
-                xy = tuple(float(v) for v in np.asarray(c[:2], float) + toward * min(room, 0.5 * inner))
-    else:
-        s = rig.ann.support(support)
-        drop = False
-    body_z = s["z"] - asset["origin_to_bottom_center"][2] + 0.006
-    if rig.held["kind"] == "corner":          # tilted in the hand: lowest corner 1 cm above
-        body_z = s["z"] + rig.held["body_minus_low"] + 0.01
-    body = np.array([xy[0], xy[1], body_z])
-    off0, R0 = rig.held["tcp_minus_body"], rig.held["R"]
-    relations = [(off0, R0, None)]
-    if rig.held["kind"] != "corner":
-        # The grasp relation is replayed as it was measured, so an object that
-        # tilted in the fingers while it was lifted is put down tilted (a side
-        # pinched juice bottle came to rest 25 deg over and failed upright()).
-        # Keep the measured hand-to-object relation but ask for the object
-        # levelled; the measured relation stays as the fallback, since the
-        # levelled hand pose can be out of reach where the tilted one is not.
-        p_obj, q_obj = rig.obj_pose(name)
-        R_obj = quat_R(q_obj)
-        over = math.degrees(math.acos(max(-1.0, min(1.0, float(R_obj[2, 2])))))
-        if over > PLACE_LEVEL_MIN:
-            tcp_now, R_tcp = rig.kin.tcp(rig.q_cmd)
-            R_rest = rest_R(q_obj)
-            relations.insert(0, (R_rest @ (R_obj.T @ (np.asarray(tcp_now, float) - np.asarray(p_obj, float))),
-                                 R_rest @ (R_obj.T @ R_tcp), round(over, 1)))
+PLACE_YAWS = (0, 90, -90, 45, -45, 135, -135, 180)   # deg: wrist turns about the vertical for a place
+PLACE_YAW_COST = 0.05         # m of park cost per 45 deg of wrist turn
+PLACE_SPOT_COST = 0.05        # ... per rank of the free spot (free_spots order)
+PLACE_TILTED_COST = 0.10      # ... for putting the object down as tilted as it hangs (not levelled)
+
+
+@contextmanager
+def fingers_checked(rig):
+    """A free-space leg to a pose above a target (drop, hover) as Rig's free space (Rig._fingers_checked):
+    the fingers in the arm's collision model -- left out (ignore_fingers), an approach planned low
+    from the side swept the open fingers through a tray and the blocks in it -- and no target
+    exempted.  Steps 4-5 drop ignore_fingers."""
+    with rig._fingers_checked(rig.kin):
+        yield
+
+
+def _carrying(rig, name):
+    """Park-search queries with ``name`` in the hand as it is held now (Motion.carrying: the
+    relation taken here, at the real base), or nothing to do without cuRobo."""
+    motion = rig.kin.motion
+    if motion is None or not motion.by_owner.get(f"object:{name}") or \
+            (rig.held is not None and rig.held.get("kind") == "bimanual"):
+        return nullcontext()           # (a two-hand hold is in neither arm's model: Motion._attach_held)
+    rig.sync_world()
+    return motion.carrying(rig.kin.side, name, motion.held_in_tcp(rig.kin, rig.q_cmd, name))
+
+
+def park_over(rig, label, anchors, off, R, anchor_cost=None, max_tries=150, check=None):
+    """A park and TCP goal holding the load with its reference point at one of ``anchors`` (a drop
+    above a rim, a hover above a target): those points with the hand turned about the vertical
+    through them in PLACE_YAWS steps are one goal set (find_park_set), each checked with the load
+    in the hand and the fingers in the collision model, as the motion there is (fingers_checked).
+    ``off``: TCP minus the reference point now (world frame), ``R``: the TCP rotation now;
+    ``anchor_cost``: m of park cost per anchor; ``check``: find_park's.  (park, p, R_goal) or None."""
+    anchors = [np.asarray(a, float) for a in (anchors if np.ndim(anchors) == 2 else [anchors])]
+    anchor_cost = [0.0] * len(anchors) if anchor_cost is None else list(anchor_cost)
+    goals = [(a + rz(math.radians(d)) @ off, rz(math.radians(d)) @ R, d, i)
+             for i, a in enumerate(anchors) for d in PLACE_YAWS]
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
-    park = None
-    search_near, q_start, travel_q = rig.base_pose(), rig.q_cmd, _travel_q(rig)
-    if math.hypot(search_near[0] - xy[0], search_near[1] - xy[1]) > 1.0:
+    with _carrying(rig, rig.held["name"]) if rig.held is not None else nullcontext():
+        found = find_park_set(rig.kin, rig.world, [[(p, Rg, FREE_SPACE_KW)] for p, Rg, _, _ in goals],
+                              [PLACE_YAW_COST * abs(d) / 45.0 + anchor_cost[i] for _, _, d, i in goals],
+                              near=rig.base_pose(), max_tries=max_tries, q_start=rig.q_cmd,
+                              travel_q=_travel_q(rig), carry=rig.held is not None, check=check)
+    if found is None:
+        return None
+    park, k = found
+    p, Rg, d, i = goals[k]
+    rig.log(f"{label}_park", park=[round(v, 3) for v in park[:3]], yaw_deg=d, anchor=i)
+    return park, p, Rg
+
+
+def _is_tray(rig, name):
+    """A container the place sets things down in as on a support (its floor), not drops them
+    into: asset tag "tray" (the serving and sorting trays)."""
+    return "tray" in rig.ann.asset_of(rig.ann.objects[name]).get("tags", [])
+
+
+def _tray_support(rig, tray):
+    """The floor of ``tray`` as a support: the top of its base plate (CONTAINER_BASE_T above its
+    bottom), inside its walls (CONTAINER_WALL)."""
+    st = rig.state()
+    b = rig.geo.bottom(tray, st)
+    fp = rig.geo.footprint(tray, st)
+    return {"name": f"in:{tray}", "furniture": None, "category": "tray", "z": float(b[2]) + CONTAINER_BASE_T,
+            "aabb_xy": [fp[0] + CONTAINER_WALL, fp[1] + CONTAINER_WALL, fp[2] - CONTAINER_WALL, fp[3] - CONTAINER_WALL]}
+
+
+def place(rig, name, support, xy=None, spots=None):
+    """Set the held object down: pick run backwards (docs/COLLISION_PLAN.md 6.2, skills/place.md).
+    ``support``: a support surface (at xy, or at any of ``spots``, free_spots order), or
+    "in:<container>": a tray's floor the same way, any other container a drop (drop_into).
+
+        carry pose --planned--> set-down start --set-down, straight down--> set-down pose
+          --open--> pull-out, straight back along the gripper axis --planned--> travel posture
+
+    One relay pose, the set-down pose: the load's lowest point LEAVE_GAP above the support.  The
+    set-down is pick's lift reversed (skill_plans.set_down_length), the pull-out pick's reach-in reversed
+    (pick_approach() long); both are checked straight lines, nothing on the way may be touched."""
+    if rig.held is None or rig.held["name"] != name:
+        raise SkillFailure(f"place {name}: not holding it")
+    if support.startswith("in:"):
+        container = support[3:]
+        if not _is_tray(rig, container):
+            return drop_into(rig, name, container)
+        c = rig.geo.centre(container, rig.state())
+        return _set_down(rig, name, _tray_support(rig, container), [(float(c[0]), float(c[1]))], tray=container)
+    s = rig.ann.support(support)
+    if s.get("furniture") == "kitchen_microwave":
+        return place_microwave(rig, name, support)
+    if s.get("category") == "cabinet_inside":
+        raise SkillFailure(f"place {name}: onto a shelf behind a door is not supported yet "
+                           f"(set down from the open side, docs/COLLISION_PLAN.md 6.2)")
+    if rig.held["kind"] == "edge":
+        return place_flat(rig, name, support, xy)
+    return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
+
+
+def _place_run(rig, name, s, p, R, open_w, plan):
+    """Run the place's plan (run.run) to set ``name`` down at (p, R), the pose re-measured after
+    the drive: a plan made for a set-down pose off it by more than HINT_REACH / HINT_TURN (the
+    load turned in the pinch on the way) is made again from here first.  Between the segments the
+    place's own steps: the reach checked, the release logged and the load no longer held."""
+    kin = rig.kin
+    u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
+    planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
+    if planned is None or np.linalg.norm(planned.target[1] - p) > HINT_REACH or \
+            _turn(planned.target[2], R) > HINT_TURN:
+        rig.log("place_plan_again", obj=name, why="no plan" if planned is None else
+                f"the set-down pose moved {np.linalg.norm(planned.target[1] - p):.4f} m")
+        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
+
+    def rebuild(state, frm):
+        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, step=APPROACH_STEP)
+
+    def before_pull_out(rig):
+        # let go, it may have settled against a finger: allowed on the pull-out, recorded
+        with rig._planning(kin, rig.q_cmd), rig._fingers_checked(kin):
+            if kin.scene is not None and not kin.free(rig.q_cmd):
+                rig.log("place_pull_out_touching", obj=name, why=kin.explain(rig.q_cmd))
+
+    def after_down(rig):
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - p))
+        if err > PICK_REACH_TOL:
+            # the set-down is checked free all the way: stopped short, something is in the way
+            raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
+        check_held(rig, "place_down")
+        rig.caption = f"PLACE {name}: release"
+        before_release, _ = rig.obj_pose(name)
+        rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
+                gap_m=round(float(_lowest_z(rig, name, rig.state())) - float(s["z"]), 4))
+
+    def after_release(rig):
+        after_open, _ = rig.obj_pose(name)
+        rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
+        rig.held = None
+
+    def set_down_caption(rig):
+        rig.caption = f"PLACE {name}: set down"
+
+    hooks = {"place_reach": {"before": set_down_caption}, "place_down": {"after": after_down},
+             "place_release": {"after": after_release}, "place_pull_out": {"before": before_pull_out}}
+    run(rig, plan, rebuild, hooks)
+
+
+def _set_down(rig, name, s, spots, tray=None):
+    """place onto the support ``s`` (an annotated one, or a tray's floor) at one of ``spots``."""
+    kin = rig.kin
+    asset = rig.ann.asset_of(rig.ann.objects[name])
+    # the carry posture of the drive to the park, before the park search checks it there
+    from .policies.plan_helpers import _carry_bottom_z
+    clear_z = _carry_bottom_z(rig, tray or s["name"])
+    carry_bottom_z = max(s["z"] + 0.03, clear_z or 0.0)
+    _carry_pose(rig, min_bottom_z=carry_bottom_z)
+    rig.sync_world()
+    # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
+    # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
+    # the TCP rotation, how far the origin stands above the object's lowest point
+    st = rig.state()
+    p_obj, q_obj = rig.obj_pose(name)
+    p_obj = np.asarray(p_obj, float)
+    R_obj = quat_R(q_obj)
+    tcp, R_tcp = kin.tcp(rig.q_cmd)
+    relations = [(tcp - p_obj, R_tcp, None, float(p_obj[2] - _lowest_z(rig, name, st)))]
+    over = math.degrees(math.acos(max(-1.0, min(1.0, float(R_obj[2, 2])))))
+    if rig.held["kind"] != "corner" and over > PLACE_LEVEL_MIN:
+        R_lvl = rest_R(q_obj) @ R_obj.T
+        relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
+                             -float(asset["origin_to_bottom_center"][2])))
+    search_near, travel_q = rig.base_pose(), _travel_q(rig)
+    if math.hypot(search_near[0] - spots[0][0], search_near[1] - spots[0][1]) > 1.0:
         # far from the target: rank parks by reach to the target, not by
         # distance from here (all tries were spent near a corner 1.4 m away)
-        search_near, q_start = None, None
-    if s.get("furniture") == "kitchen_microwave":
-        # The refrigerator and microwave are far apart. Ranking microwave
-        # parks by distance to the *current* fridge pose exhausts the search
-        # before it tests the collision-free loading position beside the oven.
-        h = rig.ann.art("kitchen_microwave")["handle"]
-        side = np.asarray(h["along"], float)
-        front = np.asarray(h["outward"], float)
-        near_xy = body[:2] - 0.46 * side[:2] + 0.214 * front[:2]
-        side_yaw = math.degrees(math.atan2(-side[1], -side[0])) + 150.0
-        search_near = (float(near_xy[0]), float(near_xy[1]), side_yaw)
-        # The arm is compacted during the subsequent carry, so its current
-        # fridge grasp configuration is not the posture at this park.
-        q_start, travel_q = None, None
-    shelf_front = None
-    if s.get("category") == "cabinet_inside" and s.get("furniture") != "kitchen_microwave":
-        # a shelf behind a door: come in horizontally from the open front
-        # (a vertical approach from 6 cm above hits the compartment)
-        hint = _behind_door_hint(rig, support)
-        x0, y0, x1, y1 = s["aabb_xy"]
-        centre = np.array([(x0 + x1) / 2, (y0 + y1) / 2])
-        a = next((x for x in rig.ann.articulated if x["name"] == s.get("furniture") or
-                  support.startswith(x["name"] + "/")), None)
-        if a is not None:
-            f = np.asarray(a["pivot"][:2], float) - centre
-            shelf_front = np.array([np.sign(f[0]), 0.0]) if abs(f[0]) > abs(f[1]) else np.array([0.0, np.sign(f[1])])
-            if hint is not None:
-                search_near = (float(hint[0] + shelf_front[0] * 0.75), float(hint[1] + shelf_front[1] * 0.75),
-                               math.degrees(math.atan2(-shelf_front[1], -shelf_front[0])) + 30.0)
-            q_start = None
-    clear_z0 = _tallest_near(rig, xy, {name, container} if container else {name}, radius=0.30) \
-        if shelf_front is None else None
-    st_slots = rig.state()
-    open_w = float(rig.held.get("pre_open", 0.04)) if rig.held else 0.04
+        search_near = None
+    # the set-down poses (the relay pose): every spot, relation and wrist turn is one goal
+    goals, leg_sets, cost = [], [], []
+    for rank, spot in enumerate(spots):
+        for off0, R0, levelled, hang in relations:
+            body = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP])
+            for deg in PLACE_YAWS:
+                Rz = rz(math.radians(deg))
+                goals.append((spot, Rz @ R0, levelled, deg, hang))
+                leg_sets.append([(body + Rz @ off0, Rz @ R0, FREE_SPACE_KW)])
+                cost.append(PLACE_SPOT_COST * rank + PLACE_YAW_COST * abs(deg) / 45.0 +
+                            (PLACE_TILTED_COST if levelled is None and len(relations) > 1 else 0.0))
+    open_w = float(rig.held.get("pre_open", 0.04))
+    rests = (kin.rest, kin.drive)
 
-    def slots_blocked(tcp_p, R_):
-        # the open fingers come down beside the object: a neighbour in a
-        # finger slot stops the hand above the support (a block placed 1.5 cm
-        # from another with the fingers straddling toward it)
-        c_ = R_[:, 1]
-        for sgn in (1.0, -1.0):
-            f_ = tcp_p[:2] + sgn * c_[:2] * (open_w + 0.008)
-            for o_ in rig.ann.objects:
-                if o_ in (name, container) or o_ not in st_slots["objects"]:
-                    continue
-                fp_ = rig.geo.footprint(o_, st_slots, 0.008)
-                if fp_[0] <= f_[0] <= fp_[2] and fp_[1] <= f_[1] <= fp_[3] and \
-                        float(rig.geo.bottom(o_, st_slots)[2]) < tcp_p[2] + 0.02:
-                    return o_
-        return None
-    clear_z1 = clear_z0
-    for off0, R0, levelled in relations:
-        clear_z0 = clear_z1
-        for psi in np.radians([0, 90, -90, 45, -45, 135, -135, 180]):
-            Rz = rz(psi)
-            off, R = Rz @ off0, Rz @ R0
-            legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
-            blocker = slots_blocked(body + off, R) if shelf_front is None and not container else None
-            if blocker is not None:
-                rig.log("place_yaw_slot_blocked", deg=round(math.degrees(psi)), by=blocker)
-                continue
-            if clear_z0 is not None:
-                # pass over the tallest neighbour (a lidded pot beside the burner)
-                low0 = body[2] + 0.06 - (body_z - s["z"])
-                if clear_z0 + 0.03 > low0:
-                    legs.insert(0, (legs[0][0] + np.array([0, 0, clear_z0 + 0.03 - low0]), R))
-            if shelf_front is not None:
-                out = np.r_[shelf_front * 0.16, 0.0]
-                legs = [(body + off + out + np.array([0, 0, 0.03]), R), (body + off + np.array([0, 0, 0.03]), R),
-                        (body + off + np.array([0, 0, 0.01]), R)]
-            if s.get("furniture") == "kitchen_microwave":
-                # Approach the opening from in front of the right corner: with a
-                # rim-held bowl, the rearward side park brushes the oven back wall.
-                park = find_park(rig.kin, rig.world, legs, near=(4.95, 2.18, 165.0),
-                                 max_tries=1, q_start=None, travel_q=None)
-            if park is None:
-                park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                                 q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
-                                 carry=rig.held is not None)
-            if park:
-                rig.log("place_yaw", deg=round(math.degrees(psi)))
-                break
-        if park is None and clear_z0 is not None:
-            # no base reaches over the tall neighbour: plan the plain approach
-            rig.log("place_clearance_dropped", obj=name)
-            clear_z0 = None
-            for psi in np.radians([0, 90, -90, 45, -45, 135, -135, 180]):
-                Rz = rz(psi)
-                off, R = Rz @ off0, Rz @ R0
-                legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
-                park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                                 q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
-                                 carry=rig.held is not None)
-                if park:
-                    rig.log("place_yaw", deg=round(math.degrees(psi)))
-                    break
-        if park is not None:
-            if levelled is not None:
-                rig.log("place_level", obj=name, tilt_deg=levelled)
-            break
-        if levelled is not None:
-            rig.log("place_level_dropped", obj=name, tilt_deg=levelled)   # levelled hand pose out of reach
-    if park is None:
-        from .planner import LAST_PARK_DIAG
-        raise SkillFailure(f"place {name}: target {tuple(round(v, 2) for v in xy)} on {support} unreachable "
-                           f"(rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} })")
-    x, y, yaw, park_qs = park
-    if len(legs) == 3 and shelf_front is None:
-        legs, park_qs = legs[1:], park_qs[1:]       # the clearance leg is re-derived after the re-measure
-    rig.log("place_park", obj=name, park=[round(x, 3), round(y, 3), round(yaw, 1)])
+    # every set-down pose is one goal of the park search (park_search.find_park), and a park is one
+    # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
+    def build(st, k, q_rank):
+        p_k, R_k = leg_sets[k][0][0], leg_sets[k][0][1]
+        return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, q_seed=q_rank,
+                          step=APPROACH_STEP)
+    problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
+                      lambda x, y, yaw: rig.q_cmd.copy(), travel_q, near=search_near, label=f"place {name}")
+    found, diag = find_skill_park(rig, problem, observe(rig))
+    if found is None:
+        raise SkillFailure(f"place {name}: no spot of {len(spots)} on {s['name']} reachable "
+                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
+    park, k, plan = (found.x, found.y, found.yaw, None), found.k, found.plan
+    spot, R, levelled, deg, hang = goals[k]
+    x, y, yaw, _ = park
+    reach = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_reach"), None)
+    L = None if reach is None else reach.info.get("set_down_m")
+    rig.log("place_park", obj=name, park=[round(x, 3), round(y, 3), round(yaw, 1)], spot=[round(v, 3) for v in spot],
+            yaw_deg=deg, levelled=levelled, goals=len(leg_sets), set_down_m=None if L is None else round(L, 4))
     rig.caption = f"PLACE {name}: carry"
     rig.focus_z = s["z"]
-    # arrive with the load above the target surface: carried lower, it reached
-    # the stove's front edge below the hob and scraped on the way up
-    # (and above the loose objects already on it: a bowl carried 3 cm over the
-    # island top dragged a rolling pin along its edge)
-    from .policies.plan_helpers import _carry_bottom_z
-    clear_z = None if container or s.get("furniture") == "kitchen_microwave" else _carry_bottom_z(rig, support)
-    _goto_park(rig, park, min_bottom_z=s["z"] + 0.15 if s.get("furniture") == "kitchen_microwave"
-               else (max(s["z"] + 0.03, clear_z or 0.0) if not container else None))
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    if s.get("category") == "TableDining" and rig.held["kind"] == "pinch":
-        # The compact carry pose can put a bowl below the tabletop. Back the
-        # base far enough to leave room for a forward, high wrist pose outside
-        # the edge; a diagonal lift through the edge knocks the bowl out.
-        base_at_table = rig.base_pose()
-        before = float(geo.bottom(name, rig.state())[2])
-        if before < s["z"] + 0.08:
-            _back_off(rig, dist=0.40)
-            if np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.asarray(base_at_table[:2])) < 0.35:
-                raise SkillFailure(f"place {name}: no room to clear the table edge before lifting")
-            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
-            # A high wrist pose needs forward reach. Extend while the bowl is
-            # still outside the table footprint, then lift before coming in.
-            forward = tcp_lift.copy()
-            forward[0] += 0.20
-            rig.move_to(forward, R_lift, step=0.005, steps_per_wp=5,
-                        label="table_staging", collision=False)
-            check_held(rig, "table_staging")
-            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
-            bottom = float(geo.bottom(name, rig.state())[2])
-            dz = max(0.0, s["z"] + 0.04 - bottom)
-            rig.log("table_pre_lift_target", obj=name, bottom_z=round(bottom, 3),
-                    target_bottom_z=round(s["z"] + 0.04, 3), tcp=np.round(tcp_lift, 3).tolist())
-            rig.move_to(tcp_lift + np.array([0, 0, dz]), R_lift, step=0.005,
-                        steps_per_wp=5, label="table_pre_lift", collision=False)
-            check_held(rig, "table_pre_lift")
-            rig.drive_base([base_at_table], speed=0.15)
-            check_held(rig, "table_edge_clear")
-    if s.get("furniture") == "kitchen_microwave":
-        tcp, R_lift = rig.kin.tcp(rig.q_cmd)
-        bottom_z = float(geo.bottom(name, rig.state())[2])
-        raise_by = max(0.0, s["z"] + 0.08 - bottom_z)
-        if raise_by > 0.01:
-            rig.move_to(tcp + np.array([0, 0, raise_by]), R_lift, step=0.005,
-                        steps_per_wp=6, label="microwave_pre_lift", collision=False)
-            check_held(rig, "microwave_pre_lift")
-    # the object may have turned in the pinch on the way (bowls held at the
-    # rim, spoons): re-measure how it hangs now and aim its body at xy with its
-    # lowest point just above the surface
-    tcp_now, R_now = rig.kin.tcp(rig.q())
+    # arrive with the load above the target surface (and the loose objects on it): the carry pose
+    # taken above (_carry_bottom_z, kept until the base planner changes the carry height itself)
+    _goto_park(rig, park, min_bottom_z=carry_bottom_z)
+    # the object may have turned in the pinch on the way (bowls held at the rim, spoons):
+    # re-measure how it hangs and aim it at the spot again
+    tcp_now, R_now = kin.tcp(rig.q())
     body_now, _ = rig.obj_pose(name)
-    hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
-    off = (R @ R_now.T) @ (tcp_now - body_now)
-    body = np.array([xy[0], xy[1], s["z"] + hang + 0.004])
-    new = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
-    # the approach waypoint clears whatever stands next to the target (a
-    # lidded pot beside a free burner): the carried object must pass over it
-    over = None
-    if clear_z0 is not None:
-        need = clear_z0 + 0.03 - (new[0][0][2] - off[2] - hang)
-        if need > 0:
-            for k in (1.0, 0.7, 0.4):
-                cand = new[0][0] + np.array([0, 0, need * k])
-                if rig.kin.ik_global(cand, R, seeds=[rig.q_cmd])[1]:
-                    over = cand
-                    rig.log("place_above_clearance", obj=name, raised_m=round(float(need * k), 3))
-                    break
-
-    if shelf_front is not None:
-        new = [(body + off + np.r_[shelf_front * 0.16, 0.0] + np.array([0, 0, 0.03]), R),
-               (body + off + np.array([0, 0, 0.03]), R), (body + off + np.array([0, 0, 0.01]), R)]
-    moved = float(np.linalg.norm(new[1][0] - legs[1][0]))
+    body_now = np.asarray(body_now, float)
+    if levelled is None:
+        hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
+    p = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP]) + (R @ R_now.T) @ (tcp_now - body_now)
+    moved = float(np.linalg.norm(p - leg_sets[k][0][0]))
     rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
-            pos=np.round(body_now, 4).tolist(),
-            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
-    hints = park_qs if moved < 0.02 else (None, None)
-    planned_legs = legs
-    legs = new
-    container_exit_pose = None
-    if container and drop:
-        # At a deep bin the loaded hand can start below the rim after travel.
-        # Lift outside the bin first; a direct diagonal to its centre sweeps
-        # the carried object through the wall and pushes the bin away.
-        current_bottom = float(geo.bottom(name, rig.state())[2])
-        rim_z = float(geo.bottom(container, rig.state())[2] + ca["container"]["rim_height"])
-        prelift = max(0.0, rim_z + 0.05 - current_bottom)
-        if prelift > 0.01:
-            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(tcp_lift + np.array([0, 0, prelift]), R_lift,
-                        step=0.005, steps_per_wp=6, label="container_pre_lift", collision=False)
-            check_held(rig, "container_pre_lift")
-            rig.log("container_pre_lift_result", obj=name, container=container,
-                    bottom_z=round(float(geo.bottom(name, rig.state())[2]), 4),
-                    rim_z=round(rim_z, 4),
-                    container_pos=np.round(rig.obj_pose(container)[0], 4).tolist())
-        exit_position, exit_orientation = rig.kin.tcp(rig.q_cmd)
-        container_exit_pose = (exit_position.copy(), exit_orientation.copy())
-    st_now = rig.state()
-    if not container and float(_lowest_z(rig, name, st_now)) < s["z"] + 0.02 and "aabb_xy" in s:
-        # carried below the target surface right at its edge: back away
-        # from the surface before rising, or the load scrapes the edge
-        x0, y0, x1, y1 = s["aabb_xy"]
-        c_now = rig.geo.centre(name, st_now)
-        fp_now = rig.geo.footprint(name, st_now)
-        # clearance of the load's near edge past each side of the surface
-        # (> 0: fully outside on that side); the load is on the side of largest clearance
-        clr = {(1.0, 0.0): fp_now[0] - x1, (-1.0, 0.0): x0 - fp_now[2],
-               (0.0, 1.0): fp_now[1] - y1, (0.0, -1.0): y0 - fp_now[3]}
-        out_key = max(clr, key=lambda k: clr[k])
-        out = np.array(out_key)
-        need = 0.02 - clr[out_key]                          # distance to move out to clear by 2 cm
-        inside = clr[out_key] < 0.0                          # under the surface's footprint
-        t_now, R_now = rig.kin.tcp(rig.q_cmd)
-        for d in ((min(0.10, max(need, 0.02)), 0.04) if inside else ()):
-            try:
-                rig.move_to(t_now + np.r_[out * d, 0.0], R_now, step=0.002, steps_per_wp=10,
-                            label="place_back_from_edge", smooth=True, collision=False)
-                check_held(rig, "place_back_from_edge")
-                break
-            except SkillFailure as exc:
-                if rig.held is None:
-                    raise
-                rig.log("place_back_from_edge_short", d=d, reason=str(exc))
-        t_now, _ = rig.kin.tcp(rig.q_cmd)
-        rise_z = over[2] if over is not None else legs[0][0][2]
-        mid = np.array([t_now[0], t_now[1], rise_z])
-        if rig.kin.ik_global(mid, R, seeds=[rig.q_cmd])[1]:
-            rig.move_to(mid, R, step=0.002, steps_per_wp=10, label="place_rise", smooth=True, collision=False)
-            check_held(rig, "place_rise")
-    if over is not None:
-        rig.move_to(over, R, step=0.002, steps_per_wp=10, label="place_over_neighbours", smooth=True, collision=False)
-        check_held(rig, "place_over_neighbours")
-    import contextlib
-    guard = contextlib.nullcontext()
-    if container and hasattr(rig.world, "temp_obstacles"):
-        # the container itself is not in the arm model: a joint-space fallback
-        # to the pose above it swung the forearm through a trash can
-        cst = rig.state()
-        cfp = geo.footprint(container, cst)
-        cz = float(geo.bottom(container, cst)[2])
-        guard = rig.world.temp_obstacles([[cfp[0], cfp[1], cz, cfp[2], cfp[3],
-                                           cz + float(ca["container"]["rim_height"])]])
-    if shelf_front is not None and hints[0] is not None and \
-            not rig.kin.cart_path(rig.q_cmd, np.asarray(legs[0][0], float), R, step=0.02)[1]:
-        # no straight line into the shelf from the carry pose: a joint-space
-        # detour here, beside the open fridge, jammed the arm against it.  Back
-        # out, shape the arm into the planned posture in free space, drive in.
-        px, py, pyaw = rig.base_pose()
-        if _back_off(rig, dist=0.40) > 0.1:
-            try:
-                rig.sync_world()
-                rig.follow(rig.joint_path(np.asarray(hints[0]), "place_preshape"), steps_per_wp=8)
-                check_held(rig, "place_preshape")
-                rig.drive_base([(px, py, pyaw)], speed=0.08, turn=0.3, ramp=0.8)
-                check_held(rig, "place_preshape_in")
-                rig.log("place_preshape", obj=name)
-            except Dropped:
-                raise
-            except SkillFailure as exc:
-                rig.log("place_preshape_short", reason=str(exc))
-                _goto_park(rig, park)
-    try:
-        with guard:
-            # into a container the hand travels down past furniture (a floor bin
-            # beside the stove): check the arm against the scene on the way
-            err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True,
-                              collision=bool(container), q_hint=hints[0])
-        if err > 0.03:
-            raise SkillFailure(f"place {name}: hand blocked above support ({err:.3f} m)")
-    except SkillFailure as e:
-        if moved > 0.10 or "no IK" not in str(e):
-            raise
-        # A rim-held bowl can pivot slightly during the short carry. The
-        # original target remains within the wider cavity and has a verified
-        # IK branch at this park; use it if the measured correction cannot be
-        # reached from the loaded arm configuration.
-        rig.log("place_remeasure_fallback", obj=name, reason=str(e))
-        legs, hints = planned_legs, park_qs
-        rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True, collision=False,
-                    q_hint=hints[0])
-    stage_pos, _ = rig.obj_pose(name)
-    rig.log("place_after_above", obj=name, pos=np.round(stage_pos, 4).tolist(),
-            fingers=np.round(rig.fingers(), 4).tolist(),
-            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
-    check_held(rig, "place_above")
-    if shelf_front is not None:
-        # slide in horizontally over the shelf, then lower as usual
-        hints = tuple(hints) + (None,) * (3 - len(hints))
-        rig.move_to(legs[1][0], R, step=0.003, steps_per_wp=8, label="place_insert", smooth=True, collision=False,
-                    q_hint=hints[1])
-        check_held(rig, "place_insert")
-        legs, hints = [legs[0], legs[2]], (hints[0], hints[2])
-    if not drop:
-        rig.caption = f"PLACE {name}: lower"
-        err = rig.move_to(legs[1][0], R, step=0.002, steps_per_wp=8, label="place_lower", smooth=True, collision=False,
-                          q_hint=hints[1])
-        if err > 0.03:
-            raise SkillFailure(f"place {name}: hand blocked at support ({err:.3f} m)")
-        rig.step(30)
-        stage_pos, _ = rig.obj_pose(name)
-        rig.log("place_after_lower", obj=name, pos=np.round(stage_pos, 4).tolist(),
-                fingers=np.round(rig.fingers(), 4).tolist())
-        check_held(rig, "place_lower")
-        if not container:
-            # the measured gap under the object decides, not the planned offset:
-            # a can let go 5 cm above a fridge shelf tumbled 11 cm away
-            gap = float(_lowest_z(rig, name, rig.state())) - float(s["z"])
-            if gap > 0.015:
-                try:
-                    held_vertical_move(rig, -(gap - 0.006), "place_lower_to_contact", step=0.002, allow_pull=False)
-                except SkillFailure as exc:
-                    if rig.held is None:
-                        raise
-                    rig.log("place_lower_to_contact_short", gap_m=round(gap, 3), reason=str(exc))
-    rig.caption = f"PLACE {name}: release" + (f" into the {container}" if container else "")
+            pos=np.round(body_now, 4).tolist())
     kind = rig.held["kind"]
-    before_release, _ = rig.obj_pose(name)
-    if container:
-        current_container, _ = rig.obj_pose(container)
-        shift = float(np.linalg.norm(current_container[:2] - container_start[:2]))
-        rig.log("place_container_shift", obj=name, container=container,
-                shift_m=round(shift, 4), pos=np.round(current_container, 4).tolist())
-        if shift > 0.05:
-            raise SkillFailure(f"place {name}: container shifted {shift:.3f} m before release")
-    rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
-            target=[round(float(v), 4) for v in body])
-    rig.grip(rig.held["pre_open"], 70, gradual=True)
-    after_open, _ = rig.obj_pose(name)
-    rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist(),
-            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
-    top = legs[0][0] if drop else legs[1][0]
-    rig.held = None                    # released: a short retreat is not part of the outcome
-    tcp, _ = rig.kin.tcp(rig.q_cmd)
-    away = np.asarray(rig.base_pose()[:2]) - np.asarray(xy)
-    away /= max(1e-9, float(np.linalg.norm(away)))
-    retreats = [("place_retreat_up", top + np.array([0, 0, 0.06])),
-                ("place_retreat_back", tcp + 0.08 * R[:, 2]),
-                ("place_retreat_base", tcp + np.r_[0.08 * away, 0.03])]
-    if shelf_front is not None:
-        # behind a door: back out horizontally through the opening first (a
-        # lift left the hand inside the fridge and the next tuck had no exit)
-        retreats = [("place_retreat_out", tcp + np.r_[shelf_front * 0.22, 0.01]),
-                    ("place_retreat_out_short", tcp + np.r_[shelf_front * 0.14, 0.01])] + retreats
-    errors = []
-    for label, target in retreats:
-        try:
-            rig.move_to(target, R, step=0.004, label=label, smooth=True, collision=False)
-            break
-        except SkillFailure as e:
-            errors.append(str(e))
-    else:
-        rig.log("retreat_short", reasons=errors)
-    if container_exit_pose is not None:
-        # The release retreat only clears the object vertically. Return the
-        # empty hand to its known outside-of-bin staging position as well, so
-        # the next navigation can fold the arm without sweeping the rim.
-        exit_target, exit_orientation = container_exit_pose
-        try:
-            rig.move_to(exit_target, exit_orientation, step=0.005, steps_per_wp=6,
-                        label="container_exit", collision=False)
-        except SkillFailure as e:
-            rig.log("container_exit_short", reason=str(e))
+    _place_run(rig, name, s, p, R, open_w, plan)
     rig.step(90)
     rig.focus_z = None
     st = rig.state()
-    if container:
-        ok, why = geo.inside(name, container, st)
-        rig.log("place_result", obj=name, container=container, inside=bool(ok), detail=why)
+    if tray is not None:
+        ok, why = rig.geo.inside(name, tray, st)
+        rig.log("place_result", obj=name, container=tray, inside=bool(ok), detail=why)
         if not ok:
-            raise SkillFailure(f"place {name} in {container}: {why}")
+            raise SkillFailure(f"place {name} in {tray}: {why}")
         return True
-    p = geo.bottom(name, st)
-    err = float(np.linalg.norm(p[:2] - np.asarray(xy)))
-    on, why = geo.on(name, support, st)
-    rig.log("place_result", obj=name, support=support, xy_err_m=round(err, 4), on_support=bool(on))
+    b = rig.geo.bottom(name, st)
+    err = float(np.linalg.norm(b[:2] - np.asarray(spot)))
+    on, why = rig.geo.on(name, s["name"], st)
+    rig.log("place_result", obj=name, support=s["name"], xy_err_m=round(err, 4), on_support=bool(on))
     if not on:
         # what is it resting on: the objects next to it
         near = {o: [round(float(v), 3) for v in st["objects"][o]["pos"]] for o in rig.ann.objects
                 if o != name and o in st["objects"] and
-                np.linalg.norm(np.asarray(st["objects"][o]["pos"][:2]) - p[:2]) < 0.30}
-        rig.log("place_not_on_support", obj=name, bottom=[round(float(v), 3) for v in p],
+                np.linalg.norm(np.asarray(st["objects"][o]["pos"][:2]) - b[:2]) < 0.30}
+        rig.log("place_not_on_support", obj=name, bottom=[round(float(v), 3) for v in b],
                 quat=[round(float(v), 3) for v in st["objects"][name]["quat"]], near=near)
     tol = 0.12 if kind == "corner" else 0.10   # a corner-held object pivots flat on release
-    if s.get("category") == "cabinet_inside":
-        # inside a fridge/cabinet the hand exits through a narrow opening and
-        # nudges the object; resting upright on the shelf is what counts
-        tilt = math.degrees(math.acos(float(np.clip(quat_R(st["objects"][name]["quat"])[2, 2], -1.0, 1.0))))
-        rig.log("place_shelf_check", obj=name, tilt_deg=round(tilt, 1))
-        if on and tilt < 20.0:
-            tol = 0.15
     if not (on and err < tol):
         raise SkillFailure(f"place {name}: xy err {err:.3f} m, on support {on} ({why})")
     return True
+
+
+def drop_into(rig, name, container):
+    """Let the held object go into ``container`` (any container but a tray: place sets things down
+    on a tray's floor).  One relay pose: the load over the opening, its lowest point LEAVE_GAP above
+    the rim; no set-down (it is let go in the air) and no pull-out (nothing is left between the
+    fingers once it falls).  The planner takes the hand there and on to the travel posture
+    (Rig.tuck); the park search checks both (park_over, _drop_check)."""
+    if rig.held is None or rig.held["name"] != name:
+        raise SkillFailure(f"drop {name}: not holding it")
+    ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
+    if not ca:
+        raise SkillFailure(f"drop {name}: {container} is not a container")
+    st = rig.state()
+    cb = np.asarray(rig.geo.bottom(container, st), float)
+    rim_z = float(cb[2] + ca["rim_height"])
+    fp = rig.geo.footprint(name, st)
+    size = rig.ann.asset_of(rig.ann.objects[container])["size"]
+    inner = float(ca.get("rim_radius") or 0.0) or 0.5 * float(min(size[:2]))
+    centre = np.array([(fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2])
+    low = float(_lowest_z(rig, name, st))
+    if np.linalg.norm(centre - cb[:2]) < 0.6 * inner and rim_z < low < rim_z + 0.25:
+        # already held over the opening (after hover): let go here
+        rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
+    else:
+        from .policies.plan_helpers import _carry_bottom_z
+        _carry_pose(rig, min_bottom_z=_carry_bottom_z(rig, container))
+        check_held(rig, "drop_carry")
+        st = rig.state()
+        tcp, R = rig.kin.tcp(rig.q_cmd)
+        body, _ = rig.obj_pose(name)
+        body = np.asarray(body, float)
+        hang = float(body[2] - _lowest_z(rig, name, st))
+        # the opening's centre, and off it toward each side as far as the load still clears the
+        # walls: a bin deep on a table is out of reach at its centre
+        osz = rig.ann.asset_of(rig.ann.objects[name])["size"]
+        room = inner - 0.5 * math.hypot(osz[0], osz[1]) - CONTAINER_WALL - LEAVE_GAP
+        z = rim_z + LEAVE_GAP + hang
+        anchors = [np.r_[cb[:2], z]] + ([np.r_[cb[:2] + room * np.asarray(d, float), z]
+                                         for d in ((1, 0), (-1, 0), (0, 1), (0, -1))] if room > LEAVE_MARGIN else [])
+        found = park_over(rig, "drop", anchors, tcp - body, R, anchor_cost=[0.0] + [PLACE_SPOT_COST] * (len(anchors) - 1),
+                          check=_drop_check(rig))
+        if found is None:
+            from .planner import LAST_PARK_DIAG
+            raise SkillFailure(f"drop {name}: no base pose above {container} "
+                               f"(rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} })")
+        park, p, Rg = found
+        _goto_park(rig, park)
+        rig.caption = f"DROP {name} into {container}"
+        with fingers_checked(rig):
+            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", allow=FREE, smooth=True,
+                        q_hint=park[3][0])
+        check_held(rig, "drop_above")
+    rig.grip(rig.held.get("pre_open", 0.04), 40)
+    rig.held = None
+    rig.step(PHYSICS_HZ)                   # it falls clear of the open fingers
+    rig.tuck()
+    ok, why = rig.geo.inside(name, container, rig.state())
+    rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)
+    if not ok:
+        raise SkillFailure(f"drop {name} into {container}: {why}")
+    return True
+
+
+def _drop_check(rig):
+    """find_park check of a drop at qs[0]: with the hand empty and open to its grasp width (the
+    load let go and fallen), the tuck from there (Rig.tuck)."""
+    kin = rig.kin
+    motion = kin.motion
+    open_w = float(rig.held.get("pre_open", 0.04))
+
+    def check(x, y, yaw, qs):
+        if motion is None:
+            return True
+        with rig._fingers_checked(kin), motion.empty_hand(kin.side), motion.hand_open(kin.side, open_w):
+            goal = next((g for g in (kin.rest, kin.drive) if kin.free(g)), None)
+            return goal is not None and joint_reachable(kin, qs[0], goal)
+    return check
 
 
 def free_spots(rig, name, support, hint=None, k=8):
@@ -2249,33 +2234,8 @@ def place_on(rig, name, support, hint=None, tries=4):
     spots = free_spots(rig, name, support, hint)
     if not spots:
         raise SkillFailure(f"place {name}: no free spot on {support}")
-    last = None
-    for xy in spots[:tries]:
-        try:
-            return place(rig, name, support, xy)
-        except SkillFailure as e:
-            last = e
-            rig.log("place_retry", obj=name, xy=[round(v, 3) for v in xy], reason=str(e))
-            if rig.held is None:          # released but not where it should be
-                raise
-    raise last
-
-
-def _tallest_near(rig, xy, exclude, radius=0.30):
-    """Highest top (z) of the objects whose footprint comes within ``radius``
-    of xy, or None."""
-    st = rig.state()
-    best = None
-    for o in rig.ann.objects:
-        if o in exclude:
-            continue
-        fp = rig.geo.footprint(o, st)
-        d = math.hypot(max(fp[0] - xy[0], 0, xy[0] - fp[2]), max(fp[1] - xy[1], 0, xy[1] - fp[3]))
-        if d > radius:
-            continue
-        top = float(rig.geo.bottom(o, st)[2]) + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2])
-        best = top if best is None else max(best, top)
-    return best
+    # the free spots are one goal set of the place (not tried one after another)
+    return place(rig, name, support, spots=spots[:tries])
 
 
 def _behind_door_hint(rig, support):
@@ -2306,7 +2266,7 @@ def place_flat(rig, name, support, hint=None):
     held = rig.held
     # fingertips at least 3.5 cm past the support edge: real tops reach a bit
     # beyond the annotated edge and a lower finger resting on it gets pinned
-    over_p = max(EDGE_PLACE_OVERHANG, held.get("depth", EDGE_GRIP_DEPTH) + 0.035)
+    over_p = max(EDGE_PLACE_OVERHANG, held["depth"] + 0.035)
     s = rig.ann.support(support)
     st = rig.state()
     h, lat_half = held["h"], held["lat_half"]
@@ -2436,19 +2396,19 @@ def place_flat(rig, name, support, hint=None):
             legs = [legs[0], (legs[1][0] + np.array([0, 0, need]), legs[1][1]), legs[2]]
             rig.log("flat_over_raised", obj=name, raised_m=round(need, 3))
         rig.caption = f"PLACE {name}: slide in over the surface"
-        rig.move_to(*legs[1], step=0.004, steps_per_wp=4, label="flat_over", collision=False)
+        rig.move_to(*legs[1], step=0.004, steps_per_wp=4, label="flat_over", allow=FREE_ELSE_STRAIGHT)
         err = float(np.linalg.norm(rig.kin.tcp(rig.q())[0] - legs[1][0]))
         if err < 0.02 or attempts >= 2 or rig.held is None:
             break
         # the book caught on the shelf (side panel / a neighbour): back out
         # and use the next free spot
         rig.log("flat_over_blocked", obj=name, err_m=round(err, 3), centre=[round(v, 3) for v in c])
-        rig.move_to(*legs[0], step=0.004, label="flat_back_out", collision=False)
+        rig.move_to(*legs[0], step=0.004, label="flat_back_out", allow=FREE_ELSE_STRAIGHT)
         check_held(rig, "flat_back_out")
         # skip spots within 8 cm of the blocked one (3 cm steps along the edge)
         cands = cands[:idx + 1] + [t for t in cands[idx + 1:] if np.linalg.norm(t[2] - c) > 0.08]
         start, attempts = idx + 1, attempts + 1
-    rig.move_to(*legs[2], step=0.002, steps_per_wp=6, label="flat_lower", collision=False)
+    rig.move_to(*legs[2], step=0.002, steps_per_wp=6, label="flat_lower", allow=LEGACY)
     rig.step(30)
     rig.caption = f"PLACE {name}: release, pull the hand out"
     rig.grip(0.04, 70)
@@ -2462,13 +2422,14 @@ def place_flat(rig, name, support, hint=None):
     low = np.r_[out[:2], s["z"] + size[2] / 2]
     push_end = np.r_[(tcp + n3 * (held["depth"] - over_p - 0.01))[:2], low[2]]
     try:
-        rig.move_to(up, R, step=0.003, steps_per_wp=4, label="flat_release_down", collision=False)
-        rig.move_to(out, R, step=0.004, label="flat_retreat", collision=False)
+        rig.move_to(up, R, step=0.003, steps_per_wp=4, label="flat_release_down", allow=LEGACY)
+        rig.move_to(out, R, step=0.004, label="flat_retreat", allow=LEAVE_CONTACT)
         rig.grip(0.0, 40)
         rig.caption = f"PLACE {name}: push it fully onto the surface"
-        rig.move_to(low, R, step=0.004, label="flat_push_down", collision=False)
-        rig.move_to(push_end, R, step=0.003, steps_per_wp=4, label="flat_push", collision=False)
-        rig.move_to(push_end + n3 * 0.12 + np.array([0, 0, 0.06]), R, step=0.01, label="flat_up", collision=False)
+        rig.move_to(low, R, step=0.004, label="flat_push_down", allow=LEGACY)
+        rig.move_to(push_end, R, step=0.003, steps_per_wp=4, label="flat_push", allow=LEGACY)
+        rig.move_to(push_end + n3 * 0.12 + np.array([0, 0, 0.06]), R, step=0.01, label="flat_up",
+                    allow=LEAVE_CONTACT)
     except SkillFailure as e:
         rig.log("retreat_short", reason=str(e))
     rig.step(90)
@@ -2547,7 +2508,7 @@ def approach_microwave_button(rig, name="kitchen_microwave", button="door"):
     rig.grip(0.0, 40)
     prefix = "microwave_door_button" if button == "door" else "microwave_button"
     rig.move_to(*targets[0], label=prefix + "_pre", q_hint=park[3][0])
-    rig.move_to(*targets[1], step=0.005, label=prefix + "_align", collision=False)
+    rig.move_to(*targets[1], step=0.005, label=prefix + "_align", allow=LEGACY)
     tcp, _ = rig.kin.tcp(rig.q())
     error = float(np.linalg.norm(tcp - pre))
     if error > 0.04:
@@ -2570,7 +2531,7 @@ def press_aligned_microwave_button(rig, name="kitchen_microwave", button="door")
         raise SkillFailure(f"microwave: {button} button alignment is stale")
     inside = _microwave_start_food(rig, name) if button == "start" else None
     prefix = "microwave_door_button" if button == "door" else "microwave_button"
-    rig.move_to(stage["contact"], stage["R"], step=0.003, label=prefix + "_press", collision=False)
+    rig.move_to(stage["contact"], stage["R"], step=0.003, label=prefix + "_press", allow=LEGACY)
     rig.step(24)
     tcp, _ = rig.kin.tcp(rig.q())
     distance = float(np.linalg.norm(tcp - stage["contact"]))
@@ -2594,7 +2555,7 @@ def retract_microwave_button(rig, name="kitchen_microwave", button="door"):
     if np.linalg.norm(tcp - stage["contact"]) > 0.04:
         raise SkillFailure(f"microwave: {button} button press pose is stale")
     prefix = "microwave_door_button" if button == "door" else "microwave_button"
-    rig.move_to(stage["pre"], stage["R"], step=0.005, label=prefix + "_release", collision=False)
+    rig.move_to(stage["pre"], stage["R"], step=0.005, label=prefix + "_release", allow=LEGACY)
     tcp, _ = rig.kin.tcp(rig.q())
     error = float(np.linalg.norm(tcp - stage["pre"]))
     if error > 0.04:
@@ -2631,7 +2592,7 @@ def clear_microwave_door_sweep(rig, name="kitchen_microwave"):
     if rig.held is None:
         q = rig.q()
         if min(np.max(np.abs(q - rig.kin.rest)), np.max(np.abs(q))) > 0.07:
-            rig.tuck()                     # the arm can be left half-folded after a place
+            rig.tuck(hang=False)           # the arm can be left half-folded after a place
             q = rig.q()
             if min(np.max(np.abs(q - rig.kin.rest)), np.max(np.abs(q))) > 0.07:
                 raise SkillFailure("microwave hinge: arm is not tucked")
@@ -2672,7 +2633,7 @@ def _set_microwave_hinge(rig, name, target, caption):
             motor.apply_action(ArticulationAction(joint_positions=rig.torch.tensor([q], dtype=rig.torch.float32),
                                                   joint_indices=rig.torch.tensor([rig._dof[name]])))
             rig.step(1)
-        rig.step(120)
+        rig.step(PHYSICS_HZ)
         actual = rig.joint(name)
         rig.log("microwave_door_motion", target=round(target, 3), actual=round(actual, 3))
         if abs(actual - target) > 0.10:

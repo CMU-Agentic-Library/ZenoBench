@@ -106,15 +106,8 @@
     "note": "The microwave's measured hinge-clearance pose (also when loaded)."
    },
    {
-    "path_id": "bimanual_or_left_load",
-    "when": [
-     {
-      "noun": "robot",
-      "field": "left_held",
-      "op": "truthy",
-      "value": true
-     }
-    ],
+    "path_id": "away",
+    "when": [],
     "steps": [
      {
       "policy": "policy_067",
@@ -127,55 +120,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
-   },
-   {
-    "path_id": "loaded",
-    "when": [
-     {
-      "noun": "robot",
-      "field": "right_held",
-      "op": "truthy",
-      "value": true
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_035",
-      "args": [
-       "$distance_m"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": "Straight reverse with the right-hand load."
-   },
-   {
-    "path_id": "empty",
-    "when": [],
-    "steps": [
-     {
-      "policy": "policy_100",
-      "args": [
-       "$obstacle",
-       "$distance_m"
-      ],
-      "kwargs": {},
-      "as": "plan"
-     },
-     {
-      "policy": "policy_037",
-      "args": [
-       "#plan.forward_m"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": ""
+    "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
    }
   ]
  },

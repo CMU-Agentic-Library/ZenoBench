@@ -43,9 +43,7 @@
     "class": "PlanRetreatPolicy"
   },
   "availability": "callable",
-  "skill_contract_paths": [
-    "contract_012:retreat/empty"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [],
   "evidence": "pending Isaac Sim check (skill library v2)"

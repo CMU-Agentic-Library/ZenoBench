@@ -64,7 +64,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `arrange` (`skill_052`) (then) — a new layout is set on the cleared surface
 - Is a fallback for: `wipe` (`skill_037`) (recover) — objects cover the surface
 - Is a fallback for: `arrange` (`skill_052`) (recover) — the support is too crowded
-- Alternative: `empty` (`skill_051`) — the items lie on a surface instead
+- Alternative: `empty` (`skill_051`) — use clear instead when the items lie on a surface instead
 
 ## Failure
 

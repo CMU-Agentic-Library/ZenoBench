@@ -1,13 +1,13 @@
 ---
 name: pick-object
-description: "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items."
+description: "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked."
 ---
 
 # Pick an object (`skill_017`)
 
 `pick(object: object_ref, hands: hand?, grasp: tag?, pass_by: pose2d?)`
 
-Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.
+Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.
 
 ## When to use
 
@@ -23,12 +23,12 @@ The robot must hold an object for any later hand action.
 
 - `object` (`object_ref`): The object to grasp.
 - `hands` (`hand`, optional): "both" requests a two-handed lift for wide items.
-- `grasp` (`tag`, optional): Optional grasp style to request: handle, rim, top or edge.
+- `grasp` (`tag`, optional): Optional: "handle" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).
 - `pass_by` (`pose2d`, optional): Optional base waypoint: grasp while driving past.
 
 ## Outputs
 
-- `grasp` (`hand`): Grasp route actually used.
+- `grasp` (`tag`): Kind of hold: pinch, edge, corner or bimanual (the selected path names the grasp route).
 - `lift_m` (`number`): Measured lift of the object.
 
 ## Applicability
@@ -78,7 +78,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `on_the_move` — when args.pass_by and 'top_pinch' in object.grasp_types
 
 1. `policy_052($object, $pass_by)`
-- extra precondition `grasp_clearance(object=$object)`
+- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 
 ### `two_hand_box` — when args.hands == 'both' and object.wide_box
 
@@ -104,14 +104,14 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `flat_overhang_ready` — when object.flat and object.edge_ready
 
 1. `policy_013($object)`
-- extra precondition `edge_overhang(object=$object)`
+- extra precondition `edge_overhang(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 - The overhang already exists (e.g. after expose): pinch it directly.
 
 ### `flat_edge` — when object.flat
 
 1. `policy_045($object)`
 2. `policy_013($object)`
-- Slide the flat item until it overhangs a free edge, then pinch the overhang.
+- Slide the flat item until it overhangs a free edge, then pinch the overhang. In the benchmark profiles the slide is left out: call expose first, then pick takes flat_overhang_ready.
 
 ### `rect_rim` — when 'rim_pinch_rect' in object.grasp_types
 
@@ -120,7 +120,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `round_rim` — when 'rim_pinch' in object.grasp_types
 
 1. `policy_011($object)`
-- extra precondition `grasp_clearance(object=$object)`
+- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 - Preferred for cups, mugs, bowls and pots: a rim pinch does not let the vessel swing.
 
 ### `handle` — when 'handle_pinch' in object.grasp_types and object.handle_collider
@@ -130,7 +130,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `top_pinch` — when 'top_pinch' in object.grasp_types
 
 1. `policy_010($object)`
-- extra precondition `grasp_clearance(object=$object)`
+- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
 
 ### `annotation_dispatch` — when object.grasp_types
 
@@ -139,8 +139,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `approach` (`skill_002`) (then) — the target is an object to grasp
+- Previous step: `navigate` (`skill_001`) (enables) — the object to grasp is the destination
 - Previous step: `crouch` (`skill_005`) (then) — the object is on the floor or a low shelf
+- Previous step: `bend` (`skill_007`) (then) — the object lies deep on the surface
 - Previous step: `inspect` (`skill_012`) (then) — an object found inside must be taken out
 - Previous step: `drop` (`skill_019`) (enables) — more items go into the same container
 - Previous step: `stack` (`skill_020`) (enables) — a taller stack is built
@@ -156,6 +157,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `open` (`skill_040`) (enables) — an object inside must be taken out
 - Previous step: `heat` (`skill_043`) (then) — the heated food is served
 - Previous step: `uncover` (`skill_046`) (enables) — something inside is taken out
+- Previous step: `sidestep` (`skill_055`) (then) — the object is now in front of the arm
 - Previous step: `measure` (`skill_058`) (then) — the size decides the grasp
 - Previous step: `touch` (`skill_065`) (enables) — the touched object is then grasped
 - Previous step: `stop` (`skill_068`) (enables) — the food is taken off the heat
@@ -165,7 +167,6 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Fallback on failure: `expose` (`skill_031`) (repair, repairs edge_overhang) — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
 - Fallback on failure: `separate` (`skill_032`) (repair, repairs grasp_clearance) — fingers have no room beside the object (grasp_clearance false)
 - Fallback on failure: `pull` (`skill_030`) (recover) — the object sits too deep to reach
-- Fallback on failure: `approach` (`skill_002`) (recover) — no grasp is reachable from base poses near the current one
 - Fallback on failure: `upright` (`skill_036`) (recover) — a tall object fell over and its top pinch is gone
 - Fallback on failure: `crouch` (`skill_005`) (recover) — the object is on the floor or a low shelf
 - Fallback on failure: `uncover` (`skill_046`) (recover) — the object to take is a lid-covered container's content

@@ -81,12 +81,6 @@
       "definition": "policies/policy_013/policy.json"
     },
     {
-      "policy_id": "policy_014",
-      "name": "pick_floor_corner",
-      "legacy_id": "pick_floor_corner",
-      "definition": "policies/policy_014/policy.json"
-    },
-    {
       "policy_id": "policy_015",
       "name": "place_surface",
       "legacy_id": "place_surface",

@@ -253,7 +253,7 @@
    {
     "skill_id": "skill_069",
     "verb": "dip",
-    "when": "the contents must be mixed",
+    "when": "use stir instead when the contents must be mixed",
     "bind": {}
    }
   ]

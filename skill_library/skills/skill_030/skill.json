@@ -191,15 +191,15 @@
   "fallback": [],
   "fallback_for": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the object sits too deep on its support",
-    "type": "substitute"
-   },
-   {
     "skill_id": "skill_017",
     "verb": "pick",
     "when": "the object sits too deep to reach",
+    "type": "recover"
+   },
+   {
+    "skill_id": "skill_031",
+    "verb": "expose",
+    "when": "no base pose reaches behind the object",
     "type": "recover"
    }
   ],
@@ -207,7 +207,7 @@
    {
     "skill_id": "skill_029",
     "verb": "push",
-    "when": "the object should come toward the robot",
+    "when": "use pull instead when the object should come toward the robot",
     "bind": {}
    }
   ]

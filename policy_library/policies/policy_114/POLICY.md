@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).sidestep_base.execute(...)`
 - Class: `SidestepPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_063:sidestep/loaded
+- Skill Contract paths: contract_063:sidestep/sideways
 
 ## Recorded evidence
 

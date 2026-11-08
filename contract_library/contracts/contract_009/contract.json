@@ -6,7 +6,7 @@
  "verb": "navigate",
  "noun": "place",
  "name": "Navigate to a place",
- "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
+ "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is tucked and hangs at the side (inside the base footprint) while the base drives, then returns to the tuck; a loaded one is held in the compact carry pose.",
  "group": "base_and_body",
  "inputs": {
   "destination": {
@@ -109,75 +109,33 @@
     "note": "An object held by both grippers moves at the slow bimanual carry speed."
    },
    {
-    "path_id": "carry",
-    "when": [
-     {
-      "noun": "robot",
-      "field": "right_held",
-      "op": "truthy",
-      "value": true
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_097",
-      "args": [
-       "$destination"
-      ],
-      "kwargs": {},
-      "as": "plan"
-     },
-     {
-      "policy": "policy_002",
-      "args": [
-       "#plan.pose"
-      ],
-      "kwargs": {
-       "name": "@robot.right_object",
-       "min_bottom_z": "#plan.carry_bottom_z"
-      }
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
-   },
-   {
-    "path_id": "empty",
+    "path_id": "drive",
     "when": [],
     "steps": [
      {
-      "policy": "policy_097",
+      "policy": "policy_092",
       "args": [
        "$destination"
-      ],
-      "kwargs": {},
-      "as": "plan"
-     },
-     {
-      "policy": "policy_001",
-      "args": [
-       "#plan.pose"
       ],
       "kwargs": {}
      }
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower."
    }
   ]
  },
  "relations": [
   {
    "kind": "sequence",
-   "to": "approach",
-   "when": "a manipulation target is on the destination",
+   "to": "pick",
+   "when": "the object to grasp is the destination",
    "bind": {
-    "target": "$destination"
+    "object": "$destination"
    },
-   "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
-   "to_skill_id": "skill_002",
+   "reason": "navigate leaves the base near; pick chooses its own grasp park from there.",
+   "to_skill_id": "skill_017",
    "sequence_type": "enables"
   },
   {

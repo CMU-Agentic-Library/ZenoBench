@@ -20,7 +20,7 @@ The robot must shift sideways a few centimetres without turning (align with a ta
 
 ## Inputs
 
-- `distance_m` (`number`): Lateral displacement in metres (left > 0).
+- `distance_m` (`number`): Lateral displacement in metres (left > 0), not 0.
 
 ## Applicability
 
@@ -46,17 +46,14 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `empty_tucked` — when not robot.right_held and not robot.left_held and robot.right_arm_stowed
-
-1. `policy_037(0.0, $distance_m)`
-
-### `loaded` — when always (default path)
+### `sideways` — when always (default path)
 
 1. `policy_114($distance_m)`
+- Checked over the whole robot; a load stays held and the base drives slower.
 
 ## Relations
 
-- Next step: `approach` (`skill_002`) (then) — the target is now in front of the arm
+- Next step: `pick` (`skill_017`) (then) — the object is now in front of the arm
 - Alternative: `navigate` (`skill_001`) — a larger move is needed
 
 ## Failure

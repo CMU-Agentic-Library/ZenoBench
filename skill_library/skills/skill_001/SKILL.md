@@ -1,13 +1,13 @@
 ---
 name: navigate-place
-description: "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load."
+description: "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is tucked and hangs at the side (inside the base footprint) while the base drives, then returns to the tuck; a loaded one is held in the compact carry pose."
 ---
 
 # Navigate to a place (`skill_001`)
 
 `navigate(destination: place_ref)`
 
-Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.
+Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is tucked and hangs at the side (inside the base footprint) while the base drives, then returns to the tuck; a loaded one is held in the compact carry pose.
 
 ## When to use
 
@@ -15,7 +15,6 @@ The robot must be in another room or next to another piece of furniture.
 
 ## Not to be confused with
 
-- `approach`: approach fine-parks so the arm reaches one target; navigate only gets near.
 - `retreat`: retreat moves straight back from a place without a destination.
 
 ## Inputs
@@ -56,16 +55,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 2. `policy_058(@robot.right_object, #plan.pose)`
 - An object held by both grippers moves at the slow bimanual carry speed.
 
-### `carry` — when robot.right_held
+### `drive` — when always (default path)
 
-1. `policy_097($destination) as plan`
-2. `policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)`
-- Back off, lift the load to carry height, plan with extra clearance, drive slowly.
-
-### `empty` — when always (default path)
-
-1. `policy_097($destination) as plan`
-2. `policy_001(#plan.pose)`
+1. `policy_092($destination)`
+- The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower.
 
 ## Relations
 
@@ -79,16 +72,15 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `lift` (`skill_023`) (then) — the object is carried over furniture
 - Previous step: `close` (`skill_041`) (then) — the robot leaves
 - Previous step: `explore_furniture` (`skill_071`) (then) — an object seen on a layer must be fetched
-- Next step: `approach` (`skill_002`) (enables) — a manipulation target is on the destination
+- Next step: `pick` (`skill_017`) (enables) — the object to grasp is the destination
 - Next step: `look` (`skill_011`) (then) — the destination must be observed first
 - Fallback on failure: `retreat` (`skill_004`) (recover) — navigation fails because the base or load is wedged against furniture
 - Fallback on failure: `tuck` (`skill_009`) (recover) — navigation fails because the empty arm cannot fold
 - Fallback on failure: `lift` (`skill_023`) (recover) — a carried object hangs too low for the doorway clearance
-- Is a fallback for: `approach` (`skill_002`) (repair) — no base pose near the current one reaches the target
 - Is a fallback for: `look` (`skill_011`) (repair) — the line of sight is blocked
 - Is a fallback for: `identify` (`skill_057`) (recover) — the object is not visible from here
-- Alternative: `face` (`skill_003`) — turning in place is blocked by furniture
-- Alternative: `sidestep` (`skill_055`) — a larger move is needed
+- Alternative: `face` (`skill_003`) — use navigate instead when turning in place is blocked by furniture
+- Alternative: `sidestep` (`skill_055`) — use navigate instead when a larger move is needed
 
 ## Failure
 

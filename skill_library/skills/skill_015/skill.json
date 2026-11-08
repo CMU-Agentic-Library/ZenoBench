@@ -199,7 +199,7 @@
    {
     "skill_id": "skill_065",
     "verb": "touch",
-    "when": "contact is not allowed",
+    "when": "use point instead when contact is not allowed",
     "bind": {}
    }
   ]

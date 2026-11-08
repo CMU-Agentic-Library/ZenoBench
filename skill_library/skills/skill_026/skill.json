@@ -41,8 +41,8 @@
  ],
  "outputs": {
   "grasp": {
-   "type": "hand",
-   "description": "Grasp kind after the regrasp."
+   "type": "tag",
+   "description": "Kind of hold after the regrasp: pinch, edge, corner or bimanual."
   }
  },
  "applicability": {
@@ -172,13 +172,13 @@
    {
     "skill_id": "skill_017",
     "verb": "pick",
-    "when": "the object is already in the hand but badly held",
+    "when": "use regrasp instead when the object is already in the hand but badly held",
     "bind": {}
    },
    {
     "skill_id": "skill_025",
     "verb": "rotate",
-    "when": "the grasp, not the yaw, must change",
+    "when": "use regrasp instead when the grasp, not the yaw, must change",
     "bind": {}
    }
   ]

@@ -32,8 +32,7 @@
   "appliance": {
    "type": "appliance_ref",
    "required": true,
-   "description": "The refrigerator.",
-   "default": "breakfast_fridge"
+   "description": "The refrigerator."
   },
   "temp_c": {
    "type": "number",

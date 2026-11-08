@@ -483,12 +483,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -658,12 +652,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -713,12 +701,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -1058,13 +1040,6 @@
        }
       },
       {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
@@ -1122,22 +1097,9 @@
        "role": "retry_after_recovery"
       },
       {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -1195,13 +1157,6 @@
         "object": "wooden_block_b"
        },
        "role": "retry_after_recovery"
-      },
-      {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
       },
       {
        "skill": "navigate",
@@ -1275,22 +1230,9 @@
        "role": "retry_after_recovery"
       },
       {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -1336,12 +1278,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_b"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "wooden_block_a",
@@ -1372,12 +1308,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_b"
-       }
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
@@ -1387,12 +1317,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -1694,12 +1618,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -1722,12 +1640,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -1784,12 +1696,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -1845,12 +1751,6 @@
         "destination": "wide_storage_bin"
        },
        "role": "alternative"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
       },
       {
        "skill": "place",
@@ -1903,12 +1803,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -1964,12 +1858,6 @@
         "destination": "wide_storage_bin"
        },
        "role": "alternative"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
       },
       {
        "skill": "place",
@@ -2038,12 +1926,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -2067,12 +1949,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -2124,12 +2000,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "small_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -2152,12 +2022,6 @@
        "skill": "navigate",
        "args": {
         "destination": "small_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "small_storage_bin"
        }
       },
       {
@@ -4668,9 +4532,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4709,9 +4573,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4759,9 +4623,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4846,9 +4710,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4939,9 +4803,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -5925,13 +5789,6 @@
        "skill": "pick",
        "args": {
         "object": "soda_can"
-       }
-      },
-      {
-       "skill": "lift",
-       "args": {
-        "object": "soda_can",
-        "height_m": 0.95
        }
       },
       {
@@ -9698,12 +9555,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -9799,12 +9650,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -10310,13 +10155,6 @@
        "skill": "navigate",
        "args": {
         "destination": "party_bowl_1"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "party_bowl_1"
        },
        "role": "insert"
       },
@@ -10973,7 +10811,7 @@
      "variants": [
       "shelf_taken"
      ],
-     "note": "the book placement on the bookcase top after an approach / with a hint (place_flat regression)",
+     "note": "the book placement on the bookcase top with a hint (place_flat regression)",
      "steps": [
       {
        "skill": "navigate",
@@ -11044,12 +10882,6 @@
        "skill": "navigate",
        "args": {
         "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "bookcase_2/top"
        }
       },
       {
@@ -11801,12 +11633,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_cabinet_6"
-       }
-      },
-      {
        "skill": "open",
        "args": {
         "articulated": "kitchen_cabinet_6"
@@ -12219,12 +12045,6 @@
        "skill": "navigate",
        "args": {
         "destination": "mug"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "mug"
        }
       },
       {

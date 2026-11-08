@@ -54,7 +54,7 @@
  "outputs": {
   "moved_m": {
    "type": "number",
-   "description": "Measured displacement along the direction."
+   "description": "Measured horizontal displacement of the object (any direction)."
   }
  },
  "applicability": {
@@ -214,19 +214,19 @@
    {
     "skill_id": "skill_033",
     "verb": "center",
-    "when": "a specific direction is wanted",
+    "when": "use push instead when a specific direction is wanted",
     "bind": {}
    },
    {
     "skill_id": "skill_034",
     "verb": "roll",
-    "when": "sliding is acceptable",
+    "when": "use push instead when sliding is acceptable",
     "bind": {}
    },
    {
     "skill_id": "skill_067",
     "verb": "sweep",
-    "when": "only one object has to move",
+    "when": "use push instead when only one object has to move",
     "bind": {}
    }
   ]

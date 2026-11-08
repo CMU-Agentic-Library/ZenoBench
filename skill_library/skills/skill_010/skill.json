@@ -17,7 +17,7 @@
  "description": "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.",
  "use_when": "Start or end of a task, or after a failure, to return to a known posture.",
  "not_to_be_confused_with": {
-  "tuck": "tuck only folds one arm; reset also restores torso and waist."
+  "tuck": "reset also opens the fingers and verifies torso, waist and arm together; the head is not moved."
  },
  "inputs": {},
  "required_inputs": [],
@@ -176,13 +176,13 @@
    {
     "skill_id": "skill_006",
     "verb": "stand",
-    "when": "the arm and waist must also be restored",
+    "when": "use reset instead when the arm and waist must also be restored",
     "bind": {}
    },
    {
     "skill_id": "skill_008",
     "verb": "straighten",
-    "when": "the arm and torso must also be restored",
+    "when": "use reset instead when the arm and torso must also be restored",
     "bind": {}
    }
   ]

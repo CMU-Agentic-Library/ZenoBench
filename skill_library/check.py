@@ -106,17 +106,29 @@ SYNONYM_GROUPS = [
 
 # Registered policies that no SkillNode path may use, with the measured reason.
 RETIRED_POLICIES = {
-    "policy_014": "Floor corner pinch: with parallel jaws the closing axis across a 2.9 cm flat object lying on "
-                  "the floor runs nearly horizontally over its top face, so the upper pad never presses the top "
-                  "and the lower pad would have to sit below the floor; it held nothing in any of 11 Isaac Sim "
-                  "attempts (notebook, books, toy car). Flat objects on the floor have no pick path.",
+    "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach "
+                  "was removed (every manipulation skill chooses its own base park).",
+    "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "
+                  "manipulation skill chooses its own base park).",
+    "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive "
+                  "speed capped by what the hands hold in Rig.drive_base (2026-11-04).",
+    "policy_002": "Carry navigate to a pose: merged into navigate's one path (policy_092, see policy_001).",
+    "policy_035": "Back off with a load along the heading: retreat's paths are one (policy_067, away from the "
+                  "obstacle, whole-robot checked, load kept) since 2026-11-04.",
+    "policy_036": "Rotate the tucked, empty base in place: face's paths are one (policy_066), the turn checked over "
+                  "the whole robot whatever the arms hold (2026-11-04).",
+    "policy_037": "Translate the tucked, empty base: retreat (policy_067) and sidestep (policy_114) have one path "
+                  "each, checked over the whole robot whatever the arms hold (2026-11-04).",
+    "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
+    "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04).",
 }
 
 NOUN_FIELDS = {
     "object": {"instance", "kind", "asset", "tags", "grasp_types", "support", "support_category", "on_floor",
                "location", "appliance", "in_container", "held_by", "held_kind", "flat", "tall", "lying", "wide_box",
                "handle_collider", "near_closed_edge", "edge_ready", "is_container", "is_lid", "lid", "contents",
-               "initial_support", "xy", "bearing_abs_deg", "buffer_xy", "sort_target", "aside_support"},
+               "initial_support", "initial_xy", "xy", "bearing_abs_deg", "buffer_xy", "sort_target",
+               "aside_support"},
     "support": {"instance", "kind", "category", "furniture", "z", "objects", "is_microwave_cavity", "appliance",
                 "bearing_abs_deg", "free_xy", "burner_xy", "roomiest_xy"},
     "articulated": {"instance", "kind", "type", "category", "has_handle", "powered", "is_open", "power_button", "wide_open_q",
@@ -127,7 +139,7 @@ NOUN_FIELDS = {
     "room": {"instance", "kind", "bearing_abs_deg"},
     "furniture": {"instance", "kind", "bearing_abs_deg"},
     "robot": {"right_held", "left_held", "right_object", "left_object", "right_kind", "both_hold_same",
-              "right_arm_stowed"},
+              "right_arm_stowed", "base_ready"},
 }
 TYPE_FIELDS = {
     "object_ref": "object", "container_ref": "object", "lid_ref": "object", "tool_ref": "object",
@@ -147,7 +159,8 @@ def field_type(type_, fld):
     """Type of a noun attribute when it is used as a value."""
     table = {"support": "support_ref", "initial_support": "support_ref", "lid": "lid_ref",
              "appliance": "appliance_ref", "power_button": "button_ref", "contents": "object_list",
-             "objects": "object_list", "xy": "xy", "buffer_xy": "xy", "free_xy": "xy", "burner_xy": "xy", "sort_target": "receptacle_ref",
+             "objects": "object_list", "xy": "xy", "initial_xy": "xy", "buffer_xy": "xy", "free_xy": "xy",
+             "burner_xy": "xy", "sort_target": "receptacle_ref",
              "instance": type_, "right_object": "object_ref", "left_object": "object_ref",
              "in_container": "container_ref"}
     return table.get(fld)

@@ -1,13 +1,13 @@
 ---
 name: release-object
-description: "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off."
+description: "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls."
 ---
 
 # Release an object (`skill_021`)
 
 `release(object: object_ref, hand: hand)`
 
-Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
+Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls.
 
 ## When to use
 

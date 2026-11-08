@@ -1,6 +1,6 @@
 # contract_050 — Press a button
 
-Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
+Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner).
 
 Paired SkillNode: `skill_042` (`press-button`).
 

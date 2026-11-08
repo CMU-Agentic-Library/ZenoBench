@@ -35,3 +35,20 @@ def test_held_links_on_the_tcp_and_out_of_self_collision():
         assert h in k["collision_link_names"]
         assert set(k["self_collision_ignore"][h]) >= set(links)
     assert k["mesh_link_names"] == links        # the yaml alias is not extended
+
+
+def test_a_target_above_a_flat_object_leaves_it_an_obstacle():
+    from zeno_skills.motion import TARGET_PAD, Motion
+    from zeno_skills.scene_geometry import Collider
+    T = np.eye(4)
+    T[:3, 3] = [1.0, 0.0, 0.76]
+    tray = Collider("tray", "object:tray", "cuboid", "/tray", np.eye(4), dims=np.array([0.27, 0.2, 0.055]))
+    m = Motion.__new__(Motion)
+    m.by_owner = {"object:tray": [tray]}
+    m.body_pose = {"/tray": T}
+    m._corners = {"tray": Motion.box_corners(tray)}
+    lo, hi = m._owner_box("object:tray")
+    assert np.allclose(lo, [0.865, -0.1, 0.7325]) and np.allclose(hi, [1.135, 0.1, 0.7875])
+    above = np.array([1.0, 0.0, hi[2] + TARGET_PAD + 0.02])          # place_above, T12
+    assert m._targets_allow([above]) == set()
+    assert m._targets_allow([np.array([1.0, 0.0, 0.77])]) == {"object:tray"}

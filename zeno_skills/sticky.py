@@ -237,8 +237,8 @@ class StickyHands:
     def drop_caught(self, name, before):
         """A pinch that also caught what the object stood in (an apple pinched against its
         basket's wall) would, once welded, carry that along for good: a physical grasp slips
-        off it sooner or later.  Let go, lift the open hand clear, snap the object alone."""
-        from .rig import SkillFailure
+        off it sooner or later.  Let go, plan the open hand to the travel posture (Rig.tuck), snap
+        the object alone."""
         rig = self.rig
         caught = caught_neighbours(rig, name, before, rig.state())
         if not caught:
@@ -246,13 +246,7 @@ class StickyHands:
         rig.log("sticky_caught", obj=name, caught=caught)
         rig.grip(0.04, 40)                               # the weld goes first (fingers open)
         rig.held = None
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        for up in (0.15, 0.10, 0.06):
-            try:
-                rig.move_to(tcp + np.array([0, 0, up]), R, step=0.005, label="sticky_clear", collision=False)
-                break
-            except SkillFailure:
-                continue
+        rig.tuck()
         rig.step(60)                                     # the neighbour settles back
         return self.snap(name, "caught_neighbour", "pinch also lifted " + ", ".join(o for o, _ in caught))
 
@@ -279,21 +273,11 @@ class StickyHands:
         if cands:
             g = min(cands, key=lambda c: float(np.linalg.norm(c["p"][:2] - np.array([bx, by]))) +
                     0.3 * c.get("along_rank", 0))
-            return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb, kind="pinch",
+            # a thickness pinch holds a flat object at its side: an edge hold (place_flat)
+            return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb,
+                        kind="edge" if g["kind"] == "thickness_pinch" else "pinch",
                         pre_open=float(g["pre_open"]), source=f"annotated_{g['kind']}")
-        size = np.asarray(asset["size"], float)
         from .kinematics import gripper_rot
-        if size[2] < 0.06 and max(size[:2]) > 0.07:
-            # flat: an edge pinch on the side facing the robot (as _edge_pinch_impl)
-            from .skills import EDGE_GRIP_DEPTH, _half_along, _yaw
-            b = np.asarray(rig.geo.bottom(name, rig.state()), float)
-            n = np.array([bx, by]) - b[:2]
-            n = n / max(1e-9, float(np.linalg.norm(n)))
-            h = _half_along(size, _yaw(quat), n)
-            tcp = np.r_[b[:2] + n * (h - EDGE_GRIP_DEPTH), b[2] + size[2] / 2]
-            R = gripper_rot(-np.r_[n, 0.0], [0, 0, 1.0])
-            return dict(rel_p=R.T @ (pos - tcp), rel_R=R.T @ Rb, kind="edge",
-                        pre_open=min(0.04, float(size[2]) / 2 + 0.012), source="edge_default")
         R = gripper_rot([0, 0, -1.0], [1.0, 0.0, 0.0])
         c = np.asarray(rig.geo.centre(name, rig.state()), float)
         return dict(rel_p=R.T @ (pos - c), rel_R=R.T @ Rb, kind="pinch", pre_open=0.04, source="centred")
@@ -358,17 +342,9 @@ class StickyHands:
         held = {"name": name, "kind": grasp["kind"], "tcp_minus_body": tcp - body, "R": R,
                 "pre_open": grasp["pre_open"]}
         st = rig.state()
-        if grasp["kind"] == "corner":
-            from .skills import _lowest_z
-            held["body_minus_low"] = float(body[2] - _lowest_z(rig, name, st))
-        elif grasp["kind"] == "edge":
-            from .skills import _half_along, _perp, _yaw
-            size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-            n = R[:2, 2] / max(1e-9, float(np.linalg.norm(R[:2, 2])))       # fingers point along -n
-            b = np.asarray(rig.geo.bottom(name, st), float)
-            h = _half_along(size, _yaw(quat), n)
-            held.update(h=h, depth=float(h - n @ (tcp[:2] - b[:2])), lat_half=_half_along(size, _yaw(quat), _perp(n)),
-                        dz=float(tcp[2] - b[2]))
+        if grasp["kind"] == "edge":
+            from .skills import edge_held
+            held.update(edge_held(rig, name, tcp, R))
         rig.held = held
         rig.log("sticky_snap", obj=name, reason=reason, error=error[:200], grasp=grasp["source"],
                 kind=grasp["kind"], reach=reach, moved_m=round(float(np.linalg.norm(body - before)), 3),
@@ -393,10 +369,9 @@ class StickyHands:
 
     def place(self, name, receptacle, hint, before, error):
         """Set ``name`` down on / in ``receptacle``: the targets are found first (nothing found, the
-        object stays as it is), then the hand lets go (the weld goes first) and lifts clear, the
-        object is set level at a target the hand is not over and settles; the next target when it
+        object stays as it is), then the hand lets go (the weld goes first) and is planned to the
+        travel posture (Rig.tuck), the object is set level at a target the hand is not over and settles; the next target when it
         does not end up there (fell off, toppled)."""
-        from .rig import SkillFailure
         rig = self.rig
         obj0 = (before or {}).get("objects", {}).get(name) or {}
         # the orientation the place started with (still in the hand), not where a failed release left it
@@ -416,13 +391,7 @@ class StickyHands:
         if rig.held is not None and rig.held.get("name") == name:
             rig.grip(0.04, 40)
             rig.held = None
-            tcp, Rt = rig.kin.tcp(rig.q_cmd)
-            for up in (0.10, 0.05):
-                try:
-                    rig.move_to(tcp + np.array([0, 0, up]), Rt, step=0.005, label="sticky_clear", collision=False)
-                    break
-                except SkillFailure:
-                    continue
+            rig.tuck()                                   # the open hand to the travel posture, planned
         # spots under the hand last (it stays where the attempt left it)
         tcp, _ = rig.kin.tcp(rig.q())
         reach = 0.5 * float(np.hypot(size[0], size[1])) + 0.08

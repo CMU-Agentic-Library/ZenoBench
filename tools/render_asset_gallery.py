@@ -28,8 +28,8 @@ def grasp_label(asset: dict) -> str:
     names = []
     for grasp in asset.get("grasps", []):
         kind = grasp["type"]
-        if kind == "edge_pinch_after_push":
-            kind = "edge_pinch*"
+        if kind == "thickness_pinch":
+            kind = "thickness_pinch*"
         if kind not in names:
             names.append(kind)
     return "+".join(names) if names else "not graspable"

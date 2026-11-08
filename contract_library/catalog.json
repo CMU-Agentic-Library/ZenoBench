@@ -9,12 +9,6 @@
    "definition": "contracts/contract_009/contract.json"
   },
   {
-   "contract_id": "contract_010",
-   "skill_id": "skill_002",
-   "verb": "approach",
-   "definition": "contracts/contract_010/contract.json"
-  },
-  {
    "contract_id": "contract_011",
    "skill_id": "skill_003",
    "verb": "face",

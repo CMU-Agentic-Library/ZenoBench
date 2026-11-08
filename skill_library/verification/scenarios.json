@@ -411,12 +411,6 @@
      }
     },
     {
-     "skill": "approach",
-     "args": {
-      "target": "soda_can"
-     }
-    },
-    {
      "skill": "pick",
      "args": {
       "object": "soda_can"
@@ -1431,29 +1425,6 @@
    "task": "tasks/kitchen_skills",
    "subgraph": "skill_library/examples/search_then_fetch.skill_subgraph.json",
    "bindings": "skill_library/examples/search_then_fetch.bindings.json"
-  },
-  {
-   "id": "c_approach_moving",
-   "task": "tasks/collect_fruits",
-   "steps": [
-    {
-     "skill": "navigate",
-     "args": {
-      "destination": "apple"
-     }
-    },
-    {
-     "skill": "approach",
-     "args": {
-      "target": "dining_table_2/top",
-      "pass_by": [
-       2.397,
-       5.681,
-       15.0
-      ]
-     }
-    }
-   ]
   }
  ]
 }

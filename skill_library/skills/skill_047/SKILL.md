@@ -81,8 +81,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `fetch` (`skill_047`) (enables) — more objects go to the same place
 - Fallback on failure: `search` (`skill_013`) (recover) — the object is not where expected
 - Alternative: `restore` (`skill_053`) — the object should return to its starting support
-- Alternative: `swap` (`skill_054`) — only one object needs to move
-- Alternative: `hide` (`skill_070`) — the object only needs to move
+- Alternative: `swap` (`skill_054`) — use fetch instead when only one object needs to move
+- Alternative: `hide` (`skill_070`) — use fetch instead when the object only needs to move
 
 ## Failure
 

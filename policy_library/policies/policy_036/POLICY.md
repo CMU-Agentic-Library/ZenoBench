@@ -22,7 +22,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).base_rotate_in_place.execute(...)`
 - Class: `BaseRotateInPlacePolicy`
 - Availability: `verified`
-- Skill Contract paths: contract_011:face/rotate_empty
 - Referenced as support by legacy families: contract_001
 
 ## Recorded evidence

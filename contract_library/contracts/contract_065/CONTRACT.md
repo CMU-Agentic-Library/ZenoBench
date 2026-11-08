@@ -1,6 +1,6 @@
 # contract_065 — Identify an object
 
-Look at an object and report its category and tags (asset annotation) once it is in the head camera view.
+Look at an object and report its asset name and tags (asset annotation) once it is in the head camera view.
 
 Paired SkillNode: `skill_057` (`identify-object`).
 

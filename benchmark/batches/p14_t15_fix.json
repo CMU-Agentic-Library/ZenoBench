@@ -1,0 +1,2 @@
+[{"task": "P14_restore_swap", "seed": 0, "route": "nominal", "variant": "default", "planner": "scripted", "profile": "sticky_snap/gt"},
+ {"task": "T15_book_face_up", "seed": 0, "route": "nominal", "planner": "scripted", "profile": "sticky_snap/gt"}]

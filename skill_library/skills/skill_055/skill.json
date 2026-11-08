@@ -26,7 +26,7 @@
   "distance_m": {
    "type": "number",
    "required": true,
-   "description": "Lateral displacement in metres (left > 0)."
+   "description": "Lateral displacement in metres (left > 0), not 0."
   }
  },
  "required_inputs": [
@@ -82,24 +82,7 @@
  ],
  "policy_paths": [
   {
-   "path_id": "empty_tucked",
-   "when": [
-    "not robot.right_held",
-    "not robot.left_held",
-    "robot.right_arm_stowed"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_037(0.0, $distance_m)"
-   ],
-   "policies": [
-    "policy_037"
-   ],
-   "note": ""
-  },
-  {
-   "path_id": "loaded",
+   "path_id": "sideways",
    "when": [
     "always (default path)"
    ],
@@ -111,16 +94,16 @@
    "policies": [
     "policy_114"
    ],
-   "note": ""
+   "note": "Checked over the whole robot; a load stays held and the base drives slower."
   }
  ],
  "relations": {
   "previous": [],
   "next": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the target is now in front of the arm",
+    "skill_id": "skill_017",
+    "verb": "pick",
+    "when": "the object is now in front of the arm",
     "bind": {},
     "reason": "small lateral offset fixed",
     "type": "then"

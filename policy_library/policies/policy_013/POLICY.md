@@ -1,6 +1,6 @@
 # policy_013 — pick_edge
 
-先推到桌边，再夹住悬出的平物体
+夹住伸出支撑面边缘的平板物体的厚度（捏取流程，thickness_pinch；推到边是 slide_to_edge）
 
 ## Scope
 
@@ -14,16 +14,13 @@ Policy-specific checks remain inside the controller and are not all normalized i
 ## Execute inputs
 
 - `name`: positional_or_keyword; required
+- `max_candidates`: keyword_only; optional
 
 ## Binding and status
 
 - Runtime: `PolicySuite(rig).policy_013.execute(...)`
 - Legacy alias: `PolicySuite(rig).pick_edge.execute(...)`
 - Class: `EdgePickPolicy`
-- Availability: `verified`
+- Availability: `callable`
 - Skill Contract paths: contract_025:pick/flat_overhang_ready, contract_025:pick/flat_edge, contract_036:flip/edge_roll
 - Legacy family Contracts: contract_002
-
-## Recorded evidence
-
-Isaac Sim: pick_edge book_red, 2026-10-01

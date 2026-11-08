@@ -18,7 +18,7 @@
    "temp_c"
   ]
  },
- "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+ "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
  "use_when": "Food must reach a target temperature with the microwave or the stove.",
  "not_to_be_confused_with": {
   "chill": "opposite direction, in the refrigerator.",
@@ -111,7 +111,7 @@
     "appliance": "$appliance"
    },
    "negated": true,
-   "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+   "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
    "kind": "fluent",
    "gt_sources": [
     "thermal_state"
@@ -145,7 +145,7 @@
      "appliance": "$appliance"
     },
     "negated": true,
-    "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+    "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
     "kind": "fluent",
     "gt_sources": [
      "thermal_state"
@@ -239,7 +239,7 @@
     "policy_090",
     "policy_094"
    ],
-   "note": "Food must be inside a pot (or pan) whose bottom rests on the burner."
+   "note": "The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."
   }
  ],
  "relations": {
@@ -271,7 +271,7 @@
    {
     "skill_id": "skill_045",
     "verb": "cover",
-    "when": "the covered pot is heated",
+    "when": "the pot is heated with its lid on (heat itself needs no lid)",
     "type": "enables"
    }
   ],
@@ -327,7 +327,7 @@
    {
     "skill_id": "skill_039",
     "verb": "pour",
-    "when": "the food is in a cup, not in the pot on the burner",
+    "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
     "bind": {},
     "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
     "type": "recover"
@@ -338,17 +338,17 @@
    {
     "skill_id": "skill_043",
     "verb": "heat",
-    "when": "no microwave is available: heat in a pot on the stove",
+    "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
     "bind": {
      "food": "$food",
      "appliance": "kitchen_stove"
     },
-    "reason": "Same verb, other noun: the stove path pours/places the food into the pot first."
+    "reason": "Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top)."
    },
    {
     "skill_id": "skill_068",
     "verb": "stop",
-    "when": "heat stops automatically at a target temperature",
+    "when": "use heat instead when heat stops automatically at a target temperature",
     "bind": {}
    }
   ]

@@ -36,12 +36,22 @@ LINKS = ["torso_lift_link", "torso_link", "head_yaw_link", "head_link", "stereo_
     [f"{s}_{l}" for s in ("right", "left") for l in SIDE_LINKS]
 SPHERE_AREA = 0.004      # one sphere per this much hull surface (m^2), clipped to [MIN, MAX] per link
 MIN_SPHERES, MAX_SPHERES = 6, 24
-# head: coarser, to stay within cuRobo's fast
-# self-collision kernel (see self_collision_ignore)
-LINK_MAX_SPHERES = {"head_link": 12}
+# head and torso: coarser, to stay within cuRobo's fast self-collision kernel (see
+# self_collision_ignore) once the fingers got their 18 (each sphere less costs ~170-210 pairs and
+# grows the link by 1-2 mm: torso 24 -> 20 reaches 13.4 instead of 11.9 mm past its hull)
+LINK_MAX_SPHERES = {"head_link": 10, "torso_link": 20, "torso_lift_link": 20}
 # the hands work close to objects and to each other (handovers): finer spheres, less inflation
 HAND = ("arm_link_7", "gripper_link", "gripper_camera_link", "gripper_left_finger_link", "gripper_right_finger_link")
 LINK_MIN_SPHERES = {f"{s}_{l}": 10 for s in ("right", "left") for l in HAND}
+# fingers: their collider is the pad box alone (physics.py).  Rows of spheres across the pad's
+# width, one every FINGER_STEP along z, that cover the whole box: the planner must see every point
+# the simulator's pad can touch.  (Rows tangent to the faces left the tip edges 2.3 mm and the tip
+# corners 3.7 mm outside every sphere: fingertips knocked the object on 5 of 49 pick approaches,
+# 11-05.)  The rows' offset across x and their inset from the box's ends are chosen for the least
+# bulge past any face, the radius is the one that covers the box (finger_rows).
+FINGER_ROWS = 3
+FINGER_STEP = 0.009
+FINGER_SEARCH = 0.00025     # m: grid of the offset / inset search
 # lula's spheres sit inside the surface; every radius of a link grows by the 99th percentile of
 # its surface samples' gap (at most MAX_GROW) so the spheres cover the collider
 MAX_GROW = 0.02
@@ -89,6 +99,44 @@ def link_hulls(stage):
     return out
 
 
+def finger_rows(m):
+    """Spheres of a pad box ``m`` (axis aligned in its link frame) that cover all of it: FINGER_ROWS
+    rows across x (at -xo, ..., xo), each with the same number of spheres along z as rows tangent
+    to the faces one FINGER_STEP apart would have, from b inside the box's -z end to b inside its
+    +z end, on the box's mid-plane in y.  For each (xo, b) on a FINGER_SEARCH grid the radius is the
+    smallest that puts every point of the box's surface inside a sphere; the pair with the least
+    bulge past any face (tip, faces, sides) is taken."""
+    import numpy as np
+    lo, hi = m.bounds
+    if m.volume < 0.98 * float(np.prod(hi - lo)):
+        raise RuntimeError("finger collider is not the axis-aligned pad box finger_rows assumes")
+    half = (hi - lo) / 2
+    c = (lo + hi) / 2
+    n_z = int(np.ceil((2 * half[2] - 2 * half[1]) / FINGER_STEP)) + 1
+    # the box's surface, every face on a 1 mm grid (its edges and corners included)
+    g = [np.linspace(-h, h, max(2, int(round(2 * h / 0.001)) + 1)) for h in half]
+    pts = []
+    for ax in range(3):
+        o = [i for i in range(3) if i != ax]
+        A, B = np.meshgrid(g[o[0]], g[o[1]], indexing="ij")
+        for sgn in (-1, 1):
+            P = np.zeros((A.size, 3))
+            P[:, o[0]], P[:, o[1]], P[:, ax] = A.ravel(), B.ravel(), sgn * half[ax]
+            pts.append(P)
+    pts = np.unique(np.round(np.vstack(pts), 6), axis=0)
+    best = None
+    for xo in np.arange(0.0, half[0] + 1e-9, FINGER_SEARCH):
+        for b in np.arange(0.0, half[2] / 2 + 1e-9, FINGER_SEARCH):
+            C = np.array([[x, 0.0, z] for x in np.linspace(-xo, xo, FINGER_ROWS)
+                          for z in np.linspace(-half[2] + b, half[2] - b, n_z)])
+            r = float(np.max(np.min(np.linalg.norm(pts[:, None, :] - C[None], axis=2), axis=1)))
+            bulge = max(r - b, r - half[1], xo + r - half[0])
+            if best is None or bulge < best[0]:
+                best = (bulge, C, r)
+    _, C, r = best
+    return C + c, np.full(len(C), r)
+
+
 def fit_spheres(hulls):
     import numpy as np
     sys.path.insert(0, LULA)
@@ -98,20 +146,25 @@ def fit_spheres(hulls):
     for link, m in hulls.items():
         n = int(np.clip(round(m.area / SPHERE_AREA), LINK_MIN_SPHERES.get(link, MIN_SPHERES),
                         max(LINK_MAX_SPHERES.get(link, MAX_SPHERES), LINK_MIN_SPHERES.get(link, 0))))
-        gen = lula.create_collision_sphere_generator(np.asarray(m.vertices, float), np.asarray(m.faces, np.int32))
-        sph = gen.generate_spheres(n, 0.0)
-        C = np.array([s.center for s in sph], float)
-        R = np.array([s.radius for s in sph], float)
-        S = m.sample(4000)
-        gap = np.min(np.linalg.norm(S[:, None, :] - C[None], axis=2) - R[None], axis=1)
-        R = R + float(np.clip(np.percentile(gap, 99), 0.0, MAX_GROW))
+        S = trimesh.sample.sample_surface(m, 4000, seed=0)[0]     # seeded: a rebuild keeps the radii
+        if link.endswith("_finger_link"):
+            C, R = finger_rows(m)
+        else:
+            gen = lula.create_collision_sphere_generator(np.asarray(m.vertices, float), np.asarray(m.faces, np.int32))
+            sph = gen.generate_spheres(n, 0.0)
+            C = np.array([s.center for s in sph], float)
+            R = np.array([s.radius for s in sph], float)
+            gap = np.min(np.linalg.norm(S[:, None, :] - C[None], axis=2) - R[None], axis=1)
+            R = R + float(np.clip(np.percentile(gap, 99), 0.0, MAX_GROW))
         spheres[link] = [{"center": [round(float(v), 4) for v in c], "radius": round(float(r), 4)}
                          for c, r in zip(C, R)]
         # coverage: hull surface samples outside every sphere (how far, worst case)
         gap = np.min(np.linalg.norm(S[:, None, :] - C[None], axis=2) - R[None], axis=1)
         # protrusion: how far the spheres reach past the collider (conservatism)
         far = np.max(R - trimesh.proximity.signed_distance(m, C)) if m.is_watertight else float("nan")
-        report.append((link, len(sph), float(np.mean(gap > 0.005)), float(gap.max()), float(far)))
+        # below the collider's -z end (a fingertip over a support)
+        tip = float(m.bounds[0][2] - (C[:, 2] - R).min())
+        report.append((link, len(C), float(np.mean(gap > 0.005)), float(gap.max()), float(far), tip))
     return spheres, report
 
 
@@ -146,23 +199,37 @@ def joint_limits():
     return joints
 
 
-def assemble(spheres):
-    from zeno_skills.kinematics import FINGER_OPEN, LEFT_ARM_FOLD, TCP_DEPTH, URDF, ArmKin
-    right, left = ArmKin(side="right"), ArmKin(side="left")
-    names = list(right.names) + list(left.names[2:]) + list(BASE_JOINTS)
-    urdf = mobile_urdf()
+def parent_ignore(links):
+    """{link: {its parent}}: the self-collision pairs ignored before sampling (self_collision_ignore
+    adds the sampled ones)."""
     joints = joint_limits()
-    default = dict(zip(right.names, right.posture))
-    default.update({n: LEFT_ARM_FOLD.get(n, 0.0) for n in left.names[2:]})
-    default.update({n: 0.0 for n in BASE_JOINTS})
-    links = [l for l in LINKS if l in spheres]
-    # self-collision ignore pairs: sampled afterwards (self_collision_ignore), parent/child here
     parent = {j.find("child").get("link"): j.find("parent").get("link") for j in joints.values()}
     ignore = {l: set() for l in links}
     for l in links:
-        p = parent.get(l)
-        if p in ignore:
-            ignore[l].add(p)
+        if parent.get(l) in ignore:
+            ignore[l].add(parent[l])
+    return ignore
+
+
+def default_posture():
+    """(joint names, the default posture): the right arm's posture, the left arm folded
+    (LEFT_ARM_FOLD), the base at the origin -- cuRobo's retract config, and the posture the
+    self-collision sampling ignores the touching pairs of."""
+    from zeno_skills.kinematics import LEFT_ARM_FOLD, ArmKin
+    right, left = ArmKin(side="right"), ArmKin(side="left")
+    names = list(right.names) + list(left.names[2:]) + list(BASE_JOINTS)
+    default = dict(zip(right.names, right.posture))
+    default.update({n: LEFT_ARM_FOLD.get(n, 0.0) for n in left.names[2:]})
+    default.update({n: 0.0 for n in BASE_JOINTS})
+    return names, [float(default[n]) for n in names]
+
+
+def assemble(spheres):
+    from zeno_skills.kinematics import FINGER_OPEN, TCP_DEPTH, URDF
+    names, retract = default_posture()
+    urdf = mobile_urdf()
+    links = [l for l in LINKS if l in spheres]
+    ignore = parent_ignore(links)
     tcp = {f"{s}_tcp": {"parent_link_name": f"{s}_gripper_link", "link_name": f"{s}_tcp",
                         "fixed_transform": [0.0, 0.0, -TCP_DEPTH, 1.0, 0.0, 0.0, 0.0],
                         "joint_type": "FIXED", "joint_name": f"{s}_tcp_joint"} for s in ("right", "left")}
@@ -186,7 +253,7 @@ def assemble(spheres):
         "use_global_cumul": True,
         "cspace": {
             "joint_names": names,
-            "retract_config": [float(default[n]) for n in names],
+            "retract_config": retract,
             "null_space_weight": [1.0] * len(names),
             "cspace_distance_weight": [1.0] * len(names),
             "max_acceleration": 15.0,
@@ -269,6 +336,10 @@ def self_collision_ignore(cfg, samples=40000, always=0.5):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", default="tasks/collect_fruits/scene.usd")
+    ap.add_argument("--links", nargs="*", default=None,
+                    help="refit only these links (none: just the default posture and the self-collision pairs) "
+                         "and keep the rest of the existing config")
+    ap.add_argument("--out", default=None, help="config path (default robot_sources/curobo/zeno_malo.yml)")
     args = ap.parse_args()
     from isaaclab.app import AppLauncher
     app = AppLauncher({"headless": True, "no_splash": True, "fast_shutdown": True}).app
@@ -281,16 +352,28 @@ def main():
     stage = omni.usd.get_context().get_stage()
     P.patch_left_gripper(stage)
     hulls = link_hulls(stage)
+    if args.links is not None:
+        hulls = {l: m for l, m in hulls.items() if l in args.links}
     spheres, report = fit_spheres(hulls)
-    for link, n, outside, worst, far in report:
+    for link, n, outside, worst, far, tip in report:
         print(f"  {link:34s} {n:3d} spheres  surface >5 mm outside: {outside * 100:5.1f}%  worst {worst * 1000:5.1f} mm"
-              f"  spheres reach {far * 1000:5.1f} mm past the hull", flush=True)
-    cfg = assemble(spheres)
+              f"  spheres reach {far * 1000:5.1f} mm past the hull, {tip * 1000:4.1f} mm below its -z end", flush=True)
+    if args.links is not None:
+        cfg = yaml.safe_load((OUT / "zeno_malo.yml").read_text())
+        k = cfg["robot_cfg"]["kinematics"]
+        k["collision_spheres"].update(spheres)
+        assert k["cspace"]["joint_names"] == default_posture()[0]
+        k["cspace"]["retract_config"] = default_posture()[1]
+        # the sampled pairs were sampled on the old spheres: sample them again
+        k["self_collision_ignore"] = {l: sorted(v) for l, v in parent_ignore(k["collision_link_names"]).items() if v}
+    else:
+        cfg = assemble(spheres)
     cfg["robot_cfg"]["kinematics"]["self_collision_ignore"] = self_collision_ignore(cfg)
-    OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / "zeno_malo.yml"
+    path = Path(args.out) if args.out else OUT / "zeno_malo.yml"
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
-        f.write(f"# generated by tools/build_curobo_robot.py from {args.scene} (lula spheres on PhysX colliders)\n")
+        f.write(f"# generated by tools/build_curobo_robot.py from {args.scene} (lula spheres on PhysX colliders, "
+                "finger rows on the pad boxes)\n")
         yaml.safe_dump(cfg, f, sort_keys=False)
     print(f"[curobo] {sum(len(v) for v in spheres.values())} spheres on {len(spheres)} links -> {path}", flush=True)
     app.close()

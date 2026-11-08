@@ -1,6 +1,6 @@
 # contract_075 — Sweep objects together
 
-Push several objects on one support toward their centroid until they form a cluster (radius 12 cm), without grasping them.
+Push several objects on one support toward their centroid until they all lie within radius_m of it, without grasping them.
 
 Paired SkillNode: `skill_067` (`sweep-objects`).
 

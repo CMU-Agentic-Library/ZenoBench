@@ -143,17 +143,6 @@
  },
  "relations": [
   {
-   "kind": "sequence",
-   "to": "approach",
-   "when": "the observed target will be manipulated",
-   "bind": {
-    "target": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_002",
-   "sequence_type": "then"
-  },
-  {
    "kind": "fallback",
    "to": "navigate",
    "when": "the line of sight is blocked",

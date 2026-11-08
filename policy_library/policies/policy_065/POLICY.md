@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).approach_target.execute(...)`
 - Class: `ApproachTargetPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_010:approach/park, contract_025:pick/floor_top
+- Skill Contract paths: contract_025:pick/floor_top
 
 ## Recorded evidence
 

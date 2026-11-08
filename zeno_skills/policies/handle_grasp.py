@@ -6,8 +6,10 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import lifting
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..rig import SkillFailure
 
@@ -55,9 +57,9 @@ class PickCupHandlePolicy(AtomicPolicy):
         rig.grip(float(spec["pre_open"]), 40)
         rig.move_to(pre, R, step=0.01, label="handle_pick_pre", smooth=True, q_hint=park[3][0])
         rig.move_to(p, R, step=0.004, label="handle_pick_contact", smooth=True, q_hint=park[3][1])
-        fingers = rig.grip(0.0, 120, gradual=True)
+        fingers = rig.grip(0.0, PHYSICS_HZ, gradual=True)
         rig.move_to(p+np.array([0, 0, 0.08]), R, step=0.004,
-                    steps_per_wp=5, label="handle_pick_lift", smooth=True, collision=False)
+                    steps_per_wp=5, label="handle_pick_lift", smooth=True, allow=lifting(name))
         rig.step(40)
         after, _ = rig.obj_pose(name)
         lift_m = float(after[2]-before[2])

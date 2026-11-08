@@ -20,7 +20,7 @@
  "description": "Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.",
  "use_when": "A held object must go into an open container from above without a precise pose.",
  "not_to_be_confused_with": {
-  "place": "place lowers the object onto the container floor before opening."
+  "place": "place lowers the object onto a shallow container's floor, and releases it just above a deep one's rim on the robot's side; drop always lets go 5 cm above the opening's centre (or right where a hover left it)."
  },
  "inputs": {
   "object": {
@@ -213,7 +213,7 @@
    {
     "skill_id": "skill_018",
     "verb": "place",
-    "when": "a deep container leaves no room to lower the hand inside",
+    "when": "the hand cannot reach the robot-side release spot inside the container",
     "type": "substitute"
    }
   ],
@@ -230,7 +230,7 @@
    {
     "skill_id": "skill_021",
     "verb": "release",
-    "when": "the object should fall into a container",
+    "when": "use drop instead when the object should fall into a container",
     "bind": {}
    }
   ]

@@ -9,7 +9,10 @@ annotations/assets.json  (per asset type, object frame; tools/prepare_assets.py)
       side_pinch       tall round object: horizontal approach toward its axis at ``height``,
                        fingers across the diameter, from every 30 degrees; lying on its side,
                        the top pinch across it instead
-      edge_pinch_after_push  flat & wider than the gripper
+      thickness_pinch  flat & wider than the gripper: horizontal approach from outside one of its
+                       four sides, the pads above and below it across its thickness, ``depth``
+                       inside the side.  Below it is its support: only a side that overhangs the
+                       support's edge leaves room for the lower pad (expose slides it there)
       handle_pinch           annotated object-handle contact (consumed by PickCupHandlePolicy)
 annotations/<scene>.json (per scene, world frame; tools/annotate_scene.py)
     rooms, obstacles (furniture AABBs), supports (horizontal surfaces),
@@ -154,6 +157,17 @@ class SceneAnnotations:
                         appr = np.array([0, 0, -math.cos(tilt)]) - d * math.sin(tilt)
                         out.append({"kind": "rim_pinch_rect", "p": p, "R": gripper_rot(appr, d),
                                     "pre_open": g["pre_open"], "tilt": tilt})
+            elif g["type"] == "thickness_pinch":
+                if lying:
+                    continue                 # not lying flat: no thickness to pinch across
+                t = float(a["size"][2])
+                for k in range(4):
+                    d = rz(yaw) @ np.array([math.cos(k * math.pi / 2), math.sin(k * math.pi / 2), 0.0])
+                    half = 0.5 * float(a["size"][k % 2])
+                    p = bottom + d * (half - g["depth"]) + np.array([0.0, 0.0, 0.5 * t])
+                    out.append({"kind": "thickness_pinch", "p": p, "R": gripper_rot(-d, [0.0, 0.0, 1.0]),
+                                "pre_open": g["pre_open"], "side": k})
+                continue
             elif g["type"] == "top_pinch" and lying:
                 out += self._lying_pinches(g, a, body_pos, body_quat_wxyz)
                 continue

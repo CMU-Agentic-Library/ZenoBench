@@ -7,7 +7,7 @@
                "close kitchen_cabinet_6"
 
 Plan steps:  open <art> | close <art> | pick <obj>
-             | pick_top/pick_round_rim/pick_rect_rim/pick_edge/pick_floor_corner <obj>
+             | pick_top/pick_round_rim/pick_rect_rim/pick_edge <obj>
              | place <obj> in:<container>          drop into a container
              | place <obj> <support> [<x> <y>]      free spot on a support (near x, y)
              | place_surface/place_edge <obj> <support> | place_container <obj> <container>
@@ -116,7 +116,7 @@ def main():
                 row["heating_active"] = bool(policies.microwave_start.execute(tok[1]))
             elif tok[0] == "pick":
                 policies.pick.execute(tok[1])
-            elif tok[0] in ("pick_top", "pick_round_rim", "pick_rect_rim", "pick_edge", "pick_floor_corner"):
+            elif tok[0] in ("pick_top", "pick_round_rim", "pick_rect_rim", "pick_edge"):
                 getattr(policies, tok[0]).execute(tok[1])
             elif tok[0] == "prepare_floor_reach":
                 row["tcp_error_m"] = policies.prepare_floor_reach.execute(tok[1])
@@ -149,11 +149,12 @@ def main():
                 if rig.held is None or rig.held["name"] != tok[1]:
                     raise SkillFailure(f"tilt fixture: right hand is not holding {tok[1]}")
                 from scipy.spatial.transform import Rotation
+                from zeno_skills.clearance import unchecked
                 from zeno_skills.evaluator import tilt_deg
                 p, R = rig.kin.tcp(rig.q())
                 tipped = R @ Rotation.from_euler("x", float(tok[2]), degrees=True).as_matrix()
                 rig.move_to(p, tipped, step=0.008, steps_per_wp=5,
-                            label="tilt_held_fixture", collision=False)
+                            label="tilt_held_fixture", allow=unchecked("test fixture: tips the held object in place"))
                 rig.step(60)
                 _, quat = rig.obj_pose(tok[1])
                 row["tilt_deg"] = float(tilt_deg(quat))

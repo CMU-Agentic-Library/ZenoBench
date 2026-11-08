@@ -15,7 +15,7 @@ A held object must go into an open container from above without a precise pose.
 
 ## Not to be confused with
 
-- `place`: place lowers the object onto the container floor before opening.
+- `place`: place lowers the object onto a shallow container's floor, and releases it just above a deep one's rim on the robot's side; drop always lets go 5 cm above the opening's centre (or right where a hover left it).
 
 ## Inputs
 
@@ -59,9 +59,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `lift` (`skill_023`) (enables) — the object is released over a tall container
 - Previous step: `hover` (`skill_063`) (enables) — the object is released into the container under it
 - Next step: `pick` (`skill_017`) (enables) — more items go into the same container
-- Is a fallback for: `place` (`skill_018`) (substitute) — a deep container leaves no room to lower the hand inside
+- Is a fallback for: `place` (`skill_018`) (substitute) — the hand cannot reach the robot-side release spot inside the container
 - Alternative: `place` (`skill_018`) — a gentle release inside is needed
-- Alternative: `release` (`skill_021`) — the object should fall into a container
+- Alternative: `release` (`skill_021`) — use drop instead when the object should fall into a container
 
 ## Failure
 

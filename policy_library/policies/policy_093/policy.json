@@ -27,6 +27,12 @@
       "kind": "keyword_only",
       "required": false,
       "default": 0.02
+    },
+    {
+      "name": "down_only",
+      "kind": "keyword_only",
+      "required": false,
+      "default": false
     }
   ],
   "requires": [

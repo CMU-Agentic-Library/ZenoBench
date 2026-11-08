@@ -272,12 +272,6 @@
  "relations": {
   "previous": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the target is a door or drawer",
-    "type": "then"
-   },
-   {
     "skill_id": "skill_004",
     "verb": "retreat",
     "when": "a door's swing needs room in front of the robot",
@@ -359,16 +353,6 @@
     "bind": {},
     "type": "repair",
     "repairs": "hand_empty"
-   },
-   {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the handle is out of reach",
-    "bind": {
-     "target": "$articulated"
-    },
-    "reason": "a base pose with verified IK at the handle",
-    "type": "recover"
    }
   ],
   "fallback_for": [
@@ -391,14 +375,7 @@
     "type": "recover"
    }
   ],
-  "alternative": [
-   {
-    "skill_id": "skill_042",
-    "verb": "press",
-    "when": "the door key is pressed only to open the microwave door",
-    "bind": {}
-   }
-  ]
+  "alternative": []
  },
  "failure": {
   "codes": [

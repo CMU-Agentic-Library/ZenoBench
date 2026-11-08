@@ -15,6 +15,7 @@ ASSET = ROBOT + "/Asset"
 ANCHOR = ROBOT + "/base_anchor"
 GRIP_MATERIAL = "/World/PhysicsMaterials/rubber_pad"
 OBJECT_MATERIAL = "/World/PhysicsMaterials/household"
+PHYSICS_HZ = 120            # physics steps per simulated second (CPU PhysX; sticky.py was checked at this rate)
 
 
 def deinstance(stage, root_path):
@@ -320,7 +321,11 @@ def set_box_inertia(stage, root_path, mass):
                                                mass * (sx * sx + sy * sy) / 12))
 
 
-def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="round", mats=None, handle=None, extra_handles=()):
+CONTAINER_WALL = 0.007        # m: wall thickness of a rebuilt container collider
+CONTAINER_BASE_T = 0.012      # m: thickness of its base plate (its floor is this far above its bottom)
+
+
+def container_collider(stage, root_path, profile, n_seg=24, wall=CONTAINER_WALL, shape="round", mats=None, handle=None, extra_handles=()):
     """Thin-walled containers (bowl, cup, basket, box, tray) were imported with
     a single convex hull or a cavity-filling decomposition: a *solid* object
     that cannot hold anything or be rim-pinched.  Rebuild the collider as wall
@@ -376,8 +381,8 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
             base_r = (hx, hy)
     # base plate
     if shape == "round":
-        add_box((cx, cy, z0 + 0.006), (1.5 * base_r, 1.5 * base_r, 0.012), 0.0)
-        add_box((cx, cy, z0 + 0.006), (1.5 * base_r, 1.5 * base_r, 0.012), math.pi / 4)
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * base_r, 1.5 * base_r, CONTAINER_BASE_T), 0.0)
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * base_r, 1.5 * base_r, CONTAINER_BASE_T), math.pi / 4)
         # The two squares only cover ~0.75 r; tiles out to the wall close the
         # ring where small items (cherry tomatoes) used to fall through.
         tile_w = 2 * math.pi * base_r / n_seg * 1.15
@@ -385,9 +390,9 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
             a = 2 * math.pi * i / n_seg
             rm = 0.82 * base_r
             add_box((cx + rm * math.cos(a), cy + rm * math.sin(a), z0 + 0.006),
-                    (0.36 * base_r + wall / 2, tile_w, 0.012), a)
+                    (0.36 * base_r + wall / 2, tile_w, CONTAINER_BASE_T), a)
     else:
-        add_box((cx, cy, z0 + 0.006), (2 * base_r[0], 2 * base_r[1], 0.012), 0.0)
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (2 * base_r[0], 2 * base_r[1], CONTAINER_BASE_T), 0.0)
     if handle is not None:
         add_handle_collider(stage, str(body.GetPath()), handle, mats)
         k += 1
@@ -451,4 +456,4 @@ def scene_settings(stage):
     api.CreateSolverTypeAttr().Set("TGS")
     api.CreateEnableCCDAttr().Set(True)
     api.CreateMinPositionIterationCountAttr().Set(16)
-    api.CreateTimeStepsPerSecondAttr().Set(120)
+    api.CreateTimeStepsPerSecondAttr().Set(PHYSICS_HZ)

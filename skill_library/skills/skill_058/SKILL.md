@@ -11,11 +11,11 @@ Look at an object and report its current axis-aligned size.
 
 ## When to use
 
-The size or distance of an object must be known before choosing a grasp or place.
+The size of an object must be known before choosing a grasp or place.
 
 ## Not to be confused with
 
-- `identify`: identify returns the category, measure the size and distance.
+- `identify`: identify returns the category, measure the size.
 
 ## Inputs
 
@@ -23,7 +23,7 @@ The size or distance of an object must be known before choosing a grasp or place
 
 ## Outputs
 
-- `size_m` (`xy`): World-frame size [dx, dy, dz] in metres.
+- `size_m` (`xyz`): World-frame size [dx, dy, dz] in metres.
 
 ## Applicability
 

@@ -24,9 +24,11 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import FREE, FREE_ELSE_STRAIGHT, LEGACY
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
@@ -59,10 +61,11 @@ class ShakeHeldPolicy(AtomicPolicy):
         done = 0
         for _ in range(int(cycles)):
             for s in (1, -1):
-                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake", collision=False)
+                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake",
+                            allow=FREE_ELSE_STRAIGHT)
             skills.check_held(rig, "shake")
             done += 1
-        rig.move_to(tcp, R, step=0.004, label="shake_end", collision=False)
+        rig.move_to(tcp, R, step=0.004, label="shake_end", allow=FREE_ELSE_STRAIGHT)
         rig.step(30)
         gap1 = float(rig.fingers().sum())
         rig.log("shake_grip", obj=name, gap_before=round(gap0, 4), gap_after=round(gap1, 4))
@@ -79,7 +82,7 @@ class WaitPolicy(AtomicPolicy):
         if not math.isfinite(s) or s <= 0 or s > 600:
             raise ValueError("wait: seconds must be in (0, 600]")
         self.rig.caption = f"WAIT {s:.0f} s"
-        self.rig.step(int(round(s * 120)))
+        self.rig.step(int(round(s * PHYSICS_HZ)))
         return {"elapsed_s": s}
 
 
@@ -107,7 +110,8 @@ class WaveHandPolicy(AtomicPolicy):
         n = 0
         for _ in range(int(swings)):
             for sgn in (1, -1):
-                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing", collision=False)
+                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing",
+                            allow=FREE_ELSE_STRAIGHT)
             n += 1
         _mem(rig, "gestures")["wave"] = n
         rig.log("wave_result", swings=n)
@@ -173,14 +177,14 @@ class KnockPanelPolicy(AtomicPolicy):
         q0 = rig.joint(name)
         hits = 0
         for _ in range(int(taps)):
-            rig.move_to(panel + out * 0.004, R, step=0.004, label="knock_tap", collision=False)
+            rig.move_to(panel + out * 0.004, R, step=0.004, label="knock_tap", allow=LEGACY)
             tcp, _ = rig.kin.tcp(rig.q())
             gap = float((tcp - panel) @ out)
             if gap < 0.02:
                 hits += 1
                 rig.log("knock_contact", articulated=name, gap_m=round(gap, 4))
-            rig.move_to(panel + out * 0.06, R, step=0.006, label="knock_back", collision=False)
-        rig.move_to(pre, R, label="knock_retract", collision=False)
+            rig.move_to(panel + out * 0.06, R, step=0.006, label="knock_back", allow=LEGACY)
+        rig.move_to(pre, R, label="knock_retract", allow=LEGACY)
         rig.grip(0.04, 60)
         moved = abs(rig.joint(name) - q0)
         rig.log("knock_result", articulated=name, hits=hits, joint_moved=round(moved, 4))
@@ -216,10 +220,10 @@ class TouchObjectPolicy(AtomicPolicy):
         rig.grip(0.0, 30)
         p0 = rig.obj_pose(name)[0]
         rig.move_to(pre, R, label="touch_pre", q_hint=park[3][0])
-        rig.move_to(contact, R, step=0.002, steps_per_wp=4, label="touch_down", collision=False)
+        rig.move_to(contact, R, step=0.002, steps_per_wp=4, label="touch_down", allow=LEGACY)
         tcp, _ = rig.kin.tcp(rig.q())
         rig.log("touch_contact", obj=name, tcp_above_top=round(float(tcp[2] - top), 4))
-        rig.move_to(pre, R, step=0.006, label="touch_up", collision=False)
+        rig.move_to(pre, R, step=0.006, label="touch_up", allow=LEGACY)
         rig.grip(0.04, 60)
         moved = float(np.linalg.norm(rig.obj_pose(name)[0] - p0))
         return {"moved_m": moved}
@@ -334,16 +338,12 @@ class SidestepPolicy(AtomicPolicy):
         x, y, yaw = rig.base_pose()
         d = float(left_m)
         tx, ty = x - math.sin(math.radians(yaw)) * d, y + math.cos(math.radians(yaw)) * d
-        rig.sync_world()
-        for u in np.linspace(0.1, 1.0, 6):
-            if not rig.world.footprint_clear(x + (tx - x) * u, y + (ty - y) * u, math.radians(yaw)):
-                raise SkillFailure("sidestep: the way is blocked")
         if rig.held is not None:
             skills.check_held(rig, "sidestep_start")
-            rig.drive_base([(tx, ty, yaw)], speed=0.12, turn=0.3, ramp=1.0)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
             skills.check_held(rig, "sidestep_end")
         else:
-            rig.drive_base([(tx, ty, yaw)], speed=0.2)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
         return {"base_pose": list(rig.base_pose())}
 
 
@@ -371,21 +371,16 @@ class HoverOverPolicy(AtomicPolicy):
         hang = float(body[2] - skills._lowest_z(rig, name, st))
         b_now = rig.geo.bottom(name, st)
         off = tcp - np.r_[b_now[:2], b_now[2]]
-        goal = np.r_[c, top + clearance_m] + off
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = find_park(rig.kin, rig.world, [(goal + np.array([0, 0, 0.05]), R), (goal, R)], near=rig.base_pose(),
-                         max_tries=150, q_start=rig.q_cmd, travel_q=skills._travel_q(rig))
-        if park is None:
+        # one relay pose, the load's bottom centred clearance_m above the target; the planner takes
+        # it there
+        found = skills.park_over(rig, "hover", np.r_[c, top + clearance_m], off, R)
+        if found is None:
             raise SkillFailure(f"hover {name}: no base pose above {target} (rejected: {_park_diag()})")
+        park, goal, Rg = found
         skills._goto_park(rig, park)
-        low = float(rig.geo.bottom(name, rig.state())[2])
-        if low < top + clearance_m:
-            t0, R0 = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t0 + np.array([0, 0, top + clearance_m + 0.05 - low]), R0, step=0.005, label="hover_lift",
-                        collision=False)
-        rig.move_to(goal + np.array([0, 0, 0.05]), R, step=0.005, label="hover_above", collision=False, smooth=True)
-        rig.move_to(goal, R, step=0.004, label="hover_settle", collision=False, smooth=True)
+        with skills.fingers_checked(rig):
+            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE, smooth=True,
+                        q_hint=park[3][0])
         skills.check_held(rig, "hover")
         rig.step(30)
         return {"bottom_above_target_m": float(rig.geo.bottom(name, rig.state())[2] - top), "hang_m": hang}

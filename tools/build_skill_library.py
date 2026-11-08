@@ -18,6 +18,7 @@ Writes
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import shutil
 import sys
@@ -27,10 +28,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from skill_library.check import RETIRED_POLICIES, check_library  # noqa: E402
-from skill_library.definitions import SKILLS  # noqa: E402
+from skill_library.definitions import RETIRED_SKILLS, SKILLS  # noqa: E402
 from zeno_skills.predicates import GT_SOURCES, REGISTRY  # noqa: E402
 
 SKILL_OFFSET = 1
+# feasibility estimates the benchmark profiles only record (episode/profiles/*/benchmark.yaml execution.advisory)
+ADVISORY = ("grasp_clearance", "edge_overhang")
 CONTRACT_OFFSET = 9          # contract_001..008 are the legacy family contracts
 
 
@@ -45,8 +48,11 @@ def atom_text(a):
 
 def atom_record(a, role):
     p = REGISTRY[a["pred"]]
+    meaning = f"Must be false: {p.doc}" if a.get("negated") else p.doc
+    if role == "pre" and a["pred"] in ADVISORY:
+        meaning += " (A feasibility estimate: the benchmark profiles only record it and attempt the action.)"
     rec = {"predicate": atom_text(a), "name": a["pred"], "args": a["args"], "negated": bool(a.get("negated")),
-           "meaning": p.doc, "kind": p.kind, "gt_sources": GT_SOURCES[a["pred"]]}
+           "meaning": meaning, "kind": p.kind, "gt_sources": GT_SOURCES[a["pred"]]}
     rec["checked"] = ("before execution on live GT state; the Contract does not move if false"
                       if role == "pre" else "after the policy chain on live GT state; the action is reported only if true")
     return rec
@@ -57,7 +63,7 @@ def cond_text(c):
     return {"equals": f"{c['noun']}.{c['field']} == {v!r}", "in": f"{c['noun']}.{c['field']} in {v!r}",
             "contains": f"{v!r} in {c['noun']}.{c['field']}", "gte": f"{c['noun']}.{c['field']} >= {v}",
             "lte": f"{c['noun']}.{c['field']} <= {v}", "truthy": f"{c['noun']}.{c['field']}",
-            "falsy": f"not {c['noun']}.{c['field']}"}[c["op"]]
+            "falsy": f"not {c['noun']}.{c['field']}", "set": f"{c['noun']}.{c['field']} is given"}[c["op"]]
 
 
 def node_name(rec, sep):
@@ -82,10 +88,11 @@ def compile_records():
     from zeno_skills.interface_ids import POLICY_PUBLIC_IDS
     names = {pid: legacy for legacy, pid in POLICY_PUBLIC_IDS.items()}
     by_verb = {}
-    for i, s in enumerate(SKILLS):
+    numbers = (n for n in itertools.count(SKILL_OFFSET) if n not in RETIRED_SKILLS)
+    for s, n in zip(SKILLS, numbers):
         rec = dict(s)
-        rec["skill_id"] = f"skill_{i + SKILL_OFFSET:03d}"
-        rec["contract_id"] = f"contract_{i + CONTRACT_OFFSET:03d}"
+        rec["skill_id"] = f"skill_{n:03d}"
+        rec["contract_id"] = f"contract_{n - SKILL_OFFSET + CONTRACT_OFFSET:03d}"
         rec["policy_plan"] = {"selection": "first path whose noun conditions all hold, decided before any motion",
                               "on_no_match": "NO_PATH: the Contract refuses without moving",
                               "paths": s["paths"]}
@@ -121,7 +128,8 @@ def skill_json(rec, by_verb, names, incoming):
         elif rel["kind"] == "fallback":
             rels["fallback_for"].append(dict(item, type=rel["fallback_type"]))
         elif rel["kind"] == "alternative" and not any(a["verb"] == src["verb"] for a in rels["alternative"]):
-            rels["alternative"].append(dict(item, bind={}))
+            # the edge's condition says when to take this skill instead of src
+            rels["alternative"].append(dict(item, when=f"use {rec['verb']} instead when {rel['when']}", bind={}))
     paths = []
     for p in rec["policy_plan"]["paths"]:
         paths.append({
@@ -279,7 +287,8 @@ def skill_md(js, nested=()):
         L.append("")
         L += [f"{i + 1}. `{c}`" for i, c in enumerate(p["chain"])]
         for a in p["extra_preconditions"]:
-            L.append(f"- extra precondition `{a['predicate']}`")
+            L.append(f"- extra precondition `{a['predicate']}`" + (
+                " (feasibility estimate: only recorded in the benchmark profiles)" if a["name"] in ADVISORY else ""))
         for a in p["extra_postconditions"]:
             L.append(f"- extra postcondition `{a['predicate']}`")
         if p["note"]:
@@ -396,7 +405,8 @@ def build():
     files[Path("policy_library/POLICY_COVERAGE.md")] = coverage_md(records, names)
     files[Path("contract_library/skill_contracts.json")] = _json({
         "schema_version": 2, "kind": "skill_contract_catalog",
-        "contracts": [contract_json(r) for r in records]})
+        "contracts": [contract_json(r) for r in records],
+        "retired_policies": RETIRED_POLICIES})
     from zeno_skills.contracts import CONTRACTS
     legacy = [{"contract_id": spec.public_id, "legacy_id": lid,
                "definition": f"contracts/{spec.public_id}/contract.json"} for lid, spec in CONTRACTS.items()]
@@ -405,14 +415,18 @@ def build():
         "contracts": [{"contract_id": r["contract_id"], "skill_id": r["skill_id"], "verb": r["verb"],
                        "definition": f"contracts/{r['contract_id']}/contract.json"} for r in records],
         "legacy_family_contracts": legacy})
+    s_ids = f"{records[0]['skill_id']}`–`{records[-1]['skill_id']}"
+    c_ids = f"{records[0]['contract_id']}`–`{records[-1]['contract_id']}"
+    gaps = "、".join(f"`skill_{n:03d}`" for n in sorted(RETIRED_SKILLS))
     # public ID table (skill <-> contract <-> verb, policies with legacy aliases)
     ids = json.loads((ROOT / "zeno_skills/interface_ids.json").read_text())
     ids["node_contract_ids"] = {r["skill_id"]: r["contract_id"] for r in records}
     files[Path("zeno_skills/interface_ids.json")] = json.dumps(ids, indent=1) + "\n"
-    L = ["# Public IDs", "", "Generated by `tools/build_skill_library.py`. SkillNodes `skill_001`-`skill_"
-         f"{len(records):03d}` pair one-to-one with Contracts `contract_{CONTRACT_OFFSET:03d}`-`contract_"
-         f"{len(records) + CONTRACT_OFFSET - 1:03d}`. `contract_001`-`contract_008` are the legacy family "
-         "Contracts. Policies keep their descriptive names as aliases.", "",
+    retired = "; ".join(f"`skill_{n:03d}` / `contract_{n - SKILL_OFFSET + CONTRACT_OFFSET:03d}` ({why.split(':')[0]})"
+                        for n, why in sorted(RETIRED_SKILLS.items()))
+    L = ["# Public IDs", "", f"Generated by `tools/build_skill_library.py`. SkillNodes `{s_ids}` pair one-to-one "
+         f"with Contracts `{c_ids}`; retired numbers, kept free: {retired}. `contract_001`-`contract_008` are "
+         "the legacy family Contracts. Policies keep their descriptive names as aliases.", "",
          "## SkillNodes and Contracts", "", "| SkillNode | Verb + noun | Contract |", "|---|---|---|"]
     L += [f"| `{r['skill_id']}` | {r['verb']} {r['noun']} | `{r['contract_id']}` |" for r in records]
     L += ["", "## Legacy family Contracts", "", "| Contract | Legacy name |", "|---|---|"]
@@ -425,11 +439,10 @@ def build():
     kinds = Counter((r["kind"], r.get("sequence_type") or r.get("fallback_type") or "") for r in rel_rows)
     n_paths = sum(len(r["paths"]) for r in records)
     n_tasks = len(json.loads((ROOT / "skill_library/tasks.json").read_text())["tasks"])
-    counts = (f"**{len(records)} 个 SkillNode**（`skill_001`–`skill_{len(records):03d}`，{len(records)} 个不同动词）"
-              f"一一对应 **{len(records)} 个 Contract**（`contract_{CONTRACT_OFFSET:03d}`–`contract_"
-              f"{len(records) + CONTRACT_OFFSET - 1:03d}`），共 **{n_paths} 条按名词选择的 policy 路径**，"
+    counts = (f"**{len(records)} 个 SkillNode**（`{s_ids}`，{gaps} 已退役不再使用，{len(records)} 个不同动词）"
+              f"一一对应 **{len(records)} 个 Contract**（`{c_ids}`），共 **{n_paths} 条按名词选择的 policy 路径**，"
               f"覆盖 **{len(names) - len(RETIRED_POLICIES)}/{len(names)} 个底层 policy**"
-              f"（{len(RETIRED_POLICIES)} 个因物理上不可行而退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；"
+              f"（{len(RETIRED_POLICIES)} 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；"
               f"前后条件来自 **{len(REGISTRY)} 个 GT 谓词**。"
               f"关系图有 {kinds[('sequence', 'enables')]} 条 enables、{kinds[('sequence', 'then')]} 条 then、"
               f"{sum(v for (k, _), v in kinds.items() if k == 'fallback')} 条 fallback "
@@ -458,13 +471,12 @@ def build():
     n_planner = sum(1 for leg in names.values() if leg.startswith("plan_"))
     files[Path("contract_library/README.md")] = _inject(
         (ROOT / "contract_library/README.md").read_text(), "counts",
-        f"当前有 **{len(records)} 个 Skill Contract**（`contract_{CONTRACT_OFFSET:03d}`–`contract_"
-        f"{len(records) + CONTRACT_OFFSET - 1:03d}`），与 `skill_001`–`skill_{len(records):03d}` 一一对应，"
+        f"当前有 **{len(records)} 个 Skill Contract**（`{c_ids}`），与 `{s_ids}` 一一对应（{gaps} 已退役），"
         f"共 {n_paths} 条 policy 路径。")
     files[Path("policy_library/README.md")] = _inject(
         (ROOT / "policy_library/README.md").read_text(), "counts",
         f"当前有 **{n_policy} 个公开 policy**（`policy_001`–`policy_{n_policy:03d}`），其中 {n_planner} 个是只计算目标、"
-        f"不运动的规划 policy；全部被 {len(records)} 个 Skill Contract 的路径覆盖。")
+        f"不运动的规划 policy；除 {len(RETIRED_POLICIES)} 个退役的以外，全部被 {len(records)} 个 Skill Contract 的路径覆盖。")
     return files, errors, records
 
 

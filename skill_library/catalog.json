@@ -10,13 +10,6 @@
    "definition": "skills/skill_001/skill.json"
   },
   {
-   "skill_id": "skill_002",
-   "verb": "approach",
-   "noun": "target",
-   "contract_id": "contract_010",
-   "definition": "skills/skill_002/skill.json"
-  },
-  {
    "skill_id": "skill_003",
    "verb": "face",
    "noun": "target",

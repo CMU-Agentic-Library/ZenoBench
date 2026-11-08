@@ -14,8 +14,19 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from ..kinematics import vel_limits
-from ..planner import plan_path
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
+
+# Switched off (2026-11-02, docs/COLLISION_PLAN.md section 2): the arm moves along a base path
+# planned for the posture it starts in, checked step by step only for the arm (the fingers not at
+# all), never against the whole robot.  No benchmark task asks for pass_by; the policies stay bound
+# (catalog, contracts) but refuse to run until moving manipulation is planned whole-body.
+DISABLED = "synchronized base and arm motion is switched off until it is planned whole-body"
+
+
+def _refuse(what):
+    if DISABLED:
+        raise SkillFailure(f"{what}: {DISABLED}")
 
 
 def _rotation(yaw_deg):
@@ -25,9 +36,8 @@ def _rotation(yaw_deg):
 def _path(rig, base_path):
     rig.sync_world()
     if len(base_path) == 3 and np.isscalar(base_path[0]):
-        path = plan_path(rig.world, rig.base_pose(), tuple(float(v) for v in base_path))
-        if path is None:
-            raise SkillFailure(f"synchronized motion: no base path to {base_path}")
+        from .. import skills
+        path = skills.plan_drive(rig, tuple(float(v) for v in base_path), "synchronized_motion")
     else:
         path = [tuple(float(v) for v in pose) for pose in base_path]
     if not path:
@@ -56,6 +66,7 @@ class ReachWhileMovingPolicy(AtomicPolicy):
     """Reach a world-frame TCP pose while the base follows a collision-free path."""
 
     def execute(self, position, rotation, base_path, *, speed=0.08, tolerance=0.04):
+        _refuse("reach while moving")
         rig = self.rig
         if rig.held is not None:
             raise SkillFailure("reach while moving: right hand must be empty")
@@ -77,7 +88,7 @@ class ReachWhileMovingPolicy(AtomicPolicy):
             nonlocal last_update, arm_travel, updates
             if rig.tick-last_update < 12 and progress < 0.999:
                 return
-            dt = max(1, rig.tick-last_update)/120.0
+            dt = max(1, rig.tick-last_update) / PHYSICS_HZ
             last_update = rig.tick
             x, y, a = pose
             R_base = _rotation(a)
@@ -132,6 +143,7 @@ class PickWhileMovingPolicy(AtomicPolicy):
     """Close on an annotated grasp and lift while the base is still driving."""
 
     def execute(self, name, base_path, *, speed=0.02):
+        _refuse("pick while moving")
         rig = self.rig
         if rig.held is not None or rig.left_held is not None:
             raise SkillFailure("pick while moving: both hands must be empty")
@@ -172,7 +184,7 @@ class PickWhileMovingPolicy(AtomicPolicy):
             else:
                 target = contact+np.array([0, 0, 0.07*min(1.0, (progress-0.65)/0.3)])
             if rig.tick-state["last"] >= 6 or progress >= 0.999:
-                dt = max(1, rig.tick-state["last"])/120.0
+                dt = max(1, rig.tick-state["last"]) / PHYSICS_HZ
                 state["last"] = rig.tick
                 _track_tcp(rig, target, R, dt)
                 state["arm_updates"] += 1
@@ -210,6 +222,7 @@ class PlaceWhileMovingPolicy(AtomicPolicy):
     """Lower and release a right-held item on a support during base travel."""
 
     def execute(self, name, support, base_path, *, xy=None, speed=0.02):
+        _refuse("place while moving")
         rig = self.rig
         held = rig.held
         if held is None or held["name"] != name or held["kind"] != "pinch":
@@ -244,7 +257,7 @@ class PlaceWhileMovingPolicy(AtomicPolicy):
             else:
                 target_now = target+np.array([0, 0, 0.10*min(1.0, (progress-0.7)/0.25)])
             if rig.tick-state["last"] >= 6 or progress >= 0.999:
-                dt = max(1, rig.tick-state["last"])/120.0
+                dt = max(1, rig.tick-state["last"]) / PHYSICS_HZ
                 state["last"] = rig.tick
                 _track_tcp(rig, target_now, R, dt)
                 state["arm_updates"] += 1

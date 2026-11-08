@@ -10,7 +10,7 @@
    "verb": "navigate",
    "noun": "place",
    "name": "Navigate to a place",
-   "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
+   "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is tucked and hangs at the side (inside the base footprint) while the base drives, then returns to the tuck; a loaded one is held in the compact carry pose.",
    "group": "base_and_body",
    "inputs": {
     "destination": {
@@ -113,75 +113,33 @@
       "note": "An object held by both grippers moves at the slow bimanual carry speed."
      },
      {
-      "path_id": "carry",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_097",
-        "args": [
-         "$destination"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_002",
-        "args": [
-         "#plan.pose"
-        ],
-        "kwargs": {
-         "name": "@robot.right_object",
-         "min_bottom_z": "#plan.carry_bottom_z"
-        }
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
-     },
-     {
-      "path_id": "empty",
+      "path_id": "drive",
       "when": [],
       "steps": [
        {
-        "policy": "policy_097",
+        "policy": "policy_092",
         "args": [
          "$destination"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_001",
-        "args": [
-         "#plan.pose"
         ],
         "kwargs": {}
        }
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower."
      }
     ]
    },
    "relations": [
     {
      "kind": "sequence",
-     "to": "approach",
-     "when": "a manipulation target is on the destination",
+     "to": "pick",
+     "when": "the object to grasp is the destination",
      "bind": {
-      "target": "$destination"
+      "object": "$destination"
      },
-     "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
-     "to_skill_id": "skill_002",
+     "reason": "navigate leaves the base near; pick chooses its own grasp park from there.",
+     "to_skill_id": "skill_017",
      "sequence_type": "enables"
     },
     {
@@ -238,246 +196,6 @@
     "excludes": [
      "arm reachability of a specific target",
      "grasping"
-    ]
-   }
-  },
-  {
-   "schema_version": 2,
-   "kind": "skill_contract",
-   "contract_id": "contract_010",
-   "skill_id": "skill_002",
-   "verb": "approach",
-   "noun": "target",
-   "name": "Approach a manipulation target",
-   "description": "Park the base where the right arm has a collision-free IK solution at the target's reach pose: 10 cm above an object or support, the handle pre-grasp of a door or drawer, 8 cm in front of a button.",
-   "group": "base_and_body",
-   "inputs": {
-    "target": {
-     "type": "entity_ref",
-     "required": true,
-     "description": "The object, support, handle-bearing part or button to reach."
-    },
-    "pass_by": {
-     "type": "pose2d",
-     "required": false,
-     "description": "Optional base waypoint: reach toward the target while driving past it."
-    }
-   },
-   "outputs": {
-    "base_pose": {
-     "type": "pose2d",
-     "description": "Base pose at which reachability was verified."
-    }
-   },
-   "requires": [
-    {
-     "pred": "base_near",
-     "args": {
-      "place": "$target"
-     }
-    }
-   ],
-   "ensures": [
-    {
-     "pred": "reachable",
-     "args": {
-      "target": "$target"
-     }
-    }
-   ],
-   "invalidates": [
-    "reachable(*)",
-    "facing(*)",
-    "in_view(*)",
-    "pointing_at(*)"
-   ],
-   "precheck": [
-    {
-     "predicate": "base_near(place=$target)",
-     "name": "base_near",
-     "args": {
-      "place": "$target"
-     },
-     "negated": false,
-     "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
-     "kind": "fluent",
-     "gt_sources": [
-      "base_pose",
-      "scene_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "all paths"
-    }
-   ],
-   "verifier": [
-    {
-     "predicate": "reachable(target=$target)",
-     "name": "reachable",
-     "args": {
-      "target": "$target"
-     },
-     "negated": false,
-     "meaning": "From the current base pose the right TCP has a collision-free IK solution 10 cm above the target (handle pre-grasp for doors, 8 cm in front of a button).",
-     "kind": "fluent",
-     "gt_sources": [
-      "base_pose",
-      "arm_ik",
-      "collision_model",
-      "object_pose",
-      "grasp_annotation"
-     ],
-     "checked": "after the policy chain on live GT state; the action is reported only if true",
-     "scope": "all paths"
-    }
-   ],
-   "noun_binding": {
-    "target": {
-     "type": "entity_ref",
-     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
-    }
-   },
-   "action_predicate": {
-    "name": "approach_target",
-    "verb": "approach",
-    "noun": "target",
-    "arguments": [
-     "target",
-     "pass_by"
-    ]
-   },
-   "policy_plan": {
-    "selection": "first path whose noun conditions all hold, decided before any motion",
-    "on_no_match": "NO_PATH: the Contract refuses without moving",
-    "paths": [
-     {
-      "path_id": "reach_on_the_move",
-      "when": [
-       {
-        "noun": "args",
-        "field": "pass_by",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_098",
-        "args": [
-         "$target"
-        ],
-        "kwargs": {},
-        "as": "reach"
-       },
-       {
-        "policy": "policy_051",
-        "args": [
-         "#reach.position",
-         "#reach.rotation",
-         "$pass_by"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Extend the arm toward the reach pose while the base follows the given waypoint."
-     },
-     {
-      "path_id": "park",
-      "when": [],
-      "steps": [
-       {
-        "policy": "policy_065",
-        "args": [
-         "$target"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": ""
-     }
-    ]
-   },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the target is an object to grasp",
-     "bind": {
-      "object": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the target is a door or drawer",
-     "bind": {
-      "articulated": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "press",
-     "when": "the target is a button",
-     "bind": {
-      "button": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_042",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "navigate",
-     "when": "no base pose near the current one reaches the target",
-     "bind": {
-      "destination": "$target"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "base_near",
-     "to_skill_id": "skill_001"
-    },
-    {
-     "kind": "fallback",
-     "to": "bend",
-     "when": "the target is just beyond the arm envelope",
-     "bind": {},
-     "reason": "Waist pitch adds forward reach from the same base pose.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_007"
-    },
-    {
-     "kind": "fallback",
-     "to": "pull",
-     "when": "the object sits too deep on its support",
-     "bind": {
-      "object": "$target"
-     },
-     "reason": "Dragging the object to the front makes it reachable.",
-     "fallback_type": "substitute",
-     "to_skill_id": "skill_030"
-    }
-   ],
-   "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
-    "stop_and_report": true
-   },
-   "scope": {
-    "includes": [
-     "base pose search with IK + collision checks",
-     "verification from the reached pose"
-    ],
-    "excludes": [
-     "contact with the target"
     ]
    }
   },
@@ -556,50 +274,22 @@
     "on_no_match": "NO_PATH: the Contract refuses without moving",
     "paths": [
      {
-      "path_id": "rotate_empty",
+      "path_id": "already_facing",
       "when": [
        {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "right_arm_stowed",
-        "op": "truthy",
-        "value": true
+        "noun": "target",
+        "field": "bearing_abs_deg",
+        "op": "lte",
+        "value": 2
        }
       ],
-      "steps": [
-       {
-        "policy": "policy_099",
-        "args": [
-         "$target"
-        ],
-        "kwargs": {},
-        "as": "heading"
-       },
-       {
-        "policy": "policy_036",
-        "args": [
-         "#heading.delta_yaw_deg"
-        ],
-        "kwargs": {}
-       }
-      ],
+      "steps": [],
       "requires": [],
       "ensures": [],
-      "note": "Tucked and empty: the measured in-place rotation primitive."
+      "note": "The heading error is already under 2 deg: nothing moves."
      },
      {
-      "path_id": "rotate_loaded",
+      "path_id": "rotate",
       "when": [],
       "steps": [
        {
@@ -612,7 +302,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "With a load or unfolded arm: slower turn with grasp checks."
+      "note": "An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower."
      }
     ]
    },
@@ -767,15 +457,8 @@
       "note": "The microwave's measured hinge-clearance pose (also when loaded)."
      },
      {
-      "path_id": "bimanual_or_left_load",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
+      "path_id": "away",
+      "when": [],
       "steps": [
        {
         "policy": "policy_067",
@@ -788,55 +471,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
-     },
-     {
-      "path_id": "loaded",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_035",
-        "args": [
-         "$distance_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Straight reverse with the right-hand load."
-     },
-     {
-      "path_id": "empty",
-      "when": [],
-      "steps": [
-       {
-        "policy": "policy_100",
-        "args": [
-         "$obstacle",
-         "$distance_m"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_037",
-        "args": [
-         "#plan.forward_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": ""
+      "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
      }
     ]
    },
@@ -879,13 +514,13 @@
    "verb": "crouch",
    "noun": "torso",
    "name": "Crouch the torso",
-   "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+   "description": "Lower the torso lift to its bottom (or a requested height) for low-shelf work; a held object goes down with the body. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.",
    "group": "base_and_body",
    "inputs": {
     "height_m": {
      "type": "number",
      "required": false,
-     "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
+     "description": "Optional torso joint target in [-0.53, -0.05] m (0 is full height: use stand); omit for the lowest."
     }
    },
    "outputs": {},
@@ -911,7 +546,7 @@
      "name": "torso_raised",
      "args": {},
      "negated": true,
-     "meaning": "Torso lift within 3 cm of its highest position (travel height).",
+     "meaning": "Must be false: Torso lift within 3 cm of its highest position (travel height).",
      "kind": "fluent",
      "gt_sources": [
       "torso_joint"
@@ -967,7 +602,7 @@
        {
         "noun": "args",
         "field": "height_m",
-        "op": "truthy",
+        "op": "set",
         "value": true
        }
       ],
@@ -1049,7 +684,7 @@
    "verb": "stand",
    "noun": "torso",
    "name": "Stand up to full height",
-   "description": "Raise the torso lift to its top travel height.",
+   "description": "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)",
    "group": "base_and_body",
    "inputs": {},
    "outputs": {},
@@ -1144,23 +779,22 @@
    "verb": "bend",
    "noun": "waist",
    "name": "Bend the waist",
-   "description": "Pitch the waist forward to extend the reach over a deep surface.",
+   "description": "Pitch the waist forward to extend the reach over a deep surface. A held object pitches forward with the body by the same angle.",
    "group": "base_and_body",
    "inputs": {
     "pitch_rad": {
      "type": "positive_number",
      "required": false,
-     "description": "Forward pitch in rad (max 0.69); omit for the maximum."
+     "description": "Forward pitch in rad, 0.1 to 0.69; omit for the maximum."
     }
    },
    "outputs": {},
    "requires": [],
    "ensures": [
     {
-     "pred": "waist_bent",
-     "args": {
-      "min_pitch_rad": 0.2
-     }
+     "pred": "waist_straight",
+     "args": {},
+     "negated": true
     }
    ],
    "invalidates": [
@@ -1171,10 +805,23 @@
    "precheck": [],
    "verifier": [
     {
-     "predicate": "waist_bent(min_pitch_rad=0.2)",
+     "predicate": "not waist_straight()",
+     "name": "waist_straight",
+     "args": {},
+     "negated": true,
+     "meaning": "Must be false: Waist pitch within 0.05 rad of upright.",
+     "kind": "fluent",
+     "gt_sources": [
+      "waist_joint"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true",
+     "scope": "all paths"
+    },
+    {
+     "predicate": "waist_bent(min_pitch_rad=$pitch_rad)",
      "name": "waist_bent",
      "args": {
-      "min_pitch_rad": 0.2
+      "min_pitch_rad": "$pitch_rad"
      },
      "negated": false,
      "meaning": "Waist pitched forward by at least the given angle.",
@@ -1183,7 +830,22 @@
       "waist_joint"
      ],
      "checked": "after the policy chain on live GT state; the action is reported only if true",
-     "scope": "all paths"
+     "scope": "path to_pitch"
+    },
+    {
+     "predicate": "waist_bent(min_pitch_rad=0.6)",
+     "name": "waist_bent",
+     "args": {
+      "min_pitch_rad": 0.6
+     },
+     "negated": false,
+     "meaning": "Waist pitched forward by at least the given angle.",
+     "kind": "fluent",
+     "gt_sources": [
+      "waist_joint"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true",
+     "scope": "path full"
     }
    ],
    "noun_binding": {},
@@ -1205,7 +867,7 @@
        {
         "noun": "args",
         "field": "pitch_rad",
-        "op": "truthy",
+        "op": "set",
         "value": true
        }
       ],
@@ -1219,7 +881,14 @@
        }
       ],
       "requires": [],
-      "ensures": [],
+      "ensures": [
+       {
+        "pred": "waist_bent",
+        "args": {
+         "min_pitch_rad": "$pitch_rad"
+        }
+       }
+      ],
       "note": ""
      },
      {
@@ -1233,7 +902,14 @@
        }
       ],
       "requires": [],
-      "ensures": [],
+      "ensures": [
+       {
+        "pred": "waist_bent",
+        "args": {
+         "min_pitch_rad": 0.6
+        }
+       }
+      ],
       "note": ""
      }
     ]
@@ -1250,12 +926,20 @@
     },
     {
      "kind": "sequence",
-     "to": "approach",
-     "when": "the target was just out of reach",
+     "to": "pick",
+     "when": "the object lies deep on the surface",
      "bind": {},
      "reason": "extra reach",
-     "to_skill_id": "skill_002",
+     "to_skill_id": "skill_017",
      "sequence_type": "then"
+    },
+    {
+     "kind": "alternative",
+     "to": "crouch",
+     "when": "the target is low rather than far away",
+     "bind": {},
+     "reason": "",
+     "to_skill_id": "skill_005"
     }
    ],
    "failure": {
@@ -1275,7 +959,7 @@
    "verb": "straighten",
    "noun": "waist",
    "name": "Straighten the waist",
-   "description": "Return the waist pitch to upright.",
+   "description": "Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)",
    "group": "base_and_body",
    "inputs": {},
    "outputs": {},
@@ -1370,7 +1054,7 @@
    "verb": "tuck",
    "noun": "arm",
    "name": "Tuck an arm",
-   "description": "Fold an empty arm to its travel posture along a collision-checked path.",
+   "description": "Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.",
    "group": "base_and_body",
    "inputs": {
     "hand": {
@@ -1830,17 +1514,6 @@
     ]
    },
    "relations": [
-    {
-     "kind": "sequence",
-     "to": "approach",
-     "when": "the observed target will be manipulated",
-     "bind": {
-      "target": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_002",
-     "sequence_type": "then"
-    },
     {
      "kind": "fallback",
      "to": "navigate",
@@ -2770,7 +2443,7 @@
    "verb": "pick",
    "noun": "object",
    "name": "Pick an object",
-   "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
+   "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -2790,12 +2463,9 @@
     "grasp": {
      "type": "tag",
      "required": false,
-     "description": "Optional grasp style to request: handle, rim, top or edge.",
+     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).",
      "enum": [
-      "handle",
-      "rim",
-      "top",
-      "edge"
+      "handle"
      ]
     },
     "pass_by": {
@@ -2806,8 +2476,8 @@
    },
    "outputs": {
     "grasp": {
-     "type": "hand",
-     "description": "Grasp route actually used."
+     "type": "tag",
+     "description": "Kind of hold: pinch, edge, corner or bimanual (the selected path names the grasp route)."
     },
     "lift_m": {
      "type": "number",
@@ -2922,7 +2592,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -2984,7 +2654,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge.",
+     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -3001,7 +2671,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -3017,7 +2687,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -3452,7 +3122,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "Slide the flat item until it overhangs a free edge, then pinch the overhang."
+      "note": "Slide the flat item until it overhangs a free edge, then pinch the overhang. In the benchmark profiles the slide is left out: call expose first, then pick takes flat_overhang_ready."
      },
      {
       "path_id": "rect_rim",
@@ -3660,17 +3330,6 @@
     },
     {
      "kind": "fallback",
-     "to": "approach",
-     "when": "no grasp is reachable from base poses near the current one",
-     "bind": {
-      "target": "$object"
-     },
-     "reason": "a base pose with verified IK at the object",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
-    },
-    {
-     "kind": "fallback",
      "to": "upright",
      "when": "a tall object fell over and its top pinch is gone",
      "bind": {
@@ -3743,7 +3402,7 @@
    "verb": "place",
    "noun": "object",
    "name": "Place a held object",
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -3760,6 +3419,11 @@
      "type": "xy",
      "required": false,
      "description": "Optional preferred position on a surface."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional: put it on the free spot of the surface closest to this object (e.g. the bowl next to the spoon). Use instead of hint_xy."
     },
     "pass_by": {
      "type": "pose2d",
@@ -4122,6 +3786,10 @@
     "receptacle": {
      "type": "receptacle_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -4132,6 +3800,7 @@
      "object",
      "receptacle",
      "hint_xy",
+     "near",
      "pass_by"
     ]
    },
@@ -4554,7 +4223,7 @@
     {
      "kind": "fallback",
      "to": "drop",
-     "when": "a deep container leaves no room to lower the hand inside",
+     "when": "the hand cannot reach the robot-side release spot inside the container",
      "bind": {
       "object": "$object",
       "container": "$receptacle"
@@ -4562,17 +4231,6 @@
      "reason": "",
      "fallback_type": "substitute",
      "to_skill_id": "skill_019"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "the receptacle is out of reach",
-     "bind": {
-      "target": "$receptacle"
-     },
-     "reason": "a base pose with verified IK above the receptacle",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
     },
     {
      "kind": "fallback",
@@ -5100,7 +4758,7 @@
    "verb": "release",
    "noun": "object",
    "name": "Release an object",
-   "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.",
+   "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -5453,7 +5111,7 @@
    "verb": "lift",
    "noun": "object",
    "name": "Lift a held object",
-   "description": "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).",
+   "description": "Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -5464,8 +5122,12 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Minimum world height of the object's bottom.",
-     "default": 0.55
+     "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given. An object already that high does not move."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "outputs": {},
@@ -5560,6 +5222,10 @@
     "object": {
      "type": "object_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -5568,7 +5234,8 @@
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
    "policy_plan": {
@@ -5632,7 +5299,7 @@
    "verb": "lower",
    "noun": "object",
    "name": "Lower a held object",
-   "description": "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
+   "description": "Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -5643,7 +5310,12 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Maximum world height of the object's bottom."
+     "description": "Maximum height of the object's bottom: world height, or above the top of near when near is given."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "outputs": {},
@@ -5738,6 +5410,10 @@
     "object": {
      "type": "object_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -5746,7 +5422,8 @@
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
    "policy_plan": {
@@ -5763,12 +5440,14 @@
          "$object",
          "$height_m"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "down_only": true
+        }
        }
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "An object already that low does not move."
      }
     ]
    },
@@ -6005,8 +5684,8 @@
    },
    "outputs": {
     "grasp": {
-     "type": "hand",
-     "description": "Grasp kind after the regrasp."
+     "type": "tag",
+     "description": "Kind of hold after the regrasp: pinch, edge, corner or bimanual."
     }
    },
    "requires": [
@@ -6164,7 +5843,7 @@
    "verb": "brace",
    "noun": "object",
    "name": "Brace an object with the left hand",
-   "description": "Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
+   "description": "Pinch an object resting on a support (a container, or any object with a top or handle pinch) with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -6304,7 +5983,6 @@
         "op": "in",
         "value": [
          "support",
-         "floor",
          "container"
         ]
        }
@@ -6320,7 +5998,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "Only an object standing in the open (not behind an appliance or cabinet door)."
+      "note": "Only an object standing in the open on a support (not on the floor, not behind an appliance or cabinet door)."
      }
     ]
    },
@@ -6366,7 +6044,7 @@
    "verb": "flip",
    "noun": "object",
    "name": "Flip a flat object over",
-   "description": "Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand 180 deg, lay it back and release.",
+   "description": "Turn a flat object upside down on its support: slide it to an edge, pinch the overhang, swing the pinched edge up and over the far edge until the object passes vertical, release, and push it over. It lands on its other face about one object-length further onto the support, so that much free room is needed.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -6590,7 +6268,7 @@
    "outputs": {
     "moved_m": {
      "type": "number",
-     "description": "Measured displacement along the direction."
+     "description": "Measured horizontal displacement of the object (any direction)."
     }
    },
    "requires": [
@@ -7165,14 +6843,14 @@
     },
     {
      "kind": "fallback",
-     "to": "approach",
+     "to": "pull",
      "when": "no base pose reaches behind the object",
      "bind": {
-      "target": "$object"
+      "object": "$object"
      },
-     "reason": "",
-     "fallback_type": "repair",
-     "to_skill_id": "skill_002"
+     "reason": "dragging it toward the base brings its far side into reach",
+     "fallback_type": "recover",
+     "to_skill_id": "skill_030"
     }
    ],
    "failure": {
@@ -7192,7 +6870,7 @@
    "verb": "separate",
    "noun": "object",
    "name": "Separate an object from its neighbour",
-   "description": "Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.",
+   "description": "Push an object straight away from its closest neighbour until there is room for the fingers beside it, without leaving the support.",
    "group": "contact",
    "inputs": {
     "object": {
@@ -7214,13 +6892,6 @@
      "args": {
       "place": "$object"
      }
-    },
-    {
-     "pred": "grasp_clearance",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true
     }
    ],
    "ensures": [
@@ -7262,22 +6933,6 @@
      "gt_sources": [
       "base_pose",
       "scene_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "all paths"
-    },
-    {
-     "predicate": "not grasp_clearance(object=$object)",
-     "name": "grasp_clearance",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "asset_annotation"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "all paths"
@@ -7626,7 +7281,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.",
+     "meaning": "Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -7829,7 +7484,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.",
+     "meaning": "Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -8017,7 +7672,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.",
+     "meaning": "Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -8645,7 +8300,7 @@
    "verb": "pour",
    "noun": "contents",
    "name": "Pour contents into a container",
-   "description": "Hold the cup's far lip over a container, turn the cup about that lip up to 90 deg and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.",
+   "description": "Hold the cup's far lip over a container, turn the cup about that lip (up to about 110 deg) and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.",
    "group": "contact",
    "inputs": {
     "source": {
@@ -8770,7 +8425,7 @@
       "container": "$source"
      },
      "negated": true,
-     "meaning": "No annotated object is inside the container.",
+     "meaning": "Must be false: No annotated object is inside the container.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -9340,17 +8995,6 @@
      "fallback_type": "repair",
      "repairs": "hand_empty",
      "to_skill_id": "skill_022"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "the handle is out of reach",
-     "bind": {
-      "target": "$articulated"
-     },
-     "reason": "a base pose with verified IK at the handle",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
     }
    ],
    "failure": {
@@ -9673,7 +9317,7 @@
    "verb": "press",
    "noun": "button",
    "name": "Press a button",
-   "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).",
+   "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner).",
    "group": "articulated_and_appliance",
    "inputs": {
     "button": {
@@ -9884,7 +9528,7 @@
         }
        }
       ],
-      "note": ""
+      "note": "Fails without moving the door when no task food is inside the cavity."
      },
      {
       "path_id": "microwave_door_key",
@@ -9909,7 +9553,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "Only the key press: the door stays as it is (open presses this key itself)."
      },
      {
       "path_id": "generic_key",
@@ -9951,12 +9595,14 @@
      "sequence_type": "enables"
     },
     {
-     "kind": "alternative",
-     "to": "open",
-     "when": "the door key is pressed only to open the microwave door",
+     "kind": "fallback",
+     "to": "close",
+     "when": "the start key was refused because the microwave door is open",
      "bind": {},
      "reason": "",
-     "to_skill_id": "skill_040"
+     "fallback_type": "repair",
+     "repairs": "is_closed",
+     "to_skill_id": "skill_041"
     }
    ],
    "failure": {
@@ -9976,7 +9622,7 @@
    "verb": "heat",
    "noun": "food",
    "name": "Heat food",
-   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
    "group": "articulated_and_appliance",
    "inputs": {
     "food": {
@@ -10141,7 +9787,7 @@
       "appliance": "$appliance"
      },
      "negated": true,
-     "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+     "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
      "kind": "fluent",
      "gt_sources": [
       "thermal_state"
@@ -10259,7 +9905,7 @@
        }
       ],
       "ensures": [],
-      "note": "Food must be inside a pot (or pan) whose bottom rests on the burner."
+      "note": "The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."
      }
     ]
    },
@@ -10289,12 +9935,12 @@
     {
      "kind": "alternative",
      "to": "heat",
-     "when": "no microwave is available: heat in a pot on the stove",
+     "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
      "bind": {
       "food": "$food",
       "appliance": "kitchen_stove"
      },
-     "reason": "Same verb, other noun: the stove path pours/places the food into the pot first.",
+     "reason": "Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top).",
      "to_skill_id": "skill_043"
     },
     {
@@ -10333,7 +9979,7 @@
     {
      "kind": "fallback",
      "to": "pour",
-     "when": "the food is in a cup, not in the pot on the burner",
+     "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
      "bind": {},
      "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
      "fallback_type": "recover",
@@ -10368,8 +10014,7 @@
     "appliance": {
      "type": "appliance_ref",
      "required": true,
-     "description": "The refrigerator.",
-     "default": "breakfast_fridge"
+     "description": "The refrigerator."
     },
     "temp_c": {
      "type": "number",
@@ -10751,7 +10396,7 @@
     {
      "kind": "sequence",
      "to": "heat",
-     "when": "the covered pot is heated",
+     "when": "the pot is heated with its lid on (heat itself needs no lid)",
      "bind": {},
      "reason": "stove path",
      "to_skill_id": "skill_043",
@@ -11820,7 +11465,7 @@
     "receptacle": {
      "type": "receptacle_ref",
      "required": true,
-     "description": "Where the contents go (a container for the pouring path)."
+     "description": "Where the contents go: a support or a container."
     }
    },
    "outputs": {
@@ -11967,61 +11612,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
-     },
-     {
-      "path_id": "pour_out",
-      "when": [
-       {
-        "noun": "container",
-        "field": "grasp_types",
-        "op": "contains",
-        "value": "rim_pinch"
-       },
-       {
-        "noun": "receptacle",
-        "field": "kind",
-        "op": "equals",
-        "value": "object"
-       }
-      ],
-      "steps": [
-       {
-        "call": "navigate",
-        "args": {
-         "destination": "$container"
-        }
-       },
-       {
-        "call": "pick",
-        "args": {
-         "object": "$container"
-        }
-       },
-       {
-        "call": "navigate",
-        "args": {
-         "destination": "$receptacle"
-        }
-       },
-       {
-        "call": "pour",
-        "args": {
-         "source": "$container",
-         "target": "$receptacle"
-        }
-       },
-       {
-        "call": "place",
-        "args": {
-         "object": "$container",
-         "receptacle": "@container.support"
-        }
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "A cup or mug of loose items is emptied by pouring, then put back."
+      "note": "Take the items out one by one; empty never pours (pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove). To pour, call pour."
      }
     ]
    },
@@ -12234,7 +11825,7 @@
    "verb": "restore",
    "noun": "object",
    "name": "Restore an object to its place",
-   "description": "Return an object to the support it occupied at the start of the episode.",
+   "description": "Return an object to the spot it occupied at the start of the episode (the free spot of its starting support closest to it); also works when it was only moved along that support. Success is judged on the support, not the exact spot.",
    "group": "multi_object",
    "inputs": {
     "object": {
@@ -12250,13 +11841,6 @@
      "args": {
       "hand": "right"
      }
-    },
-    {
-     "pred": "at_initial_place",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true
     }
    ],
    "ensures": [
@@ -12286,22 +11870,6 @@
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "all paths"
-    },
-    {
-     "predicate": "not at_initial_place(object=$object)",
-     "name": "at_initial_place",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true,
-     "meaning": "Object is back on the support it occupied when the episode started.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "initial_scene_annotation"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "all paths"
@@ -12396,7 +11964,9 @@
          "$object",
          "@object.initial_support"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hint": "@object.initial_xy"
+        }
        }
       ],
       "requires": [],
@@ -12684,7 +12254,7 @@
     "distance_m": {
      "type": "number",
      "required": true,
-     "description": "Lateral displacement in metres (left > 0)."
+     "description": "Lateral displacement in metres (left > 0), not 0."
     }
    },
    "outputs": {},
@@ -12735,43 +12305,7 @@
     "on_no_match": "NO_PATH: the Contract refuses without moving",
     "paths": [
      {
-      "path_id": "empty_tucked",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "right_arm_stowed",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_037",
-        "args": [
-         0.0,
-         "$distance_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": ""
-     },
-     {
-      "path_id": "loaded",
+      "path_id": "sideways",
       "when": [],
       "steps": [
        {
@@ -12784,18 +12318,18 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "Checked over the whole robot; a load stays held and the base drives slower."
      }
     ]
    },
    "relations": [
     {
      "kind": "sequence",
-     "to": "approach",
-     "when": "the target is now in front of the arm",
+     "to": "pick",
+     "when": "the object is now in front of the arm",
      "bind": {},
      "reason": "small lateral offset fixed",
-     "to_skill_id": "skill_002",
+     "to_skill_id": "skill_017",
      "sequence_type": "then"
     },
     {
@@ -12830,7 +12364,7 @@
     "seconds": {
      "type": "positive_number",
      "required": true,
-     "description": "How long to wait.",
+     "description": "How long to wait, at most 600 s.",
      "default": 5.0
     }
    },
@@ -12922,7 +12456,7 @@
    "verb": "identify",
    "noun": "object",
    "name": "Identify an object",
-   "description": "Look at an object and report its category and tags (asset annotation) once it is in the head camera view.",
+   "description": "Look at an object and report its asset name and tags (asset annotation) once it is in the head camera view.",
    "group": "perception_and_gesture",
    "inputs": {
     "object": {
@@ -12934,11 +12468,11 @@
    "outputs": {
     "category": {
      "type": "tag",
-     "description": "Asset category."
+     "description": "Asset name, e.g. soda_can."
     },
     "tags": {
      "type": "object_list",
-     "description": "Annotated tags."
+     "description": "Annotated tags, e.g. drink, can."
     }
    },
    "requires": [],
@@ -13034,9 +12568,9 @@
     {
      "kind": "sequence",
      "to": "sort",
-     "when": "the category decides the destination",
+     "when": "the tags decide the destination",
      "bind": {},
-     "reason": "category output",
+     "reason": "tags output",
      "to_skill_id": "skill_049",
      "sequence_type": "then"
     },
@@ -13090,7 +12624,7 @@
    },
    "outputs": {
     "size_m": {
-     "type": "xy",
+     "type": "xyz",
      "description": "World-frame size [dx, dy, dz] in metres."
     }
    },
@@ -13734,7 +13268,7 @@
    "verb": "hover",
    "noun": "object",
    "name": "Hover a held object over a target",
-   "description": "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.",
+   "description": "Hold the carried object 6 cm above a target without releasing it, e.g. to show or to align before a drop: above a container's opening, a support's centre, a burner, or a door's handle.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -14553,7 +14087,7 @@
    "verb": "sweep",
    "noun": "objects",
    "name": "Sweep objects together",
-   "description": "Push several objects on one support toward their centroid until they form a cluster (radius 12 cm), without grasping them.",
+   "description": "Push several objects on one support toward their centroid until they all lie within radius_m of it, without grasping them.",
    "group": "contact",
    "inputs": {
     "objects": {
@@ -14768,7 +14302,7 @@
       "appliance": "$appliance"
      },
      "negated": true,
-     "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+     "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
      "kind": "fluent",
      "gt_sources": [
       "thermal_state"
@@ -15148,12 +14682,12 @@
     "receptacle": {
      "type": "receptacle_ref",
      "required": true,
-     "description": "A lidded container or a cabinet interior shelf."
+     "description": "A lidded container, or an inside shelf of a cabinet or appliance with an annotated door."
     },
     "lid": {
      "type": "lid_ref",
      "required": false,
-     "description": "The lid to use for a container."
+     "description": "The lid to cover the container with: required when the receptacle is a container (it is not found automatically)."
     }
    },
    "outputs": {},
@@ -15553,5 +15087,16 @@
     "excludes": []
    }
   }
- ]
+ ],
+ "retired_policies": {
+  "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
+  "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
+  "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive speed capped by what the hands hold in Rig.drive_base (2026-11-04).",
+  "policy_002": "Carry navigate to a pose: merged into navigate's one path (policy_092, see policy_001).",
+  "policy_035": "Back off with a load along the heading: retreat's paths are one (policy_067, away from the obstacle, whole-robot checked, load kept) since 2026-11-04.",
+  "policy_036": "Rotate the tucked, empty base in place: face's paths are one (policy_066), the turn checked over the whole robot whatever the arms hold (2026-11-04).",
+  "policy_037": "Translate the tucked, empty base: retreat (policy_067) and sidestep (policy_114) have one path each, checked over the whole robot whatever the arms hold (2026-11-04).",
+  "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
+  "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04)."
+ }
 }

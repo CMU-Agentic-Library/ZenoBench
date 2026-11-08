@@ -6,7 +6,7 @@
  "verb": "hover",
  "noun": "object",
  "name": "Hover a held object over a target",
- "description": "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.",
+ "description": "Hold the carried object 6 cm above a target without releasing it, e.g. to show or to align before a drop: above a container's opening, a support's centre, a burner, or a door's handle.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {

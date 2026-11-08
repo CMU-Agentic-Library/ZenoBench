@@ -19,7 +19,7 @@ The planner sees what the robot's head camera saw, never the hidden GT scene:
   - a contact skill (pick, push, place into, stir ...) additionally needs its
     object arguments in the current view or in the hand: a pick does not track
     an object that left the view;
-  - navigate / approach to an object drive to its *cached* position (the GT
+  - navigate to an object drives to its *cached* position (the GT
     pose of an object that moved out of sight is never used); look-type skills
     at a stale object first glance at the cached position;
   - support / container lists inside multi-object skills (clear, empty) are
@@ -61,7 +61,7 @@ CONTACT_VERBS = {"pick", "place", "drop", "stack", "release", "handover", "lift"
 MANIPULATED_SLOTS = {"object", "objects", "a", "b", "tool", "lid", "source"}
 MANIPULATED_EXTRA = {("uncover", "container"), ("brace", "object")}
 # verbs that only move the base / head toward a known (possibly cached) place
-MOTION_VERBS = {"navigate", "approach"}
+MOTION_VERBS = {"navigate"}
 LOOK_VERBS = {"look", "face", "point", "identify", "measure", "inspect"}
 
 STALE_M = 0.03

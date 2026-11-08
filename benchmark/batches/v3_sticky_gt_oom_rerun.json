@@ -1,0 +1,58 @@
+[
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pen_available",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "free",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "dishes_on_tv_stand",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bottle_on_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P16_empty_mug",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P17_pour",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P19_spoon_dip",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ }
+]

@@ -1,13 +1,13 @@
 ---
 name: press-button
-description: "Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner)."
+description: "Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner)."
 ---
 
 # Press a button (`skill_042`)
 
 `press(button: button_ref)`
 
-Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
+Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner).
 
 ## When to use
 
@@ -57,10 +57,12 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 3. `policy_029(@button.appliance, button=start)`
 - extra precondition `is_closed(articulated=@button.appliance)`
 - extra postcondition `heating(appliance=@button.appliance)`
+- Fails without moving the door when no task food is inside the cavity.
 
 ### `microwave_door_key` — when button.button == 'door_button'
 
 1. `policy_033(@button.appliance, button=door)`
+- Only the key press: the door stays as it is (open presses this key itself).
 
 ### `generic_key` — when always (default path)
 
@@ -68,10 +70,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `approach` (`skill_002`) (then) — the target is a button
 - Next step: `heat` (`skill_043`) (enables) — the start key began a cycle
 - Next step: `tuck` (`skill_009`) (enables) — the hand is free again
-- Alternative: `open` (`skill_040`) — the door key is pressed only to open the microwave door
+- Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the start key was refused because the microwave door is open
 
 ## Failure
 

@@ -17,7 +17,7 @@
    "hand"
   ]
  },
- "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.",
+ "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls.",
  "use_when": "The hand must open in place (the object is already supported).",
  "not_to_be_confused_with": {
   "drop": "drop moves above a container first; release does not move the object.",

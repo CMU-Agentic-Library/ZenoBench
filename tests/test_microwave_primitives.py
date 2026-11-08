@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from zeno_skills import skills
+from zeno_skills.clearance import LEGACY
 from zeno_skills.policies import MicrowaveButtonPressPolicy, MicrowaveHingeDrivePolicy
 from zeno_skills.rig import SkillFailure
 
@@ -32,7 +33,7 @@ def test_button_press_requires_matching_alignment_and_checks_contact():
         MicrowaveButtonPressPolicy(rig).execute("oven", button="start")
     assert MicrowaveButtonPressPolicy(rig).execute("oven", button="door") == 0
     assert stage["phase"] == "pressed"
-    assert calls[0][1]["collision"] is False
+    assert calls[0][1]["allow"] is LEGACY
     with pytest.raises(SkillFailure, match="not aligned"):
         MicrowaveButtonPressPolicy(rig).execute("oven", button="door")
 

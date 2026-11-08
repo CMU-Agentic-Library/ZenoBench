@@ -22,7 +22,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).back_off_with_load.execute(...)`
 - Class: `BackOffWithLoadPolicy`
 - Availability: `verified`
-- Skill Contract paths: contract_012:retreat/loaded
 - Referenced as support by legacy families: contract_001
 
 ## Recorded evidence

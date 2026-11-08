@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).face_target.execute(...)`
 - Class: `FaceTargetPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_011:face/rotate_loaded, contract_019:look/turn_then_head
+- Skill Contract paths: contract_011:face/rotate, contract_019:look/turn_then_head
 
 ## Recorded evidence
 

@@ -12,7 +12,7 @@
   "distance_m": {
    "type": "number",
    "required": true,
-   "description": "Lateral displacement in metres (left > 0)."
+   "description": "Lateral displacement in metres (left > 0), not 0."
   }
  },
  "outputs": {},
@@ -63,43 +63,7 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
-    "path_id": "empty_tucked",
-    "when": [
-     {
-      "noun": "robot",
-      "field": "right_held",
-      "op": "falsy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "left_held",
-      "op": "falsy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "right_arm_stowed",
-      "op": "truthy",
-      "value": true
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_037",
-      "args": [
-       0.0,
-       "$distance_m"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": ""
-   },
-   {
-    "path_id": "loaded",
+    "path_id": "sideways",
     "when": [],
     "steps": [
      {
@@ -112,18 +76,18 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "Checked over the whole robot; a load stays held and the base drives slower."
    }
   ]
  },
  "relations": [
   {
    "kind": "sequence",
-   "to": "approach",
-   "when": "the target is now in front of the arm",
+   "to": "pick",
+   "when": "the object is now in front of the arm",
    "bind": {},
    "reason": "small lateral offset fixed",
-   "to_skill_id": "skill_002",
+   "to_skill_id": "skill_017",
    "sequence_type": "then"
   },
   {

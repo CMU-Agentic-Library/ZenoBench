@@ -113,9 +113,9 @@
    "note": "The microwave's measured hinge-clearance pose (also when loaded)."
   },
   {
-   "path_id": "bimanual_or_left_load",
+   "path_id": "away",
    "when": [
-    "robot.left_held"
+    "always (default path)"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [],
@@ -125,39 +125,7 @@
    "policies": [
     "policy_067"
    ],
-   "note": ""
-  },
-  {
-   "path_id": "loaded",
-   "when": [
-    "robot.right_held"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_035($distance_m)"
-   ],
-   "policies": [
-    "policy_035"
-   ],
-   "note": "Straight reverse with the right-hand load."
-  },
-  {
-   "path_id": "empty",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_100($obstacle, $distance_m) as plan",
-    "policy_037(#plan.forward_m)"
-   ],
-   "policies": [
-    "policy_037",
-    "policy_100"
-   ],
-   "note": ""
+   "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
   }
  ],
  "relations": {

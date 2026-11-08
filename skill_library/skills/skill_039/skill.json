@@ -17,7 +17,7 @@
    "target"
   ]
  },
- "description": "Hold the cup's far lip over a container, turn the cup about that lip up to 90 deg and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.",
+ "description": "Hold the cup's far lip over a container, turn the cup about that lip (up to about 110 deg) and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.",
  "use_when": "Loose contents of a held container must go into another container.",
  "not_to_be_confused_with": {
   "drop": "drop releases the held object itself; pour tips out its contents."
@@ -105,7 +105,7 @@
     "container": "$source"
    },
    "negated": true,
-   "meaning": "No annotated object is inside the container.",
+   "meaning": "Must be false: No annotated object is inside the container.",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -260,7 +260,7 @@
    {
     "skill_id": "skill_043",
     "verb": "heat",
-    "when": "the food is in a cup, not in the pot on the burner",
+    "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
     "type": "recover"
    }
   ],

@@ -15,7 +15,7 @@ The target is beside or behind the robot and only the heading must change.
 
 ## Not to be confused with
 
-- `look`: look moves the head only; face moves the whole base.
+- `look`: look aims the head camera and turns the base only when the target is beyond the head's range; face always turns the base.
 
 ## Inputs
 
@@ -49,16 +49,14 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `rotate_empty` — when not robot.right_held and not robot.left_held and robot.right_arm_stowed
+### `already_facing` — when target.bearing_abs_deg <= 2
 
-1. `policy_099($target) as heading`
-2. `policy_036(#heading.delta_yaw_deg)`
-- Tucked and empty: the measured in-place rotation primitive.
+- The heading error is already under 2 deg: nothing moves.
 
-### `rotate_loaded` — when always (default path)
+### `rotate` — when always (default path)
 
 1. `policy_066($target)`
-- With a load or unfolded arm: slower turn with grasp checks.
+- An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower.
 
 ## Relations
 

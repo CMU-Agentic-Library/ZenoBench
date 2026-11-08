@@ -7,7 +7,9 @@ import numpy as np
 from .base import AtomicPolicy
 from .posture import LowerTorsoPolicy, SetWaistPitchPolicy
 from .. import skills
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, lifting
 from ..kinematics import gripper_rot
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 
@@ -175,7 +177,7 @@ class GraspArticulatedHandlePolicy(AtomicPolicy):
                 except SkillFailure as exc:
                     rig.log("handle_pre_branch_short", reason=str(exc))
             rig.move_to(*target, label=label, q_hint=hint)
-        fingers = rig.grip(0.0, 120)
+        fingers = rig.grip(0.0, PHYSICS_HZ)
         if fingers.min() <= min(0.004, 0.3*thickness):
             rig.kin.coll_kw = old_coll_kw
             raise SkillFailure(f"grasp handle {name}: no finger contact")
@@ -228,28 +230,28 @@ class PickFromCavityPolicy(AtomicPolicy):
             # Reverse the measured insertion approach. Generic rim samples can
             # be unreachable through the narrow open door even when the pose
             # that loaded this exact object is reachable.
-            rig.sync_world()
             rig.kin.coll_kw = {"ignore_fingers": True}
-            rig.follow(rig.joint_path(rig.microwave_retrieval_q, "cavity_return_safe"))
-            rig.drive_base([stage["release_base"]], speed=0.12)
+            skills.relocate(rig, tuple(stage["release_base"]),
+                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()))],
+                            label="cavity_return_safe", speed=0.12)
             rig.sync_world()
             before, _ = rig.obj_pose(name)
             target = stage["release_tcp"] + before-stage["release_body"]
             R = stage["R"]
             rig.grip(stage["pre_open"], 40)
             front_err = rig.move_to(target+np.array([0, -0.10, 0.06]), R,
-                                    label="cavity_pick_front", collision=False)
+                                    label="cavity_pick_front", allow=FREE_ELSE_STRAIGHT)
             if front_err > 0.02:
                 raise SkillFailure(f"pick from cavity {name}: front approach missed by {front_err:.3f} m")
             above_err = rig.move_to(target+np.array([0, 0, 0.045]), R,
-                                    label="cavity_pick_above", collision=False)
+                                    label="cavity_pick_above", allow=FREE_ELSE_STRAIGHT)
             if above_err > 0.20:
                 raise SkillFailure(f"pick from cavity {name}: upper approach missed by {above_err:.3f} m")
             if above_err > 0.02:
                 rig.log("cavity_intermediate_tracking", obj=name,
                         tcp_error_m=round(float(above_err), 4))
             err = rig.move_to(target, R, step=0.003, steps_per_wp=5,
-                              label="cavity_pick_contact", collision=False)
+                              label="cavity_pick_contact", allow=LEGACY)
             if err > 0.02:
                 # A measured insertion-reversal pose may be kinematically valid
                 # yet blocked by the shell in dynamics. Replan a different
@@ -263,9 +265,9 @@ class PickFromCavityPolicy(AtomicPolicy):
                     raise SkillFailure(f"pick from cavity {name}: fallback did not withdraw through the front")
                 skills.check_held(rig, "pick_from_cavity_replan")
                 return result
-            fingers = rig.grip(0.0, 120)
+            fingers = rig.grip(0.0, PHYSICS_HZ)
             rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
-                        steps_per_wp=5, label="cavity_pick_lift", collision=False)
+                        steps_per_wp=5, label="cavity_pick_lift", allow=lifting(name))
             rig.step(40)
             after, _ = rig.obj_pose(name)
             if after[2]-before[2] < 0.015 or fingers.min() < 0.003:

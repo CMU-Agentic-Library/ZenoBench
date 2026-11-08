@@ -73,25 +73,29 @@ def test_local_base_motion_checks_sweep_and_measured_pose():
 
     pose = [0.0, 0.0, 0.0]
     checked = []
+    depth = [0.0]
 
-    def clear(x, y, yaw):
-        checked.append((x, y, yaw))
-        return True
+    def base_depths(rig, poses, spheres):
+        checked.extend(map(tuple, poses))                   # the whole robot along the move
+        return np.array([[0.0] + [depth[0]] * (len(poses) - 1)])
 
-    def drive(path):
+    def drive(path, **kw):
         pose[:] = path[-1]
 
-    rig = SimpleNamespace(held=None, q=lambda: np.zeros(9),
-                          kin=SimpleNamespace(rest=np.zeros(9)),
-                          world=SimpleNamespace(footprint_clear=clear),
+    # a hand 0.5 m out: a 15 deg turn sweeps it 13 cm, checked every base_planner.DENSE
+    motion = SimpleNamespace(base_depths=base_depths,
+                             body_spheres=lambda rig, postures: np.array([[[0.5, 0.0, 0.0, 0.05]]]))
+    rig = SimpleNamespace(held=None, q=lambda: np.zeros(9), q_cmd=np.zeros(9), left_q_cmd=np.zeros(7),
+                          kin=SimpleNamespace(rest=np.zeros(9), motion=motion), sync_world=lambda: None,
+                          world=SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
                           base_pose=lambda: tuple(pose), drive_base=drive)
     assert BaseRotateInPlacePolicy(rig).execute(15) == 15
-    assert len(checked) >= 4
+    assert len(checked) >= 4 and np.isclose(checked[-1][2], np.radians(15))
     checked.clear()
     bx, by, yaw = BaseTranslateLocalPolicy(rig).execute(0.1)
     assert np.allclose([bx, by], [0.1 * np.cos(np.pi / 12), 0.1 * np.sin(np.pi / 12)])
     assert yaw == 15
     assert len(checked) >= 3
-    rig.world.footprint_clear = lambda *args: False
-    with pytest.raises(SkillFailure, match="occupied footprint"):
+    depth[0] = 0.01
+    with pytest.raises(SkillFailure, match="blocked"):
         BaseTranslateLocalPolicy(rig).execute(0.1)

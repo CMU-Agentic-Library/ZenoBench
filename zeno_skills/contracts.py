@@ -19,7 +19,7 @@ from .interface_ids import CONTRACT_PUBLIC_IDS
 
 from .policies import (
     AtomicPolicy, CarryNavigatePolicy, ClickPolicy, ClosePolicy, ContainerPlacePolicy,
-    EdgePickPolicy, EdgePlacePolicy, EmptyHandNavigatePolicy, FloorCornerPickPolicy,
+    EdgePickPolicy, EdgePlacePolicy, EmptyHandNavigatePolicy,
     HandleClosePolicy, HandleOpenPolicy, LeanForwardPolicy, LowerTorsoPolicy,
     MicrowavePlacePolicy, MicrowaveStartPolicy, NavigatePolicy, OpenPolicy,
     PickPolicy, PoweredDoorClosePolicy, PoweredDoorOpenPolicy, PushFromBehindPolicy,
@@ -95,7 +95,7 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
         ("held(object)", "object lifted"),
         {"success": "object held", "failure": "object may have moved during attempt"},
         {"auto": PickPolicy, "top": TopPinchPickPolicy, "round_rim": RoundRimPickPolicy,
-         "rect_rim": RectRimPickPolicy, "edge": EdgePickPolicy, "floor_corner": FloorCornerPickPolicy,
+         "rect_rim": RectRimPickPolicy, "edge": EdgePickPolicy,
          "cup_handle": PickCupHandlePolicy, "cavity": PickFromCavityPolicy,
          "moving": PickWhileMovingPolicy},
         "held object identity, lift and stable grasp",
@@ -262,8 +262,10 @@ def policy_contract_relations(catalog: list[dict]) -> Mapping[str, Mapping[str, 
                    for path in contract["policy_plan"]["paths"]
                    for pid in _walk(path["steps"])
                    if pid in public_to_old}
-    if ids != covered | active_used:
-        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used)}")
+    # retired policies (skill_library/check.py RETIRED_POLICIES) are reached by no path on purpose
+    retired = {public_to_old[pid] for pid in active.get("retired_policies", {}) if pid in public_to_old}
+    if ids != covered | active_used | retired:
+        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used - retired)}")
     return MappingProxyType(relations)
 
 

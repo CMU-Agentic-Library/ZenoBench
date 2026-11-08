@@ -31,7 +31,7 @@ An object must slide along its support without grasping it.
 
 ## Outputs
 
-- `moved_m` (`number`): Measured displacement along the direction.
+- `moved_m` (`number`): Measured horizontal displacement of the object (any direction).
 
 ## Applicability
 
@@ -77,9 +77,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - Next step: `pick` (`skill_017`) (then) — the object was pushed into a graspable spot
 - Alternative: `pull` (`skill_030`) — the object should come toward the robot
-- Alternative: `center` (`skill_033`) — a specific direction is wanted
-- Alternative: `roll` (`skill_034`) — sliding is acceptable
-- Alternative: `sweep` (`skill_067`) — only one object has to move
+- Alternative: `center` (`skill_033`) — use push instead when a specific direction is wanted
+- Alternative: `roll` (`skill_034`) — use push instead when sliding is acceptable
+- Alternative: `sweep` (`skill_067`) — use push instead when only one object has to move
 
 ## Failure
 

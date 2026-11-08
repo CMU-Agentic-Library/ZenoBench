@@ -173,30 +173,15 @@
   {
    "id": "pick_edge",
    "group": "grasp",
-   "description": "\u5148\u63a8\u5230\u684c\u8fb9\uff0c\u518d\u5939\u4f4f\u60ac\u51fa\u7684\u5e73\u7269\u4f53",
+   "description": "\u5939\u4f4f\u4f38\u51fa\u652f\u6491\u9762\u8fb9\u7f18\u7684\u5e73\u677f\u7269\u4f53\u7684\u539a\u5ea6\uff08\u634f\u53d6\u6d41\u7a0b\uff0cthickness_pinch\uff1b\u63a8\u5230\u8fb9\u662f slide_to_edge\uff09",
    "input": "object",
    "effect": "held(object)",
-   "status": "verified",
+   "status": "callable",
    "executor": "pick_edge",
-   "verification": "Isaac Sim: pick_edge book_red, 2026-10-01",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_013",
    "legacy_id": "pick_edge"
-  },
-  {
-   "id": "pick_floor_corner",
-   "group": "grasp",
-   "description": "\u4ece\u5730\u9762\u5e73\u7269\u4f53\u4fa7\u9762\u548c\u9876\u90e8\u5939\u89d2\u6293\u53d6",
-   "input": "object",
-   "effect": "held(object)",
-   "status": "callable",
-   "executor": "pick_floor_corner",
-   "caveat": "toy_car\u3001\u5730\u9762\u5e73\u4e66\u548c\u8584 notebook \u5747\u672a\u901a\u8fc7\u7a33\u5b9a\u5939\u6301\uff1b\u8584 notebook \u63a5\u89e6\u8bef\u5dee 0.0142 m\uff0c\u4f46\u62ac\u5347 0 m\uff08runs/repair_floor_notebook_v1\uff09\uff1b\u5148\u6267\u884c prepare_floor_reach \u7684\u8def\u5f84\u4e5f\u5728\u5173\u8282\u79fb\u52a8\u65f6\u78b0\u649e\uff08v2\uff09\u3002",
-   "schema_version": 1,
-   "kind": "low_level_policy",
-   "policy_id": "policy_014",
-   "legacy_id": "pick_floor_corner"
   },
   {
    "id": "place_surface",

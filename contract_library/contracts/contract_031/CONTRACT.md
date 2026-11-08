@@ -1,6 +1,6 @@
 # contract_031 — Lift a held object
 
-Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
+Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).
 
 Paired SkillNode: `skill_023` (`lift-object`).
 

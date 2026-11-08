@@ -38,9 +38,7 @@
     "class": "EmptyHandNavigatePolicy"
   },
   "availability": "verified",
-  "skill_contract_paths": [
-    "contract_009:navigate/empty"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [
     "contract_001"
   ],

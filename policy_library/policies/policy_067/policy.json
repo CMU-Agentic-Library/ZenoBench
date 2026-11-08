@@ -45,7 +45,7 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
-    "contract_012:retreat/bimanual_or_left_load"
+    "contract_012:retreat/away"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [],

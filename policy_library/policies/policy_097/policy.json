@@ -39,9 +39,7 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
-    "contract_009:navigate/two_hand_carry",
-    "contract_009:navigate/carry",
-    "contract_009:navigate/empty"
+    "contract_009:navigate/two_hand_carry"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [],
