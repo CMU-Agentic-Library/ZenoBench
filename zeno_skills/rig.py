@@ -1243,34 +1243,3 @@ def relay_approach(kin, q_from, p, R, u, L, carry=False, step=0.003, q_hint=None
         why = "it collides" if free_ik else "no IK along it"
         return None, f"no collision-free straight from its start ({why})"
     return {"free": list(free), "line": list(line), "how": how}, None
-
-
-def set_down_length(kin, q_p, step=0.004):
-    """The straight a load is set down along (place's set-down): pick's lift off the same support
-    reversed.  The lift measured as pick measures it (Rig._leave_contact with lifts_off), from where
-    it would start: the load on the support, LEAVE_GAP below the set-down pose q_p -- at least
-    LEAVE_GAP of rise, then on until the robot and its load are LEAVE_GAP clear of the world, plus
-    LEAVE_MARGIN, at most LEAVE_MAX -- and the part of it above q_p.  (Measured from q_p itself the
-    forced rise came on top of the gap: the straight's start stood LEAVE_GAP higher than the lift's
-    end.)  (m from the set-down pose to the straight's start, the joint waypoints above q_p up to
-    it), or (None, ...) when the arm runs out of IK or still touches at LEAVE_MAX.  ``kin`` with the
-    load in its collision model (Rig._planning, Motion.carrying)."""
-    p, R = kin.tcp(np.asarray(q_p, float))
-    up = np.array([0.0, 0.0, 1.0])
-    scene, kin.scene = kin.scene, None
-    try:
-        down, _ = kin.cart_path(np.asarray(q_p, float), p - LEAVE_GAP * up, R, step=step)
-        q_c = np.asarray(down[-1], float) if down else None
-        qs = kin.cart_path(q_c, p + (LEAVE_MAX - LEAVE_GAP) * up, R, step=step)[0] if q_c is not None else []
-    finally:
-        kin.scene = scene
-    qs = list(qs) if qs else []
-    if q_c is None:
-        return None, []
-    z_c = kin.tcp(q_c)[0][2]
-    n, clear = Rig._exit_length(kin, q_c, qs, touching=lambda q: kin.tcp(q)[0][2] - z_c < LEAVE_GAP or
-                                kin.near(q, LEAVE_GAP))
-    above = [q for q in qs[:n] if kin.tcp(q)[0][2] > p[2] + 1e-4]
-    if not clear or not above:
-        return None, above
-    return float(np.linalg.norm(kin.tcp(above[-1])[0] - p)), above

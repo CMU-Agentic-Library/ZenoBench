@@ -60,6 +60,9 @@ class FakeKin:
     def free(self, q):
         return not self.wall(np.asarray(q)[:3])
 
+    def path_free(self, qs):
+        return all(self.free(q) for q in qs)
+
 
 def _state(q=None):
     q = np.zeros(9) if q is None else np.asarray(q, float)

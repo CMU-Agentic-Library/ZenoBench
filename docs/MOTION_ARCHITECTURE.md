@@ -1,6 +1,6 @@
 # 运动规划的分层设计（草案）
 
-**状态：** 设计；第 9 节第 1、2 步已实现（2026-11-07），其余未实现。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
+**状态：** 设计；第 9 节第 1–3 步已实现（2026-11-07 / 08），pick / place 在用（微波炉里取物、书的 `place_flat` 除外），第 4 步起未实现。代码现状见 `COLLISION_PLAN.md` 第 3 节和 6.2"pick / place 每段运动现在怎么做"；迁移顺序见本文第 9 节。
 
 ## 1. 为什么要改
 
@@ -196,7 +196,11 @@ Rig.run(plan, state):
 
 不一次全改：基线整体变，倒退分不清来源（原则 4）。
 
-**进度（11-07）：** 第 1、2 步已做：`zeno_skills/motion_state.py`（`State`、`Hand`、`Held`、`Spec`、`Segment`、`Failure`、`Plan` 和 `at_base`、`with_arm`、`with_width`、`holding`、`released`、`with_object`）；`zeno_skills/primitives.py`（四个原语、`Joint` / `Pose` / `PoseSet` 目标、`Extent`、三个"还在碰"判据、`exit_length`；`LEAVE_GAP`、`LEAVE_MARGIN`、`LEAVE_MAX`、`ON_LINE` 从 `rig.py` 搬来，`rig.py` 从这里 import，`Rig._exit_length` 转调 `exit_length`）；`Motion.query`（包一层：底盘、另一只手臂、头和手指的锁定值、手里的东西挂上 / 不当障碍、物体和部件按 State 挪、`coll_kw` 由 Spec 给，退出全部复原；`Motion.object_frames`、`_held_owners`、`_part_poses`）；`zeno_skills/run.py` 先有 `observe(rig)`。单测 `tests/test_primitives.py`（15 个）。仿真里对比过（`/data/zenobench/statequery`，T20 s10 第一次 pick 后拿着瓶子）：按观测状态、手张开、瓶子放下、底盘挪开四种情况，`query` 和原来的上下文各 150 个姿态的 `free`、`near` 0 处不一致，查完全部复原；左手持物、部件挪动还没对比过。还没有调用方：pick / place 仍走 `move_relay`。
+**进度（11-07）：** 第 1、2 步已做：`zeno_skills/motion_state.py`（`State`、`Hand`、`Held`、`Spec`、`Segment`、`Failure`、`Plan` 和 `at_base`、`with_arm`、`with_width`、`holding`、`released`、`with_object`）；`zeno_skills/primitives.py`（四个原语、`Joint` / `Pose` / `PoseSet` 目标、`Extent`、三个"还在碰"判据、`exit_length`；`LEAVE_GAP`、`LEAVE_MARGIN`、`LEAVE_MAX`、`ON_LINE` 从 `rig.py` 搬来，`rig.py` 从这里 import，`Rig._exit_length` 转调 `exit_length`）；`Motion.query`（包一层：底盘、另一只手臂、头和手指的锁定值、手里的东西挂上 / 不当障碍、物体和部件按 State 挪、`coll_kw` 由 Spec 给，退出全部复原；`Motion.object_frames`、`_held_owners`、`_part_poses`）；`zeno_skills/run.py` 先有 `observe(rig)`。单测 `tests/test_primitives.py`（15 个）。仿真里对比过（`/data/zenobench/statequery`，T20 s10 第一次 pick 后拿着瓶子）：按观测状态、手张开、瓶子放下、底盘挪开四种情况，`query` 和原来的上下文各 150 个姿态的 `free`、`near` 0 处不一致，查完全部复原；左手持物、部件挪动还没对比过。
+
+第 3 步已做（11-08）：`zeno_skills/skill_plans.py`（`plan_pick`：张手 → 到伸入段起点 → 伸入 → 合爪（`holding`）→ 抬起（`off_support`）→ 去搬运姿态（`PoseSet`，保持倾角）；`plan_place`：到放下段起点 → 放下 → 松手（`released`，手张到抓取宽度）→ 抽出（起点在物体里时先 `place_pull_out_contact`）→ 收臂（收起，碰就下垂）；`set_down_length` 用原语重写）；`run.py`（`holds`、`execute`、`run`：每段前 `observe`、复核、不成立就用技能给的 `rebuild` 从这段重做剩下的，做不出来 SkillFailure；技能自己的步骤挂 hooks）。`skills.py`：pick 的停车点检查 `_pick_plan_check`、执行 `_pick_run`（hooks：伸入时盯物体、到位检查、合爪判断和登记持物、搬运后 `check_held`），结果判断拆成 `_pick_judged`；place 的检查 `_place_plan_check`、执行 `_place_run`（重新测量偏 > `HINT_REACH` 就从当前状态重做整份计划，取代原来"偏 2 cm 整套重做"）。删了 `_place_check`、`rig.set_down_length`；`_relay_check` / `Rig.move_relay` / `relay_approach` 只剩微波炉里取物用（6.4）。抬起段不再减半 / 不抬，搬运段不再 `FREE_ELSE_STRAIGHT` / `carry_pose_kept`（pick 里；navigate / place 前的 `_carry_pose` 还是旧的）。单测 `tests/test_skill_plans.py`（8 个）。
+
+针对性检查（11-08，`/data/zenobench/plan1107`，11-07 全量的 6 个直线失败）：5/6。98 段里 91 段原样走计划，7 段执行时重做、都成：T01 抬起段重量 2.0 cm（计划 3.0）、接着搬运段碰了重做；T13、T20 ×2 物体在手里偏 3.9–4.6 mm 整份 place 重做；T20 ×2 松手后手指真卡在瓶子里，重量出 1.9 cm 的离开段，接着抽出。T01 s11 失败在书的旧 `place_flat`：搬运姿态由计划选、和以前不同，`place_flat` 换了停车点，它不查碰撞的 `flat_push` 卡住差 16 cm，书倒（52°）——书进新流程是待办。查出并修了一处建模错误：松手后模型里的手没张开（还是拿着时的宽度），手指"穿进"刚放下的物体，计划里多出 3–6 cm 的离开段、执行时再撤掉；修后重跑 T09 s11 28/28 段原样、T20 s10 11/11 段原样（重新测量偏 4.6 mm 先重做了一次），都成。
 
 **静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，本地开关 `.claude/audit_paused`，97b3f76）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后删掉开关文件。
 

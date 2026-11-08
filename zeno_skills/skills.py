@@ -29,8 +29,11 @@ from .evaluator import quat_R
 from .kinematics import PAD_TIP, finger_model_box, finger_model_length, gripper_rot
 from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
-from .rig import (FINGERS_KW, FREE_SPACE_KW, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped, SkillFailure, relay_approach,
-                  set_down_length)
+from .motion_state import Failure, at_base, with_arm, with_width
+from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
+                  SkillFailure, relay_approach)
+from .run import observe, run
+from .skill_plans import PLACE_STAGES, plan_pick, plan_place
 from .sticky import SHUT, note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
@@ -53,7 +56,7 @@ PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search c
 # m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
 # vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
 PAD_FLOOR_GAP = 0.022 - PAD_TIP
-PLACE_APPROACH = 0.05         # m: wipe's press straight (tooluse); place measures its set-down (rig.set_down_length)
+PLACE_APPROACH = 0.05         # m: wipe's press straight (tooluse); place measures its set-down (skill_plans.set_down_length)
 
 
 # ---------------------------------------------------------------- navigation
@@ -93,6 +96,30 @@ def _carry_ref(kin, q):
     upright = np.asarray(q, float).copy()
     upright[0], upright[1] = float(kin.hi[0]), 0.0
     return upright, np.r_[CARRY_BODY_W, CARRY_BODY_W, np.ones(len(upright) - 2)]
+
+
+def _carry_goal_set(rig, name):
+    """carry_goals for skill_plans.plan_pick: at a State with ``name`` held and the hand at q, the
+    carry goal set of _carry_pose (its spots from the base, heights from the load's bottom up to
+    CARRY_Z, the turns about the vertical), sought near the upright body (_carry_ref); a container
+    on a rim pinch slower and smooth (it swings out of the pads on a fast sweep)."""
+    from .primitives import PoseSet
+    from .skill_plans import held_frame
+    kin = rig.kin
+    frame, lo, hi = kin.motion._box_of(name)
+    corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+    rim = bool(rig.ann.asset_of(rig.ann.objects[name]).get("container"))
+
+    def carry_goals(state, q):
+        held = state.held(kin.side)
+        tcp, R = kin.tcp(np.asarray(q, float))
+        T = held_frame(kin, q, held)
+        hang = max(0.0, float(tcp[2] - (corners @ T[:3, :3].T + T[:3, 3])[:, 2].min()))
+        goals, cost = _carry_goals(state.base, tcp, R, CARRY_Z + hang)
+        upright, weights = _carry_ref(kin, q)
+        return PoseSet(tuple(goals), tuple(cost), upright, weights), \
+            {"step": 0.005 if rim else 0.01, "steps_per_wp": 6 if rim else 4, "smooth": rim}
+    return carry_goals
 
 
 def _carry_pose(rig, min_bottom_z=None):
@@ -499,22 +526,18 @@ def _at_park(rig, x, y, yaw):
     return math.hypot(x - bx, y - by) <= AT_PARK_M and abs((yaw - byaw + 180) % 360 - 180) <= AT_PARK_DEG
 
 
-def _relay_check(rig, goal, plans, travel_q, then=None):
+def _relay_check(rig, goal, plans, travel_q):
     """find_park check of a relay pose entered straight, ``goal`` (x, y, yaw, qs) -> (p, R, u, L,
-    a solution of the straight's start) or None: the motion to it made the way it is executed (rig.relay_approach, the free space of
-    the hand, a held load's tilt held), from the posture the arm is in at that park -- where it is
-    now when _goto_park does not drive there, else ``travel_q`` (what the drive arrives in).  The
-    plan goes into ``plans`` under _park_key for Rig.move_relay.  ``then(x, y, yaw, qs, plan)``: what
-    is checked after it, from where the plan ends.  COLLISION_PLAN 6.2."""
+    a solution of the straight's start): the motion to it made the way it is executed
+    (rig.relay_approach), from the posture the arm is in at that park, kept in ``plans`` under
+    _park_key for Rig.move_relay.  Only the pick in the microwave still uses it (step 6.4); the
+    rest plans the whole skill (skill_plans, _pick_plan_check, _place_plan_check)."""
     kin = rig.kin
 
     def check(x, y, yaw, qs):
         if kin.motion is None:
-            return then is None or then(x, y, yaw, qs, None)
-        g = goal(x, y, yaw, qs)
-        if g is None:
-            return False
-        p, R, u, L, q_hint = g
+            return True
+        p, R, u, L, q_hint = goal(x, y, yaw, qs)
         q_from = rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else np.asarray(travel_q, float)
         with rig._fingers_checked(kin):
             plan, why = relay_approach(kin, q_from, p, R, u, L, carry=rig._carrying(), step=APPROACH_STEP,
@@ -524,14 +547,126 @@ def _relay_check(rig, goal, plans, travel_q, then=None):
             LAST_RELAY_DIAG[reason] = LAST_RELAY_DIAG.get(reason, 0) + 1
             return False
         plan["q_from"] = q_from
-        if then is not None and not then(x, y, yaw, qs, plan):
-            return False
         plans[_park_key(x, y, yaw, qs)] = plan
         return True
     return check
 
 
 LAST_RELAY_DIAG: dict = {}    # why _relay_check turned parks down, by reason (for failure messages)
+
+
+def _diag(fail):
+    """Count a plan that could not be made at a park, by segment and reason (LAST_RELAY_DIAG)."""
+    key = f"{fail.segment}: {fail.why.split(' (')[0]}"
+    LAST_RELAY_DIAG[key] = LAST_RELAY_DIAG.get(key, 0) + 1
+
+
+def _turn(Ra, Rb):
+    return math.acos(np.clip((np.trace(np.asarray(Ra).T @ np.asarray(Rb)) - 1) / 2, -1.0, 1.0))
+
+
+def _grasp_of(name, g):
+    return {"name": name, "p": np.asarray(g["p"], float), "R": np.asarray(g["R"], float),
+            "pre_open": float(g["pre_open"]), "kind": "edge" if g["kind"] == "thickness_pinch" else "pinch"}
+
+
+def _pick_plan_check(rig, name, g, shared, plans, arrive_q):
+    """find_park check of the pinch g: the whole pick as it will run from this park
+    (skill_plans.plan_pick: from the posture the arm arrives in -- where it is when _goto_park does
+    not drive, else ``arrive_q`` -- the hand opened to the grasp's width), kept in ``plans``
+    under _park_key for the execution.  ``shared``: the State now and the carry goal set, made at
+    the first park checked and kept for the other candidates."""
+    kin = rig.kin
+    grasp = _grasp_of(name, g)
+    u, L = _grasp_approach(g)
+
+    def check(x, y, yaw, qs):
+        if "state" not in shared:
+            shared["state"], shared["carry_goals"] = observe(rig), _carry_goal_set(rig, name)
+        s0 = with_width(shared["state"], kin.side, g["pre_open"])
+        s = with_arm(at_base(s0, (x, y, yaw)), rig.q_cmd if _at_park(rig, x, y, yaw) else arrive_q, kin.side)
+        plan = plan_pick(kin, s, grasp, u, L, shared["carry_goals"], q_hint=qs[0], step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            _diag(plan)
+            return False
+        plans[_park_key(x, y, yaw, qs)] = plan
+        return True
+    return check
+
+
+def _pick_run(rig, name, g, park, plan, carry_goals):
+    """Run the pick's plan from the park (run.run).  A grasp re-read off the one planned for
+    (HINT_REACH / HINT_TURN) has the plan made again from here first.  Between the segments the
+    pick's own steps: the object watched on the way in, the reach checked, the pinch judged and
+    the load registered as held, the carry checked.  Returns the TCP where the hand closed."""
+    kin = rig.kin
+    grasp = _grasp_of(name, g)
+    u, L = _grasp_approach(g)
+    planned = next((sg for sg in plan.segments if sg.name == "pick_grasp"), None) if plan is not None else None
+    if planned is None or np.linalg.norm(planned.target[1] - grasp["p"]) > HINT_REACH or \
+            _turn(planned.target[2], grasp["R"]) > HINT_TURN:
+        rig.log("pick_plan_again", obj=name, why="no plan" if planned is None else "the grasp moved")
+        plan = plan_pick(kin, observe(rig), grasp, u, L, carry_goals, step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
+    reach = next((sg for sg in plan.segments if sg.name == "pick_reach" and sg.qs), None)
+    hint0 = None if reach is None else reach.q_end
+    out = {}
+
+    def rebuild(state, frm):
+        hint = None if hint0 is None else rig._goal(grasp["p"] - L * np.asarray(u) / np.linalg.norm(u),
+                                                    grasp["R"], hint0)
+        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_hint=hint, step=APPROACH_STEP)
+
+    def after_grasp(rig):
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - grasp["p"]))
+        if kin.motion is not None:
+            # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
+            rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
+                    hits=kin.motion.contacts_by_owner(kin, rig.q_cmd, kin._other_q()))
+        if err > PICK_REACH_TOL:
+            # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
+            rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
+            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+            rig.focus_z = None
+            raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
+
+    def after_close(rig):
+        f = rig.fingers()
+        if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
+            # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
+            # with an open hand clear of the neighbours; nothing is held, so nothing is welded
+            rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False,
+                    why="not pinched")
+            rig.grip(0.04, 60)
+            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+            rig.focus_z = None
+            raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+                               f"opened to {g['pre_open']:.3f})")
+        # held from here (and welded, under sticky hands): the hand's pose as it stands
+        tcp0, R = kin.tcp(rig.q())
+        rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
+                    "pre_open": g["pre_open"]}
+        if g["kind"] == "thickness_pinch":
+            # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
+            rig.held.update(edge_held(rig, name, tcp0, R))
+        out["tcp0"] = tcp0
+        rig.caption = f"PICK {name}: lift"
+
+    def caption(text):
+        def set_(rig):
+            rig.caption = f"PICK {name}: {text}"
+        return set_
+
+    watch = lambda: _watching(rig, name)
+    hooks = {"pick_reach": {"around": watch}, "pick_grasp": {"around": watch, "after": after_grasp},
+             "pick_close": {"before": caption("close gripper"), "after": after_close},
+             "carry_in": {"after": lambda rig: check_held(rig, "carry_in")}}
+    try:
+        run(rig, plan, rebuild, hooks)
+    except Dropped as exc:
+        raise SkillFailure(f"pick {name}: not held ({exc})")
+    return out["tcp0"]
 
 
 def _park_key(x, y, yaw, qs):
@@ -1238,19 +1373,27 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         # prefer the centre, use the others when it is out of reach
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
     park, g, plans = None, None, {}
-    # the reach-in as it will run (_relay_check: from the posture the arm arrives in, the
-    # straight from where that leg ends), its plan kept for the execution (Rig.move_relay)
+    # the whole pick as it will run, to the carry pose (skill_plans.plan_pick: from the posture the
+    # arm arrives in, each segment from where the one before ends), its plan kept for the execution
+    # (run.run).  In the microwave (step 6.4) the reach-in alone (_relay_check, Rig.move_relay).
     arrive_q = retrieval_q if in_microwave and retrieval_q is not None else _travel_q(rig)
+    use_plan = not in_microwave
     LAST_RELAY_DIAG.clear()
+    # what every candidate's plan starts from, read when the first park is checked
+    shared = {}
     for g in cands[:max_candidates] + extra:
-        reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
+        if use_plan:
+            check = _pick_plan_check(rig, name, g, shared, plans, arrive_q)
+        else:
+            reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
+            check = _relay_check(rig, reach_in, plans, arrive_q)
         with _hand_opened(rig, g["pre_open"]):
             park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
                              max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
                              q_start=retrieval_q if in_microwave and retrieval_q is not None else
                                      None if in_microwave or fridge_shelf else rig.q_cmd,
                              travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig),
-                             check=_relay_check(rig, reach_in, plans, arrive_q), unfold=False)
+                             check=check, unfold=False)
         if park:
             break
     if park is None:
@@ -1279,6 +1422,10 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
             quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
     note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
+    if use_plan:
+        tcp0 = _pick_run(rig, name, g, park, plans.get(_park_key(*park)),
+                         shared.get("carry_goals") or _carry_goal_set(rig, name))
+        return _pick_judged(rig, name, g, tcp0, pos)
     rig.grip(g["pre_open"], 40)
     # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
     # object in the collision model, nothing exempt; planned to end straight along the gripper
@@ -1338,6 +1485,12 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         _carry_pose(rig)
     except Dropped as exc:
         raise SkillFailure(f"pick {name}: not held ({exc})")
+    return _pick_judged(rig, name, g, tcp0, pos)
+
+
+def _pick_judged(rig, name, g, tcp0, pos):
+    """Did the pick bring ``name`` along to the carry pose (the hand at tcp0 when it closed, the
+    object at pos before)?  SkillFailure, the hand opened, when not."""
     after, _ = rig.obj_pose(name)
     tcp, _ = rig.kin.tcp(rig.q())
     rise, lift = float(tcp[2] - tcp0[2]), float(after[2] - pos[2])
@@ -1729,7 +1882,7 @@ def place(rig, name, support, xy=None, spots=None):
           --open--> pull-out, straight back along the gripper axis --planned--> travel posture
 
     One relay pose, the set-down pose: the load's lowest point LEAVE_GAP above the support.  The
-    set-down is pick's lift reversed (rig.set_down_length), the pull-out pick's reach-in reversed
+    set-down is pick's lift reversed (skill_plans.set_down_length), the pull-out pick's reach-in reversed
     (pick_approach() long); both are checked straight lines, nothing on the way may be touched."""
     if rig.held is None or rig.held["name"] != name:
         raise SkillFailure(f"place {name}: not holding it")
@@ -1750,54 +1903,72 @@ def place(rig, name, support, xy=None, spots=None):
     return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
 
 
-def _place_check(rig, name, M, open_w, travel_q, legs):
-    """find_park check of a set-down at qs[0] (the base set to the park): the set-down straight
-    (set_down_length) and the motion to it as they will run (_relay_check: from the posture the
-    arm arrives in, the load's tilt held, the straight from where that leg ends); then, the load
-    let go where the straight ends and settled the LEAVE_GAP it falls onto the support
-    (Motion.released) and the hand open to its grasp width, the pull-out straight and the tuck from
-    there.  Each passing park's (plan, set-down length, pull-out end) goes into ``legs``, the
-    execution's (Rig.move_relay)."""
+def _place_plan_check(rig, state, open_w, travel_q, plans):
+    """find_park check of a set-down at qs[0] (the base set to the park): the whole place as it
+    will run from this park (skill_plans.plan_place: from the posture the arm arrives in, the
+    load's tilt held, the set-down, the release, the pull-out and the tuck, each from where the
+    one before ends), kept in ``plans`` under _park_key for the execution."""
     kin = rig.kin
-    motion = kin.motion
-    lengths = {}
 
-    def set_down(x, y, yaw, qs):
-        with rig._fingers_checked(kin):
-            L, line = set_down_length(kin, qs[0])
-        if L is None or not kin.free(line[-1]):
-            return None
-        lengths[_park_key(x, y, yaw, qs)] = L
+    def check(x, y, yaw, qs):
+        s = with_arm(at_base(state, (x, y, yaw)), rig.q_cmd if _at_park(rig, x, y, yaw) else travel_q, kin.side)
         p, R = kin.tcp(qs[0])
-        return p, R, np.array([0.0, 0.0, -1.0]), L, line[-1]
-
-    def then(x, y, yaw, qs, plan):
-        key = _park_key(x, y, yaw, qs)
-        if plan is None:                  # no collision model (minimal rigs)
-            legs[key] = (None, None, None)
-            return True
-        L = lengths[key]
-        if M is None:                     # a two-hand hold: not modelled in the hand (_carrying)
-            legs[key] = (plan, L, None)
-            return True
-        q_end = np.asarray((plan["line"] or plan["free"] or [plan["q_from"]])[-1], float)
-        p, R = kin.tcp(q_end)
-        T = np.eye(4)
-        T[:3, :3], T[:3, 3] = R, p
-        settled = T @ M
-        settled[2, 3] -= LEAVE_GAP          # let go, it falls the gap onto the support
-        with rig._fingers_checked(kin), motion.released(kin.side, name, settled), \
-                motion.hand_open(kin.side, open_w):
-            out, ok = kin.cart_path(q_end, p + pick_approach() * R[:, 2], R, 0.01)
-            if not ok:
-                return False
-            goal = next((g for g in (kin.rest, kin.drive) if kin.free(g)), None)
-            if goal is None or not joint_reachable(kin, out[-1], goal):
-                return False
-        legs[key] = (plan, L, out[-1])
+        plan = plan_place(kin, s, p, R, open_w, R[:, 2], pick_approach(), (kin.rest, kin.drive), q_p=qs[0],
+                          step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            _diag(plan)
+            return False
+        plans[_park_key(x, y, yaw, qs)] = plan
         return True
+    return check
 
-    return _relay_check(rig, set_down, {}, travel_q, then=then)
+
+def _place_run(rig, name, s, p, R, open_w, plan):
+    """Run the place's plan (run.run) to set ``name`` down at (p, R), the pose re-measured after
+    the drive: a plan made for a set-down pose off it by more than HINT_REACH / HINT_TURN (the
+    load turned in the pinch on the way) is made again from here first.  Between the segments the
+    place's own steps: the reach checked, the release logged and the load no longer held."""
+    kin = rig.kin
+    u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
+    planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
+    if planned is None or np.linalg.norm(planned.target[1] - p) > HINT_REACH or \
+            _turn(planned.target[2], R) > HINT_TURN:
+        rig.log("place_plan_again", obj=name, why="no plan" if planned is None else
+                f"the set-down pose moved {np.linalg.norm(planned.target[1] - p):.4f} m")
+        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, step=APPROACH_STEP)
+        if isinstance(plan, Failure):
+            raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
+
+    def rebuild(state, frm):
+        stage = frm if frm in PLACE_STAGES else "place_pull_out"
+        new = plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=stage, step=APPROACH_STEP)
+        if not isinstance(new, Failure) and any(sg.name == "place_pull_out_contact" for sg in new.segments):
+            # let go, it settled against a finger: out of that contact first
+            rig.log("place_pull_out_stuck", obj=name)
+        return new
+
+    def after_down(rig):
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - p))
+        if err > PICK_REACH_TOL:
+            # the set-down is checked free all the way: stopped short, something is in the way
+            raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
+        check_held(rig, "place_down")
+        rig.caption = f"PLACE {name}: release"
+        before_release, _ = rig.obj_pose(name)
+        rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
+                gap_m=round(float(_lowest_z(rig, name, rig.state())) - float(s["z"]), 4))
+
+    def after_release(rig):
+        after_open, _ = rig.obj_pose(name)
+        rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
+        rig.held = None
+
+    def set_down_caption(rig):
+        rig.caption = f"PLACE {name}: set down"
+
+    hooks = {"place_reach": {"before": set_down_caption}, "place_down": {"after": after_down},
+             "place_release": {"after": after_release}}
+    run(rig, plan, rebuild, hooks)
 
 
 def _set_down(rig, name, s, spots, tray=None):
@@ -1841,22 +2012,25 @@ def _set_down(rig, name, s, spots, tray=None):
                 cost.append(PLACE_SPOT_COST * rank + PLACE_YAW_COST * abs(deg) / 45.0 +
                             (PLACE_TILTED_COST if levelled is None and len(relations) > 1 else 0.0))
     open_w = float(rig.held.get("pre_open", 0.04))
-    legs = {}
+    plans = {}
+    LAST_RELAY_DIAG.clear()
+    base_state = observe(rig)
     rig.kin.coll_kw = {"ignore_fingers": True}
     with _carrying(rig, name):
-        M = kin.motion.held_in_tcp(kin, rig.q_cmd, name) \
-            if kin.motion is not None and rig.held.get("kind") != "bimanual" else None
         found = find_park_set(kin, rig.world, leg_sets, cost, near=search_near, max_tries=120,
                               q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(), carry=True,
-                              check=_place_check(rig, name, M, open_w, travel_q, legs), unfold=False)
+                              check=_place_plan_check(rig, base_state, open_w, travel_q, plans), unfold=False)
     if found is None:
         from .planner import LAST_PARK_DIAG
         raise SkillFailure(f"place {name}: no spot of {len(spots)} on {s['name']} reachable "
-                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} })")
+                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} }; "
+                           f"plans: {dict(LAST_RELAY_DIAG)})")
     park, k = found
     spot, R, levelled, deg, hang = goals[k]
     x, y, yaw, _ = park
-    plan, L, q_o = legs.get(_park_key(*park), (None, None, None))
+    plan = plans.get(_park_key(*park))
+    reach = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_reach"), None)
+    L = None if reach is None else reach.info.get("set_down_m")
     rig.log("place_park", obj=name, park=[round(x, 3), round(y, 3), round(yaw, 1)], spot=[round(v, 3) for v in spot],
             yaw_deg=deg, levelled=levelled, goals=len(leg_sets), set_down_m=None if L is None else round(L, 4))
     rig.caption = f"PLACE {name}: carry"
@@ -1875,67 +2049,8 @@ def _set_down(rig, name, s, spots, tray=None):
     moved = float(np.linalg.norm(p - leg_sets[k][0][0]))
     rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
             pos=np.round(body_now, 4).tolist())
-    if moved >= 0.02 or L is None:
-        # aimed elsewhere: the park's checks again at the new set-down pose, here (the load as it
-        # hangs now, the carry posture as the travel posture), not the set-down length alone
-        legs_now = {}
-        M_now = kin.motion.held_in_tcp(kin, rig.q_cmd, name) \
-            if kin.motion is not None and rig.held.get("kind") != "bimanual" else None
-        check = _place_check(rig, name, M_now, open_w, rig.q_cmd, legs_now)
-        with rig._planning(kin, rig.q_cmd, keep_held=True), rig._fingers_checked(kin):
-            q_p, ok = kin.ik_global(p, R, seeds=[rig.q_cmd])
-            ok = bool(ok) and check(*rig.base_pose(), [q_p])
-            plan, L, q_o = next(iter(legs_now.values()), (None, None, None)) if ok else (None, None, None)
-            if ok and L is None:          # no collision model (minimal rigs): the length alone
-                L = set_down_length(kin, q_p)[0]
-        if not ok or L is None:
-            raise SkillFailure(f"place {name}: the set-down at the re-measured pose (moved {moved:.3f} m) "
-                               f"fails the park's checks")
-    with rig._fingers_checked(kin):
-        rig.caption = f"PLACE {name}: set down"
-        # the park's plan when it still holds here (a load re-measured off its aim by more than
-        # HINT_REACH is not: the same relay_approach again from here, Rig.move_relay)
-        err = rig.move_relay(p, R, np.array([0.0, 0.0, -1.0]), L, plan=plan, step=APPROACH_STEP,
-                             steps_per_wp=8, label="place_down", smooth=True)
-        if err > PICK_REACH_TOL:
-            # the set-down is checked free all the way: stopped short, something is in the way
-            raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
-        check_held(rig, "place_down")
-        rig.caption = f"PLACE {name}: release"
-        kind = rig.held["kind"]
-        before_release, _ = rig.obj_pose(name)
-        rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
-                gap_m=round(float(_lowest_z(rig, name, rig.state())) - float(s["z"]), 4))
-        rig.grip(rig.held["pre_open"], 70, gradual=True)
-        after_open, _ = rig.obj_pose(name)
-        rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
-        rig.held = None
-        # out of the object the way pick reached in: back along the gripper axis, a finger's
-        # length (pick_approach); then on to the next relay pose, the travel posture (an open
-        # hand left where it let go held a spoon standing between its fingers, T09, and one left
-        # over a tray kept the base from moving, T12)
-        # pull-out: the reach-in reversed, the whole straight checked as pick checks its reach-in
-        # (the park search checked it with the load settled where it falls).  Only when the open
-        # hand really is in the load -- let go, it may settle against a finger (a rim-held cup
-        # pivots onto the one inside it, T13) -- out of that contact first (Rig.leave: only what
-        # the hand touches at the start may be touched).  Not on "within LEAVE_GAP": open fingers
-        # stand a few mm off what they let go, and half the pull-outs left unchecked (11-07)
-        tcp_r, R_r = kin.tcp(rig.q_cmd)
-        u = R_r[:, 2]
-        rig.sync_world()
-        with rig._planning(kin, rig.q_cmd):
-            stuck = kin.scene is not None and not kin.free(rig.q_cmd)
-            if stuck:
-                rig.log("place_pull_out_stuck", obj=name, why=kin.explain(rig.q_cmd))
-        if stuck:
-            rig.leave(u, "place_pull_out_contact", LEAVE_CONTACT)
-        rest = pick_approach() - float((kin.tcp(rig.q_cmd)[0] - tcp_r) @ u)
-        if rest > ON_LINE:
-            rig.move_to(tcp_r + pick_approach() * u, R_r, step=0.004, label="place_pull_out", smooth=True,
-                        approach=(u, rest, None), allow=FREE, free=FREE, q_hint=q_o)
-        # the next relay pose, the travel posture: checked at the park, so not reaching it is a failure
-        if not rig.tuck():
-            raise SkillFailure(f"place {name}: no travel posture reachable after the pull-out")
+    kind = rig.held["kind"]
+    _place_run(rig, name, s, p, R, open_w, plan)
     rig.step(90)
     rig.focus_z = None
     st = rig.state()
