@@ -1,0 +1,142 @@
+{
+  "_note": "EmbodiedGen V2 props for the v6 heating task (T07): leftovers in containers that decide the appliance (metal: stove, glass / ceramic: microwave). Generate with tools/generate_assets.py --batch in the EmbodiedGen V2 environment (GPT_PROVIDER=codex).",
+  "soup_pot": {
+    "prompt": "a wide short flat-bottomed stainless steel stockpot with two loop handles on opposite sides, tomato soup inside below the rim, no lid, isolated product, plain white background",
+    "size": 0.3,
+    "mass": 1.2,
+    "tags": [
+      "cookware",
+      "pot",
+      "food",
+      "metal",
+      "handled"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.26,
+      0.3,
+      0.16
+    ],
+    "handle_grasp": {
+      "type": "handle_pinch",
+      "center": [
+        0.0,
+        0.14,
+        0.073
+      ],
+      "approach": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "close_dir": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "pre_open": 0.03
+    },
+    "handle_collider": {
+      "center": [
+        0.0,
+        0.14,
+        0.073
+      ],
+      "size": [
+        0.06,
+        0.02,
+        0.013
+      ]
+    },
+    "extra_handle_colliders": [
+      {
+        "center": [
+          0.0,
+          -0.14,
+          0.073
+        ],
+        "size": [
+          0.06,
+          0.02,
+          0.013
+        ]
+      }
+    ]
+  },
+  "oatmeal_bowl": {
+    "prompt": "a bowl of oatmeal",
+    "size": 0.18,
+    "mass": 0.45,
+    "tags": [
+      "dish",
+      "bowl",
+      "food",
+      "ceramic",
+      "container"
+    ],
+    "collider": "round_container",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.178,
+      0.176,
+      0.09
+    ],
+    "seed": 3
+  },
+  "glass_food_container": {
+    "prompt": "a small clear glass rectangular food storage container with a blue snap-on plastic lid, leftover rice and vegetables inside, isolated product, plain white background",
+    "size": 0.16,
+    "mass": 0.5,
+    "tags": [
+      "container",
+      "food",
+      "glass",
+      "lidded"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.16,
+      0.11,
+      0.07
+    ]
+  },
+  "steel_lunch_box": {
+    "prompt": "a small rectangular stainless steel lunch box with a closed metal lid and two side clips, isolated product, plain white background",
+    "size": 0.16,
+    "mass": 0.4,
+    "tags": [
+      "container",
+      "food",
+      "metal",
+      "lidded"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.16,
+      0.11,
+      0.06
+    ]
+  },
+  "foil_takeout_tray": {
+    "prompt": "a rectangular aluminium foil takeout food tray with a folded rim, filled with fried noodles, no lid, isolated product, plain white background",
+    "size": 0.2,
+    "mass": 0.3,
+    "tags": [
+      "container",
+      "food",
+      "metal",
+      "tray",
+      "flat"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.2,
+      0.14,
+      0.045
+    ]
+  }
+}

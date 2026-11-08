@@ -1,119 +1,191 @@
-"""Two evaluation tracks over the v6 families: Action-Level and Task-Level.
+"""Four categories of v6 variants: control, Action-Level, Task-Level, Action + Task.
 
-* **Action-Level** (``action``): recovering from transient action failures (grasp miss, slip, placement
-  miss, IK refusal) with local repairs (retry, re-approach, expose / separate, re-grasp).  Physical skills,
-  observation-limited profile, no GT state; the recovery is the scripted route of the variant (planner
-  ``scripted``), not a task planner.  It measures the skill layer and is owned by the skill side.
-* **Task-Level** (``task``): replanning at the task level (DR, GD, SR, CL, PP, task-level alternatives).  GT
-  skills (``sticky_snap/gt``: a held object stays in the hand, a pick / place that fails physically after its
-  preconditions held is completed), so execution noise does not decide the episode; injected task-level
-  conditions, dynamic events and persistent action failures still apply.  This is the track a planner is
-  scored on.
+* **Action-Level** (``action``): a short fallback at the work spot - a few skills combined, then the task goes
+  on as planned.  The scene makes it necessary (``LOCAL_CONDITIONS`` / ``local_failure``): a flat book pushed
+  over the edge before the pick, a crowded block pulled apart, the pot lid taken off, an object lying on the
+  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared; or a
+  dynamic event put right where the robot works (``event_is_local``: a book pushed back, a tomato taken out of the
+  pot, a door opened again).  No injected action failure.
+* **Task-Level** (``task``): the plan itself changes over a longer horizon - an absent object and its substitute,
+  a search in another place or room, a capacity split, another destination / appliance / cookware, an object an
+  event takes elsewhere.
+* **Action + Task** (``action_task``): both in one variant.
+* **Control** (``control``): neither; the nominal plan works.
 
-A family goes to the tracks its cases call for:
+Injected action failures (an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once or every
+time) are not part of the design anywhere: ``strip_injected`` removes them from every layout and, in its route,
+each call they failed with the repair up to the successful retry.  A variant built on a failure that never goes
+away is dropped, one left with nothing is dropped, one left equal to another variant is merged into it
+(``v6_dropped`` per task says which and why).
 
-* transient action failures only -> Action-Level;
-* task-level content only (a core capability, a task-level alternative, a scene condition, a task-level
-  failure, a persistent action failure, or a search / stated-substitute adaptation) -> Task-Level;
-* both (the v5 Action / Mixed Hards, x6 families with an extra transient failure) -> both: the full variant
-  in Action-Level, its **task projection** in Task-Level.  The projection drops the transient action failures
-  and, in the route, each call they failed together with the local repair up to its successful retry; it is
-  re-audited with the same capability checker, so its Task-Level tier is the rule's tier for what is left.
-  A projection that equals another variant of the task is not added again (``same_as``);
-* no challenge (Easy) -> a control in both tracks.
-
-    python benchmark/v6/tracks.py          # summary of the split (tasks.json must be current)
+    python benchmark/v6/tracks.py          # TRACKS.md and one batch per category (tasks.json must be current)
 """
 from __future__ import annotations
 
-import copy
 import json
 import sys
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from benchmark.v6.hypotheses import ACTION_KINDS, audit_variant, trig_hits  # noqa: E402
+from benchmark.v6.routes import ACTION_KINDS, trig_hits  # noqa: E402
 
-TRACKS = {
-    "action": {
-        "title": "Action-Level",
-        "planner": "scripted",
-        "profile": "benchmark",
-        "measures": "local recovery from transient action failures (retry, re-approach, expose / separate, "
-                    "re-grasp) with physical skills and limited observation",
-        "owner": "skill layer (scripted recovery routes); not scored for task planners",
-    },
-    "task": {
-        "title": "Task-Level",
-        "planner": "any task planner (fixed, retry, VLM, ours); oracle route for validation",
-        "profile": "sticky_snap/gt",
-        "measures": "goal-preserving task-level replanning (DR, GD, SR, CL, PP, task-level alternatives) on "
-                    "GT skills, so execution noise does not decide the episode",
-        "owner": "task planners",
-    },
+CATEGORIES = {
+    "control": {"title": "Control", "profile": "benchmark",
+                "measures": "the nominal plan works: the reference for the other categories"},
+    "action": {"title": "Action-Level", "profile": "benchmark",
+               "measures": "a short fallback at the work spot: a few skills combined, then the plan goes on"},
+    "task": {"title": "Task-Level", "profile": "sticky_snap/gt",
+             "measures": "the plan changes over a longer horizon (substitute, search, split, another place or "
+                         "procedure, a dynamic event)"},
+    "action_task": {"title": "Action + Task", "profile": "benchmark",
+                    "measures": "both a short fallback at the work spot and a longer-horizon change of plan"},
 }
-META = ("note", "v5", "v6", "since", "decisions", "vary", "move")
+ORDER = ("control", "action", "task", "action_task")
 
-# subcategories: what the episode tests.  Action-Level by the transient failure mechanism; Task-Level Hard by
-# its primary core capability, Task-Level Medium by the kind of adaptation.
-SUBCATEGORIES = {
-    "action": {
-        "AL-IK": "IK / reach refusal: re-approach or change the base pose, then retry",
-        "AL-GRASP": "grasp miss: retry, or expose / separate the object first",
-        "AL-SLIP": "the object slips while carried: pick it up again and continue",
-        "AL-PLACE": "placement miss: pick the object up and place it again",
-        "AL-COMPOUND": "two or more of these mechanisms in one episode",
-    },
-    "task": {
-        "TL-DR": "dependency replanning: discover a missing precondition and insert the step "
-                 "(open a door, move an obstacle)",
-        "TL-GD": "goal decomposition: split or re-allocate the goal (capacity, several places to inspect, "
-                 "several containers)",
-        "TL-SR": "strategy replacement: another procedure, appliance, base or hand use reaches the same goal",
-        "TL-CL": "cross-level recovery: an action failure no retry fixes, solved by changing object, "
-                 "destination, appliance or procedure",
-        "TL-PP": "partial-progress preservation: an event undoes or blocks part of the work; repair only that "
-                 "part and keep the rest",
-        "TL-SUB": "substitution (Medium): the preferred object, container, destination or tool is absent, "
-                  "taken or unsuitable; use one the goal allows",
-        "TL-PRE": "precondition / constraint (Medium): one enabling step or a constraint to respect (lid on, "
-                  "grasp blocked, door state, destination rule, capacity)",
-        "TL-SEARCH": "search (Medium): the object, tool or destination is out of view or in another room",
-    },
+# scene conditions whose fallback is a few skills at the work spot -> what the robot does
+LOCAL_CONDITIONS = {
+    "no_overhang": "expose the flat object over the edge, then pick it",
+    "crowded": "separate the crowded object, then pick it",
+    "lid_on": "take the lid off, then put in",
+    "state_differs": "deal with the state as found (e.g. close the door left open)",
+    "surface_cluttered": "move the objects off the work strip, work, put them back",
+    "anchor_boxed_in": "move the boxed-in anchor to where the setting fits",
+    "destination_full": "move what fills the destination to a legal place, then place",
+    "unstable_base": "move the base in from the edge (or stack on the other one)",
+    "closed_fridge": "open the fridge at the work spot, take the item out, close it again",
 }
-CORE_ORDER = ("CL", "PP", "SR", "GD", "DR")        # the more specific capability is the primary one
-SUB_COND = {
-    "search_target": "TL-SEARCH", "search_tool": "TL-SEARCH",
-    "object_absent": "TL-SUB", "container_choice": "TL-SUB", "cookware_choice": "TL-SUB",
-    "destination_identity": "TL-SUB", "destination_occupied": "TL-SUB", "anchor_relocation": "TL-SUB",
-    "grasp_blocked": "TL-PRE", "state_precondition": "TL-PRE", "destination_constraint": "TL-PRE",
-    "container_capacity": "TL-PRE",
+
+
+# designs the rules above cannot tell apart: (task, variant) -> the variant it is the same design as
+SAME_DESIGN = {
+    # its extra dependency only states that block A stands on the island, i.e. the unstable_base condition
+    ("T02_stack_blocks", "h_action_grasp_and_ik"): "edge_base",
+    ("T02_stack_blocks", "h_mixed_edge_base_grasp"): "edge_base",
 }
-SUB_FAIL = {"resource": "TL-SUB", "destination": "TL-SUB", "capacity": "TL-PRE", "dependency": "TL-PRE"}
-MEDIUM_ORDER = ("TL-SUB", "TL-PRE", "TL-SEARCH")
-ACTION_SUB = {"ik": "AL-IK", "grasp": "AL-GRASP", "slip": "AL-SLIP", "placement": "AL-PLACE"}
 
 
-def transient(f):
-    return f["kind"] in ACTION_KINDS and not f.get("persist")
+def injected(f):
+    """An injected action failure: an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once
+    or every time (``persist``, ``until_moved``).  None is part of the design."""
+    return f["kind"] in ACTION_KINDS
 
 
-def content(task, vid):
-    """``(task_level, action_level)`` of one variant."""
-    v, a = task["variants"][vid], task["v6_audit"][vid]
-    fs = v.get("failures") or []
-    act = any(transient(f) for f in fs)
-    tl = bool(a["core"] or (a["evidence"].get("AF") or {}).get("level") == "task" or v.get("condition_types")
-              or any(not transient(f) for f in fs) or (a["tier_rule"] != "easy" and not act))
-    return tl, act
+def declares_condition(v, f):
+    """An initial resource / destination / capacity failure next to a scene condition only states that condition
+    as checkable facts (the v5 Hards carry both): it is not a challenge of its own."""
+    return bool(v.get("conditions")) and f.get("when", "initial") == "initial" and \
+        f["kind"] in ("resource", "destination", "capacity")
+
+
+def local_failure(f):
+    """A declared scene fact handled at the work spot: something on / in front of the target or a closed door at
+    the start, or a reach blocked until an object in front is moved."""
+    if f["kind"] == "dependency" and f.get("when", "initial") == "initial":
+        return "clear the object on the target / open the door first"
+    return None
+
+
+SEARCH = ("search", "explore_room", "explore_furniture")
+PLACE_SKILLS = ("navigate", "open", "inspect", "explore_furniture")
+
+
+@lru_cache(maxsize=None)
+def _objects(base):
+    return {o["name"]: o for o in json.loads((ROOT / base / "annotation.json").read_text())["objects"]}
+
+
+def _furniture(task, lid, name):
+    """The piece of furniture an object stands on (or a place / support name belongs to)."""
+    v = task["variants"][lid]
+    for src in (v.get("move", {}), v.get("add", {}), task["scene"].get("move", {})):
+        if name in src and src[name].get("support"):
+            return src[name]["support"].split("/")[0]
+    for f in v.get("failures") or []:                     # an object an event brings in
+        ev = f.get("event") or {}
+        if ev.get("object") == name and (ev.get("to") or {}).get("support"):
+            return ev["to"]["support"].split("/")[0]
+    o = _objects(task["scene"]["base"]).get(name)
+    return (o.get("support") or name).split("/")[0] if o else str(name).split("/")[0]
+
+
+def _places(task, lid, steps):
+    out = set()
+    for s in steps:
+        a = s["args"]
+        n = a.get("destination") or a.get("target") or a.get("articulated") or a.get("furniture")
+        if s["skill"] in PLACE_SKILLS and n:
+            out.add(_furniture(task, lid, n))
+    return out
+
+
+def _control(task):
+    return next((info["layouts"][0] for vid, info in task["v6_variants"].items()
+                 if all(not a and not b for a, b in (_content(task, x, False) for x in info["layouts"]))), None)
+
+
+def event_is_local(task, lid, f):
+    """A dynamic event the robot repairs where it works anyway: a door opened / closed again, or an object moved
+    to a place the robot works at (a book pushed back, a tomato taken out of the pot, a bowl pushed into the
+    path), with no search for it and no new place afterwards.  An object taken elsewhere (searched for), or a
+    repair at another place (another display, the stove, another cabinet) is a longer-horizon change."""
+    ev = f.get("event") or {}
+    if ev.get("type") == "set_joint":
+        return True
+    steps = task["routes"][task["oracle"][lid]]["steps"]
+    hits = trig_hits(steps, f)
+    if not hits or ev.get("type") != "move_object":
+        return False
+    i = hits[0]
+    after = steps[i + 1:]
+    if any(s["skill"] in SEARCH and s["args"].get("object") in (ev.get("object"), None) for s in after):
+        return False
+    ctl = _control(task)
+    known = _places(task, lid, steps[:i + 1]) | (_places(task, ctl, task["routes"][task["oracle"][ctl]]["steps"])
+                                                if ctl else set())
+    to = (ev.get("to") or {}).get("support") or (ev.get("onto") and _furniture(task, lid, ev["onto"]))
+    return bool(to) and to.split("/")[0] in known and not (_places(task, lid, after) - known)
+
+
+def content(task, lid):
+    return _content(task, lid, True)
+
+
+def _content(task, lid, events=True):
+    """``(local, longer)``: why one layout is Action-Level / Task-Level (lists of reasons)."""
+    v = task["variants"][lid]
+    local, longer = [], []
+    for f in v.get("failures") or []:
+        if injected(f) or declares_condition(v, f):
+            continue
+        why = local_failure(f)
+        if why:
+            local.append(why)
+        elif f.get("when") == "dynamic":
+            if events and event_is_local(task, lid, f):
+                local.append("someone changed things at the work spot: put it right there")
+            else:
+                longer.append(f"event: {f['kind']}")
+        else:
+            longer.append(f"{f['kind']}")
+    for c in v.get("conditions") or []:
+        (local if c in LOCAL_CONDITIONS else longer).append(LOCAL_CONDITIONS.get(c, c))
+    # a goal of its own (close the door again, leave the block on the island) states how the fallback ends;
+    # it is not a change of plan by itself
+    return sorted(set(local)), sorted(set(longer))
+
+
+def category(local, longer):
+    return {(False, False): "control", (True, False): "action", (False, True): "task",
+            (True, True): "action_task"}[(bool(local), bool(longer))]
 
 
 def project_route(steps, drop):
-    """The route without the calls the dropped failures make fail: each such call and the local repair after
-    it, up to the next call of the same skill with the same arguments (its retry), which stays."""
+    """The route without the calls the dropped failures make fail: each such call and the repair after it, up
+    to the next call of the same skill with the same arguments (its retry), which stays."""
     hit = sorted({i for f in drop for i in trig_hits(steps, f) if steps[i].get("expect") == "fail"})
     out, skip_to = [], -1
     for i, s in enumerate(steps):
@@ -128,123 +200,116 @@ def project_route(steps, drop):
     return out
 
 
-def action_sub(task, cases):
-    kinds = sorted({f["kind"] for v in cases for f in task["variants"][v].get("failures") or [] if transient(f)})
-    return ("AL-COMPOUND" if len(kinds) > 1 else ACTION_SUB[kinds[0]]), kinds
+OBJECT_ARGS = ("object", "objects", "food", "tool", "lid")
+# calls that only polish or check a route (steady the pot, line things up, show, measure): not the design
+AUXILIARY = ("arrange", "brace", "release", "present", "square", "press", "wait", "lower", "lift", "hover", "crouch",
+             "stand", "nod", "wave", "point", "shake", "regrasp", "center", "measure", "count", "identify", "touch",
+             "rotate")
 
 
-def task_sub(task, cases, tier):
-    """``(primary, all)`` subcategories of a Task-Level family from its cases."""
-    if tier == "hard":
-        caps = set.intersection(*[set(task["v6_audit"][v]["core"]) for v in cases])
-        declared = [h["cap"] for h in (task["variants"][cases[0]].get("v6") or {}).get("hypotheses") or []
-                    if h["cap"] in caps]
-        primary = declared[0] if declared else next(c for c in CORE_ORDER if c in caps)
-        return f"TL-{primary}", sorted(f"TL-{c}" for c in caps)
-    subs = set()
-    for v in cases:
-        x = task["variants"][v]
-        subs |= {SUB_COND[c] for c in x.get("condition_types") or [] if c in SUB_COND}
-        subs |= {SUB_FAIL[f["kind"]] for f in x.get("failures") or [] if f["kind"] in SUB_FAIL}
-    if not subs:                                    # a named target elsewhere, or a start far from it
-        subs = {"TL-SEARCH"}
-    return next(s for s in MEDIUM_ORDER if s in subs), sorted(subs)
+def design_key(task, lid):
+    """What a layout asks of the robot, without where things stand or where it starts (the seed's part) and
+    without how a route words it: its conditions, failures (kind, timing, trigger, event), goal, instruction and
+    the objects the route handles (which object is cleared, which substitute is used)."""
+    v = task["variants"][lid]
+    fails = sorted(json.dumps({k: f.get(k) for k in ("kind", "persist", "until_moved", "when", "trigger", "event")},
+                              sort_keys=True) for f in v.get("failures") or [] if not declares_condition(v, f))
+    handled = set()
+    for s in task["routes"][task["oracle"][lid]]["steps"]:
+        if s.get("expect") == "fail" or s["skill"] in AUXILIARY:
+            continue
+        for k in OBJECT_ARGS:
+            x = s["args"].get(k)
+            handled |= set(x) if isinstance(x, list) else {x} if isinstance(x, str) else set()
+    return json.dumps([sorted(v.get("conditions") or []), fails, v.get("goal"), v.get("instruction"),
+                       sorted(handled)], sort_keys=True)
 
 
-def timing(task, cases):
-    whens = {f.get("when", "initial") for v in cases for f in task["variants"][v].get("failures") or []}
-    return "dynamic" if "dynamic" in whens else "initial"
-
-
-def _sig(v):
-    return json.dumps({k: x for k, x in v.items() if k not in META}, sort_keys=True)
-
-
-def project(task, vid):
-    """Task projection of a variant: ``(variant, steps)`` without its transient action failures, or None when
-    it has none."""
-    v = task["variants"][vid]
-    drop = [f for f in v.get("failures") or [] if transient(f)]
-    if not drop:
-        return None
-    p = copy.deepcopy(v)
-    keep = [f for f in v["failures"] if not transient(f)]
-    if keep:
-        p["failures"] = keep
-    else:
-        p.pop("failures")
-    if p.get("v6", {}).get("hypotheses"):
-        gone = {f"failure:{f['id']}" for f in drop}
-        p["v6"]["hypotheses"] = [h for h in p["v6"]["hypotheses"] if h.get("cause") not in gone] or None
-        if p["v6"]["hypotheses"] is None:
-            p["v6"].pop("hypotheses")
-    p["track_projection"] = {"of": vid, "dropped": [f["id"] for f in drop]}
-    steps = project_route(task["routes"][task["oracle"][vid]]["steps"], drop)
-    return p, steps
+def strip_injected(doc):
+    """Remove injected transient action failures from every layout; drop / merge what is left empty or equal."""
+    for t in doc["tasks"]:
+        dropped, changed = {}, set()
+        for vid, info in t["v6_variants"].items():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
+                drop = [f for f in v.get("failures") or [] if injected(f)]
+                if not drop:
+                    continue
+                changed.add(vid)
+                if any(f.get("persist") for f in drop):
+                    # the route works around a failure that never goes away (another object, procedure or
+                    # place); without it the design has no reason to exist
+                    dropped[vid] = "built on an injected action failure that never goes away"
+                rname = t["oracle"][lid]
+                t["routes"][rname] = dict(t["routes"][rname],
+                                          steps=project_route(t["routes"][rname]["steps"], drop))
+                keep = [f for f in v["failures"] if not injected(f)]
+                if keep:
+                    v["failures"] = keep
+                else:
+                    v.pop("failures")
+                v["injected_removed"] = [f["id"] for f in drop]
+        # one design, one variant: unchanged variants first, so a stripped one merges into the original design
+        seen = {}
+        for vid in sorted(t["v6_variants"], key=lambda x: x in changed):
+            if vid in dropped:
+                continue
+            info = t["v6_variants"][vid]
+            kinds = [content(t, lid) for lid in info["layouts"]]
+            if vid in changed and not any(a or b for a, b in kinds):
+                dropped[vid] = "only injected action failures"
+                continue
+            same = SAME_DESIGN.get((t["task_id"], vid))
+            if same in t["v6_variants"]:
+                dropped[vid] = f"same as {same} (SAME_DESIGN)"
+                continue
+            key = tuple(sorted(design_key(t, lid) for lid in info["layouts"]))
+            if key in seen:
+                dropped[vid] = f"same as {seen[key]}" + (" without its injected action failures" if vid in changed
+                                                         else " but for the layout (object poses / start)")
+                continue
+            seen[key] = vid
+        # a variant redesigned at a longer horizon leaves, with every variant merged into it
+        for vid, why in (t.get("v6_replaced") or {}).items():
+            dropped[vid] = why
+        controls = [vid for vid in t["v6_variants"] if vid not in dropped and
+                    all(not a and not b for a, b in (content(t, lid) for lid in t["v6_variants"][vid]["layouts"]))]
+        for vid in dropped:
+            for lid in t["v6_variants"].pop(vid)["layouts"]:
+                t["variants"].pop(lid, None)
+                t["oracle"].pop(lid, None)          # routes no one uses go below (variants may share one)
+        for vid, info in t["v6_variants"].items():
+            c = info.get("control")
+            while c in dropped and dropped[c].startswith("same as "):
+                c = dropped[c][len("same as "):].split(" ")[0]
+            if c in dropped or (c is not None and c not in t["variants"]):
+                c = controls[0] if controls and controls[0] != vid else None
+            info["control"] = c
+        t["v6_dropped"] = dropped
+        # configurations no variant uses (v5's study / supplementary ones) are not part of v6
+        used = {lid for info in t["v6_variants"].values() for lid in info["layouts"]}
+        for lid in [x for x in t["variants"] if x not in used]:
+            t["variants"].pop(lid)
+            t["oracle"].pop(lid, None)
+        keep = set(t["oracle"].values()) | {t.get("nominal")}
+        for r in [r for r in t["routes"] if r not in keep]:
+            t["routes"].pop(r)
+    return doc
 
 
 def apply_tracks(doc):
-    """Adds the task projections (variants ``<vid>__tl``, routes ``tl_<vid>``, re-audited) and per task
-    ``v6_tracks``; doc-level ``tracks`` holds the track settings."""
-    doc["tracks"] = {k: dict(v, subcategories=SUBCATEGORIES[k]) for k, v in TRACKS.items()}
+    """Per task ``v6_tracks``: variant -> {category, local, longer}; doc-level ``categories``."""
+    doc["categories"] = CATEGORIES
     for t in doc["tasks"]:
-        sigs = {}
-        for vid in t["variants"]:
-            sigs.setdefault(_sig(t["variants"][vid]), vid)
-        tracks = {"action": {}, "task": {}, "controls": []}
-        for fam, info in t["v6_families"].items():
-            kinds = [content(t, v) for v in info["cases"]]
-            tl, act = any(k[0] for k in kinds), any(k[1] for k in kinds)
-            if info["tier"] == "easy" or not tl and not act:
-                tracks["controls"].append(fam)
-                continue
-            if act:
-                sub, kinds = action_sub(t, info["cases"])
-                tracks["action"][fam] = {
-                    "sub": sub, "mechanisms": kinds, "with_task_content": tl,
-                    "cases": info["cases"], "seeds": info["seeds"], "family_tier": info["tier"],
-                    "action_failures": sorted({f["id"] for v in info["cases"]
-                                               for f in t["variants"][v].get("failures") or [] if transient(f)})}
-            if not tl:
-                continue
-            cmap, same = {}, {}
-            for v in info["cases"]:
-                pr = project(t, v)
-                if pr is None:
-                    cmap[v] = v
-                    continue
-                p, steps = pr
-                hit = sigs.get(_sig({k: x for k, x in p.items() if k != "track_projection"}))
-                if hit is not None:
-                    cmap[v], same[v] = hit, hit
-                    continue
-                pid = f"{v}__tl"
-                t["variants"][pid] = p
-                t["routes"][f"tl_{v}"] = {"steps": steps, "kind": "v6_task_projection", "variant": pid}
-                t["oracle"][pid] = f"tl_{v}"
-                t["v6_audit"][pid] = audit_variant(t, pid)
-                cmap[v] = pid
-            cases = list(dict.fromkeys(cmap.values()))
-            tiers = Counter(t["v6_audit"][c]["tier_rule"] for c in cases)
-            tier = min(tiers, key=["easy", "medium", "hard"].index)
-            sub, subs = task_sub(t, cases, tier)
-            tracks["task"][fam] = {
-                "sub": sub, "subs": subs, "timing": timing(t, cases),
-                "cases": cases, "seeds": {s: cmap[v] for s, v in info["seeds"].items()},
-                "tier": tier, "family_tier": info["tier"],
-                "projected": any(cmap[v] != v for v in info["cases"]),
-                **({"same_as": same} if same else {}),
-                **({"mixed_tiers": dict(tiers)} if len(tiers) > 1 else {})}
-        # a projection identical to another family's cases is one Task-Level design: keep the unprojected one
-        first = {}
-        for fam in sorted(tracks["task"], key=lambda f: tracks["task"][f]["projected"]):
-            key = tuple(sorted(tracks["task"][fam]["cases"]))
-            if key in first:
-                tracks["task"][first[key]].setdefault("merged", []).append(fam)
-                tracks["task"].pop(fam)
-            else:
-                first[key] = fam
-        t["v6_tracks"] = tracks
+        out = {}
+        for vid, info in t["v6_variants"].items():
+            local, longer = set(), set()
+            for lid in info["layouts"]:
+                a, b = content(t, lid)
+                local |= set(a)
+                longer |= set(b)
+            out[vid] = {"category": category(local, longer), "local": sorted(local), "longer": sorted(longer)}
+        t["v6_tracks"] = out
     return doc
 
 
@@ -253,90 +318,52 @@ def short(tid):
 
 
 def report(doc):
-    """TRACKS.md (taxonomy, counts, per-family table) and one batch per track:
-    batches/track_task_scripted.json (oracle route replayed on GT skills), batches/track_action_scripted.json."""
+    """TRACKS.md (definitions, counts per task, every variant) and batches/category_<name>.json (oracle routes)."""
     out = ROOT / "benchmark/v6"
-    tasks = [t["task_id"] for t in doc["tasks"]]
-    md = ["# ZenoBench v6 evaluation tracks", "",
-          "Generated by `python benchmark/v6/tracks.py` from `tasks.json` (`v6_tracks` per task, `tracks` at the "
-          "top).  Two top-level categories; subcategories say what an episode tests.  Static only: physics status "
-          "per family is in `PHYSICS_TODO.md`.", ""]
-    for k in ("action", "task"):
-        cfg = doc["tracks"][k]
-        fams = [(t, f, x) for t in doc["tasks"] for f, x in t["v6_tracks"][k].items()]
-        md += [f"## {cfg['title']} (`{k}`)", "",
-               f"* Measures: {cfg['measures']}.", f"* Runs with: planner `{cfg['planner']}`, profile "
-               f"`{cfg['profile']}`.", f"* Owner: {cfg['owner']}.",
-               f"* {len(fams)} families, {sum(len(x['seeds']) for _, _, x in fams)} episodes (seeds 10-19).", ""]
-        tierkey = "tier" if k == "task" else "family_tier"
-        md += ["| subcategory | definition | families | Medium | Hard | tasks |", "|---|---|---|---|---|---|"]
-        for sub, desc in cfg["subcategories"].items():
-            rows = [(t, x) for t, _, x in fams if x["sub"] == sub]
-            md.append(f"| {sub} | {desc} | {len(rows)} | {sum(x[tierkey] == 'medium' for _, x in rows)} | "
-                      f"{sum(x[tierkey] == 'hard' for _, x in rows)} | {len({t['task_id'] for t, _ in rows})} |")
-        md += ["", "Families per subcategory and task:", "",
-               "| subcategory | " + " | ".join(short(x) for x in tasks) + " |",
-               "|---|" + "---|" * len(tasks)]
-        for sub in cfg["subcategories"]:
-            md.append(f"| {sub} | " + " | ".join(
-                str(sum(1 for f, x in t["v6_tracks"][k].items() if x["sub"] == sub) or "") for t in doc["tasks"]) + " |")
-        md.append("")
-        if k == "action":
-            md += ["`family_tier` is the family's v6 tier, which counts its task-level content too; within this "
-                   "track the episode is scored on the scripted route.", ""]
-        else:
-            n_dyn = sum(x["timing"] == "dynamic" for _, _, x in fams)
-            n_proj = sum(x["projected"] for _, _, x in fams)
-            n_merged = sum(len(x.get("merged", [])) for _, _, x in fams)
-            md += [f"* {n_dyn} families have a dynamic event (the rest act on the initial scene).",
-                   f"* {n_proj} families are task projections of a variant with transient action failures "
-                   f"(`<vid>__tl`, failures and their local repairs removed, re-audited); {n_merged} projections "
-                   "equal another family's configuration and are merged into it (`merged`).",
-                   "* Every Hard family keeps its Hard tier after projection (checked by `validate_v6.py`).", ""]
-    md += ["## Controls", "", f"{sum(len(t['v6_tracks']['controls']) for t in doc['tasks'])} Easy families (the "
-           "nominal plan works) are the control for both tracks.", "", "## Families", "",
-           "| task | family | track | subcategory | also | tier | cases |", "|---|---|---|---|---|---|---|"]
-    for t in doc["tasks"]:
-        tr = t["v6_tracks"]
-        for f, x in tr["task"].items():
-            md.append(f"| {short(t['task_id'])} | {f} | task | {x['sub']} | {', '.join(s for s in x['subs'] if s != x['sub'])}"
-                      f"{' (merged: ' + ', '.join(x['merged']) + ')' if x.get('merged') else ''} | {x['tier']} | "
-                      f"{', '.join(x['cases'])} |")
-        for f, x in tr["action"].items():
-            md.append(f"| {short(t['task_id'])} | {f} | action | {x['sub']} | {', '.join(x['mechanisms'])} | "
-                      f"{x['family_tier']} | {', '.join(x['cases'])} |")
-        for f in tr["controls"]:
-            md.append(f"| {short(t['task_id'])} | {f} | control | - | - | easy | {f} |")
+    tasks = doc["tasks"]
+    n = Counter(x["category"] for t in tasks for x in t["v6_tracks"].values())
+    md = ["# ZenoBench v6 categories", "",
+          "Generated by `python benchmark/v6/tracks.py` from `tasks.json` (`v6_tracks` per task).  A variant is "
+          "one task design; its ten seeds (10-19) vary the layout.  Static only: physics status is in "
+          "`PHYSICS_TODO.md`.", "",
+          "| category | what the variant needs | variants | episodes |", "|---|---|---|---|"]
+    for k in ORDER:
+        md.append(f"| {CATEGORIES[k]['title']} | {CATEGORIES[k]['measures']} | {n[k]} | {10 * n[k]} |")
+    md += ["", "Variants per task:", "", "| category | " + " | ".join(short(t["task_id"]) for t in tasks) + " |",
+           "|---|" + "---|" * len(tasks)]
+    for k in ORDER:
+        md.append(f"| {CATEGORIES[k]['title']} | " + " | ".join(
+            str(sum(x["category"] == k for x in t["v6_tracks"].values()) or "") for t in tasks) + " |")
+    n_drop = Counter(r.split(" ")[0] for t in tasks for r in t["v6_dropped"].values())
+    md += ["", f"Removed with the injected action failures: {sum(n_drop.values())} variants "
+           f"({n_drop.get('only', 0)} had nothing else, {n_drop.get('same', 0)} equal another variant without them; "
+           "`v6_dropped` per task).", "", "## Variants", "",
+           "| task | variant | category | local fallback | longer-horizon change | layouts |", "|---|---|---|---|---|---|"]
+    for t in tasks:
+        for k in ORDER:
+            for vid, x in t["v6_tracks"].items():
+                if x["category"] == k:
+                    md.append(f"| {short(t['task_id'])} | {vid} | {CATEGORIES[k]['title']} | {'; '.join(x['local']) or '-'} | "
+                              f"{'; '.join(x['longer']) or '-'} | {len(t['v6_variants'][vid]['layouts'])} |")
     (out / "TRACKS.md").write_text("\n".join(md) + "\n")
-    jobs = {"task": [], "action": []}
-    for t in doc["tasks"]:
-        for k, planner in (("task", "scripted"), ("action", "scripted")):
-            for f, x in t["v6_tracks"][k].items():
-                for s, v in sorted(x["seeds"].items(), key=lambda kv: int(kv[0])):
-                    jobs[k].append({"task": t["task_id"], "seed": int(s), "variant": v, "route": t["oracle"][v],
-                                    "planner": planner, "profile": doc["tracks"][k]["profile"], "eval_track": k,
-                                    "sub": x["sub"], "family": f})
     (out / "batches").mkdir(exist_ok=True)
-    (out / "batches/track_task_scripted.json").write_text(json.dumps(jobs["task"], indent=0))
-    (out / "batches/track_action_scripted.json").write_text(json.dumps(jobs["action"], indent=0))
-    return jobs
+    for old in ("track_task_scripted.json", "track_action_scripted.json"):
+        (out / "batches" / old).unlink(missing_ok=True)
+    jobs = {}
+    for k in ORDER:
+        jobs[k] = [{"task": t["task_id"], "seed": int(s), "variant": lid, "route": t["oracle"][lid],
+                    "planner": "scripted", "profile": CATEGORIES[k]["profile"], "category": k, "v6_variant": vid}
+                   for t in tasks for vid, x in t["v6_tracks"].items() if x["category"] == k
+                   for s, lid in sorted(t["v6_variants"][vid]["seeds"].items(), key=lambda kv: int(kv[0]))]
+        (out / f"batches/category_{k}.json").write_text(json.dumps(jobs[k], indent=0))
+    return n, jobs
 
 
 def main():
     doc = json.loads((ROOT / "benchmark/v6/tasks.json").read_text())
-    n = Counter()
-    for t in doc["tasks"]:
-        tr = t["v6_tracks"]
-        n["controls"] += len(tr["controls"])
-        for k in ("action", "task"):
-            for fam, x in tr[k].items():
-                n[(k, x.get("tier", x.get("family_tier")))] += 1
-                n[(k, x["sub"])] += 1
-        n["both"] += len(set(tr["action"]) & set(tr["task"]))
-    jobs = report(doc)
-    for k, v in sorted(n.items(), key=str):
-        print(k, v)
-    print("episodes:", {k: len(v) for k, v in jobs.items()}, "-> TRACKS.md, batches/track_*.json")
+    n, jobs = report(doc)
+    print({k: n[k] for k in ORDER}, "episodes:", {k: len(v) for k, v in jobs.items()},
+          "-> TRACKS.md, batches/category_*.json")
 
 
 if __name__ == "__main__":

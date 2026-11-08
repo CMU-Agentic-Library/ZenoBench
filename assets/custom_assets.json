@@ -425,5 +425,153 @@
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "prompt": "a single plain natural wood toy building block cube with smooth edges, isolated product, plain white background"
+ },
+ "soup_pot": {
+  "size": 0.3,
+  "mass": 1.2,
+  "tags": [
+   "cookware",
+   "pot",
+   "food",
+   "metal",
+   "handled"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/soup_pot/result/soup_pot.urdf",
+  "target_size": [
+   0.26,
+   0.3,
+   0.16
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a wide short flat-bottomed stainless steel stockpot with two loop handles on opposite sides, tomato soup inside below the rim, no lid, isolated product, plain white background",
+  "handle_grasp": {
+   "type": "handle_pinch",
+   "center": [
+    0.0,
+    0.14,
+    0.073
+   ],
+   "approach": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "close_dir": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "pre_open": 0.03
+  },
+  "handle_collider": {
+   "center": [
+    0.0,
+    0.14,
+    0.073
+   ],
+   "size": [
+    0.06,
+    0.02,
+    0.013
+   ]
+  },
+  "extra_handle_colliders": [
+   {
+    "center": [
+     0.0,
+     -0.14,
+     0.073
+    ],
+    "size": [
+     0.06,
+     0.02,
+     0.013
+    ]
+   }
+  ]
+ },
+ "oatmeal_bowl": {
+  "size": 0.18,
+  "mass": 0.45,
+  "tags": [
+   "dish",
+   "bowl",
+   "food",
+   "ceramic",
+   "container"
+  ],
+  "collider": "round_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/oatmeal_bowl/result/oatmeal_bowl.urdf",
+  "target_size": [
+   0.178,
+   0.176,
+   0.09
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a bowl of oatmeal"
+ },
+ "glass_food_container": {
+  "size": 0.16,
+  "mass": 0.5,
+  "tags": [
+   "container",
+   "food",
+   "glass",
+   "lidded"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/glass_food_container/result/glass_food_container.urdf",
+  "target_size": [
+   0.16,
+   0.11,
+   0.07
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a small clear glass rectangular food storage container with a blue snap-on plastic lid, leftover rice and vegetables inside, isolated product, plain white background"
+ },
+ "steel_lunch_box": {
+  "size": 0.16,
+  "mass": 0.4,
+  "tags": [
+   "container",
+   "food",
+   "metal",
+   "lidded"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/steel_lunch_box/result/steel_lunch_box.urdf",
+  "target_size": [
+   0.16,
+   0.11,
+   0.06
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a small rectangular stainless steel lunch box with a closed metal lid and two side clips, isolated product, plain white background"
+ },
+ "foil_takeout_tray": {
+  "size": 0.2,
+  "mass": 0.3,
+  "tags": [
+   "container",
+   "food",
+   "metal",
+   "tray",
+   "flat"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/foil_takeout_tray/result/foil_takeout_tray.urdf",
+  "target_size": [
+   0.2,
+   0.14,
+   0.045
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a rectangular aluminium foil takeout food tray with a folded rim, filled with fried noodles, no lid, isolated product, plain white background"
  }
 }

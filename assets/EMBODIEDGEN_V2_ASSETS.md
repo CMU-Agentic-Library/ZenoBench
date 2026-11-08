@@ -60,3 +60,32 @@ ISAACLAB_PYTHON=... bash tools/make_kitchen_scene.sh      # kitchen layer + kitc
 ```
 
 `tools/prepare_assets.py` marks top grasps of objects that are round in top view (`"round": true`, any closing diameter) and adds `along_offsets` to long thin objects (rolling pin, spoon, pencil) so a second hand finds a contact away from the first.
+
+## Leftovers for the heating task (v6 T07)
+
+Five more V2 props from [`embodiedgen_heating_assets.json`](embodiedgen_heating_assets.json) hold food whose container
+decides the appliance: metal goes on the stove (it does not heat in the microwave), glass and ceramic go in the
+microwave (a ceramic bowl does not count on the burner). Their thermal parameters are set per variant
+(`thermal_override` in `benchmark/v6/define_tasks_v6.py`; `episode/episode.py` accepts a food a variant adds).
+
+| Asset | Target size (cm) | Mass (g) | Collider | Grasp annotation | Heated by |
+| --- | --- | --- | --- | --- | --- |
+| `soup_pot` | 26 × 30 × 16 | 1200 | convex hull, two handle bars | `handle_pinch` | stove |
+| `oatmeal_bowl` | 17.8 × 17.6 × 9 | 450 | round container | `rim_pinch` | microwave |
+| `glass_food_container` | 16 × 11 × 7 | 500 | convex hull | `edge_pinch*` | microwave |
+| `steel_lunch_box` | 16 × 11 × 6 | 400 | convex hull | `edge_pinch*` | stove |
+| `foil_takeout_tray` | 20 × 14 × 4.5 | 300 | convex hull | `edge_pinch*` | stove |
+
+`edge_pinch*` pushes the box to a support edge first. Text-to-3D needed retries: the first soup pot was a tall
+round-bottomed bucket and two oatmeal prompts gave a mound without a bowl; the committed prompts are the ones that
+passed (and were checked by eye). The foil tray came out empty (no noodles). None has a physical grasp rollout yet.
+
+```bash
+PATH=$HOME/miniforge3/envs/embodiedgen/bin:$PATH GPT_PROVIDER=codex \
+    python tools/generate_assets.py --batch assets/embodiedgen_heating_assets.json --skip-convert
+OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/prepare_assets.py --only soup_pot oatmeal_bowl glass_food_container steel_lunch_box foil_takeout_tray --convert
+OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/fix_textures.py
+python tools/render_asset_gallery.py
+```
+
+The `ninja` build tool of the `embodiedgen` env must be on `PATH` (mesh extraction compiles a C++ extension).

@@ -1,11 +1,12 @@
-"""v6 catalog: generation, v5 preservation, tier rule, capability targets, seed manifests, checker negatives."""
+"""v6 catalog: generation, v5 preservation, seed manifests, Action-Level / Task-Level tracks."""
 from __future__ import annotations
 
-import copy
 import json
+
+from benchmark.v6.define_tasks_v6 import TASK_TEXT
 import subprocess
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -14,12 +15,10 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from benchmark.scene import episode_config  # noqa: E402
-from benchmark.v6 import hypotheses as H  # noqa: E402
 from benchmark.v6.define_tasks_v6 import SEEDS, seed_cases  # noqa: E402
 
 DOC = json.loads((ROOT / "benchmark/v6/tasks.json").read_text())
 TASKS = {t["task_id"]: t for t in DOC["tasks"]}
-CORE_TARGET = {"variants": 20, "tasks": 8}
 
 
 def test_catalog_is_up_to_date():
@@ -28,73 +27,76 @@ def test_catalog_is_up_to_date():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
-def test_v5_configurations_and_routes_unchanged():
+def test_v5_designs_unchanged():
+    """A v5 variant keeps its design (conditions, goal, instruction, failures other than the injected action ones);
+    where things stand and where the robot starts are the seed's (layout.py)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
-    frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
     for tid, t in TASKS.items():
+        if tid not in v5:                               # T21-T30: base tasks of v6's own (new_tasks_v6.py)
+            continue
         for vid in [x for ids in v5[tid]["v5_formal"].values() for x in ids]:
-            assert t["variants"][vid] == v5[tid]["variants"][vid]
-            assert t["routes"][t["oracle"][vid]] == v5[tid]["routes"][v5[tid]["oracle"][vid]]
-            for s in (10, 15, 19):
-                assert episode_config(t, s, vid)["config_hash"] == frozen[f"{tid}/{vid}/{s}"]
+            if vid in t["v6_dropped"]:
+                assert vid not in t["variants"]
+                continue
+            old, new = v5[tid]["variants"][vid], t["variants"][vid]
+            assert old.get("goal") == new.get("goal"), vid
+            if tid not in TASK_TEXT:                # TASK_TEXT: the task's instruction was shortened on purpose
+                assert old.get("instruction") == new.get("instruction"), vid
+            else:
+                assert "instruction" not in new and t["instruction"] == TASK_TEXT[tid][0], vid
+            if "conditions_ignored" not in new:
+                assert old.get("conditions") == new.get("conditions"), vid
+            removed = set(new.get("injected_removed", []))
+            assert [f for f in old.get("failures", []) if f["id"] not in removed] == new.get("failures", []), vid
+
+
+def test_seeds_keep_what_the_variant_tests():
+    """Objects a variant places for its challenge keep their relative positions on every seed (the bowl stays in
+    the pin's path, the crowd around block B stays tight), and a boxed-in or full place stays as designed."""
+    from benchmark.scene import episode_config
+
+    def rel(cfg, a, b):
+        return [round(cfg["move"][a]["xy"][k] - cfg["move"][b]["xy"][k], 3) for k in (0, 1)]
+    for tid, vid, a, b in (("T02_stack_blocks", "crowded_use_another__tight_tv", "wooden_block_b", "oatmeal"),):
+        t = TASKS[tid]
+        assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
+    # a set place copied across the table: the table stays as designed on every seed (keep_design)
+    t = TASKS["T13_breakfast_setup"]
+    vid = "copy_the_setting__bowl_cup"
+    assert len({tuple(episode_config(t, s, vid)["add"]["example_bowl"]["xy"]) for s in SEEDS}) == 1
+
+
+def test_seeds_draw_different_layouts():
+    """Ten seeds of a variant put the robot and the movable objects in different places."""
+    from benchmark.scene import episode_config
+    for tid, vid in (("T01_book_to_dining_table", "overhang_ready"), ("T13_breakfast_setup", "dishes_on_tv_stand")):
+        t = TASKS[tid]
+        starts = {tuple(episode_config(t, s, vid)["start"]) for s in SEEDS}
+        poses = {json.dumps(episode_config(t, s, vid)["move"], sort_keys=True) for s in SEEDS}
+        assert len(starts) >= 8 and len(poses) >= 8, (tid, len(starts), len(poses))
+        assert all(episode_config(t, s, vid) == episode_config(t, s, vid) for s in (10, 15))
 
 
 def test_every_family_has_ten_reproducible_seeds():
     for tid, t in TASKS.items():
-        for fam, info in t["v6_families"].items():
+        for fam, info in t["v6_variants"].items():
             seeds = {int(k): v for k, v in info["seeds"].items()}
             assert sorted(seeds) == SEEDS
-            if info["origin"] == "v6" or len(info["cases"]) > 1:
-                assert seeds == seed_cases(tid, fam, info["cases"])
+            if info["origin"] == "v6" or len(info["layouts"]) > 1:
+                assert seeds == seed_cases(tid, fam, info["layouts"])
                 c = Counter(seeds.values())
-                assert set(c) == set(info["cases"]) and max(c.values()) - min(c.values()) <= 1
+                assert set(c) == set(info["layouts"]) and max(c.values()) - min(c.values()) <= 1
             for s, v in list(seeds.items())[:2]:
                 assert episode_config(t, s, v)["config_hash"] == episode_config(t, s, v)["config_hash"]
 
 
 def test_cases_differ_in_decision():
     for t in TASKS.values():
-        for fam, info in t["v6_families"].items():
-            if len(info["cases"]) > 1:
-                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["cases"]}
-                assert len(routes) == len(info["cases"]), fam
+        for fam, info in t["v6_variants"].items():
+            if len(info["layouts"]) > 1:
+                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["layouts"]}
+                assert len(routes) == len(info["layouts"]), fam
                 assert info.get("factor"), fam
-
-
-def test_new_families_agree_with_the_tier_rule():
-    for t in TASKS.values():
-        assert t["v6_design_problems"] == [], t["task_id"]
-        for fam, info in t["v6_families"].items():
-            if info["origin"] != "v6":
-                continue
-            for v in info["cases"]:
-                a = t["v6_audit"][v]
-                assert a["tier_rule"] == info["tier"], (fam, v)
-                assert a["rejected"] == [], (fam, v)
-                if info["tier"] == "hard":
-                    assert a["core"] and not a["retry_solvable"], (fam, v)
-
-
-def test_hard_tier_means_task_level_replanning():
-    for t in TASKS.values():
-        for fam in t["v6_formal"]["hard"]:
-            for v in t["v6_families"][fam]["cases"]:
-                a = t["v6_audit"][v]
-                assert a["core"] and not a["retry_solvable"], (t["task_id"], fam)
-        for fam in t["v6_formal"]["easy"]:
-            for v in t["v6_families"][fam]["cases"]:
-                assert not t["variants"][v].get("failures"), (t["task_id"], fam)
-
-
-def test_core_capability_targets():
-    n, tasks = Counter(), defaultdict(set)
-    for tid, t in TASKS.items():
-        for fam in t["v6_formal"]["hard"]:
-            for cap in t["v6_families"][fam]["capabilities"]:
-                n[cap] += 1
-                tasks[cap].add(tid)
-    for cap in H.CORE:
-        assert n[cap] >= CORE_TARGET["variants"] and len(tasks[cap]) >= CORE_TARGET["tasks"], (cap, n[cap], len(tasks[cap]))
 
 
 def test_planner_view_is_clean():
@@ -109,151 +111,204 @@ def test_static_report_is_current_and_clean():
     import hashlib
     st = json.loads((ROOT / "benchmark/v6/STATIC.json").read_text())
     assert st["tasks_sha1"] == hashlib.sha1((ROOT / "benchmark/v6/tasks.json").read_bytes()).hexdigest()
-    assert st["problems"] == [] and st["static_ok"] == st["episodes"] == 10 * st["families"]
-
-
-# ----------------------------------------------------------------- the checker rejects what it should
-def _ctx(tid, vid, mutate=None):
-    t = copy.deepcopy(TASKS[tid])
-    if mutate:
-        mutate(t)
-    return t, H.Ctx(t, vid)
-
-
-def test_a_transient_failure_is_not_cross_level():
-    def transient(t):
-        for f in t["variants"]["x6_cl_block_a_unholdable__b_island"]["failures"]:
-            f.pop("persist", None)
-    _, c = _ctx("T06_block_destination_occupied", "x6_cl_block_a_unholdable__b_island", transient)
-    h = c.v["v6"]["hypotheses"][0]
-    assert any("not persistent" in r for r in H.check_CL(c, h))
-
-
-def test_dr_needs_a_cause_naming_the_blocker():
-    _, c = _ctx("T01_book_to_dining_table", "x6_dr_block_on_book__block")
-    h = dict(c.v["v6"]["hypotheses"][0], blocker="rolling_pin")
-    assert H.check_DR(c, h)
-
-
-def test_pp_needs_progress_before_the_event():
-    _, c = _ctx("T13_breakfast_setup", "x6_pp_spoon_moved__table_end")
-    h = dict(c.v["v6"]["hypotheses"][0], kept={"atom": ["on", "cup", "dining_table_2/top"],
-                                              "by": {"skill": "place", "args": {"object": "spoon"}}})
-    assert any("not achieved before" in r or "never achieves" in r for r in H.check_PP(c, h))
-
-
-def test_sr_needs_a_different_procedure():
-    _, c = _ctx("T07_heat_oatmeal", "x6_cl_microwave_door_stuck__oatmeal_island")
-    h = next(x for x in c.v["v6"]["hypotheses"] if x["cap"] == "SR")
-    same = dict(h, replacement=h["nominal"])
-    assert H.check_SR(c, same)
-
-
-def test_a_variant_without_constraints_is_retry_solvable():
-    _, c = _ctx("T06_block_destination_occupied", "x6_m_grasp_block_a")
-    assert H.retry_solvable(c)
-    _, c = _ctx("T06_block_destination_occupied", "x6_cl_block_a_unholdable__b_island")
-    assert not H.retry_solvable(c)
+    assert st["problems"] == [] and st["static_ok"] == st["episodes"] == 10 * st["variants"]
 
 
 @pytest.mark.parametrize("tid", sorted(TASKS))
-def test_every_hard_family_has_a_control_in_the_task(tid):
+def test_every_new_family_has_a_control_in_the_task(tid):
     t = TASKS[tid]
-    for fam, info in t["v6_families"].items():
+    for fam, info in t["v6_variants"].items():
         if info["origin"] == "v6":
             assert info["control"] in t["variants"], fam
 
 
 # ----------------------------------------------------------------- tracks (benchmark/v6/tracks.py)
-def test_every_family_is_placed_in_its_tracks():
-    from benchmark.v6.tracks import SUBCATEGORIES, transient
+def test_every_variant_has_its_category():
+    from benchmark.v6.tracks import ORDER, category, content, injected
     for tid, t in TASKS.items():
-        tr = t["v6_tracks"]
-        merged = {m for x in tr["task"].values() for m in x.get("merged", [])}
-        placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | merged
-        assert placed == set(t["v6_families"]), tid
-        for fam, x in tr["action"].items():
-            assert x["sub"] in SUBCATEGORIES["action"] and x["action_failures"], (tid, fam)
-        for fam, x in tr["task"].items():
-            assert x["sub"] in SUBCATEGORIES["task"], (tid, fam)
-            assert x["sub"] in x["subs"], (tid, fam)
-            for v in x["cases"]:
-                assert not any(transient(f) for f in t["variants"][v].get("failures") or []), (tid, fam, v)
-            assert (x["tier"] == "hard") == (x["sub"] in ("TL-DR", "TL-GD", "TL-SR", "TL-CL", "TL-PP")), (tid, fam)
-        for fam in tr["controls"]:
-            assert t["v6_families"][fam]["tier"] == "easy", (tid, fam)
+        assert set(t["v6_tracks"]) == set(t["v6_variants"]), tid
+        for vid, info in t["v6_variants"].items():
+            local, longer = set(), set()
+            for lid in info["layouts"]:
+                assert not any(injected(f) for f in t["variants"][lid].get("failures") or []), (tid, lid)
+                a, b = content(t, lid)
+                local |= set(a)
+                longer |= set(b)
+            assert t["v6_tracks"][vid]["category"] == category(local, longer) in ORDER, (tid, vid)
 
 
-def test_projection_keeps_hard_and_drops_only_transient_failures():
-    from benchmark.v6.tracks import transient
-    n = 0
+def test_local_fallbacks_are_action_level():
+    """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
+    cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
+    # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
+    assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
+    # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
+    t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
+    assert {x["category"] for x in t01.values()} == {"control", "task"}
+    # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
+    # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
     for tid, t in TASKS.items():
-        for fam, x in t["v6_tracks"]["task"].items():
-            if x["family_tier"] == "hard":
-                assert x["tier"] == "hard", (tid, fam)
-            for v in x["cases"]:
-                p = t["variants"][v].get("track_projection")
-                if not p:
-                    continue
-                n += 1
-                src = t["variants"][p["of"]]
-                assert [f for f in src["failures"] if not transient(f)] == (t["variants"][v].get("failures") or [])
-                assert set(p["dropped"]) == {f["id"] for f in src["failures"] if transient(f)}
-                steps = t["routes"][t["oracle"][v]]["steps"]
-                assert len(steps) < len(t["routes"][t["oracle"][p["of"]]]["steps"])
-    assert n > 0
+        assert "action" not in {x["category"] for x in t["v6_tracks"].values()}, tid
+    # a substitute, never a local fallback: Task-Level
+    assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
 
 
-def test_track_batches_name_their_profile():
-    for name, track, profile in (("track_task_scripted", "task", "sticky_snap/gt"),
-                                 ("track_action_scripted", "action", "benchmark")):
-        jobs = json.loads((ROOT / f"benchmark/v6/batches/{name}.json").read_text())
-        assert jobs and all(j["eval_track"] == track and j["profile"] == profile for j in jobs)
-        assert "track" not in jobs[0]          # --track is the skill track of run_episode
-        assert len(jobs) == 10 * sum(len(t["v6_tracks"][track]) for t in TASKS.values())
+def test_no_injected_action_failure_anywhere():
+    """No IK refusal, grasp miss, slip or placement miss is forced on any call, once or every time."""
+    for tid, t in TASKS.items():
+        for vid, v in t["variants"].items():
+            assert not [f for f in v.get("failures") or [] if f["kind"] in ("ik", "grasp", "slip", "placement")], \
+                (tid, vid)
+    src = (ROOT / "benchmark/v6/define_tasks_v6.py").read_text()
+    for helper in ("f_ik(", "f_grasp(", "f_slip(", "with_ik(", "with_grasp(", "with_slip(", "persist"):
+        assert helper not in src, helper
 
 
-def _result(task, variant, calls, fi=None, profile="benchmark", **kw):
-    return {"task_id": task, "variant": variant, "seed": 10, "planner": "p", "profile": profile, "calls": calls,
-            "failure_injection": fi or {}, "dropped": [], **kw}
+def test_no_dynamic_events():
+    """No variant has someone change the scene during the episode (the user's rule, applied task by task)."""
+    for tid, t in TASKS.items():
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                assert not [f for f in t["variants"][lid].get("failures") or [] if f.get("when") == "dynamic"], \
+                    (tid, lid)
 
 
-def _call(i, skill, args, success, tick):
-    return {"index": i, "skill": skill, "args": args, "feedback": {"success": success}, "tick": tick}
+def test_every_layout_has_its_route():
+    for tid, t in TASKS.items():
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                assert t["oracle"][lid] in t["routes"], (tid, lid)
 
 
-def test_action_metrics_count_a_recovered_failure():
-    from benchmark.v6.track_metrics import action_facts
-    t = TASKS["T07_heat_oatmeal"]
-    calls = [_call(0, "navigate", {"destination": "oatmeal"}, True, 10), _call(1, "pick", {"object": "oatmeal"}, False, 10),
-             _call(2, "approach", {"target": "oatmeal"}, True, 20), _call(3, "pick", {"object": "oatmeal"}, True, 30)]
-    fi = {"manifested": ["ik_pick_oatmeal"], "fired": ["ik_pick_oatmeal"],
-          "log": [{"id": "ik_pick_oatmeal", "kind": "ik", "verb": "pick", "tick": 10}]}
-    f = action_facts(_result("T07_heat_oatmeal", "m_ik_oatmeal", calls, fi, success=True), t)
-    assert f["valid"] and f["events"] == [{"kind": "ik", "recovered": True, "cost": 1}]
-    assert f["nominal_n"] == 3 and f["nominal_ok"] == 3
+def test_in_place_choices_are_redesigned_at_a_longer_horizon():
+    """The substitute / container / pot is in another room; the in-place variant left v6."""
+    for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
+                          ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
+                          ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
+        t = TASKS[tid]
+        assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
+        assert t["v6_tracks"][new]["category"] == "task"
+        assert any(s["skill"] == "search" for s in t["routes"][t["oracle"][new]]["steps"])
+    assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
+    # T04 has no dynamic events (user ruling): the cup taken away, the drinks spot filled after the pick
+    for vid in ("h_dynamic_cup_taken", "cup_taken_mug_in_living_room", "x6_dr_spot_filled_dynamic__bowl",
+                "x6_dr_spot_filled_dynamic__block"):
+        assert vid not in TASKS["T04_cup_or_mug_to_cabinet"]["v6_variants"], vid
 
 
-def test_task_metrics_flag_a_futile_repeat_and_a_redo():
-    from benchmark.v6.track_metrics import task_facts
-    t = TASKS["T07_heat_oatmeal"]
-    fam = "x6_pp_door_opened_after_heat"
-    x = t["v6_tracks"]["task"][fam]
-    heat = {"food": "oatmeal", "appliance": "kitchen_microwave", "temp_c": 40}
-    calls = [_call(0, "heat", heat, True, 10), _call(1, "close", {"articulated": "kitchen_microwave"}, True, 20),
-             _call(2, "heat", heat, True, 30)]
-    fi = {"fired": ["dependency_kitchen_microwave"],
-          "log": [{"id": "dependency_kitchen_microwave", "kind": "dependency", "verb": "heat", "tick": 10}]}
-    f = task_facts(_result("T07_heat_oatmeal", fam, calls, fi, profile="sticky_snap/gt", task_success=True), t, fam, x)
-    assert f["success"] and f["reactive"] and f["pp"] is False          # heated again after the event
-    door = "x6_cl_microwave_door_stuck"
-    v = t["v6_tracks"]["task"][door]["cases"][0]
-    op = {"articulated": "kitchen_microwave"}
-    calls = [_call(0, "open", op, False, 10), _call(1, "open", op, False, 20), _call(2, "open", op, False, 30)]
-    fid = next(f["id"] for f in t["variants"][v]["failures"] if f.get("persist"))
-    fi = {"fired": [fid], "log": [{"id": fid, "kind": "grasp", "verb": "open", "tick": 10},
-                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 20},
-                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 30}]}
-    f = task_facts(_result("T07_heat_oatmeal", v, calls, fi, profile="sticky_snap/gt", task_success=False), t, door,
-                   t["v6_tracks"]["task"][door])
-    assert f["persistent_met"] and f["futile"] and not f["success"]
+def test_injected_only_variants_are_dropped():
+    t = TASKS["T01_book_to_dining_table"]
+    assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"
+    t = TASKS["T15_book_face_up"]
+    assert t["v6_dropped"]["h_mixed_block_on_book_ik"].startswith("same as h_task_block_on_book")
+    for tid, t in TASKS.items():
+        for info in t["v6_variants"].values():
+            assert info["control"] is None or info["control"] in t["variants"], tid
+
+
+def test_category_batches_name_their_profile():
+    from benchmark.v6.tracks import CATEGORIES
+    for k, cfg in CATEGORIES.items():
+        jobs = json.loads((ROOT / f"benchmark/v6/batches/category_{k}.json").read_text())
+        assert all(j["category"] == k and j["profile"] == cfg["profile"] for j in jobs)
+        assert len(jobs) == 10 * sum(x["category"] == k for t in TASKS.values() for x in t["v6_tracks"].values())
+
+
+def _t01_suitable(cfg, sup="dining_table_2/top"):
+    """Centres y (1 cm steps) along the east edge of a dining table where a book (12 x 18 cm, either way along
+    the edge) is clear of the tableware by 5 cm and within 15 cm of a plate or bowl (the table_seats goal)."""
+    import math
+    from benchmark.v6 import layout as L
+    boxes = {n: L._box(L._asset_of(cfg["base"], n, {}), m) for n, m in cfg["move"].items()
+             if m.get("support") == sup}
+    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.468)}[sup]
+
+    def gap(a, b):
+        return math.hypot(max(0, max(a[0], b[0]) - min(a[2], b[2])), max(0, max(a[1], b[1]) - min(a[3], b[3])))
+    ok = set()
+    for along, across in ((0.12, 0.18), (0.18, 0.12)):
+        for i in range(250):
+            y = y0 + along / 2 + i * 0.01
+            if y + along / 2 > y1:
+                break
+            bk = [edge - across, y - along / 2, edge, y + along / 2]
+            seats = [boxes[n] for n in ("bowl_side_table", "plate_counter_a", "plate_counter_b") if n in boxes]
+            if min(gap(bk, b) for b in boxes.values()) >= 0.05 and seats and min(gap(bk, b) for b in seats) <= 0.15:
+                ok.add(round(y, 2))
+    return ok
+
+
+def test_t01_one_suitable_slot_per_setting():
+    """T01 table_seats: in every setting and seed the edge has one suitable slot (the route's), and it differs
+    between the settings; no_room_fallback has one in its seats layouts and none in its full one."""
+    t = TASKS["T01_book_to_dining_table"]
+    slots = {}
+    for s, lid in t["v6_variants"]["table_seats"]["seeds"].items():
+        ok = _t01_suitable(episode_config(t, int(s), lid))
+        hint = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]["hint_xy"]
+        assert ok and max(ok) - min(ok) < 0.2, (lid, s, sorted(ok))        # one slot, not several
+        assert min(ok) - 0.02 <= hint[1] <= max(ok) + 0.02, (lid, s, hint)
+        slots[lid] = round(hint[1], 2)
+    assert len(set(slots.values())) == 3
+    for s, lid in t["v6_variants"]["no_room_fallback"]["seeds"].items():
+        ok = _t01_suitable(episode_config(t, int(s), lid))
+        assert bool(ok) == (not lid.endswith("full_a")), (lid, s, sorted(ok))
+    assert {lid.split("__")[1] for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} == \
+        {"seats_b", "seats_c", "full_a"}
+
+
+def test_t01_reader_seat():
+    """T01 reader_seat: every seat has a suitable slot; the route's is beside the mug's seat only; the mug's seat
+    differs between the layouts."""
+    t = TASKS["T01_book_to_dining_table"]
+    mugs = set()
+    for s, lid in t["v6_variants"]["reader_seat"]["seeds"].items():
+        cfg = episode_config(t, int(s), lid)
+        ok = sorted(_t01_suitable(cfg))
+        assert ok[-1] - ok[0] > 1.0, (lid, s, ok)                        # slots beside seats far apart
+        hint = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]["hint_xy"]
+        goal = t["variants"][lid]["goal"]["all"]
+        mine = next(a[2][0] for a in goal if a[0] == "near_any")
+        others = next(a[2] for a in goal if a[0] == "not near_any")
+        y = lambda n: cfg["move"][n]["xy"][1]  # noqa: E731
+        assert abs(hint[1] - y(mine)) < min(abs(hint[1] - y(o)) for o in others), (lid, s)
+        mugs.add(round(y("mug_dining_cabinet"), 2))
+    assert len(mugs) == 3
+
+
+def test_t01_which_table():
+    """T01 which_table: breakfast is set on one table (one suitable slot there, the route's), the other table has
+    no seat and free edge slots; both tables occur among the seeds."""
+    t = TASKS["T01_book_to_dining_table"]
+    tables = set()
+    for s, lid in t["v6_variants"]["which_table"]["seeds"].items():
+        cfg = episode_config(t, int(s), lid)
+        last = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]
+        sup, idle = last["receptacle"], ({"dining_table_1/top", "dining_table_2/top"} - {last["receptacle"]}).pop()
+        ok = _t01_suitable(cfg, sup)
+        assert ok and max(ok) - min(ok) < 0.2, (lid, s, sorted(ok))
+        assert min(ok) - 0.02 <= last["hint_xy"][1] <= max(ok) + 0.02, (lid, s, last)
+        assert not _t01_suitable(cfg, idle)
+        assert not any(m.get("support") == idle for n, m in cfg["move"].items()
+                       if n.split("_")[0] in ("plate", "bowl", "cup", "mug", "spoon"))
+        tables.add(sup)
+    assert len(tables) == 2
+
+
+def test_new_base_tasks():
+    """T21-T30: a control and five Task-Level variants each, plus a dependent-decisions one in some (Action + Task
+    when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
+    for k in range(21, 31):
+        tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
+        tr = TASKS[tid]["v6_tracks"]
+        chained = sum("dependent_decisions" in (TASKS[tid]["variants"][i["layouts"][0]].get("conditions") or [])
+                      for i in TASKS[tid]["v6_variants"].values())
+        cats = sorted(x["category"] for x in tr.values())
+        assert cats.count("control") == 1 and "action" not in cats, tid
+        assert 6 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid   # added or replacing
+        t = TASKS[tid]
+        assert t["instruction_zh"]
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
+                assert not v.get("instruction") or v.get("instruction_zh"), (tid, lid)

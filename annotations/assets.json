@@ -1966,5 +1966,235 @@
   "usd": "usd/assets/wooden_block.usd",
   "source_urdf": "assets/asset3d/wooden_block/result/wooden_block_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "soup_pot": {
+  "name": "soup_pot",
+  "tags": [
+   "cookware",
+   "pot",
+   "food",
+   "metal",
+   "handled"
+  ],
+  "mass": 1.2,
+  "collider": "solid",
+  "size": [
+   0.26,
+   0.3,
+   0.16
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   0.0,
+   -0.0793
+  ],
+  "min_pinch_width": 0.2001,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "handle_pinch",
+    "center": [
+     0.0,
+     0.14,
+     0.073
+    ],
+    "approach": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "close_dir": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/soup_pot.usd",
+  "source_urdf": "assets/asset3d/soup_pot/result/soup_pot_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "oatmeal_bowl": {
+  "name": "oatmeal_bowl",
+  "tags": [
+   "dish",
+   "bowl",
+   "food",
+   "ceramic",
+   "container"
+  ],
+  "mass": 0.45,
+  "collider": "round_container",
+  "size": [
+   0.178,
+   0.176,
+   0.09
+  ],
+  "origin_to_bottom_center": [
+   -0.0003,
+   0.0,
+   -0.0449
+  ],
+  "min_pinch_width": 0.1565,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.0844,
+    "rim_height": 0.09,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/oatmeal_bowl.usd",
+  "source_urdf": "assets/asset3d/oatmeal_bowl/result/oatmeal_bowl_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0108,
+     0.0306,
+     0.056
+    ],
+    [
+     0.0306,
+     0.0504,
+     0.0704
+    ],
+    [
+     0.0504,
+     0.0702,
+     0.0813
+    ],
+    [
+     0.0702,
+     0.09,
+     0.0844
+    ]
+   ],
+   "rim_height": 0.09,
+   "rim_radius": 0.0844
+  }
+ },
+ "glass_food_container": {
+  "name": "glass_food_container",
+  "tags": [
+   "container",
+   "food",
+   "glass",
+   "lidded"
+  ],
+  "mass": 0.5,
+  "collider": "solid",
+  "size": [
+   0.16,
+   0.11,
+   0.07
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   -0.0001,
+   -0.0352
+  ],
+  "min_pinch_width": 0.0978,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.07
+   }
+  ],
+  "usd": "usd/assets/glass_food_container.usd",
+  "source_urdf": "assets/asset3d/glass_food_container/result/glass_food_container_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "steel_lunch_box": {
+  "name": "steel_lunch_box",
+  "tags": [
+   "container",
+   "food",
+   "metal",
+   "lidded"
+  ],
+  "mass": 0.4,
+  "collider": "solid",
+  "size": [
+   0.16,
+   0.11,
+   0.06
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   -0.0,
+   -0.0302
+  ],
+  "min_pinch_width": 0.0913,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.06
+   }
+  ],
+  "usd": "usd/assets/steel_lunch_box.usd",
+  "source_urdf": "assets/asset3d/steel_lunch_box/result/steel_lunch_box_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "foil_takeout_tray": {
+  "name": "foil_takeout_tray",
+  "tags": [
+   "container",
+   "food",
+   "metal",
+   "tray",
+   "flat"
+  ],
+  "mass": 0.3,
+  "collider": "solid",
+  "size": [
+   0.2,
+   0.14,
+   0.045
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   -0.0,
+   -0.0224
+  ],
+  "min_pinch_width": 0.138,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.045000000000000005
+   }
+  ],
+  "usd": "usd/assets/foil_takeout_tray.usd",
+  "source_urdf": "assets/asset3d/foil_takeout_tray/result/foil_takeout_tray_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  }
 }

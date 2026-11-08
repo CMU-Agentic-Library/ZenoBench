@@ -1,5 +1,5 @@
 """Extend the existing asset gallery with EmbodiedGen V2 mesh renders
-(the twelve task props and the five SkillNode-library props).
+(the twelve task props, the five SkillNode-library props and the five heating-task leftovers).
 
 Run after V2 generation and annotation: python tools/render_asset_gallery.py
 The first four rows are retained from the existing gallery; rerunning is idempotent.
@@ -18,6 +18,8 @@ NAMES = (
     "plastic_cup", "paperback_book", "tissue_box", "rolling_pin", "shallow_sorting_tray", "handled_cooking_pot",
     # props added for the verb SkillNode library (assets/embodiedgen_skill_assets.json)
     "pot_lid", "kitchen_sponge", "trash_can", "cherry_tomato", "wooden_block",
+    # leftovers for the v6 heating task (assets/embodiedgen_heating_assets.json)
+    "soup_pot", "oatmeal_bowl", "glass_food_container", "steel_lunch_box", "foil_takeout_tray",
 )
 VIEW = {name: "0000" for name in NAMES}
 

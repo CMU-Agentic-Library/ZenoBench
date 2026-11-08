@@ -1,0 +1,502 @@
+[
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "block_put_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "h_task_pencil_in_cabinet"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "lid_on_spoon_away",
+"route": "hard_uncover_search_spoon",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "lid_on_spoon_away__alt_dining_table_2",
+"route": "v6_lid_on_spoon_away__alt_dining_table_2",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 12,
+"variant": "lid_on_spoon_away__alt_dining_table_2",
+"route": "v6_lid_on_spoon_away__alt_dining_table_2",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 13,
+"variant": "lid_on_spoon_away__alt_dining_table_2",
+"route": "v6_lid_on_spoon_away__alt_dining_table_2",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 14,
+"variant": "lid_on_spoon_away__alt_dining_table_2",
+"route": "v6_lid_on_spoon_away__alt_dining_table_2",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 15,
+"variant": "lid_on_spoon_away",
+"route": "hard_uncover_search_spoon",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 16,
+"variant": "lid_on_spoon_away",
+"route": "hard_uncover_search_spoon",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 17,
+"variant": "lid_on_spoon_away__alt_dining_table_2",
+"route": "v6_lid_on_spoon_away__alt_dining_table_2",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 18,
+"variant": "lid_on_spoon_away",
+"route": "hard_uncover_search_spoon",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"variant": "lid_on_spoon_away",
+"route": "hard_uncover_search_spoon",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "lid_on_spoon_away"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 12,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 13,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 14,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 15,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 16,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 17,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 18,
+"variant": "tomato_in_fridge__on_island",
+"route": "v6_tomato_in_fridge__on_island",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"variant": "tomato_in_fridge__in_fridge",
+"route": "v6_tomato_in_fridge__in_fridge",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tomato_in_fridge"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 10,
+"variant": "tray_elsewhere__books_on_it",
+"route": "v6_tray_elsewhere__books_on_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 11,
+"variant": "tray_elsewhere__books_on_it",
+"route": "v6_tray_elsewhere__books_on_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 12,
+"variant": "tray_elsewhere__orange_in_it",
+"route": "v6_tray_elsewhere__orange_in_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 13,
+"variant": "tray_elsewhere__books_on_it",
+"route": "v6_tray_elsewhere__books_on_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 14,
+"variant": "tray_elsewhere__orange_in_it",
+"route": "v6_tray_elsewhere__orange_in_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 15,
+"variant": "tray_elsewhere__orange_in_it",
+"route": "v6_tray_elsewhere__orange_in_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 16,
+"variant": "tray_elsewhere__orange_in_it",
+"route": "v6_tray_elsewhere__orange_in_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 17,
+"variant": "tray_elsewhere__books_on_it",
+"route": "v6_tray_elsewhere__books_on_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 18,
+"variant": "tray_elsewhere__books_on_it",
+"route": "v6_tray_elsewhere__books_on_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 19,
+"variant": "tray_elsewhere__orange_in_it",
+"route": "v6_tray_elsewhere__orange_in_it",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action_task",
+"v6_variant": "tray_elsewhere"
+}
+]

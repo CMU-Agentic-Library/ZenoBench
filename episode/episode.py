@@ -193,6 +193,8 @@ class Episode:
         for food, over in (cfg.get("thermal_override") or {}).items():
             if food in base_task["thermal"]:
                 base_task["thermal"][food] = dict(base_task["thermal"][food], **over)
+            elif food not in cfg["remove"] and "initial_c" in over:
+                base_task["thermal"][food] = dict(over)      # a food the variant adds (e.g. leftovers in a pot)
         if cfg.get("thermal_sources") is not None:
             base_task = dict(base_task, thermal_sources=cfg["thermal_sources"])
         rig.configure_thermal(base_task)
