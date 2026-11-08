@@ -8,7 +8,7 @@ import pytest
 
 from tools.audit_collision import KINDS, compare, counts, load_baseline, sites
 
-# tools/stop_check.py: while .claude/audit_paused exists (local, git-ignored) the ratchet is off
+# tools/stop_check.py: while .claude/audit_paused exists (committed, so a fresh checkout skips too) the ratchet is off
 PAUSED = Path(__file__).resolve().parents[1] / ".claude" / "audit_paused"
 
 

@@ -216,7 +216,7 @@ Rig.run(plan, state):
 
 这一轮 6 个（`/data/zenobench/park1108/run4`）：5/6，T13 s10 松手后杯子靠到手指上、沿夹爪轴只能退 2 cm 就没 IK、还碰着杯子而失败；改成撤手段手指可碰后重跑 T13 s10、T20 s10 都成（T13 撤手开始手指在杯子里 1 mm，照计划走完，杯子离目标 1.9 cm）。
 
-**静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，本地开关 `.claude/audit_paused`，97b3f76）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后删掉开关文件。
+**静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，开关文件 `.claude/audit_paused`，97b3f76；11-08 起提交进仓库，干净的 checkout 也跳过）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后在一次提交里删掉开关文件。
 
 ## 10. 待定
 

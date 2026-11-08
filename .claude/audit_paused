@@ -1,0 +1,4 @@
+Paused 2026-11-07 by the user: the layered motion refactor (docs/MOTION_ARCHITECTURE.md) moves code between
+files and adds new modules the audit does not know yet. Committed since 2026-11-08, so a fresh checkout skips
+the ratchet too. To turn the audit back on, update the baseline for the moves
+(python tools/audit_collision.py --update-baseline [--allow-increase]) and delete this file in the same commit.

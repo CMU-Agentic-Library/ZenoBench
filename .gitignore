@@ -3,4 +3,3 @@ __pycache__/
 runs/
 *.facts.jsonl
 .claude/stop_check_ok
-.claude/audit_paused
