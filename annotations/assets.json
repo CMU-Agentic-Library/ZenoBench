@@ -2121,9 +2121,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.07
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.04,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/glass_food_container.usd",
@@ -2154,9 +2155,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.06
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.04,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/steel_lunch_box.usd",
@@ -2188,9 +2190,10 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "edge_pinch_after_push",
-    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.045000000000000005
+    "type": "thickness_pinch",
+    "depth": 0.025,
+    "pre_open": 0.0345,
+    "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
   "usd": "usd/assets/foil_takeout_tray.usd",

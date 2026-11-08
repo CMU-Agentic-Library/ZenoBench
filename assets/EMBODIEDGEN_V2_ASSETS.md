@@ -72,11 +72,11 @@ microwave (a ceramic bowl does not count on the burner). Their thermal parameter
 | --- | --- | --- | --- | --- | --- |
 | `soup_pot` | 26 × 30 × 16 | 1200 | convex hull, two handle bars | `handle_pinch` | stove |
 | `oatmeal_bowl` | 17.8 × 17.6 × 9 | 450 | round container | `rim_pinch` | microwave |
-| `glass_food_container` | 16 × 11 × 7 | 500 | convex hull | `edge_pinch*` | microwave |
-| `steel_lunch_box` | 16 × 11 × 6 | 400 | convex hull | `edge_pinch*` | stove |
-| `foil_takeout_tray` | 20 × 14 × 4.5 | 300 | convex hull | `edge_pinch*` | stove |
+| `glass_food_container` | 16 × 11 × 7 | 500 | convex hull | `thickness_pinch*` | microwave |
+| `steel_lunch_box` | 16 × 11 × 6 | 400 | convex hull | `thickness_pinch*` | stove |
+| `foil_takeout_tray` | 20 × 14 × 4.5 | 300 | convex hull | `thickness_pinch*` | stove |
 
-`edge_pinch*` pushes the box to a support edge first. Text-to-3D needed retries: the first soup pot was a tall
+`thickness_pinch*` needs a side overhanging its support first (`expose` slides the box to the edge), then the pads close above and below that side. The glass box's 7 cm leaves 5 mm per pad at the gripper's 8 cm opening. Text-to-3D needed retries: the first soup pot was a tall
 round-bottomed bucket and two oatmeal prompts gave a mound without a bowl; the committed prompts are the ones that
 passed (and were checked by eye). The foil tray came out empty (no noodles). None has a physical grasp rollout yet.
 
