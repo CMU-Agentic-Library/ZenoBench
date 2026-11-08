@@ -1038,6 +1038,12 @@ class Motion:
         with self._query(kin, other_q, coll_kw) as arm:
             return self._segments_free(arm, [np.asarray(qa, float), np.asarray(qb, float)])
 
+    @_timed("check_s")
+    def path_free(self, kin, qs, other_q=None, coll_kw=None):
+        STATS["check"] += 1
+        with self._query(kin, other_q, coll_kw) as arm:
+            return self._segments_free(arm, [np.asarray(q, float) for q in qs])
+
     @_timed("plan_s")
     def plan(self, kin, q0, q1, other_q=None, coll_kw=None, carry=False):
         """cuRobo joint-space trajectory q0 -> q1 (waypoints after q0) or (None, status).
