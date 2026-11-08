@@ -133,6 +133,10 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
     --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval
 ```
 
+A route step of a skill that has left the library (today `approach`: every manipulation skill picks its own base
+park) is rewritten by `define_tasks_v6.py` through `benchmark/retired_skills.py`: dropped right after a navigate to
+the same place, otherwise turned into that navigate. Write new routes without it.
+
 ## Files
 
 * `VARIANTS_zh.md` - every variant in plain Chinese: the situation, what the robot does, what the seed chooses.
