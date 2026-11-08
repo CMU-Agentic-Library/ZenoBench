@@ -28,9 +28,9 @@
 
 ### table_seats（Task）
 
-**情况**：指令要求把书放在某位客人吃饭的位置旁边、和餐具留出空隙，但没说是哪个空位。餐桌东侧摆了三人份早餐（每个座位一个盘子或碗加一个杯子，另有两盒麦片），桌边有好几个空位：两套餐具之间的窄缝（放得下但会挨着餐具）、两盒麦片之间或桌子尽头的大空地（离座位远），还有一个座位旁边够宽的空位 → 看清桌面，自己判断哪个空位既在客人座位旁边、又放得下、和餐具留得出空隙，放在那里
+**情况**：指令要求把书放在某位客人吃饭的位置旁边、和餐具留出空隙，但没说是哪个空位。餐桌东侧摆了三人份早餐（每个座位一个盘子或碗加一个杯子，另有两盒麦片），桌边有好几个空位：两套餐具之间的窄缝（放得下但会挨着餐具）、麦片外侧桌子尽头的大空地（离座位远），还有一个座位旁边够宽的空位 → 看清桌面，自己判断哪个空位既在客人座位旁边、又放得下、和餐具留得出空隙，放在那里
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。
+**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。
 
 **成功条件**：
 
@@ -45,13 +45,13 @@
 
 - 摆法 `seats_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
 - 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.779])`
+- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
 
 ### which_table（Task）
 
 **情况**：家里有两张餐桌（近的在隔壁餐厅约 6 m，远的在西边另一间餐厅约 16 m），早餐只摆在其中一张上（三人份，和 table_seats 一样只有一个座位旁的合适空位），另一张上是孩子的积木和储物箱，桌边也有空位；指令只说放到客人吃饭的那张桌子上 → 先到近桌看，没摆早餐就改去另一间餐厅，在摆了早餐的桌子上选座位旁的空位放下；放到另一张桌子上算失败
 
-**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。
+**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。
 
 **成功条件**：
 
@@ -101,14 +101,14 @@
 **参考调用顺序**：
 
 - 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.779])`
+- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
 - 摆法 `full_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=cell_shelf_4/top)` → 8. `place(object=paperback_book, receptacle=cell_shelf_4/top, hint_xy=[4.3, 4.45])`
 
 ### reader_seat（Task）
 
 **情况**：三个座位旁边都有够宽的空位；其中一个座位的饮料是马克杯，另外两个是玻璃杯；指令说书是"早上喝咖啡的那位客人"的 → 从桌上认出用马克杯的座位，把书放在那个座位旁边（离它的盘子或马克杯不超过 15 cm，离别的座位的盘子超过 15 cm）
 
-**指令**：餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。
+**指令**：餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。桌上的餐具和麦片都别挪动。
 
 **成功条件**：
 

@@ -114,10 +114,12 @@ T01_LAYOUTS = {   # name: (row, index of the suitable gap, plate the spoon lies 
     "seats_b": ([0.05, "plate_counter_a", 0.04, "cup_counter_b", WIDE, "bowl_side_table", 0.04, "cup_side_table",
                  NARROW, "plate_counter_b", 0.04, "mug_dining_cabinet", 0.05, "clutter_cereal_a", 0.05,
                  "clutter_cereal_b"], 2, "plate_counter_a"),
-    # narrow between seats 1 and 2 | widest between the two cereal boxes | the north end by seat 3 (suitable)
-    "seats_c": ([0.05, "cup_side_table", 0.04, "bowl_side_table", NARROW, "mug_dining_cabinet", 0.04,
-                 "plate_counter_b", 0.05, "clutter_cereal_a", 0.40, "clutter_cereal_b", 0.05, "cup_counter_b", 0.04,
-                 "plate_counter_a", 0.30], 8, "plate_counter_a"),
+    # far south end beyond both cereal boxes | wide between the cereal and seat 1's plate (suitable) | narrow
+    # between seats 2 and 3.  Seats 1 and 2 sit 5 cm apart, so the only wide slot beside a plate is south of seat 1;
+    # it lies where seats_a and seats_b have tableware, so no one book position solves two layouts
+    "seats_c": ([0.36, "clutter_cereal_a", 0.05, "clutter_cereal_b", WIDE, "plate_counter_a", 0.04, "cup_counter_b",
+                 0.05, "bowl_side_table", 0.04, "cup_side_table", NARROW, "plate_counter_b", 0.04,
+                 "mug_dining_cabinet"], 2, "plate_counter_a"),
 }
 HALF = (WIDE - 0.125) / 2          # either side of a cereal box standing in a wide slot: too narrow for the book
 T01_FULL = {   # no_room_fallback: seats_a with the second cereal box in the one suitable slot
@@ -257,9 +259,9 @@ def T01(t):
     suitable = dict(instruction="Breakfast is set on the dining table for the guests. Bring the paperback from the "
                                 "island and put it beside one of the guests' places, so they can read while they "
                                 "eat; leave some space between the book and the tableware, do not put it right "
-                                "against it.",
+                                "against it. Do not move the tableware or the cereal boxes.",
                     instruction_zh="餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，"
-                                   "方便边吃边看；书和餐具之间要留出空隙，不要挨着。")
+                                   "方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。")
     return {
         "table_seats": dict(
             base="table_set", control="overhang_ready", conditions=["spot_quality"], **suitable, keep_design=[DINING],
@@ -267,7 +269,7 @@ def T01(t):
             factor="which free slot on the set table is the suitable one (seed: one of three settings)",
             challenge="breakfast is set for three along the east edge of the dining table (a plate or bowl and a "
                       "drink per seat, two cereal boxes); the edge has several free slots: one too narrow between "
-                      "two seats, one wide but between the cereal boxes or at the far end, away from every seat, and "
+                      "two seats, one wide but at the far end beyond the cereal boxes, away from every seat, and "
                       "one wide slot beside a seat; the west half of the table is empty",
             rationale="a suitable place for a book at a breakfast table is beside a seat (within 15 cm of a plate "
                       "or bowl) and clear of the tableware (5 cm): look at the table, judge the slots and put it in "
@@ -280,9 +282,9 @@ def T01(t):
             instruction="The guests are having breakfast. Bring the paperback from the kitchen island to the table "
                         "where they are eating and put it beside one of the guests' places, so they can read while "
                         "they eat; leave some space between the book and the tableware, do not put it right against "
-                        "it.",
+                        "it. Do not move the tableware or the cereal boxes.",
             instruction_zh="客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；"
-                           "书和餐具之间要留出空隙，不要挨着。",
+                           "书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。",
             factor="which of the two dining tables the guests eat at, and its setting (seed: one of four)",
             challenge="the house has two dining tables, the near one "
                       "(6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the "
@@ -294,10 +296,9 @@ def T01(t):
         "no_room_fallback": dict(
             base="table_set", control="table_seats", conditions=["spot_quality", "infeasible_fallback"],
             keep_design=[DINING], watch=[B, *T01_WARE6],
-            instruction=suitable["instruction"] + " Do not move the tableware or the cereal boxes; if there is no "
-                        "such place on the table, put the book on top of the low cell shelf by the dining room's "
-                        "south wall instead.",
-            instruction_zh=suitable["instruction_zh"] + "桌上的餐具和麦片都别挪动；要是桌上没有这样的位置，就把书放到"
+            instruction=suitable["instruction"][:-1] + "; if there is no such place on the table, put the book on top "
+                        "of the low cell shelf by the dining room's south wall instead.",
+            instruction_zh=suitable["instruction_zh"][:-1] + "；要是桌上没有这样的位置，就把书放到"
                            "餐厅南墙边那个矮格子柜的顶上。",
             factor="whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in "
                    "it)",
@@ -319,9 +320,10 @@ def T01(t):
             keep_design=[DINING], watch=[B, *T01_WARE6],
             instruction="Breakfast is set on the dining table for the guests. The paperback on the island belongs to "
                         "the guest who drinks coffee in the morning: put it beside that guest's place, so they can "
-                        "read while they eat; leave some space between the book and the tableware.",
+                        "read while they eat; leave some space between the book and the tableware. Do not move the "
+                        "tableware or the cereal boxes.",
             instruction_zh="餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置"
-                           "旁边，方便边吃边看；书和餐具之间要留出空隙。",
+                           "旁边，方便边吃边看；书和餐具之间要留出空隙。桌上的餐具和麦片都别挪动。",
             factor="which seat has the coffee mug (seed: one of three)",
             challenge="three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one "
                       "seat has a coffee mug, the other two a cup; the instruction names the guest only by what "

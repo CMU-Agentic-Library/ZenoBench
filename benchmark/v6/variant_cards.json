@@ -55,7 +55,7 @@
    14,
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -185,7 +185,7 @@
   },
   "control": "overhang_ready",
   "oracle_route": "v6_table_seats__seats_a",
-  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but between the cereal boxes or at the far end, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
+  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but at the far end beyond the cereal boxes, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
   "rationale": "a suitable place for a book at a breakfast table is beside a seat (within 15 cm of a plate or bowl) and clear of the tableware (5 cm): look at the table, judge the slots and put it in the one beside a seat; which slot that is changes with the setting",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -197,7 +197,7 @@
    17,
    18
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -327,7 +327,7 @@
   },
   "control": "overhang_ready",
   "oracle_route": "v6_table_seats__seats_b",
-  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but between the cereal boxes or at the far end, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
+  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but at the far end beyond the cereal boxes, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
   "rationale": "a suitable place for a book at a breakfast table is beside a seat (within 15 cm of a plate or bowl) and clear of the tableware (5 cm): look at the table, judge the slots and put it in the one beside a seat; which slot that is changes with the setting",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -339,7 +339,7 @@
    16,
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -469,7 +469,7 @@
   },
   "control": "overhang_ready",
   "oracle_route": "v6_table_seats__seats_c",
-  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but between the cereal boxes or at the far end, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
+  "challenge": "breakfast is set for three along the east edge of the dining table (a plate or bowl and a drink per seat, two cereal boxes); the edge has several free slots: one too narrow between two seats, one wide but at the far end beyond the cereal boxes, away from every seat, and one wide slot beside a seat; the west half of the table is empty",
   "rationale": "a suitable place for a book at a breakfast table is beside a seat (within 15 cm of a plate or bowl) and clear of the tableware (5 cm): look at the table, judge the slots and put it in the one beside a seat; which slot that is changes with the setting",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -481,7 +481,7 @@
    16,
    19
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -644,7 +644,7 @@
    15,
    17
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -806,7 +806,7 @@
    10,
    12
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -963,7 +963,7 @@
    13,
    18
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1526,7 +1526,7 @@
    16,
    17
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1677,7 +1677,7 @@
    13,
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1828,7 +1828,7 @@
    18,
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Do not move the tableware or the cereal boxes.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
