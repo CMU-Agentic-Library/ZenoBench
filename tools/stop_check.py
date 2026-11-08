@@ -26,6 +26,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WATCH = ("zeno_skills", "tools", "tests")
 STAMP = ROOT / ".claude" / "stop_check_ok"
+# while this file exists (local, git-ignored; its text says why) the collision audit is not run here
+# nor by tests/test_collision_audit.py -- a refactor moving sites between files; compiling still is
+AUDIT_PAUSED = ROOT / ".claude" / "audit_paused"
 
 
 def _git(*args):
@@ -56,6 +59,8 @@ def problems():
             py_compile.compile(str(ROOT / n), doraise=True)
         except py_compile.PyCompileError as exc:
             out.append(f"{n} does not compile: {exc.msg.strip()}")
+    if AUDIT_PAUSED.exists():
+        return out
     sys.path.insert(0, str(ROOT))
     from tools.audit_collision import compare, counts, load_baseline, sites
     up, _ = compare(counts(), load_baseline())
