@@ -31,7 +31,7 @@ from .physics import CONTAINER_BASE_T, CONTAINER_WALL, PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
-                  SkillFailure, relay_approach)
+                  SkillFailure)
 from .park_search import Problem, find_park as find_skill_park
 from .run import observe, run
 from .skill_plans import plan_pick, plan_place
@@ -527,39 +527,43 @@ def _at_park(rig, x, y, yaw):
     return math.hypot(x - bx, y - by) <= AT_PARK_M and abs((yaw - byaw + 180) % 360 - 180) <= AT_PARK_DEG
 
 
-def _relay_check(rig, goal, plans, travel_q):
-    """find_park check of a relay pose entered straight, ``goal`` (x, y, yaw, qs) -> (p, R, u, L,
-    a solution of the straight's start): the motion to it made the way it is executed
-    (rig.relay_approach), from the posture the arm is in at that park, kept in ``plans`` under
-    _park_key for Rig.move_relay.  Only the pick in the microwave still uses it (step 6.4); the
-    rest plans the whole skill (skill_plans, park_search)."""
-    kin = rig.kin
-
-    def check(x, y, yaw, qs):
-        if kin.motion is None:
-            return True
-        p, R, u, L, q_hint = goal(x, y, yaw, qs)
-        q_from = rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else np.asarray(travel_q, float)
-        with rig._fingers_checked(kin):
-            plan, why = relay_approach(kin, q_from, p, R, u, L, carry=rig._carrying(), step=APPROACH_STEP,
-                                       q_hint=q_hint)
-        if plan is None:
-            reason = why.split(":")[0]
-            LAST_RELAY_DIAG[reason] = LAST_RELAY_DIAG.get(reason, 0) + 1
-            return False
-        plan["q_from"] = q_from
-        plans[_park_key(x, y, yaw, qs)] = plan
-        return True
-    return check
-
-
-LAST_RELAY_DIAG: dict = {}    # why _relay_check turned parks down, by reason (for failure messages)
-
-
-def _diag(fail):
-    """Count a plan that could not be made at a park, by segment and reason (LAST_RELAY_DIAG)."""
-    key = f"{fail.segment}: {fail.why.split(' (')[0]}"
-    LAST_RELAY_DIAG[key] = LAST_RELAY_DIAG.get(key, 0) + 1
+# ---- retired 2026-11-08 (docs/MOTION_ARCHITECTURE.md steps 3-4): the reach-in-only park check of
+# the old pick (Rig.move_relay), its plan keys and failure counts, and what only it used.  pick and
+# place plan the whole skill now (skill_plans, park_search); kept for reference until the microwave
+# pick (step 6.4) is checked on the new path.
+# def _relay_check(rig, goal, plans, travel_q):
+#     """find_park check of a relay pose entered straight, ``goal`` (x, y, yaw, qs) -> (p, R, u, L,
+#     a solution of the straight's start): the motion to it made the way it is executed
+#     (rig.relay_approach), from the posture the arm is in at that park, kept in ``plans`` under
+#     _park_key for Rig.move_relay.  Only the pick in the microwave still uses it (step 6.4); the
+#     rest plans the whole skill (skill_plans, park_search)."""
+#     kin = rig.kin
+#
+#     def check(x, y, yaw, qs):
+#         if kin.motion is None:
+#             return True
+#         p, R, u, L, q_hint = goal(x, y, yaw, qs)
+#         q_from = rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else np.asarray(travel_q, float)
+#         with rig._fingers_checked(kin):
+#             plan, why = relay_approach(kin, q_from, p, R, u, L, carry=rig._carrying(), step=APPROACH_STEP,
+#                                        q_hint=q_hint)
+#         if plan is None:
+#             reason = why.split(":")[0]
+#             LAST_RELAY_DIAG[reason] = LAST_RELAY_DIAG.get(reason, 0) + 1
+#             return False
+#         plan["q_from"] = q_from
+#         plans[_park_key(x, y, yaw, qs)] = plan
+#         return True
+#     return check
+#
+#
+# LAST_RELAY_DIAG: dict = {}    # why _relay_check turned parks down, by reason (for failure messages)
+#
+#
+# def _diag(fail):
+#     """Count a plan that could not be made at a park, by segment and reason (LAST_RELAY_DIAG)."""
+#     key = f"{fail.segment}: {fail.why.split(' (')[0]}"
+#     LAST_RELAY_DIAG[key] = LAST_RELAY_DIAG.get(key, 0) + 1
 
 
 def _turn(Ra, Rb):
@@ -574,12 +578,13 @@ def _grasp_of(name, g):
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
 
-def _pick_find_park(rig, name, cands, near, fridge_shelf):
+def _pick_find_park(rig, name, cands, near, prefer=()):
     """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
     the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
     relay pose the ranking solves), and a park counts when the whole pick plans from it
     (skill_plans.plan_pick, from the posture the arm arrives in, the hand opened to the
-    candidate's width).  (Found or None, diag, the carry goal set)."""
+    candidate's width).  ``near`` / ``prefer`` as Problem's (the fridge shelf's open side, the pose a
+    microwave was loaded from).  (Found or None, diag, the carry goal set)."""
     kin = rig.kin
     state = observe(rig)
     carry_goals = _carry_goal_set(rig, name)
@@ -597,12 +602,7 @@ def _pick_find_park(rig, name, cands, near, fridge_shelf):
 
     travel = _travel_q(rig)
     arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
-    if fridge_shelf:
-        # the fridge shelf behind its door: its open side first (a known good park)
-        problem = Problem(tuple(goals), build, arrive, travel, near=rig.base_pose()[:2], prefer=(near,),
-                          label=f"pick {name}")
-    else:
-        problem = Problem(tuple(goals), build, arrive, travel, near=near, label=f"pick {name}")
+    problem = Problem(tuple(goals), build, arrive, travel, near=near, prefer=tuple(prefer), label=f"pick {name}")
     found, diag = find_skill_park(rig, problem, state)
     return found, diag, carry_goals
 
@@ -694,12 +694,13 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
     return out["tcp0"]
 
 
-def _park_key(x, y, yaw, qs):
-    """Key of what a find_park check stored for one candidate: the base pose AND its solution --
-    find_park_set checks one base pose for several goals (spots, wrist turns), and keyed by the
-    pose alone the last goal checked there overwrote the plan and set-down length of the chosen
-    one (T05 pen: the set-down planned for a goal 4.7 cm and 135 deg off, 11-07)."""
-    return (x, y, yaw, tuple(np.round(np.asarray(qs[0], float), 9)))
+# ---- retired 2026-11-08 with the old pick search (see _relay_check above)
+# def _park_key(x, y, yaw, qs):
+#     """Key of what a find_park check stored for one candidate: the base pose AND its solution --
+#     find_park_set checks one base pose for several goals (spots, wrist turns), and keyed by the
+#     pose alone the last goal checked there overwrote the plan and set-down length of the chosen
+#     one (T05 pen: the set-down planned for a goal 4.7 cm and 135 deg off, 11-07)."""
+#     return (x, y, yaw, tuple(np.round(np.asarray(qs[0], float), 9)))
 
 
 # ---------------------------------------------------------------- articulated
@@ -1208,14 +1209,15 @@ def pick_approach():
     return finger_model_length() + LEAVE_MARGIN
 
 
-def _grasp_targets(g):
-    """find_park's targets of a pinch: the start of its straight approach and the grasp, both free
-    space (the open fingers checked, the object an obstacle: the hand closes where it already
-    stands), and the lift out of it (the fingers checked, the object exempt: it is in the hand
-    then).  Each with its own rule: nothing rides on the arm's coll_kw."""
-    u, L = _grasp_approach(g)
-    return [(g["p"] - L * u, g["R"], FREE_SPACE_KW), (g["p"], g["R"], FREE_SPACE_KW),
-            (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"], FINGERS_KW)]
+# ---- retired 2026-11-08 with the old pick search (see _relay_check above)
+# def _grasp_targets(g):
+#     """find_park's targets of a pinch: the start of its straight approach and the grasp, both free
+#     space (the open fingers checked, the object an obstacle: the hand closes where it already
+#     stands), and the lift out of it (the fingers checked, the object exempt: it is in the hand
+#     then).  Each with its own rule: nothing rides on the arm's coll_kw."""
+#     u, L = _grasp_approach(g)
+#     return [(g["p"] - L * u, g["R"], FREE_SPACE_KW), (g["p"], g["R"], FREE_SPACE_KW),
+#             (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"], FINGERS_KW)]
 
 
 def _pinch_candidates(rig, obj, pos, quat, kinds, surface_z):
@@ -1272,15 +1274,16 @@ def _pads_clear_of(g, floor_z):
     return p
 
 
-@contextmanager
-def _hand_opened(rig, width):
-    """Collision queries inside see the right hand opened to ``width`` (Motion.hand_open)."""
-    motion = getattr(rig.kin, "motion", None)
-    if motion is None or not hasattr(motion, "hand_open"):
-        yield
-        return
-    with motion.hand_open("right", width):
-        yield
+# ---- retired 2026-11-08 with the old pick search (see _relay_check above)
+# @contextmanager
+# def _hand_opened(rig, width):
+#     """Collision queries inside see the right hand opened to ``width`` (Motion.hand_open)."""
+#     motion = getattr(rig.kin, "motion", None)
+#     if motion is None or not hasattr(motion, "hand_open"):
+#         yield
+#         return
+#     with motion.hand_open("right", width):
+#         yield
 
 
 def _watching(rig, name):
@@ -1397,48 +1400,30 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         # off-centre pinch points of a long object let it swing in the hand:
         # prefer the centre, use the others when it is out of reach
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
-    park, g, plans, plan, carry_goals = None, None, {}, None, None
-    use_plan = not in_microwave
-    if use_plan:
-        # every grasp candidate is one goal of the park search (park_search.find_park), and a park
-        # is one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
-        found, diag, carry_goals = _pick_find_park(rig, name, cands[:max_candidates] + extra, search_near,
-                                                   fridge_shelf)
-        if found is not None:
-            g = (cands[:max_candidates] + extra)[found.k]
-            park, plan = (found.x, found.y, found.yaw, None), found.plan
-    # in the microwave (step 6.4) the reach-in alone (_relay_check, Rig.move_relay), candidate by candidate
-    arrive_q = retrieval_q if in_microwave and retrieval_q is not None else _travel_q(rig)
-    LAST_RELAY_DIAG.clear()
-    for g in ([] if use_plan else cands[:max_candidates] + extra):
-        reach_in = (lambda c: lambda x, y, yaw, qs: (c["p"], c["R"], *_grasp_approach(c), qs[0]))(g)
-        check = _relay_check(rig, reach_in, plans, arrive_q)
-        with _hand_opened(rig, g["pre_open"]):
-            park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
-                             max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
-                             q_start=retrieval_q if in_microwave and retrieval_q is not None else
-                                     None if in_microwave or fridge_shelf else rig.q_cmd,
-                             travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig),
-                             check=check, unfold=False)
-        if park:
-            break
-    if park is None:
-        from .planner import LAST_PARK_DIAG
+    # every grasp candidate is one goal of the park search (park_search.find_park), and a park is
+    # one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run.  In the
+    # microwave too since 11-08: its candidates sorted by the cavity's opening (above), the pose it
+    # was loaded from tried first; the old reach-in-only search, the relocation to the retrieval
+    # posture and the written withdrawal points are retired (commented out below, step 6.4)
+    near = rig.base_pose()
+    prefer = ()
+    if in_microwave:
+        near = rig.base_pose()[:2] if len(search_near) == 3 else search_near
+        prefer = (search_near,) if len(search_near) == 3 else ()
+    elif fridge_shelf:
+        near, prefer = rig.base_pose()[:2], (search_near,)
+    found, diag, carry_goals = _pick_find_park(rig, name, cands[:max_candidates] + extra, near, prefer)
+    if found is None:
         getattr(rig, "log", lambda *a, **k: None)("pick_no_park", obj=name, pos=[round(float(v), 3) for v in pos],
-                quat=[round(float(v), 3) for v in quat], n_cands=len(cands),
-                diag=diag if use_plan else {k: v for k, v in LAST_PARK_DIAG.items() if v},
-                relay=None if use_plan else dict(LAST_RELAY_DIAG))
+                quat=[round(float(v), 3) for v in quat], n_cands=len(cands), diag=diag)
         raise SkillFailure(f"pick {name}: no reachable grasp from any base pose")
+    g = (cands[:max_candidates] + extra)[found.k]
+    park, plan = (found.x, found.y, found.yaw, None), found.plan
     x, y, yaw, _ = park
     rig.log("pick_park", obj=name, kind=g["kind"], park=[round(x, 3), round(y, 3), round(yaw, 1)],
             floor=bool(floor_z < 0.05))
     rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
-    if in_microwave and retrieval_q is not None:
-        relocate(rig, (x, y, yaw), [("microwave_pick_safe", (retrieval_q, rig.left_q_cmd.copy()))],
-                 label="microwave_pick_safe", speed=0.2)
-        rig.sync_world()
-    else:
-        _goto_park(rig, park)
+    _goto_park(rig, park)
     # re-read after driving (the drive may have knocked it): the same candidate at the object's
     # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
     # tolerance dropped every re-read of an object turned by a tenth of a degree)
@@ -1449,69 +1434,76 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
             quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
     note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
-    if use_plan:
-        tcp0 = _pick_run(rig, name, g, park, plan, carry_goals)
-        return _pick_judged(rig, name, g, tcp0, pos)
-    rig.grip(g["pre_open"], 40)
-    # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
-    # object in the collision model, nothing exempt; planned to end straight along the gripper
-    # axis, no fallback: a hand that cannot get there open without touching is a grasp (or a park)
-    # that does not work.  2: the fingers close where the hand stands.
-    # the object is watched every tick on the way (the monitor's checks miss a knock, plan section 5)
-    with rig._fingers_checked(rig.kin), _watching(rig, name):
-        err = rig.move_relay(g["p"], g["R"], *_grasp_approach(g), plan=plans.get(_park_key(*park)),
-                             step=APPROACH_STEP, steps_per_wp=4, label="pick_grasp", smooth=True)
-    if rig.kin.motion is not None:
-        # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
-        rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
-                hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
-    if err > PICK_REACH_TOL:
-        # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
-        rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
-        rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
-        rig.focus_z = None
-        raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
-    rig.caption = f"PICK {name}: close gripper"
-    rig.clear.motion("pick_close", closing(name), follows=False)
-    rig.grip(0.0, PHYSICS_HZ, gradual=True)
-    f = rig.fingers()
-    if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
-        # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
-        # with an open hand clear of the neighbours (fingers closed beside a crowding bowl stopped
-        # at 5 mm, so the next push could not make its fist); nothing is held, so nothing is welded
-        rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False, why="not pinched")
-        rig.grip(0.04, 60)
-        rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
-        rig.focus_z = None
-        raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
-                           f"opened to {g['pre_open']:.3f})")
-    # held from here -- and welded, under sticky hands: the load is in the arm's collision model
-    # (off its support: the contact exit ends once it is clear), and whether it came along is
-    # judged at the next relay pose, the carry.  The hand's pose as it stands, not as commanded
-    # (the held frame and the rise measured from it)
-    tcp0, R = rig.kin.tcp(rig.q())
-    rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
-                "pre_open": g["pre_open"]}
-    if g["kind"] == "thickness_pinch":
-        # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
-        rig.held.update(edge_held(rig, name, tcp0, R))
-    rig.caption = f"PICK {name}: lift"
-    rig.leave([0, 0, 1], "pick_lift", LEAVE_CONTACT, step=0.002, steps_per_wp=6, lifts_off=True)
-    if in_microwave:
-        # Lift alone leaves most of the bowl behind the door plane. Withdraw
-        # horizontally through the front before moving the base away.
-        for y, label in ((cavity[1] - 0.10, "microwave_pick_front"),
-                         (cavity[1] - 0.23, "microwave_pick_clear")):
-            tcp_now, _ = rig.kin.tcp(rig.q_cmd)
-            target = tcp_now.copy()
-            target[1] = y
-            rig.move_to(target, R, step=0.004, steps_per_wp=5, label=label)
-            check_held(rig, label)
-    try:
-        _carry_pose(rig)
-    except Dropped as exc:
-        raise SkillFailure(f"pick {name}: not held ({exc})")
+    tcp0 = _pick_run(rig, name, g, park, plan, carry_goals)
     return _pick_judged(rig, name, g, tcp0, pos)
+
+    # ---- retired 2026-11-08 (docs/MOTION_ARCHITECTURE.md steps 3-4): the old execution after the
+    # reach-in (Rig.move_relay, Rig.leave for the lift with its halving, the microwave's written
+    # withdrawal points, _carry_pose with its unchecked straight and carry_pose_kept).  The plan
+    # (skill_plans.plan_pick) and run.run replace it; kept for reference until the microwave pick
+    # (step 6.4) is checked on the new path.
+    # The search part retired with it: one planner.find_park per candidate with _relay_check
+    # (_hand_opened, _grasp_targets), q_start / travel_q for the retrieval posture, and the
+    # relocation through "microwave_pick_safe".
+    # rig.grip(g["pre_open"], 40)
+    # # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
+    # # object in the collision model, nothing exempt; planned to end straight along the gripper
+    # # axis, no fallback: a hand that cannot get there open without touching is a grasp (or a park)
+    # # that does not work.  2: the fingers close where the hand stands.
+    # # the object is watched every tick on the way (the monitor's checks miss a knock, plan section 5)
+    # with rig._fingers_checked(rig.kin), _watching(rig, name):
+    #     err = rig.move_relay(g["p"], g["R"], *_grasp_approach(g), plan=plans.get(_park_key(*park)),
+    #                          step=APPROACH_STEP, steps_per_wp=4, label="pick_grasp", smooth=True)
+    # if rig.kin.motion is not None:
+    #     # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
+    #     rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
+    #             hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
+    # if err > PICK_REACH_TOL:
+    #     # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
+    #     rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
+    #     rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+    #     rig.focus_z = None
+    #     raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
+    # rig.caption = f"PICK {name}: close gripper"
+    # rig.clear.motion("pick_close", closing(name), follows=False)
+    # rig.grip(0.0, PHYSICS_HZ, gradual=True)
+    # f = rig.fingers()
+    # if not np.all((f[:2] > SHUT) & (f[:2] < float(g["pre_open"]) - GRIP_CLOSED_BY)):
+    #     # not pinched: shut on nothing, or a finger left where it opened (it met nothing).  Leave
+    #     # with an open hand clear of the neighbours (fingers closed beside a crowding bowl stopped
+    #     # at 5 mm, so the next push could not make its fist); nothing is held, so nothing is welded
+    #     rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False, why="not pinched")
+    #     rig.grip(0.04, 60)
+    #     rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
+    #     rig.focus_z = None
+    #     raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+    #                        f"opened to {g['pre_open']:.3f})")
+    # # held from here -- and welded, under sticky hands: the load is in the arm's collision model
+    # # (off its support: the contact exit ends once it is clear), and whether it came along is
+    # # judged at the next relay pose, the carry.  The hand's pose as it stands, not as commanded
+    # # (the held frame and the rise measured from it)
+    # tcp0, R = rig.kin.tcp(rig.q())
+    # rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
+    #             "pre_open": g["pre_open"]}
+    # if g["kind"] == "thickness_pinch":
+    #     # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
+    #     rig.held.update(edge_held(rig, name, tcp0, R))
+    # rig.caption = f"PICK {name}: lift"
+    # rig.leave([0, 0, 1], "pick_lift", LEAVE_CONTACT, step=0.002, steps_per_wp=6, lifts_off=True)
+    # if in_microwave:
+    #     # Lift alone leaves most of the bowl behind the door plane. Withdraw
+    #     # horizontally through the front before moving the base away.
+    #     for y, label in ((cavity[1] - 0.10, "microwave_pick_front"),
+    #                      (cavity[1] - 0.23, "microwave_pick_clear")):
+    #         tcp_now, _ = rig.kin.tcp(rig.q_cmd)
+    #         target = tcp_now.copy()
+    #         target[1] = y
+    #         rig.move_to(target, R, step=0.004, steps_per_wp=5, label=label)
+    #         check_held(rig, label)
+    # try:
+    #     _carry_pose(rig)
+    # except Dropped as exc:
+    #     raise SkillFailure(f"pick {name}: not held ({exc})")
 
 
 def _pick_judged(rig, name, g, tcp0, pos):
