@@ -33,6 +33,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+from benchmark.retired_skills import drop_retired_steps  # noqa: E402
 from benchmark.v5.define_tasks_v5 import (FIELDS, OVERLAY, P, REC, S, _refresh_view,  # noqa: E402
                                           f_initial, f_joint, f_move, find, seed_vary)
 
@@ -2641,7 +2642,9 @@ def build() -> dict:
                     t["variants"][lid]["layout"] = layout_spec(t, lid, reg, ctl)
                     observe_first(t, lid)
     apply_tracks(out)
-    return out
+    # approach left the library (benchmark/retired_skills.py): its steps in the routes v6 inherits from v5
+    # and in its own designs become the navigate they still need, or go when a navigate there precedes them
+    return drop_retired_steps(out)
 
 
 def main():

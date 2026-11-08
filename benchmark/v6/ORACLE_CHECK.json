@@ -5,7 +5,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "overhang_ready",
-   "steps": 7,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -15,7 +15,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "table_seats__seats_a",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -32,7 +32,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "table_seats__seats_b",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -49,7 +49,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "table_seats__seats_c",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -66,7 +66,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_table__near_a",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 15,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -83,7 +83,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_table__near_b",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 15,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -100,7 +100,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_table__far_a",
-   "steps": 10,
+   "steps": 9,
    "atoms_checked": 15,
    "atoms_geometric": 5,
    "geometric_atoms": [
@@ -116,7 +116,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_table__far_b",
-   "steps": 10,
+   "steps": 9,
    "atoms_checked": 15,
    "atoms_geometric": 5,
    "geometric_atoms": [
@@ -132,7 +132,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__seats_b",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -149,7 +149,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__seats_c",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -166,7 +166,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__full_a",
-   "steps": 9,
+   "steps": 8,
    "atoms_checked": 11,
    "atoms_geometric": 5,
    "geometric_atoms": [
@@ -182,7 +182,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "reader_seat__mug_1",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 13,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -199,7 +199,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "reader_seat__mug_2",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 13,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -216,7 +216,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "reader_seat__mug_3",
-   "steps": 8,
+   "steps": 7,
    "atoms_checked": 13,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -233,7 +233,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_book__living",
-   "steps": 9,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -243,7 +243,7 @@
   {
    "task": "T01_book_to_dining_table",
    "layout": "which_book__bedroom",
-   "steps": 9,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -263,7 +263,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "crowded_use_another__tight_tv",
-   "steps": 9,
+   "steps": 8,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -275,7 +275,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "crowded_use_another__tight_dining",
-   "steps": 9,
+   "steps": 8,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -287,7 +287,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "crowded_use_another__loose",
-   "steps": 7,
+   "steps": 6,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -299,7 +299,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "third_toy_elsewhere__duck",
-   "steps": 12,
+   "steps": 11,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -309,7 +309,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "third_toy_elsewhere__toy_block",
-   "steps": 12,
+   "steps": 11,
    "atoms_checked": 19,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -319,7 +319,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "tower_for_kid__counter",
-   "steps": 18,
+   "steps": 16,
    "atoms_checked": 23,
    "atoms_geometric": 12,
    "geometric_atoms": [
@@ -342,7 +342,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "tower_for_kid__study",
-   "steps": 18,
+   "steps": 16,
    "atoms_checked": 23,
    "atoms_geometric": 12,
    "geometric_atoms": [
@@ -365,7 +365,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "tower_for_kid_duck__counter",
-   "steps": 18,
+   "steps": 16,
    "atoms_checked": 11,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -380,7 +380,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "tower_for_kid_duck__study",
-   "steps": 18,
+   "steps": 16,
    "atoms_checked": 11,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -395,7 +395,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "block_put_away__in_4",
-   "steps": 24,
+   "steps": 22,
    "atoms_checked": 15,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -410,7 +410,7 @@
   {
    "task": "T02_stack_blocks",
    "layout": "block_put_away__in_6",
-   "steps": 24,
+   "steps": 22,
    "atoms_checked": 15,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -425,7 +425,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "large_only",
-   "steps": 12,
+   "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -435,7 +435,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "small_bin_or_bedroom_bin",
-   "steps": 16,
+   "steps": 14,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -445,7 +445,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "three_containers_bedroom",
-   "steps": 16,
+   "steps": 14,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -455,7 +455,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "which_bin_by_contents__toys_near",
-   "steps": 15,
+   "steps": 13,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -465,7 +465,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "which_bin_by_contents__tools_near",
-   "steps": 12,
+   "steps": 10,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -475,7 +475,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "no_bin_substitute__basket",
-   "steps": 17,
+   "steps": 15,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -485,7 +485,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "no_bin_substitute__tray",
-   "steps": 17,
+   "steps": 15,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -495,7 +495,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__dining",
-   "steps": 15,
+   "steps": 13,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -505,7 +505,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__counter",
-   "steps": 15,
+   "steps": 13,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1139,7 +1139,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "far_sponge_tv__alt_dining_table_2",
-   "steps": 7,
+   "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1149,7 +1149,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "wipe_and_sort__blocks",
-   "steps": 17,
+   "steps": 15,
    "atoms_checked": 12,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -1164,7 +1164,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "wipe_and_sort__duck",
-   "steps": 17,
+   "steps": 15,
    "atoms_checked": 12,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -1179,7 +1179,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__dining",
-   "steps": 10,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1189,7 +1189,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__study",
-   "steps": 10,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1199,7 +1199,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__far_dining",
-   "steps": 10,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1441,7 +1441,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "guests_coming__can_mug_block",
-   "steps": 17,
+   "steps": 16,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1453,7 +1453,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "guests_coming__can_block",
-   "steps": 13,
+   "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2061,7 +2061,7 @@
   {
    "task": "T19_recycling",
    "layout": "bin_on_bookcase",
-   "steps": 14,
+   "steps": 13,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2071,7 +2071,7 @@
   {
    "task": "T19_recycling",
    "layout": "m_can_in_dining_room",
-   "steps": 15,
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2081,7 +2081,7 @@
   {
    "task": "T19_recycling",
    "layout": "m_can_in_dining_room__alt_tv_stand_2",
-   "steps": 15,
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2091,7 +2091,7 @@
   {
    "task": "T19_recycling",
    "layout": "lookalike_bin",
-   "steps": 17,
+   "steps": 16,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2101,7 +2101,7 @@
   {
    "task": "T19_recycling",
    "layout": "lookalike_bin__alt_tv_stand_2",
-   "steps": 17,
+   "steps": 16,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2111,7 +2111,7 @@
   {
    "task": "T19_recycling",
    "layout": "x6_gd_can_put_away__in_4",
-   "steps": 24,
+   "steps": 23,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2121,7 +2121,7 @@
   {
    "task": "T19_recycling",
    "layout": "x6_gd_can_put_away__in_6",
-   "steps": 24,
+   "steps": 23,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],

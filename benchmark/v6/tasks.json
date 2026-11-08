@@ -4699,12 +4699,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -4746,12 +4740,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -4800,12 +4788,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -4863,12 +4845,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -4920,12 +4896,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -4983,12 +4953,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5043,12 +5007,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5100,12 +5058,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -5175,12 +5127,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5247,12 +5193,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5307,12 +5247,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5364,12 +5298,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -5433,12 +5361,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5493,12 +5415,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5550,12 +5466,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -5625,12 +5535,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "paperback_book"
@@ -5687,12 +5591,6 @@
        "skill": "navigate",
        "args": {
         "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
        }
       },
       {
@@ -9784,12 +9682,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "floor_block",
@@ -9846,12 +9738,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "floor_block",
@@ -9893,12 +9779,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -9978,13 +9858,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        },
        "role": "recover"
       },
@@ -10070,13 +9943,6 @@
        "role": "recover"
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "toy_block",
@@ -10157,12 +10023,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "wooden_block_b",
@@ -10192,12 +10052,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -10280,12 +10134,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "floor_block",
@@ -10315,12 +10163,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -10403,12 +10245,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "wooden_block_b",
@@ -10438,12 +10274,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -10526,12 +10356,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "wooden_block_b",
@@ -10561,12 +10385,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -10605,12 +10423,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_b"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_b"
        }
       },
       {
@@ -10711,12 +10523,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
-       }
-      },
-      {
        "skill": "stack",
        "args": {
         "object": "floor_block",
@@ -10752,12 +10558,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_b"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_b"
        }
       },
       {
@@ -10855,12 +10655,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wooden_block_a"
        }
       },
       {
@@ -13333,12 +13127,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13361,12 +13149,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -13437,12 +13219,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13465,12 +13241,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -13542,12 +13312,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13570,12 +13334,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -13641,12 +13399,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13669,12 +13421,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -13721,12 +13467,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13749,12 +13489,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -13832,12 +13566,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "storage_basket"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -13860,12 +13588,6 @@
        "skill": "navigate",
        "args": {
         "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "storage_basket"
        }
       },
       {
@@ -13943,12 +13665,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "serving_tray"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "breakfast_spoon",
@@ -13971,12 +13687,6 @@
        "skill": "navigate",
        "args": {
         "destination": "serving_tray"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "serving_tray"
        }
       },
       {
@@ -14036,12 +13746,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "rolling_pin",
@@ -14071,12 +13775,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -14136,12 +13834,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "rolling_pin",
@@ -14171,12 +13863,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -28324,9 +28010,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_microwave/start_button"
+        "destination": "kitchen_microwave/start_button"
        }
       },
       {
@@ -28463,9 +28149,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_microwave/start_button"
+        "destination": "kitchen_microwave/start_button"
        }
       },
       {
@@ -30503,9 +30189,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -30554,12 +30240,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -30604,12 +30284,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
@@ -30632,12 +30306,6 @@
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
        }
       },
       {
@@ -30666,9 +30334,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -30716,12 +30384,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
@@ -30744,12 +30406,6 @@
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
        }
       },
       {
@@ -30778,9 +30434,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -30835,12 +30491,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -30851,12 +30501,6 @@
        "skill": "navigate",
        "args": {
         "destination": "sponge_tray"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "sponge_tray"
        }
       },
       {
@@ -30904,12 +30548,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -30920,12 +30558,6 @@
        "skill": "navigate",
        "args": {
         "destination": "sponge_tray"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "sponge_tray"
        }
       },
       {
@@ -30973,12 +30605,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -30989,12 +30615,6 @@
        "skill": "navigate",
        "args": {
         "destination": "sponge_tray"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "sponge_tray"
        }
       },
       {
@@ -31079,9 +30699,9 @@
        }
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "dining_table_2/top"
+        "destination": "dining_table_2/top"
        }
       },
       {
@@ -37878,12 +37498,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
@@ -37963,12 +37577,6 @@
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "toy_box"
        }
       },
       {
@@ -53614,12 +53222,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -53710,12 +53312,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -53825,12 +53421,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -53932,12 +53522,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -54036,12 +53620,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
@@ -54191,12 +53769,6 @@
        }
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -54333,12 +53905,6 @@
        "skill": "navigate",
        "args": {
         "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
        }
       },
       {
