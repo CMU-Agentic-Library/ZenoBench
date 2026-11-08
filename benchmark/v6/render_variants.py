@@ -76,6 +76,65 @@ def place_hints(task, lid):
     return [(r, xy, f"{i} {o}" if len(hints) > 1 else f"{o} 放这里") for i, (r, xy, o) in enumerate(hints, 1)]
 
 
+def accepted_spots(goal_atoms, cfg, sup, aabb, step=0.02):
+    """Where on ``sup`` the goal accepts the placed object: every (x, y) of a grid whose footprint (either way
+    round) is inside the support and meets the goal's clear_of / near_any / not near_any atoms, judged on the
+    footprints as the goal predicates do.  [] when the goal has no such atom for an object on ``sup``."""
+    import benchmark.v6.layout as L
+    on = [a for a in goal_atoms if a[0] == "on" and len(a) > 2 and a[2] == sup]
+    if not on:
+        return []
+    obj = on[0][1]
+    rules = [a for a in goal_atoms if a[0] in ("clear_of", "near_any", "not near_any") and a[1] == obj]
+    if not rules:
+        return []
+    add, move = cfg.get("add") or {}, cfg.get("move") or {}
+    names = {n for a in rules for n in a[2]}
+    boxes = {n: L._box(L._asset_of(cfg["base"], n, add), move.get(n) or add[n]) for n in names
+             if (move.get(n) or add.get(n) or {}).get("support") == sup}
+    asset = L._asset_of(cfg["base"], obj, add)
+
+    def gap(p, q):
+        return math.hypot(max(0.0, max(p[0], q[0]) - min(p[2], q[2])), max(0.0, max(p[1], q[1]) - min(p[3], q[3])))
+
+    def fits(bk):
+        if bk[0] < aabb[0] or bk[1] < aabb[1] or bk[2] > aabb[2] or bk[3] > aabb[3]:
+            return False
+        for a in rules:
+            near = [gap(bk, boxes[n]) for n in a[2] if n in boxes]
+            d = float(a[3])
+            if a[0] == "clear_of" and near and min(near) < d - 0.003:
+                return False
+            if a[0] == "near_any" and (not near or min(near) > d):
+                return False
+            if a[0] == "not near_any" and near and min(near) <= d:
+                return False
+        return True
+    out = []
+    x = aabb[0]
+    while x <= aabb[2]:
+        y = aabb[1]
+        while y <= aabb[3]:
+            if any(fits(L._box(asset, {"xy": [x, y], "yaw_deg": yaw})) for yaw in (0.0, 90.0)):
+                out.append((x, y))
+            y += step
+        x += step
+    return out
+
+
+def paint_spots(img, pixels, r=6):
+    """Translucent green dots on an image array at the given pixels."""
+    import numpy as np
+    from PIL import Image, ImageDraw
+    im = Image.fromarray(np.asarray(img, dtype=np.uint8)).convert("RGBA")
+    layer = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for p in pixels:
+        if p is not None and 0 <= p[0] < im.width and 0 <= p[1] < im.height:
+            d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=(40, 220, 90, 110))
+    return np.asarray(Image.alpha_composite(im, layer).convert("RGB"))
+
+
 def star(img, marks):
     from PIL import ImageDraw, ImageFont
     d = ImageDraw.Draw(img)
@@ -322,6 +381,10 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             eye, c = support_eye(n)
         img = shot(eye, c)
         z = rig.ann.support(n)["z"]
+        spots = [] if n.endswith("/inside_shelf") else accepted_spots(list(atoms(goal)), cfg, n,
+                                                                      rig.ann.support(n)["aabb_xy"])
+        if spots:                                # every place the goal accepts, not only the route's
+            img = paint_spots(img, [project([x, y, z + 0.005]) for x, y in spots])
         marks = [(project([h[1][0], h[1][1], z + 0.03]), h[2]) for h in place_hints(task, lid) if h[0] == n]
         stay = [x for x, rr in role.items() if rr in ("keep", "other", "ref", "alt") and sup_of(x) == n]
         if not marks and n.endswith("/inside_shelf"):
@@ -329,7 +392,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         marks += stars([x for x in stay if role[x] in ("other", "ref", "alt")])
         kept = [x for x in stay if role[x] == "keep"]
         shown.update([n, *stay])
-        views.append((n.replace("/", "_"), marks, img, f"放置处 {n}" + ("，★ 参考路线的放置点" if any(
+        views.append((n.replace("/", "_"), marks, img, f"放置处 {n}" + ("；绿色：判定会通过的所有位置" if spots else "")
+                      + ("，★ 参考路线的放置点" if any(
             h[0] == n for h in place_hints(task, lid)) else "") + (
             "" if not kept else f"；上面其余 {len(kept)} 件东西都别动" if len(kept) > 3 else f"；{'、'.join(kept)} 别动")))
     kind += ["place"] * (len(views) - len(kind))
