@@ -26,7 +26,7 @@ R 类不列。
 | rig.py `follow_both` | 双臂只有直线插值，按 `max(3, n//8)` 个样本稀疏检查 | X | 步骤 5，双臂要有规划或至少逐点检查 |
 | rig.py `joint_path_via` | 直接插值，不做任何检查 | X | 步骤 5，`follow` 只收检查过的路径 |
 | planner.py `_ik_sequence` | 正向链失败就反向链（为了 IK 分支连续） | K | 改成种子；手写 park 删掉时再看（6.4） |
-| planner.py `_chain` | park 搜索用直线判可达，执行时直线不通还会规划，两边判据不一致 | X | pick 伸入段、place 放下段 11-07 已改（`rig.relay_approach` 搜索和执行同一个函数，计划 6.2）；其余技能手写 park 删掉时一起看（6.4） |
+| planner.py `_chain` | park 搜索用直线判可达，执行时直线不通还会规划，两边判据不一致 | X | pick / place 11-08 已不用（`park_search.find_park` + 技能的计划构造函数，搜索和执行同一套，`MOTION_ARCHITECTURE.md`）；其余技能迁到新分层时一起删（6.3、6.4） |
 | planner.py `find_park` | `near` 是三元组时 cost=-1，跳过收臂姿态、展开、可达路径三项检查；`_move_articulated` 和 `place` 用它探测手写 park | X | 手写 park 删掉后这条路径一起删 |
 
 ## 2. 底盘（B 类）
@@ -48,7 +48,7 @@ R 类不列。
 |---|---|---|---|
 | policies/plan_helpers.py `_carry_bottom_z` | 搬运高度抬到目的地台面上已有物体之上（最多 12 cm），用来避免持物扫倒东西 | W | 先给底盘规划器加"换搬运高度"再删（计划第 7 节）；删掉时 T13 bowl_on_cabinet 开往餐桌搜到上限 |
 | skills.py `_carry_pose` | 夹在边上的书搬运时 `min_bottom_z` +6 cm（书下垂） | S | 下垂进持物碰撞模型；随 6.2 书的放置 |
-| skills.py `_carry_pose` | `carry_in` 走 `FREE_ELSE_STRAIGHT`：规划不出来就不查碰撞的直线（11-07 全量 5 次）；一个搬运目标都没有 IK 就留在原处带着开（`carry_pose_kept`，11-07 全量 11 次）；pick 的停车点搜索不查这一段 | F | 6.2：搬运段进 pick 的计划（搜索按执行的走法做一遍，执行照着走），两种退路删（计划 6.2"pick / place 每段运动"表） |
+| skills.py `_carry_pose` | `carry_in` 走 `FREE_ELSE_STRAIGHT`：规划不出来就不查碰撞的直线（11-07 全量 5 次）；一个搬运目标都没有 IK 就留在原处带着开（`carry_pose_kept`，11-07 全量 11 次） | F | pick 里 11-08 已删（去搬运姿态进了 pick 的计划，`skill_plans.plan_pick`）；navigate 出发前、place / drop / hover 等选停车点前那一处还在，等这些技能迁到新分层 |
 
 ### 3.2 place（skills.py `place`、`place_on`）
 
@@ -84,8 +84,8 @@ R 类不列。
 
 | 位置 | 内容 | 类 | 处理 |
 |---|---|---|---|
-| `_pick_pinch_core` | 候选逐个找停车点（`for g in cands`） | F | 改成目标集合（6.1 第 8 项） |
-| rig.py `Rig.leave`（`pick_lift`） | 抬起段 6 cm 求不出 IK 就减半，到 `LEAVE_MARGIN` 还不行就不抬直接进下一段；停车点搜索只查往上 `PICK_LEAVE_CHECK`（3 cm）有 IK，不是执行的那条线 | F | 6.2：抬起段进 pick 的计划，搜索和执行同一条线，求不出就不要这个停车点 |
+| `_pick_pinch_core` | 候选逐个找停车点（`for g in cands`） | F | 11-08 已改：所有候选一个目标集合（`park_search.find_park`）；微波炉里取物还是逐个（6.4） |
+| rig.py `Rig.leave`（`pick_lift`） | 抬起段 6 cm 求不出 IK 就减半，到 `LEAVE_MARGIN` 还不行就不抬直接进下一段；停车点搜索只查往上 `PICK_LEAVE_CHECK`（3 cm）有 IK，不是执行的那条线 | F | pick 里 11-08 已删（抬起段进了计划，`primitives.contact_extent`：到头还碰就失败）；`Rig.leave` 本身还给 `pick_fail_clear`、微波炉取物、开关门用 |
 
 pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子在第 6 节。
 

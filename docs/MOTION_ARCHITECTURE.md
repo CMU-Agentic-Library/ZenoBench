@@ -49,6 +49,7 @@ class Held:
     name: str
     T_tcp_obj: np.ndarray        # 物体相对 TCP 的位姿（实测，或计划里假设的）
     kind: str                    # pinch / edge / corner / bimanual
+    pad: float = 0.0             # m 碰撞球放大：计划推算的持法（pick 合爪前规划的搬运段，HELD_POSE_MARGIN）
 
 @dataclass(frozen=True)
 class Hand:
@@ -88,6 +89,7 @@ class Spec:
     fingers: bool                # 手指进不进碰撞模型
     exempt: tuple = ()           # 豁免的目标（持物时恒为空）
     hold_tilt: bool = False      # 持物保持倾角
+    touch: tuple = ()            # 手指可以碰的物体：对手指不算障碍物，手臂其余部分另外查（11-08，place 抽出段）
 ```
 
 由 `build` 给出、存进计划的每一段；`run` 执行时照它向接触监视声明。
@@ -126,7 +128,7 @@ class Spec:
 | 4 | 抬起段 | `contact_extent` + `contact_segment` | `LEAVE_CONTACT`（物体离开支撑面） | — |
 | 5 | 抬起终点 → 搬运姿态 | `free_leg`（搬运目标集合） | FREE，保持倾角 | — |
 
-**place**（`plan_place`，到达姿态是搬运姿态）倒过来：自由段 → 放下段（`straight` 竖直，长度由 `contact_extent` 从"物体贴着支撑面"往上量）→ 松手（`released(物体, 落下 LEAVE_GAP 后的位姿)`）→ 抽出段（`straight` 沿夹爪轴；起点穿进物体时先 `contact_segment` 离开）→ `free_leg({收起, 下垂})`。
+**place**（`plan_place`，到达姿态是搬运姿态）倒过来：自由段 → 放下段（`straight` 竖直，长度由 `contact_extent` 从"物体贴着支撑面"往上量）→ 松手（`released(物体, 落下 LEAVE_GAP 后的位姿)`）→ 抽出段（`straight` 沿夹爪轴，刚放下的物体在 `Spec.touch` 里：手指可以碰，手臂其余部分不能）→ `free_leg({收起, 下垂})`。
 
 抬起段、搬运段、抽出段、收臂都在计划里，`COLLISION_PLAN.md` 6.2 表下"还对不上的"四处在这个结构下不存在；`carry_pose_kept`、`carry_in` 的 `FREE_ELSE_STRAIGHT`、抬起段减半 / 不抬这些退路随之删掉。
 
@@ -147,7 +149,7 @@ problem = (goals, build, arrive)
 2. **批量便宜过滤**：够得着（肩到目标距离、高度）；底盘柱体不碰（`world.footprints_clear`）；到达姿态下整机不碰（`Motion.base_depths`）；从当前位置算一次底盘可达场（`base_reachable` 那套），查表得"开得到吗、多远"，取代每个候选一次完整底盘规划（`_drivable`）。
 3. **批量 IK（只排序）**：中继位姿换到底盘坐标系，纯运动学批量 IK，得到有没有解、关节余量、可操作度。不查碰撞（cuRobo 的碰撞世界随底盘变，不能跨底盘位置成批）；碰撞留给第 5 步。批大小固定，避免 CUDA graph 重录。这一步不是验证，可以去掉（见第 10 节）。
 4. **排序**：开车距离 + 目标组代价 + IK 质量，对全部通过的候选排序（现在是凑够 4 个就停、只在这 4 个里排）。
-5. **按顺序构造计划**：`problem.build(state_at(state, park), k)`，第一个做出完整计划的胜出；有预算（最多 N 个或若干秒）；失败原因按类计数进 `diag`。
+5. **按顺序构造计划**：`problem.build(state_at(state, park), k, q_rank)`，第一个做出完整计划的胜出；有预算（`BUILD_S` 20 s、`BUILD_MAX` 60 个）；失败原因按类计数进 `diag`。
 6. **精确底盘路径**：只对胜出者做 `base_planner.plan`；做不出来（可达场是近似）回第 5 步取下一个。
 
 `check`、`ride`、`score`、`unfold`、`carry`、`q_start` 这些开关不再需要：技能要查的东西都在自己的 `build` 里（开门跟随部件也在开门的 `build` 里）。

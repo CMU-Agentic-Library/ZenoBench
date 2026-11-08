@@ -72,6 +72,10 @@
 
 ## 3. 现在的机制
 
+### pick / place 的分层（`MOTION_ARCHITECTURE.md`，11-08 起）
+
+pick（微波炉里除外）和 place（书的 `place_flat` 除外）不再走下面的 `move_to` / `Rig._approach` / `Rig.leave`：停车点搜索（`park_search.find_park`）在每个候选停车点用技能的计划构造函数（`skill_plans.plan_pick` / `plan_place`）做整份计划（pick 到搬运姿态、place 到收臂），由四个原语（`primitives.free_leg` / `straight` / `contact_extent` / `contact_segment`）串成，每段从上一段的实际终点出发；执行（`run.run`）逐段复核，计划成立就原样走，不成立就用同一个构造函数从当前状态重做剩下的，做不出来技能失败，没有退路。碰撞查询的状态由 `State` + `Spec` 一次设好（`Motion.query`）。下面几节是其余技能还在用的旧入口。
+
 ### 运动入口（`rig.py`）
 
 - `move_to`、`move_to_any`、`joint_path`、`move_left_to` 共用 `_motion_path`：不查碰撞（或没有 world）就走直线；查碰撞就在 `_planning` 里规划；fallback 类的 Allow 规划不出来、或起点已在碰撞里，就走直线并记 `clearance_fallback`；其他的抛 `SkillFailure`。
@@ -94,11 +98,11 @@
 
 ### pick（`_pick_pinch_core`）
 
-物理上怎么走见 `skills/pick.md`。
+物理上怎么走见 `skills/pick.md`，分层见上面和 `MOTION_ARCHITECTURE.md` 第 6–8 节。
 
-1. **张开的手到抓取位姿**：一次查碰撞的运动（`pick_grasp`），最后是伸入段：沿夹爪轴直线，长度是手指碰撞球的长度加 `LEAVE_MARGIN`（`pick_approach`，约 7.3 cm）；要抓的物体是障碍物，不做目标豁免。停车点验证用同一条规则：伸入段起点和抓取位姿按自由空间查，模型里的手指张到候选的宽度；再加抓取位姿往上 `PICK_LEAVE_CHECK`（物体算在手里）。
+1. **张开的手到抓取位姿**：到伸入段起点（`pick_reach`），再伸入段（`pick_grasp`）：沿夹爪轴直线，长度是手指碰撞球的长度加 `LEAVE_MARGIN`（`pick_approach`，约 7.3 cm）；要抓的物体是障碍物，不做目标豁免，模型里的手指张到候选的宽度。
 2. **合爪前查到位**：TCP 离抓取位姿超过 `PICK_REACH_TOL` 就不合爪、失败。
-3. **合爪**：只动手指，`closing(name)`（这只手的手指可以碰这个物体）。两根手指都合拢了至少 `GRIP_CLOSED_BY` 又没合到底才算夹住，夹住了才登记 `rig.held`（sticky 这时焊住）。然后抬起段（竖直向上离开接触），再规划到搬运姿态。
+3. **合爪**：只动手指，`closing(name)`（这只手的手指可以碰这个物体）。两根手指都合拢了至少 `GRIP_CLOSED_BY` 又没合到底才算夹住，夹住了才登记 `rig.held`（sticky 这时焊住）。然后抬起段（接触段，`off_support`），再到搬运姿态（`carry_in`）。三段都在停车点搜索做的计划里。
 
 抓取高度：顶部捏取张开的指垫最低那个角至少比物体下面的表面高 `PAD_FLOOR_GAP`，按这次夹爪朝向算（`_pads_clear_of`）。表面（`_surface_under`）：有标注支撑面取支撑面和包围盒最低点中较高的（放在碗里取后者）；没有支撑面取包围盒最低点和物体脚下、低于物体中心的静态碰撞体最高顶面中较高的（`Motion.static_top`，地毯）。掌心、相机不碰物体的最低高度由 `tools/prepare_assets.py` 按碰撞球对物体网格推导，写在抓取标注里。
 
@@ -185,9 +189,9 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3. **找不到停车点**：T02 s11 far_crowded（木块 b，前置条件 `grasp_clearance` 也不满足）；P16 两个种子 empty 里拿樱桃番茄。
 4. **翻书**（T15 book_free ×2、P05）：`FlipFlatPolicy` 要的是"夹住、不抬"，pick 抓完就去搬运姿态、书整本离开桌面。把 pick 拆成"抓住"和"拿起"两段，翻书只用前一段。随 6.2（书、翻书）一起做。
 5. **`physical` profile 下的抓取质量**：sticky 合爪后焊住物体，抓得稳不稳看不出来。已经看到的：T20 table_full s10 沿口捏的碗搬运中在手里移了 6.1 cm；（T03 far_small_and_large 擀面杖原来记在这里，11-07 查明不是抓取问题：place 把它竖着卡在杯口上并判了成功，见 6.2"已知的 place 问题"。）
-6. **搬运姿态去不了**（`carry_pose_kept`，11-06 全量 19 次）：pick 后手臂在另一个 IK 分支上，去搬运姿态要翻转（T10）。查是不是选抓法 / 抓取 IK 时没看后面的搬运姿态。
-7. **停车点验证的抬起长度 `PICK_LEAVE_CHECK` 3 cm 和执行不一致**：11-06 全量抬起段中位 1.7 cm、最长 4.0 cm，执行上限 6 cm（终点没 IK 就减半）。连同第 10 节"抬起段提前停下"。
-8. **候选逐个找停车点**（`for g in cands`）：改成目标集合，`find_park_set` 先支持每组自己的手指张开宽度。
+6. **搬运姿态去不了**（`carry_pose_kept`，11-06 全量 19 次）：pick 后手臂在另一个 IK 分支上，去搬运姿态要翻转（T10）。**11-08 已改**：去搬运姿态进了 pick 的计划，停车点搜索做不出来就不要这个停车点，执行时做不出来 pick 失败，`carry_pose_kept` 在 pick 里没有了（navigate / place 前的 `_carry_pose` 还有）。全量里看停车点有没有因此变少。
+7. **停车点验证的抬起长度 `PICK_LEAVE_CHECK` 3 cm 和执行不一致**：11-06 全量抬起段中位 1.7 cm、最长 4.0 cm，执行上限 6 cm（终点没 IK 就减半）。**11-08 已改**：抬起段进了计划（`contact_extent`，`off_support`），搜索和执行同一个量法，执行前按实测持法重量；不再减半、不再跳过。`PICK_LEAVE_CHECK` 只剩新搜索里"手够得着的点"的预筛。第 10 节"抬起段提前停下"还没定。
+8. **候选逐个找停车点**（`for g in cands`）：改成目标集合。**11-08 已改**：所有抓取候选是 `park_search.find_park` 的一个目标集合（`PICK_CAND_COST` 每位排名），每个候选的手指宽度在它自己的 `build` 里（`with_width`）。微波炉里取物还是逐个候选（6.4）。
 9. **常数**：见第 8 节标 6.1 的。
 10. **抓取高度的参照面统一**（第 10 节）。
 
@@ -325,14 +329,14 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 问题 | 例子 | 打算 |
 |---|---|---|
-| 停车点验证和执行各自构造运动，验证通过不保证执行（贯穿各技能）：到中继位姿的持物可达只看位姿（`joint_reachable(carry=True)`）、执行先按位姿规划不用验证的解（`Rig._move_path` → `plan_to`）、直线从不同的解出发（`_chain` 对 `_approach_path`）。都在共用层，十几个技能调 `find_park` 后用 `move_to` 执行 | 已确认：T20 bottle_on_cabinet 放下段（6.2"验证和执行用同一份计划"）；11-07 全量"直线起点出发不通"的失败调用 9 次（pick 1、stack 1、place 7）。可能同类、没确认：`carry_pose_kept` 11 次、`tuck_blocked` 4 次、`carry_in` fallback 5 次、P06 `handover_left_pre` 规划失败 | pick / place 在 6.2 切到"搜索产出计划、执行按计划走"；别的技能改到哪个（6.3、6.4）在那时切，并顺带查上面"可能同类"的几项。不一次全改：基线整体变，倒退分不清来源 |
+| 停车点验证和执行各自构造运动，验证通过不保证执行（贯穿各技能）：到中继位姿的持物可达只看位姿（`joint_reachable(carry=True)`）、执行先按位姿规划不用验证的解（`Rig._move_path` → `plan_to`）、直线从不同的解出发（`_chain` 对 `_approach_path`）。都在共用层，十几个技能调 `find_park` 后用 `move_to` 执行 | 已确认：T20 bottle_on_cabinet 放下段（6.2"验证和执行用同一份计划"）；11-07 全量"直线起点出发不通"的失败调用 9 次（pick 1、stack 1、place 7）。可能同类、没确认：`carry_pose_kept` 11 次、`tuck_blocked` 4 次、`carry_in` fallback 5 次、P06 `handover_left_pre` 规划失败 | pick / place 11-08 已切到"搜索产出计划、执行按计划走"（`MOTION_ARCHITECTURE.md`）；别的技能改到哪个（6.3、6.4）在那时切，并顺带查上面"可能同类"的几项。不一次全改：基线整体变，倒退分不清来源 |
 | 同样输入，cuRobo 规划结果会分叉 | P07 s10 连跑两次一次成功一次 "no IK for shake" | 不单独处理，按第 5 节区分 |
 | 难的目标上 cuRobo 只是偶尔成功，停车点搜索碰上那一次就选了这个停车点，执行时重新规划失败 | 伸入段起点贴着马克杯时（第 2 节），同一规划 9 次成功 1 次 | 让目标不难（直线起点在空处）；不靠重复规划 |
 | IK 解可以贴着关节限位（cuRobo IK 的限位激活距离 0.001），轨迹优化在限位 0.05 以内重罚；停车点打分的关节余量只算手臂 7 个关节，不算躯干和腰 | 马克杯的停车点躯干离上限 6 mm、腰离限位 0.8 mrad（不是那次失败的原因）；T01 s11 overhang_ready 抓取位姿的解压在腰和 `right_arm_joint_5` 两个限位上，验证时求出、执行时同样输入求不出（6.2"验证和执行用同一份计划"第 4 条） | 手臂关节的 `kin.lo/hi` 已经在硬件限位以内 0.03 rad，贴着它不是贴着硬件；躯干、腰只留 1e-4（地上取物要到限位）。T01 是在边界上重新求 IK 求不出，6.2 让执行用搜索的路点、不重求，就没有这一步。需要时把躯干、腰算进打分的余量 |
 | 马克杯、带柄锅的容器碰撞体和真实网格对不上 | 抓杯时手指捏在离真实杯壁约 2.2 cm 的碰撞壁上 | 见 `CONTAINER_COLLIDERS.md`；先不修 |
 | 仿真里手指只有指垫方块参与碰撞：原网格是 L 形（手指 + 横跨夹爪的滑轨），凸分解成伸进两指之间的楔形，所以整个关掉了（`physics.py`）。指垫以上那段手指、滑轨两端（各伸出夹爪本体约 13 mm）在仿真里不碰任何东西 | — | 这个分支不动（改仿真接触）；以后可以把 L 形拆成几块凸体 |
 | 规划器的手指碰撞球包住指垫方块，最多凸出 4.2 mm（`build_curobo_robot.finger_rows`）：模型比实物大，合爪、贴着放时会多报接触 | 合爪时监视器误报 | 只当指标；真实接触以 PhysX 为准 |
-| 搬运姿态到不了时手臂留在原处开车（`carry_pose_kept`，都是带倾角的规划失败） | 11-06 全量 19 次；T10 抓完第 3 个关节 2.30 rad，去任何搬运姿态都要把易拉罐翻约 3 rad | 6.1 第 6 项；要在停车点搜索里做和执行一致的位姿目标规划，先解决 CUDA graph 重录的开销（第 9 节） |
+| 搬运姿态到不了时手臂留在原处开车（`carry_pose_kept`，都是带倾角的规划失败） | 11-06 全量 19 次；T10 抓完第 3 个关节 2.30 rad，去任何搬运姿态都要把易拉罐翻约 3 rad | pick 里 11-08 已改（6.1 第 6 项：搬运进了 pick 的计划，搜索里做和执行同一个规划；CUDA graph 重录量过不是问题）；navigate / place 前的 `_carry_pose` 还在 |
 | 竖着吊放的细长物体松手倒下，落点离目标 9–12 cm | T09 lid_off（容差 10 cm） | 6.2 |
 | 放进容器暂时只分"托盘 / 其余 drop"（6.2）：要露在容器外面的物体从沿口上方松手会倒、会弹出去 | T03 far_small_and_large 擀面杖放进杯子 | 以后按几何分流，取代托盘标注：物体整个落得进开口、高度不超过沿口 → drop；露在外面 → 放下段竖直插进去（窄容器里物体贴着壁，按"离开周围 `LEAVE_GAP`"量的放下段起点自然在沿口以上）；托盘这种浅的当支撑面 |
 | 导航原地摆臂（`Rig.swing`，两只手臂关节直线插值）擦到墙：底盘规划器按 2 cm 抽样检查摆臂，执行时没检查 | T13 no_cup s10 `navigate_bookcase_2` 的收起 → 下垂（右手指）、下垂 → 收起（夹爪本体）擦外墙，PhysX 接触很浅（`/data/zenobench/approach_moved/run_fix`） | 6.3 之前查：采样密度、跟踪偏差、墙的网格精度，还是 `base/collisions` 是什么 |

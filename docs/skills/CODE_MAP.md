@@ -2,7 +2,7 @@
 
 这篇讲**代码怎么组织**：一个技能调用从哪里进来、经过哪几层、每一段运动在哪个函数里决定查不查碰撞，以及哪些还是旧的写死路径。物理上每一步做什么见同目录的各篇（[README](README.md)），为什么这样改、计划做什么见 [`../COLLISION_PLAN.md`](../COLLISION_PLAN.md)。
 
-行号对应 `a588fd0`，之后会漂移，**以函数名为准**。第 3、4 节的 pick / place 部分按 2026-11-07 的工作区（`move_relay` 之后）更新过。每次改动后，凡是改到下面某张表的内容，同一个提交里一起更新这篇。
+行号对应 `a588fd0`，之后会漂移，**以函数名为准**。第 1、3、4 节的 pick / place 部分按 2026-11-08 的分层（`ddc2edf`，`../MOTION_ARCHITECTURE.md`）更新过。每次改动后，凡是改到下面某张表的内容，同一个提交里一起更新这篇。
 
 ---
 
@@ -24,9 +24,15 @@ policies/*.py     PolicySuite → XxxPolicy.execute     115 个原子策略（ca
   ▼                        │
 skills.py         技能本体：pick / place / navigate / 开关门 / push / 微波炉…
   │                        │  决定"中继位姿是什么、停车点在哪、接触段往哪个方向走"
+  │   pick / place：       │
+  │   park_search.py  find_park(Problem)：底盘候选、便宜过滤、排序，按顺序调技能的 build
+  │   skill_plans.py  plan_pick / plan_place（build）：原语串成整份计划，State 在段间推进
+  │   primitives.py   free_leg / straight / contact_extent / contact_segment（搜索和执行同一套）
+  │   run.py          observe / holds / run：逐段复核、不成立就用 build 重做剩下的、执行
+  │   motion_state.py State / Spec / Segment / Plan / Failure（纯数据）
   ▼                        ▼
-rig.py            Rig：机器人运动的唯一入口 move_to / move_to_any / leave / joint_path /
-  │                    tuck / swing / drive_base / grip；决定每一段是规划、直线还是 fallback
+rig.py            Rig：机器人运动的执行入口 follow / grip / clear（监视）；旧的 move_to / move_to_any /
+  │                    leave / joint_path / tuck / swing / drive_base 还给没迁移的技能用
   ▼
 motion.py         Motion：cuRobo 封装（IK、轨迹规划、碰撞世界、目标豁免、手持物体的碰撞球）
 kinematics.py     ArmKin：正运动学 + 把逆运动学和碰撞查询转给 motion
@@ -37,7 +43,8 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 | 模块 | 谁调它 | 做什么 |
 |---|---|---|
-| `planner.py` | skills、policies | **手臂视角的停车点搜索** `find_park` / `find_park_set`：在哪个底盘位姿，手臂能无碰撞地走完给定的一串目标位姿。另有旧的网格路径 `plan_path` |
+| `park_search.py` | skills（pick、place） | **新的停车点搜索** `find_park(rig, Problem, state)`：能做出技能整份计划的停车点，连计划一起返回（`MOTION_ARCHITECTURE.md` 第 7 节）|
+| `planner.py` | skills、policies | **旧的停车点搜索** `find_park` / `find_park_set`（微波炉取物和其他技能还在用）：在哪个底盘位姿，手臂能无碰撞地走完给定的一串目标位姿。另有 `joint_reachable`、`_whole_body`、`_drivable`（新搜索也用）和旧的网格路径 `plan_path` |
 | `base_planner.py` | `skills._base_plan` | **底盘路径规划**：在 (x, y, yaw) 网格上做 A*，同时考虑手臂姿态链（收臂 → 下垂 → 收臂）|
 | `clearance.py` | rig、skills、policies | `Allow`：一段运动允许碰什么（第 3 节）；`rig.clear`：接触监视器、fallback 计数 |
 | `collision.py` | planner | 标注包围盒，只给底盘的占地检查和网格用；手臂不用 |
@@ -45,7 +52,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | `physx_contacts.py` | clearance | 读 PhysX 的真实接触 |
 | `annotations.py` / `predicates.py` / `scene_geometry.py` | 各层 | 场景和资产的真值、谓词、碰撞体 |
 
-**名字容易混的两个**：`planner.find_park` 回答"停在哪"，`base_planner.plan` 回答"怎么开过去"。`skills.navigate` 只用后者；pick、place 这类先用前者选停车点，再用后者开过去（`_goto_park → navigate → relocate`）。
+**名字容易混的两个**：`park_search.find_park` / `planner.find_park` 回答"停在哪"，`base_planner.plan` 回答"怎么开过去"。`skills.navigate` 只用后者；pick、place 这类先用前者选停车点，再用后者开过去（`_goto_park → navigate → relocate`）。
 
 ---
 
@@ -80,7 +87,8 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | 入口 | 用途 |
 |---|---|
 | `move_to(p, R, allow=, approach=, q_hint=)` | 手（TCP）到一个位姿。最主要的入口 |
-| `move_relay(p, R, u, L, plan=)` | 直线进入中继位姿：停车点搜索做好的计划（`relay_approach`）还成立就原样走，否则从当前姿态用同一个函数重做；`FREE`，没有退路。pick 的伸入段、place 的放下段 |
+| `run.run(rig, plan, rebuild, hooks)` | pick / place：按计划逐段执行（复核、重做、`follow` / `grip`、监视声明）。技能自己的步骤挂 hooks |
+| `move_relay(p, R, u, L, plan=)` | 旧：直线进入中继位姿，计划（`relay_approach`）成立就原样走。只剩微波炉里取物用 |
 | `move_to_any(goals, …)` | 先批量求 IK、挑代价最小的目标，再交给 `move_to`。搬运姿态用它 |
 | `leave(u, label, allow)` | 沿方向 u 离开接触，**没有终点**：碰撞模型判断不再接触就停（最多 `LEAVE_MAX`）|
 | `joint_path(q)` / `joint_path_via` + `follow` | 关节空间运动 |
@@ -126,16 +134,19 @@ move_to
 
 ```
 _pick_pinch_core
-  候选抓取（annotation） → planner.find_park(_grasp_targets(g), check=_relay_check(reach_in), unfold=False)
-       _relay_check → rig.relay_approach：从到达姿态到伸入段起点、再走伸入段，计划存进 plans[_park_key]
-  relocate / _goto_park → navigate → relocate → base_planner.plan + drive_base(FREE) + swing
-  按 idx 重算同一个候选 → grip(pre_open)
-  with _fingers_checked, _watching:  move_relay(g.p, g.R, *_grasp_approach(g), plan=plans[_park_key(park)])
-                                     计划成立（_plan_off 为 None）原样走，否则 relay_approach 重做
-  grip(0)  → 没抓到：leave(up, LEAVE_CONTACT)，SkillFailure
-  leave(up, LEAVE_CONTACT, lifts_off=True)
-  (微波炉里) move_to 往外撤
-  _carry_pose → move_to_any(_carry_goals, FREE_ELSE_STRAIGHT)
+  候选抓取（annotation）
+  不在微波炉里：
+    _pick_find_park：所有候选 = 一个目标集合 → park_search.find_park(Problem(goals, build, arrive, travel, near))
+       build = plan_pick(state_at_park, 候选, _carry_goal_set)：pick_open → pick_reach（free_leg）→ pick_grasp
+               （straight）→ pick_close（holding）→ pick_lift（contact_extent off_support）→ carry_in
+               （free_leg PoseSet，持物碰撞球放大 HELD_POSE_MARGIN）
+    _goto_park → navigate → relocate
+    按 idx 重算同一个候选；抓取位姿偏 HINT_REACH 以上就 plan_pick(observe(rig)) 重做
+    _pick_run → run.run(plan, rebuild=plan_pick(start=段名), hooks)
+       hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后到位检查（被挡 → leave + SkillFailure）；
+              pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
+    _pick_judged：拿住了没有
+  微波炉里（6.4）：planner.find_park(check=_relay_check) 逐个候选 → move_relay → leave → 写死的退出点 → _carry_pose
 ```
 
 ### place（`skills.place`，台面 / 浅容器 / 深容器 / 层板）
@@ -146,16 +157,17 @@ place
   edge 持法（书） → place_flat（旧的写死路径，见第 5 节）
   其他（台面 / 托盘底板） → _set_down
 _set_down
-  _carry_pose(min_bottom_z)
-  目标集合：空位 × 持法（吊着 / 摆正） × 手腕转角 → planner.find_park_set(check=_place_check, unfold=False)
-       _place_check → set_down_length（放下段长度）→ _relay_check → rig.relay_approach（到放下段起点 + 放下段）
-                    → then：Motion.released + hand_open 下查抽出段直线、joint_reachable 到收起 / 下垂
-       legs[_park_key] = (计划, 放下段长度, 抽出段终点的解)
+  _carry_pose(min_bottom_z)（旧做法：FREE_ELSE_STRAIGHT、carry_pose_kept）
+  目标集合：空位 × 持法（吊着 / 摆正） × 手腕转角 → park_search.find_park(Problem)
+       build = plan_place(state_at_park, 放下位姿, q_seed)：place_reach（set_down_length → free_leg，持物先关节规划）
+               → place_down（straight）→ place_release（released，手张开）→ place_pull_out（straight，Spec.touch 刚放下的物体）
+               → tuck（free_leg 到收起 / 下垂）
   _goto_park(min_bottom_z) → navigate
-  重新测量手持位姿；偏 2 cm 以上就在当前底盘重跑 _place_check
-  move_relay(放下位姿, -z, L, plan)  → check_held
-  grip(pre_open, gradual) → 手指真卡在物体里才 leave(u, LEAVE_CONTACT)
-  move_to(抽出终点, allow=FREE, approach=(u, 剩下的长度), q_hint=抽出段终点的解) → tuck（失败就 SkillFailure）
+  重新测量手持位姿；放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig)) 重做
+  _place_run → run.run(plan, rebuild=plan_place(start=段名), hooks)
+       hooks：place_down 后到位检查、check_held；place_release 后 rig.held = None；
+              place_pull_out 前手指在物体里就记 place_pull_out_touching
+  结果检查（在支撑面上 / 托盘里、离目标点多远）
 ```
 
 ### navigate（`skills.navigate`）
@@ -197,7 +209,7 @@ close_articulated：铰链门改为推外表面 → _push_close（contact 段是
 | `insert_microwave_cavity` | 插入那一段 | 6.4 |
 | `approach_microwave_button` / `press_…` / `retract_…` | 按按钮 | 6.5 |
 
-已经迁移的：`_pick_pinch_core`、`place`（台面 / 容器）、`_carry_pose`、`navigate` / `relocate`、`held_vertical_move`、`_move_articulated` 的抓握和离开、`withdraw_microwave_cavity`。
+已经迁移的：`_pick_pinch_core`、`place`（台面 / 容器）——这两个已经是新分层（停车点搜索做整份计划、执行照着走，`MOTION_ARCHITECTURE.md`）——、`_carry_pose`、`navigate` / `relocate`、`held_vertical_move`、`_move_articulated` 的抓握和离开、`withdraw_microwave_cavity`。
 
 ### `policies/` 里自己动手臂的策略
 
