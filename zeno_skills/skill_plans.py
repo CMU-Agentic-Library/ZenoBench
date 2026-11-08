@@ -12,7 +12,7 @@ from dataclasses import replace
 
 import numpy as np
 
-from .clearance import FREE, LEAVE_CONTACT, closing
+from .clearance import FREE, LEAVE_CONTACT, Allow, closing
 from .motion_state import Failure, Held, Plan, Segment, Spec, holding, released, with_width
 from .primitives import (LEAVE_GAP, ON_LINE, Pose, Joint, contact_extent, contact_segment, free_leg, in_world,
                          near_world, off_support, query, straight)
@@ -158,10 +158,10 @@ def plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start="pl
     start (the load's tilt held; the set-down's length set_down_length, from ``q_p``, the park
     search's solution of (p, R), or one solved here -- ``q_seed`` first among its seeds), the
     set-down straight down, let go (the load
-    falls LEAVE_GAP onto the support: released), the pull-out of length out_len along u_out (the
-    gripper axis back; a hand that starts in the load -- in the model after the release -- first
-    out of that contact, near_world), the tuck to the first free of ``rest_goals`` (the fold, the
-    hanging posture).  From ``start`` on.  Plan or Failure."""
+    falls LEAVE_GAP onto the support: released, the hand opened), the pull-out of length out_len
+    along u_out (the gripper axis back; the fingers may touch what they let go, the rest of the arm
+    may not: Spec.touch), the tuck to the first free of ``rest_goals`` (the fold, the hanging
+    posture).  From ``start`` on.  Plan or Failure."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
         return _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q_p, step, q_seed)
 
@@ -203,25 +203,18 @@ def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, q
                 s = released(s, kin.side, held.name, T)
             s = with_width(s, kin.side, pre_open)    # the hand opened to the grasp's width
         elif stage == "place_pull_out":
+            # back along the gripper axis, a finger's length; the fingers may touch what they let go
+            # (it may settle against one: a rim-held cup pivots onto the finger inside it, T13) -- a
+            # contact the monitor records, not a failure (11-08) -- the rest of the arm may not
             p0, R0 = kin.tcp(q)
             u = np.asarray(u_out, float) / np.linalg.norm(u_out)
-            with query(kin, s, FREE_HAND):
-                stuck = not kin.free(q)
-            if stuck:
-                # let go, it settled against a finger (a rim-held cup pivots onto the one inside it,
-                # T13): out of that contact first, only what the hand touches at its start touched
-                seg = _contact(kin, s, Spec(allow=LEAVE_CONTACT), u, "near_world", "place_pull_out_contact", 0.004,
-                               q, steps_per_wp=3, smooth=True)
-                if isinstance(seg, Failure):
-                    return seg
-                segs.append(seg)
-                q = seg.q_end
-            rest = out_len - float((kin.tcp(q)[0] - p0) @ u)
-            if rest > ON_LINE:
-                seg = straight(kin, s, FREE_HAND, p0 + out_len * u, R0, stage, step=0.004, q_from=q)
-                seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
-            else:
-                continue
+            touch = () if held is None else (held.name,)
+            spec = FREE_HAND if not touch else Spec(
+                allow=Allow(hand=kin.side, links="fingers", touch=touch,
+                            reason="pull-out: the open fingers may touch the object they let go"),
+                fingers=True, exempt=False, touch=touch)
+            seg = straight(kin, s, spec, p0 + out_len * u, R0, stage, step=0.004, q_from=q)
+            seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
         else:                                               # tuck
             with query(kin, s, FREE_HAND):
                 goal = next((g for g in rest_goals if kin.free(g)), None)

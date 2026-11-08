@@ -208,6 +208,12 @@ Rig.run(plan, state):
 
 第 4 步针对性检查（`/data/zenobench/park1108`）：第一轮 3/6——T20 ×2 找不到停车点（构造预算 8 个太少，前 8 个里 5 个伸入段直线进柜子会碰）、T01 搬运段如上；预算改按时间、加搬运余量后重跑 T20 s10、T01 s11 都成（T20 构造 14 个找到）。T09、T13、T12 第一轮就成；T20 s11 改后没重跑。搜索耗时：pick 18–22 s（旧版 T20 约 9 s），`stage_s` 显示大头是持物去搬运姿态的规划（单次 8–14 s），待查。
 
+持物自由段的规划顺序（11-08）：拿着东西、有目标的 IK 解时，`free_leg` 先关节规划到解，倾斜超标或失败再按位姿保持倾角规划（`Kinematics.plan(carry=True)`），不再走 `plan_to` 的"按位姿保持倾角 → 关节 → 再按位姿保持倾角"（第三次和第一次是同一个问题，等于藏起来的重试）。逐次计时（`/data/zenobench/carrytime`）：保持倾角按位姿规划本身单次 0.6–8.4 s、失败时用满尝试次数约 6–8 s，关节规划约 2 s 但几乎总让物体倾斜超标——搜索没有明显变快（pick 4–26 s），慢的问题留着，全量后再定（调小保持倾角规划的尝试次数，或让搬运目标优先选关节直走倾斜不超标的）。
+
+撤手段手指可以碰刚放下的物体（11-08，用户定）：`Spec.touch`——这些物体对手指不算障碍物（`Motion.query` 里加进 `_query` 的豁免），手臂除手指外另外查不能碰它们（`Motion.path_free_only` / `Kinematics.path_free_only`，`primitives.free_path` 合两次，`straight` 和执行前复核都用）；`Allow(touch=(物体,), links="fingers")` 让监视器记成允许的接触。撤手段于是总是一条直线，删了起点在物体里时的离开段（`place_pull_out_contact`）；撤手开始时模型里手指在物体里记 `place_pull_out_touching`。
+
+这一轮 6 个（`/data/zenobench/park1108/run4`）：5/6，T13 s10 松手后杯子靠到手指上、沿夹爪轴只能退 2 cm 就没 IK、还碰着杯子而失败；改成撤手段手指可碰后重跑 T13 s10、T20 s10 都成（T13 撤手开始手指在杯子里 1 mm，照计划走完，杯子离目标 1.9 cm）。
+
 **静态审计（`tools/audit_collision.py`）暂停中**（11-07 起，本地开关 `.claude/audit_paused`，97b3f76）：重构会在文件之间搬计数点、新增审计还不认识的模块。恢复前要做：审计认识新原语（`free_leg`、`straight`、`contact_segment` 加进 `MOTIONS` / `TARGET_MOTIONS` / `MOVES`，`Spec(allow=...)` 按 `allow=` 查）；`run.py` 像 `rig.py` 一样算执行入口（`follow` 不计）、查询层像 `kinematics.py` 一样可以写 `coll_kw`；`find_park` 按顺序构造计划的循环不算重试；搬移的计数点用 `--update-baseline --allow-increase` 更新基线，提交说明写清楚搬了什么。然后删掉开关文件。
 
 ## 10. 待定

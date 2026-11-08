@@ -318,6 +318,12 @@ class ArmKin:
             return True
         return self._motion().path_free(self, qs, self._other_q(), self.coll_kw)
 
+    def path_free_only(self, qs, names):
+        """The arm without its fingers clear of the objects ``names`` along ``qs`` (Motion.path_free_only)."""
+        if self.scene is None:
+            return True
+        return self._motion().path_free_only(self, qs, names, self._other_q(), self.coll_kw)
+
     def ik_global(self, p_t, R_t, seeds=None):
         """cuRobo's multi-seed IK (collision-aware unless scene is None); seeds first."""
         seeds = [np.asarray(s, float) for s in (seeds or [])] + [self.posture]

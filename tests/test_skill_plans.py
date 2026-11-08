@@ -74,12 +74,14 @@ def test_a_place_lets_go_and_tucks_with_the_load_an_obstacle():
     assert plan.segments[0].info["set_down_m"] > 0
 
 
-def test_a_hand_that_starts_in_the_load_leaves_that_contact_before_the_pull_out():
+def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
     q = _q(0.5, 0.0, 0.10)
-    kin = _place_kin(wall=lambda p: p[2] < 0.105)                  # after the release the hand is in it
-    plan = plan_place(kin, _state(q), q[:3], np.eye(3), 0.03, [0, 0, 1], 0.07, (_q(0.3, 0.0, 0.40),),
-                      start="place_pull_out")
-    assert [s.name for s in plan.segments][:2] == ["place_pull_out_contact", "place_pull_out"]
+    kin = _place_kin()
+    plan = plan_place(kin, _state(q, held=Held("cup", np.eye(4))), q[:3], np.eye(3), 0.03, [0, 0, 1], 0.07,
+                      (_q(0.3, 0.0, 0.40),), start="place_release")
+    pull = plan.segments[1]
+    assert pull.name == "place_pull_out" and pull.spec.touch == ("cup",)
+    assert pull.spec.allow.touch == ("cup",) and pull.spec.allow.links == "fingers"
 
 
 # ------------------------------------------------------------------------------- run

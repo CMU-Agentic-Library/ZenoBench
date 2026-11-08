@@ -130,6 +130,16 @@ def via(q0, qs):
     return out
 
 
+def free_path(kin, state, spec, qs):
+    """``qs`` (joint waypoints, the first the start) free in ``state`` by ``spec``: the whole robot
+    checked, the objects of spec.touch no obstacle to the fingers -- and the arm without its
+    fingers clear of them too (Kinematics.path_free_only)."""
+    with query(kin, state, spec):
+        if not kin.path_free(list(qs)):
+            return False
+        return not spec.touch or kin.path_free_only(list(qs), spec.touch)
+
+
 def _why_straight(kin, q0, p, R, step):
     """Why the straight q0 -> (p, R) failed: it collides, or there is no IK along it."""
     scene, kin.scene = kin.scene, None
@@ -184,10 +194,19 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
         qs, ok = kin.cart_path(q0, p, R, step=step)
         if ok:
             return Segment(name, spec, q0, tuple(qs), target=("pose", p, R), info={"how": "straight"})
-        qs, status = kin.plan_to(q0, p, R, carry=spec.hold_tilt, q_goal=goal.q_hint)
+        if spec.hold_tilt and goal.q_hint is not None:
+            # a load in the hand and a solution of the goal: the joint plan to it, else (it tilts the
+            # load, or fails) the tilt-held plan to its pose (Kinematics.plan, carry).  Not plan_to's
+            # tilt-held pose first: that one and the same plan again after the joint plan is a retry
+            # -- T01 s11 11-08, 6.1 s to FINETUNE_TRAJOPT_FAIL, then 0.7 s to the same pose
+            qs, status = kin.plan(q0, np.asarray(goal.q_hint, float), carry=True)
+            how = "planned (tilt held)"
+        else:
+            qs, status = kin.plan_to(q0, p, R, carry=spec.hold_tilt, q_goal=goal.q_hint)
+            how = status
         if qs is None:
             return Failure(f"no collision-free path to the pose ({status})", name)
-        return Segment(name, spec, q0, tuple(via(q0, qs)), target=("pose", p, R), info={"how": status})
+        return Segment(name, spec, q0, tuple(via(q0, qs)), target=("pose", p, R), info={"how": how})
 
 
 def straight(kin, state, spec, p, R, name, step=0.003, q_from=None):
@@ -199,6 +218,9 @@ def straight(kin, state, spec, p, R, name, step=0.003, q_from=None):
         qs, ok = kin.cart_path(q0, p, R, step=step)
         if not ok:
             return Failure(f"no collision-free straight ({_why_straight(kin, q0, p, R, step)})", name)
+        if spec.touch and not kin.path_free_only([q0] + list(qs), spec.touch):
+            return Failure(f"no collision-free straight (the arm, not its fingers, touches {', '.join(spec.touch)})",
+                           name)
     return Segment(name, spec, q0, tuple(qs), target=("pose", p, R),
                    info={"length": float(np.linalg.norm(p - kin.tcp(q0)[0]))})
 

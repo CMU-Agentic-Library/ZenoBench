@@ -34,7 +34,7 @@ from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, L
                   SkillFailure, relay_approach)
 from .park_search import Problem, find_park as find_skill_park
 from .run import observe, run
-from .skill_plans import PLACE_STAGES, plan_pick, plan_place
+from .skill_plans import plan_pick, plan_place
 from .sticky import SHUT, note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
@@ -1946,12 +1946,13 @@ def _place_run(rig, name, s, p, R, open_w, plan):
             raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
 
     def rebuild(state, frm):
-        stage = frm if frm in PLACE_STAGES else "place_pull_out"
-        new = plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=stage, step=APPROACH_STEP)
-        if not isinstance(new, Failure) and any(sg.name == "place_pull_out_contact" for sg in new.segments):
-            # let go, it settled against a finger: out of that contact first
-            rig.log("place_pull_out_stuck", obj=name)
-        return new
+        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, step=APPROACH_STEP)
+
+    def before_pull_out(rig):
+        # let go, it may have settled against a finger: allowed on the pull-out, recorded
+        with rig._planning(kin, rig.q_cmd), rig._fingers_checked(kin):
+            if kin.scene is not None and not kin.free(rig.q_cmd):
+                rig.log("place_pull_out_touching", obj=name, why=kin.explain(rig.q_cmd))
 
     def after_down(rig):
         err = float(np.linalg.norm(kin.tcp(rig.q())[0] - p))
@@ -1973,7 +1974,7 @@ def _place_run(rig, name, s, p, R, open_w, plan):
         rig.caption = f"PLACE {name}: set down"
 
     hooks = {"place_reach": {"before": set_down_caption}, "place_down": {"after": after_down},
-             "place_release": {"after": after_release}}
+             "place_release": {"after": after_release}, "place_pull_out": {"before": before_pull_out}}
     run(rig, plan, rebuild, hooks)
 
 

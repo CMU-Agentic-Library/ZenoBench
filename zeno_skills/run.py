@@ -11,7 +11,7 @@ import numpy as np
 
 from .kinematics import FINGER_OPEN
 from .motion_state import Failure, Hand, Held, State
-from .primitives import contact_extent, query
+from .primitives import contact_extent, free_path, query
 from .rig import PLAN_AT_START, SkillFailure
 
 
@@ -60,8 +60,8 @@ def holds(kin, state, seg):
         return None
     if not seg.qs:
         return None
-    with query(kin, state, seg.spec):
-        if not kin.path_free([q] + list(seg.qs)):
+    if not free_path(kin, state, seg.spec, [q] + list(seg.qs)):
+        with query(kin, state, seg.spec):
             # where along it and into what
             at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
             what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"

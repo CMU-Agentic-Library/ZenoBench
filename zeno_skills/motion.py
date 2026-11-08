@@ -841,6 +841,7 @@ class Motion:
         other_attr = "left_q" if side == "right" else "right_q"
         scene = kin.scene
         saved = {"base": (kin.base_p.copy(), kin.base_R.copy()), "kw": kin.coll_kw,
+                 "touch": getattr(self, "finger_touch", set()),
                  "other": getattr(scene, other_attr, None) if scene is not None else None,
                  "width": dict(self.hand_width), "head": getattr(self, "head_override", None),
                  "held": {s_: set(v) for s_, v in self.held.items()},
@@ -858,6 +859,7 @@ class Motion:
             kw["ignore_fingers"] = not spec.fingers
             kw["exempt_targets"] = bool(spec.exempt)
             kin.coll_kw = kw
+            self.finger_touch = {f"object:{n}" for n in getattr(spec, "touch", ())}
             # objects and parts the state has elsewhere than the synced world
             for name, T in state.objects.items():
                 owner = f"object:{name}"
@@ -900,6 +902,7 @@ class Motion:
         finally:
             kin.base_p, kin.base_R = saved["base"]
             kin.coll_kw = saved["kw"]
+            self.finger_touch = saved["touch"]
             if scene is not None:
                 setattr(scene, other_attr, saved["other"])
             self.hand_width = saved["width"]
@@ -1030,6 +1033,9 @@ class Motion:
             # the bottle it was reaching for)
             allow = set() if self.held.get(kin.side) or not coll_kw.get("exempt_targets", True) else \
                 self._targets_allow([np.asarray(p, float) for p in targets])
+            # objects the fingers may touch (Motion.query, Spec.touch): no obstacle here; the rest of
+            # the arm is checked against them apart (path_free_only)
+            allow = allow | getattr(self, "finger_touch", set())
             self.exempt = sorted(o.split(":", 1)[1] for o in allow)
             rel = self.relaxed.setdefault(kin.side, set())
             if own:
@@ -1155,6 +1161,33 @@ class Motion:
         STATS["check"] += 1
         with self._query(kin, other_q, coll_kw) as arm:
             return self._segments_free(arm, [np.asarray(q, float) for q in qs])
+
+    @_timed("check_s")
+    def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
+        """The arm without its fingers clear of the objects ``names`` alone all along ``qs`` (Spec.touch:
+        the fingers may touch them, the rest of the arm may not)."""
+        STATS["check"] += 1
+        owners = {f"object:{n}" for n in names}
+        touch, self.finger_touch = getattr(self, "finger_touch", set()), set()
+        try:
+            with self._query(kin, other_q, {**(coll_kw or {}), "ignore_fingers": True}) as arm:
+                on = [c for c in self.cols.items if self.enabled[c.name]]
+                try:
+                    for c in on:
+                        self._set_enabled(c, False)
+                    for c in self.cols.items:
+                        if c.owner in owners:
+                            self._set_enabled(c, True)
+                    return self._segments_free(arm, [np.asarray(q, float) for q in qs])
+                finally:
+                    for c in self.cols.items:
+                        if c.owner in owners:
+                            self._set_enabled(c, False)
+                    for c in on:
+                        self._set_enabled(c, True)
+        finally:
+            self.finger_touch = touch
+            self.cull_at = None
 
     @_timed("plan_s")
     def plan(self, kin, q0, q1, other_q=None, coll_kw=None, carry=False):

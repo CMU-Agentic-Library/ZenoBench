@@ -61,11 +61,14 @@ class State:
 class Spec:
     """The collision rules of one segment.  ``fingers``: the hand's fingers in the collision model.
     ``exempt``: what the TCP target touches may be touched (the backend exempts by the target's
-    position; never with a load in the hand).  ``hold_tilt``: a load in the hand keeps its tilt."""
+    position; never with a load in the hand).  ``hold_tilt``: a load in the hand keeps its tilt.
+    ``touch``: objects the fingers may touch -- no obstacle to them, still one to the rest of the
+    arm (primitives.free_path checks that apart); ``allow`` then lists them for the monitor."""
     allow: Allow = FREE
     fingers: bool = True
     exempt: bool = False
     hold_tilt: bool = False
+    touch: tuple = ()
 
 
 @dataclass(frozen=True)

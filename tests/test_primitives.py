@@ -63,6 +63,9 @@ class FakeKin:
     def path_free(self, qs):
         return all(self.free(q) for q in qs)
 
+    def path_free_only(self, qs, names):
+        return True
+
 
 def _state(q=None):
     q = np.zeros(9) if q is None else np.asarray(q, float)
@@ -121,6 +124,14 @@ def test_a_pose_goal_goes_straight_when_it_can_else_plans_with_the_hint():
     kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan_to=([_q(0.1, 0, 0)], "pose"))
     seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "to")
     assert seg.info["how"] == "pose" and kin.calls[-1] == ("plan_to", False, (0.5, 0.5, 0.5))
+
+
+def test_a_load_with_a_goal_solution_is_planned_to_it_with_the_tilt_held():
+    hint = _q(0.1, 0, 0)
+    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan=([hint], None))
+    seg = P.free_leg(kin, _state(), Spec(hold_tilt=True), P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "carry")
+    assert seg.info["how"] == "planned (tilt held)" and ("plan", True) in kin.calls
+    assert not any(c[0] == "plan_to" for c in kin.calls)
 
 
 def test_a_goal_set_takes_the_cheapest_reachable_goal():
