@@ -6,6 +6,7 @@
 - `COLLISION_CLEANUP.md`：要删的东西逐条列表，每条标了类别（W、F、C、K、S、B、X）和归哪一步。
 - `skills/`：每个技能在物理上一步一步做什么。改了技能就同步改那里。
 - `CONTAINER_COLLIDERS.md`：容器碰撞体和真实网格对不上（马克杯、锅），先不修。
+- `MOTION_ARCHITECTURE.md`：运动规划的分层设计草案（原语、技能计划、停车点搜索、执行、`State`），6.2 剩下的工作按它做。
 
 代码：分支 `remove-handcoded-motion`。
 
@@ -173,7 +174,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3：3a ✓ ──► 3b 第 1、2 项 ✓ ──► 6.1 pick（暂停）──► 6.2 place ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪**：6.2 place，支撑面、托盘、drop 已改完并通过针对性检查（见 6.2"进度"），剩下：11-07 那批对称性修改的针对性检查（放下段到位容差已知会误判，见"已知的 place 问题"）、书走同一流程（删 `place_flat`，11-07 试过一版 4/10，已回滚），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
+**现在在哪**：6.2 place，支撑面、托盘、drop 已改完，11-07 全量 140/170（见 6.2"进度"）。**验证和执行用同一份计划**（6.2 同名一段）pick / place 已改、针对性检查过（未提交），剩下：抽出段、搬运段、抬起段进计划（6.2"pick / place 每段运动"表下的顺序）、书走同一流程（删 `place_flat`，11-07 试过一版 4/10，已回滚），然后全量。不属于 pick / place、要在 6.3 之前查的：P06 双手交接（左臂从收起姿态到 `handover_left_pre` 出 `GRAPH_FAIL`，`benchmark/runs/left_fold_1105`）；导航原地摆臂擦墙（第 7 节）；P15 `search_object` 没看见垃圾桶。
 
 ### 6.1 pick（暂停）
 
@@ -183,7 +184,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 2. **真被挡住**：T13 s11 no_cup_bowl_on_cabinet，差 5.8 cm，马克杯被推 1.66 mm，左手指和杯子有真实接触。
 3. **找不到停车点**：T02 s11 far_crowded（木块 b，前置条件 `grasp_clearance` 也不满足）；P16 两个种子 empty 里拿樱桃番茄。
 4. **翻书**（T15 book_free ×2、P05）：`FlipFlatPolicy` 要的是"夹住、不抬"，pick 抓完就去搬运姿态、书整本离开桌面。把 pick 拆成"抓住"和"拿起"两段，翻书只用前一段。随 6.2（书、翻书）一起做。
-5. **`physical` profile 下的抓取质量**：sticky 合爪后焊住物体，抓得稳不稳看不出来。已经看到的：T20 table_full s10 沿口捏的碗搬运中在手里移了 6.1 cm；T03 far_small_and_large 擀面杖抓起后，到 `lift_object` 时已不在手里（离手 0.62 m）。
+5. **`physical` profile 下的抓取质量**：sticky 合爪后焊住物体，抓得稳不稳看不出来。已经看到的：T20 table_full s10 沿口捏的碗搬运中在手里移了 6.1 cm；（T03 far_small_and_large 擀面杖原来记在这里，11-07 查明不是抓取问题：place 把它竖着卡在杯口上并判了成功，见 6.2"已知的 place 问题"。）
 6. **搬运姿态去不了**（`carry_pose_kept`，11-06 全量 19 次）：pick 后手臂在另一个 IK 分支上，去搬运姿态要翻转（T10）。查是不是选抓法 / 抓取 IK 时没看后面的搬运姿态。
 7. **停车点验证的抬起长度 `PICK_LEAVE_CHECK` 3 cm 和执行不一致**：11-06 全量抬起段中位 1.7 cm、最长 4.0 cm，执行上限 6 cm（终点没 IK 就减半）。连同第 10 节"抬起段提前停下"。
 8. **候选逐个找停车点**（`for g in cands`）：改成目标集合，`find_park_set` 先支持每组自己的手指张开宽度。
@@ -219,14 +220,64 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 **删掉的：** `held_vertical_move` 的二次下放和拉回重试、`slots_blocked`（手指在碰撞模型里，放下段、抽出段的检查已经覆盖）、台面的直线 fallback（`FREE_ELSE_STRAIGHT`）、写死的 `PLACE_APPROACH`、松手后沿放下反方向的 `place_retreat`、放下段起点的 `FINGERS_KW`（持物时豁免本来不生效，换成自由空间写清楚）、层板的门轴猜测和 `search_near` 特例、`place_flat` 的预备点 / 换点循环 / 下垂补偿 / 松手后的手写动作 / 吞异常、sticky 的 `sticky_clear` 上抬几档、下游按 `held["kind"] == "edge"` 认书的地方（放书按 `kind == "edge"` 认可以保留，11-07 定：标记来自抓取标注，是数据）。`_carry_bottom_z` 的避障抬高 6.2 保留，等底盘规划器能换搬运高度再删（第 7 节、第 9 节）。
 
-**进度（11-07）：** 支撑面、托盘、drop、hover、sticky 按上面的设计改完（`9f5d71c`）；书还走 `place_flat`。针对性检查 39 个 episode（`/data/zenobench/place62/targeted`，种子 10、11）：34/39，同一批在 11-06 全量里 24/39；10 个由败转成，没有由成转败。place、drop、hover 本身零失败，剩下 5 个失败 11-06 也失败，都不在 place 上（T03 far_small_and_large ×2 擀面杖抬起前已不在手里、P15 s11 pick 差 1.0 cm 停下、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒没倒进去）。36 次 place：松手时间隙中位 4.9 mm（最小 1.5 mm，沿口捏的碗下垂），放下段中位 1.9 cm、最长 3.0 cm；落点误差最大的是 T09 竖着吊放的勺子（6.9、4.7 cm，以前 9–12 cm）。放下段、抽出段、收臂上的真实意外接触 3 次（都是贴着刚放下的物体或台面，冲量 < 0.06）；`tuck_blocked` 从 8 次到 0。覆盖率：新函数都跑到了；没跑到的是 `place_flat` 和 sticky 的 `place` / `drop_caught`（place 没失败过，sticky 的退路一次都没触发）。
+**进度（11-07）：** 支撑面、托盘、drop、hover、sticky 按上面的设计改完（`9f5d71c`）；书还走 `place_flat`。针对性检查 39 个 episode（`/data/zenobench/place62/targeted`，种子 10、11）：34/39，同一批在 11-06 全量里 24/39；10 个由败转成，没有由成转败。place、drop、hover 本身零失败，剩下 5 个失败 11-06 也失败，都不在 place 上（T03 far_small_and_large ×2 擀面杖卡在杯口、place 判成功（当时记成抬起前已不在手里，11-07 查调用记录更正）、P15 s11 pick 差 1.0 cm 停下、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒没倒进去）。36 次 place：松手时间隙中位 4.9 mm（最小 1.5 mm，沿口捏的碗下垂），放下段中位 1.9 cm、最长 3.0 cm；落点误差最大的是 T09 竖着吊放的勺子（6.9、4.7 cm，以前 9–12 cm）。放下段、抽出段、收臂上的真实意外接触 3 次（都是贴着刚放下的物体或台面，冲量 < 0.06）；`tuck_blocked` 从 8 次到 0。覆盖率：新函数都跑到了；没跑到的是 `place_flat` 和 sticky 的 `place` / `drop_caught`（place 没失败过，sticky 的退路一次都没触发）。
+
+**全量（11-07，39b8497 + 未提交的对称性修改和 `Rig._settle`）：** 140/170（11-06 124），新成 24、新败 8，`benchmark/runs/v3_sticky_gt_1107_2seeds/`。30 个失败里 16 个直接在 pick / place 上：place 8（T20 bottle_on_cabinet ×2 放下段、T13 s10 bowl_on_cabinet / T09 s11 lid_off / T12 s11 toys_everywhere 抽出段、T03 far_small_and_large ×2、T01 s11 table_set 书离杯子 4 mm），pick 8（T01 no_overhang / far_no_overhang ×4 书平放却被 `flat_edge` 抓起、路线期望这一步失败；T01 s11 overhang_ready 伸入段直线没有 IK；T17 s10 block_crowded、P16 ×2 找不到停车点）。另有 4 个沾边（T15 s10、P05 ×2 翻书，T13 s11 spoon_boxed_in 成组差 2.2 cm），10 个无关（P03、P04、P06、P08、P17 各 ×2）。前 5 个直线失败是下面"验证和执行用同一份计划"的来源。
+
+**验证和执行用同一份计划（11-07 定，先做）：**
+
+*查到的。* T20 bottle_on_cabinet（s10、s11 一样）：停车点验证过放下段直线（从验证的起点关节解出发不碰），执行时规划到起点用的是按位姿规划（`planned_leg how=pose`），cuRobo 自己选的解和验证的解差 2.47 rad（另一个 IK 分支），从那里往下走，`right_arm_link_3` 穿进静态家具 3–4 mm，place 直接失败（不换停车点）。同一位置从验证的解出发那条直线是通的（`approach_line_from_hint ok`）。原因不在某个技能，在验证和执行各自构造运动：
+
+| 段 | 停车点验证 | 执行 |
+|---|---|---|
+| 到直线起点 | `joint_reachable(carry=True)`：持物时关节规划会倾斜就改按位姿规划（`Motion._plan_js`），到了那个位姿就算可达，不管停在哪个解 | `Rig._move_path`：先试 TCP 直线，再 `plan_to` 先按位姿规划，验证的解（`q_line`）只在按位姿失败时才用 |
+| 直线两端的关节解 | `_chain` / `set_down_length` 求的一组 | `Rig._approach` 用 `ik_global` 重求，`_goal` 离提示 1 mm 以上就重求 |
+| 直线本身 | 从验证的起点解出发的 `cart_path`（0.02 m 步长） | 从规划终点出发的 `cart_path`（0.003 m，失败再按 0.02 m） |
+
+每一行两份实现，各自选 IK 分支、各自定退路顺序，有一处不一样验证就不再保证执行。
+
+*11-07 先试了只改执行侧（未提交，会被下面的设计取代）：* `_approach_path` 有 `q_line` 时 `_move_path(keep_hint=True)`：不走 TCP 直线，`plan_to(joint_first=True)` 先规划到验证的解本身（`Motion._to_joint_goal`：持物时按位姿规划的终点要能关节直线移到验证的解，否则不算）。6 个直线失败重跑（`/data/zenobench/jointgoal1107`）：T13 s10、T09 s11、T12 s11 转成（伸入段、放下段都 `how=joint`，抽出段接着通了）；T20 ×2 仍败：持物时关节规划到验证的解会让瓶子倾斜、按位姿规划又落到另一个分支，只能退回老路（`line_start_goal joint_first_failed: the carry plan ends off the joint goal`），说明验证侧的 `joint_reachable(carry=True)` 本来就不该让这个停车点通过；T01 s11 overhang_ready 是另一回事：执行到了验证的解本身（差 0），从那里的直线仍"没有 IK"，而验证时有，底盘、目标位置都一样，原因未查（下面第 4 条）。
+
+*设计。* 停车点搜索产出一份计划，执行按计划走；同一种运动只有一个函数，搜索和执行都调它：
+
+1. **计划**：每个中继位姿一个关节解（pick：伸入段起点、抓取位姿；place：放下段起点、放下位姿、抽出段终点），直线段的关节路点，到第一个中继位姿的自由段。`find_park` / `find_park_set` 加一个返回计划的选项，别的调用方不变。
+2. **自由段（到中继位姿）**：搜索和执行用同一个规划函数、同样的约束（持物时保持倾角、同一套碰撞模型），不再一边判"到了位姿就算"、一边先按位姿再按关节。光是约束一样还不够：cuRobo 同样输入结果会分叉（第 7 节），所以执行用的是搜索的结果，不是再规划一次碰运气。具体（11-07 定，第 10 节原来的 (b)）：搜索按执行的方式（持物按位姿、保持倾角）从行驶 / 搬运姿态规划到中继位姿，规划终点就是这个中继位姿的关节解，直线从它查；执行时起点和搜索时一样（误差在容差内）就直接用这条轨迹，不一样就用同一个函数规划到那个关节解本身（终点已证明持物可达）。不选"规划到搜索另外求的 IK 解"（原来的 (a)）：那个解没经过持物规划，T20 的解持物就到不了
+3. **直线段**：执行用搜索求出的路点，开到后按当时的世界只复查碰撞，不重求 IK。
+4. **开到后**：重新测量偏差小就照计划走；偏差大（place 已有：2 cm）在实际底盘位置把同一套验证重做，pick 也这样。T01 overhang_ready 已查（11-07，`/data/zenobench/t01probe`）：验证和执行那条直线的输入（底盘、起点解、目标、碰撞设置、另一只手臂）差在 1e-5 以内；验证时抓取位姿的解压在两个关节限位上（腰 0.6981 / 上限 0.6980，`right_arm_joint_5` 1.5407 = 限位，`path_ik` 允许越界 1e-4），执行时同样输入原样重放 4/4 没有 IK（不查碰撞也一样，卡在最后一个路点）。同一 episode 再跑 3 次，那个停车点（7.62, 1.009, 120°）都没通过验证、选了别的停车点 pick 成功：贴着限位的解求不求得出是碰运气，搜索碰上一次就选了它（排第一，关节余量 0.0）。所以第 3 条成立：执行用搜索的路点，不重求 IK。另外搜索不该把压在限位上的解当成验证通过（第 7 节限位那一行）。
+5. **范围**：pick（`_pick_pinch_core`）、place（`_set_down`、`_place_check`）、tooluse 放下（`policies/tooluse.py`），执行侧的 `Rig._approach` / `_approach_path` / `_move_path`。别的技能见第 7 节同名一行，改到它们时再切。
+
+*实现（11-07，未提交）：* `rig.relay_approach`：从给定姿态到直线起点（TCP 直线，不通就 `plan_to` 按位姿规划、持物保持倾角），再从这一段**实际的终点**走直线到中继位姿，返回两段的关节路点；搜索和执行都调它。`skills._relay_check`：`find_park` 的 check，按停车点上手臂会在的姿态（`_goto_park` 不开车就是现在的姿态，否则是开车到达的 `_travel_q`）调 `relay_approach`，计划存下来；pick（`_pick_pinch_core`，`unfold=False`，从行驶姿态展开到伸入段的检查由它代替）和 place（`_place_check`：放下段长度仍由 `set_down_length` 量，抽出段和收臂改成从放下段直线的终点查，以前从放下位姿的 IK 解查）都用它。`Rig.move_relay`：执行时计划还成立（手臂在计划起点 `PLAN_AT_START`、计划终点在当前底盘下离目标 `HINT_REACH` / `HINT_TURN` 以内、每段在现在的世界里不碰）就原样走，否则用 `relay_approach` 从当前姿态重做一遍（日志 `relay`：`reused`、`why`）。新常数 `APPROACH_STEP`（直线路点间距，搜索和执行同一个）、`PLAN_AT_START`。下午的执行侧补丁（`joint_first`）已撤掉。还没切过去的：tooluse 的放下（`policies/tooluse.py`，仍走 `_approach_path` 的 `q_line`）；pick 抬起段的验证仍从抓取位姿的 IK 解查（抬起段是离开接触，执行时按碰撞模型量）；抽出段执行时仍从当前姿态求直线。
+
+*针对性检查结果（11-07，`/data/zenobench/relay1107`）：* 11-07 全量的 6 个直线失败 6/6 过（第一轮 T01 s11 找不到停车点：`relay_approach` 少了执行时原有的"按位姿规划不出来就规划到关节解"那一步，比执行严；补上后搜索和执行同一套，过了）。6.2 针对性检查 39 个：35/39（9f5d71c 时 34/39），没有由成转败，P15 s11 转成；剩下 4 个都是原来的失败（T03 far_small_and_large ×2 擀面杖卡在杯口、P16 s11 找不到樱桃番茄的停车点、P17 s11 倾倒）。`relay`：`pick_grasp` 70/70 原样走计划；`place_down` 29 原样、13 重做（重新测量后目标偏 1.0–4.7 mm，超过 `HINT_REACH`），重做的全成。其中 T05 s11 pen 那次偏 4.7 cm、135°，查出是老问题：`find_park_set` 在同一个底盘位置检查多个目标（空位、手腕朝向），检查结果只按底盘位置存，后检查的目标覆盖了选中目标的计划、放下段长度和抽出段终点（以前只当提示用，看不出来）；改成按底盘位置加这个目标的解存（`skills._park_key`），重跑 T05 s11 原样走计划、过了。耗时合计 +4%。`carry_pose_kept` 4 次（P15 s11 ×3、T20 table_full s11，都是 pick 后去搬运姿态倾角约束规划不出来，6.1 第 6 项）；`place_pull_out_stuck` 4 次，都走出来了（T13 s10 在 6 个那批里有一次没走出来：离开接触 5.25 cm 后剩下的直线没有 IK，重跑过了；抽出段还没进计划）。
+
+*pick / place 每段运动现在怎么做（11-07，未提交的工作区）：* 机制见 `skills/approach_leave.md`。"内部换法"是查碰撞的几种做法依次试，不算 fallback；"fallback"指改走不查碰撞的路或跳过这一段。
+
+| 段 | 怎么生成 | 约束 / 碰撞规则 | 停车点搜索验证了什么 | 执行时的退路 / 失败 |
+|---|---|---|---|---|
+| pick 自由段：行驶姿态 → 伸入段起点 | `relay_approach`：TCP 直线 → 按位姿规划（末端沿夹爪轴） → 规划到起点的 IK 解 | 自由空间：手指查，要抓的物体是障碍物，不豁免；模型里手张到抓取宽度 | 同一个函数做一遍，存计划 | 计划成立原样走，否则同一个函数从当前姿态重做；做不出来失败。无 fallback |
+| pick 伸入段 | 从自由段实际终点沿夹爪轴直线到抓取位姿，`pick_approach()` 长，路点 `APPROACH_STEP` | 同上；逐 tick 盯物体（`approach_moved`）；到位差 > `PICK_REACH_TOL` 算被挡 | 同上（在计划里） | 同上；停在半路失败。无 fallback |
+| pick 合爪 | 手臂不动 | `closing`：手指可碰这个物体 | — | 没夹住：张开、竖直离开、失败 |
+| pick 抬起段 | `Rig.leave` 竖直直线，不规划；6 cm 求不出 IK 就减半到 `LEAVE_MARGIN`，都不行就不抬 | 不查（`LEAVE_CONTACT`）：只许碰起点就在碰的；走到离开 `LEAVE_GAP` 再 `LEAVE_MARGIN`，至少升 `LEAVE_GAP`，最多 `LEAVE_MAX` | 只查抓取位姿往上 `PICK_LEAVE_CHECK`（3 cm）有 IK，不是执行的那条线 | 减半长度；不抬（F 类） |
+| pick 自由段：抬起终点 → 搬运姿态（`carry_in`） | `move_to_any`：搬运位置 × 手腕朝向的目标集合，批量 IK 选关节走得最少的；TCP 直线 → 按位姿规划 → 规划到那个 IK 解 | 保持倾角 `CARRY_TILT`，限速 `CARRY_VEL` / `RIM_VEL`；手指、物体都在模型里 | 不验证 | 规划不出来：不查碰撞的直线（`FREE_ELSE_STRAIGHT`，11-07 全量 `clearance_fallback` 5 次）；没有 IK：留在原处带着开（`carry_pose_kept`）。都是 F 类 |
+| place 自由段：搬运姿态 → 放下段起点 | `relay_approach`（同 pick） | 保持倾角，限速；手指、物体都在模型里；搬运高度 `_carry_bottom_z` | 同一个函数做一遍，存计划 | 计划成立原样走；重新测量偏 > `HINT_REACH` 就同一个函数重做（39 个里 13 次，全成）；偏 2 cm 以上整套验证重做。无 fallback |
+| place 放下段 | 从自由段实际终点竖直直线到放下位姿，长度 `set_down_length`（抬起段倒过来量） | 整段查，无接触段；放下位姿物体最低点高于支撑面 `LEAVE_GAP`；到位差 > `PICK_REACH_TOL` 算被挡 | 同上（在计划里） | 同上；停在半路失败。无 fallback |
+| place 抽出段 | 沿夹爪轴往回直线，`pick_approach()` 长；起点穿进物体（`place_pull_out_stuck`）时先 `Rig.leave` 离开接触，剩下的直线 | 平常整段查，刚放下的物体是障碍物；卡住时那一截不查，只许碰起点就在碰的 | 从放下段直线终点查（物体落下 `LEAVE_GAP` 成障碍物，手张开） | 不用计划，从当前姿态重求直线；求不出失败（T13 s10 出过一次） |
+| place 自由段：抽出终点 → 行驶姿态（`tuck`） | 收起，收起碰就下垂；关节直线插值，不通就关节规划 | 自由空间，手指查 | 从抽出直线终点到收起或下垂 `joint_reachable` | 都到不了 place 失败（别处的 `tuck` 只记 `tuck_blocked`、留在原处） |
+
+（这些按 `MOTION_ARCHITECTURE.md` 的分层一起改，不再逐段补。）**还对不上的，按影响排：** ① 抽出段：搜索从放下段直线终点查，执行从当前姿态重求，不用计划；卡住时那截不查碰撞。② 抬起段：搜索只查 3 cm 有 IK，执行最长 6 cm 不查，求不出 IK 就缩短或不抬。③ 搬运段（`carry_in`）：pick 的搜索不查，执行留着两种 F 类退路（不查的直线、留在原处）。④ 收臂：搜索 `joint_reachable`、执行 `tuck`，不是同一个函数（手已空、都在关节空间，差得少）。下一步按 ① → ③ → ② 改成"搜索做计划、执行照着走"，删掉 ②③ 的 F 类退路（`COLLISION_CLEANUP.md` 记一行）。
+
+*代价和风险。* 第 9 节记过"对固定关节解做关节规划比执行严格，误拒能走通的停车点"：那次只改了搜索侧、而且搜索比执行严；这次两侧用同一个函数、同样的约束，不会一边严一边松，但选中的停车点会变，要重跑全量定新基线。搜索里每个候选停车点都要做一次完整的持物规划（现在只在关节直线不通时才规划），会慢：先在 T20 和 6.2 那 39 个上量停车点数和搜索耗时；第 9 节的 CUDA graph 重录开销也要量（搜索里不要交替批量 IK 和单个 IK）。
+
+*搜索代价量过（11-07，`/data/zenobench/searchcost`，在现有搜索里对每个候选多做一次 (b) 的持物规划，不改代码）：* T20 s10、T13 s10（3 次 place 搜索，14 个候选）。持物规划每个候选 0.80–1.05 s（现有 `_place_check` 0.24–1.5 s，整次搜索 30–45 s），一次搜索多 4–5 s；搜索里 CUDA graph 重录 0–1 次（开头那次），不是问题。T13：规划终点和 IK 解差 0.01–0.39 rad，同一分支，终点往下的直线 9/9 通。T20：5 个候选的规划终点都落在另一个分支（差 2.3–2.9 rad），终点往下的直线 5/5 碰；也就是 (b) 会把这 5 个都拒掉（对的），这次选中的 (2.449, 7.3, 0°) 也照样失败。有没有别的停车点能过，要实现后看；都没有的话 T20 的问题在搬运姿态的分支（6.1 第 6 项）。规划终点 14 个里 8 个离 `kin.lo/hi` 不到 1 mrad，但手臂关节的 `kin.lo/hi` 本来就在硬件限位以内 0.03 rad（`ArmKin.__init__`，驱动在限位前几百分之一弧度就停），所以不是贴着硬件限位；T01 的问题是在边界上重新求 IK 不稳，执行用搜索的结果就没有这一步（第 7 节限位那一行）。
+
+*针对性检查：* 11-07 的 6 个（T20 bottle_on_cabinet ×2、T13 s10 bowl_on_cabinet、T09 s11 lid_off、T12 s11 toys_everywhere、T01 s11 overhang_ready），加 6.2 针对性检查那 39 个看停车点变少没有、搜索耗时；`approach_line_hit`、`line_start_hint_lost`、`carry_pose_kept`、`tuck_blocked` 计数。
 
 **已知的 place 问题：**
 
 - 抽出段开头的离开接触（`place_pull_out_contact`）按"离开周围 `LEAVE_GAP`"判断，手指张开后本来就离物体几毫米，所以 36 次里 18 次走了 1.5–5.6 cm 的不查碰撞的离开段，剩下的才查。**已改（11-07，未跑）**：只有起点真的穿进物体（`kin.free` 不成立，记 `place_pull_out_stuck`）时才走离开接触，否则整段查碰撞。同一次还改了和 pick 不对称的几处：放下段从物体贴着支撑面的位置量（以前从放下位姿量，起点高约 5 mm）；停车点验证的抽出段让物体先落下 `LEAVE_GAP`；重新测量偏 2 cm 以上时整套验证重做（以前只重量放下段）；放下段到位容差 3 cm → `PICK_REACH_TOL`（11-07 41 次最大 3.0 mm）；收臂失败判 place 失败（以前吞掉）。
 - 书（11-07 试过，已回滚）：按 `kind == "edge"` 认书，放下位姿是支撑面开放边缘上的一组（手正对边缘从外面伸进来，被夹的边伸出去，伸出量从"规划器下指尖过边缘 `LEAVE_GAP`"到"中心在边缘里 `COM_MARGIN`"按 3 cm 网格取），删 `place_flat`、`edge_held`、搬运多抬的 6 cm。用过 `place_flat` 的 10 个 episode 4/10（11-06 是 9/10）：成功的书落点误差 0.5–2 mm；5 个书的 place 找不到停车点（每个边缘位置只剩一档伸出，`_place_check` 拒掉 59–113 个有 IK 的停车点，没记是哪项检查拒的）。整套改动存在 `/data/zenobench/place62/books/working_tree_with_books.patch`（含当时其余未提交的改动），结果在 `/data/zenobench/place62/books/run/`。再做时先给 `_place_check` 的每个失败出口计数。
 - 放下段到位容差收到 `PICK_REACH_TOL`（5 mm）后，T14 shelf_taken s11 的 mug_shelf 放下段停在差 6 mm 处判失败：`follow` 在关节误差 < 0.01 rad 就停，和 6.1 第 1 项同一个问题，11-07 一起改了（`Rig._settle`），重跑过了 4.1 mm。
-- T03 far_small_and_large：擀面杖放进杯子，改成 drop 后预计会倒在杯外（这次 pick 先失败了，没走到），等第 7 节的按几何分流。
+- T03 far_small_and_large：路线要擀面杖放不进杯子、再换容器；改成 drop 后擀面杖竖着卡在杯口（z 1.0 m）而 place 判成功，路线没换容器，下一步 `lift` 发现手空（11-07 全量 ×2；原来记成"抬起前已不在手里"是看错了）。drop 的结果检查要认出"卡在沿口上不算放进去"；放法等第 7 节的按几何分流。
 - `carry_in`（pick 之后去搬运姿态）退回直线时擦到桌面：T20 table_full s11，7 次接触，属于 6.1 第 6 项。
 
 **常数**：第 8 节标 6.2 的。
@@ -274,9 +325,10 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 问题 | 例子 | 打算 |
 |---|---|---|
+| 停车点验证和执行各自构造运动，验证通过不保证执行（贯穿各技能）：到中继位姿的持物可达只看位姿（`joint_reachable(carry=True)`）、执行先按位姿规划不用验证的解（`Rig._move_path` → `plan_to`）、直线从不同的解出发（`_chain` 对 `_approach_path`）。都在共用层，十几个技能调 `find_park` 后用 `move_to` 执行 | 已确认：T20 bottle_on_cabinet 放下段（6.2"验证和执行用同一份计划"）；11-07 全量"直线起点出发不通"的失败调用 9 次（pick 1、stack 1、place 7）。可能同类、没确认：`carry_pose_kept` 11 次、`tuck_blocked` 4 次、`carry_in` fallback 5 次、P06 `handover_left_pre` 规划失败 | pick / place 在 6.2 切到"搜索产出计划、执行按计划走"；别的技能改到哪个（6.3、6.4）在那时切，并顺带查上面"可能同类"的几项。不一次全改：基线整体变，倒退分不清来源 |
 | 同样输入，cuRobo 规划结果会分叉 | P07 s10 连跑两次一次成功一次 "no IK for shake" | 不单独处理，按第 5 节区分 |
 | 难的目标上 cuRobo 只是偶尔成功，停车点搜索碰上那一次就选了这个停车点，执行时重新规划失败 | 伸入段起点贴着马克杯时（第 2 节），同一规划 9 次成功 1 次 | 让目标不难（直线起点在空处）；不靠重复规划 |
-| IK 解可以贴着关节限位（cuRobo IK 的限位激活距离 0.001），轨迹优化在限位 0.05 以内重罚；停车点打分的关节余量只算手臂 7 个关节，不算躯干和腰 | 马克杯的停车点躯干离上限 6 mm、腰离限位 0.8 mrad（不是那次失败的原因） | 需要时把躯干、腰算进余量 |
+| IK 解可以贴着关节限位（cuRobo IK 的限位激活距离 0.001），轨迹优化在限位 0.05 以内重罚；停车点打分的关节余量只算手臂 7 个关节，不算躯干和腰 | 马克杯的停车点躯干离上限 6 mm、腰离限位 0.8 mrad（不是那次失败的原因）；T01 s11 overhang_ready 抓取位姿的解压在腰和 `right_arm_joint_5` 两个限位上，验证时求出、执行时同样输入求不出（6.2"验证和执行用同一份计划"第 4 条） | 手臂关节的 `kin.lo/hi` 已经在硬件限位以内 0.03 rad，贴着它不是贴着硬件；躯干、腰只留 1e-4（地上取物要到限位）。T01 是在边界上重新求 IK 求不出，6.2 让执行用搜索的路点、不重求，就没有这一步。需要时把躯干、腰算进打分的余量 |
 | 马克杯、带柄锅的容器碰撞体和真实网格对不上 | 抓杯时手指捏在离真实杯壁约 2.2 cm 的碰撞壁上 | 见 `CONTAINER_COLLIDERS.md`；先不修 |
 | 仿真里手指只有指垫方块参与碰撞：原网格是 L 形（手指 + 横跨夹爪的滑轨），凸分解成伸进两指之间的楔形，所以整个关掉了（`physics.py`）。指垫以上那段手指、滑轨两端（各伸出夹爪本体约 13 mm）在仿真里不碰任何东西 | — | 这个分支不动（改仿真接触）；以后可以把 L 形拆成几块凸体 |
 | 规划器的手指碰撞球包住指垫方块，最多凸出 4.2 mm（`build_curobo_robot.finger_rows`）：模型比实物大，合爪、贴着放时会多报接触 | 合爪时监视器误报 | 只当指标；真实接触以 PhysX 为准 |
