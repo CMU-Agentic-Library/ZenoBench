@@ -8,10 +8,10 @@
 | task | variant | category | physics now | depends on |
 |---|---|---|---|---|
 | T01 | overhang_ready | control | 0/0 of 10 | - |
-| T01 | table_seats | task | 0/0 of 10 | - |
-| T01 | which_table | task | 0/0 of 10 | - |
-| T01 | no_room_fallback | task | 0/0 of 10 | - |
-| T01 | reader_seat | task | 0/0 of 10 | - |
+| T01 | table_seats | action_task | 0/0 of 10 | - |
+| T01 | which_table | action_task | 0/0 of 10 | - |
+| T01 | no_room_fallback | action_task | 0/0 of 10 | - |
+| T01 | reader_seat | action_task | 0/0 of 10 | - |
 | T01 | which_book | task | 0/0 of 10 | - |
 | T02 | clear | control | 0/0 of 10 | - |
 | T02 | crowded_use_another | task | 0/0 of 10 | - |

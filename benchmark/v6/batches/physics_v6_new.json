@@ -9,8 +9,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 11,
-"variant": "table_seats__seats_a",
-"route": "v6_table_seats__seats_a",
+"variant": "table_seats__seats_a_flat",
+"route": "v6_table_seats__seats_a_flat",
 "family": "table_seats"
 },
 {
@@ -30,8 +30,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "table_seats__seats_a",
-"route": "v6_table_seats__seats_a",
+"variant": "table_seats__seats_a_flat",
+"route": "v6_table_seats__seats_a_flat",
 "family": "table_seats"
 },
 {
@@ -44,36 +44,36 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 16,
+"variant": "table_seats__seats_c_flat",
+"route": "v6_table_seats__seats_c_flat",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 17,
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 18,
+"variant": "table_seats__seats_b_flat",
+"route": "v6_table_seats__seats_b_flat",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 19,
 "variant": "table_seats__seats_c",
 "route": "v6_table_seats__seats_c",
 "family": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
-"seed": 17,
-"variant": "table_seats__seats_b",
-"route": "v6_table_seats__seats_b",
-"family": "table_seats"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 18,
-"variant": "table_seats__seats_b",
-"route": "v6_table_seats__seats_b",
-"family": "table_seats"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 19,
-"variant": "table_seats__seats_c",
-"route": "v6_table_seats__seats_c",
-"family": "table_seats"
-},
-{
-"task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "which_table__far_a",
-"route": "v6_which_table__far_a",
+"variant": "which_table__far_a_flat",
+"route": "v6_which_table__far_a_flat",
 "family": "which_table"
 },
 {
@@ -93,8 +93,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 13,
-"variant": "which_table__far_b",
-"route": "v6_which_table__far_b",
+"variant": "which_table__far_b_flat",
+"route": "v6_which_table__far_b_flat",
 "family": "which_table"
 },
 {
@@ -121,8 +121,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 17,
-"variant": "which_table__near_b",
-"route": "v6_which_table__near_b",
+"variant": "which_table__near_b_flat",
+"route": "v6_which_table__near_b_flat",
 "family": "which_table"
 },
 {
@@ -135,8 +135,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "which_table__near_a",
-"route": "v6_which_table__near_a",
+"variant": "which_table__near_a_flat",
+"route": "v6_which_table__near_a_flat",
 "family": "which_table"
 },
 {
@@ -170,15 +170,15 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "no_room_fallback__full_a",
-"route": "v6_no_room_fallback__full_a",
+"variant": "no_room_fallback__full_a_flat",
+"route": "v6_no_room_fallback__full_a_flat",
 "family": "no_room_fallback"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 15,
-"variant": "no_room_fallback__seats_c",
-"route": "v6_no_room_fallback__seats_c",
+"variant": "no_room_fallback__seats_c_flat",
+"route": "v6_no_room_fallback__seats_c_flat",
 "family": "no_room_fallback"
 },
 {
@@ -191,8 +191,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 17,
-"variant": "no_room_fallback__seats_b",
-"route": "v6_no_room_fallback__seats_b",
+"variant": "no_room_fallback__seats_b_flat",
+"route": "v6_no_room_fallback__seats_b_flat",
 "family": "no_room_fallback"
 },
 {
@@ -205,8 +205,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "no_room_fallback__seats_b",
-"route": "v6_no_room_fallback__seats_b",
+"variant": "no_room_fallback__seats_b_flat",
+"route": "v6_no_room_fallback__seats_b_flat",
 "family": "no_room_fallback"
 },
 {
@@ -219,8 +219,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 11,
-"variant": "reader_seat__mug_1",
-"route": "v6_reader_seat__mug_1",
+"variant": "reader_seat__mug_1_flat",
+"route": "v6_reader_seat__mug_1_flat",
 "family": "reader_seat"
 },
 {
@@ -240,15 +240,15 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "reader_seat__mug_1",
-"route": "v6_reader_seat__mug_1",
+"variant": "reader_seat__mug_1_flat",
+"route": "v6_reader_seat__mug_1_flat",
 "family": "reader_seat"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 15,
-"variant": "reader_seat__mug_2",
-"route": "v6_reader_seat__mug_2",
+"variant": "reader_seat__mug_2_flat",
+"route": "v6_reader_seat__mug_2_flat",
 "family": "reader_seat"
 },
 {
@@ -275,8 +275,8 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "reader_seat__mug_3",
-"route": "v6_reader_seat__mug_3",
+"variant": "reader_seat__mug_3_flat",
+"route": "v6_reader_seat__mug_3_flat",
 "family": "reader_seat"
 },
 {

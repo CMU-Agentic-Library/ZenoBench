@@ -1,6 +1,6 @@
 {
- "routes": 278,
- "ok": 278,
+ "routes": 291,
+ "ok": 291,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -50,6 +50,57 @@
    "task": "T01_book_to_dining_table",
    "layout": "table_seats__seats_c",
    "steps": 7,
+   "atoms_checked": 12,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "table_seats"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "table_seats__seats_a_flat",
+   "steps": 8,
+   "atoms_checked": 12,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "table_seats"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "table_seats__seats_b_flat",
+   "steps": 8,
+   "atoms_checked": 12,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "table_seats"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "table_seats__seats_c_flat",
+   "steps": 8,
    "atoms_checked": 12,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -131,6 +182,72 @@
   },
   {
    "task": "T01_book_to_dining_table",
+   "layout": "which_table__near_a_flat",
+   "steps": 8,
+   "atoms_checked": 15,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "which_table"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "which_table__near_b_flat",
+   "steps": 8,
+   "atoms_checked": 15,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "which_table"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "which_table__far_a_flat",
+   "steps": 10,
+   "atoms_checked": 15,
+   "atoms_geometric": 5,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a"
+   ],
+   "problems": [],
+   "variant": "which_table"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "which_table__far_b_flat",
+   "steps": 10,
+   "atoms_checked": 15,
+   "atoms_geometric": 5,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a"
+   ],
+   "problems": [],
+   "variant": "which_table"
+  },
+  {
+   "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__seats_b",
    "steps": 7,
    "atoms_checked": 12,
@@ -181,6 +298,56 @@
   },
   {
    "task": "T01_book_to_dining_table",
+   "layout": "no_room_fallback__seats_b_flat",
+   "steps": 8,
+   "atoms_checked": 12,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "no_room_fallback"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "no_room_fallback__seats_c_flat",
+   "steps": 8,
+   "atoms_checked": 12,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "no_room_fallback"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "no_room_fallback__full_a_flat",
+   "steps": 9,
+   "atoms_checked": 11,
+   "atoms_geometric": 5,
+   "geometric_atoms": [
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "no_room_fallback"
+  },
+  {
+   "task": "T01_book_to_dining_table",
    "layout": "reader_seat__mug_1",
    "steps": 7,
    "atoms_checked": 13,
@@ -217,6 +384,57 @@
    "task": "T01_book_to_dining_table",
    "layout": "reader_seat__mug_3",
    "steps": 7,
+   "atoms_checked": 13,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "reader_seat"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "reader_seat__mug_1_flat",
+   "steps": 8,
+   "atoms_checked": 13,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "reader_seat"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "reader_seat__mug_2_flat",
+   "steps": 8,
+   "atoms_checked": 13,
+   "atoms_geometric": 6,
+   "geometric_atoms": [
+    "clear_of paperback_book ['plate_counter_a', 'plate_counter_b', 'bowl_side_table', 'cup_side_table', 'cup_counter_b', 'mug_dining_cabinet', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
+    "upright cup_side_table",
+    "upright cup_counter_b",
+    "upright mug_dining_cabinet",
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b"
+   ],
+   "problems": [],
+   "variant": "reader_seat"
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "layout": "reader_seat__mug_3_flat",
+   "steps": 8,
    "atoms_checked": 13,
    "atoms_geometric": 6,
    "geometric_atoms": [

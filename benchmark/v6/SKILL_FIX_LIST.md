@@ -42,7 +42,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | rolling_pin | 72 | 6 | 8% | other 5, carry slip 1 | T03 | 5 | carry: rolling_pin slipped out of the hand while carrying it |
 | place | oatmeal | 156 | 6 | 4% | other 4, IK / reach / base pose 1, placement result 1 | T04 T07 T16 | 1 | no IK for place_above |
 | pick | bowl | 83 | 6 | 7% | grasp miss 6 | T13 | 2 | pick bowl: not held (lift 0.000 m) |
-| expose | paperback_book | 25 | 5 | 17% | other 5 | T01 | 0 | slide to edge: centre of mass may leave the support |
+| expose | paperback_book | 25 | 5 | 17% | other 5 | T01 | 4 | slide to edge: centre of mass may leave the support |
 | look | rolling_pin | 33 | 5 | 13% | IK / reach / base pose 3, perception / search 2 | T03 | 0 | NOT_FOUND: 'rolling_pin' is not visible at its last observed position |
 | stir | handled_cooking_pot | 60 | 5 | 8% | carry slip 3, other 2 | T09 | 4 | left_carry: handled_cooking_pot slipped from the left hand |
 | lift | rolling_pin | 3 | 4 | 57% | other 3, IK / reach / base pose 1 | T03 | 0 | PRECONDITION_FAILED: holding(hand=right, object=rolling_pin) is false (right holds None) |

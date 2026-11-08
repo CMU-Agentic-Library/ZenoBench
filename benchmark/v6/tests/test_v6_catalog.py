@@ -142,9 +142,12 @@ def test_local_fallbacks_are_action_level():
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
     assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
-    # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
+    # T01: what it tests is which table, which seat, which book, or the fallback; where the book starts on the
+    # island, half the layouts have it flat (expose first), so those designs are Action + Task
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
-    assert {x["category"] for x in t01.values()} == {"control", "task"}
+    assert {v: x["category"] for v, x in t01.items()} == {
+        "overhang_ready": "control", "which_book": "task", **{v: "action_task" for v in (
+            "table_seats", "which_table", "no_room_fallback", "reader_seat")}}
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
     for tid, t in TASKS.items():
@@ -252,9 +255,9 @@ def test_t01_one_suitable_slot_per_setting():
     assert len(set(slots.values())) == 3
     for s, lid in t["v6_variants"]["no_room_fallback"]["seeds"].items():
         ok = _t01_suitable(episode_config(t, int(s), lid))
-        assert bool(ok) == (not lid.endswith("full_a")), (lid, s, sorted(ok))
-    assert {lid.split("__")[1] for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} == \
-        {"seats_b", "seats_c", "full_a"}
+        assert bool(ok) == ("full_a" not in lid), (lid, s, sorted(ok))
+    assert {lid.split("__")[1].removesuffix("_flat") for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} \
+        == {"seats_b", "seats_c", "full_a"}
 
 
 def test_t01_reader_seat():

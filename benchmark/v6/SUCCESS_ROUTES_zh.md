@@ -26,11 +26,11 @@
 
 1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
 
-### table_seats（Task）
+### table_seats（Action + Task）
 
 **情况**：指令要求把书放在某位客人吃饭的位置旁边、和餐具留出空隙，但没说是哪个空位。餐桌东侧摆了三人份早餐（每个座位一个盘子或碗加一个杯子，另有两盒麦片），桌边有好几个空位：两套餐具之间的窄缝（放得下但会挨着餐具）、麦片外侧桌子尽头的大空地（离座位远），还有一个座位旁边够宽的空位 → 看清桌面，自己判断哪个空位既在客人座位旁边、又放得下、和餐具留得出空隙，放在那里
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。
+**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。
 
 **成功条件**：
 
@@ -46,23 +46,26 @@
 - 摆法 `seats_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
 - 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
 - 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `seats_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `seats_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
 
-### which_table（Task）
+### which_table（Action + Task）
 
 **情况**：家里有两张餐桌（近的在隔壁餐厅约 6 m，远的在西边另一间餐厅约 16 m），早餐只摆在其中一张上（三人份，和 table_seats 一样只有一个座位旁的合适空位），另一张上是孩子的积木和储物箱，桌边也有空位；指令只说放到客人吃饭的那张桌子上 → 先到近桌看，没摆早餐就改去另一间餐厅，在摆了早餐的桌子上选座位旁的空位放下；放到另一张桌子上算失败
 
-**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动。
+**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。
 
 **成功条件**：
 
-- 摆法 `far_a`、`far_b`：
+- 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
   - `paperback_book` 在 `dining_table_1/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
   - 手里空着
-- 摆法 `near_a`、`near_b`：
+- 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
@@ -76,21 +79,25 @@
 - 摆法 `near_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
 - 摆法 `far_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
 - 摆法 `far_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
+- 摆法 `near_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `near_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `far_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
+- 摆法 `far_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
 
-### no_room_fallback（Task）
+### no_room_fallback（Action + Task）
 
 **情况**：和 table_seats 一样的三人份早餐；指令加了约束：餐具和麦片都别动，桌上没有合适位置就放到餐厅南墙边的矮格子柜顶上 → 先看桌子：有座位旁的合适空位就放那里（这时放格子柜算失败）；唯一的宽空位被一盒麦片占着时，按指令放到格子柜上（挪麦片腾位置算失败）
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。
+**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。
 
 **成功条件**：
 
-- 摆法 `full_a`：
+- 摆法 `full_a`、`full_a_flat`：
   - `paperback_book` 在 `cell_shelf_4/top` 上
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- 摆法 `seats_b`、`seats_c`：
+- 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
@@ -103,16 +110,19 @@
 - 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
 - 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
 - 摆法 `full_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=cell_shelf_4/top)` → 8. `place(object=paperback_book, receptacle=cell_shelf_4/top, hint_xy=[4.3, 4.45])`
+- 摆法 `seats_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `full_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=cell_shelf_4/top)` → 9. `place(object=paperback_book, receptacle=cell_shelf_4/top, hint_xy=[4.3, 4.45])`
 
-### reader_seat（Task）
+### reader_seat（Action + Task）
 
-**情况**：三个座位旁边都有够宽的空位；其中一个座位的饮料是马克杯，另外两个是玻璃杯；指令说书是"早上喝咖啡的那位客人"的 → 从桌上认出用马克杯的座位，把书放在那个座位旁边（离它的盘子或马克杯不超过 15 cm，离别的座位的盘子超过 15 cm）
+**情况**：三个座位旁边都有够宽的空位；其中一个座位的饮料是马克杯，另外两个是没把手的杯子；指令说书是"早上用带把手的马克杯喝咖啡的那位客人"的（另外两位用没把手的杯子） → 从桌上认出用马克杯的座位，把书放在那个座位旁边（离它的盘子或马克杯不超过 15 cm，离别的座位的盘子超过 15 cm）
 
-**指令**：餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。桌上的餐具和麦片都别挪动。
+**指令**：餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。
 
 **成功条件**：
 
-- 摆法 `mug_2`：
+- 摆法 `mug_2`、`mug_2_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`mug_dining_cabinet`
@@ -120,7 +130,7 @@
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- 摆法 `mug_1`：
+- 摆法 `mug_1`、`mug_1_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
@@ -128,7 +138,7 @@
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- 摆法 `mug_3`：
+- 摆法 `mug_3`、`mug_3_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
@@ -142,12 +152,15 @@
 - 摆法 `mug_1`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
 - 摆法 `mug_2`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
 - 摆法 `mug_3`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
+- 摆法 `mug_1_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
+- 摆法 `mug_2_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
+- 摆法 `mug_3_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
 
 ### which_book（Task）
 
 **情况**：岛台上有一本书（不是要找的）；指令说客人昨晚在哪个房间看书（客厅看电视时，或卧室睡前），书就留在那里；另一个房间也有一本别的书 → 不拿眼前岛台上的书，去指令说的房间拿那本，送到餐桌；岛台上和另一个房间的书都不动
 
-**指令**：客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。
+**指令**：客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。除了那本书，别的东西都别挪动。
 
 **成功条件**：
 

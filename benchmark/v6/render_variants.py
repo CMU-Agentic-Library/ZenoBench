@@ -390,7 +390,10 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     # view, a look-alike, the thing that must stay, the furniture to open); at most three
     in_goal = {x for at in atoms(goal) for a in at[1:] for x in (a if isinstance(a, list) else [a])
                if isinstance(x, str)}
-    pick = [i for i, x in enumerate(kind) if x == "take"][:1]
+    takes = [i for i, x in enumerate(kind) if x == "take"]
+    searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
+    found = [i for i in takes if views[i][0] in searched]      # what the robot had to find (the duck): shown too
+    pick = (found + [i for i in takes if i not in found])[:2] if found else takes[:1]
     places = [i for i, x in enumerate(kind) if x == "place"]
     places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
     goal_places = [i for i in places if views[i][0].replace("_", "/") in {g.replace("_", "/") for g in in_goal}]
