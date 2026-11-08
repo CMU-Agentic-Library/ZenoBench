@@ -88,7 +88,6 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 |---|---|
 | `move_to(p, R, allow=, approach=, q_hint=)` | 手（TCP）到一个位姿。最主要的入口 |
 | `run.run(rig, plan, rebuild, hooks)` | pick / place：按计划逐段执行（复核、重做、`follow` / `grip`、监视声明）。技能自己的步骤挂 hooks |
-| `move_relay(p, R, u, L, plan=)` | 旧：直线进入中继位姿，计划（`relay_approach`）成立就原样走。只剩微波炉里取物用 |
 | `move_to_any(goals, …)` | 先批量求 IK、挑代价最小的目标，再交给 `move_to`。搬运姿态用它 |
 | `leave(u, label, allow)` | 沿方向 u 离开接触，**没有终点**：碰撞模型判断不再接触就停（最多 `LEAVE_MAX`）|
 | `joint_path(q)` / `joint_path_via` + `follow` | 关节空间运动 |
@@ -135,7 +134,6 @@ move_to
 ```
 _pick_pinch_core
   候选抓取（annotation）
-  不在微波炉里：
     _pick_find_park：所有候选 = 一个目标集合 → park_search.find_park(Problem(goals, build, arrive, travel, near))
        build = plan_pick(state_at_park, 候选, _carry_goal_set)：pick_open → pick_reach（free_leg）→ pick_grasp
                （straight）→ pick_close（holding）→ pick_lift（contact_extent off_support）→ carry_in
@@ -146,7 +144,7 @@ _pick_pinch_core
        hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后到位检查（被挡 → leave + SkillFailure）；
               pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
     _pick_judged：拿住了没有
-  微波炉里（6.4）：planner.find_park(check=_relay_check) 逐个候选 → move_relay → leave → 写死的退出点 → _carry_pose
+  （微波炉里也走这条，11-08 起；旧的逐个候选 + move_relay + 写死退出点已注释掉，6.4）
 ```
 
 ### place（`skills.place`，台面 / 浅容器 / 深容器 / 层板）
