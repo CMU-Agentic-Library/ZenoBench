@@ -15,7 +15,7 @@
    - 掌心、相机不碰物体的最低高度由 `tools/prepare_assets.py` 按碰撞球对物体网格推导，写在抓取标注里。
 3. **排序。** 按离机器人的远近；长物体优先夹中间。微波炉里、冰箱层板上的有各自的排序（场景特例，计划 6.4）。
 
-**选停车点**（`skills._pick_find_park` → `park_search.find_park`，见 `../MOTION_ARCHITECTURE.md` 第 7 节）
+**选停车点**（`skill_jobs/pick.py` 的 `_pick_problem` → `motion_skills.run_skill` → `park_search.find_park`，见 `../MOTION_ARCHITECTURE.md` 第 2.3、7 节）
 
 4. **所有候选一起找停车点**：每个抓取候选是目标集合里的一个目标（标注的候选最多前 12 个，旋转 90° 的那组排在后面），排名每靠后一位代价加 `PICK_CAND_COST`（5 cm）。每个目标给出手要够到的点（伸入段起点、抓取位姿、抓取位姿往上 `PICK_LEAVE_CHECK`）和排序用的中继位姿（伸入段起点）。冰箱层板先试它开门那一侧的停车点（`prefer`）。
    - **便宜的检查**：围着目标取候选底盘位置（每个目标最多 `MAX_PER_GOAL` 个）；手够得着、底盘占地不碰家具；收起的手臂在那里整机不碰（一次批量）；从现在的位置开得到（一次可达场）。
@@ -28,9 +28,9 @@
      5. 抬起段：竖直往上量接触到哪里结束（`contact_extent`，`off_support`），见[离开](approach_leave.md#离开leave)；
      6. 去搬运姿态：搬运目标集合（[搬运姿态](carry.md)），保持物体倾角；手里物体的碰撞球放大 `HELD_POSE_MARGIN`（5 mm），因为持法是推算的。
    - 胜出的停车点再做一次精确的底盘路径（整机）。都做不出来就失败（`pick_no_park`，带每项拒绝计数和构造失败原因）。日志 `park_search`。
-5. **开过去**（[navigate](navigate.md)：先收臂，再按整机规划开到停车点）。已经在停车点上就不动。
+5. **开过去**（`run_skill` 调 [navigate](navigate.md)：已收起就不再收臂，再按整机规划开到停车点）。已经在停车点上就不动。
 
-**抓**（`skills._pick_run` → `run.run`，见 `../MOTION_ARCHITECTURE.md` 第 8 节）
+**抓**（`skill_jobs/pick.py` 的 `_pick_ready` → `run.run`，见 `../MOTION_ARCHITECTURE.md` 第 8 节）
 
 6. **重新测量物体**（开车可能碰动了它），按序号找回同一个候选。抓取位姿和计划时差 `HINT_REACH`（1 mm）/ `HINT_TURN`（0.01 rad）以上，就从当前状态把整份 pick 计划重做（`pick_plan_again`），做不出来就失败。sticky hands 记下这次抓取。
 7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）、路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。

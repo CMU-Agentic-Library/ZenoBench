@@ -85,7 +85,7 @@ Skill(
 1. `problem = skill.problem(...)`；
 2. 要选停车点的，`find_park`；不选的（姿态类、感知类的头部动作），只在原地 `build`，停车点就是现在的位置；
 3. 不在停车点，就构造并执行 navigate 的计划（`plan_navigate`，第 6 节）；
-4. `run(rig, plan, problem.build, skill.hooks)`；hook 判失败时执行 `build_clear` 再抛 `SkillFailure`。
+4. `run(rig, plan, problem.build, skill.hooks)`（`rig` 就是 `Actuator`）；hook 判失败时执行 `build_clear` 再抛 `SkillFailure`。
 
 `AtomicPolicy.execute` 只剩 `run_skill(self.rig, SKILLS[name], args)`。迁一个技能 = 给它写 `problem`（目标集合）和 `build`（尽量用下表的模板），hooks 照搬，然后不再调旧入口。
 
@@ -142,7 +142,7 @@ Skill(
 
 这个形状由 `tests/test_layering.py` 守住：①②③ 的 import 图（模块级和函数内的都算）不出现 `rig`、`skills`、`planner`、`motion_skills`；`run.py` 只调 `act.` 的协议方法；`Rig` 没有和协议方法同名的实例属性（`Rig.arm` 是关节下标张量，第一版的 `Actuator.arm` 就被它遮住了，所以叫 `arm_kin`）。
 
-底盘的整机模型（球模型、`base_planner`）现在靠 `Rig` 读手里物体的位置，做不到 rig-free。做法和 `kin` 一样：协议 `motion_state.BaseModel`（`plan` / `straight` / `depths` / `reachable` / `drivable`），由 `skills.RigBase` 在 rig 上实现，作为参数传给 ① 的 `drive` / `drive_straight` 和 ③ 的 `find_park`。它从"机器人现在的样子"规划（`state` 是现在的状态，或者现在的状态换了手臂姿态），换机器人时要重写的是它和 `Actuator`。
+底盘的整机模型（球模型、`base_planner`）现在靠 `Rig` 读手里物体的位置，做不到 rig-free。做法和 `kin` 一样：协议 `motion_state.BaseModel`（`plan` / `straight` / `depths` / `reachable` / `drivable`），由 `skill_jobs/base.py` 的 `RigBase` 在 rig 上实现，作为参数传给 ① 的 `drive` / `drive_straight` 和 ③ 的 `find_park`。它从"机器人现在的样子"规划（`state` 是现在的状态，或者现在的状态换了手臂姿态），换机器人时要重写的是它和 `Actuator`。
 
 `Actuator` 是 ④ 唯一能碰的仿真接口：
 
@@ -230,7 +230,7 @@ class State:
     parts: Mapping[str, float]   # 可动部件的关节值
 ```
 
-- 执行时 `run.observe(rig)` 从仿真读出。搜索时用小函数从当前状态改出假设：`at_base`、`with_arm`、`with_width`、`holding`、`released`、`with_object`，每个都返回新的 `State`。`state_at(park)` = `at_base` + `with_arm(到达姿态)`。
+- 执行时 `run.observe(act)`（`Actuator.snapshot`）从仿真读出。搜索时用小函数从当前状态改出假设：`at_base`、`with_arm`、`with_width`、`holding`、`released`、`with_object`，每个都返回新的 `State`。`state_at(park)` = `at_base` + `with_arm(到达姿态)`。
 - **完整性**：凡是影响碰撞查询的都在 `State` 里（头、左臂、手指宽度、部件值）。
 - `Held(kind="part")`：手握着部件的把手。握着时，那只手的手指对这个部件不算障碍物（和持物一样），松开就恢复。它取代技能里设了不恢复的 `hand_touches_part`。
 - `Held.T_tcp_obj` 是"手里的东西在 TCP 里的位姿"的唯一表示。工具的工作点（勺尖、海绵底面）是它的直接延伸：`T_tcp_tool = T_tcp_obj · T_obj_tool`，其中 `T_obj_tool` 是标注里的 `tool_frame`（第 6 节接触类技能）。
@@ -448,7 +448,7 @@ run.observe(act)    -> (State, Observation | None)
 
 持物时第 1 段是复核加按需决定：pick 的 `carry_in` 已经定了搬运姿态，满足就原样用，不重新决定（第 1 节第 2 条）。只有 place 才知道的要求（容器边沿高度 `min_bottom_z`）不满足时才动。第 1 步以前的 `_carry_pose` 按"离某个目标点 1 cm、0.05 rad 以内"判断已在搬运姿态，几乎总判不在，11-08 全量里又动了约 169 次手臂，还有 1 次退成不查碰撞的直线（T19 s10，`FREE_ELSE_STRAIGHT`）。
 
-实现（9.3 第 1 步）：判据在 `skills._carry`，三条——TCP 在底盘系里落在 `CARRY_SPOTS` 外扩 10 cm 的范围（`CARRY_FRONT_X` 0.25–0.55 m、`CARRY_FRONT_Y` −0.40–0 m）；物体底面不低于 `CARRY_Z` 减 `CARRY_LOW_TOL` 1 cm；整机在这个姿态下原地不碰（`RigBase.depths` ≤ `DEPTH_TOL`）。不满足就 `free_leg(搬运目标集合)`（要求的高度优先），做不出来技能失败（不再 `carry_pose_kept`，不再不查碰撞的直线）。`min_bottom_z`（`_carry_floor`：目的地的边沿高度，边夹的书再加 6 cm）不是约束而是"能抬就抬"：够得着那个高度的搬运目标就抬上去，够不着就原样带着走，日志写明原因——带物开车的整机底盘规划本来就查物体和世界的碰撞。第一版把它当约束，v6 T07 microwave_works / T23 spoon_on_floor 要的 1.15–1.18 m 够不着，navigate 直接失败，而旧代码在那里是保持原姿态（f6d16de 改正）。`carry_posture(rig, min_bottom_z)` 是这第 1 段单独跑：place 在停车点搜索之前（这样搜索假设的搬运姿态就是开车时的姿态）、drop、去停靠点前的检查、`stow_load` 用它。空手的 `tuck`、左臂收起做不出来就省掉，由底盘规划在路上换（和以前的 `Rig.tuck` / `_fold_left` 一样）。
+实现（9.3 第 1 步）：判据在 `skill_jobs/carry.py` 的 `_carry`，三条——TCP 在底盘系里落在 `CARRY_SPOTS` 外扩 10 cm 的范围（`CARRY_FRONT_X` 0.25–0.55 m、`CARRY_FRONT_Y` −0.40–0 m）；物体底面不低于 `CARRY_Z` 减 `CARRY_LOW_TOL` 1 cm；整机在这个姿态下原地不碰（`RigBase.depths` ≤ `DEPTH_TOL`）。不满足就 `free_leg(搬运目标集合)`（要求的高度优先），做不出来技能失败（不再 `carry_pose_kept`，不再不查碰撞的直线）。`min_bottom_z`（`_carry_floor`：目的地的边沿高度，边夹的书再加 6 cm）不是约束而是"能抬就抬"：够得着那个高度的搬运目标就抬上去，够不着就原样带着走，日志写明原因——带物开车的整机底盘规划本来就查物体和世界的碰撞。第一版把它当约束，v6 T07 microwave_works / T23 spoon_on_floor 要的 1.15–1.18 m 够不着，navigate 直接失败，而旧代码在那里是保持原姿态（f6d16de 改正）。`carry_posture(rig, min_bottom_z)` 是这第 1 段单独跑：place 在停车点搜索之前（这样搜索假设的搬运姿态就是开车时的姿态）、drop、去停靠点前的检查、`stow_load` 用它。空手的 `tuck`、左臂收起做不出来就省掉，由底盘规划在路上换（和以前的 `Rig.tuck` / `_fold_left` 一样）。
 
 navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选（2.3、第 10 节）。
 
@@ -555,7 +555,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 某段不成立就用原语重新做，决定先原样复用；它后面的段起点变了，也跟着重做。
 - 两个锚点之间只复核下一段：世界没变，只有意外（被挡住、碰动了东西）才会让它不成立。
 
-只有这一处触发重做。`_pick_run` / `_place_run` 开头"重新测量的目标偏了 `HINT_REACH` 就整份重做"那一套要删掉：目标由 `build` 从 `State` 推出以后（第 6 节），到达锚点做的就是这件事，而且会复用旧决定。
+只有这一处触发重做。`skill_jobs/pick.py` 的 `_pick_ready`、`skill_jobs/place.py` 的 `_place_ready` 开头"重新测量的目标偏了 `HINT_REACH` 就整份重做"那一套要删掉：目标由 `build` 从 `State` 推出以后（第 6 节），到达锚点做的就是这件事，而且会复用旧决定。
 
 ### 8.4 复核 `holds`
 
@@ -575,7 +575,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 `execute` 按种类分：`move` 交给 `follow`，持物时限速；`drive` 交给底盘；`scripted` 交给它的执行器；`action` 做对应动作；`anchor` 不动。每段都向接触监视声明 `seg.spec.allow`。这些都是 `Actuator` 的方法（2.5）：`execute` 和 `observe` 是 ④ 仅有的两处仿真副作用，而且只通过这个协议，不直接碰 `Rig`。
 
-技能自己的判断挂在 hooks 上：伸入时盯物体、合爪后判断和登记持物、搬运后 `check_held`。hooks 只读状态、做判断、登记、写日志，**不动机器人，不改碰撞模型**。判失败以后要退出接触（没夹住、半路被挡），由技能给一个失败出口的 `build_clear(state)`（张手 + `contact_extent(near_world)` + `contact_segment`），`run` 执行它再抛 `SkillFailure`。现在 `_pick_run` 的 `after_grasp` / `after_close` 在 hook 里直接调 `rig.grip` 和 `rig.leave`，要改。
+技能自己的判断挂在 hooks 上：伸入时盯物体、合爪后判断和登记持物、搬运后 `check_held`。hooks 只读状态、做判断、登记、写日志，**不动机器人，不改碰撞模型**。判失败以后要退出接触（没夹住、半路被挡），由技能给一个失败出口的 `build_clear(state)`（张手 + `contact_extent(near_world)` + `contact_segment`），`run` 执行它再抛 `SkillFailure`。现在 `_pick_ready` 的 `after_grasp` / `after_close` 在 hook 里直接调 `rig.grip` 和 `rig.leave`，要改（9.3 第 2.6 步）。
 
 失败只有两类：
 1. 计划做不出来（原语返回原因），包括锚点处重做不出来；
@@ -591,7 +591,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 `Plan` / `Segment` 不该只有 `build` 能产出。`State` 是干净的快照、`Plan` 是干净的运动表示、`holds` + 接触监视是一套独立的校验，合起来意味着：**任何能产出 `Plan` 的东西，都能免费拿到碰撞复核、接触监视、持物限速和失败分类。** 外部策略（学出来的、别人写的）只要产出 `Plan`，`run` 就能执行并校验它；`find_park` 也能拿 `problem.build` 给它打分。
 
-现在 `run(rig, plan, rebuild, hooks)` 把 `rebuild` 当必需位置参数，而且 `holds` 不成立时无条件调用它——外部策略没有 `build`。改成 `rebuild=None` 合法，含义是"不重做，不成立就按失败退出"：
+第 1 步以前 `run(rig, plan, rebuild, hooks)` 把 `rebuild` 当必需位置参数，而且 `holds` 不成立时无条件调用它——外部策略没有 `build`。9.3 第 1 步起 `run(act, plan, rebuild, hooks)` 里 `rebuild=None` 合法，含义是"不重做，不成立就按失败退出"：
 
 ```
 why = holds(kin, state, seg)
@@ -600,7 +600,7 @@ if why is not None:
     ...
 ```
 
-两行改动，归在 9.3 第 2 步。做了以后 ④ 就从"pick / place 的执行器"变成"任意 `Plan` 的执行与校验器"，这是第 1 节第 3 条（没有 fallback）唯一合理的放宽方式：外部策略不会重做，但它也不会偷偷走不查碰撞的路。
+`carry_posture` 已经这样用（它的计划是刚从现在的状态做的，不成立就失败）。有了它，④ 就从"pick / place 的执行器"变成"任意 `Plan` 的执行与校验器"，这是第 1 节第 3 条（没有 fallback）唯一合理的放宽方式：外部策略不会重做，但它也不会偷偷走不查碰撞的路。
 
 配套的是 4.6：外部策略要观测，观测走 `Observation`，不进 `State`。
 
@@ -615,7 +615,7 @@ if why is not None:
 - 计划（续）：`plan_navigate`、`travel_chain`、`Carry`（`skill_plans/navigate.py`）。
 - 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载）；navigate、pick、place 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`，加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
 - 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`，pick / place 在用，微波炉里取物也是（cc2dbb2；写死的 `search_near` 和 `microwave_retrieval_q` 还在，9.3 第 8 步删）。
-- 执行：`run.observe`、`holds`、`execute`、`run(act, plan, rebuild, hooks)`（`rebuild=None` 合法，8.8）；`skills._pick_ready`、`_place_ready`。
+- 执行：`run.observe`、`holds`、`execute`、`run(act, plan, rebuild, hooks)`（`rebuild=None` 合法，8.8）；`skill_jobs.pick._pick_ready`、`skill_jobs.place._place_ready`。
 - 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`。
 - 基线：v3 两个种子 140/170（11-08，`benchmark/runs/v3_sticky_gt_1108_2seeds`）。计划段 2045 段原样走、13 段执行时重做（2 段做不出来）。pick 搜索中位 8 s、p90 14 s；place 中位 16 s、p90 29 s。之后还没跑过的改动：`free_leg` 有 `q_hint` 时先走到它（空手也是），`_reach` 在碰撞模型里求伸入段 / 放下段起点（排序 IK 只当种子）。
 - 静态审计（`tools/audit_collision.py`）暂停（开关文件 `.claude/audit_paused`）。恢复前要做：
@@ -641,7 +641,7 @@ if why is not None:
 |---|---|---|---|
 | 伸入段 / 放下段起点的分支 | `_reach` | 搜索和执行都走 `_reach`，但没有"原样复用"那一步 | `decide_ik`（5.7） |
 | `q_p` 的分支 | `plan_place` | 搜索时 `q_seed = q_rank`，执行时重做和整份重做不带种子 | `decide_ik` + `prior` |
-| 什么时候重做 | `run`（锚点 + `holds`） | `_pick_run` / `_place_run` 开头按 `HINT_REACH` 比较目标，偏了就整份重做，不带种子 | 目标从 `State` 推出，删掉开头那段（8.3） |
+| 什么时候重做 | `run`（锚点 + `holds`） | `_pick_ready` / `_place_ready` 开头按 `HINT_REACH` 比较目标，偏了就整份重做，不带种子 | 目标从 `State` 推出，删掉开头那段（8.3） |
 | TCP 到不到得了目标 | `holds` 的终点检查 | 没人查：底盘误差直接变成抓取 / 放下误差 | `holds` 加终点检查（8.4） |
 | 搬运姿态 | `plan_pick` 的 `carry_in` | ~~navigate 和 place 之前又调旧的 `_carry_pose`~~ | 已去掉：`plan_navigate` 第 1 段按约束复核，满足就不动（9.3 第 1 步） |
 | 开车时的行驶姿态 | `plan_navigate` | ~~搜索的 `_drivable` 和 `navigate` 给 `travel_postures` 的参数不同~~ | 已去掉：两边都取 `travel_chain`（9.3 第 1 步） |
@@ -651,7 +651,7 @@ if why is not None:
 
 按"覆盖多少 v6 路线步数、依赖谁"排（2.3 的表）：
 
-1. **框架（第 ⑤ 层）**：`Skill`、`run_skill`、`drive`（包 `_base_plan` 和 `straight_base_move`）、`plan_navigate`；pick / place 改走 `run_skill`。分五次提交：
+1. **框架（第 ⑤ 层，已完成）**：`Skill`、`run_skill`、`drive`（包 `_base_plan` 和 `straight_base_move`）、`plan_navigate`；pick / place 改走 `run_skill`。分五次提交：
    1. 只换结构、行为不变：`skill_plans.py` 拆成 `skill_plans/` 包（9.4），`Actuator` 协议抽出来、④ 只对着它编程（2.5），加 import 图单测守住 ①② 不碰 `rig`，`find_park` 改成 `(kin, world, problem, state, log)`；`motion_signature --compare` 无差异；
    2. `SKILLS` 进 catalog（2.3）：pick / place 两条先进去，加载器 + schema 校验；
    3. `plan_navigate` 第 1 段按约束复核持物姿态，不满足才用 `FREE` 规划；删 `_carry_pose`、`carry_pose_kept` 和它的 `FREE_ELSE_STRAIGHT`（11-08 的 T07 ×2 失败出在这里）；
@@ -665,14 +665,14 @@ if why is not None:
 2. **pick / place 收尾**，每项单独提交：
    1. 先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志，跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL`；同一次提交里建 `tolerances.py`（4.5），把四处散落的阈值搬进去、补上来源标记；
    2. `decide_ik`、`Plan.decisions`、`build` 的 `prior`（取代 `plan_pick` / `plan_place` 的 `q_seed` 和 `build` 的 `q_rank` 参数；`free_leg` 的 `Pose.q_hint` 不变，它是定下的分支）；
-   3. 目标从 `State` 推出（pick 的抓取候选放在物体框里，place 的目标是物体位姿），删 `_pick_run` / `_place_run` 开头的整份重做；
+   3. 目标从 `State` 推出（pick 的抓取候选放在物体框里，place 的目标是物体位姿），删 `_pick_ready` / `_place_ready` 开头的整份重做；
    4. 锚点段、`holds` 的终点检查、`run` 在锚点复核剩下的整份；
    5. 余量：place 计划带 `HOLD_DRIFT`；
-   6. hooks 不动机器人：`build_clear`；`run` 的 `rebuild=None` 合法（8.8）；
+   6. hooks 不动机器人：`build_clear`（`run` 的 `rebuild=None` 第 1 步已做，8.8）；
    7. 9.2 第一张表里剩下的：收臂预算、搬运慢、书进 `plan_place`（删 `place_flat`）。
 3. **感知类**：look、search、explore_furniture / explore_room、inspect、measure、identify、count。navigate + 头部动作，只依赖第 1 步。
 4. **取放家族**：drop、stack、lift、hover、cover、present；collect 在任务层串。在 `plan_pick` / `plan_place` 上换目标集合。
-5. **姿态类**：`Spec.joints` + `JointSet` + 拆 `q_body`（`joints` 按关节名写，不按 `q_right` 的下标）。bend / straighten、升降躯干、wave、nod；删改 `kin.lo / hi` 和 `_lock_shared_posture` 的地方。
+5. **姿态类**：`Spec.joints` + 拆 `q_body`（`JointSet` 第 1 步已加）（`joints` 按关节名写，不按 `q_right` 的下标）。bend / straighten、升降躯干、wave、nod；删改 `kin.lo / hi` 和 `_lock_shared_posture` 的地方。
 6. **部件类 + retreat**：`scripted` + `Held(kind="part")` + `touch` 扩到部件和部位。开关门，`_ride` 变成闭环执行器，删 `hand_touches_part`；retreat 用直线 `drive`。
 7. **接触类**：按 v6 用量排，依次是 stir、wipe、roll / flip、expose、press / touch、push、sweep、pour。先加 `tool_frame` 标注和它的解析（第 6 节接触类技能），再迁第一个技能，否则 9 个技能各写一遍换算。删 `LEGACY` 直线和"到不了的点跳过"。
 8. **微波炉和电器动作**：`drive_part`、`toggle`、电机开门前让开的检查。删写死的底盘位置（`search_near`）和 `microwave_retrieval_q`。
@@ -681,11 +681,11 @@ if why is not None:
 
 每步单独提交，先针对性检查再全量。
 
-**只降不升的计数**：恢复静态审计（9.1）时，让它数 `run.py` 和原语执行器以外直接调旧运动入口的地方（`move_to`、`move_to_any`、`joint_path`、`move_left_to`、`follow`、`leave`、`swing`、`drive_base`、`tuck`、`straight_base_move`、`relocate`、`navigate`、`_carry_pose`）。11-08 粗数约 190 处（`skills.py` 61、`hand.py` 17、`tooluse.py` 16、`extra.py` 15、`orientation.py` 12、`bimanual.py` 12……，含注释里的，要按审计重数）。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
+**只降不升的计数**：恢复静态审计（9.1）时，让它数 `run.py` 和原语执行器以外直接调旧运动入口的地方（`move_to`、`move_to_any`、`joint_path`、`move_left_to`、`follow`、`leave`、`swing`、`drive_base`、`tuck`、`straight_base_move`、`relocate`、`navigate`）。11-08 粗数约 190 处；第 1 步之后 180 处（`skills.py` 39、`hand.py` 17、`tooluse.py` 17、`extra.py` 15、`orientation.py` 14、`bimanual.py` 14……；粗数含注释里的，要按审计重数）。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
 
 ### 9.4 代码放哪
 
-`skills.py` 现在 2666 行 114 个函数，`policies/` 另有 5391 行。迁移有 10 步，如果新的 `Skill` / `build` 继续往 `skills.py` 里加、旧的又注释着不删（bd55037 / cc2dbb2 对 pick / place 就是这么做的），它会长期背着一大坨注释掉的死代码，同时还在变长。
+`skills.py` 第 1 步以前 2666 行 114 个函数，第 1 步之后 2284 行 104 个函数（job 搬进了 `skill_jobs/`）；`policies/` 另有 5391 行。迁移有 10 步，如果新的 `Skill` / `build` 继续往 `skills.py` 里加、旧的又注释着不删（bd55037 / cc2dbb2 对 pick / place 就是这么做的），它会长期背着一大坨注释掉的死代码，同时还在变长。
 
 规则：
 
