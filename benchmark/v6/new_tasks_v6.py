@@ -108,13 +108,18 @@ HOUSE_CUPS = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table", "mug_din
 
 
 # ================================================================== T21 bring tissues to the spill
+# the task asks for "something to wipe it up"; the designs built on a sponge standing in for tissues ask for tissues
+TISSUES_ASKED = dict(instruction="Some soup got spilled at the dining table. Bring some tissues over.",
+                     instruction_zh="餐桌上洒了点汤，拿点纸巾过去。")
+
+
 def t21():
     TIS = "tissue"
     meal = {"soup_bowl": on("oatmeal_bowl", T2, 3.10, 6.95), "meal_spoon": on("breakfast_spoon", T2, 3.10, 7.14)}
     ctl = {"note": "the tissue box on the TV stand, a bowl of soup on the dining table",
            "add": {TIS: on("tissue_box", TV, 7.60, 0.36), **meal}}
-    t = base_task("T21_bring_tissues", "ZB-T21", "Some soup got spilled at the dining table. Bring some tissues over.",
-                  "餐桌上洒了点汤，拿点纸巾过去。", "tissue_on_tv_stand", ctl,
+    t = base_task("T21_bring_tissues", "ZB-T21", "Some soup got spilled at the dining table. Bring something to wipe "
+                  "it up.", "餐桌上洒了点汤，拿点擦的东西过去。", "tissue_on_tv_stand", ctl,
                   {"all": [["on", TIS, T2], H]}, fetch(TIS, T2, [3.30, 6.65]), [TIS, "soup_bowl"])
     to_table = lambda x=TIS, sup=T2, hint=(3.30, 6.65): fetch(x, sup, hint)  # noqa: E731
     west_meal = {"soup_bowl": on("oatmeal_bowl", T1, -7.95, 7.60), "meal_spoon": on("breakfast_spoon", T1, -7.95, 7.79)}
@@ -148,7 +153,8 @@ def t21():
             "the purpose is to wipe the spill: bring the closest thing that does that (the sponge)",
             {"": dict(add={"spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
                       goal={"all": [["on", "spare_sponge", T2], H]}, watch=["spare_sponge", "soup_bowl"],
-                      route=[look(TV)] + to_table("spare_sponge"))}),
+                      route=[look(TV)] + to_table("spare_sponge"))},
+            **TISSUES_ASKED),
         "tissue_put_away": fam(
             "tissue_on_tv_stand", ["item_put_away"], "which low cabinet holds the tissues (seed)",
             "the tissue box was put away in one of the two low wall cabinets",
@@ -189,7 +195,8 @@ def t21():
                      + (from_closed(TIS, C4) if cab == C4 else [S("close", articulated=C4)] + explore(C6)
                         + (from_closed(TIS, C6) if cab == C6 else [S("close", articulated=C6)]))
                      + ([nav(T2), place(TIS, T2, [3.30, 6.65])] if cab else to_table("spare_sponge")))
-             for c, cab, xy in (("in_first", C4, (1.40, 0.42)), ("in_second", C6, (3.50, 0.36)), ("none", None, None))}),
+             for c, cab, xy in (("in_first", C4, (1.40, 0.42)), ("in_second", C6, (3.50, 0.36)), ("none", None, None))},
+            **TISSUES_ASKED),
     }
     return t, fams
 

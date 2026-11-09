@@ -18685,7 +18685,7 @@
    18,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18734,7 +18734,7 @@
    18,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18780,7 +18780,7 @@
    14,
    16
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18830,7 +18830,7 @@
    18,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18931,7 +18931,7 @@
    17,
    18
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18988,7 +18988,7 @@
    16,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
