@@ -2174,7 +2174,7 @@
    11,
    12
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2306,7 +2306,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__seats_b",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/no_room_fallback__seats_c": {
@@ -2316,7 +2316,7 @@
    10,
    18
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2448,7 +2448,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__seats_c",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/no_room_fallback__full_a": {
@@ -2458,7 +2458,7 @@
    13,
    16
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2484,12 +2484,93 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "all": [
+   "any": [
     [
-     "on",
-     "paperback_book",
-     "cell_shelf_4/top"
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/top"
+     ]
     ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/shelf_0"
+     ]
+    ]
+   ],
+   "all": [
     [
      "near_start",
      "plate_counter_a",
@@ -2564,7 +2645,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__full_a",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/no_room_fallback__seats_b_flat": {
@@ -2574,7 +2655,7 @@
    17,
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2707,7 +2788,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__seats_b_flat",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/no_room_fallback__seats_c_flat": {
@@ -2716,7 +2797,7 @@
   "seeds": [
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2849,7 +2930,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__seats_c_flat",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/no_room_fallback__full_a_flat": {
@@ -2858,7 +2939,7 @@
   "seeds": [
    14
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2885,12 +2966,93 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "all": [
+   "any": [
     [
-     "on",
-     "paperback_book",
-     "cell_shelf_4/top"
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/top"
+     ]
     ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_1/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "paperback_book",
+      "bookcase_4/shelf_0"
+     ]
+    ]
+   ],
+   "all": [
     [
      "near_start",
      "plate_counter_a",
@@ -2965,7 +3127,7 @@
   "control": "overhang_ready",
   "oracle_route": "v6_no_room_fallback__full_a_flat",
   "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+  "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/reader_seat__mug_1": {
@@ -4055,7 +4217,7 @@
    15,
    17
   ],
-  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4120,7 +4282,7 @@
   },
   "control": "clear",
   "oracle_route": "v6_crowded_use_another__tight_tv",
-  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
   "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -4132,7 +4294,7 @@
    18,
    19
   ],
-  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4197,7 +4359,7 @@
   },
   "control": "clear",
   "oracle_route": "v6_crowded_use_another__tight_dining",
-  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
   "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -4209,7 +4371,7 @@
    13,
    14
   ],
-  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4274,7 +4436,7 @@
   },
   "control": "clear",
   "oracle_route": "v6_crowded_use_another__loose",
-  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
   "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

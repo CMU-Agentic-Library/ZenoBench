@@ -4777,8 +4777,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -4904,7 +4904,7 @@
       "family": "no_room_fallback",
       "case": "seats_b",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -5065,8 +5065,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5192,7 +5192,7 @@
       "family": "no_room_fallback",
       "case": "seats_c",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -5353,8 +5353,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5368,12 +5368,93 @@
       "spoon_target_table"
      ],
      "goal": {
-      "all": [
+      "any": [
        [
-        "on",
-        "paperback_book",
-        "cell_shelf_4/top"
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/top"
+        ]
        ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/shelf_0"
+        ]
+       ]
+      ],
+      "all": [
        [
         "near_start",
         "plate_counter_a",
@@ -5454,7 +5535,7 @@
       "family": "no_room_fallback",
       "case": "full_a",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -5616,8 +5697,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5743,7 +5824,7 @@
       "family": "no_room_fallback",
       "case": "seats_b_flat",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -5905,8 +5986,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -6032,7 +6113,7 @@
       "family": "no_room_fallback",
       "case": "seats_c_flat",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -6194,8 +6275,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -6209,12 +6290,93 @@
       "spoon_target_table"
      ],
      "goal": {
-      "all": [
+      "any": [
        [
-        "on",
-        "paperback_book",
-        "cell_shelf_4/top"
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/top"
+        ]
        ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_1/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_3/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "paperback_book",
+         "bookcase_4/shelf_0"
+        ]
+       ]
+      ],
+      "all": [
        [
         "near_start",
         "plate_counter_a",
@@ -6295,7 +6457,7 @@
       "family": "no_room_fallback",
       "case": "full_a_flat",
       "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
-      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase (any one, any level), instead of clearing the slot (moving the cereal box fails)",
       "control": "table_seats",
       "contrast": null,
       "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it); and whether the book overhangs the island's edge or lies flat on it (Action: expose it)",
@@ -9656,17 +9818,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cell_shelf_4/top"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "cell_shelf_4/top",
+        "receptacle": "bookcase_2/top",
         "hint_xy": [
-         4.3,
-         4.45
+         1.15,
+         -0.43
         ]
        }
       }
@@ -9839,17 +10001,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cell_shelf_4/top"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "cell_shelf_4/top",
+        "receptacle": "bookcase_2/top",
         "hint_xy": [
-         4.3,
-         4.45
+         1.15,
+         -0.43
         ]
        }
       }
@@ -10825,8 +10987,8 @@
       "infeasible_fallback",
       "not_in_view"
      ],
-     "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
-     "instruction_zh": "把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，免得把燕麦碰洒；家里别处还有一块木积木，用那块。",
+     "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
+     "instruction_zh": "把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -10878,11 +11040,11 @@
       ]
      },
      "since": "v6",
-     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
      "v6": {
       "family": "crowded_use_another",
       "case": "tight_tv",
-      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
       "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
       "control": "clear",
       "contrast": null,
@@ -11027,8 +11189,8 @@
       "infeasible_fallback",
       "not_in_view"
      ],
-     "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
-     "instruction_zh": "把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，免得把燕麦碰洒；家里别处还有一块木积木，用那块。",
+     "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
+     "instruction_zh": "把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -11080,11 +11242,11 @@
       ]
      },
      "since": "v6",
-     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
      "v6": {
       "family": "crowded_use_another",
       "case": "tight_dining",
-      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
       "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
       "control": "clear",
       "contrast": null,
@@ -11255,8 +11417,8 @@
       "infeasible_fallback",
       "not_in_view"
      ],
-     "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
-     "instruction_zh": "把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，免得把燕麦碰洒；家里别处还有一块木积木，用那块。",
+     "instruction": "Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island is filled to the brim; do not disturb the things around it, or it will spill.",
+     "instruction_zh": "把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -11308,11 +11470,11 @@
       ]
      },
      "since": "v6",
-     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+     "note": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
      "v6": {
       "family": "crowded_use_another",
       "case": "loose",
-      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+      "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says not to disturb what is around the bowl: it names neither the wedged block nor the other block elsewhere in the house",
       "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
       "control": "clear",
       "contrast": null,

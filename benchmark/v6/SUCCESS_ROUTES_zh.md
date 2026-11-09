@@ -86,17 +86,12 @@
 
 ### no_room_fallback（Action + Task）
 
-**情况**：和 table_seats 一样的三人份早餐；指令加了约束：餐具和麦片都别动，桌上没有合适位置就放到餐厅南墙边的矮格子柜顶上 → 先看桌子：有座位旁的合适空位就放那里（这时放格子柜算失败）；唯一的宽空位被一盒麦片占着时，按指令放到格子柜上（挪麦片腾位置算失败）
+**情况**：和 table_seats 一样的三人份早餐；指令加了约束：餐具和麦片都别动，桌上没有合适位置就把书放到书柜收起来（家里四个书柜，哪个、哪层都算） → 先看桌子：有座位旁的合适空位就放那里（这时放书柜算失败）；唯一的宽空位被一盒麦片占着时，按指令放进书柜（参考路线：卧室的书柜，最近）（挪麦片腾位置算失败）
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。
+**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。
 
 **成功条件**：
 
-- 摆法 `full_a`、`full_a_flat`：
-  - `paperback_book` 在 `cell_shelf_4/top` 上
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
 - 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
@@ -104,15 +99,44 @@
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
+- 摆法 `full_a`、`full_a_flat`：
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `paperback_book` 在 `bookcase_1/top` 上
+    - 第 2 组：
+      - `paperback_book` 在 `bookcase_1/shelf_1` 上
+    - 第 3 组：
+      - `paperback_book` 在 `bookcase_1/shelf_0` 上
+    - 第 4 组：
+      - `paperback_book` 在 `bookcase_2/top` 上
+    - 第 5 组：
+      - `paperback_book` 在 `bookcase_2/shelf_1` 上
+    - 第 6 组：
+      - `paperback_book` 在 `bookcase_2/shelf_0` 上
+    - 第 7 组：
+      - `paperback_book` 在 `bookcase_3/top` 上
+    - 第 8 组：
+      - `paperback_book` 在 `bookcase_3/shelf_1` 上
+    - 第 9 组：
+      - `paperback_book` 在 `bookcase_3/shelf_0` 上
+    - 第 10 组：
+      - `paperback_book` 在 `bookcase_4/top` 上
+    - 第 11 组：
+      - `paperback_book` 在 `bookcase_4/shelf_1` 上
+    - 第 12 组：
+      - `paperback_book` 在 `bookcase_4/shelf_0` 上
 
 **参考调用顺序**：
 
 - 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
 - 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
-- 摆法 `full_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=cell_shelf_4/top)` → 8. `place(object=paperback_book, receptacle=cell_shelf_4/top, hint_xy=[4.3, 4.45])`
+- 摆法 `full_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=bookcase_2/top)` → 8. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
 - 摆法 `seats_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
 - 摆法 `seats_c_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
-- 摆法 `full_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=cell_shelf_4/top)` → 9. `place(object=paperback_book, receptacle=cell_shelf_4/top, hint_xy=[4.3, 4.45])`
+- 摆法 `full_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=bookcase_2/top)` → 9. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
 
 ### reader_seat（Action + Task）
 
@@ -198,9 +222,9 @@
 
 ### crowded_use_another（Task）
 
-**情况**：积木 B 被满满一碗燕麦和擀面杖夹住（缝只有 3 mm）；指令说夹紧的积木别去拨（燕麦会洒），家里别处还有一块木积木 → 先看 B：夹紧了就不拨它，去找另一块积木和 A 叠在一起，B、碗、擀面杖都不动；B 没被夹住就直接叠岛台上的两块，另一块不动
+**情况**：积木 B 被满满一碗燕麦和擀面杖夹住（缝只有 3 mm）；指令只说碗盛得很满、别碰它周围的东西，没点名哪块积木被夹住，也没说家里别处还有积木 → 先看 B：夹紧了就不拨它，去找另一块积木和 A 叠在一起，B、碗、擀面杖都不动；B 没被夹住就直接叠岛台上的两块，另一块不动
 
-**指令**：把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，免得把燕麦碰洒；家里别处还有一块木积木，用那块。
+**指令**：把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。
 
 **成功条件**：
 

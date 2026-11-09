@@ -127,7 +127,8 @@ T01_FULL = {   # no_room_fallback: seats_a with the second cereal box in the one
                 0.04, "cup_counter_b", HALF, "clutter_cereal_b", HALF, "plate_counter_b", 0.04, "mug_dining_cabinet"],
                "plate_counter_b"),
 }
-T01_FALLBACK = "cell_shelf_4/top"  # the low cell shelf by the dining room's south wall
+T01_BOOKCASES = [f"bookcase_{k}/{lv}" for k in (1, 2, 3, 4) for lv in ("top", "shelf_1", "shelf_0")]  # any bookcase
+T01_FALLBACK = "bookcase_2/top"     # reference: the nearest bookcase (bedroom)
 # reader_seat: three seats, each a plate or bowl and its drink north of it, with a wide slot south of every plate
 # (beside that seat only: the next plate is 26 cm away); the coffee drinker's seat has the mug, the others a cup
 T01_READER = {   # name: the seats south to north, (plate, drink)
@@ -297,24 +298,23 @@ def T01(t):
         "no_room_fallback": dict(
             base="table_set", control="table_seats", conditions=["spot_quality", "infeasible_fallback"],
             keep_design=[DINING], watch=[B, *T01_WARE6],
-            instruction=suitable["instruction"][:-1] + "; if there is no such place on the table, put the book on top "
-                        "of the low cell shelf by the dining room's south wall instead.",
-            instruction_zh=suitable["instruction_zh"][:-1] + "；要是桌上没有这样的位置，就把书放到"
-                           "餐厅南墙边那个矮格子柜的顶上。",
+            instruction=suitable["instruction"][:-1] + "; if there is no such place on the table, put the book away "
+                        "on a bookcase instead.",
+            instruction_zh=suitable["instruction_zh"][:-1] + "；要是桌上没有这样的位置，就把书放到书柜收起来。",
             factor="whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in "
                    "it)",
             challenge="breakfast is set for three as in table_seats; in one layout of three a cereal box stands in "
                       "the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; "
                       "the instruction forbids moving the tableware and the cereal and names a fallback place",
             rationale="judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if "
-                      "none fits, the goal cannot be met under the constraint: take the named fallback, the cell "
-                      "shelf, instead of clearing the slot (moving the cereal box fails)",
+                      "none fits, the goal cannot be met under the constraint: take the named fallback, a bookcase "
+                      "(any one, any level), instead of clearing the slot (moving the cereal box fails)",
             cases={**{n: dict(move=cases[n]["move"], goal=seat_goal(), route=cases[n]["route"])
                       for n in ("seats_b", "seats_c")},
-                   **{n: dict(move=mv, goal={"all": [["on", B, T01_FALLBACK],
+                   **{n: dict(move=mv, goal={"any": [[["on", B, bc]] for bc in T01_BOOKCASES], "all": [
                                                      *[["near_start", x, 0.03] for x in T01_WARE6],
                                                      *[["upright", x] for x in T01_UPRIGHT], ["hand_empty", "right"]]},
-                              route=carry + [nav(T01_FALLBACK), place(B, T01_FALLBACK, [4.30, 4.45])])
+                              route=carry + [nav(T01_FALLBACK), place(B, T01_FALLBACK, [1.15, -0.43])])
                       for n, mv in full.items()}}),
         "reader_seat": dict(
             base="table_set", control="table_seats", conditions=["referent_clue", "spot_quality"],
@@ -418,7 +418,7 @@ def T02(t):
     put_away_goal["all"] += [["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
     edge_two = OR(t, "edge_base")                # look, nav A, pick A, nav B, approach B, stack A on B
     # crowded_use_another: block B is wedged between the full oatmeal bowl and the rolling pin; the instruction
-    # forbids prying it out (the oatmeal would spill) and points to another block in the house.  In the loose
+    # only says not to disturb what is around the full bowl; that a third block exists the robot finds out itself.  In the loose
     # layout B stands clear of them and the two island blocks are stacked; the other block stays.
     crowd = copy.deepcopy(t["variants"]["crowded"]["move"])          # oatmeal, rolling pin, A, B (3 mm gaps)
     keep = ["oatmeal", "rolling_pin"]
@@ -441,17 +441,15 @@ def T02(t):
     return {
         "crowded_use_another": dict(
             base="crowded", control="clear", conditions=["infeasible_fallback", "not_in_view"],
-            instruction="Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is "
-                        "full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not "
-                        "pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the "
-                        "house, use that one instead.",
-            instruction_zh="把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，"
-                           "免得把燕麦碰洒；家里别处还有一块木积木，用那块。",
+            instruction="Stack two of the kid's wooden blocks on top of each other. The bowl of oatmeal on the island "
+                        "is filled to the brim; do not disturb the things around it, or it will spill.",
+            instruction_zh="把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。",
             watch=[A, B, F, *keep],
             factor="whether block B is wedged in (seed: tight with the other block on the TV stand or the dining "
                    "table, or loose)",
-            challenge="block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids "
-                      "prying a wedged block out and says another block is elsewhere in the house",
+            challenge="block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction only says "
+                      "not to disturb what is around the bowl: it names neither the wedged block nor the other "
+                      "block elsewhere in the house",
             rationale="look at B first: wedged, the local fix (separate) is ruled out, so find the other block and "
                       "stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks "
                       "and leave the other block where it is",

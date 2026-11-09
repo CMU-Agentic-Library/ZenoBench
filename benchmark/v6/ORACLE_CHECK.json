@@ -284,7 +284,7 @@
    "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__full_a",
    "steps": 8,
-   "atoms_checked": 11,
+   "atoms_checked": 22,
    "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_side_table",
@@ -334,7 +334,7 @@
    "task": "T01_book_to_dining_table",
    "layout": "no_room_fallback__full_a_flat",
    "steps": 9,
-   "atoms_checked": 11,
+   "atoms_checked": 22,
    "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_side_table",
