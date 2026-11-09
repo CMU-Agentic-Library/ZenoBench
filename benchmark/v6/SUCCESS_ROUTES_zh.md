@@ -1723,42 +1723,9 @@
 - 摆法 `duck_in_study`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `navigate(destination=rubber_duck)` → 8. `search(object=rubber_duck, region=living_room_0_1)` → 9. `navigate(destination=rubber_duck)` → 10. `pick(object=rubber_duck)` → 11. `navigate(destination=storage_basket)` → 12. `place(object=rubber_duck, receptacle=storage_basket)`
 - 摆法 `alt_dining_table_2`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `navigate(destination=rubber_duck)` → 8. `search(object=rubber_duck, region=dining_room_0_1)` → 9. `navigate(destination=rubber_duck)` → 10. `pick(object=rubber_duck)` → 11. `navigate(destination=storage_basket)` → 12. `place(object=rubber_duck, receptacle=storage_basket)`
 
-### toys_everywhere（Task）
-
-**情况**：没有储物筐，只有一个半满的小箱和一个浅托盘；鸭子也不在原处 → 量尺寸分配，并找鸭子
-
-**成功条件**：
-
-- `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
-- `toy_bin_small` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - 第 2 组：
-    - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
-  - 第 3 组：
-    - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
-  - 第 4 组：
-    - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
-    - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
-
-**参考调用顺序**：
-
-- 摆法 `toys_everywhere`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
-- 摆法 `alt_dining_table_2`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=dining_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
-
 ### bins_capacity（Task）
 
-**情况**：没有储物筐，有两个小箱：一个已经装满了积木（两层，一点空都没有），另一个是空的；两个箱子有时并排放在卧室书架上，有时分在不同房间 → 看出满的那个放不下，小车和鸭子都放进空箱，空箱不在眼前就去找；满箱里的积木不动
+**情况**：没有储物筐，只有放不下所有玩具的容器：要么两个小箱（一个已经装满积木，一个空着，有时并排放在卧室书架上，有时分在不同房间），要么一个装了半箱积木的小箱和一个浅托盘（鸭子还不在原处） → 看每个容器还剩多少地方，把小车和鸭子分到放得下的地方，空箱或鸭子不在眼前就去找；箱子里原有的积木不动
 
 **成功条件**：
 
@@ -1796,6 +1763,28 @@
   - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `toy_bin_small_2`、`toy_bin_small` 立着
   - 手里空着
+- 摆法 `half_bin_and_tray`、`half_bin_and_tray_duck_dining`：
+  - `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_4` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_5` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_6` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `toy_bin_small` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
+      - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - 第 2 组：
+      - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
+      - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
+    - 第 3 组：
+      - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
+      - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
+    - 第 4 组：
+      - `toy_car` 完全在 `toy_tray` 里（没有露出边沿）
+      - `rubber_duck` 完全在 `toy_tray` 里（没有露出边沿）
 
 **参考调用顺序**：
 
@@ -1803,6 +1792,8 @@
 - 摆法 `side_right_full`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small_2)` → 4. `measure(object=toy_bin_small)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_bin_small)` → 9. `place(object=toy_car, receptacle=toy_bin_small)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
 - 摆法 `apart_full_on_tv`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `search(object=toy_bin_small_2, region=bedroom_0_1)` → 5. `measure(object=toy_bin_small_2)` → 6. `explore_room(room=living_room_0_0)` → 7. `navigate(destination=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_bin_small_2)` → 10. `place(object=toy_car, receptacle=toy_bin_small_2)` → 11. `search(object=rubber_duck, region=living_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small_2)` → 15. `drop(object=rubber_duck, container=toy_bin_small_2)`
 - 摆法 `apart_empty_on_desk`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `search(object=toy_bin_small_2, region=living_room_0_1)` → 5. `measure(object=toy_bin_small_2)` → 6. `explore_room(room=living_room_0_0)` → 7. `navigate(destination=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_bin_small_2)` → 10. `place(object=toy_car, receptacle=toy_bin_small_2)` → 11. `search(object=rubber_duck, region=living_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small_2)` → 15. `drop(object=rubber_duck, container=toy_bin_small_2)`
+- 摆法 `half_bin_and_tray`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=living_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
+- 摆法 `half_bin_and_tray_duck_dining`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `pick(object=toy_car)` → 8. `navigate(destination=toy_tray)` → 9. `place(object=toy_car, receptacle=toy_tray)` → 10. `search(object=rubber_duck, region=dining_room_0_1)` → 11. `navigate(destination=rubber_duck)` → 12. `pick(object=rubber_duck)` → 13. `navigate(destination=toy_bin_small)` → 14. `drop(object=rubber_duck, container=toy_bin_small)`
 
 ### find_all_toys（Task）
 
@@ -3318,18 +3309,32 @@
 
 ### which_is_leftover（Task）
 
-**情况**：剩饭和一个空外卖盒 → 只收剩饭
+**情况**：桌上除了剩饭还有不该进冰箱的东西：一个空外卖盒，或者果篮和麦片盒，或者一碗有人还在吃的燕麦（勺子摆在碗前） → 只把剩饭收进冰箱；空外卖盒、果篮、麦片都不进冰箱，正在吃的那碗不收也不拿起来（过程要求）
 
 **成功条件**：
 
-- `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-- `breakfast_fridge` 关着
-- `["not on", "empty_tray", "breakfast_fridge/inside_shelf"]`
-- 手里空着
+- 摆法 `still_eating`：
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
+  - 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
+  - 手里空着
+- 摆法 `fruit_stays_out`：
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `which_is_leftover`：
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `["not on", "empty_tray", "breakfast_fridge/inside_shelf"]`
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
+- 摆法 `which_is_leftover`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
+- 摆法 `fruit_stays_out`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
+- 摆法 `still_eating`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
 
 ### two_leftovers（Task）
 
@@ -3348,22 +3353,6 @@
 - 摆法 `soup_on_table`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `navigate(destination=leftover_soup)` → 9. `pick(object=leftover_soup)` → 10. `navigate(destination=breakfast_fridge)` → 11. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 12. `close(articulated=breakfast_fridge)`
 - 摆法 `soup_on_stove`：1. `look(target=dining_table_2/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 13. `close(articulated=breakfast_fridge)`
 
-### still_eating（Task）
-
-**情况**：一碗燕麦前摆着勺子，有人还在吃 → 不收，也不拿起来（过程要求），只收剩饭
-
-**成功条件**：
-
-- `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-- `breakfast_fridge` 关着
-- `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
-- 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
-
 ### fridge_out_of_view（Task）
 
 **情况**：从餐厅出发，看不到冰箱 → 先找到冰箱
@@ -3377,21 +3366,6 @@
 **参考调用顺序**：
 
 1. `look(target=dining_table_2/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
-
-### fruit_stays_out（Task）
-
-**情况**：桌上还有果篮和麦片盒 → 不是剩菜，不进冰箱
-
-**成功条件**：
-
-- `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
-- `breakfast_fridge` 关着
-- `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
 
 ---
 
@@ -3520,17 +3494,22 @@
 
 ### belongs_on_table（Task）
 
-**情况**：还摆着碗和勺子 → 吃饭用的留下，只拿走玩具
+**情况**：桌上摆着碗和勺子（吃饭用的），有时还有一辆玩具车 → 吃饭用的留下，有玩具就拿回玩具箱，没有就什么都不用做
 
 **成功条件**：
 
-- `table_car` 在 `toy_box` 里
-- `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
+- 摆法 `belongs_on_table`：
+  - `table_car` 在 `toy_box` 里
+  - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `nothing_to_clear`：
+  - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)`
+- 摆法 `belongs_on_table`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)`
+- 摆法 `nothing_to_clear`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)`
 
 ### homework_on_table（Task）
 
@@ -3592,19 +3571,6 @@
 **参考调用顺序**：
 
 1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)` → 6. `navigate(destination=empty_can)` → 7. `pick(object=empty_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=empty_can, container=trash_can)` → 10. `navigate(destination=table_book)` → 11. `pick(object=table_book)` → 12. `navigate(destination=bookcase_2/top)` → 13. `place(object=table_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.43])`
-
-### nothing_to_clear（Task）
-
-**情况**：桌上只有餐具 → 什么都不用做
-
-**成功条件**：
-
-- `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
-
-**参考调用顺序**：
-
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)`
 
 ### which_table（Task）
 
@@ -3679,20 +3645,6 @@
 - 摆法 `two_inside`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `navigate(destination=soup_bowl_2)` → 12. `pick(object=soup_bowl_2)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 15. `navigate(destination=soup_bowl_3)` → 16. `pick(object=soup_bowl_3)` → 17. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 18. `close(articulated=kitchen_cabinet_6)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
 - 摆法 `one_inside`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `navigate(destination=soup_bowl_2)` → 12. `pick(object=soup_bowl_2)` → 13. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 14. `close(articulated=kitchen_cabinet_6)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 17. `navigate(destination=spare_mug)` → 18. `pick(object=spare_mug)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
 
-### clean_one（Task）
-
-**情况**：一个碗里还有燕麦，一个空的 → 拿空的
-
-**成功条件**：
-
-- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-- `full_bowl` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
-
 ### bowl_put_away（Task）
 
 **情况**：碗收在矮柜里 → 打开找，拿出来关好
@@ -3722,15 +3674,21 @@
 
 ### bowl_not_plate（Task）
 
-**情况**：柜上有盘子和碗 → 拿碗
+**情况**：干净碗旁边放着不能用来盛汤的东西：一个盘子，或者一碗还装着燕麦的碗 → 拿那个干净的空碗，别的不动
 
 **成功条件**：
 
-- 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
-- `spare_plate` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
+- 摆法 `clean_one`：
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - `full_bowl` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `bowl_not_plate`：
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - `spare_plate` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+- 摆法 `bowl_not_plate`：1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+- 摆法 `clean_one`：1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
 

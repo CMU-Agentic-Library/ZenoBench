@@ -1,7 +1,7 @@
 {
- "variants": 159,
- "episodes": 1590,
- "static_ok": 1590,
+ "variants": 154,
+ "episodes": 1540,
+ "static_ok": 1540,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -49,8 +49,8 @@
    "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T13_breakfast_setup": {
    "episodes": 40,
@@ -109,26 +109,26 @@
    "static_ok": 60
   },
   "T27_leftovers_to_fridge": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T28_cup_to_bedside": {
    "episodes": 60,
    "static_ok": 60
   },
   "T29_clear_table_for_dinner": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T30_bowls_for_soup": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   }
  },
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 121
+  "task": 116
  },
- "tasks_sha1": "0852946a8502498e4f6dd9a1bc5810bf30bb864f"
+ "tasks_sha1": "691fff6f00300212e691da0bdc3eaf7dc42e599d"
 }

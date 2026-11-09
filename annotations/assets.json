@@ -741,12 +741,12 @@
   "size": [
    0.24,
    0.1674,
-   0.04
+   0.025
   ],
   "origin_to_bottom_center": [
    -0.0,
    0.0,
-   -0.0204
+   -0.0127
   ],
   "min_pinch_width": 0.1668,
   "graspable_by_zeno": true,
@@ -754,7 +754,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.032,
+    "pre_open": 0.0245,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -773,12 +773,12 @@
   "size": [
    0.2201,
    0.183,
-   0.0562
+   0.028
   ],
   "origin_to_bottom_center": [
    0.0,
    -0.0001,
-   -0.0276
+   -0.0138
   ],
   "min_pinch_width": 0.1382,
   "graspable_by_zeno": true,
@@ -786,7 +786,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.04,
+    "pre_open": 0.026000000000000002,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -805,12 +805,12 @@
   "size": [
    0.2,
    0.1399,
-   0.0591
+   0.028
   ],
   "origin_to_bottom_center": [
    -0.0001,
    -0.0,
-   -0.0301
+   -0.0143
   ],
   "min_pinch_width": 0.1394,
   "graspable_by_zeno": true,
@@ -818,7 +818,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.04,
+    "pre_open": 0.026000000000000002,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -907,31 +907,31 @@
    "toy",
    "block"
   ],
-  "mass": 0.04,
+  "mass": 0.03,
   "collider": "solid",
   "size": [
-   0.0427,
-   0.0499,
-   0.05
+   0.0342,
+   0.0399,
+   0.04
   ],
   "origin_to_bottom_center": [
    -0.0,
    -0.0,
-   -0.025
+   -0.02
   ],
-  "min_pinch_width": 0.0427,
+  "min_pinch_width": 0.0342,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
     "close_yaw": 0.0,
-    "width": 0.042719839957815475,
+    "width": 0.03417587196625238,
     "offset_xy": [
      0.0,
      0.0
     ],
-    "height": 0.025,
-    "pre_open": 0.033359919978907734
+    "height": 0.019999999999999993,
+    "pre_open": 0.02908793598312619
    }
   ],
   "usd": "usd/assets/toy_block.usd",
@@ -1461,12 +1461,12 @@
   "size": [
    0.18,
    0.12,
-   0.025
+   0.018
   ],
   "origin_to_bottom_center": [
    0.0001,
    0.0001,
-   -0.0123
+   -0.0089
   ],
   "min_pinch_width": 0.1196,
   "graspable_by_zeno": true,
@@ -1474,7 +1474,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.0245,
+    "pre_open": 0.021,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -1939,28 +1939,28 @@
   "mass": 0.06,
   "collider": "solid",
   "size": [
-   0.05,
-   0.05,
-   0.05
+   0.04,
+   0.04,
+   0.04
   ],
   "origin_to_bottom_center": [
    0.0,
    0.0,
-   -0.025
+   -0.02
   ],
-  "min_pinch_width": 0.05,
+  "min_pinch_width": 0.04,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
     "close_yaw": 1.5707963267948966,
-    "width": 0.04997869629133749,
+    "width": 0.03999734411837344,
     "offset_xy": [
      0.0,
      0.0
     ],
-    "height": 0.024999979698407757,
-    "pre_open": 0.036989348145668746
+    "height": 0.01999996751745241,
+    "pre_open": 0.03199867205918672
    }
   ],
   "usd": "usd/assets/wooden_block.usd",

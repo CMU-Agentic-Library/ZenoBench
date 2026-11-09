@@ -35,6 +35,13 @@ SEEDS = list(range(10, 20))
 OUT = ROOT / "benchmark/v6/STATIC.json"
 
 
+def decision_sig(t, v):
+    """What a layout asks of the robot: its reference route and its goal.  Two seeds of one variant differ in at
+    least one (the same route with different things to leave alone is a different decision too)."""
+    goal = t["variants"][v].get("goal") or t.get("goal")
+    return route_sig(t["routes"][t["oracle"][v]]["steps"]), json.dumps(goal, sort_keys=True)
+
+
 def route_sig(steps):
     return hashlib.sha1(json.dumps([[s["skill"], s["args"], s.get("expect")] for s in steps], sort_keys=True).encode()).hexdigest()[:12]
 
@@ -110,8 +117,8 @@ def main():
                     if {str(k): v for k, v in seed_cases(tid, fam, info["layouts"]).items()} != \
                             {str(k): v for k, v in info["seeds"].items()}:
                         probs.append((None, "seed manifest is not the deterministic assignment"))
-                    if len({route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["layouts"]}) < len(info["layouts"]):
-                        probs.append((None, "two layouts share one oracle route"))
+                    if len({decision_sig(t, v) for v in info["layouts"]}) < len(info["layouts"]):
+                        probs.append((None, "two layouts share one oracle route and goal"))
                 hashes[episode_config(t, 10, fam)["config_hash"]].append(fam)
             else:
                 if {str(k): v for k, v in seed_cases(tid, fam, info["layouts"]).items()} != \
@@ -120,9 +127,9 @@ def main():
                 cnt = Counter(info["seeds"].values())
                 if set(cnt) != set(info["layouts"]) or max(cnt.values()) - min(cnt.values()) > 1:
                     probs.append((None, f"unbalanced seed manifest {dict(cnt)}"))
-                sigs = {route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["layouts"]}
+                sigs = {decision_sig(t, v) for v in info["layouts"]}
                 if len(info["layouts"]) > 1 and len(sigs) < len(info["layouts"]):
-                    probs.append((None, "two layouts share one oracle route (no decision difference)"))
+                    probs.append((None, "two layouts share one oracle route and goal (no decision difference)"))
                 for v in info["layouts"]:
                     meta = t["variants"][v].get("v6") or {}
                     for k in ("challenge", "rationale", "control"):

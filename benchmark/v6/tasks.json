@@ -10871,18 +10871,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -10891,18 +10891,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -11073,12 +11073,12 @@
         "box": [
          6.754,
          1.5669,
-         7.245,
+         7.24,
          1.8049
         ],
         "dx": [
          -0.2,
-         1.0
+         1.01
         ],
         "dy": [
          -0.04,
@@ -11091,10 +11091,10 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.575,
-         0.335,
-         7.625,
-         0.385
+         7.58,
+         0.34,
+         7.62,
+         0.38
         ],
         "dx": [
          -0.92,
@@ -11270,17 +11270,17 @@
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
+         3.68,
+         6.28,
+         3.72,
+         6.32
         ],
         "dx": [
          -0.03,
          0.1
         ],
         "dy": [
-         -0.76,
+         -0.77,
          1.62
         ]
        },
@@ -11295,12 +11295,12 @@
         "box": [
          6.754,
          1.5669,
-         7.245,
+         7.24,
          1.8049
         ],
         "dx": [
          -0.2,
-         1.0
+         1.01
         ],
         "dy": [
          -0.04,
@@ -11526,12 +11526,12 @@
         "box": [
          6.754,
          1.5669,
-         7.475,
-         1.825
+         7.47,
+         1.82
         ],
         "dx": [
          -0.2,
-         0.77
+         0.78
         ],
         "dy": [
          -0.04,
@@ -11544,10 +11544,10 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.575,
-         0.335,
-         7.625,
-         0.385
+         7.58,
+         0.34,
+         7.62,
+         0.38
         ],
         "dx": [
          -0.92,
@@ -11777,18 +11777,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -11797,18 +11797,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -12078,17 +12078,17 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.1214,
-         7.2751,
-         -0.0786,
-         7.3249
+         -0.1171,
+         7.2801,
+         -0.0829,
+         7.3199
         ],
         "dx": [
          -0.39,
-         0.31
+         0.32
         ],
         "dy": [
-         -0.29,
+         -0.3,
          0.0
         ]
        },
@@ -12120,18 +12120,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -12140,18 +12140,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -12537,17 +12537,17 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.125,
-         7.275,
-         -0.075,
-         7.325
+         -0.12,
+         7.28,
+         -0.08,
+         7.32
         ],
         "dx": [
-         -0.38,
-         0.31
+         -0.39,
+         0.32
         ],
         "dy": [
-         -0.29,
+         -0.3,
          0.0
         ]
        },
@@ -12597,18 +12597,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -12617,10 +12617,10 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.575,
-         0.335,
-         7.625,
-         0.385
+         7.58,
+         0.34,
+         7.62,
+         0.38
         ],
         "dx": [
          -0.92,
@@ -13021,18 +13021,18 @@
         ],
         "support": "desk_1/top",
         "box": [
-         -0.725,
-         -6.025,
-         -0.675,
-         -5.975
+         -0.72,
+         -6.02,
+         -0.68,
+         -5.98
         ],
         "dx": [
          -0.67,
-         0.63
+         0.64
         ],
         "dy": [
          0.0,
-         0.25
+         0.26
         ]
        },
        {
@@ -13081,18 +13081,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -13101,10 +13101,10 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.575,
-         0.335,
-         7.625,
-         0.385
+         7.58,
+         0.34,
+         7.62,
+         0.38
         ],
         "dx": [
          -0.92,
@@ -13414,18 +13414,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -13434,10 +13434,10 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.575,
-         0.335,
-         7.625,
-         0.385
+         7.58,
+         0.34,
+         7.62,
+         0.38
         ],
         "dx": [
          -0.92,
@@ -13713,18 +13713,18 @@
         ],
         "support": "desk_1/top",
         "box": [
-         -0.725,
-         -6.025,
-         -0.675,
-         -5.975
+         -0.72,
+         -6.02,
+         -0.68,
+         -5.98
         ],
         "dx": [
          -0.67,
-         0.63
+         0.64
         ],
         "dy": [
          0.0,
-         0.25
+         0.26
         ]
        },
        {
@@ -13773,18 +13773,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -14053,14 +14053,14 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         6.975,
-         1.51,
-         7.325,
-         1.685
+         6.98,
+         1.515,
+         7.32,
+         1.68
         ],
         "dx": [
-         -0.42,
-         0.92
+         -0.43,
+         0.93
         ]
        },
        {
@@ -14346,14 +14346,14 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         6.975,
-         1.51,
-         7.325,
-         1.685
+         6.98,
+         1.515,
+         7.32,
+         1.68
         ],
         "dx": [
-         -0.42,
-         0.92
+         -0.43,
+         0.93
         ]
        },
        {
@@ -16417,16 +16417,16 @@
          -0.32
         ],
         [
-         1.135,
-         -0.51,
-         1.185,
-         -0.46
+         1.14,
+         -0.505,
+         1.18,
+         -0.465
         ],
         [
-         1.135,
-         -0.4,
-         1.185,
-         -0.35
+         1.14,
+         -0.395,
+         1.18,
+         -0.355
         ]
        ]
       },
@@ -16947,16 +16947,16 @@
          -0.2777
         ],
         [
-         0.9784,
-         -0.5086,
-         1.0396,
-         -0.4474
+         0.9845,
+         -0.5025,
+         1.0335,
+         -0.4535
         ],
         [
-         1.127,
-         -0.42,
-         1.191,
-         -0.356
+         1.1334,
+         -0.4136,
+         1.1846,
+         -0.3624
         ]
        ]
       },
@@ -26318,18 +26318,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -26338,18 +26338,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -26568,18 +26568,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -26588,18 +26588,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -26806,17 +26806,17 @@
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
+         3.68,
+         6.28,
+         3.72,
+         6.32
         ],
         "dx": [
          -0.03,
          0.1
         ],
         "dy": [
-         -0.76,
+         -0.77,
          1.62
         ]
        },
@@ -26826,17 +26826,17 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.125,
-         7.275,
-         -0.075,
-         7.325
+         -0.12,
+         7.28,
+         -0.08,
+         7.32
         ],
         "dx": [
-         -0.38,
-         0.31
+         -0.39,
+         0.32
         ],
         "dy": [
-         -0.29,
+         -0.3,
          0.0
         ]
        },
@@ -26866,18 +26866,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -27014,11 +27014,11 @@
        ],
        "yaw_deg": 0.0
       },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
+      "pot_lid": {
+       "support": "kitchen_stove/top",
        "xy": [
-        7.22,
-        1.625
+        8.4096,
+        1.725
        ],
        "yaw_deg": 0.0
       },
@@ -27027,14 +27027,6 @@
        "xy": [
         7.07,
         1.625
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4096,
-        1.725
        ],
        "yaw_deg": 0.0
       },
@@ -27166,6 +27158,27 @@
       "clusters": [
        {
         "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.05,
+         1.6,
+         7.22,
+         1.645
+        ],
+        "dx": [
+         -0.5,
+         1.03
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
          "oatmeal"
         ],
         "support": "kitchen_island/top",
@@ -27182,46 +27195,6 @@
         "dy": [
          -0.2,
          0.04
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        }
       ],
@@ -27326,11 +27299,11 @@
        ],
        "yaw_deg": 0.0
       },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
+      "pot_lid": {
+       "support": "kitchen_stove/top",
        "xy": [
-        7.22,
-        1.625
+        8.4096,
+        1.725
        ],
        "yaw_deg": 0.0
       },
@@ -27339,14 +27312,6 @@
        "xy": [
         7.07,
         1.625
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4096,
-        1.725
        ],
        "yaw_deg": 0.0
       },
@@ -27458,6 +27423,27 @@
       "clusters": [
        {
         "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.05,
+         1.6,
+         7.22,
+         1.645
+        ],
+        "dx": [
+         -0.5,
+         1.03
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
          "oatmeal"
         ],
         "support": "kitchen_island/top",
@@ -27474,46 +27460,6 @@
         "dy": [
          -0.2,
          0.04
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        }
       ],
@@ -27582,10 +27528,10 @@
          0.3325
         ],
         [
-         3.408,
-         0.44,
-         3.458,
-         0.49
+         3.413,
+         0.445,
+         3.453,
+         0.485
         ]
        ]
       },
@@ -27632,19 +27578,19 @@
        ],
        "yaw_deg": 0.0
       },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      },
       "pot_lid": {
        "support": "kitchen_stove/top",
        "xy": [
         8.4096,
         1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
        ],
        "yaw_deg": 0.0
       },
@@ -27780,17 +27726,17 @@
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
+         3.68,
+         6.28,
+         3.72,
+         6.32
         ],
         "dx": [
          -0.03,
          0.1
         ],
         "dy": [
-         -0.76,
+         -0.77,
          1.62
         ]
        },
@@ -27820,18 +27766,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -27958,19 +27904,19 @@
        ],
        "yaw_deg": 0.0
       },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      },
       "pot_lid": {
        "support": "kitchen_stove/top",
        "xy": [
         8.4096,
         1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
        ],
        "yaw_deg": 0.0
       },
@@ -28086,10 +28032,10 @@
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.975,
-         -0.455,
-         1.025,
-         -0.405
+         0.98,
+         -0.45,
+         1.02,
+         -0.41
         ],
         "dx": [
          -0.26,
@@ -28126,18 +28072,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -28206,10 +28152,10 @@
          0.3325
         ],
         [
-         3.408,
-         0.44,
-         3.458,
-         0.49
+         3.413,
+         0.445,
+         3.453,
+         0.485
         ]
        ]
       },
@@ -28404,18 +28350,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -28424,18 +28370,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -28657,18 +28603,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
+         7.2,
+         1.605,
+         7.24,
+         1.645
         ],
         "dx": [
-         -0.64,
-         1.0
+         -0.65,
+         1.01
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -28677,18 +28623,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -45067,274 +45013,6 @@
       }
      }
     },
-    "toys_everywhere": {
-     "note": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
-     "difficulty": "hard",
-     "since": "v4",
-     "conditions": [
-      "joint_capacity"
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small"
-       ],
-       [
-        "upright",
-        "toy_bin_small"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "toy_bin_small",
-      "toy_tray"
-     ],
-     "may_end_on_floor": [
-      "toy_car"
-     ],
-     "remove": [
-      "storage_basket"
-     ],
-     "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        0.84,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "toy_tray": {
-       "asset": "shallow_sorting_tray",
-       "support": "bookcase_2/top",
-       "xy": [
-        1.13,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "stored_block_1": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.375
-       ],
-       "yaw_deg": 0
-      }
-     },
-     "move": {
-      "rubber_duck": {
-       "support": "desk_1/top",
-       "xy": [
-        -0.95,
-        -6.02
-       ],
-       "yaw_deg": 128.7
-      }
-     },
-     "condition_types": [
-      "container_capacity"
-     ],
-     "decisions": [
-      "decompose"
-     ],
-     "v5": {
-      "tier": "hard",
-      "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
-      "derived_from": "toys_everywhere",
-      "existing": true,
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_tray"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.53,
-         1.265,
-         -0.33
-        ],
-        "dy": [
-         -0.07,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.0038,
-         -6.0757,
-         -0.8962,
-         -5.9643
-        ],
-        "dx": [
-         -0.39,
-         0.86
-        ],
-        "dy": [
-         -0.24,
-         0.0
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "duck_in_study__alt_dining_table_2": {
      "note": "the duck was left on the study desk (here the rubber_duck is on dining_table_2/top)",
      "conditions": [
@@ -45422,298 +45100,6 @@
       }
      }
     },
-    "toys_everywhere__alt_dining_table_2": {
-     "note": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase (here the rubber_duck is on dining_table_2/top)",
-     "difficulty": "hard",
-     "since": "v6",
-     "conditions": [
-      "joint_capacity"
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "fully_inside",
-        "stored_block_1",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_2",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_3",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_4",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_5",
-        "toy_bin_small"
-       ],
-       [
-        "fully_inside",
-        "stored_block_6",
-        "toy_bin_small"
-       ],
-       [
-        "upright",
-        "toy_bin_small"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "toy_bin_small",
-      "toy_tray"
-     ],
-     "may_end_on_floor": [
-      "toy_car"
-     ],
-     "remove": [
-      "storage_basket"
-     ],
-     "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        0.84,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "toy_tray": {
-       "asset": "shallow_sorting_tray",
-       "support": "bookcase_2/top",
-       "xy": [
-        1.13,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "stored_block_1": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_2": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_3": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.762,
-        -0.375
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_4": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.485
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_5": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.43
-       ],
-       "yaw_deg": 0
-      },
-      "stored_block_6": {
-       "asset": "wooden_block",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.918,
-        -0.375
-       ],
-       "yaw_deg": 0
-      }
-     },
-     "move": {
-      "rubber_duck": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.3
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "condition_types": [
-      "container_capacity"
-     ],
-     "decisions": [
-      "decompose"
-     ],
-     "v6": {
-      "family": "toys_everywhere",
-      "case": "alt_dining_table_2",
-      "tier": "hard",
-      "hard_category": "task",
-      "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase (here the rubber_duck is on dining_table_2/top)",
-      "derived_from": "toys_everywhere",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "stored_block_1",
-         "stored_block_2",
-         "stored_block_3",
-         "stored_block_4",
-         "stored_block_5",
-         "stored_block_6",
-         "toy_bin_small",
-         "toy_tray"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.53,
-         1.265,
-         -0.33
-        ],
-        "dy": [
-         -0.07,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.655,
-         6.2671,
-         3.745,
-         6.3329
-        ],
-        "dx": [
-         -0.05,
-         0.08
-        ],
-        "dy": [
-         -0.76,
-         1.61
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "bins_capacity__side_left_full": {
      "move": {
       "rubber_duck": {
@@ -45764,8 +45150,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.788,
-        -0.458
+        0.795,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -45774,8 +45160,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.788,
-        -0.402
+        0.795,
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -45785,7 +45171,7 @@
        "z": 0.718,
        "xy": [
         0.84,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -45795,7 +45181,7 @@
        "z": 0.718,
        "xy": [
         0.84,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -45804,8 +45190,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.892,
-        -0.458
+        0.885,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -45814,68 +45200,68 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.892,
-        -0.402
+        0.885,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.788,
-        -0.458
+        0.795,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.788,
-        -0.402
+        0.795,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         0.84,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         0.84,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.892,
-        -0.458
+        0.885,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.892,
-        -0.402
+        0.885,
+        -0.406
        ],
        "yaw_deg": 0
       }
@@ -46088,8 +45474,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.078,
-        -0.458
+        1.085,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46098,8 +45484,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.078,
-        -0.402
+        1.085,
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -46109,7 +45495,7 @@
        "z": 0.718,
        "xy": [
         1.13,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46119,7 +45505,7 @@
        "z": 0.718,
        "xy": [
         1.13,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -46128,8 +45514,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.182,
-        -0.458
+        1.175,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46138,68 +45524,68 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.182,
-        -0.402
+        1.175,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.078,
-        -0.458
+        1.085,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.078,
-        -0.402
+        1.085,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         1.13,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         1.13,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.182,
-        -0.458
+        1.175,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.182,
-        -0.402
+        1.175,
+        -0.406
        ],
        "yaw_deg": 0
       }
@@ -46412,8 +45798,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.548,
-        0.332
+        7.555,
+        0.336
        ],
        "yaw_deg": 0
       },
@@ -46422,8 +45808,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.548,
-        0.388
+        7.555,
+        0.384
        ],
        "yaw_deg": 0
       },
@@ -46433,7 +45819,7 @@
        "z": 0.493,
        "xy": [
         7.6,
-        0.332
+        0.336
        ],
        "yaw_deg": 0
       },
@@ -46443,7 +45829,7 @@
        "z": 0.493,
        "xy": [
         7.6,
-        0.388
+        0.384
        ],
        "yaw_deg": 0
       },
@@ -46452,8 +45838,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.652,
-        0.332
+        7.645,
+        0.336
        ],
        "yaw_deg": 0
       },
@@ -46462,68 +45848,68 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.652,
-        0.388
+        7.645,
+        0.384
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
-        7.548,
-        0.332
+        7.555,
+        0.336
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
-        7.548,
-        0.388
+        7.555,
+        0.384
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
         7.6,
-        0.332
+        0.336
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
         7.6,
-        0.388
+        0.384
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
-        7.652,
-        0.332
+        7.645,
+        0.336
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.544,
+       "z": 0.534,
        "xy": [
-        7.652,
-        0.388
+        7.645,
+        0.384
        ],
        "yaw_deg": 0
       }
@@ -46759,8 +46145,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.948,
-        -0.458
+        0.955,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46769,8 +46155,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.948,
-        -0.402
+        0.955,
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -46780,7 +46166,7 @@
        "z": 0.718,
        "xy": [
         1.0,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46790,7 +46176,7 @@
        "z": 0.718,
        "xy": [
         1.0,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
@@ -46799,8 +46185,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.052,
-        -0.458
+        1.045,
+        -0.454
        ],
        "yaw_deg": 0
       },
@@ -46809,68 +46195,68 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.052,
-        -0.402
+        1.045,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.948,
-        -0.458
+        0.955,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        0.948,
-        -0.402
+        0.955,
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         1.0,
-        -0.458
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
         1.0,
-        -0.402
+        -0.406
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.052,
-        -0.458
+        1.045,
+        -0.454
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.769,
+       "z": 0.759,
        "xy": [
-        1.052,
-        -0.402
+        1.045,
+        -0.406
        ],
        "yaw_deg": 0
       }
@@ -47030,6 +46416,555 @@
        }
       ],
       "static": {},
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "bins_capacity__half_bin_and_tray": {
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "bins_capacity",
+      "case": "half_bin_and_tray",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "stored_block_1",
+         "stored_block_2",
+         "stored_block_3",
+         "stored_block_4",
+         "stored_block_5",
+         "stored_block_6",
+         "toy_bin_small",
+         "toy_tray"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.73,
+         -0.53,
+         1.265,
+         -0.33
+        ],
+        "dy": [
+         -0.07,
+         0.07
+        ]
+       },
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.0038,
+         -6.0757,
+         -0.8962,
+         -5.9643
+        ],
+        "dx": [
+         -0.39,
+         0.86
+        ],
+        "dy": [
+         -0.24,
+         0.0
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "bins_capacity__half_bin_and_tray_duck_dining": {
+     "move": {
+      "rubber_duck": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "bins_capacity",
+      "case": "half_bin_and_tray_duck_dining",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "stored_block_1",
+         "stored_block_2",
+         "stored_block_3",
+         "stored_block_4",
+         "stored_block_5",
+         "stored_block_6",
+         "toy_bin_small",
+         "toy_tray"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.73,
+         -0.53,
+         1.265,
+         -0.33
+        ],
+        "dy": [
+         -0.07,
+         0.07
+        ]
+       },
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.655,
+         6.2671,
+         3.745,
+         6.3329
+        ],
+        "dx": [
+         -0.05,
+         0.08
+        ],
+        "dy": [
+         -0.76,
+         1.61
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
        "hide": [],
@@ -47499,14 +47434,14 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.375,
-         0.335,
-         7.425,
-         0.385
+         7.38,
+         0.34,
+         7.42,
+         0.38
         ],
         "dx": [
          -0.72,
-         0.93
+         0.94
         ],
         "dy": [
          -0.11,
@@ -47579,7 +47514,7 @@
       "castle_block_2": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.05,
+       "z": 0.04,
        "xy": [
         5.0,
         1.0
@@ -47589,7 +47524,7 @@
       "castle_block_3": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.1,
+       "z": 0.08,
        "xy": [
         5.0,
         1.0
@@ -47766,7 +47701,7 @@
       "castle_block_2": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.05,
+       "z": 0.04,
        "xy": [
         5.0,
         1.0
@@ -47915,7 +47850,7 @@
       "castle_block_2": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.05,
+       "z": 0.04,
        "xy": [
         5.0,
         1.0
@@ -47925,7 +47860,7 @@
       "castle_block_3": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.1,
+       "z": 0.08,
        "xy": [
         5.0,
         1.0
@@ -48074,13 +48009,13 @@
    "oracle": {
     "toys_out": "v5x_toys_out",
     "duck_in_study": "explore_search_duck",
-    "toys_everywhere": "hard_allocate_by_size",
     "duck_in_study__alt_dining_table_2": "v6_duck_in_study__alt_dining_table_2",
-    "toys_everywhere__alt_dining_table_2": "v6_toys_everywhere__alt_dining_table_2",
     "bins_capacity__side_left_full": "v6_bins_capacity__side_left_full",
     "bins_capacity__side_right_full": "v6_bins_capacity__side_right_full",
     "bins_capacity__apart_full_on_tv": "v6_bins_capacity__apart_full_on_tv",
     "bins_capacity__apart_empty_on_desk": "v6_bins_capacity__apart_empty_on_desk",
+    "bins_capacity__half_bin_and_tray": "v6_bins_capacity__half_bin_and_tray",
+    "bins_capacity__half_bin_and_tray_duck_dining": "v6_bins_capacity__half_bin_and_tray_duck_dining",
     "find_all_toys__car_duck": "v6_find_all_toys__car_duck",
     "find_all_toys__car_duck_bear": "v6_find_all_toys__car_duck_bear",
     "find_all_toys__all_four": "v6_find_all_toys__all_four",
@@ -48248,104 +48183,6 @@
      ],
      "since": "v3"
     },
-    "hard_allocate_by_size": {
-     "kind": "alternative",
-     "variants": [
-      "toys_everywhere"
-     ],
-     "recovery": "look at the containers first: the duck needs the bin's last gap, so the car goes to the tray",
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_tray"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_tray"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "living_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small"
-       }
-      }
-     ],
-     "since": "v4"
-    },
     "v5x_toys_out": {
      "kind": "v5_skill_coverage",
      "variants": [
@@ -48506,100 +48343,6 @@
      ],
      "kind": "v6_seed_extension",
      "variant": "duck_in_study__alt_dining_table_2"
-    },
-    "v6_toys_everywhere__alt_dining_table_2": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "toy_tray"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "toy_tray"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_bin_small"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "rubber_duck",
-        "container": "toy_bin_small"
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "toys_everywhere__alt_dining_table_2"
     },
     "v6_bins_capacity__side_left_full": {
      "steps": [
@@ -48986,6 +48729,192 @@
      ],
      "kind": "v6_oracle",
      "variant": "bins_capacity__apart_empty_on_desk"
+    },
+    "v6_bins_capacity__half_bin_and_tray": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_tray"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_tray"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "bins_capacity__half_bin_and_tray"
+    },
+    "v6_bins_capacity__half_bin_and_tray_duck_dining": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_tray"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_tray"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "bins_capacity__half_bin_and_tray_duck_dining"
     },
     "v6_find_all_toys__car_duck": {
      "steps": [
@@ -49652,27 +49581,6 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "toys_everywhere": {
-     "origin": "v5",
-     "control": "toys_out",
-     "layouts": [
-      "toys_everywhere",
-      "toys_everywhere__alt_dining_table_2"
-     ],
-     "seeds": {
-      "10": "toys_everywhere__alt_dining_table_2",
-      "11": "toys_everywhere__alt_dining_table_2",
-      "12": "toys_everywhere",
-      "13": "toys_everywhere",
-      "14": "toys_everywhere__alt_dining_table_2",
-      "15": "toys_everywhere__alt_dining_table_2",
-      "16": "toys_everywhere",
-      "17": "toys_everywhere",
-      "18": "toys_everywhere__alt_dining_table_2",
-      "19": "toys_everywhere"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
     "bins_capacity": {
      "origin": "v6",
      "control": "toys_out",
@@ -49680,20 +49588,22 @@
       "bins_capacity__side_left_full",
       "bins_capacity__side_right_full",
       "bins_capacity__apart_full_on_tv",
-      "bins_capacity__apart_empty_on_desk"
+      "bins_capacity__apart_empty_on_desk",
+      "bins_capacity__half_bin_and_tray",
+      "bins_capacity__half_bin_and_tray_duck_dining"
      ],
      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
      "seeds": {
       "10": "bins_capacity__side_left_full",
-      "11": "bins_capacity__side_left_full",
-      "12": "bins_capacity__side_right_full",
-      "13": "bins_capacity__apart_empty_on_desk",
+      "11": "bins_capacity__apart_full_on_tv",
+      "12": "bins_capacity__apart_empty_on_desk",
+      "13": "bins_capacity__side_right_full",
       "14": "bins_capacity__side_right_full",
-      "15": "bins_capacity__apart_full_on_tv",
+      "15": "bins_capacity__side_left_full",
       "16": "bins_capacity__apart_empty_on_desk",
-      "17": "bins_capacity__side_left_full",
+      "17": "bins_capacity__half_bin_and_tray",
       "18": "bins_capacity__apart_full_on_tv",
-      "19": "bins_capacity__side_right_full"
+      "19": "bins_capacity__half_bin_and_tray_duck_dining"
      }
     },
     "find_all_toys": {
@@ -49742,14 +49652,18 @@
     }
    },
    "v6_replaced": {
+    "h_mixed_everywhere_ik": "the same design as toys_everywhere (its injected failures are gone), now seeds of bins_capacity",
+    "h_action_grasp_and_ik": "the same design as toys_everywhere (its injected failures are gone), now seeds of bins_capacity",
+    "toys_everywhere": "merged into bins_capacity (seeds: a half-full bin and a shallow tray)",
     "h_dynamic_duck_taken": "removed: no dynamic events in T12 (the kid takes the duck)"
    },
    "v6_dropped": {
     "e2_from_kitchen": "same as toys_out but for the layout (object poses / start)",
     "m_grasp_car": "only injected action failures",
     "m_ik_duck_place": "only injected action failures",
-    "h_action_grasp_and_ik": "same as toys_everywhere without its injected action failures",
-    "h_mixed_everywhere_ik": "same as toys_everywhere without its injected action failures",
+    "h_action_grasp_and_ik": "the same design as toys_everywhere (its injected failures are gone), now seeds of bins_capacity",
+    "h_mixed_everywhere_ik": "the same design as toys_everywhere (its injected failures are gone), now seeds of bins_capacity",
+    "toys_everywhere": "merged into bins_capacity (seeds: a half-full bin and a shallow tray)",
     "h_dynamic_duck_taken": "removed: no dynamic events in T12 (the kid takes the duck)"
    },
    "v6_tracks": {
@@ -49763,13 +49677,6 @@
      "local": [],
      "longer": [
       "not_in_view"
-     ]
-    },
-    "toys_everywhere": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "joint_capacity"
      ]
     },
     "bins_capacity": {
@@ -55135,18 +55042,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -55293,18 +55200,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -55497,18 +55404,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        },
        {
@@ -55517,14 +55424,14 @@
         ],
         "support": "tv_stand_2/top",
         "box": [
-         6.975,
-         0.335,
-         7.025,
-         0.385
+         6.98,
+         0.34,
+         7.02,
+         0.38
         ],
         "dx": [
          -0.32,
-         1.33
+         1.34
         ],
         "dy": [
          -0.11,
@@ -55669,17 +55576,17 @@
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
+         3.68,
+         6.28,
+         3.72,
+         6.32
         ],
         "dx": [
          -0.03,
          0.1
         ],
         "dy": [
-         -0.76,
+         -0.77,
          1.62
         ]
        },
@@ -55729,18 +55636,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -55940,18 +55847,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -56123,18 +56030,18 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
+         7.05,
+         1.605,
+         7.09,
+         1.645
         ],
         "dx": [
-         -0.49,
+         -0.5,
          1.15
         ],
         "dy": [
-         -0.07,
-         0.06
+         -0.08,
+         0.05
         ]
        }
       ],
@@ -74559,14 +74466,14 @@
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.175,
-         1.775,
-         7.225,
-         1.825
+         7.18,
+         1.78,
+         7.22,
+         1.82
         ],
         "dx": [
-         -0.62,
-         1.02
+         -0.63,
+         1.03
         ],
         "dy": [
          0.0,
@@ -76887,20 +76794,22 @@
      "origin": "v6",
      "control": "rice_on_table",
      "layouts": [
-      "which_is_leftover"
+      "which_is_leftover",
+      "fruit_stays_out",
+      "still_eating"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what else is on the table that is not leftovers (seed: an empty takeout tray; the fruit basket and cereal; a bowl someone is still eating from)",
      "seeds": {
       "10": "which_is_leftover",
-      "11": "which_is_leftover",
+      "11": "fruit_stays_out",
       "12": "which_is_leftover",
       "13": "which_is_leftover",
-      "14": "which_is_leftover",
+      "14": "fruit_stays_out",
       "15": "which_is_leftover",
-      "16": "which_is_leftover",
-      "17": "which_is_leftover",
-      "18": "which_is_leftover",
-      "19": "which_is_leftover"
+      "16": "still_eating",
+      "17": "fruit_stays_out",
+      "18": "still_eating",
+      "19": "still_eating"
      }
     },
     "two_leftovers": {
@@ -76924,26 +76833,6 @@
       "19": "two_leftovers__soup_on_stove"
      }
     },
-    "still_eating": {
-     "origin": "v6",
-     "control": "rice_on_table",
-     "layouts": [
-      "still_eating"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "still_eating",
-      "11": "still_eating",
-      "12": "still_eating",
-      "13": "still_eating",
-      "14": "still_eating",
-      "15": "still_eating",
-      "16": "still_eating",
-      "17": "still_eating",
-      "18": "still_eating",
-      "19": "still_eating"
-     }
-    },
     "fridge_out_of_view": {
      "origin": "v6",
      "control": "rice_on_table",
@@ -76963,26 +76852,6 @@
       "18": "fridge_out_of_view",
       "19": "fridge_out_of_view"
      }
-    },
-    "fruit_stays_out": {
-     "origin": "v6",
-     "control": "rice_on_table",
-     "layouts": [
-      "fruit_stays_out"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "fruit_stays_out",
-      "11": "fruit_stays_out",
-      "12": "fruit_stays_out",
-      "13": "fruit_stays_out",
-      "14": "fruit_stays_out",
-      "15": "fruit_stays_out",
-      "16": "fruit_stays_out",
-      "17": "fruit_stays_out",
-      "18": "fruit_stays_out",
-      "19": "fruit_stays_out"
-     }
     }
    },
    "v6_replaced": {},
@@ -76997,7 +76866,9 @@
      "category": "task",
      "local": [],
      "longer": [
-      "disposal_by_state"
+      "category_rule",
+      "disposal_by_state",
+      "referent_clue"
      ]
     },
     "two_leftovers": {
@@ -77008,25 +76879,11 @@
       "multi_object_goal"
      ]
     },
-    "still_eating": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "referent_clue"
-     ]
-    },
     "fridge_out_of_view": {
      "category": "task",
      "local": [],
      "longer": [
       "not_in_view"
-     ]
-    },
-    "fruit_stays_out": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "category_rule"
      ]
     }
    }
@@ -80077,19 +79934,20 @@
      "origin": "v6",
      "control": "car_on_table",
      "layouts": [
-      "belongs_on_table"
+      "belongs_on_table",
+      "nothing_to_clear"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what is on the table besides the place setting (seed: a toy car, or nothing)",
      "seeds": {
-      "10": "belongs_on_table",
-      "11": "belongs_on_table",
+      "10": "nothing_to_clear",
+      "11": "nothing_to_clear",
       "12": "belongs_on_table",
-      "13": "belongs_on_table",
-      "14": "belongs_on_table",
+      "13": "nothing_to_clear",
+      "14": "nothing_to_clear",
       "15": "belongs_on_table",
       "16": "belongs_on_table",
       "17": "belongs_on_table",
-      "18": "belongs_on_table",
+      "18": "nothing_to_clear",
       "19": "belongs_on_table"
      }
     },
@@ -80133,26 +79991,6 @@
       "19": "several"
      }
     },
-    "nothing_to_clear": {
-     "origin": "v6",
-     "control": "car_on_table",
-     "layouts": [
-      "nothing_to_clear"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "nothing_to_clear",
-      "11": "nothing_to_clear",
-      "12": "nothing_to_clear",
-      "13": "nothing_to_clear",
-      "14": "nothing_to_clear",
-      "15": "nothing_to_clear",
-      "16": "nothing_to_clear",
-      "17": "nothing_to_clear",
-      "18": "nothing_to_clear",
-      "19": "nothing_to_clear"
-     }
-    },
     "which_table": {
      "origin": "v6",
      "control": "car_on_table",
@@ -80187,7 +80025,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "category_rule"
+      "category_rule",
+      "goal_already_met"
      ]
     },
     "homework_on_table": {
@@ -80204,13 +80043,6 @@
      "longer": [
       "category_rule",
       "multi_object_goal"
-     ]
-    },
-    "nothing_to_clear": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "goal_already_met"
      ]
     },
     "which_table": {
@@ -81986,26 +81818,6 @@
       "19": "bowls_in_cabinet__two_inside"
      }
     },
-    "clean_one": {
-     "origin": "v6",
-     "control": "bowl_on_cabinet",
-     "layouts": [
-      "clean_one"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "clean_one",
-      "11": "clean_one",
-      "12": "clean_one",
-      "13": "clean_one",
-      "14": "clean_one",
-      "15": "clean_one",
-      "16": "clean_one",
-      "17": "clean_one",
-      "18": "clean_one",
-      "19": "clean_one"
-     }
-    },
     "bowl_put_away": {
      "origin": "v6",
      "control": "bowl_on_cabinet",
@@ -82050,19 +81862,20 @@
      "origin": "v6",
      "control": "bowl_on_cabinet",
      "layouts": [
-      "bowl_not_plate"
+      "bowl_not_plate",
+      "clean_one"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what stands next to the clean bowl (seed: a plate, or a bowl still full of oatmeal)",
      "seeds": {
-      "10": "bowl_not_plate",
-      "11": "bowl_not_plate",
+      "10": "clean_one",
+      "11": "clean_one",
       "12": "bowl_not_plate",
       "13": "bowl_not_plate",
       "14": "bowl_not_plate",
-      "15": "bowl_not_plate",
+      "15": "clean_one",
       "16": "bowl_not_plate",
-      "17": "bowl_not_plate",
-      "18": "bowl_not_plate",
+      "17": "clean_one",
+      "18": "clean_one",
       "19": "bowl_not_plate"
      }
     }
@@ -82091,13 +81904,6 @@
       "dependent_decisions",
       "item_put_away",
       "resource_absent"
-     ]
-    },
-    "clean_one": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "referent_clue"
      ]
     },
     "bowl_put_away": {

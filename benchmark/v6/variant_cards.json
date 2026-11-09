@@ -9055,7 +9055,6 @@
     "juice_bottle",
     "oatmeal",
     "pot_lid",
-    "wooden_block_a",
     "wooden_block_b"
    ],
    "added": [
@@ -9171,7 +9170,6 @@
     "juice_bottle",
     "oatmeal",
     "pot_lid",
-    "wooden_block_a",
     "wooden_block_b"
    ],
    "added": [
@@ -13581,281 +13579,12 @@
   "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T12_tidy_toys/toys_everywhere": {
-  "variant": "toys_everywhere",
-  "category": "task",
-  "seeds": [
-   12,
-   13,
-   16,
-   17,
-   19
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [
-    "stored_block_1",
-    "stored_block_2",
-    "stored_block_3",
-    "stored_block_4",
-    "stored_block_5",
-    "stored_block_6",
-    "toy_bin_small",
-    "toy_tray"
-   ],
-   "removed": [
-    "storage_basket"
-   ],
-   "conditions": [
-    "joint_capacity"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_bin_small"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_bin_small"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_bin_small"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_tray"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_tray"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_bin_small"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_tray"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_tray"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "fully_inside",
-     "stored_block_1",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_2",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_3",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_4",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_5",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_6",
-     "toy_bin_small"
-    ],
-    [
-     "upright",
-     "toy_bin_small"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "hard_allocate_by_size",
-  "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T12_tidy_toys/toys_everywhere__alt_dining_table_2": {
-  "variant": "toys_everywhere",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   14,
-   15,
-   18
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [
-    "stored_block_1",
-    "stored_block_2",
-    "stored_block_3",
-    "stored_block_4",
-    "stored_block_5",
-    "stored_block_6",
-    "toy_bin_small",
-    "toy_tray"
-   ],
-   "removed": [
-    "storage_basket"
-   ],
-   "conditions": [
-    "joint_capacity"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_bin_small"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_bin_small"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_bin_small"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_tray"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_tray"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_bin_small"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "toy_car",
-      "toy_tray"
-     ],
-     [
-      "fully_inside",
-      "rubber_duck",
-      "toy_tray"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "fully_inside",
-     "stored_block_1",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_2",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_3",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_4",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_5",
-     "toy_bin_small"
-    ],
-    [
-     "fully_inside",
-     "stored_block_6",
-     "toy_bin_small"
-    ],
-    [
-     "upright",
-     "toy_bin_small"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "v6_toys_everywhere__alt_dining_table_2",
-  "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase (here the rubber_duck is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T12_tidy_toys/bins_capacity__side_left_full": {
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
    10,
-   11,
-   17
+   15
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
   "initial_conditions": {
@@ -13985,9 +13714,8 @@
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
-   12,
-   14,
-   19
+   13,
+   14
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
   "initial_conditions": {
@@ -14117,7 +13845,7 @@
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
-   15,
+   11,
    18
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
@@ -14248,7 +13976,7 @@
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
-   13,
+   12,
    16
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
@@ -14371,6 +14099,266 @@
   },
   "control": "toys_out",
   "oracle_route": "v6_bins_capacity__apart_empty_on_desk",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bins_capacity__half_bin_and_tray": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   17
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__half_bin_and_tray",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bins_capacity__half_bin_and_tray_duck_dining": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   19
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__half_bin_and_tray_duck_dining",
   "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
   "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -22313,15 +22301,9 @@
   "category": "task",
   "seeds": [
    10,
-   11,
    12,
    13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
+   15
   ],
   "instruction": "Dinner is over. Put the leftovers in the fridge.",
   "initial_conditions": {
@@ -22365,6 +22347,123 @@
   "oracle_route": "v6_which_is_leftover",
   "challenge": "the box of rice and an empty takeout tray on the table",
   "rationale": "only food goes into the fridge: the empty tray does not",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/fruit_stays_out": {
+  "variant": "which_is_leftover",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   17
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "leftover_rice",
+    "table_basket",
+    "table_cereal"
+   ],
+   "removed": [],
+   "conditions": [
+    "category_rule"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "table_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "table_cereal",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_fruit_stays_out",
+  "challenge": "the box of rice, the fruit basket with an apple and a box of cereal on the table",
+  "rationale": "only leftovers go into the fridge: the fruit and the cereal stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/still_eating": {
+  "variant": "which_is_leftover",
+  "category": "task",
+  "seeds": [
+   16,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "eating_bowl",
+    "eating_spoon",
+    "leftover_rice"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "eating_bowl",
+     0.03
+    ],
+    [
+     "never_picked",
+     [
+      "eating_bowl"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_still_eating",
+  "challenge": "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
+  "rationale": "a portion someone is still eating is not a leftover: only the rice",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T27_leftovers_to_fridge/two_leftovers__soup_on_table": {
@@ -22485,72 +22584,6 @@
   "rationale": "all the leftovers, not only the first one seen: both into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T27_leftovers_to_fridge/still_eating": {
-  "variant": "still_eating",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Dinner is over. Put the leftovers in the fridge.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "eating_bowl",
-    "eating_spoon",
-    "leftover_rice"
-   ],
-   "removed": [],
-   "conditions": [
-    "referent_clue"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "leftover_rice",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ],
-    [
-     "near_start",
-     "eating_bowl",
-     0.03
-    ],
-    [
-     "never_picked",
-     [
-      "eating_bowl"
-     ]
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "rice_on_table",
-  "oracle_route": "v6_still_eating",
-  "challenge": "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
-  "rationale": "a portion someone is still eating is not a leftover: only the rice",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T27_leftovers_to_fridge/fridge_out_of_view": {
   "variant": "fridge_out_of_view",
   "category": "task",
@@ -22606,71 +22639,6 @@
   "oracle_route": "v6_fridge_out_of_view",
   "challenge": "the robot starts in the dining room; the fridge stands in the open kitchen, out of view",
   "rationale": "find the fridge first, then put the rice in",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T27_leftovers_to_fridge/fruit_stays_out": {
-  "variant": "fruit_stays_out",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Dinner is over. Put the leftovers in the fridge.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "leftover_rice",
-    "table_basket",
-    "table_cereal"
-   ],
-   "removed": [],
-   "conditions": [
-    "category_rule"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "leftover_rice",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ],
-    [
-     "near_start",
-     "table_basket",
-     0.03
-    ],
-    [
-     "near_start",
-     "table_cereal",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "rice_on_table",
-  "oracle_route": "v6_fruit_stays_out",
-  "challenge": "the box of rice, the fruit basket with an apple and a box of cereal on the table",
-  "rationale": "only leftovers go into the fridge: the fruit and the cereal stay where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T28_cup_to_bedside/cup_on_counter": {
@@ -23191,15 +23159,10 @@
   "variant": "belongs_on_table",
   "category": "task",
   "seeds": [
-   10,
-   11,
    12,
-   13,
-   14,
    15,
    16,
    17,
-   18,
    19
   ],
   "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
@@ -23247,6 +23210,56 @@
   "oracle_route": "v6_belongs_on_table",
   "challenge": "the toy car, and a bowl and a spoon set for the meal",
   "rationale": "what is set for the meal stays; only the toy goes",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/nothing_to_clear": {
+  "variant": "belongs_on_table",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   13,
+   14,
+   18
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "set_bowl",
+    "set_spoon"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_already_met"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "near_start",
+     "set_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "set_spoon",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_nothing_to_clear",
+  "challenge": "the table holds only what is set for the meal",
+  "rationale": "nothing on it is out of place: leave the table as it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T29_clear_table_for_dinner/homework_on_table": {
@@ -23475,61 +23488,6 @@
   "oracle_route": "v6_several",
   "challenge": "the toy car, a paperback and an empty soda can on the table",
   "rationale": "each to its place: the toy to the toy box, the book to a bookshelf, the empty can into the bin",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T29_clear_table_for_dinner/nothing_to_clear": {
-  "variant": "nothing_to_clear",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "set_bowl",
-    "set_spoon"
-   ],
-   "removed": [],
-   "conditions": [
-    "goal_already_met"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "near_start",
-     "set_bowl",
-     0.03
-    ],
-    [
-     "near_start",
-     "set_spoon",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "car_on_table",
-  "oracle_route": "v6_nothing_to_clear",
-  "challenge": "the table holds only what is set for the meal",
-  "rationale": "nothing on it is out of place: leave the table as it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T29_clear_table_for_dinner/which_table__east": {
@@ -23923,69 +23881,6 @@
   "rationale": "three places, so three bowls; one is out, so open the cabinet; what is inside decides the rest: two bowls -> three bowls; one bowl -> two bowls and the mug for the third (a mug holds soup, a plate would not)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T30_bowls_for_soup/clean_one": {
-  "variant": "clean_one",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "full_bowl",
-    "soup_bowl_1",
-    "stove_soup"
-   ],
-   "removed": [],
-   "conditions": [
-    "referent_clue"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "count_on_at_least",
-     [
-      "soup_bowl_1",
-      "bowl_dining_cabinet",
-      "bowl_kitchen_cabinet",
-      "bowl_side_table",
-      "bowl_inside_kitchen_cabinet"
-     ],
-     "kitchen_island/top",
-     1
-    ],
-    [
-     "near_start",
-     "full_bowl",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "bowl_on_cabinet",
-  "oracle_route": "v6_clean_one",
-  "challenge": "two bowls on the cabinet: one still has oatmeal in it, the other is empty",
-  "rationale": "for serving, the empty bowl",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T30_bowls_for_soup/bowl_put_away": {
   "variant": "bowl_put_away",
   "category": "task",
@@ -24116,15 +24011,10 @@
   "variant": "bowl_not_plate",
   "category": "task",
   "seeds": [
-   10,
-   11,
    12,
    13,
    14,
-   15,
    16,
-   17,
-   18,
    19
   ],
   "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
@@ -24173,6 +24063,64 @@
   "oracle_route": "v6_bowl_not_plate",
   "challenge": "a plate and a bowl on the cabinet",
   "rationale": "soup is served in a bowl: the bowl, not the plate",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/clean_one": {
+  "variant": "bowl_not_plate",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   17,
+   18
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "full_bowl",
+    "soup_bowl_1",
+    "stove_soup"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "bowl_dining_cabinet",
+      "bowl_kitchen_cabinet",
+      "bowl_side_table",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     "kitchen_island/top",
+     1
+    ],
+    [
+     "near_start",
+     "full_bowl",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_clean_one",
+  "challenge": "two bowls on the cabinet: one still has oatmeal in it, the other is empty",
+  "rationale": "for serving, the empty bowl",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  }
 }

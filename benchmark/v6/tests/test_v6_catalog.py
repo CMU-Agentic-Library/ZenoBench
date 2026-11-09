@@ -96,8 +96,10 @@ def test_cases_differ_in_decision():
     for t in TASKS.values():
         for fam, info in t["v6_variants"].items():
             if len(info["layouts"]) > 1:
-                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["layouts"]}
-                assert len(routes) == len(info["layouts"]), fam
+                sigs = {(json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True),
+                         json.dumps(t["variants"][v].get("goal") or t.get("goal"), sort_keys=True))
+                        for v in info["layouts"]}
+                assert len(sigs) == len(info["layouts"]), fam        # the route or the goal differs
                 assert info.get("factor"), fam
 
 
@@ -302,7 +304,7 @@ def test_t01_which_table():
 
 
 def test_new_base_tasks():
-    """T21-T30: a control and five Task-Level variants each, plus a dependent-decisions one in some (Action + Task
+    """T21-T30: a control and at least three Task-Level variants each (five before same-design merges), plus a dependent-decisions one in some (Action + Task
     when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
     for k in range(21, 31):
         tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
@@ -311,7 +313,8 @@ def test_new_base_tasks():
                       for i in TASKS[tid]["v6_variants"].values())
         cats = sorted(x["category"] for x in tr.values())
         assert cats.count("control") == 1 and "action" not in cats, tid
-        assert 6 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid   # added or replacing
+        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review)
+        assert 4 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

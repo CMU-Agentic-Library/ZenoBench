@@ -130,6 +130,7 @@ T01_FULL = {   # no_room_fallback: seats_a with the second cereal box in the one
 # "back to the kitchen counter": any kitchen worktop does (both counters, the island where there is one)
 KITCHEN_WORKTOPS = ["kitchen_counter_1/top", "kitchen_counter_2/top", "kitchen_island/top"]
 KITCHEN_WORKTOPS_DESK = ["kitchen_counter_1/top", "kitchen_counter_2/top"]     # tasks/desk_prep has no island
+BLOCK_H = 0.04                         # the toy blocks' edge (annotations/assets.json wooden_block)
 T01_BOOKCASES = [f"bookcase_{k}/{lv}" for k in (1, 2, 3, 4) for lv in ("top", "shelf_1", "shelf_0")]  # any bookcase
 T01_FALLBACK = "bookcase_2/top"     # reference: the nearest bookcase (bedroom)
 # reader_seat: three seats, each a plate or bowl and its drink north of it, with a wide slot south of every plate
@@ -1382,10 +1383,10 @@ def T12(t):
     N_STORED = 12
 
     def full_of_blocks(sup, x0, y0):
-        """Twelve blocks, 3 x 2 per layer, two layers: inside the floor (smaller than the rim), the top layer just
-        above the rim: the bin looks and is full."""
+        """Twelve 4 cm blocks, 3 x 2 per layer, two layers, inside the floor (smaller than the rim): the bin looks
+        and is full."""
         z0 = SZ[sup] + 0.009
-        cells = [(dx, dy, dz) for dz in (0.0, 0.051) for dx in (-0.052, 0.0, 0.052) for dy in (-0.028, 0.028)]
+        cells = [(dx, dy, dz) for dz in (0.0, BLOCK_H + 0.001) for dx in (-0.045, 0.0, 0.045) for dy in (-0.024, 0.024)]
         return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": round(z0 + dz, 3),
                                           "xy": [round(x0 + dx, 3), round(y0 + dy, 3)], "yaw_deg": 0}
                 for i, (dx, dy, dz) in enumerate(cells)}
@@ -1411,6 +1412,19 @@ def T12(t):
                  "side_right_full": cap_case((BC, (1.13, -0.43)), (BC, (0.84, -0.43)), swap=True),
                  "apart_full_on_tv": cap_case(("tv_stand_2/top", (7.60, 0.36)), (BC, (1.00, -0.43))),
                  "apart_empty_on_desk": cap_case((BC, (1.00, -0.43)), ("desk_1/top", (-0.45, -5.95)))}
+    # toys_everywhere (v5) is the same design with other containers: a half-full bin and a shallow tray, the duck to
+    # be found; it joins as two seeds (the duck on the study desk or on the dining table)
+    tev = t["variants"]["toys_everywhere"]
+    tev_route = t["routes"][t["oracle"]["toys_everywhere"]]["steps"]
+    for case, duck, region in (("half_bin_and_tray", tev["move"][DUCK], "living_room_0_1"),
+                               ("half_bin_and_tray_duck_dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1")):
+        steps = copy.deepcopy(tev_route)
+        for st in steps:
+            if st["skill"] == "search":
+                st["args"]["region"] = region
+                st.pop("role", None)
+        cap_cases[case] = dict(move={DUCK: copy.deepcopy(duck)}, add=copy.deepcopy(tev["add"]),
+                               remove=list(tev.get("remove", [])), goal=copy.deepcopy(tev["goal"]), route=steps)
 
     def put_away(x):
         return [nav(x), pick(x), nav(BASKET), place(x, BASKET)]
@@ -1443,7 +1457,7 @@ def T12(t):
     for c, levels, loose in (("tall_two_loose", 3, 2), ("short_one_loose", 2, 1), ("tall_none_loose", 3, 0)):
         tower = [f"castle_block_{i + 1}" for i in range(levels)]
         strays = [f"loose_block_{i + 1}" for i in range(loose)]
-        add = {b: floor(5.00, 1.00, 0.05 * i) for i, b in enumerate(tower)}
+        add = {b: floor(5.00, 1.00, BLOCK_H * i) for i, b in enumerate(tower)}
         add.update({b: floor(*xy) for b, xy in zip(strays, ((4.70, 1.30), (5.35, 1.45)))})
         castle_cases[c] = dict(
             add=add,
@@ -2275,6 +2289,11 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T12_tidy_toys", "h_mixed_everywhere_ik"): "the same design as toys_everywhere (its injected failures are gone), "
+                                                "now seeds of bins_capacity",
+    ("T12_tidy_toys", "h_action_grasp_and_ik"): "the same design as toys_everywhere (its injected failures are gone), "
+                                                "now seeds of bins_capacity",
+    ("T12_tidy_toys", "toys_everywhere"): "merged into bins_capacity (seeds: a half-full bin and a shallow tray)",
     ("T11_collect_fruits", "h_mixed_bowl_there_grasp"): "the same design as basket_gone_bowl_there, now a seed of "
                                                         "basket_missing",
     ("T18_check_cabinet_dishes", "h_task_two_cabinets"): "merged into dishes_spread (seed: the bowl in the other low "
@@ -2465,9 +2484,6 @@ SEED_EXT = {
     ('T10_trash_the_can', 'far_can_far'): 0,
     ('T10_trash_the_can', 'h_dynamic_can_moved'): 1,
     ('T12_tidy_toys', 'duck_in_study'): 0,
-    ('T12_tidy_toys', 'h_action_grasp_and_ik'): 0,
-    ('T12_tidy_toys', 'h_mixed_everywhere_ik'): 0,
-    ('T12_tidy_toys', 'toys_everywhere'): 0,
     ('T19_recycling', 'h_action_grasp_and_miss'): 1,
     ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
     ('T19_recycling', 'lookalike_bin'): 1,
@@ -2481,7 +2497,9 @@ MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
-}
+         ("T27_leftovers_to_fridge", "which_is_leftover"): ["fruit_stays_out", "still_eating"],
+         ("T29_clear_table_for_dinner", "belongs_on_table"): ["nothing_to_clear"],
+         ("T30_bowls_for_soup", "bowl_not_plate"): ["clean_one"]}
 MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed: on the island in view, on the TV "
                                                          "stand or on the dining table, out of view)",
                 ("T07_heat_oatmeal", "microwave_broken"): "where the oatmeal is (seed: by the microwave, or elsewhere "
@@ -2500,7 +2518,11 @@ MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed
                 ("T29_clear_table_for_dinner", "belongs_on_table"): "what is on the table besides the place setting "
                                                                     "(seed: a toy car, or nothing)",
                 ("T30_bowls_for_soup", "bowl_not_plate"): "what stands next to the clean bowl (seed: a plate, or a "
-                                                          "bowl still full of oatmeal)"}
+                                                          "bowl still full of oatmeal)",
+                ("T28_cup_to_bedside", "where_his_cup_is"): "where his cup is and what else stands on the counter "
+                                                            "(seed: on the counter among other cups; in the cabinet "
+                                                            "with other cups on the counter; in the cabinet, the "
+                                                            "counter empty)"}
 
 
 def ext_target(t, fam):

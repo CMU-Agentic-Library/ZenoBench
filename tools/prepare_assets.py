@@ -53,7 +53,7 @@ SPECS = {
     "book_blue": (0.200, 0.30, ["book", "flat"], "solid", None),
     "toy_car": (0.120, 0.15, ["toy", "toy_car"], "solid", None),
     "teddy_bear": (0.160, 0.15, ["toy", "plush"], "solid", None),   # small plush: crown pinch on the head
-    "toy_block": (0.050, 0.04, ["toy", "block"], "solid", None),
+    "toy_block": (0.040, 0.03, ["toy", "block"], "solid", None),     # 4 cm like the wooden blocks
     "rubber_duck": (0.090, 0.05, ["toy", "duck"], "solid", None),
     "toy_box": (0.500, 3.00, ["container", "toy_box", "storage"], "rect_container", None),
     "storage_basket": (0.380, 0.60, ["container", "basket", "storage"], "rect_container", None),
@@ -63,7 +63,8 @@ SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the 
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 # lay-flat assets whose generated mesh is too thick: resting height (m); the
 # footprint keeps the uniform scale from SPECS
-THICKNESS = {"book_red": 0.040}
+# thinner books (2026-11-09): a thickness pinch on a 2-3 cm book leaves the pads room; the 4-6 cm ones did not
+THICKNESS = {"book_red": 0.025, "book_green": 0.028, "book_blue": 0.028}
 
 # the open hand's palm over a top pinch: the right gripper's palm and camera collision spheres
 # (the cuRobo model the planner checks the grasp pose with) must stay this far above the object

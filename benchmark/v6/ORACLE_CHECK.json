@@ -1820,30 +1820,6 @@
   },
   {
    "task": "T12_tidy_toys",
-   "layout": "toys_everywhere",
-   "steps": 14,
-   "atoms_checked": 15,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright toy_bin_small"
-   ],
-   "problems": [],
-   "variant": "toys_everywhere"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "toys_everywhere__alt_dining_table_2",
-   "steps": 14,
-   "atoms_checked": 15,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright toy_bin_small"
-   ],
-   "problems": [],
-   "variant": "toys_everywhere"
-  },
-  {
-   "task": "T12_tidy_toys",
    "layout": "bins_capacity__side_left_full",
    "steps": 14,
    "atoms_checked": 15,
@@ -1890,6 +1866,30 @@
    "geometric_atoms": [
     "upright toy_bin_small",
     "upright toy_bin_small_2"
+   ],
+   "problems": [],
+   "variant": "bins_capacity"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "layout": "bins_capacity__half_bin_and_tray",
+   "steps": 14,
+   "atoms_checked": 15,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright toy_bin_small"
+   ],
+   "problems": [],
+   "variant": "bins_capacity"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "layout": "bins_capacity__half_bin_and_tray_duck_dining",
+   "steps": 14,
+   "atoms_checked": 15,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright toy_bin_small"
    ],
    "problems": [],
    "variant": "bins_capacity"
@@ -3084,6 +3084,26 @@
   },
   {
    "task": "T27_leftovers_to_fridge",
+   "layout": "fruit_stays_out",
+   "steps": 8,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "which_is_leftover"
+  },
+  {
+   "task": "T27_leftovers_to_fridge",
+   "layout": "still_eating",
+   "steps": 8,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "which_is_leftover"
+  },
+  {
+   "task": "T27_leftovers_to_fridge",
    "layout": "two_leftovers__soup_on_table",
    "steps": 12,
    "atoms_checked": 4,
@@ -3108,16 +3128,6 @@
   },
   {
    "task": "T27_leftovers_to_fridge",
-   "layout": "still_eating",
-   "steps": 8,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "still_eating"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
    "layout": "fridge_out_of_view",
    "steps": 9,
    "atoms_checked": 3,
@@ -3125,16 +3135,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "fridge_out_of_view"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "fruit_stays_out",
-   "steps": 8,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "fruit_stays_out"
   },
   {
    "task": "T28_cup_to_bedside",
@@ -3252,6 +3252,16 @@
   },
   {
    "task": "T29_clear_table_for_dinner",
+   "layout": "nothing_to_clear",
+   "steps": 2,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "belongs_on_table"
+  },
+  {
+   "task": "T29_clear_table_for_dinner",
    "layout": "homework_on_table",
    "steps": 9,
    "atoms_checked": 3,
@@ -3269,16 +3279,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "several"
-  },
-  {
-   "task": "T29_clear_table_for_dinner",
-   "layout": "nothing_to_clear",
-   "steps": 2,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "nothing_to_clear"
   },
   {
    "task": "T29_clear_table_for_dinner",
@@ -3342,16 +3342,6 @@
   },
   {
    "task": "T30_bowls_for_soup",
-   "layout": "clean_one",
-   "steps": 5,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "clean_one"
-  },
-  {
-   "task": "T30_bowls_for_soup",
    "layout": "bowl_put_away",
    "steps": 11,
    "atoms_checked": 3,
@@ -3373,6 +3363,16 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowl_not_plate",
+   "steps": 5,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "bowl_not_plate"
+  },
+  {
+   "task": "T30_bowls_for_soup",
+   "layout": "clean_one",
    "steps": 5,
    "atoms_checked": 3,
    "atoms_geometric": 0,
