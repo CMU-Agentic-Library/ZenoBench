@@ -140,18 +140,22 @@ def star(img, marks):
     d = ImageDraw.Draw(img)
     font = ImageFont.truetype(FONT, 24)
     marks = [m for m in marks if m[0] is not None and 0 <= m[0][0] < img.width and 0 <= m[0][1] < img.height]
-    for (u, v), _ in marks:
-        pts = [(u + (18 if k % 2 == 0 else 8) * math.sin(k * math.pi / 5),
-                v - (18 if k % 2 == 0 else 8) * math.cos(k * math.pi / 5)) for k in range(10)]
+    for (u, v), _ in marks:                      # a ring round the thing (a small one stays visible) and a star
+        for r_, w_, c_ in ((17, 6, (40, 25, 0)), (17, 3, (255, 205, 40))):    # above it on a short stem
+            d.ellipse([u - r_, v - r_, u + r_, v + r_], outline=c_, width=w_)
+        d.line([(u, v - 17), (u, v - 30)], fill=(255, 205, 40), width=3)
+        sv = v - 40
+        pts = [(u + (11 if k % 2 == 0 else 5) * math.sin(k * math.pi / 5),
+                sv - (11 if k % 2 == 0 else 5) * math.cos(k * math.pi / 5)) for k in range(10)]
         d.polygon(pts, fill=(255, 205, 40), outline=(90, 60, 0))
     boxes = []                                   # labels already drawn: a new one moves down until it is free
     for (u, v), label in marks:
         w = d.textlength(label, font=font)
-        x = u + 20 if u + 20 + w < img.width - 8 else u - 20 - w      # left of the star near the right edge
-        y = v - 30
+        x = u + 22 if u + 22 + w < img.width - 8 else u - 22 - w      # left of the star near the right edge
+        y = v - 56
         while any(x < b[2] and b[0] < x + w and y < b[3] and b[1] < y + 30 for b in boxes):
             y += 32
-        if y > v - 10:                           # moved off its star: a thin leader line back to it
+        if y > v - 40:                           # moved off its star: a thin leader line back to it
             d.line([(u, v), (x if x > u else x + w, y + 15)], fill=(255, 225, 80), width=2)
         boxes.append((x, y, x + w, y + 30))
         d.text((x, y), label, font=font, fill=(255, 225, 80), stroke_width=3, stroke_fill=(0, 0, 0))
@@ -351,7 +355,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     kind = []                                   # per view: take / place / point (what the variant is about)
     # 1) what the robot takes (or stacks on): a close-up; in closed furniture, the furniture with the item starred
     for n, r in role.items():
-        if r not in ("take", "base", "use") or n not in objs or n in shown:
+        if r not in ("take", "base", "use", "alt") or n not in objs or n in shown:   # alt: any one of them will do
             continue
         sp = sup_of(n)
         if sp.endswith("/inside_shelf"):
@@ -361,7 +365,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在里面）")], img,
                           f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
         else:
-            img = shot(around(pos(n), 0.75, 0.55), pos(n))
+            img = shot(around(pos(n), 0.6, 0.6), pos(n))    # steep enough to see over an edge lip
             views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置）"))
         shown.add(n)
     kind += ["take"] * (len(views) - len(kind))
@@ -454,16 +458,55 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     # view, a look-alike, the thing that must stay, the furniture to open); at most three
     in_goal = {x for at in atoms(goal) for a in at[1:] for x in (a if isinstance(a, list) else [a])
                if isinstance(x, str)}
+    # what the site shows per layout: the start layout (overview), every thing to find or take, every destination
+    # the goal names (green: every accepted place, star: the route's), and up to two notes (furniture to open, a
+    # surface to leave alone, a person's view)
     takes = [i for i, x in enumerate(kind) if x == "take"]
-    searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
-    found = [i for i in takes if views[i][0] in searched]      # what the robot had to find (the duck): shown too
-    pick = (found + [i for i in takes if i not in found])[:3]          # up to three things to take (all of a sort)
     places = [i for i, x in enumerate(kind) if x == "place"]
-    places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
-    goal_places = [i for i in places if views[i][0].replace("_", "/") in {g.replace("_", "/") for g in in_goal}]
-    pick += sorted(places[:max(2, min(3, len(goal_places)))])  # the goal's destinations first (tray, toy box)
-    pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:max(0, 4 - len(pick))]
-    views = [views[i] for i in sorted(pick)]
+    gset = {g.replace("_", "/") for g in in_goal}
+    goal_places = [i for i in places if views[i][0].replace("_", "/") in gset] or places[:1]
+    notes = [i for i, x in enumerate(kind) if x in ("view", "point")][:2]
+    tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places] + [("note_", i) for i in notes]
+    tagged.sort(key=lambda p: p[1])
+    head = {"find_": "要找的 · ", "goal_": "目标结果 · ", "note_": "注意 · "}
+    views = [(pre + views[i][0], views[i][1], views[i][2], head[pre] + views[i][3]) for pre, i in tagged]
+    # the start layout: the whole area the variant uses, from high above, everything in it starred
+    pts, marks0 = [], []
+    bx, by, _ = rig.base_pose()
+    pts.append([bx, by, 0.5])
+    for n, r in role.items():
+        if r in LABEL and n in objs:
+            pts.append(pos(n))
+        elif r == "place" and n not in objs:
+            try:
+                b = rig.ann.support(n)
+                pts.append([(b["aabb_xy"][0] + b["aabb_xy"][2]) / 2, (b["aabb_xy"][1] + b["aabb_xy"][3]) / 2, b["z"]])
+            except Exception:
+                pass
+    lo = [min(p[k] for p in pts) for k in range(3)]
+    hi = [max(p[k] for p in pts) for k in range(3)]
+    c0 = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, 0.6]
+    K = cam.data.intrinsic_matrices[0].cpu().numpy()
+    hf = math.atan(K[0, 2] / K[0, 0])            # half fields of view
+    vf = math.atan(K[1, 2] / K[1, 1])
+    ext = max((hi[0] - lo[0] + 1.2) / 2 / math.tan(hf), (hi[1] - lo[1] + 1.2) / 2 / math.tan(vf), 2.5)
+    eye0 = [c0[0], c0[1] - 0.25 * ext, c0[2] + ext]
+    img0 = shot(eye0, c0)
+    marks0.append((project([bx, by, 0.3]), "机器人起点"))
+    for n, r in role.items():
+        if r in LABEL and n in objs and r != "ref":
+            marks0.append((project(pos(n)), f"{LABEL[r]}：{n}"))
+        elif r == "place" and n not in objs:
+            try:
+                b = rig.ann.support(n)
+                marks0.append((project([(b["aabb_xy"][0] + b["aabb_xy"][2]) / 2,
+                                        (b["aabb_xy"][1] + b["aabb_xy"][3]) / 2, b["z"]]), f"放到：{n}"))
+            except Exception:
+                pass
+        elif r == "place" and n in objs:
+            marks0.append((project(pos(n)), f"放进：{n}"))
+    views.insert(0, ("overview", [m for m in marks0 if m[0] is not None], img0,
+                     "初始布局（俯视，★ 标出机器人起点、要找的东西和放置处）"))
     out_dir.mkdir(parents=True, exist_ok=True)
     tag_l = lid.split('__', 1)[1] if '__' in lid else lid           # a merged v5 variant keeps its own name
     lay = f" · 摆法 {tag_l}" if lid != vid else ""
