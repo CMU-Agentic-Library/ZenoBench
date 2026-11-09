@@ -3,12 +3,20 @@ its data from the catalog (skill_library/catalog.json, "motion_skills": generate
 tools/build_skill_library.py from its MOTION_SKILLS), its Python part a ``job`` function -- and every
 skill runs through the one ``run_skill``:
 
-    1. job = skill.job(rig, args, state)                       what this call asks for
-    2. job.problem: park_search.find_park (no park found: job.no_park)
-       no problem: the skill runs where it stands (navigate: its goal is given)
-    3. not at the park: navigate there (itself run_skill), job.travel its arguments
+    1. job = skill.job(rig, args, state, skill)                what this call asks for; the job
+                                                               builds with skill.build (the catalog's template)
+    2. job.problem: park_search.find_park, the arm postures from the catalog -- travel the one the
+       base drives in, arrive the one it arrives in (at the current pose: the arm as it stands)
+       (no park found: job.no_park); no problem: the skill runs where it stands (navigate)
+    3. not at the park: navigate there (itself run_skill), job.travel its arguments; at it but not
+       exactly (AT_PARK_M / AT_PARK_DEG, no drive): the plan made again where the base stands
     4. plan, build, hooks = job.ready(found); run.run(rig, plan, build, hooks)
     5. job.done() -> the skill's result
+
+What the catalog says is what runs: ``template`` is the builder the job gets (skill.build),
+``park`` whether there is a park search, ``arrive`` / ``travel`` its postures (``posture``).
+``shape`` is the row of docs 2.3's table (coverage counts read it); a skill without a park
+search (navigate) states the postures its own plan takes (travel_chain) and nothing reads them.
 
 Job is the form of 9.3 step 1: the skill's own steps between the layers -- a re-measure after the
 drive, the logs, the result judged -- sit in its callbacks.  The re-measure leaves with 9.3 step
@@ -19,10 +27,12 @@ from __future__ import annotations
 
 import importlib
 import json
-from dataclasses import dataclass, field
+import math
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
 
+from .motion_state import Failure
 from .park_search import find_park
 from .run import observe, run
 
@@ -65,6 +75,26 @@ class Skill:
     job: Callable
     skill_id: str = ""
 
+    @property
+    def build(self):
+        """The plan builder the catalog names (skill_plans.<template>): the one the job builds with."""
+        from . import skill_plans
+        return getattr(skill_plans, self.template)
+
+
+def posture(rig, name):
+    """The right arm's joints for a catalog posture: "fold" the travel fold (kin.rest), "carry" the
+    carry posture the arm holds the load in now, "fold_or_carry" the one of the two the hand calls for."""
+    if name == "fold" or (name == "fold_or_carry" and rig.held is None):
+        return rig.kin.rest.copy()
+    if rig.held is None:
+        raise ValueError(f"posture {name!r} with nothing in the hand")
+    return rig.q_cmd.copy()
+
+
+def _same_pose(a, b):
+    return math.hypot(a[0] - b[0], a[1] - b[1]) < 1e-4 and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < 1e-2
+
 
 def run_skill(rig, skill, args):
     """Run ``skill`` (Skill) with ``args`` on ``rig`` (see the module docstring)."""
@@ -72,29 +102,51 @@ def run_skill(rig, skill, args):
     from .skill_jobs.base import RigBase
     from .skills import _at_park
     state = observe(rig)
-    job = skill.job(rig, args, state)
+    job = skill.job(rig, args, state, skill)
     if skill.park != (job.problem is not None):
         raise SkillFailure(f"{skill.name}: the catalog says park={skill.park}, the job "
                            f"{'has' if job.problem is not None else 'has no'} park problem")
     found = None
     if job.problem is not None:
-        # read again: the job may have moved the arm first (place settles its carry posture)
-        found, diag = find_park(rig.kin, rig.world, job.problem, observe(rig), rig.log, base=RigBase(rig))
+        # the postures are the catalog's, taken now: the job may have moved the arm first (place
+        # settles its carry posture).  At the current pose the arm stays as it stands (no drive)
+        travel, goes = posture(rig, skill.travel), posture(rig, skill.arrive)
+        problem = replace(job.problem, travel=travel,
+                          arrive=lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else goes)
+        found, diag = find_park(rig.kin, rig.world, problem, observe(rig), rig.log, base=RigBase(rig))
         if found is None:
             raise job.no_park(diag) if job.no_park is not None else SkillFailure(f"{skill.name}: no park")
         if job.found is not None:
-            job.found(found)
+            job.found(found)              # before the drive: its logs and captions
         if not _at_park(rig, found.x, found.y, found.yaw):
             run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
+        elif not _same_pose(rig.base_pose(), found.pose):
+            # close enough not to drive, but the plan is the one for found.pose: the same build where
+            # the base stands (the joint waypoints of another base put the hand up to ~3 cm off)
+            here = tuple(rig.base_pose())
+            plan = problem.build(observe(rig), found.k, found.q_rank)
+            rig.log("park_here", target=problem.label, park=[round(v, 3) for v in found.pose],
+                    here=[round(v, 3) for v in here], built=not isinstance(plan, Failure))
+            if isinstance(plan, Failure):
+                run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
+            else:
+                found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan)
+    from .run import run_clear
+    from .skill_plans import plan_clear
+    clear = lambda st, what: plan_clear(rig.kin, st, **what)      # the failure exit (docs 8.6)
     plan, build, hooks = job.ready(found)
     try:
-        run(rig, plan, build, hooks)
+        run(rig, plan, build, hooks, clear=clear)
     except Exception as exc:
         other = job.failed(exc) if job.failed is not None else None
         if other is not None:
             raise other from exc
         raise
-    return job.done() if job.done is not None else None
+    try:
+        return job.done() if job.done is not None else None
+    except Exception as exc:
+        run_clear(rig, clear, exc)               # the result judged wrong: the exit it asks for
+        raise
 
 
 def load(path=CATALOG):
@@ -133,8 +185,8 @@ def load(path=CATALOG):
 
 
 class _Skills(dict):
-    """SKILLS[name]: the catalog, loaded on first use (the jobs live in skills.py, which imports
-    this module)."""
+    """SKILLS[name]: the catalog, loaded on first use (the jobs in skill_jobs/ import skills.py,
+    which calls run_skill: loading at import would be circular)."""
 
     def __missing__(self, name):
         if not self:

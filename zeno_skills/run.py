@@ -10,9 +10,15 @@ from contextlib import ExitStack
 
 import numpy as np
 
-from .motion_state import Failure
-from .primitives import contact_extent, free_path, query
-from .rig import PLAN_AT_START, SkillFailure
+from .motion_state import Failure, SkillFailure
+from .primitives import LEAVE_MARGIN, contact_extent, free_path, query
+
+PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
+                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
+EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this of the planned one is
+                          # that one -- its end still clears with half the margin, and it runs at most
+                          # this much further unchecked.  (One step, 2 mm, was the measure's own
+                          # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
 
 
 def observe(act):
@@ -39,7 +45,7 @@ def holds(kin, state, seg):
                              step=seg.info["step"], q_from=q)
         if isinstance(ext, Failure):
             return f"the contact measured again: {ext.why}"
-        if abs(ext.length - seg.info.get("length", 0.0)) > seg.info["step"]:
+        if abs(ext.length - seg.info.get("length", 0.0)) > EXTENT_TOL:
             return f"the contact measured again is {ext.length:.3f} m, planned {seg.info.get('length', 0.0):.3f} m"
         return None
     if not seg.qs:
@@ -54,19 +60,22 @@ def holds(kin, state, seg):
 
 
 def execute(act, seg):
-    """Run one segment through the Actuator: an action (the gripper); a drive (the base along its
-    paths, the arms switched where the planner put it); the waypoints of an arm under the segment's
-    Allow (a contact Allow with what the hand and its load touch now), at its speed; an anchor is
-    no motion."""
+    """Run one segment through the Actuator, each declared to the contact monitor under its Allow
+    first: an action (the gripper); a drive (the base along its paths, the arms switched where the
+    planner put it); the waypoints of an arm (a contact Allow with what the hand and its load touch
+    now), at its speed.  An anchor moves nothing and declares nothing."""
     if seg.kind == "anchor":
         return
     if seg.kind == "action":
         what = seg.action[0]
         if what == "grip":
             _, width, ticks, gradual = seg.action
-            if seg.spec.allow is not None and (seg.spec.allow.to_contact or not seg.spec.allow.checked):
-                act.declare(seg.name, seg.spec.allow, follows=False)
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
             act.grip(width, ticks if ticks is not None else _hz(), gradual=gradual)
+            return
+        if what == "wait":                      # let the world settle (an object let go), nothing moves
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
+            act.wait(seg.action[1])
             return
         raise ValueError(f"unknown action {what}")
     if seg.kind == "drive":
@@ -94,7 +103,24 @@ def _hz():
     return PHYSICS_HZ
 
 
-def run(act, plan, rebuild, hooks=None):
+def run_clear(act, clear, exc):
+    """A skill's failure exit (docs 8.6), when ``exc`` asks for one (motion_state.clearing): the
+    plan ``clear(state, exc.clear)`` makes from the State now (skill_plans.plan_clear: the hand
+    opened, out of the contact), run as it is -- built just now, nothing to build again.  A failure
+    of the exit itself propagates (the skill's failure is its __context__), as the hooks' own
+    leave did before the exit was a plan."""
+    spec = getattr(exc, "clear", None)
+    if clear is None or spec is None:
+        return
+    why = exc
+    plan = clear(observe(act), spec)
+    if plan is None or not plan.segments:
+        return
+    act.log("fail_clear", why=str(why)[:200], segments=[s.name for s in plan.segments], exit=plan.info.get("exit"))
+    _run(act, plan, None, {})
+
+
+def run(act, plan, rebuild, hooks=None, clear=None):
     """Run ``plan`` (motion_state.Plan): before each segment the State is read (observe) and the
     segment checked (holds); one that does not hold has the rest of the plan built again from here
     by ``rebuild(state, segment name) -> Plan | Failure`` -- the skill's builder, the one the park
@@ -102,9 +128,18 @@ def run(act, plan, rebuild, hooks=None):
     ``act``: the motion_state.Actuator (the rig).  ``rebuild`` None: a segment that does not hold
     fails the skill (a plan nobody can build again, docs 8.8).
     ``hooks``: {segment name: {"around": context factory, "before": fn(act), "after": fn(act)}},
-    the skill's own steps between segments (the grasp judged, the load registered as held).
-    Returns the segments run."""
-    hooks = hooks or {}
+    the skill's own steps between segments (the grasp judged, the load registered as held) -- they
+    judge, register and log; they do not move the robot.  ``clear``: the skill's failure exit
+    ((state, what) -> Plan | None, run_clear), run when a hook fails asking for it
+    (motion_state.clearing), before the failure is raised.  Returns the segments run."""
+    try:
+        return _run(act, plan, rebuild, hooks or {})
+    except Exception as exc:
+        run_clear(act, clear, exc)
+        raise
+
+
+def _run(act, plan, rebuild, hooks):
     segs, done, i = list(plan.segments), [], 0
     while i < len(segs):
         seg = segs[i]

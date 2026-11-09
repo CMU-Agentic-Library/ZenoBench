@@ -19,6 +19,23 @@ from .clearance import FREE, Allow
 SIDES = ("right", "left")
 
 
+class SkillFailure(RuntimeError):
+    """A skill could not be done: a plan that cannot be made, or a simulated result that is wrong
+    (docs/MOTION_ARCHITECTURE.md 8.6).  Here, below every layer that raises it (rig re-exports it)."""
+
+
+class Dropped(SkillFailure):
+    """The held object left the hand while carrying it (worth a re-pick)."""
+
+
+def clearing(exc, open_width=None, leave=True, ticks=60):
+    """``exc`` asking for the skill's failure exit before it is raised (run.run_clear, docs 8.6):
+    open the empty hand to ``open_width`` (None: as it is) over ``ticks``, then (``leave``) back out
+    of any contact straight up.  A hook judges and marks; the exit is a plan run.run makes."""
+    exc.clear = {"open_width": open_width, "leave": leave, "ticks": ticks}
+    return exc
+
+
 @dataclass(frozen=True)
 class Held:
     """An object in a hand: its box frame (Motion._box_of) in the TCP frame (Motion.held_in_tcp).
@@ -153,8 +170,9 @@ class Actuator(Protocol):
     robot or simulator implements this and the kinematics, nothing above.
 
     Writes:
-      follow(qs, steps_per_wp, smooth=False)   arm waypoints (slower with a load in the hand)
+      follow(qs, steps_per_wp, smooth, side)   arm waypoints (slower with a load in the hand); side "left": the left arm
       grip(width, steps, gradual)              the gripper
+      wait(ticks)                              the world settles that many physics ticks, nothing moves
       drive_base(path, allow=...)              the base along waypoints [(x, y, yaw_deg)]
       swing(q_right, q_left, label)            both arms straight in joint space (a travel-posture switch)
       declare(name, allow, side, follows)      the segment to the contact monitor (Clearance.motion)
@@ -164,8 +182,9 @@ class Actuator(Protocol):
       arm_kin(side) -> ArmKin                  that arm's kinematics (its collision queries)
       log(label, **kw)"""
 
-    def follow(self, qs, steps_per_wp=3, smooth=False): ...
+    def follow(self, qs, steps_per_wp=3, smooth=False, side="right"): ...
     def grip(self, width, steps=100, gradual=False): ...
+    def wait(self, ticks): ...
     def drive_base(self, path, **kw): ...
     def swing(self, q_right, q_left, label, **kw): ...
     def declare(self, name, allow, side="right", follows=True): ...

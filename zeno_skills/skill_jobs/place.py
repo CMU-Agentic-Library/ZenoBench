@@ -14,14 +14,15 @@ from ..rig import HINT_REACH
 from ..rig import HINT_TURN
 from ..rig import LEAVE_GAP
 from ..rig import SkillFailure
+from ..primitives import query
 from ..run import observe
-from ..skill_plans import plan_place
+from ..skill_plans import FREE_HAND
 from ..sticky import rest_R
-from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, _travel_q, _turn, check_held, pick_approach)
-from .carry import carry_posture
+from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, _turn, check_held, pick_approach)
+from .carry import _carry_bottom_z, carry_posture
 
 
-def place_job(rig, args, state):
+def place_job(rig, args, state, skill=None):
     """motion_skills.Job of the set-down: the carry posture settled for the support's rim first
     (carry_posture), every spot x hold x wrist turn one goal of the park search (the whole place
     planned there, skill_plans.plan_place); after the drive the set-down pose re-measured, the plan
@@ -29,16 +30,20 @@ def place_job(rig, args, state):
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
     kin = rig.kin
+    plan_place = skill.build if skill is not None else _plan_place()
     asset = rig.ann.asset_of(rig.ann.objects[name])
     # the carry posture of the drive to the park, before the park search checks it there
-    from ..policies.plan_helpers import _carry_bottom_z
     clear_z = _carry_bottom_z(rig, tray or s["name"])
     carry_bottom_z = max(s["z"] + 0.03, clear_z or 0.0)
     carry_posture(rig, min_bottom_z=carry_bottom_z)
     rig.sync_world()
     # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
     # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
-    # the TCP rotation, how far the origin stands above the object's lowest point
+    # the TCP rotation, how far the origin stands above the object's lowest point.  The TCP is the
+    # commanded one (q_cmd), here and in ready's re-measure: the arm sags under the load (q - q_cmd,
+    # up to 0.013 rad in the 11-08 run), and a hold taken from the commanded TCP is what a
+    # commanded set-down pose reproduces -- the measured TCP on one side only read that sag as a
+    # shifted hold (32 of 148 places planned again from scratch, 11-08)
     st = rig.state()
     p_obj, q_obj = rig.obj_pose(name)
     p_obj = np.asarray(p_obj, float)
@@ -50,7 +55,7 @@ def place_job(rig, args, state):
         R_lvl = rest_R(q_obj) @ R_obj.T
         relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
                              -float(asset["origin_to_bottom_center"][2])))
-    search_near, travel_q = rig.base_pose(), _travel_q(rig)
+    search_near = rig.base_pose()
     if math.hypot(search_near[0] - spots[0][0], search_near[1] - spots[0][1]) > 1.0:
         # far from the target: rank parks by reach to the target, not by
         # distance from here (all tries were spent near a corner 1.4 m away)
@@ -74,9 +79,9 @@ def place_job(rig, args, state):
     def build(st, k, q_rank):
         p_k, R_k = leg_sets[k][0][0], leg_sets[k][0][1]
         return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, q_seed=q_rank,
-                          step=APPROACH_STEP)
+                          step=APPROACH_STEP, obj=name)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
-                      lambda x, y, yaw: rig.q_cmd.copy(), travel_q, near=search_near, label=f"place {name}")
+                      near=search_near, label=f"place {name}")
     ctx = {}
 
     def no_park(diag):
@@ -96,11 +101,12 @@ def place_job(rig, args, state):
 
     def ready(found):
         # arrived with the load above the target surface (Job.travel: the carry posture's
-        # min_bottom_z).  The object may have turned in the pinch on the way (bowls held at the rim,
-        # spoons): re-measure how it hangs and aim it at the spot again
+        # min_bottom_z).  Without a weld the object may have turned in the pinch on the way (bowls
+        # held at the rim, spoons): re-measure how it hangs from the commanded TCP, as the search
+        # took it (see the relations above), and aim it at the spot again
         spot, R, levelled, deg, hang = goals[found.k]
         ctx["spot"] = spot
-        tcp_now, R_now = kin.tcp(rig.q())
+        tcp_now, R_now = kin.tcp(rig.q_cmd)
         body_now, _ = rig.obj_pose(name)
         body_now = np.asarray(body_now, float)
         if levelled is None:
@@ -110,46 +116,56 @@ def place_job(rig, args, state):
         rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
                 pos=np.round(body_now, 4).tolist())
         ctx["kind"] = rig.held["kind"]
-        return _place_ready(rig, name, s, p, R, open_w, found.plan)
+        return _place_ready(rig, name, s, p, R, open_w, found.plan, plan_place)
 
     def done():
         return _place_result(rig, name, s, ctx["spot"], ctx["kind"], tray)
-    return Job(problem=problem, no_park=no_park, found=found_park, travel={"min_bottom_z": carry_bottom_z},
+    # the drive keeps the posture carry_posture settled above: it does not try the higher ride again
+    return Job(problem=problem, no_park=no_park, found=found_park,
+               travel={"min_bottom_z": carry_bottom_z, "raise_load": False},
                ready=ready, done=done)
 
 
-def _place_ready(rig, name, s, p, R, open_w, plan):
+def _plan_place():
+    from ..skill_plans import plan_place
+    return plan_place
+
+
+def _place_ready(rig, name, s, p, R, open_w, plan, plan_place=None):
     """The place's plan to run (run.run) to set ``name`` down at (p, R), the pose re-measured after
     the drive, its builder for the rest, its hooks: a plan made for a set-down pose off it by more
     than HINT_REACH / HINT_TURN (the load turned in the pinch on the way) is made again from here
     first.  Between the segments the place's own steps: the reach checked, the release logged and
     the load no longer held."""
     kin = rig.kin
+    plan_place = plan_place or _plan_place()
     u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
     planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
     if planned is None or np.linalg.norm(planned.target[1] - p) > HINT_REACH or \
             _turn(planned.target[2], R) > HINT_TURN:
         rig.log("place_plan_again", obj=name, why="no plan" if planned is None else
                 f"the set-down pose moved {np.linalg.norm(planned.target[1] - p):.4f} m")
-        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, step=APPROACH_STEP)
+        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, step=APPROACH_STEP, obj=name)
         if isinstance(plan, Failure):
             raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
 
     def rebuild(state, frm):
-        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, step=APPROACH_STEP)
+        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, step=APPROACH_STEP, obj=name)
 
     def before_pull_out(rig):
-        # let go, it may have settled against a finger: allowed on the pull-out, recorded
-        with rig._planning(kin, rig.q_cmd), rig._fingers_checked(kin):
-            if kin.scene is not None and not kin.free(rig.q_cmd):
-                rig.log("place_pull_out_touching", obj=name, why=kin.explain(rig.q_cmd))
+        # let go, it may have settled against a finger: allowed on the pull-out, recorded -- a query
+        # of the State now with the fingers in the model (primitives.query), nothing changed
+        st = observe(rig)
+        with query(kin, st, FREE_HAND):
+            if kin.scene is not None and not kin.free(st.q(kin.side)):
+                rig.log("place_pull_out_touching", obj=name, why=kin.explain(st.q(kin.side)))
 
     def after_down(rig):
         err = float(np.linalg.norm(kin.tcp(rig.q())[0] - p))
         if err > PICK_REACH_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
-        check_held(rig, "place_down")
+        check_held(rig, "place_down", open_hand=False)
         rig.caption = f"PLACE {name}: release"
         before_release, _ = rig.obj_pose(name)
         rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
@@ -169,8 +185,8 @@ def _place_ready(rig, name, s, p, R, open_w, plan):
 
 
 def _place_result(rig, name, s, spot, kind, tray):
-    """Did the set-down leave ``name`` on ``s`` near ``spot`` (or inside the tray)?  SkillFailure when not."""
-    rig.step(90)
+    """Did the set-down leave ``name`` on ``s`` near ``spot`` (or inside the tray)?  SkillFailure when not.
+    (The 90 ticks it settles first are the plan's last segment, place_settle.)"""
     rig.focus_z = None
     st = rig.state()
     if tray is not None:

@@ -207,12 +207,14 @@ def nested_skills(rec, by_verb):
 
 
 # The motion layers' skill catalog (docs/MOTION_ARCHITECTURE.md 2.3, layer 5): per verb that runs on
-# motion_skills.run_skill, its build-template shape, its skill_plans builder, whether it chooses a park,
-# the arm posture at the park / on the way, and its Python job (module:function).  Emitted into
+# motion_skills.run_skill, its shape (the row of 2.3's table), its skill_plans builder (the job builds
+# with it: Skill.build), whether it chooses a park, the arm posture at the park / on the way (run_skill
+# gives them to the park search; a skill without a park states what its own plan does), and its Python
+# job (module:function).  Emitted into
 # skill_library/catalog.json as "motion_skills" (with the SkillNode of the same verb); loaded and checked
 # by zeno_skills.motion_skills.load.
 MOTION_SKILLS = [
-    {"name": "navigate", "shape": "drive", "template": "plan_navigate", "park": False, "arrive": "fold", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.navigate:navigate_job"},
+    {"name": "navigate", "shape": "drive", "template": "plan_navigate", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.navigate:navigate_job"},
     {"name": "pick", "shape": "pick_place", "template": "plan_pick", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.pick:pick_job"},
     {"name": "place", "shape": "pick_place", "template": "plan_place", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.place:place_job"},
 ]

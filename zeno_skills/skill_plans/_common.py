@@ -12,8 +12,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..motion_state import Failure, Segment, Spec
-from ..primitives import (ON_LINE, Pose, contact_extent, contact_segment, free_leg, in_world, near_world,
+from ..clearance import FREE, LEAVE_CONTACT
+from ..motion_state import Failure, Plan, Segment, Spec, with_width
+from ..primitives import (ON_LINE, ON_LINE_TURN, Pose, contact_extent, contact_segment, free_leg, in_world, near_world,
                           off_support, query)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
@@ -27,11 +28,15 @@ def T_of(R, p):
     return T
 
 
-def _on_line(kin, q, s, u, L):
-    """The TCP at q already on the straight s -> s + L u (before its end)."""
-    d = kin.tcp(np.asarray(q, float))[0] - s
+def _on_line(kin, q, s, R, u, L):
+    """The TCP at q already on the straight s -> s + L u (before its end), turned as R within
+    ON_LINE_TURN: then the straight from there is the same straight, a translation along u."""
+    p_q, R_q = kin.tcp(np.asarray(q, float))
+    d = p_q - s
     along = float(d @ u)
-    return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE
+    turn = float(np.arccos(np.clip((np.trace(np.asarray(R, float).T @ R_q) - 1.0) / 2.0, -1.0, 1.0)))
+    return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE and \
+        turn < ON_LINE_TURN
 
 
 def _reach(kin, state, spec, p, R, u, L, q_from, seed, name, step):
@@ -42,7 +47,7 @@ def _reach(kin, state, spec, p, R, u, L, q_from, seed, name, step):
     as it is: those are kinematic, and a solution in collision made the leg fail where another
     would do).  No collision-free solution: Failure."""
     s = p - L * u
-    if _on_line(kin, q_from, s, u, L):
+    if _on_line(kin, q_from, s, R, u, L):
         return Segment(name, spec, q_from, (), info={"how": "on the straight"})
     with query(kin, state, spec):
         q_s, ok = kin.ik_global(s, R, seeds=([np.asarray(seed, float)] if seed is not None else []) + [q_from])
@@ -67,3 +72,28 @@ def held_frame(kin, q, held):
     """World pose of a held object's box frame with the hand at q."""
     p, R = kin.tcp(np.asarray(q, float))
     return T_of(R, p) @ np.asarray(held.T_tcp_obj, float)
+
+
+def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, name="fail_clear"):
+    """A skill's failure exit (docs/MOTION_ARCHITECTURE.md 8.6, build_clear): with nothing in the
+    hand, open it to ``open_width`` (None, or that open already: no open) and (``leave``) back out of
+    any contact straight up (contact_extent, near_world: no segment when nothing is touched).  With
+    a load in the hand: None -- opening would drop it.  Still touching LEAVE_MAX up: the open alone
+    (the exit is the contact model's call, not a shorter try).  Plan or None."""
+    if state.held(kin.side) is not None:
+        return None
+    q = state.q(kin.side)
+    segs, s, why = [], state, None
+    hand = state.hands.get(kin.side)
+    if open_width is not None and (hand is None or hand.width < open_width - 1e-3):
+        segs.append(Segment(f"{name}_open", Spec(allow=FREE), q, kind="action",
+                            action=("grip", float(open_width), int(ticks), False)))
+        s = with_width(s, kin.side, open_width)
+    if leave:
+        seg = _contact(kin, s, Spec(allow=LEAVE_CONTACT), [0.0, 0.0, 1.0], "near_world", name, step, q,
+                       steps_per_wp=3, smooth=True)
+        if isinstance(seg, Failure):
+            why = seg.why
+        elif seg.qs:
+            segs.append(seg)
+    return Plan(tuple(segs), info={"exit": why}) if segs else None

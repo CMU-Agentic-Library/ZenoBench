@@ -5,32 +5,30 @@ from __future__ import annotations
 import math
 import numpy as np
 
-from ..clearance import LEAVE_CONTACT
-from ..motion_state import Failure
-from ..motion_state import with_width
+from ..motion_state import Failure, clearing
 from ..park_search import Problem
 from ..rig import Dropped
 from ..rig import HINT_REACH
 from ..rig import HINT_TURN
 from ..rig import SkillFailure
 from ..run import observe
-from ..skill_plans import plan_pick
 from ..sticky import SHUT
 from ..sticky import note_grasp
-from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REACH_TOL, PINCH_KINDS, _at_park, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _travel_q, _turn, _watching, check_held, edge_held)
+from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REACH_TOL, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _turn, _watching, check_held, edge_held)
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
 
-def _pick_problem(rig, name, cands, near, prefer=(), state=None):
+def _pick_problem(rig, name, cands, near, prefer=(), build_with=None):
     """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
     the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
     relay pose the ranking solves), and a park counts when the whole pick plans from it
-    (skill_plans.plan_pick, from the posture the arm arrives in, the hand opened to the
-    candidate's width).  ``near`` / ``prefer`` as Problem's (the fridge shelf's open side, the pose a
-    microwave was loaded from).  (Problem, the carry goal set)."""
+    (``build_with``: the catalog's builder, skill_plans.plan_pick, from the posture the arm arrives
+    in -- run_skill sets it from the catalog -- the hand opened to the candidate's width).  ``near`` /
+    ``prefer`` as Problem's (in front of a door's free edge: _front_of).  (Problem, the carry goal set)."""
     kin = rig.kin
+    build_with = build_with or _plan_pick()
     carry_goals = _carry_goal_set(rig, name)
     goals = []
     for i, g in enumerate(cands):
@@ -41,22 +39,72 @@ def _pick_problem(rig, name, cands, near, prefer=(), state=None):
 
     def build(s, k, q_rank):
         g = cands[k]
-        return plan_pick(kin, with_width(s, kin.side, g["pre_open"]), _grasp_of(name, g), *_grasp_approach(g),
-                         carry_goals, q_seed=q_rank, step=APPROACH_STEP)
+        return build_with(kin, s, _grasp_of(name, g), *_grasp_approach(g), carry_goals, q_seed=q_rank,
+                          step=APPROACH_STEP)
 
-    travel = _travel_q(rig)
-    arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
-    problem = Problem(tuple(goals), build, arrive, travel, near=near, prefer=tuple(prefer), label=f"pick {name}")
+    problem = Problem(tuple(goals), build, near=near, prefer=tuple(prefer), label=f"pick {name}")
     return problem, carry_goals
 
 
-def _pick_ready(rig, name, g, plan, carry_goals, out):
+FRONT_SEED_M = 0.65            # m in front of a door's free edge the first park of a pick behind it stands
+                               # (the hand-placed fridge seed of 11-0x stood 0.67 m out, 6 cm past the edge)
+
+
+def _outward(a):
+    """The unit horizontal direction out of articulated ``a``'s opening: its handle's outward normal."""
+    out = np.asarray(a["handle"]["outward"], float)[:2]
+    return out / np.linalg.norm(out)
+
+
+def _behind_door(rig, obj, pos):
+    """The articulated (with a door handle) ``obj`` stands behind: in its cavity, or on one of its
+    inside supports ("<name>/inside_...": a shelf, a drawer's bottom) -- not on its top."""
+    sup = str(obj.get("support", ""))
+    for a in rig.ann.articulated:
+        if not isinstance(a.get("handle"), dict) or "outward" not in a["handle"]:
+            continue
+        cav = a.get("cavity_aabb")
+        if cav is not None and all(cav[i] < pos[i] < cav[i + 3] for i in range(3)):
+            return a
+        if sup.startswith(a["name"] + "/inside"):
+            return a
+    return None
+
+
+def _front_of(rig, a, target):
+    """A base pose FRONT_SEED_M out of ``a``'s opening (_outward) in front of its door's free edge --
+    the end of the closed door away from the hinge, where the open door is not; the handle for a
+    drawer -- facing ``target`` with it off to the right arm's side by park_search.FACE_LEFT, as the
+    candidates' cost prefers (and the hand-placed seeds had it)."""
+    from ..park_search import FACE_LEFT
+    out = _outward(a)
+    if a.get("type") == "revolute":
+        T = rig.ann.part_pose(a, a["closed_q"])
+        boxes = a.get("part_boxes") or [a["part_box"]]
+        ends = [T[:3, :3] @ np.array([x, 0.5 * (lo[1] + hi[1]), 0.0]) + T[:3, 3]
+                for lo, hi in boxes for x in (lo[0], hi[0])]
+        pivot = np.asarray(a["pivot"], float)
+        edge = max(ends, key=lambda e: float(np.hypot(*(e - pivot)[:2])))[:2]
+    else:
+        edge = np.asarray(a["handle"]["center"], float)[:2]
+    xy = edge + FRONT_SEED_M * out
+    face = math.degrees(math.atan2(target[1] - xy[1], target[0] - xy[0]))
+    return float(xy[0]), float(xy[1]), float(face + FACE_LEFT)
+
+
+def _plan_pick():
+    from ..skill_plans import plan_pick
+    return plan_pick
+
+
+def _pick_ready(rig, name, g, plan, carry_goals, out, plan_pick=None):
     """The pick's plan to run from the park, its builder for the rest, its hooks (run.run).  A grasp
     re-read off the one planned for (HINT_REACH / HINT_TURN) has the plan made again from here
     first.  Between the segments the pick's own steps: the object watched on the way in, the reach
     checked, the pinch judged and the load registered as held (``out["tcp0"]``: the TCP where the
     hand closed), the carry checked."""
     kin = rig.kin
+    plan_pick = plan_pick or _plan_pick()
     grasp = _grasp_of(name, g)
     u, L = _grasp_approach(g)
     planned = next((sg for sg in plan.segments if sg.name == "pick_grasp"), None) if plan is not None else None
@@ -81,9 +129,9 @@ def _pick_ready(rig, name, g, plan, carry_goals, out):
         if err > PICK_REACH_TOL:
             # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
             rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
-            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
             rig.focus_z = None
-            raise SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose")
+            # out of the contact straight up: the failure exit run makes (skill_plans.plan_clear)
+            raise clearing(SkillFailure(f"pick {name}: the open hand stopped {err:.3f} m short of the grasp pose"))
 
     def before_close(rig):
         rig.caption = f"PICK {name}: close gripper"
@@ -97,11 +145,10 @@ def _pick_ready(rig, name, g, plan, carry_goals, out):
             # with an open hand clear of the neighbours; nothing is held, so nothing is welded
             rig.log("pick_result", obj=name, kind=g["kind"], fingers=f.round(4).tolist(), held=False,
                     why="not pinched")
-            rig.grip(0.04, 60)
-            rig.leave([0, 0, 1], "pick_fail_clear", LEAVE_CONTACT, step=0.005)
             rig.focus_z = None
-            raise SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
-                               f"opened to {g['pre_open']:.3f})")
+            # the hand opened and out of the contact: the failure exit run makes (plan_clear)
+            raise clearing(SkillFailure(f"pick {name}: not held (fingers {np.round(f[:2], 4).tolist()}, "
+                                        f"opened to {g['pre_open']:.3f})"), 0.04)
         # held from here (and welded, under sticky hands): the hand's pose as it stands
         tcp0, R = kin.tcp(rig.q())
         rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
@@ -127,11 +174,11 @@ def _pick_ready(rig, name, g, plan, carry_goals, out):
     watch = lambda: _watching(rig, name)
     hooks = {"pick_reach": {"around": watch}, "pick_grasp": {"around": watch, "after": after_grasp},
              "pick_close": {"before": before_close, "after": after_close},
-             "carry_in": {"after": lambda rig: check_held(rig, "carry_in")}}
+             "carry_in": {"after": lambda rig: check_held(rig, "carry_in", open_hand=False)}}
     return plan, rebuild, hooks
 
 
-def pick_job(rig, args, state):
+def pick_job(rig, args, state, skill=None):
     """motion_skills.Job of the pinch pick: every grasp candidate one goal of the park search (the
     whole pick planned there, skill_plans.plan_pick); after the drive the candidate re-read, the plan
     run with the pick's hooks; then judged (_pick_judged)."""
@@ -148,48 +195,29 @@ def pick_job(rig, args, state):
     rig.sync_world()
     rig.focus_z = float(pos[2])
     bx, by, _ = rig.base_pose()
-    # A fridge shelf is recessed behind its door. The robot's post-opening
-    # pose biases the generic park search toward the hinge; seed the open
-    # side of this shelf so a reachable rim grasp is considered promptly.
-    fridge_shelf = str(obj.get("support", "")).startswith("breakfast_fridge/")
-    microwave = next((a for a in rig.ann.articulated
-                      if a["name"] == "kitchen_microwave" and "cavity_aabb" in a), None)
-    cavity = microwave["cavity_aabb"] if microwave is not None else None
-    in_microwave = microwave is not None and all(
-        cavity[i] < pos[i] < cavity[i + 3] for i in range(3))
-    retrieval_q = None
-    if in_microwave:
-        if abs(rig.joint("kitchen_microwave") - microwave["open_q"]) > 0.10:
-            raise SkillFailure(f"pick {name}: microwave door is closed")
-        # The only entry is from the front (low Y). Return to the arm/base
-        # pose that physically cleared the open door during loading.
-        retrieval_q = getattr(rig, "microwave_retrieval_q", None)
-        search_near = (4.8, 1.7, 150.0) if retrieval_q is not None else (4.8, 1.7)
-        cands.sort(key=lambda g: (g["p"][1], -g.get("tilt", 0),
-                                  abs(g["p"][0] - (cavity[0] + cavity[3]) / 2)))
-    elif fridge_shelf:
-        search_near = (6.246, 2.337, 135.0)
-        cands.sort(key=lambda g: (abs((g.get("azimuth", 0) + 180) % 360 - 180),
-                                  -g.get("tilt", 0)))
+    # behind a door (a cavity it stands in, a shelf of the articulated): the robot's pose after
+    # opening it biases the search toward the hinge, so a park in front of the door's free edge is
+    # tried first (_front_of, from the annotation: no scene's coordinates written here), and the
+    # grasps most outward (toward the opening) first
+    door = _behind_door(rig, obj, pos)
+    near, prefer = rig.base_pose(), ()
+    if door is not None:
+        if abs(rig.joint(door["name"]) - door["open_q"]) > 0.10:
+            raise SkillFailure(f"pick {name}: {door['name']} door is closed")
+        out = _outward(door)
+        prefer, near = (_front_of(rig, door, pos),), rig.base_pose()[:2]
+        across = np.array([-out[1], out[0]])
+        cands.sort(key=lambda g: (-float(np.asarray(g["p"])[:2] @ out), -g.get("tilt", 0),
+                                  abs(float((np.asarray(g["p"])[:2] - np.asarray(pos)[:2]) @ across))))
     else:
-        search_near = rig.base_pose()
         # off-centre pinch points of a long object let it swing in the hand:
         # prefer the centre, use the others when it is out of reach
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
     # every grasp candidate is one goal of the park search (park_search.find_park), and a park is
-    # one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run.  In the
-    # microwave too since 11-08: its candidates sorted by the cavity's opening (above), the pose it
-    # was loaded from tried first; the old reach-in-only search, the relocation to the retrieval
-    # posture and the written withdrawal points are retired (commented out below, step 6.4)
-    near = rig.base_pose()
-    prefer = ()
-    if in_microwave:
-        near = rig.base_pose()[:2] if len(search_near) == 3 else search_near
-        prefer = (search_near,) if len(search_near) == 3 else ()
-    elif fridge_shelf:
-        near, prefer = rig.base_pose()[:2], (search_near,)
+    # one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
     goal_cands = cands[:max_candidates] + extra
-    problem, carry_goals = _pick_problem(rig, name, goal_cands, near, prefer, state)
+    build_with = skill.build if skill is not None else None
+    problem, carry_goals = _pick_problem(rig, name, goal_cands, near, prefer, build_with)
     ctx = {"out": {}}
 
     def no_park(diag):
@@ -216,7 +244,7 @@ def pick_job(rig, args, state):
                 kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
         note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
         ctx["g"], ctx["pos"] = g, p_now
-        return _pick_ready(rig, name, g, found.plan, carry_goals, ctx["out"])
+        return _pick_ready(rig, name, g, found.plan, carry_goals, ctx["out"], build_with)
 
     def failed(exc):
         if isinstance(exc, Dropped):

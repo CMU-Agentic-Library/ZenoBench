@@ -24,7 +24,7 @@ Kinds, per file under zeno_skills/ (static, by AST; a count is a site to look at
   retry              a ``for`` loop over alternatives that runs a motion and leaves it early
                      (break / continue / return) (F, checklist 4)
   old_entry          a direct call of an old motion entry of the rig (OLD_ENTRIES: move_to, joint_path,
-                     leave, tuck, swing, follow, drive_base ...): what a skill not yet on the motion layers
+                     leave, tuck, swing, follow, drive_base, grip ...): what a skill not yet on the motion layers
                      moves the robot with (docs/MOTION_ARCHITECTURE.md 9.3, "only goes down"; 0 at step 10)
 
 The motion layers (docs/MOTION_ARCHITECTURE.md 2.5):
@@ -71,7 +71,9 @@ EPS = 1e-4
 BROAD = {"Exception", "BaseException", "SkillFailure"}
 # the rig's motion entries a skill not yet on the motion layers calls (old_entry)
 OLD_ENTRIES = ("move_to", "move_to_any", "joint_path", "joint_path_via", "move_left_to", "leave", "tuck", "swing",
-               "follow", "follow_smooth", "left_follow", "follow_both", "drive_base")
+               "follow", "follow_smooth", "left_follow", "follow_both", "drive_base",
+               "grip")   # the gripper too: on the motion layers it is an action segment (a hook that opens the
+                         # hand -- check_held on a drop, a pinch judged empty -- is a side effect still to move)
 # where the robot is moved: the execution of the motion layers (only through the Actuator) and the Actuator's
 # implementation (with the old entries themselves)
 EXECUTION = {"zeno_skills/run.py", "zeno_skills/rig.py"}

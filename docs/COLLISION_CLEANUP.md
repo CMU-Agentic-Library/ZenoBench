@@ -46,7 +46,7 @@ R 类不列。
 
 | 位置 | 内容 | 类 | 处理 |
 |---|---|---|---|
-| policies/plan_helpers.py `_carry_bottom_z` | 搬运高度抬到目的地台面上已有物体之上（最多 12 cm），用来避免持物扫倒东西 | W | 先给底盘规划器加"换搬运高度"再删（计划第 7 节）；删掉时 T13 bowl_on_cabinet 开往餐桌搜到上限 |
+| skill_jobs/carry.py `_carry_bottom_z`（11-08 从 policies/plan_helpers.py 挪来） | 搬运高度抬到目的地台面上已有物体之上（最多 12 cm），用来避免持物扫倒东西 | W | 先给底盘规划器加"换搬运高度"再删（计划第 7 节）；删掉时 T13 bowl_on_cabinet 开往餐桌搜到上限 |
 | skills.py `_carry_floor`（原 `_carry_pose`） | 夹在边上的书搬运时 `min_bottom_z` +6 cm（书下垂） | S | 下垂进持物碰撞模型；随 6.2 书的放置 |
 | skills.py `_carry_pose` | `carry_in` 走 `FREE_ELSE_STRAIGHT`：规划不出来就不查碰撞的直线（11-07 全量 5 次）；一个搬运目标都没有 IK 就留在原处带着开（`carry_pose_kept`，11-07 全量 11 次） | F | 已删：pick 里 11-08（去搬运姿态进了 `skill_plans.plan_pick`）；navigate / place / drop / stow_load 那一处 11-08 随 MOTION_ARCHITECTURE 9.3 第 1 步（`plan_navigate` 第 1 段按判据复核，做不出来就失败；`min_bottom_z` 够不着时原样带着走，不算退路：整机底盘规划照查） |
 

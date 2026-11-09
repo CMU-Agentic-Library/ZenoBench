@@ -65,24 +65,28 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 ## 2. 文件规模和 `skills.py` 内部分块
 
-| 文件 | 行数 | 本分支相对 main |
+行数只给量级（会漂移，精确数用 `wc -l`）：
+
+| 文件 | 行数（11-08） | 本分支相对 main |
 |---|---|---|
-| `skills.py` | 2420（11-08 第 1 步之后 2284；job 在 `skill_jobs/` 约 650 行） | 改动约 1600 行 |
-| `motion.py` | 1476 | +779 |
-| `rig.py` | 1140 | +755 |
-| `policies/*.py` | 约 3500 | 共 19 个文件都改过 |
-| `base_planner.py` | 497 | 新增 |
+| `skills.py` | 约 2300（job 在 `skill_jobs/` 约 750 行） | 改动约 1600 行 |
+| `motion.py` | 约 1700 | +779 以上 |
+| `rig.py` | 约 1300 | +755 以上 |
+| `policies/*.py` | 约 5400 | 共 19 个文件都改过 |
+| `base_planner.py` | 约 500 | 新增 |
 
 `skills.py` 里其实混着 7 块互不相关的内容：
 
-| 行 | 块 | 主要函数 |
+行号区间对应 `a588fd0`，已经漂移，按函数名找：
+
+| 行（a588fd0） | 块 | 主要函数 |
 |---|---|---|
 | 64–480 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`fold_where_possible`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
 | 482–862 | 开关门（铰链 / 抽屉）| `_move_articulated`（137 行）、`_ride`、`_ride_check`、`open_articulated`、`close_articulated`、`_push_close` |
 | 865–1035 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_grasp_targets`、`_pads_clear_of` |
-| 1040–1400 | pick 和 push | `pick`、`_pick_pinch`、`_pick_pinch_core`（169 行）、`contact_obstacles`、`push`、`edge_held` |
+| 1040–1400 | pick 和 push | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`contact_obstacles`、`push`、`edge_held` |
 | 1417–1600 | 微波炉腔体放取 | `insert_microwave_cavity`、`release_…`、`withdraw_…`、`place_microwave` |
-| 1609–2190 | place | `place`（268 行）、`park_over`、`free_spots`、`place_on`、`place_flat`（183 行）|
+| 1609–2190 | place | `place`（分派：托盘 / 台面转 `_set_down` → `run_skill`，job 在 `skill_jobs/place.py`）、`park_over`、`free_spots`、`place_on`、`place_flat`（183 行）|
 | 2191–2420 | 微波炉按钮和电动门 | `approach_microwave_button`、`press_…`、`open_microwave_door`、`_set_microwave_hinge` |
 
 ---
@@ -141,10 +145,14 @@ move_to
 ```
 run_skill
   state = observe(rig)
-  job = skill.job(rig, args, state)                 skill_jobs/<技能>.py；catalog 的 park 说要不要选停车点
-  job.problem → park_search.find_park(kin, world, problem, observe(rig), log, base=RigBase(rig))
-     找不到 → job.no_park(diag)；找到 → job.found(found)（日志）
+  job = skill.job(rig, args, state, skill)          skill_jobs/<技能>.py；skill.build = catalog 的 template；
+                                                    catalog 的 park 说要不要选停车点
+  job.problem + catalog 的 travel / arrive 姿态（motion_skills.posture）
+     → park_search.find_park(kin, world, problem, observe(rig), log, base=RigBase(rig))
+     找不到 → job.no_park(diag)
      不在停车点 → run_skill(SKILLS["navigate"], {pose, **job.travel})
+     2 cm / 2° 以内不开车、又不是正好在那 → 在现在的位置 problem.build 重做（做不出来就开过去）
+     job.found(found)（日志）
   plan, build, hooks = job.ready(found)             开到以后：重新测量、要重做就重做（第 2.3 步删）
   run.run(rig, plan, build, hooks)                  job.failed 可以换掉抛出的异常（pick：Dropped → SkillFailure）
   job.done()                                        结果判断
@@ -154,9 +162,9 @@ run_skill
 
 ```
 skill_jobs/pick.py  pick_job
-  候选抓取（annotation），微波炉 / 冰箱层板的排序和 prefer
-  _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, arrive, travel, near, prefer)
-     build = plan_pick(state_at_park, 候选, _carry_goal_set)：pick_open → pick_reach（free_leg）→ pick_grasp
+  候选抓取（annotation）；门后的（_behind_door：腔体里、inside_ 支撑面上）朝开口排序，prefer = _front_of（门自由边前）
+  _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, near, prefer)
+     build = skill.build（plan_pick）(state_at_park, 候选, _carry_goal_set)：pick_open（State 手张开）→ pick_reach（free_leg）→ pick_grasp
              （straight）→ pick_close（holding）→ pick_lift（contact_extent off_support）→ carry_in
              （free_leg PoseSet，持物碰撞球放大 HELD_POSE_MARGIN）
   ready：按 idx 重算同一个候选，note_grasp；_pick_ready：抓取位姿偏 HINT_REACH 以上就 plan_pick(observe(rig)) 重做，
@@ -164,7 +172,7 @@ skill_jobs/pick.py  pick_job
      hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后到位检查（被挡 → leave + SkillFailure）；
             pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
   done：_pick_judged（拿住了没有）
-  （微波炉里也走这条，11-08 起；旧的逐个候选 + move_relay + 写死退出点已注释掉，6.4）
+  （微波炉腔体里取物不走这条：合约路由到 PickFromCavity，policy_048，旧实现；旧的逐个候选 + move_relay + 写死退出点 11-08 审计删了，ff59b76 里还在）
 ```
 
 ### place（`skills.place`，台面 / 浅容器 / 深容器 / 层板）
@@ -178,11 +186,11 @@ skill_jobs/place.py  place_job
   carry_posture(min_bottom_z)：搬运判据满足就不动，不满足就规划到搬运目标集合，做不出来失败；
                                min_bottom_z 是"能抬就抬"（skill_jobs/carry.py）
   目标集合：空位 × 持法（吊着 / 摆正） × 手腕转角 → Problem
-     build = plan_place(state_at_park, 放下位姿, q_seed)：place_reach（set_down_length → free_leg，持物先关节规划）
-             → place_down（straight）→ place_release（released，手张开）→ place_pull_out（straight，Spec.touch 刚放下的物体）
-             → tuck（free_leg 到收起 / 下垂）
-  travel = {min_bottom_z}：开过去时 navigate 按同一套判据复核
-  ready：重新测量手持位姿；_place_ready：放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig)) 重做，
+     build = skill.build（plan_place）(state_at_park, 放下位姿, q_seed, obj)：place_reach（set_down_length → free_leg，持物先关节规划）
+             → place_down（straight）→ place_release（released，手张开，手指可碰 obj）→ place_pull_out（straight，Spec.touch obj）
+             → tuck（free_leg JointSet{收起, 下垂}）
+  travel = {min_bottom_z, raise_load: False}：开过去时 navigate 按同一套判据复核，不再试抬高
+  ready：按指令 TCP 重新测量手持位姿（和搜索一样）；_place_ready：放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig)) 重做，
          rebuild = plan_place(start=段名)
      hooks：place_down 后到位检查、check_held；place_release 后 rig.held = None；
             place_pull_out 前手指在物体里就记 place_pull_out_touching
@@ -232,7 +240,7 @@ close_articulated：铰链门改为推外表面 → _push_close（contact 段是
 | `insert_microwave_cavity` | 插入那一段 | 6.4 |
 | `approach_microwave_button` / `press_…` / `retract_…` | 按按钮 | 6.5 |
 
-已经迁移的：`_pick_pinch_core`、`place`（台面 / 容器）——这两个已经是新分层（停车点搜索做整份计划、执行照着走，`MOTION_ARCHITECTURE.md`）——、`carry_posture`（原 `_carry_pose`）、`navigate` / `relocate`、`held_vertical_move`、`_move_articulated` 的抓握和离开、`withdraw_microwave_cavity`。
+没有 LEGACY 的（按上面的判据算"已迁移"）：`_pick_pinch_core`、`place`（台面 / 容器）、`carry_posture`（原 `_carry_pose`）、`navigate` / `relocate`——这几个已经在新分层上（停车点搜索做整份计划、执行照着走，`MOTION_ARCHITECTURE.md`）——，以及 `_move_articulated` 的抓握和离开、`withdraw_microwave_cavity`、`held_vertical_move`。后三个**不在新分层上**，还走 `rig.move_to` 这类旧入口；`held_vertical_move` 还显式带 `allow=FREE_ELSE_STRAIGHT`（规划不出来就走不查碰撞的直线），按 `MOTION_ARCHITECTURE.md` 第 1 节第 3 条它仍是待迁的。
 
 ### `policies/` 里自己动手臂的策略
 
@@ -257,7 +265,7 @@ close_articulated：铰链门改为推外表面 → _push_close（contact 段是
 ## 6. 结构上的问题（供讨论，暂不动）
 
 1. **技能逻辑分在两层。** 上表约一半的策略在 `policies/` 里自己写运动，所以"底层 policy 的代码"并不都在 `skills.py`。改一个公共机制（比如 fallback 的规则）时，要连同这些策略一起查。
-2. **策略层在用 `skills.py` 的私有函数**：`_goto_park`（6 个文件）、`_travel_q`、`_pick_pinch`、`_lowest_z`、`_overlaps_objects`、`_half_along`、`_edge_coord`、`_open_edges`、`_yaw`、`_handle_targets`、`_set_microwave_hinge`、`_press_microwave_door_control`。这些函数实际上已经是公共接口，改签名之前要先 grep `policies/`。
+2. **策略层和 `skill_jobs/` 在用 `skills.py` 的私有函数**（`skill_jobs/pick.py`、`place.py` 各 import 十来个，如 `_carry_goal_set`、`_grasp_approach`、`_pinch_candidates`、`_lowest_z`；`skill_jobs/base.py` 用 `_base_steps`、`_reachable`）。策略层用的：`_goto_park`（6 个文件）、`_travel_q`、`_pick_pinch`、`_lowest_z`、`_overlaps_objects`、`_half_along`、`_edge_coord`、`_open_edges`、`_yaw`、`_handle_targets`、`_set_microwave_hinge`、`_press_microwave_door_control`。这些函数实际上已经是公共接口，改签名之前要先 grep `policies/`。
 3. **`skills.py` 混着 7 块**（第 2 节表）。按块拆成文件不会改行为，但会让 `git blame` 和大家记住的位置失效，要不要拆另外决定。
 4. **`planner.py` 和 `base_planner.py` 名字太像**，见第 1 节末尾的说明。
 

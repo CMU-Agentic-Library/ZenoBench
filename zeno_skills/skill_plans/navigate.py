@@ -19,12 +19,13 @@ from typing import Callable
 
 import numpy as np
 
-from ..motion_state import Failure, Plan, Segment, Spec, with_arm
+from ..motion_state import Failure, Plan, Segment, Spec, at_base, with_arm
 from ..primitives import JointSet, Joint, drive, free_leg, query
 from ._common import FREE_HAND, FREE_LOAD, _move
 
 NAV_STAGES = ("arm", "left_fold", "drive", "arrive")
-SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more are one (skills.SAME_POSTURE)
+SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more are one (no swing, no chain
+                             # step: skills._base_steps too); inherited from the posture chain (ea47359), unmeasured
 
 
 @dataclass(frozen=True)
@@ -122,4 +123,6 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
             s = with_arm(s, seg.q_end, seg.info.get("side", "right"))
         elif seg.kind == "drive":
             s = with_arm(s, seg.q_end, "right")
+            if goal is not None:
+                s = at_base(s, goal)
     return Plan(tuple(segs), info={"skipped": skipped, **info})

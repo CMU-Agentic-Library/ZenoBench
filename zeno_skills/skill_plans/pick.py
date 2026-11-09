@@ -8,7 +8,7 @@ from dataclasses import replace
 import numpy as np
 
 from ..clearance import LEAVE_CONTACT, closing
-from ..motion_state import Failure, Held, Plan, Segment, Spec, holding
+from ..motion_state import Failure, Held, Plan, Segment, Spec, holding, with_width
 from ..primitives import free_leg, query, straight
 from ._common import FREE_HAND, FREE_LOAD, T_of, _contact, _move, _reach
 
@@ -22,7 +22,8 @@ HELD_POSE_MARGIN = 0.005
 
 
 def plan_pick(kin, state, grasp, u, L, carry_goals, start="pick_open", q_seed=None, step=0.003):
-    """The pick of grasp = {name, p, R, pre_open, kind} from ``state``: open the hand, the free leg
+    """The pick of grasp = {name, p, R, pre_open, kind} from ``state``: open the hand (the State's
+    hand at pre_open from there on, for the search and every rebuild alike), the free leg
     to the reach-in's start (its solution solved in the collision model, ``q_seed`` -- the park
     search's ranking IK -- first among the seeds: _reach), the reach-in straight
     of length L along u, close, the lift off the support (contact_extent, off_support), the free
@@ -48,6 +49,7 @@ def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_seed, step):
         t0 = time.time()
         if stage == "pick_open":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", float(grasp["pre_open"]), 40, False))
+            s = with_width(s, kin.side, grasp["pre_open"])
         elif stage == "pick_reach":
             seg = _reach(kin, s, FREE_HAND, p, R, u, L, q, q_seed, stage, step)
             seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=4, smooth=True)

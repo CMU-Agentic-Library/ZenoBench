@@ -502,7 +502,7 @@
     "shape": "drive",
     "template": "plan_navigate",
     "park": false,
-    "arrive": "fold",
+    "arrive": "fold_or_carry",
     "travel": "fold_or_carry",
     "job": "zeno_skills.skill_jobs.navigate:navigate_job",
     "skill_id": "skill_001"

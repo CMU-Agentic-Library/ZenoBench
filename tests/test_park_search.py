@@ -99,3 +99,15 @@ def test_the_build_budget_ends_the_search(monkeypatch):
 def test_parks_the_base_cannot_drive_to_are_not_built(monkeypatch):
     found, diag = _find([], _problem(lambda s, k, q: Plan(())), _state(), reach=False)
     assert found is None and diag["built"] == 0 and diag["drive"] > 0
+
+
+
+def test_the_cheapest_yaw_puts_the_goal_on_the_right_arms_side():
+    # yaw = face + off puts the goal at bearing -off: the cost prefers off = +FACE_LEFT (goal on the
+    # right, -y, where the right arm is; 89% of the 11-08 grasps were there)
+    goal = np.array([2.0, 0.0, 0.8])
+    prob = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),), build=None)
+    cost, x, y, yaw, k = PS.candidates(prob)[0]
+    face = np.degrees(np.arctan2(goal[1] - y, goal[0] - x))
+    bearing = (face - yaw + 180) % 360 - 180
+    assert abs(bearing + PS.FACE_LEFT) < 1e-6

@@ -21,6 +21,7 @@ from .base import AtomicPolicy
 from ..kinematics import gripper_rot
 from ..predicates import entity_footprint, entity_point, reach_targets
 from ..rig import SkillFailure
+from ..skill_jobs.carry import _carry_bottom_z      # noqa: F401  (policies chain it: PlanStandoffPolicy)
 
 
 class PlanHomePolicy(AtomicPolicy):
@@ -38,48 +39,6 @@ class PlanStandoffPolicy(AtomicPolicy):
         if not poses:
             raise SkillFailure(f"plan stand-off {place}: no free pose")
         return {"pose": [float(v) for v in poses[0]], "carry_bottom_z": _carry_bottom_z(self.rig, place)}
-
-
-def _carry_bottom_z(rig, place):
-    """Height a carried load's bottom should keep while driving to ``place``:
-    3 cm above the destination surface (raised at the start of the drive, not
-    beside the counter where a late lift scraped a mug off its edge)."""
-    from ..predicates import entity_kind
-    kind, rec = entity_kind(rig.ann, place)
-    z = None
-    if kind == "support":
-        z = float(rec["z"])
-    elif kind in ("furniture", "appliance", "articulated"):
-        zs = [s["z"] for s in rig.ann.supports if (s.get("furniture") == place or s["name"].startswith(place + "/"))
-              and 0.3 <= s["z"] <= 1.0]
-        z = max(zs) if zs else None
-    elif kind == "object":
-        st = rig.state()
-        a = rig.ann.asset_of(rec)
-        if a.get("container"):
-            # going to a container (pour, drop): carry above its rim
-            z = float(rig.geo.bottom(place, st)[2]) + float(a["container"]["rim_height"])
-        else:
-            sup = rig.geo.support_under(place, st)
-            z = float(sup["z"]) if sup is not None else None
-    if z is None or z < 0.3 or z > 1.0:
-        return None                 # floor-level or out-of-reach heights keep the default carry
-    if kind == "support" and rec.get("category") != "cabinet_inside" and "/inside" not in rec["name"]:
-        # over the loose objects already standing there: the base drives in
-        # along the counter and a load held 3 cm above the top swept a
-        # rolling pin and a bottle (capped: tall items are passed by the arm)
-        st = rig.state()
-        names = {rec["name"]}
-        tops = []
-        for o in rig.ann.objects:
-            if rig.held is not None and o == rig.held["name"]:
-                continue
-            sup = rig.geo.support_under(o, st)
-            if sup is not None and sup["name"] in names:
-                tops.append(float(rig.geo.bottom(o, st)[2]) + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2]))
-        if tops:
-            z = max(z, min(max(tops), z + 0.12))
-    return round(z + 0.03, 3)
 
 
 class PlanReachPolicy(AtomicPolicy):

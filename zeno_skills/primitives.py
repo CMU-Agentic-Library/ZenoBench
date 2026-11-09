@@ -24,6 +24,7 @@ LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its
 LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
 LEAVE_MAX = 0.06          # m: ...and no further
 ON_LINE = 0.005           # m: a TCP this close to a straight (and on it before its end) is on it
+ON_LINE_TURN = 0.01       # rad: ...and turned this little from the straight's rotation
 JOINT_GOAL_TOL = 0.01     # rad: a planned leg ending this close (every joint) to its joint goal ends at it
 DENSE = 0.01              # rad: joint waypoints of a joint-space leg about this far apart (Rig._dense)
 

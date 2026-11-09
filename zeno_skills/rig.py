@@ -13,6 +13,7 @@ from dataclasses import replace
 import numpy as np
 
 from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
+from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below the layers; re-exported here)
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
 from .primitives import LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length
@@ -22,8 +23,6 @@ CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the han
 RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
 HINT_REACH = 0.001        # m: a q_hint whose TCP is this close to a planned leg's goal is its joint goal as it is
 HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
-PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a park search's plan starts is
-                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
 # A follow ends when the arm has arrived or has stopped, not at a joint tolerance: 0.01 rad of one
 # joint is 8 mm at the hand 0.8 m out, and the reach checks after it (skills.PICK_REACH_TOL, 5 mm)
 # then took a hand still closing in for a blocked one (T06 s10 6.8 mm, T10 s11 7.9 mm, the mug of
@@ -35,14 +34,6 @@ SETTLE_WINDOW = 10        # physics ticks the stop is measured over (one turning
 FREE_SPACE_KW = {"exempt_targets": False}   # coll_kw of free space: the fingers checked, no target exempted
 FINGERS_KW = {}           # coll_kw of a park search's approach target: the fingers checked, the object at it exempted
                           # (where the approach's contact segment begins is the collision model's call at the time)
-
-
-class SkillFailure(RuntimeError):
-    pass
-
-
-class Dropped(SkillFailure):
-    """The held object left the hand while carrying it (worth a re-pick)."""
 
 
 BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targets beyond are clipped
@@ -452,69 +443,6 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
-    # ---- retired 2026-11-08 (docs/MOTION_ARCHITECTURE.md steps 3-4): the straight into a relay pose
-    # run from a park search's plan (relay_approach); pick and place run whole plans now (run.run)
-    # def move_relay(self, p, R, u, L, plan=None, step=0.003, steps_per_wp=3, label=None, smooth=False):
-    #     """move_to for a relay pose (p, R) entered by the straight of length L along u, nothing on
-    #     the way touched (FREE, no fallback): the motion the park search made there (``plan``,
-    #     relay_approach's) as it is, while it still holds -- the arm at its start, its end at (p, R)
-    #     from the base as it stands (HINT_REACH / HINT_TURN: a base off its park, a target that moved
-    #     are not), every segment free in the world now -- else relay_approach again from here, the
-    #     same way.  Not re-solved when it holds: an IK solution at a joint limit came out once in the
-    #     search and never again (T01 overhang_ready, COLLISION_PLAN 6.2).  Returns the TCP error."""
-    #     self.sync_world()
-    #     kin = self.kin
-    #     p = np.asarray(p, float)
-    #     if kin.scene is None or kin.motion is None:
-    #         return self.move_to(p, R, step, steps_per_wp, label, FREE, smooth=smooth)
-    #
-    #     def make():
-    #         why = self._plan_off(plan, p, R)
-    #         got = plan
-    #         if why is not None:
-    #             # the planner's joint-goal fallback: the plan's solution of the straight's start,
-    #             # re-solved where the base stands (_goal)
-    #             start = plan["free"][-1] if plan is not None and plan["free"] else None
-    #             uu = np.asarray(u, float) / np.linalg.norm(u)
-    #             hint = self._goal(p - L * uu, R, start) if start is not None else None
-    #             got, err = relay_approach(kin, self.q_cmd, p, R, u, L, carry=self._carrying(), step=step,
-    #                                       q_hint=hint)
-    #             if got is None:
-    #                 raise SkillFailure(f"{label}: {err}")
-    #         self.log("relay", target=label, reused=why is None, why=why, how=got["how"],
-    #                  free=len(got["free"]), line=len(got["line"]), carry=self._carrying())
-    #         free = self.joint_path_via(got["free"]) if got["how"] == "planned" else list(got["free"])
-    #         return free + list(got["line"])
-    #
-    #     qs, allow = self._motion_path(label, FREE, kin, make, lambda: [])
-    #     self.clear.motion(label, allow)
-    #     (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
-    #     tcp, _ = kin.tcp(self.q())
-    #     err = float(np.linalg.norm(tcp - p))
-    #     self.log("reach", target=label, tcp_err_m=round(err, 4),
-    #              q_err=round(float(np.max(np.abs(self.q() - self.q_cmd))), 4))
-    #     return err
-
-    # ---- retired 2026-11-08 with move_relay
-    # def _plan_off(self, plan, p, R):
-    #     """Why the park search's ``plan`` (relay_approach's, with "q_from") does not hold here, or
-    #     None: the arm elsewhere, its end off (p, R) from the base as it stands, a segment in
-    #     collision now."""
-    #     if plan is None:
-    #         return "no plan"
-    #     if np.max(np.abs(self.q_cmd - np.asarray(plan["q_from"], float))) > PLAN_AT_START:
-    #         return "the arm is not where the plan starts"
-    #     qs = list(plan["free"]) + list(plan["line"])
-    #     if not qs:
-    #         return "empty plan"
-    #     pe, Re = self.kin.tcp(np.asarray(qs[-1], float))
-    #     turn = math.acos(np.clip((np.trace(np.asarray(Re).T @ np.asarray(R)) - 1) / 2, -1.0, 1.0))
-    #     off = float(np.linalg.norm(pe - p))
-    #     if off > HINT_REACH or turn > HINT_TURN:
-    #         return f"its end is {off:.4f} m / {turn:.3f} rad off the target"
-    #     if not self.kin.path_free([self.q_cmd] + qs):
-    #         return "it collides now"
-    #     return None
 
     def move_to_any(self, goals, step=0.01, steps_per_wp=3, label=None, allow=FREE, smooth=False, cost=None,
                     prefer=None, weights=None):
@@ -843,6 +771,10 @@ class Rig:
 
     def arm_kin(self, side="right"):
         return self.kin if side == "right" else self.left_kin
+
+    def wait(self, ticks):
+        """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""
+        self.step(int(ticks))
 
     def declare(self, name, allow, side="right", follows=True):
         """The next motion to the contact monitor (Clearance.motion)."""
@@ -1245,46 +1177,3 @@ class Rig:
         return path
 
 
-# ---- retired 2026-11-08 (docs/MOTION_ARCHITECTURE.md steps 1-3): split into primitives.free_leg +
-# primitives.straight, chained by skill_plans
-# def relay_approach(kin, q_from, p, R, u, L, carry=False, step=0.003, q_hint=None):
-#     """The motion from q_from to a relay pose (p, R) entered by the straight of length L along the
-#     unit direction u (a pinch's reach-in, a set-down), as it is executed: when the TCP is on that
-#     straight already, along it; else to the straight's start -- the straight TCP line, else the
-#     planner (Kinematics.plan_to: the pose, a load's tilt held; else to ``q_hint``, a solution of the
-#     straight's start, as the execution always fell back to) -- and the straight from wherever that
-#     leg ends.  The park search and the execution (Rig.move_relay) both make it this way, so
-#     the straight is checked from the solution the leg really ends on, not from an IK solution of
-#     its start the leg need not reach (T20 bottle_on_cabinet: the planner ended 2.5 rad away and the
-#     elbow hit the table; COLLISION_PLAN 6.2).  kin's collision rules as the caller set them.
-#     ({"free": joint waypoints after q_from, "line": after free, "how": "straight" | "planned"},
-#     None) or (None, why)."""
-#     q_from = np.asarray(q_from, float)
-#     p = np.asarray(p, float)
-#     u = np.asarray(u, float) / np.linalg.norm(u)
-#     s = p - L * u
-#     p0 = kin.tcp(q_from)[0]
-#     along = float((p0 - s) @ u)
-#     if L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(p0 - s - along * u) < ON_LINE:
-#         free, how = [], "straight"
-#     else:
-#         free, ok = kin.cart_path(q_from, s, R, step=step)
-#         how = "straight"
-#         if not ok:
-#             free, status = kin.plan_to(q_from, s, R, carry=carry, q_goal=q_hint)
-#             if free is None:
-#                 return None, f"no collision-free path to the straight's start: {status}"
-#             how = "planned"
-#         if L < ON_LINE:
-#             return {"free": list(free), "line": [], "how": how}, None
-#     start = np.asarray(free[-1], float) if free else q_from
-#     line, ok = kin.cart_path(start, p, R, step=step)
-#     if not ok:
-#         scene, kin.scene = kin.scene, None
-#         try:
-#             free_ik = kin.cart_path(start, p, R, step=step)[1]
-#         finally:
-#             kin.scene = scene
-#         why = "it collides" if free_ik else "no IK along it"
-#         return None, f"no collision-free straight from its start ({why})"
-#     return {"free": list(free), "line": list(line), "how": how}, None
