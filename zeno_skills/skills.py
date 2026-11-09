@@ -598,7 +598,7 @@ def _pick_find_park(rig, name, cands, near, prefer=()):
     def build(s, k, q_rank):
         g = cands[k]
         return plan_pick(kin, with_width(s, kin.side, g["pre_open"]), _grasp_of(name, g), *_grasp_approach(g),
-                         carry_goals, q_hint=q_rank, step=APPROACH_STEP)
+                         carry_goals, q_seed=q_rank, step=APPROACH_STEP)
 
     travel = _travel_q(rig)
     arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
@@ -623,13 +623,11 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
         if isinstance(plan, Failure):
             raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
     reach = next((sg for sg in plan.segments if sg.name == "pick_reach" and sg.qs), None)
-    hint0 = None if reach is None else reach.q_end
+    seed = None if reach is None else reach.q_end      # the plan's solution of the reach-in's start
     out = {}
 
     def rebuild(state, frm):
-        hint = None if hint0 is None else rig._goal(grasp["p"] - L * np.asarray(u) / np.linalg.norm(u),
-                                                    grasp["R"], hint0)
-        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_hint=hint, step=APPROACH_STEP)
+        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_seed=seed, step=APPROACH_STEP)
 
     def after_grasp(rig):
         err = float(np.linalg.norm(kin.tcp(rig.q())[0] - grasp["p"]))

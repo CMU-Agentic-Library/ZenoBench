@@ -43,12 +43,21 @@ def _on_line(kin, q, s, u, L):
     return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE
 
 
-def _reach(kin, state, spec, p, R, u, L, q_from, q_hint, name, step):
+def _reach(kin, state, spec, p, R, u, L, q_from, seed, name, step):
     """The free leg to the start of the straight of length L along u into (p, R): none when the
-    TCP is on it already; else to its start, a pose (q_hint the planner's joint goal)."""
-    if _on_line(kin, q_from, p - L * u, u, L):
+    TCP is on it already; else to its start, a pose whose solution is solved here in the collision
+    model of ``state`` / ``spec`` (Kinematics.ik_global; ``seed`` -- the park search's ranking IK,
+    the straight's start up from the set-down pose -- only the first of its seeds, never the goal
+    as it is: those are kinematic, and a solution in collision made the leg fail where another
+    would do).  No collision-free solution: Failure."""
+    s = p - L * u
+    if _on_line(kin, q_from, s, u, L):
         return Segment(name, spec, q_from, (), info={"how": "on the straight"})
-    return free_leg(kin, state, spec, Pose(p - L * u, R, q_hint), name, step=step, q_from=q_from)
+    with query(kin, state, spec):
+        q_s, ok = kin.ik_global(s, R, seeds=([np.asarray(seed, float)] if seed is not None else []) + [q_from])
+    if not ok:
+        return Failure("no collision-free IK at the straight's start", name)
+    return free_leg(kin, state, spec, Pose(s, R, np.asarray(q_s, float)), name, step=step, q_from=q_from)
 
 
 def _move(seg, **info):
@@ -70,18 +79,19 @@ def held_frame(kin, q, held):
 
 
 # ------------------------------------------------------------------------------------- pick
-def plan_pick(kin, state, grasp, u, L, carry_goals, start="pick_open", q_hint=None, step=0.003):
+def plan_pick(kin, state, grasp, u, L, carry_goals, start="pick_open", q_seed=None, step=0.003):
     """The pick of grasp = {name, p, R, pre_open, kind} from ``state``: open the hand, the free leg
-    to the reach-in's start (``q_hint``: the park search's solution of it), the reach-in straight
+    to the reach-in's start (its solution solved in the collision model, ``q_seed`` -- the park
+    search's ranking IK -- first among the seeds: _reach), the reach-in straight
     of length L along u, close, the lift off the support (contact_extent, off_support), the free
     leg to the carry pose (``carry_goals(state, q) -> (PoseSet, {step, steps_per_wp, smooth})``, the
     load's tilt held).  From
     ``start`` on (the stages before it done).  Plan or Failure."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_hint, step)
+        return _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_seed, step)
 
 
-def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_hint, step):
+def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_seed, step):
     i0 = PICK_STAGES.index(start)
     name, p, R = grasp["name"], np.asarray(grasp["p"], float), np.asarray(grasp["R"], float)
     u = np.asarray(u, float) / np.linalg.norm(u)
@@ -97,7 +107,7 @@ def _plan_pick(kin, state, grasp, u, L, carry_goals, start, q_hint, step):
         if stage == "pick_open":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", float(grasp["pre_open"]), 40, False))
         elif stage == "pick_reach":
-            seg = _reach(kin, s, FREE_HAND, p, R, u, L, q, q_hint, stage, step)
+            seg = _reach(kin, s, FREE_HAND, p, R, u, L, q, q_seed, stage, step)
             seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=4, smooth=True)
         elif stage == "pick_grasp":
             seg = straight(kin, s, FREE_HAND, p, R, stage, step=step, q_from=q)

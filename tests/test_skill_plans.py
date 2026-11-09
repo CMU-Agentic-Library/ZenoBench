@@ -7,12 +7,22 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from tests.test_primitives import FakeKin, _q
+from tests.test_primitives import FakeKin as _FakeKin, _q
 from zeno_skills import run as RUN
 from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, Spec, State
 from zeno_skills.primitives import PoseSet
 from zeno_skills.rig import SkillFailure
 from zeno_skills.skill_plans import PICK_STAGES, plan_pick, plan_place
+
+class FakeKin(_FakeKin):
+    """test_primitives' FakeKin with a collision-aware IK: the TCP at p, unless p is in the wall."""
+
+    def ik_global(self, p, R, seeds=None):
+        self.calls.append(("ik_global", len(seeds or [])))
+        q = np.asarray((seeds or [np.zeros(9)])[0], float).copy()
+        q[:3] = p
+        return q, not (self.scene is not None and self.wall(np.asarray(p, float)))
+
 
 GRASP = {"name": "cup", "p": np.array([0.5, 0.0, 0.10]), "R": np.eye(3), "pre_open": 0.03, "kind": "pinch"}
 DOWN = np.array([0.0, 0.0, -1.0])
@@ -48,6 +58,23 @@ def test_a_pick_from_a_later_stage_starts_there():
     plan = plan_pick(kin, _state(GRASP["p"].tolist() + [0] * 6, held=held), GRASP, DOWN, 0.07, _carry([]),
                      start="pick_lift")
     assert [s.name for s in plan.segments] == ["pick_lift", "carry_in"]
+
+
+def test_the_reach_ins_start_is_solved_in_the_collision_model_the_rank_ik_only_a_seed():
+    # the TCP straight to the reach-in's start is blocked: the leg goes to its solution
+    kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)], wall=lambda p: 0.39 < p[0] < 0.41 and p[2] > 0.25)
+    rank = np.full(9, 0.7)                                   # a kinematic solution, never checked
+    plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP, DOWN, 0.07,
+                     _carry([]), q_seed=rank)
+    assert isinstance(plan, Plan), plan
+    assert ("ik_global", 2) in kin.calls                     # rank first among the seeds, then the arm's
+    assert np.allclose(plan.segments[1].q_end[:3], GRASP["p"] - 0.07 * DOWN)
+
+
+def test_no_collision_free_solution_of_the_reach_ins_start_fails_the_plan():
+    kin = FakeKin(wall=lambda p: abs(p[2] - 0.17) < 1e-6)
+    out = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP, DOWN, 0.07, _carry([]))
+    assert isinstance(out, Failure) and out.segment == "pick_reach" and "IK" in out.why
 
 
 def test_a_pick_that_cannot_be_made_says_which_segment():
