@@ -99,13 +99,18 @@ def start_view(task, lid, room):
 
 def leakage(doc):
     found = []
-    worker = (ROOT / "env_service" / "worker.py").read_text()
-    if re.search(r'send\(\{"type": "ready".*"episode": meta', worker):
-        found.append({"where": "env_service/worker.py, ready message to the HTTP planner",
-                      "what": "episode metadata: variant (with the layout name), conditions, seed (with tasks.json "
-                              "the seed names the layout)",
-                      "fix": "send the planner the instruction and the observation only; keep the metadata in "
-                             "config.json"})
+    # the worker's ready message (with the episode metadata) goes to the server only; what reaches the HTTP
+    # planner is initial_task's answer: the public task (name, instruction), the profile and the observation
+    server = (ROOT / "env_service" / "server.py").read_text()
+    init = server[server.index("    def initial_task"):server.index("    def abandon")]
+    ret = init[init.rindex("return {"):]
+    ret = ret[:ret.index("}\n") + 1]
+    if re.search(r'"(episode|variant|seed|conditions|config_hash)"\s*:', ret) or "public_task(" not in ret:
+        found.append({"where": "env_service/server.py initial_task", "what": "the answer to the planner carries "
+                      "episode metadata (variant, conditions, seed)"})
+    from episode.catalog import public_task
+    if set(public_task({"task_id": "T", "instruction": "i", "variants": {}})) - {"task_id", "name", "description"}:
+        found.append({"where": "episode/catalog.py public_task", "what": "more than the name and instruction"})
     run_ep = (ROOT / "benchmark" / "run_episode.py").read_text()
     m = re.search(r"pol\.reset\((.*?)\)\n", run_ep, re.S)
     if m and re.search(r"cfg|variant|oracle|note|config", m.group(1)):
@@ -117,6 +122,8 @@ def leakage(doc):
                 found.append({"where": str(prof.relative_to(ROOT)), "what": f"{k} on: GT positions / goal state"})
         if not re.search(r"^\s*mask_feedback:\s*true", txt, re.M):
             found.append({"where": str(prof.relative_to(ROOT)), "what": "feedback not masked: unseen names"})
+        if not re.search(r"^\s*anonymize_names:\s*true", txt, re.M):
+            found.append({"where": str(prof.relative_to(ROOT)), "what": "instance names shown (spare_mug ...)"})
     obs = (ROOT / "benchmark" / "observation.py").read_text()
     sp = obs[obs.index("def static_places"):]
     sp = re.split(r"\n(?:def|class) ", sp[5:])[0]
@@ -140,8 +147,10 @@ def leakage(doc):
     if per_layout:
         found.append({"where": "instructions", "what": "the instruction differs between layouts: "
                       + ", ".join(per_layout)})
-    checked = ["env_service ready message", "run_episode recovery planner inputs (instruction, skills, observation)",
-               "benchmark profiles: gt_objects, task_status, mask_feedback", "static known places (no objects)",
+    checked = ["env_service initial_task answer (the worker's ready metadata stays in the server and config.json; "
+               "check_task returns it after the episode)",
+               "run_episode recovery planner inputs (instruction, skills, observation)",
+               "benchmark profiles: gt_objects, task_status, mask_feedback, anonymize_names", "static known places (no objects)",
                "instructions: no variant / layout name, the same for every layout (except INSTRUCTION_CLUES, where "
                "the person's words are the clue)",
                "oracle routes and configuration notes: not in any planner-facing field above"]
@@ -220,7 +229,8 @@ def main():
     print(f"leaks: {len(leaks)}")
     for x in leaks:
         print("   ", x["where"], "-", x["what"])
-    print(f"instance names that may tell: {len(names)} variants")
+    print(f"instance names that would tell: {len(names)} variants (the planner sees <category>_<k> instead: "
+          "observation.anonymize_names in the benchmark profiles)")
 
 
 if __name__ == "__main__":

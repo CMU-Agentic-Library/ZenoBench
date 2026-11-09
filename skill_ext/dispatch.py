@@ -31,9 +31,18 @@ class SkillContext:
         self.trace: list[dict] = []
 
     def call(self, skill: str, args: dict) -> dict:
-        res = self._runner.run(skill, dict(args), depth=self._runner._depth + 1)
+        ep = self._runner.episode
+        names = getattr(ep, "names", None) if self.rig is None else None   # privileged baselines: real names
+        try:
+            run_args = names.private(dict(args)) if names is not None else dict(args)
+        except KeyError:
+            row = {"contract": skill, "args": names.scrub(dict(args)), "success": False,
+                   "error_code": "INPUT_UNKNOWN", "error": "an argument names no object or place the robot knows"}
+            self.trace.append(row)
+            return row
+        res = self._runner.run(skill, run_args, depth=self._runner._depth + 1)
         row = {"contract": skill, "args": dict(args), "success": bool(res.success), "error_code": res.error_code,
-               "error": res.error}
+               "error": names.public(res.error) if names is not None else res.error}
         self.trace.append(row)
         return row
 
@@ -45,6 +54,8 @@ class SkillContext:
             full = ep.observation("base64" if "images" in fields else "path", tag=f"skill_{self.spec.name}") \
                 if "images" in fields else {"robot": ep._robot(), **({"visible_objects": [
                     ep.observer.describe(n) for n in sorted(ep.observer.view)]} if ep.observer else {})}
+            if "images" not in fields and hasattr(ep, "public") and self.rig is None:
+                full = ep.public(full)                # the planner's aliases (Episode.observation does it itself)
             out.update({k: v for k, v in full.items() if k in fields})
         if "proprio" in fields:
             out["proprio"] = proprio(rig)
@@ -132,7 +143,9 @@ class OpenSkillRunner:
         sctx = SkillContext(self, spec, self.instruction)
         self._depth, saved = depth, self._depth
         try:
-            out = spec.runner.run(sctx, values)
+            names = getattr(self.episode, "names", None) if sctx.rig is None else None
+            # the skill's code works in the planner's aliases (sctx.call maps them back)
+            out = spec.runner.run(sctx, names.public(values) if names is not None else values)
         except SkillFailure as exc:
             out = Outcome(False, "POLICY_FAILED", str(exc))
         except Exception as exc:

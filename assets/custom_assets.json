@@ -408,7 +408,7 @@
   "prompt": "a single small round red cherry tomato with a tiny green stem, isolated product, plain white background"
  },
  "wooden_block": {
-  "size": 0.05,
+  "size": 0.04,
   "mass": 0.06,
   "tags": [
    "toy",
@@ -419,9 +419,9 @@
   "lay_flat": false,
   "urdf": "assets/asset3d/wooden_block/result/wooden_block.urdf",
   "target_size": [
-   0.05,
-   0.05,
-   0.05
+   0.04,
+   0.04,
+   0.04
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "prompt": "a single plain natural wood toy building block cube with smooth edges, isolated product, plain white background"

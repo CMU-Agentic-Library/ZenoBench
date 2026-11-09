@@ -145,6 +145,8 @@ goal 是 `all` 的每个子句都成立，并且 `any` 的子句组（benchmark 
 | `objects` | 任务的相关物体（`entities`）：`name`、`kind`、GT `position` | 有 | 无 |
 | `visible_objects` | 当前视野里的物体：`name`、`category`、`tags`、`in_view`、`held`、`last_seen_position`、`last_seen_on`、`last_seen_in`、`last_seen_tick` | 无 | 有 |
 | `observation_cache` | 见过的每个物体最后一次的样子，字段同上 | 无 | 有 |
+
+benchmark profile 打开 `anonymize_names`：物体一律叫“类别_编号”（如 `mug_2`），调用里用这些名字；真实实例名会被当成未知名字拒绝。地点名不变。每局目录的 `names.json` 记录别名对应的真实名字。
 | `known_places` | 静态地点：房间、家具、支撑面、门、电器、按钮 | 无 | 有 |
 | `robot` | `base_pose` [x, y, yaw_deg]、`held_right`、`held_left`；`benchmark` 另有 `room` 和见过的食物的 `temperatures_c` | 有 | 有 |
 | `task_status` | goal 每个子句当前的真假 `[{"atom", "holds"}]` | 有 | 无 |

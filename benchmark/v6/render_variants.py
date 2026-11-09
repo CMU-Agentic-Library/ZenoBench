@@ -76,23 +76,86 @@ def place_hints(task, lid):
     return [(r, xy, f"{i} {o}" if len(hints) > 1 else f"{o} 放这里") for i, (r, xy, o) in enumerate(hints, 1)]
 
 
+def accepted_spots(goal_atoms, cfg, sup, aabb, step=0.02):
+    """Where on ``sup`` the goal accepts the placed object: every (x, y) of a grid whose footprint (either way
+    round) is inside the support and meets the goal's clear_of / near_any / not near_any atoms, judged on the
+    footprints as the goal predicates do.  [] when the goal has no such atom for an object on ``sup``."""
+    import benchmark.v6.layout as L
+    on = [a for a in goal_atoms if a[0] == "on" and len(a) > 2 and a[2] == sup]
+    if not on:
+        return []
+    obj = on[0][1]
+    rules = [a for a in goal_atoms if a[0] in ("clear_of", "near_any", "not near_any") and a[1] == obj]
+    if not rules:
+        return []
+    add, move = cfg.get("add") or {}, cfg.get("move") or {}
+    names = {n for a in rules for n in a[2]}
+    boxes = {n: L._box(L._asset_of(cfg["base"], n, add), move.get(n) or add[n]) for n in names
+             if (move.get(n) or add.get(n) or {}).get("support") == sup}
+    asset = L._asset_of(cfg["base"], obj, add)
+
+    def gap(p, q):
+        return math.hypot(max(0.0, max(p[0], q[0]) - min(p[2], q[2])), max(0.0, max(p[1], q[1]) - min(p[3], q[3])))
+
+    def fits(bk):
+        if bk[0] < aabb[0] or bk[1] < aabb[1] or bk[2] > aabb[2] or bk[3] > aabb[3]:
+            return False
+        for a in rules:
+            near = [gap(bk, boxes[n]) for n in a[2] if n in boxes]
+            d = float(a[3])
+            if a[0] == "clear_of" and near and min(near) < d - 0.003:
+                return False
+            if a[0] == "near_any" and (not near or min(near) > d):
+                return False
+            if a[0] == "not near_any" and near and min(near) <= d:
+                return False
+        return True
+    out = []
+    x = aabb[0]
+    while x <= aabb[2]:
+        y = aabb[1]
+        while y <= aabb[3]:
+            if any(fits(L._box(asset, {"xy": [x, y], "yaw_deg": yaw})) for yaw in (0.0, 90.0)):
+                out.append((x, y))
+            y += step
+        x += step
+    return out
+
+
+def paint_spots(img, pixels, r=6):
+    """Translucent green dots on an image array at the given pixels."""
+    import numpy as np
+    from PIL import Image, ImageDraw
+    im = Image.fromarray(np.asarray(img, dtype=np.uint8)).convert("RGBA")
+    layer = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for p in pixels:
+        if p is not None and 0 <= p[0] < im.width and 0 <= p[1] < im.height:
+            d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=(40, 220, 90, 110))
+    return np.asarray(Image.alpha_composite(im, layer).convert("RGB"))
+
+
 def star(img, marks):
     from PIL import ImageDraw, ImageFont
     d = ImageDraw.Draw(img)
     font = ImageFont.truetype(FONT, 24)
     marks = [m for m in marks if m[0] is not None and 0 <= m[0][0] < img.width and 0 <= m[0][1] < img.height]
-    for (u, v), _ in marks:
-        pts = [(u + (18 if k % 2 == 0 else 8) * math.sin(k * math.pi / 5),
-                v - (18 if k % 2 == 0 else 8) * math.cos(k * math.pi / 5)) for k in range(10)]
+    for (u, v), _ in marks:                      # a ring round the thing (a small one stays visible) and a star
+        for r_, w_, c_ in ((17, 6, (40, 25, 0)), (17, 3, (255, 205, 40))):    # above it on a short stem
+            d.ellipse([u - r_, v - r_, u + r_, v + r_], outline=c_, width=w_)
+        d.line([(u, v - 17), (u, v - 30)], fill=(255, 205, 40), width=3)
+        sv = v - 40
+        pts = [(u + (11 if k % 2 == 0 else 5) * math.sin(k * math.pi / 5),
+                sv - (11 if k % 2 == 0 else 5) * math.cos(k * math.pi / 5)) for k in range(10)]
         d.polygon(pts, fill=(255, 205, 40), outline=(90, 60, 0))
     boxes = []                                   # labels already drawn: a new one moves down until it is free
     for (u, v), label in marks:
         w = d.textlength(label, font=font)
-        x = u + 20 if u + 20 + w < img.width - 8 else u - 20 - w      # left of the star near the right edge
-        y = v - 30
+        x = u + 22 if u + 22 + w < img.width - 8 else u - 22 - w      # left of the star near the right edge
+        y = v - 56
         while any(x < b[2] and b[0] < x + w and y < b[3] and b[1] < y + 30 for b in boxes):
             y += 32
-        if y > v - 10:                           # moved off its star: a thin leader line back to it
+        if y > v - 40:                           # moved off its star: a thin leader line back to it
             d.line([(u, v), (x if x > u else x + w, y + 15)], fill=(255, 225, 80), width=2)
         boxes.append((x, y, x + w, y + 30))
         d.text((x, y), label, font=font, fill=(255, 225, 80), stroke_width=3, stroke_fill=(0, 0, 0))
@@ -159,12 +222,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         robot comes from first, else any side, else straight above."""
         bx, by, _ = rig.base_pose()
         a0 = math.atan2(by - tgt[1], bx - tgt[0])
-        for k in (0, 1, -1, 2, -2, 3, -3, 4):
-            a = a0 + k * math.pi / 4
-            eye = [tgt[0] + dist * math.cos(a), tgt[1] + dist * math.sin(a), tgt[2] + height]
-            if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
-                return eye
-        return [tgt[0] + 0.05, tgt[1], tgt[2] + dist + height]
+        for d_, h_ in ((dist, height), (dist * 0.7, height * 0.8), (dist * 1.3, height * 0.6), (dist * 0.5, height)):
+            for k in (0, 1, -1, 2, -2, 3, -3, 4):
+                a = a0 + k * math.pi / 4
+                eye = [tgt[0] + d_ * math.cos(a), tgt[1] + d_ * math.sin(a), tgt[2] + h_]
+                if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
+                    return eye
+        # nothing clear around: from just above (low enough to stay under wall cupboards over a counter)
+        return [tgt[0] + 0.05, tgt[1], tgt[2] + 0.45]
 
     st = rig.state()
     objs = st["objects"]
@@ -231,7 +296,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         a, k = stp["args"], stp["skill"]
         if k == "pick":
             mark(a["object"], "take")
+        elif k in ("flip", "roll", "roll_object", "rotate", "expose"):    # worked on where it lies
+            mark(a.get("object"), "take")
         elif k in ("place", "drop", "hide"):
+            if k == "hide":                      # hide picks the thing up itself
+                mark(a.get("object"), "take")
             mark(a.get("receptacle") or a.get("container"), "place")
         elif k == "stack":
             mark(a["base"], "base")
@@ -264,7 +333,12 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if at[0] in PUT and not set(names(at[1])) & stay:     # a castle block on another one stays put
             for n in names(at[1]):
                 if n in objs and n not in role:     # already where the goal wants it: it stays (the juice in the fridge)
-                    role[n] = "keep" if at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
+                    inside = at[0] in ("inside", "fully_inside") and len(at) > 2 and at[2] in objs and \
+                        math.dist(pos(n)[:2], pos(at[2])[:2]) < 0.15        # the blocks already in the full bin
+                    role[n] = "keep" if inside or at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
+    for at in atoms(goal):                       # what only has to be seen (grandma's plate and bowl)
+        if at[0] == "observed" and at[1] in objs and at[1] not in role:
+            role[at[1]] = "see"
     for at in atoms(goal):                       # what the place is judged against (the coffee drinker's mug)
         if at[0] == "near_any":
             for n in at[2]:
@@ -283,7 +357,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if n in objs and n not in role:
             role[n] = "other"
     LABEL = {"take": "要拿", "base": "叠在它上面", "keep": "别动", "other": "相关", "use": "要用",
-             "alt": "也可以用", "ref": "参照"}
+             "alt": "也可以用", "ref": "参照", "see": "要看到"}
     views, shown = [], set()
 
     def stars(names):
@@ -292,7 +366,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     kind = []                                   # per view: take / place / point (what the variant is about)
     # 1) what the robot takes (or stacks on): a close-up; in closed furniture, the furniture with the item starred
     for n, r in role.items():
-        if r not in ("take", "base", "use") or n not in objs or n in shown:
+        if r not in ("take", "base", "use", "alt", "see") or n not in objs or n in shown:   # alt: any one of them will do
             continue
         sp = sup_of(n)
         if sp.endswith("/inside_shelf"):
@@ -301,8 +375,12 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             shown.add(sp.split("/")[0])           # the furniture to open: this picture shows it
             views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在里面）")], img,
                           f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
+        elif "/shelf_" in sp:                     # on an open shelf level: from in front of that level
+            eye, _c = support_eye(sp)
+            img = shot(eye, pos(n))
+            views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置，{sp}）"))
         else:
-            img = shot(around(pos(n), 0.75, 0.55), pos(n))
+            img = shot(around(pos(n), 0.6, 0.6), pos(n))    # steep enough to see over an edge lip
             views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置）"))
         shown.add(n)
     kind += ["take"] * (len(views) - len(kind))
@@ -315,6 +393,10 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((n, None, img, f"放进 {n}（开局位置）"))
             shown.add(n)
             continue
+        try:
+            rig.ann.support(n)
+        except KeyError:                         # a container the layout does not have (the missing basket)
+            continue
         if n.endswith("/inside_shelf"):           # inside closed furniture: the furniture from outside
             eye, c = inside_eye(n, rig.ann.support(n)["z"] + 0.05)
             shown.add(n.split("/")[0])            # the same furniture needs no second picture to open it
@@ -322,14 +404,22 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             eye, c = support_eye(n)
         img = shot(eye, c)
         z = rig.ann.support(n)["z"]
+        spots = [] if n.endswith("/inside_shelf") else accepted_spots(list(atoms(goal)), cfg, n,
+                                                                      rig.ann.support(n)["aabb_xy"])
+        if spots:                                # every place the goal accepts, not only the route's
+            img = paint_spots(img, [project([x, y, z + 0.005]) for x, y in spots])
         marks = [(project([h[1][0], h[1][1], z + 0.03]), h[2]) for h in place_hints(task, lid) if h[0] == n]
         stay = [x for x, rr in role.items() if rr in ("keep", "other", "ref", "alt") and sup_of(x) == n]
         if not marks and n.endswith("/inside_shelf"):
             marks = [(project(c), f"放进 {n.split('/')[0]} 里")]
+        elif not marks and not spots:            # no route point and no distance rule: anywhere on the top
+            bb = rig.ann.support(n)["aabb_xy"]
+            marks = [(project([(bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2, z + 0.03]), f"放到 {n} 上（台面上任意位置都算）")]
         marks += stars([x for x in stay if role[x] in ("other", "ref", "alt")])
         kept = [x for x in stay if role[x] == "keep"]
         shown.update([n, *stay])
-        views.append((n.replace("/", "_"), marks, img, f"放置处 {n}" + ("，★ 参考路线的放置点" if any(
+        views.append((n.replace("/", "_"), marks, img, f"放置处 {n}" + ("；绿色：判定会通过的所有位置" if spots else "")
+                      + ("，★ 参考路线的放置点" if any(
             h[0] == n for h in place_hints(task, lid)) else "") + (
             "" if not kept else f"；上面其余 {len(kept)} 件东西都别动" if len(kept) > 3 else f"；{'、'.join(kept)} 别动")))
     kind += ["place"] * (len(views) - len(kind))
@@ -341,7 +431,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if not box:
             continue
         c = [(box[0] + box[3]) / 2, (box[1] + box[4]) / 2, (box[2] + box[5]) / 2]
-        img = shot(around(c, 1.4, 0.6), c)
+        try:                                     # its top from in front (an eye round the box lands in walls)
+            eye, _c = support_eye(n + "/top")
+        except Exception:
+            eye = around(c, 1.4, 0.6)
+        img = shot(eye, c)
         views.append((n, [(project([c[0], c[1], box[5]]), n)], img,
                       ("要打开再关好的 " if r == "open" else "要用的电器 ") + n))
         shown.add(n)
@@ -350,7 +444,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     by_sup = {}
     for n, r in role.items():
         if r in ("keep", "other", "alt", "ref") and n not in shown and n in objs \
-                and not sup_of(n).endswith("/inside_shelf"):
+                and not sup_of(n).endswith("/inside_shelf") and (sup_of(n) or pos(n)[2] < 0.1):   # not in a bin
             by_sup.setdefault(sup_of(n), []).append(n)
     for sp, names in by_sup.items():
         if sp:
@@ -390,15 +484,68 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     # view, a look-alike, the thing that must stay, the furniture to open); at most three
     in_goal = {x for at in atoms(goal) for a in at[1:] for x in (a if isinstance(a, list) else [a])
                if isinstance(x, str)}
-    pick = [i for i, x in enumerate(kind) if x == "take"][:1]
+    # what the site shows per layout: the start layout (overview), every thing to find or take, every destination
+    # the goal names (green: every accepted place, star: the route's), and up to two notes (furniture to open, a
+    # surface to leave alone, a person's view)
+    takes = [i for i, x in enumerate(kind) if x == "take"]
     places = [i for i, x in enumerate(kind) if x == "place"]
-    places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
-    goal_places = [i for i in places if views[i][0].replace("_", "/") in {g.replace("_", "/") for g in in_goal}]
-    pick += sorted(places[:max(2, min(3, len(goal_places)))])  # the goal's destinations first (tray, toy box)
-    pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:max(0, 4 - len(pick))]
-    views = [views[i] for i in sorted(pick)]
+    gset = {g.replace("_", "/") for g in in_goal}
+    goal_places = [i for i in places if views[i][0].replace("_", "/") in gset]
+    used_goal = [i for i in takes if role.get(views[i][0]) == "use" and views[i][0] in in_goal]   # the pot itself
+    if not goal_places:
+        goal_places = used_goal or places[:1]
+    if not goal_places:                          # done where it is (a stack, a flip, a roll, a look, nothing to do):
+        bases = [i for i in takes if role.get(views[i][0]) == "base"]          # the base the stack goes on, or
+        goal_places = bases[:1] or [i for i, x in enumerate(kind) if x in ("view", "point")][:1]
+    in_place = [] if goal_places else takes[-1:]  # flipped / rolled where it lies: its own picture, as the goal too
+    takes = [i for i in takes if i not in goal_places]
+    notes = [i for i, x in enumerate(kind) if x in ("view", "point") and i not in goal_places][:2]
+    tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places + in_place] + [("note_", i) for i in notes]
+    tagged.sort(key=lambda p: p[1])
+    head = {"find_": "要找的 · ", "goal_": "目标结果 · ", "note_": "注意 · "}
+    tail = {i: "（就在原处完成）" for i in in_place}
+    views = [(pre + views[i][0], views[i][1], views[i][2],
+              head[pre] + views[i][3] + (tail.get(i, "") if pre == "goal_" else "")) for pre, i in tagged]
+    # the start layout: the whole area the variant uses, from high above, everything in it starred
+    pts, marks0 = [], []
+    bx, by, _ = rig.base_pose()
+    pts.append([bx, by, 0.5])
+    for n, r in role.items():
+        if r in LABEL and n in objs:
+            pts.append(pos(n))
+        elif r == "place" and n not in objs:
+            try:
+                b = rig.ann.support(n)
+                pts.append([(b["aabb_xy"][0] + b["aabb_xy"][2]) / 2, (b["aabb_xy"][1] + b["aabb_xy"][3]) / 2, b["z"]])
+            except Exception:
+                pass
+    lo = [min(p[k] for p in pts) for k in range(3)]
+    hi = [max(p[k] for p in pts) for k in range(3)]
+    c0 = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, 0.6]
+    K = cam.data.intrinsic_matrices[0].cpu().numpy()
+    hf = math.atan(K[0, 2] / K[0, 0])            # half fields of view
+    vf = math.atan(K[1, 2] / K[1, 1])
+    ext = max((hi[0] - lo[0] + 1.2) / 2 / math.tan(hf), (hi[1] - lo[1] + 1.2) / 2 / math.tan(vf), 2.5)
+    eye0 = [c0[0], c0[1] - 0.25 * ext, c0[2] + ext]
+    img0 = shot(eye0, c0)
+    marks0.append((project([bx, by, 0.3]), "机器人起点"))
+    for n, r in role.items():
+        if r in LABEL and n in objs and r != "ref" and not (r == "keep" and not sup_of(n) and pos(n)[2] > 0.1):   # not each block in a bin
+            marks0.append((project(pos(n)), f"{LABEL[r]}：{n}"))
+        elif r == "place" and n not in objs:
+            try:
+                b = rig.ann.support(n)
+                marks0.append((project([(b["aabb_xy"][0] + b["aabb_xy"][2]) / 2,
+                                        (b["aabb_xy"][1] + b["aabb_xy"][3]) / 2, b["z"]]), f"放到：{n}"))
+            except Exception:
+                pass
+        elif r == "place" and n in objs:
+            marks0.append((project(pos(n)), f"放进：{n}"))
+    views.insert(0, ("overview", [m for m in marks0 if m[0] is not None], img0,
+                     "初始布局（俯视，★ 标出机器人起点、要找的东西和放置处）"))
     out_dir.mkdir(parents=True, exist_ok=True)
-    lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""
+    tag_l = lid.split('__', 1)[1] if '__' in lid else lid           # a merged v5 variant keeps its own name
+    lay = f" · 摆法 {tag_l}" if lid != vid else ""
     for i, (tag, marks, img, label) in enumerate(views, 1):
         im = Image.fromarray(np.asarray(img, dtype=np.uint8))
         if im.width < RES[1]:
@@ -406,7 +553,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if marks:
             star(im, marks)
         im = caption(im, [f"{tid.split('_')[0]} · {vid}（{cat}）{lay} · seed {seed} · {label}", situation])
-        path = out_dir / f"{(lid.split('__', 1)[1] + '_') if lid != vid else ''}{i}_{tag}.png"
+        path = out_dir / f"{(tag_l + '_') if lid != vid else ''}{i}_{tag}.png"
         im.save(path)
         print(f"[render] {path}", flush=True)
     ep.close()

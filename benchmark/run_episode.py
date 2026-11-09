@@ -207,18 +207,18 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 for k in range(tries):
                     t0 = time.time()
                     before = state_summary(rig, task)
-                    _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})})
+                    _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})}, internal=True)
                     if task.get("auto_look") and fb["error_code"] == "NOT_IN_VIEW":
                         # probes only: an explicit look at the remembered object, then the call again
                         target = fb["error"].split("'")[1]
-                        _, lk = ep.call({"contract": "look", "args": {"target": target}})
+                        _, lk = ep.call({"contract": "look", "args": {"target": target}}, internal=True)
                         log_row({"index": i, "try": k, "skill": "look", "args": {"target": target}, "expect": "ok",
                                  "role": "auto_look", "note": "", "feedback": lk, "wall_s": 0.0, "tick": rig.tick,
                                  "state_before": before, "state": state_summary(rig, task), "eval": lk.pop("eval")})
                         before = report["calls"][-1]["state"]
                         print("CALL", i, k, lk["action"], "OK" if lk["success"] else f"FAIL {lk['error']}",
                               "(auto look)", flush=True)
-                        _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})})
+                        _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})}, internal=True)
                     log_row({"index": i, "try": k, "skill": st["skill"], "args": st.get("args", {}), "expect": expect,
                              "role": st.get("role", ""), "note": st.get("note", ""), "feedback": fb,
                              "wall_s": round(time.time() - t0, 1), "tick": rig.tick,

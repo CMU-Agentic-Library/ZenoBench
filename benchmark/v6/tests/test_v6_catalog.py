@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 
-from benchmark.v6.define_tasks_v6 import TASK_TEXT
+from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT
 import subprocess
 import sys
 from collections import Counter
@@ -40,7 +40,9 @@ def test_v5_designs_unchanged():
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
             assert old.get("goal") == new.get("goal"), vid
-            if tid not in TASK_TEXT:                # TASK_TEXT: the task's instruction was shortened on purpose
+            if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
+                assert "instruction" not in new, vid
+            elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose
                 assert old.get("instruction") == new.get("instruction"), vid
             else:
                 assert "instruction" not in new and t["instruction"] == TASK_TEXT[tid][0], vid
@@ -94,8 +96,10 @@ def test_cases_differ_in_decision():
     for t in TASKS.values():
         for fam, info in t["v6_variants"].items():
             if len(info["layouts"]) > 1:
-                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["layouts"]}
-                assert len(routes) == len(info["layouts"]), fam
+                sigs = {(json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True),
+                         json.dumps(t["variants"][v].get("goal") or t.get("goal"), sort_keys=True))
+                        for v in info["layouts"]}
+                assert len(sigs) == len(info["layouts"]), fam        # the route or the goal differs
                 assert info.get("factor"), fam
 
 
@@ -142,9 +146,12 @@ def test_local_fallbacks_are_action_level():
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
     assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
-    # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
+    # T01: what it tests is which table, which seat, which book, or the fallback; where the book starts on the
+    # island, half the layouts have it flat (expose first), so those designs are Action + Task
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
-    assert {x["category"] for x in t01.values()} == {"control", "task"}
+    assert {v: x["category"] for v, x in t01.items()} == {
+        "overhang_ready": "control", "which_book": "task", **{v: "action_task" for v in (
+            "table_seats", "which_table", "no_room_fallback", "reader_seat")}}
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
     for tid, t in TASKS.items():
@@ -183,12 +190,13 @@ def test_every_layout_has_its_route():
 def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
     for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
-                          ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
+                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin"),
                           ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"
-        assert any(s["skill"] == "search" for s in t["routes"][t["oracle"][new]]["steps"])
+        assert all(any(s["skill"] == "search" for s in t["routes"][t["oracle"][lid]]["steps"])
+                   for lid in t["v6_variants"][new]["layouts"])
     assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
     # T04 has no dynamic events (user ruling): the cup taken away, the drinks spot filled after the pick
     for vid in ("h_dynamic_cup_taken", "cup_taken_mug_in_living_room", "x6_dr_spot_filled_dynamic__bowl",
@@ -252,9 +260,9 @@ def test_t01_one_suitable_slot_per_setting():
     assert len(set(slots.values())) == 3
     for s, lid in t["v6_variants"]["no_room_fallback"]["seeds"].items():
         ok = _t01_suitable(episode_config(t, int(s), lid))
-        assert bool(ok) == (not lid.endswith("full_a")), (lid, s, sorted(ok))
-    assert {lid.split("__")[1] for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} == \
-        {"seats_b", "seats_c", "full_a"}
+        assert bool(ok) == ("full_a" not in lid), (lid, s, sorted(ok))
+    assert {lid.split("__")[1].removesuffix("_flat") for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} \
+        == {"seats_b", "seats_c", "full_a"}
 
 
 def test_t01_reader_seat():
@@ -296,7 +304,7 @@ def test_t01_which_table():
 
 
 def test_new_base_tasks():
-    """T21-T30: a control and five Task-Level variants each, plus a dependent-decisions one in some (Action + Task
+    """T21-T30: a control and at least three Task-Level variants each (five before same-design merges), plus a dependent-decisions one in some (Action + Task
     when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
     for k in range(21, 31):
         tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
@@ -305,7 +313,8 @@ def test_new_base_tasks():
                       for i in TASKS[tid]["v6_variants"].values())
         cats = sorted(x["category"] for x in tr.values())
         assert cats.count("control") == 1 and "action" not in cats, tid
-        assert 6 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid   # added or replacing
+        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review)
+        assert 4 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

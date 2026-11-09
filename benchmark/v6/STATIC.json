@@ -1,7 +1,7 @@
 {
- "variants": 172,
- "episodes": 1720,
- "static_ok": 1720,
+ "variants": 153,
+ "episodes": 1530,
+ "static_ok": 1530,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -13,24 +13,24 @@
    "static_ok": 60
   },
   "T03_utensils_one_container": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T04_cup_or_mug_to_cabinet": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T05_pen_or_pencil_to_desk": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 80,
+   "static_ok": 80
   },
   "T06_block_destination_occupied": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T07_heat_oatmeal": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T08_wipe_island": {
    "episodes": 50,
@@ -45,12 +45,12 @@
    "static_ok": 70
   },
   "T11_collect_fruits": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 40,
+   "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T13_breakfast_setup": {
    "episodes": 40,
@@ -69,8 +69,8 @@
    "static_ok": 40
   },
   "T18_check_cabinet_dishes": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 30,
+   "static_ok": 30
   },
   "T19_recycling": {
    "episodes": 40,
@@ -85,12 +85,12 @@
    "static_ok": 60
   },
   "T21_bring_tissues": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T22_put_away_shopping": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T23_pick_up_dropped": {
    "episodes": 60,
@@ -109,26 +109,26 @@
    "static_ok": 60
   },
   "T27_leftovers_to_fridge": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T28_cup_to_bedside": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T29_clear_table_for_dinner": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T30_bowls_for_soup": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   }
  },
  "categories": {
   "control": 30,
-  "task": 137,
-  "action_task": 5
+  "action_task": 8,
+  "task": 115
  },
- "tasks_sha1": "90ae4b2a5d9e5c9cfad0ed464beb1b1939674812"
+ "tasks_sha1": "1230fd3e7a7379039be81f5be439529499cdc8ee"
 }

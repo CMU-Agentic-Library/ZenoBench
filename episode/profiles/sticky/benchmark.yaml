@@ -24,6 +24,7 @@ observation:
   robot: {base_pose: true, held: true, room: true, temperatures: observed}
   task_status: false
   last_result: true
+  anonymize_names: true         # objects as <category>_<k> (episode/names.py)
 evaluation:
   drops_fail: true
 limits:

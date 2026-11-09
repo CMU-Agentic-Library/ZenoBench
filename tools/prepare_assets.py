@@ -53,7 +53,7 @@ SPECS = {
     "book_blue": (0.200, 0.30, ["book", "flat"], "solid", None),
     "toy_car": (0.120, 0.15, ["toy", "toy_car"], "solid", None),
     "teddy_bear": (0.160, 0.15, ["toy", "plush"], "solid", None),   # small plush: crown pinch on the head
-    "toy_block": (0.050, 0.04, ["toy", "block"], "solid", None),
+    "toy_block": (0.040, 0.03, ["toy", "block"], "solid", None),     # 4 cm like the wooden blocks
     "rubber_duck": (0.090, 0.05, ["toy", "duck"], "solid", None),
     "toy_box": (0.500, 3.00, ["container", "toy_box", "storage"], "rect_container", None),
     "storage_basket": (0.380, 0.60, ["container", "basket", "storage"], "rect_container", None),
