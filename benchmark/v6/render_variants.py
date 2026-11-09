@@ -506,7 +506,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     img0 = shot(eye0, c0)
     marks0.append((project([bx, by, 0.3]), "机器人起点"))
     for n, r in role.items():
-        if r in LABEL and n in objs and r != "ref" and not (r == "keep" and not sup_of(n)):   # not each block in a bin
+        if r in LABEL and n in objs and r != "ref" and not (r == "keep" and not sup_of(n) and pos(n)[2] > 0.1):   # not each block in a bin
             marks0.append((project(pos(n)), f"{LABEL[r]}：{n}"))
         elif r == "place" and n not in objs:
             try:
