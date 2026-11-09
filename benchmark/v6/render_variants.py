@@ -429,7 +429,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if not box:
             continue
         c = [(box[0] + box[3]) / 2, (box[1] + box[4]) / 2, (box[2] + box[5]) / 2]
-        img = shot(around(c, 1.4, 0.6), c)
+        try:                                     # its top from in front (an eye round the box lands in walls)
+            eye, _c = support_eye(n + "/top")
+        except Exception:
+            eye = around(c, 1.4, 0.6)
+        img = shot(eye, c)
         views.append((n, [(project([c[0], c[1], box[5]]), n)], img,
                       ("要打开再关好的 " if r == "open" else "要用的电器 ") + n))
         shown.add(n)
@@ -488,8 +492,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     used_goal = [i for i in takes if role.get(views[i][0]) == "use" and views[i][0] in in_goal]   # the pot itself
     if not goal_places:
         goal_places = used_goal or places[:1]
+    if not goal_places:                          # done where it is (a stack, a flip, a roll, a look, nothing to do):
+        bases = [i for i in takes if role.get(views[i][0]) == "base"]          # the base the stack goes on, or
+        goal_places = bases[:1] or [i for i, x in enumerate(kind) if x in ("view", "point")][:1] or takes[-1:]
     takes = [i for i in takes if i not in goal_places]
-    notes = [i for i, x in enumerate(kind) if x in ("view", "point")][:2]
+    notes = [i for i, x in enumerate(kind) if x in ("view", "point") and i not in goal_places][:2]
     tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places] + [("note_", i) for i in notes]
     tagged.sort(key=lambda p: p[1])
     head = {"find_": "要找的 · ", "goal_": "目标结果 · ", "note_": "注意 · "}
