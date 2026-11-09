@@ -1771,9 +1771,9 @@ def T15(t):
     return {
         "flip_on_the_shelf": dict(
             base="book_free", control="book_free", conditions=["workspace_choice", "not_in_view"],
-            instruction="A paperback has been lying face down on a shelf of the bedroom bookcase for days; its spine "
-                        "is getting bent. Please sort it out and leave it on its shelf.",
-            instruction_zh="卧室书架的一层上有本平装书一直扣着放，书脊都快压弯了，帮忙处理一下，书还放回那一层。",
+            instruction="A paperback is lying face down in the bedroom bookcase. Turn it face up for me and leave it "
+                        "on the same shelf.",
+            instruction_zh="卧室书架里有本平装书封面朝下放着，帮我翻正，仍放在原来那一层。",
             watch=[BOOK],
             factor="which low shelf (seed: the upper or the lower one inside the bookcase)",
             challenge="the face-down book lies on a shelf inside the bookcase, with only about 24 cm above it",
