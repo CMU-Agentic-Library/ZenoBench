@@ -149,3 +149,18 @@ def test_the_catalog_names_each_skill_once_with_a_builder_and_a_job(tmp_path):
     (tmp_path / "c.json").write_text(json.dumps(bad))
     with pytest.raises(ValueError, match="shape"):
         MS.load(tmp_path / "c.json")
+
+
+def test_a_higher_ride_asked_is_taken_when_reachable_else_the_load_rides_as_it_is():
+    held = Held("cup", np.eye(4))
+    goal = (np.array([0.4, -0.2, 1.4]), np.eye(3))
+    carry = Carry(check=lambda s: None, goals=lambda s, q: pytest.fail("the constraints hold"),
+                  want=lambda s: "below the rim asked",
+                  raise_goals=lambda s, q: (PoseSet((goal,)), {"step": 0.01}))
+    k = Kin()
+    k.ik = [_q(0.4, -0.2, 1.4)]
+    plan = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
+    assert plan.segments[0].name == "carry_in" and np.allclose(plan.segments[0].q_end[:3], [0.4, -0.2, 1.4])
+    k.ik = [None]                                            # out of reach: no failure, no motion
+    plan = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
+    assert [s.kind for s in plan.segments] == ["drive", "anchor"] and plan.info["carry"].startswith("kept: below")

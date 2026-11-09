@@ -31,9 +31,14 @@ SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more a
 class Carry:
     """What a load in the right hand asks of the posture it is driven in.
     check(state) -> None when the posture meets the carry constraints, else why not;
-    goals(state, q) -> (PoseSet, {step, steps_per_wp, smooth}): the carry goal set when it does not."""
+    goals(state, q) -> (PoseSet, {step, steps_per_wp, smooth}): the carry goal set when it does not.
+    want(state) -> None, or why the load should ride higher (a rim the destination asks to clear:
+    not a constraint -- the drive's whole-body plan checks the load against the world -- so the
+    load is raised to raise_goals when one is reachable, else it rides as it is)."""
     check: Callable
     goals: Callable
+    want: Callable | None = None
+    raise_goals: Callable | None = None
 
 
 def travel_chain(kin, left_kin, state, arrive=None):
@@ -80,15 +85,20 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
                         skipped["tuck"], seg = seg.why, None
             elif carry is not None:
                 why = carry.check(s)            # the State now: kin at its base already
-                info["carry"] = "kept" if why is None else why
-                if why is not None:
+                want = None if why is not None or carry.want is None else carry.want(s)
+                info["carry"] = "kept" if why is None and want is None else (why or want)
+                if why is not None or want is not None:
                     with query(kin, s, FREE_LOAD):
-                        goals, how = carry.goals(s, q)
+                        goals, how = (carry.goals if why is not None else carry.raise_goals)(s, q)
                     seg = free_leg(kin, s, FREE_LOAD, goals, "carry_in", step=how.get("step", 0.01)) \
                         if goals.goals else Failure("no carry goal", "carry_in")
-                    if isinstance(seg, Failure):
+                    if isinstance(seg, Failure) and why is None:
+                        # the constraints hold, only the higher ride is out of reach: as it is
+                        info["carry"], seg = f"kept: {want}; no higher goal reachable ({seg.why})", None
+                    elif isinstance(seg, Failure):
                         return Failure(f"{why}; to the carry pose: {seg.why}", "carry_in", {"carry": why})
-                    seg = _move(seg, steps_per_wp=how.get("steps_per_wp", 4), smooth=how.get("smooth", False))
+                    else:
+                        seg = _move(seg, steps_per_wp=how.get("steps_per_wp", 4), smooth=how.get("smooth", False))
         elif stage == "left_fold":
             ql = s.q("left")
             goal_l = np.r_[ql[:2], np.asarray(left_kin.rest, float)[2:]]
