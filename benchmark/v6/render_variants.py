@@ -430,7 +430,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     by_sup = {}
     for n, r in role.items():
         if r in ("keep", "other", "alt", "ref") and n not in shown and n in objs \
-                and not sup_of(n).endswith("/inside_shelf"):
+                and not sup_of(n).endswith("/inside_shelf") and (sup_of(n) or pos(n)[2] < 0.1):   # not in a bin
             by_sup.setdefault(sup_of(n), []).append(n)
     for sp, names in by_sup.items():
         if sp:

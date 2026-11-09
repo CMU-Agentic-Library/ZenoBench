@@ -1742,6 +1742,18 @@
   - `stored_block_10` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `stored_block_11` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `stored_block_12` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_13` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_14` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_15` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_16` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_17` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_18` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_19` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_20` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_21` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_22` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_23` 完全在 `toy_bin_small` 里（没有露出边沿）
+  - `stored_block_24` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `toy_car` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `rubber_duck` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `toy_bin_small`、`toy_bin_small_2` 立着
@@ -1759,6 +1771,18 @@
   - `stored_block_10` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `stored_block_11` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `stored_block_12` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_13` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_14` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_15` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_16` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_17` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_18` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_19` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_20` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_21` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_22` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_23` 完全在 `toy_bin_small_2` 里（没有露出边沿）
+  - `stored_block_24` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `toy_car` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `toy_bin_small_2`、`toy_bin_small` 立着

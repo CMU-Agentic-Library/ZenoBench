@@ -13598,7 +13598,19 @@
     "stored_block_10",
     "stored_block_11",
     "stored_block_12",
+    "stored_block_13",
+    "stored_block_14",
+    "stored_block_15",
+    "stored_block_16",
+    "stored_block_17",
+    "stored_block_18",
+    "stored_block_19",
     "stored_block_2",
+    "stored_block_20",
+    "stored_block_21",
+    "stored_block_22",
+    "stored_block_23",
+    "stored_block_24",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
@@ -13678,6 +13690,66 @@
     [
      "fully_inside",
      "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_13",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_14",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_15",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_16",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_17",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_18",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_19",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_20",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_21",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_22",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_23",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_24",
      "toy_bin_small"
     ],
     [
@@ -13729,7 +13801,19 @@
     "stored_block_10",
     "stored_block_11",
     "stored_block_12",
+    "stored_block_13",
+    "stored_block_14",
+    "stored_block_15",
+    "stored_block_16",
+    "stored_block_17",
+    "stored_block_18",
+    "stored_block_19",
     "stored_block_2",
+    "stored_block_20",
+    "stored_block_21",
+    "stored_block_22",
+    "stored_block_23",
+    "stored_block_24",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
@@ -13809,6 +13893,66 @@
     [
      "fully_inside",
      "stored_block_12",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_13",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_14",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_15",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_16",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_17",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_18",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_19",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_20",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_21",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_22",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_23",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_24",
      "toy_bin_small_2"
     ],
     [
@@ -13860,7 +14004,19 @@
     "stored_block_10",
     "stored_block_11",
     "stored_block_12",
+    "stored_block_13",
+    "stored_block_14",
+    "stored_block_15",
+    "stored_block_16",
+    "stored_block_17",
+    "stored_block_18",
+    "stored_block_19",
     "stored_block_2",
+    "stored_block_20",
+    "stored_block_21",
+    "stored_block_22",
+    "stored_block_23",
+    "stored_block_24",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
@@ -13940,6 +14096,66 @@
     [
      "fully_inside",
      "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_13",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_14",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_15",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_16",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_17",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_18",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_19",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_20",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_21",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_22",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_23",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_24",
      "toy_bin_small"
     ],
     [
@@ -13991,7 +14207,19 @@
     "stored_block_10",
     "stored_block_11",
     "stored_block_12",
+    "stored_block_13",
+    "stored_block_14",
+    "stored_block_15",
+    "stored_block_16",
+    "stored_block_17",
+    "stored_block_18",
+    "stored_block_19",
     "stored_block_2",
+    "stored_block_20",
+    "stored_block_21",
+    "stored_block_22",
+    "stored_block_23",
+    "stored_block_24",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
@@ -14071,6 +14299,66 @@
     [
      "fully_inside",
      "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_13",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_14",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_15",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_16",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_17",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_18",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_19",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_20",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_21",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_22",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_23",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_24",
      "toy_bin_small"
     ],
     [

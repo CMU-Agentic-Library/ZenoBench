@@ -1822,7 +1822,7 @@
    "task": "T12_tidy_toys",
    "layout": "bins_capacity__side_left_full",
    "steps": 14,
-   "atoms_checked": 15,
+   "atoms_checked": 27,
    "atoms_geometric": 2,
    "geometric_atoms": [
     "upright toy_bin_small",
@@ -1835,7 +1835,7 @@
    "task": "T12_tidy_toys",
    "layout": "bins_capacity__side_right_full",
    "steps": 14,
-   "atoms_checked": 15,
+   "atoms_checked": 27,
    "atoms_geometric": 2,
    "geometric_atoms": [
     "upright toy_bin_small_2",
@@ -1848,7 +1848,7 @@
    "task": "T12_tidy_toys",
    "layout": "bins_capacity__apart_full_on_tv",
    "steps": 15,
-   "atoms_checked": 15,
+   "atoms_checked": 27,
    "atoms_geometric": 2,
    "geometric_atoms": [
     "upright toy_bin_small",
@@ -1861,7 +1861,7 @@
    "task": "T12_tidy_toys",
    "layout": "bins_capacity__apart_empty_on_desk",
    "steps": 15,
-   "atoms_checked": 15,
+   "atoms_checked": 27,
    "atoms_geometric": 2,
    "geometric_atoms": [
     "upright toy_bin_small",

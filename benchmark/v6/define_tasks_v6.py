@@ -1380,13 +1380,14 @@ def T12(t):
     FULL, EMPTY = "toy_bin_small", "toy_bin_small_2"
     SZ = {"bookcase_2/top": 0.709, "tv_stand_2/top": 0.484, "desk_1/top": 0.70}
     REG_OF = {"bookcase_2/top": "bedroom_0_1", "tv_stand_2/top": LIVING, "desk_1/top": "living_room_0_1"}
-    N_STORED = 12
+    N_STORED = 24
 
     def full_of_blocks(sup, x0, y0):
-        """Twelve 4 cm blocks, 3 x 2 per layer, two layers, inside the floor (smaller than the rim): the bin looks
-        and is full."""
+        """Twenty-four 4 cm blocks, 4 x 3 per layer (1 mm apart), two layers, inside the floor (smaller than the
+        rim): the bin looks and is full."""
         z0 = SZ[sup] + 0.009
-        cells = [(dx, dy, dz) for dz in (0.0, BLOCK_H + 0.001) for dx in (-0.045, 0.0, 0.045) for dy in (-0.024, 0.024)]
+        cells = [(dx, dy, dz) for dz in (0.0, BLOCK_H + 0.001) for dx in (-0.0615, -0.0205, 0.0205, 0.0615)
+                 for dy in (-0.041, 0.0, 0.041)]
         return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": round(z0 + dz, 3),
                                           "xy": [round(x0 + dx, 3), round(y0 + dy, 3)], "yaw_deg": 0}
                 for i, (dx, dy, dz) in enumerate(cells)}

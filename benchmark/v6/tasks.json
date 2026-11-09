@@ -45150,8 +45150,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.795,
-        -0.454
+        0.778,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -45160,8 +45160,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.795,
-        -0.406
+        0.778,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -45170,8 +45170,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.84,
-        -0.454
+        0.778,
+        -0.389
        ],
        "yaw_deg": 0
       },
@@ -45180,8 +45180,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.84,
-        -0.406
+        0.82,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -45190,8 +45190,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.885,
-        -0.454
+        0.82,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -45200,68 +45200,188 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.885,
-        -0.406
+        0.82,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.795,
-        -0.454
+        0.86,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.795,
-        -0.406
+        0.86,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.84,
-        -0.454
+        0.86,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.84,
-        -0.406
+        0.901,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.885,
-        -0.454
+        0.901,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
+       "z": 0.718,
+       "xy": [
+        0.901,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_13": {
+       "asset": "wooden_block",
+       "support": null,
        "z": 0.759,
        "xy": [
-        0.885,
-        -0.406
+        0.778,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_14": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.778,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_15": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.778,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_16": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.82,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_17": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.82,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_18": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.82,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_19": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.86,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_20": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.86,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_21": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.86,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_22": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.901,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_23": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.901,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_24": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.901,
+        -0.389
        ],
        "yaw_deg": 0
       }
@@ -45330,6 +45450,66 @@
        ],
        [
         "fully_inside",
+        "stored_block_13",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_14",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_15",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_16",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_17",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_18",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_19",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_20",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_21",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_22",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_23",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_24",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
         "toy_car",
         "toy_bin_small_2"
        ],
@@ -45372,7 +45552,19 @@
          "stored_block_10",
          "stored_block_11",
          "stored_block_12",
+         "stored_block_13",
+         "stored_block_14",
+         "stored_block_15",
+         "stored_block_16",
+         "stored_block_17",
+         "stored_block_18",
+         "stored_block_19",
          "stored_block_2",
+         "stored_block_20",
+         "stored_block_21",
+         "stored_block_22",
+         "stored_block_23",
+         "stored_block_24",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
@@ -45474,8 +45666,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.085,
-        -0.454
+        1.068,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -45484,8 +45676,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.085,
-        -0.406
+        1.068,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -45494,8 +45686,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.13,
-        -0.454
+        1.068,
+        -0.389
        ],
        "yaw_deg": 0
       },
@@ -45504,8 +45696,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.13,
-        -0.406
+        1.109,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -45514,8 +45706,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.175,
-        -0.454
+        1.109,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -45524,68 +45716,188 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.175,
-        -0.406
+        1.109,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.085,
-        -0.454
+        1.15,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.085,
-        -0.406
+        1.15,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.13,
-        -0.454
+        1.15,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.13,
-        -0.406
+        1.192,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.175,
-        -0.454
+        1.192,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
+       "z": 0.718,
+       "xy": [
+        1.192,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_13": {
+       "asset": "wooden_block",
+       "support": null,
        "z": 0.759,
        "xy": [
-        1.175,
-        -0.406
+        1.068,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_14": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.068,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_15": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.068,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_16": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.109,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_17": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.109,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_18": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.109,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_19": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.15,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_20": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.15,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_21": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.15,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_22": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.192,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_23": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.192,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_24": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.192,
+        -0.389
        ],
        "yaw_deg": 0
       }
@@ -45654,6 +45966,66 @@
        ],
        [
         "fully_inside",
+        "stored_block_13",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_14",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_15",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_16",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_17",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_18",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_19",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_20",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_21",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_22",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_23",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_24",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
         "toy_car",
         "toy_bin_small"
        ],
@@ -45696,7 +46068,19 @@
          "stored_block_10",
          "stored_block_11",
          "stored_block_12",
+         "stored_block_13",
+         "stored_block_14",
+         "stored_block_15",
+         "stored_block_16",
+         "stored_block_17",
+         "stored_block_18",
+         "stored_block_19",
          "stored_block_2",
+         "stored_block_20",
+         "stored_block_21",
+         "stored_block_22",
+         "stored_block_23",
+         "stored_block_24",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
@@ -45798,8 +46182,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.555,
-        0.336
+        7.538,
+        0.319
        ],
        "yaw_deg": 0
       },
@@ -45808,8 +46192,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.555,
-        0.384
+        7.538,
+        0.36
        ],
        "yaw_deg": 0
       },
@@ -45818,8 +46202,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.6,
-        0.336
+        7.538,
+        0.401
        ],
        "yaw_deg": 0
       },
@@ -45828,8 +46212,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.6,
-        0.384
+        7.579,
+        0.319
        ],
        "yaw_deg": 0
       },
@@ -45838,8 +46222,8 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.645,
-        0.336
+        7.579,
+        0.36
        ],
        "yaw_deg": 0
       },
@@ -45848,68 +46232,188 @@
        "support": null,
        "z": 0.493,
        "xy": [
-        7.645,
-        0.384
+        7.579,
+        0.401
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.534,
+       "z": 0.493,
        "xy": [
-        7.555,
-        0.336
+        7.62,
+        0.319
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.534,
+       "z": 0.493,
        "xy": [
-        7.555,
-        0.384
+        7.62,
+        0.36
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.534,
+       "z": 0.493,
        "xy": [
-        7.6,
-        0.336
+        7.62,
+        0.401
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.534,
+       "z": 0.493,
        "xy": [
-        7.6,
-        0.384
+        7.661,
+        0.319
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.534,
+       "z": 0.493,
        "xy": [
-        7.645,
-        0.336
+        7.661,
+        0.36
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
+       "z": 0.493,
+       "xy": [
+        7.661,
+        0.401
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_13": {
+       "asset": "wooden_block",
+       "support": null,
        "z": 0.534,
        "xy": [
-        7.645,
-        0.384
+        7.538,
+        0.319
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_14": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.538,
+        0.36
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_15": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.538,
+        0.401
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_16": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.579,
+        0.319
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_17": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.579,
+        0.36
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_18": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.579,
+        0.401
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_19": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.62,
+        0.319
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_20": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.62,
+        0.36
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_21": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.62,
+        0.401
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_22": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.661,
+        0.319
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_23": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.661,
+        0.36
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_24": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.534,
+       "xy": [
+        7.661,
+        0.401
        ],
        "yaw_deg": 0
       }
@@ -45974,6 +46478,66 @@
        [
         "fully_inside",
         "stored_block_12",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_13",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_14",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_15",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_16",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_17",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_18",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_19",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_20",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_21",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_22",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_23",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_24",
         "toy_bin_small"
        ],
        [
@@ -46060,7 +46624,19 @@
          "stored_block_10",
          "stored_block_11",
          "stored_block_12",
+         "stored_block_13",
+         "stored_block_14",
+         "stored_block_15",
+         "stored_block_16",
+         "stored_block_17",
+         "stored_block_18",
+         "stored_block_19",
          "stored_block_2",
+         "stored_block_20",
+         "stored_block_21",
+         "stored_block_22",
+         "stored_block_23",
+         "stored_block_24",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
@@ -46145,8 +46721,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.955,
-        -0.454
+        0.939,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -46155,8 +46731,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.955,
-        -0.406
+        0.939,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -46165,8 +46741,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.0,
-        -0.454
+        0.939,
+        -0.389
        ],
        "yaw_deg": 0
       },
@@ -46175,8 +46751,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.0,
-        -0.406
+        0.98,
+        -0.471
        ],
        "yaw_deg": 0
       },
@@ -46185,8 +46761,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.045,
-        -0.454
+        0.98,
+        -0.43
        ],
        "yaw_deg": 0
       },
@@ -46195,68 +46771,188 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.045,
-        -0.406
+        0.98,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_7": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.955,
-        -0.454
+        1.02,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_8": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        0.955,
-        -0.406
+        1.02,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_9": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.0,
-        -0.454
+        1.02,
+        -0.389
        ],
        "yaw_deg": 0
       },
       "stored_block_10": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.0,
-        -0.406
+        1.062,
+        -0.471
        ],
        "yaw_deg": 0
       },
       "stored_block_11": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.759,
+       "z": 0.718,
        "xy": [
-        1.045,
-        -0.454
+        1.062,
+        -0.43
        ],
        "yaw_deg": 0
       },
       "stored_block_12": {
        "asset": "wooden_block",
        "support": null,
+       "z": 0.718,
+       "xy": [
+        1.062,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_13": {
+       "asset": "wooden_block",
+       "support": null,
        "z": 0.759,
        "xy": [
-        1.045,
-        -0.406
+        0.939,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_14": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.939,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_15": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.939,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_16": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.98,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_17": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.98,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_18": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        0.98,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_19": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.02,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_20": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.02,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_21": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.02,
+        -0.389
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_22": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.062,
+        -0.471
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_23": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.062,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_24": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.759,
+       "xy": [
+        1.062,
+        -0.389
        ],
        "yaw_deg": 0
       }
@@ -46325,6 +47021,66 @@
        ],
        [
         "fully_inside",
+        "stored_block_13",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_14",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_15",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_16",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_17",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_18",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_19",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_20",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_21",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_22",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_23",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_24",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
         "toy_car",
         "toy_bin_small_2"
        ],
@@ -46367,7 +47123,19 @@
          "stored_block_10",
          "stored_block_11",
          "stored_block_12",
+         "stored_block_13",
+         "stored_block_14",
+         "stored_block_15",
+         "stored_block_16",
+         "stored_block_17",
+         "stored_block_18",
+         "stored_block_19",
          "stored_block_2",
+         "stored_block_20",
+         "stored_block_21",
+         "stored_block_22",
+         "stored_block_23",
+         "stored_block_24",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
