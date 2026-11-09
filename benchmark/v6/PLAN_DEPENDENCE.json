@@ -95,6 +95,7 @@
    "T05 pens_per_notebook",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
+   "T06 occupied_block_away",
    "T07 two_portions",
    "T08 return_sponge_home",
    "T10 after_dinner_clear",
@@ -2061,7 +2062,6 @@
    "control_route": "passes",
    "other_layouts": {},
    "other_variants_passing": [
-    "occupied_block_away__alt_tv_stand_2",
     "display_row__island_floor",
     "display_spot_or_tv__front_taken",
     "display_spot_or_tv__front_free"
@@ -2076,14 +2076,14 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "occupied_block_away__alt_tv_stand_2": "argument_mismatch"
+    "occupied_block_away__alt_bookcase_2": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T06_block_destination_occupied",
    "variant": "occupied_block_away",
-   "layout": "occupied_block_away__alt_tv_stand_2",
+   "layout": "occupied_block_away__alt_bookcase_2",
    "steps": 7,
    "own_route_passes": true,
    "geometric_atoms": [],
@@ -2158,8 +2158,7 @@
     "display_spot_or_tv__front_free": "goal_not_met"
    },
    "other_variants_passing": [
-    "occupied",
-    "occupied_block_away__alt_tv_stand_2"
+    "occupied"
    ]
   },
   {
@@ -5054,7 +5053,7 @@
    "variant": "occupied_block_away",
    "candidates": [
     "occupied_block_away",
-    "occupied_block_away__alt_tv_stand_2",
+    "occupied_block_away__alt_bookcase_2",
     "free"
    ],
    "passes_all": []
@@ -6956,13 +6955,13 @@
    "variant": "occupied_block_away",
    "layouts": [
     "occupied_block_away",
-    "occupied_block_away__alt_tv_stand_2"
+    "occupied_block_away__alt_bookcase_2"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": false,
+   "same_before_key_observation": true,
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "argument_mismatch",
-   "hidden_state_branch": false
+   "hidden_state_branch": true
   },
   {
    "task": "T06_block_destination_occupied",

@@ -1065,7 +1065,7 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "occupied_block_away__alt_tv_stand_2",
+   "layout": "occupied_block_away__alt_bookcase_2",
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,

@@ -26666,8 +26666,8 @@
       }
      }
     },
-    "occupied_block_away__alt_tv_stand_2": {
-     "note": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on tv_stand_2/top)",
+    "occupied_block_away__alt_bookcase_2": {
+     "note": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on bookcase_2/top)",
      "conditions": [
       "destination_occupied",
       "not_in_view"
@@ -26690,10 +26690,10 @@
        "yaw_deg": 0.0
       },
       "wooden_block_a": {
-       "support": "tv_stand_2/top",
+       "support": "bookcase_2/top",
        "xy": [
-        7.0,
-        0.36
+        1.0,
+        -0.43
        ],
        "yaw_deg": 0.0
       },
@@ -26719,16 +26719,36 @@
      "v3_difficulty": "hard",
      "v6": {
       "family": "occupied_block_away",
-      "case": "alt_tv_stand_2",
+      "case": "alt_bookcase_2",
       "tier": "medium",
       "hard_category": null,
-      "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on tv_stand_2/top)",
+      "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on bookcase_2/top)",
       "derived_from": "occupied_block_away",
       "seed_extension": true,
       "rationale": "seed extension of the v5 design: the wooden_block_a ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.975,
+         -0.455,
+         1.025,
+         -0.405
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.15,
+         0.0
+        ]
+       },
        {
         "names": [
          "wooden_block_b"
@@ -26747,26 +26767,6 @@
         "dy": [
          -0.07,
          0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         6.975,
-         0.335,
-         7.025,
-         0.385
-        ],
-        "dx": [
-         -0.32,
-         1.33
-        ],
-        "dy": [
-         -0.11,
-         0.02
         ]
        }
       ],
@@ -28589,7 +28589,7 @@
     "free": "nominal",
     "occupied": "v6_occupied",
     "occupied_block_away": "v6_occupied_block_away",
-    "occupied_block_away__alt_tv_stand_2": "v6_occupied_block_away__alt_tv_stand_2",
+    "occupied_block_away__alt_bookcase_2": "v6_occupied_block_away__alt_bookcase_2",
     "display_row__island_floor": "v6_display_row__island_floor",
     "display_row__spread": "v6_display_row__spread",
     "display_spot_or_tv__front_taken": "v6_display_spot_or_tv__front_taken",
@@ -28638,7 +28638,7 @@
      ],
      "since": "v2"
     },
-    "v6_occupied_block_away__alt_tv_stand_2": {
+    "v6_occupied_block_away__alt_bookcase_2": {
      "steps": [
       {
        "skill": "look",
@@ -28650,7 +28650,7 @@
        "skill": "search",
        "args": {
         "object": "wooden_block_a",
-        "region": "living_room_0_0"
+        "region": "bedroom_0_1"
        },
        "role": "recovery"
       },
@@ -28689,7 +28689,7 @@
       }
      ],
      "kind": "v6_look_first",
-     "variant": "occupied_block_away__alt_tv_stand_2"
+     "variant": "occupied_block_away__alt_bookcase_2"
     },
     "v6_occupied": {
      "steps": [
@@ -29278,18 +29278,18 @@
      "control": "free",
      "layouts": [
       "occupied_block_away",
-      "occupied_block_away__alt_tv_stand_2"
+      "occupied_block_away__alt_bookcase_2"
      ],
      "seeds": {
-      "10": "occupied_block_away__alt_tv_stand_2",
+      "10": "occupied_block_away__alt_bookcase_2",
       "11": "occupied_block_away",
       "12": "occupied_block_away",
-      "13": "occupied_block_away__alt_tv_stand_2",
-      "14": "occupied_block_away__alt_tv_stand_2",
+      "13": "occupied_block_away__alt_bookcase_2",
+      "14": "occupied_block_away__alt_bookcase_2",
       "15": "occupied_block_away",
       "16": "occupied_block_away",
-      "17": "occupied_block_away__alt_tv_stand_2",
-      "18": "occupied_block_away__alt_tv_stand_2",
+      "17": "occupied_block_away__alt_bookcase_2",
+      "18": "occupied_block_away__alt_bookcase_2",
       "19": "occupied_block_away"
      },
      "factor": "where the resource is to be found (seed extension)"

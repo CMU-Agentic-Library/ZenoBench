@@ -8808,7 +8808,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/occupied_block_away__alt_tv_stand_2": {
+ "T06_block_destination_occupied/occupied_block_away__alt_bookcase_2": {
   "variant": "occupied_block_away",
   "category": "task",
   "seeds": [
@@ -8876,8 +8876,8 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v6_occupied_block_away__alt_tv_stand_2",
-  "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on tv_stand_2/top)",
+  "oracle_route": "v6_occupied_block_away__alt_bookcase_2",
+  "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on bookcase_2/top)",
   "rationale": "seed extension of the v5 design: the wooden_block_a ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

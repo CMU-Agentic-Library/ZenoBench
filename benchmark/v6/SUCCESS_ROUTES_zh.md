@@ -694,7 +694,7 @@
 
 ### no_pen_pencil_away（Task）
 
-**情况**：没钢笔，铅笔在另一个房间的餐桌上 → 去找铅笔
+**情况**：要铅笔，铅笔在另一个房间的餐桌上 → 去找铅笔
 
 **成功条件**：
 
@@ -711,7 +711,7 @@
 
 ### check_desk_first（Task）
 
-**情况**：指令照常（拿钢笔，没有就拿铅笔），但书桌上其实已经有了：钢笔在桌上；或者家里没有钢笔、铅笔已经在桌上 → 先看书桌，确认已经有了就停手；再拿一支来算失败，别处的笔要原地不动
+**情况**：指令要的笔书桌上其实已经有了：要钢笔、钢笔在桌上；或者要铅笔、铅笔在桌上 → 先看书桌，确认已经有了就停手；再拿一支来算失败，别处的笔要原地不动
 
 **指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。
 
@@ -909,7 +909,7 @@
 
 ### x6_gd_pen_or_pencil_cabinets（Task）
 
-**情况**：两个矮柜里一个放钢笔、一个放铅笔 → 都打开看，优先拿钢笔，关好柜门
+**情况**：指令要钢笔；两个矮柜里一个放钢笔、一个放铅笔 → 打开找到钢笔为止（铅笔不算），关好柜门
 
 **指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。
 
@@ -993,7 +993,7 @@
 **参考调用顺序**：
 
 - 摆法 `occupied_block_away`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=dining_room_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `look(target=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
-- 摆法 `alt_tv_stand_2`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=living_room_0_0)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `look(target=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
+- 摆法 `alt_bookcase_2`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=bedroom_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `look(target=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
 
 ### display_row（Task）
 

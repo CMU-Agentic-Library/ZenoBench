@@ -2389,10 +2389,12 @@ NEW_CONDITIONS = {
 # stays a case with its configuration and hash untouched.  SEED_EXT holds the place chosen per family (the first
 # candidate that passes every static check, found by ``python benchmark/v6/define_tasks_v6.py --select-ext``).
 EXT_PLACES = [("dining_table_2/top", [3.7, 6.3], "dining_room_0_1"), ("tv_stand_2/top", [7.0, 0.36], "living_room_0_0"),
-              ("kitchen_cabinet_4/top", [1.4, 0.42], None), ("kitchen_cabinet_6/top", [3.7, 0.36], "living_room_0_0")]
+              ("kitchen_cabinet_4/top", [1.4, 0.42], None), ("kitchen_cabinet_6/top", [3.7, 0.36], "living_room_0_0"),
+              ("bookcase_2/top", [1.0, -0.43], "bedroom_0_1")]
 SEED_EXT = {
     ('T04_cup_or_mug_to_cabinet', 'no_cup_mug_away'): 0,
-    ('T06_block_destination_occupied', 'occupied_block_away'): 1,
+    # the TV stand is T06's other display place and kitchen cabinet 4 another low wall cabinet: the kid's bookcase
+    ('T06_block_destination_occupied', 'occupied_block_away'): 4,
     ('T07_heat_oatmeal', 'broken_oatmeal_away'): 0,
     ('T08_wipe_island', 'far_sponge_tv'): 0,
     ('T08_wipe_island', 'h_dynamic_sponge_taken'): 0,

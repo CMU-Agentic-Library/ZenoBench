@@ -2242,8 +2242,8 @@
 {
 "task": "T06_block_destination_occupied",
 "seed": 10,
-"variant": "occupied_block_away__alt_tv_stand_2",
-"route": "v6_occupied_block_away__alt_tv_stand_2",
+"variant": "occupied_block_away__alt_bookcase_2",
+"route": "v6_occupied_block_away__alt_bookcase_2",
 "family": "occupied_block_away"
 },
 {
@@ -2263,15 +2263,15 @@
 {
 "task": "T06_block_destination_occupied",
 "seed": 13,
-"variant": "occupied_block_away__alt_tv_stand_2",
-"route": "v6_occupied_block_away__alt_tv_stand_2",
+"variant": "occupied_block_away__alt_bookcase_2",
+"route": "v6_occupied_block_away__alt_bookcase_2",
 "family": "occupied_block_away"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 14,
-"variant": "occupied_block_away__alt_tv_stand_2",
-"route": "v6_occupied_block_away__alt_tv_stand_2",
+"variant": "occupied_block_away__alt_bookcase_2",
+"route": "v6_occupied_block_away__alt_bookcase_2",
 "family": "occupied_block_away"
 },
 {
@@ -2291,15 +2291,15 @@
 {
 "task": "T06_block_destination_occupied",
 "seed": 17,
-"variant": "occupied_block_away__alt_tv_stand_2",
-"route": "v6_occupied_block_away__alt_tv_stand_2",
+"variant": "occupied_block_away__alt_bookcase_2",
+"route": "v6_occupied_block_away__alt_bookcase_2",
 "family": "occupied_block_away"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 18,
-"variant": "occupied_block_away__alt_tv_stand_2",
-"route": "v6_occupied_block_away__alt_tv_stand_2",
+"variant": "occupied_block_away__alt_bookcase_2",
+"route": "v6_occupied_block_away__alt_bookcase_2",
 "family": "occupied_block_away"
 },
 {
