@@ -14,7 +14,7 @@
    18,
    19
   ],
-  "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
+  "instruction": "Bring the book on the island to the dining table to carry on reading over breakfast.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -56,7 +56,7 @@
    12,
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -197,7 +197,7 @@
    13,
    17
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -338,7 +338,7 @@
    10,
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -479,7 +479,7 @@
    11,
    14
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -620,7 +620,7 @@
   "seeds": [
    18
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -761,7 +761,7 @@
   "seeds": [
    16
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -903,7 +903,7 @@
    14,
    16
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1065,7 +1065,7 @@
    11,
    15
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1226,7 +1226,7 @@
   "seeds": [
    12
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1382,7 +1382,7 @@
   "seeds": [
    18
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1538,7 +1538,7 @@
   "seeds": [
    19
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1700,7 +1700,7 @@
   "seeds": [
    17
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -1862,7 +1862,7 @@
   "seeds": [
    10
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2019,7 +2019,7 @@
   "seeds": [
    13
   ],
-  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
+  "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2177,7 +2177,7 @@
    11,
    12
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2319,7 +2319,7 @@
    10,
    18
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2461,7 +2461,7 @@
    13,
    16
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2658,7 +2658,7 @@
    17,
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2800,7 +2800,7 @@
   "seeds": [
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2942,7 +2942,7 @@
   "seeds": [
    14
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
+  "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3140,7 +3140,7 @@
    16,
    17
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3290,7 +3290,7 @@
    10,
    13
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3440,7 +3440,7 @@
    12,
    18
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3590,7 +3590,7 @@
    11,
    14
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3740,7 +3740,7 @@
   "seeds": [
    15
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -3890,7 +3890,7 @@
   "seeds": [
    19
   ],
-  "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
+  "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4044,7 +4044,7 @@
    18,
    19
   ],
-  "instruction": "Last night the guest read for a while in the living room while watching TV and left the book there. Bring that book to the dining table; they want to go on reading at breakfast. Apart from that book, do not move anything.",
+  "instruction": "The guest wants to carry on reading over breakfast the book they read in the living room last night. Bring it to the dining table. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4105,7 +4105,7 @@
    16,
    17
   ],
-  "instruction": "Last night the guest read in the bedroom before going to sleep and left the book there. Bring that book to the dining table; they want to go on reading at breakfast. Apart from that book, do not move anything.",
+  "instruction": "The guest wants to carry on reading over breakfast the book they read in the bedroom before bed last night. Bring it to the dining table. Leave everything else as it is.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

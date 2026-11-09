@@ -292,8 +292,8 @@
     "k_book",
     "b_books"
    ],
-   "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
-   "instruction_zh": "有人把平装书落在厨房岛台上了，把它拿到餐桌上，方便吃早饭时看。",
+   "instruction": "Bring the book on the island to the dining table to carry on reading over breakfast.",
+   "instruction_zh": "把岛台上那本书拿到餐桌，吃早饭时接着看。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -595,8 +595,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -882,8 +882,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -1169,8 +1169,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -1457,8 +1457,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -1745,8 +1745,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -2033,8 +2033,8 @@
        ]
       ]
      },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "Breakfast is set. Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -2244,8 +2244,8 @@
       "destination_unnamed",
       "spot_quality"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -2566,8 +2566,8 @@
       "destination_unnamed",
       "spot_quality"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -2888,8 +2888,8 @@
       "destination_unnamed",
       "spot_quality"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -3205,8 +3205,8 @@
       "destination_unnamed",
       "spot_quality"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -3523,8 +3523,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -3846,8 +3846,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -4169,8 +4169,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -4487,8 +4487,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything.",
-     "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+     "instruction": "The guests are having breakfast. Put the book from the island on their table so they can read while eating, without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -4777,8 +4777,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5065,8 +5065,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5353,8 +5353,8 @@
       "spot_quality",
       "infeasible_fallback"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5697,8 +5697,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -5986,8 +5986,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -6275,8 +6275,8 @@
       "infeasible_fallback",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Apart from the book, do not move anything; if there is no such place on the table, put the book away on a bookcase instead.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。",
+     "instruction": "Put the book from the island on the dining table so the guests can read while eating, without getting in the way of their meal; if there really is no suitable place, put it away on a bookcase for now. Leave everything else as it is.",
+     "instruction_zh": "把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -6618,8 +6618,8 @@
       "referent_clue",
       "spot_quality"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -6914,8 +6914,8 @@
       "referent_clue",
       "spot_quality"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -7210,8 +7210,8 @@
       "referent_clue",
       "spot_quality"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -7507,8 +7507,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -7804,8 +7804,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -8101,8 +8101,8 @@
       "spot_quality",
       "no_overhang"
      ],
-     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee from a mug with a handle in the morning (the others have cups without a handle): put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware. Apart from the book, do not move anything.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+     "instruction": "The guest drinking coffee from a mug wants to read the book on the island over breakfast. Set it on the dining table for them without getting in the way of their meal. Leave everything else as it is.",
+     "instruction_zh": "用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -8376,8 +8376,8 @@
        ]
       ]
      },
-     "instruction": "Last night the guest read for a while in the living room while watching TV and left the book there. Bring that book to the dining table; they want to go on reading at breakfast. Apart from that book, do not move anything.",
-     "instruction_zh": "客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。除了那本书，别的东西都别挪动。",
+     "instruction": "The guest wants to carry on reading over breakfast the book they read in the living room last night. Bring it to the dining table. Leave everything else as it is.",
+     "instruction_zh": "客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。",
      "since": "v6",
      "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
      "v6": {
@@ -8564,8 +8564,8 @@
        ]
       ]
      },
-     "instruction": "Last night the guest read in the bedroom before going to sleep and left the book there. Bring that book to the dining table; they want to go on reading at breakfast. Apart from that book, do not move anything.",
-     "instruction_zh": "客人昨晚睡前在卧室看书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。除了那本书，别的东西都别挪动。",
+     "instruction": "The guest wants to carry on reading over breakfast the book they read in the bedroom before bed last night. Bring it to the dining table. Leave everything else as it is.",
+     "instruction_zh": "客人想吃早饭时接着看昨晚睡前在卧室读的那本书，帮忙拿到餐桌上。其他东西别动。",
      "since": "v6",
      "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
      "v6": {
