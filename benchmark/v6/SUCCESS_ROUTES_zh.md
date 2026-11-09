@@ -2560,14 +2560,14 @@
 
 ### homework_stays（Task）
 
-**情况**：“把书桌收拾一下，作业他明天还要接着写”：书桌上有看完的书、用过的马克杯、摊开的作业本和铅笔 → 书回书架，杯子回厨房，作业原样不动（过程要求：整局不拿起作业本和铅笔）
+**情况**：“把书桌收拾一下，东西都放到最合适的地方，作业他明天还要接着写”：书桌上有看完的书、用过的马克杯、摊开的作业本和铅笔 → 书放回书柜（家里任一书柜、任一层都算），杯子拿回厨房（两个厨房台面都算），作业原样不动（过程要求：整局不拿起作业本和铅笔）
 
-**指令**：孩子看完书了，把他的书桌收拾一下。作业他明天还要接着写。
+**指令**：孩子看完书了，把他的书桌收拾一下，东西都放到最合适的地方。作业他明天还要接着写。
 
 **成功条件**：
 
-- `book_red` 在 `bookcase_2/top` 上
-- `desk_mug` 在 `kitchen_counter_2/top` 上
+- `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
+- `desk_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `desk_mug` 立着
 - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
 - 过程要求：整局都没拿起过 `homework`、`hw_pencil`（拆了再搭回去不算）
@@ -2581,7 +2581,7 @@
 
 **情况**：“把书房书桌上的书收好”：孩子的绘本在卧室书架上，大人的小说在客厅书架上 → 看书是谁的、跟同类放一起
 
-**指令**：把书房书桌上的书收好。
+**指令**：把书房书桌上的书收好，放到摆着同类书的书架上。
 
 **成功条件**：
 

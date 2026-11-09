@@ -61297,14 +61297,30 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "book_red",
-        "bookcase_2/top"
+        [
+         "bookcase_1/top",
+         "bookcase_1/shelf_1",
+         "bookcase_1/shelf_0",
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0",
+         "bookcase_3/top",
+         "bookcase_3/shelf_1",
+         "bookcase_3/shelf_0",
+         "bookcase_4/top",
+         "bookcase_4/shelf_1",
+         "bookcase_4/shelf_0"
+        ]
        ],
        [
-        "on",
+        "on_any",
         "desk_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -61333,8 +61349,8 @@
        ]
       ]
      },
-     "instruction": "The kid finished reading. Tidy up his desk; he will go on with his homework tomorrow.",
-     "instruction_zh": "孩子看完书了，把他的书桌收拾一下。作业他明天还要接着写。",
+     "instruction": "The kid finished reading. Tidy up his desk and put each thing where it belongs best; he will go on with his homework tomorrow.",
+     "instruction_zh": "孩子看完书了，把他的书桌收拾一下，东西都放到最合适的地方。作业他明天还要接着写。",
      "watch": [
       "book_red",
       "desk_mug",
@@ -61376,7 +61392,7 @@
       "family": "homework_stays",
       "case": null,
       "challenge": "the desk holds the finished book, a used mug and the open homework with its pencil",
-      "rationale": "each thing by what it is and what the instruction says about it: the book back on its bookcase, the mug to the kitchen, the homework stays as it lies",
+      "rationale": "each thing by what it is and what the instruction says about it: the book back on a bookcase, the mug to a kitchen worktop, the homework stays as it lies",
       "control": "e1_book_ready",
       "contrast": null,
       "factor": "the seed's layout only",
@@ -61448,8 +61464,8 @@
       "storage_place",
       "referent_clue"
      ],
-     "instruction": "Put the books on the study desk away.",
-     "instruction_zh": "把书房书桌上的书收好。",
+     "instruction": "Put the books from the study desk on the shelves with books of the same kind.",
+     "instruction_zh": "把书房书桌上的书收好，放到摆着同类书的书架上。",
      "remove": [
       "book_red"
      ],
@@ -61618,8 +61634,8 @@
       "storage_place",
       "referent_clue"
      ],
-     "instruction": "Put the books on the study desk away.",
-     "instruction_zh": "把书房书桌上的书收好。",
+     "instruction": "Put the books from the study desk on the shelves with books of the same kind.",
+     "instruction_zh": "把书房书桌上的书收好，放到摆着同类书的书架上。",
      "remove": [
       "book_red"
      ],
@@ -61818,8 +61834,8 @@
       "storage_place",
       "referent_clue"
      ],
-     "instruction": "Put the books on the study desk away.",
-     "instruction_zh": "把书房书桌上的书收好。",
+     "instruction": "Put the books from the study desk on the shelves with books of the same kind.",
+     "instruction_zh": "把书房书桌上的书收好，放到摆着同类书的书架上。",
      "remove": [
       "book_red"
      ],

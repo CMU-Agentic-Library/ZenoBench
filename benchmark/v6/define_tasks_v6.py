@@ -1714,21 +1714,26 @@ def T14(t):
             cases=stack_cases),
         "homework_stays": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["category_rule", "multi_object_goal"],
-            instruction="The kid finished reading. Tidy up his desk; he will go on with his homework tomorrow.",
-            instruction_zh="孩子看完书了，把他的书桌收拾一下。作业他明天还要接着写。",
-            goal={"all": [["on", B, CASE], ["on", "desk_mug", "kitchen_counter_2/top"], ["upright", "desk_mug"],
+            instruction="The kid finished reading. Tidy up his desk and put each thing where it belongs best; he will "
+                        "go on with his homework tomorrow.",
+            instruction_zh="孩子看完书了，把他的书桌收拾一下，东西都放到最合适的地方。作业他明天还要接着写。",
+            # where a thing belongs is a kind of place, not one spot: the book on any bookcase (any level), the mug
+            # on any kitchen worktop
+            goal={"all": [["on_any", B, T01_BOOKCASES],
+                          ["on_any", "desk_mug", ["kitchen_counter_1/top", "kitchen_counter_2/top"]],
+                          ["upright", "desk_mug"],
                           ["near_start", "homework", 0.03], ["near_start", "hw_pencil", 0.03],
                           ["never_picked", ["homework", "hw_pencil"]], ["hand_empty", "right"]]},
             watch=[B, "desk_mug", "homework", "hw_pencil"],
             factor="the seed's layout only",
             challenge="the desk holds the finished book, a used mug and the open homework with its pencil",
-            rationale="each thing by what it is and what the instruction says about it: the book back on its "
-                      "bookcase, the mug to the kitchen, the homework stays as it lies",
+            rationale="each thing by what it is and what the instruction says about it: the book back on a "
+                      "bookcase, the mug to a kitchen worktop, the homework stays as it lies",
             cases=hw_cases),
         "whose_book": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["storage_place", "referent_clue"],
-            instruction="Put the books on the study desk away.",
-            instruction_zh="把书房书桌上的书收好。",
+            instruction="Put the books from the study desk on the shelves with books of the same kind.",
+            instruction_zh="把书房书桌上的书收好，放到摆着同类书的书架上。",
             factor="which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
             challenge="the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the "
                       "living-room shelf; the desk holds one or both kinds",
