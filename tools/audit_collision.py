@@ -23,6 +23,19 @@ Kinds, per file under zeno_skills/ (static, by AST; a count is a site to look at
                      raise (``except: pass``, a retry) (F, checklist 4)
   retry              a ``for`` loop over alternatives that runs a motion and leaves it early
                      (break / continue / return) (F, checklist 4)
+  old_entry          a direct call of an old motion entry of the rig (OLD_ENTRIES: move_to, joint_path,
+                     leave, tuck, swing, follow, drive_base ...): what a skill not yet on the motion layers
+                     moves the robot with (docs/MOTION_ARCHITECTURE.md 9.3, "only goes down"; 0 at step 10)
+
+The motion layers (docs/MOTION_ARCHITECTURE.md 2.5):
+  - a segment's collision rules are a ``Spec``: ``Spec(allow=LEGACY / unchecked(...))`` counts as
+    LEGACY / unchecked, ``Spec(exempt=...)`` (not False) as exempt, ``Spec(fingers=False)`` as
+    ignore_fingers -- the same relaxations as on a move_to;
+  - EXECUTION (run.py, through the Actuator; rig.py, the Actuator's implementation) is where the robot
+    is moved: its follow / drive_base / old entries are not sites;
+  - QUERY_LAYER (Motion.query, Motion.path_free_only) translates a Spec into the collision query: its
+    coll_kw / exemption / finger settings are the Spec's, counted where the Spec is written;
+  - the park search's loop over candidate parks builds plans (``build``), it moves nothing: no retry.
 
 tests/test_collision_audit.py ratchets these counts against the baseline: they may only go down.
 ``bool_switches()`` finds the boolean ``collision=`` / ``check=`` keywords that ``allow=`` replaced
@@ -43,7 +56,7 @@ MOTIONS = ("move_to", "move_left_to", "joint_path")
 SCAN = ("zeno_skills", "tools", "benchmark", "env_service", "episode")
 BASELINE = ROOT / "tests" / "fixtures" / "collision_audit_baseline.json"
 KINDS = ("LEGACY", "unchecked", "coll_kw", "drive_base", "follow", "exempt", "ignore_fingers", "offset",
-         "except", "swallow", "retry")
+         "except", "swallow", "retry", "old_entry")
 
 # the arguments of a motion that are its target, and the motions they belong to
 TARGET_ARGS = {"p", "R", "q_goal", "goals"}
@@ -56,6 +69,15 @@ TRIVIAL = {0, 1, 2, 0.5}
 EPS = 1e-4
 # exceptions that cover a skill failing
 BROAD = {"Exception", "BaseException", "SkillFailure"}
+# the rig's motion entries a skill not yet on the motion layers calls (old_entry)
+OLD_ENTRIES = ("move_to", "move_to_any", "joint_path", "joint_path_via", "move_left_to", "leave", "tuck", "swing",
+               "follow", "follow_smooth", "left_follow", "follow_both", "drive_base")
+# where the robot is moved: the execution of the motion layers (only through the Actuator) and the Actuator's
+# implementation (with the old entries themselves)
+EXECUTION = {"zeno_skills/run.py", "zeno_skills/rig.py"}
+# (file, function) translating a segment's Spec into the collision query (docs/MOTION_ARCHITECTURE.md 4.4)
+QUERY_LAYER = {("zeno_skills/motion.py", "Motion.query"), ("zeno_skills/motion.py", "Motion.path_free_only")}
+QUERY_KINDS = {"coll_kw", "exempt", "ignore_fingers"}
 
 
 def _files(dirs=SCAN):
@@ -218,7 +240,10 @@ def _file_sites(f, rel):
     out = []
 
     def add(n, kind, label=""):
-        out.append((rel, n.lineno, scope(n), kind, label))
+        where = scope(n)
+        if kind in QUERY_KINDS and (rel, where) in QUERY_LAYER:
+            return
+        out.append((rel, n.lineno, where, kind, label))
 
     for n in ast.walk(tree):
         if isinstance(n, ast.Call):
@@ -233,10 +258,24 @@ def _file_sites(f, rel):
                             add(n, "LEGACY", _label(n))
                         elif "unchecked(" in src:
                             add(n, "unchecked", _label(n))
-                elif name == "drive_base":
+                elif name == "drive_base" and rel != "zeno_skills/run.py":
                     add(n, "drive_base")
-                elif name in ("follow", "follow_smooth", "left_follow") and f.name != "rig.py":
+                elif name in ("follow", "follow_smooth", "left_follow") and rel not in EXECUTION:
                     add(n, "follow")
+                if name in OLD_ENTRIES and rel not in EXECUTION and rel.startswith("zeno_skills/"):
+                    add(n, "old_entry", name)
+            if name == "Spec":
+                kw = {k.arg: k.value for k in n.keywords if k.arg}
+                if "allow" in kw:
+                    src = ast.unparse(kw["allow"])
+                    if "LEGACY" in src:
+                        add(n, "LEGACY", "Spec")
+                    elif "unchecked(" in src:
+                        add(n, "unchecked", "Spec")
+                if "exempt" in kw and not _is_false(kw["exempt"]):
+                    add(n, "exempt", "Spec(exempt=" + _short(ast.unparse(kw["exempt"]), 30) + ")")
+                if "fingers" in kw and _is_false(kw["fingers"]):
+                    add(n, "ignore_fingers", "Spec(fingers=False)")
             if name == "_targets_allow":
                 add(n, "exempt", "_targets_allow")
             if name in TARGET_MOTIONS and isinstance(n.func, ast.Attribute):

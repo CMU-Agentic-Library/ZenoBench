@@ -5,8 +5,7 @@ from __future__ import annotations
 import math
 import numpy as np
 
-from ..rig import SkillFailure
-from ..skills import (_base_plan, _reachable)
+from ..skills import _base_steps, _reachable
 
 
 class RigBase:
@@ -17,10 +16,9 @@ class RigBase:
         self.rig = rig
 
     def plan(self, state, goal, chain, label, quiet=False):
-        try:
-            steps, used = _base_plan(self.rig, goal, chain, label, state=state, quiet=quiet)
-        except SkillFailure as exc:
-            return None, str(exc)
+        steps, used, why = _base_steps(self.rig, goal, chain, label, state=state, quiet=quiet)
+        if steps is None:
+            return None, why
         out = []
         for st in steps:
             if st.kind == "drive":

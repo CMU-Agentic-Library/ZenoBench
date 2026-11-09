@@ -311,15 +311,23 @@ def relocate(rig, goal, postures=(), label="relocate", **drive):
 
 
 def _base_plan(rig, goal, postures, label, state=None, quiet=False):
-    """relocate's plan from ``state`` (default: the robot as it stands): ([base_planner.Step], the
-    posture chain), or SkillFailure.  ``quiet``: no base_plan event, no probes of a blocked plan
-    (the park search's drive check)."""
+    """_base_steps, SkillFailure when there is no plan: ([base_planner.Step], the posture chain)."""
+    steps, chain, why = _base_steps(rig, goal, postures, label, state, quiet)
+    if steps is None:
+        raise SkillFailure(why)
+    return steps, chain
+
+
+def _base_steps(rig, goal, postures, label, state=None, quiet=False):
+    """The whole-body base plan from ``state`` (default: the robot as it stands): ([base_planner.Step],
+    the posture chain, None), or (None, chain, why).  ``quiet``: no base_plan event, no probes of a
+    blocked plan (the park search's drive check)."""
     from . import base_planner
     if state is None:
         rig.sync_world()
     motion = rig.kin.motion
     if motion is None:
-        raise SkillFailure(f"{label}: no whole-body model (cuRobo) to plan the base with")
+        return None, [], f"{label}: no whole-body model (cuRobo) to plan the base with"
     q_r, q_l = (rig.q_cmd, rig.left_q_cmd) if state is None else (state.q_right, state.q_left)
     origin = rig.base_pose() if state is None else tuple(state.base)
     chain = [("start", (np.asarray(q_r, float).copy(), np.asarray(q_l, float).copy()))]
@@ -337,9 +345,7 @@ def _base_plan(rig, goal, postures, label, state=None, quiet=False):
                                        goal, sets, switches, area=area, footprint=rig.world.footprints_clear,
                                        passable=rig.world.circles_clear, dense_switches=dense)
     if quiet:
-        if steps is None:
-            raise SkillFailure(f"{label}: {lat.why}")
-        return steps, chain
+        return steps, chain, None if steps is not None else f"{label}: {lat.why}"
     rig.log("base_plan", target=label, goal=None if goal is None else [round(float(v), 3) for v in goal],
             postures=[c[0] for c in chain], poses_checked=lat.evaluated, found=steps is not None,
             expanded=getattr(lat, "expanded", 0), rounds=getattr(lat, "rounds", 0),
@@ -362,8 +368,8 @@ def _base_plan(rig, goal, postures, label, state=None, quiet=False):
                         hit=motion.base_explain(rig, (p_[0], p_[1], math.radians(yaw)), sets[m]),
                         footprint=bool(rig.world.footprint_clear(p_[0], p_[1], math.radians(yaw))))
         rig.log("base_plan_blocked", target=label, hit=hit)
-        raise SkillFailure(f"{label}: {lat.why}" + (f" ({hit[0][0]} in {hit[0][1]} {hit[0][2]} mm)" if hit else ""))
-    return steps, chain
+        return None, chain, f"{label}: {lat.why}" + (f" ({hit[0][0]} in {hit[0][1]} {hit[0][2]} mm)" if hit else "")
+    return steps, chain, None
 
 
 def poses_clear(rig, poses):

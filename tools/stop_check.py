@@ -26,8 +26,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WATCH = ("zeno_skills", "tools", "tests")
 STAMP = ROOT / ".claude" / "stop_check_ok"
-# while this file exists (local, git-ignored; its text says why) the collision audit is not run here
-# nor by tests/test_collision_audit.py -- a refactor moving sites between files; compiling still is
+# while this file exists (its text says why; committed, so a fresh checkout skips too) the collision audit
+# is not run here nor by tests/test_collision_audit.py -- a refactor moving sites between files; compiling
+# still is.  Off since 2026-11-08 (MOTION_ARCHITECTURE 9.3 step 1 done, the audit taught the motion layers)
 AUDIT_PAUSED = ROOT / ".claude" / "audit_paused"
 
 

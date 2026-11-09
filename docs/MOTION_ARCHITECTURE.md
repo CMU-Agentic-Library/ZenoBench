@@ -618,11 +618,14 @@ if why is not None:
 - 执行：`run.observe`、`holds`、`execute`、`run(act, plan, rebuild, hooks)`（`rebuild=None` 合法，8.8）；`skill_jobs.pick._pick_ready`、`skill_jobs.place._place_ready`。
 - 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`。
 - 基线：v3 两个种子 140/170（11-08，`benchmark/runs/v3_sticky_gt_1108_2seeds`）。计划段 2045 段原样走、13 段执行时重做（2 段做不出来）。pick 搜索中位 8 s、p90 14 s；place 中位 16 s、p90 29 s。之后还没跑过的改动：`free_leg` 有 `q_hint` 时先走到它（空手也是），`_reach` 在碰撞模型里求伸入段 / 放下段起点（排序 IK 只当种子）。
-- 静态审计（`tools/audit_collision.py`）暂停（开关文件 `.claude/audit_paused`）。恢复前要做：
-  - 审计认识新原语和 `Spec(allow=...)`；
-  - `run.py` 算执行入口，查询层可以写 `coll_kw`；`Actuator` 的实现（`Rig`）算执行入口，协议本身不算；
-  - `find_park` 按顺序构造计划的循环不算重试；
-  - 用 `--update-baseline --allow-increase` 更新基线，在同一次提交里删掉开关文件。
+- 静态审计（`tools/audit_collision.py`，`tests/test_collision_audit.py` 的棘轮，`tools/stop_check.py` 每轮也跑）11-08 重新启用，`.claude/audit_paused` 删了。暂停期间要补的都补上了：
+  - 认识 `Spec`：`Spec(allow=LEGACY / unchecked(...))` 算 LEGACY / unchecked，`Spec(exempt=...)`（不是 False）算 exempt，`Spec(fingers=False)` 算 ignore_fingers，和写在 `move_to` 上一样；
+  - 执行入口（`EXECUTION`）：`run.py`（只经 `Actuator`，`tests/test_layering.py` 守住它只调 `act.`）和 `rig.py`（`Actuator` 的实现，也是旧入口本身）里的 follow / drive_base / 旧入口不算；
+  - 查询层（`QUERY_LAYER`）：`Motion.query`（把 `Spec` 翻译成碰撞查询，4.4）和 `Motion.path_free_only`（`touch` 的"其余部位照查"）写 `coll_kw`、豁免、手指不算——这些放宽在写 `Spec` 的地方已经算过；
+  - `find_park` 按顺序构造计划的循环只调 `build`，不动机器人，本来就不算重试；
+  - `RigBase.plan` 原来的 `except SkillFailure` 改掉了（`skills._base_steps` 返回原因，不抛异常），不进基线；`run_skill` 的 `except Exception`（`Job.failed` 换掉异常再抛，不吞）进了基线；
+  - 新增一类 `old_entry`（见 9.3"只降不升的计数"）；
+  - 基线用 `--update-baseline --allow-increase` 重建，和删开关文件在同一次提交。
 
 ### 9.2 pick / place 还没解决的
 
@@ -681,7 +684,7 @@ if why is not None:
 
 每步单独提交，先针对性检查再全量。
 
-**只降不升的计数**：恢复静态审计（9.1）时，让它数 `run.py` 和原语执行器以外直接调旧运动入口的地方（`move_to`、`move_to_any`、`joint_path`、`move_left_to`、`follow`、`leave`、`swing`、`drive_base`、`tuck`、`straight_base_move`、`relocate`、`navigate`）。11-08 粗数约 190 处；第 1 步之后 180 处（`skills.py` 39、`hand.py` 17、`tooluse.py` 17、`extra.py` 15、`orientation.py` 14、`bimanual.py` 14……；粗数含注释里的，要按审计重数）。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
+**只降不升的计数**：静态审计的 `old_entry` 一类（11-08 起在棘轮里，按文件计）：执行入口（`run.py`、`rig.py`）以外直接调 rig 旧运动入口的地方（`OLD_ENTRIES`：`move_to`、`move_to_any`、`joint_path`、`joint_path_via`、`move_left_to`、`leave`、`tuck`、`swing`、`follow` / `follow_smooth` / `left_follow` / `follow_both`、`drive_base`）。`navigate`、`relocate`、`straight_base_move` 不再算：第 1 步之后它们跑在计划层上（`run_skill` / `drive` 段）。第 1 步之后 157 处（`skills.py` 37、`orientation.py` 17、`tooluse.py` 17、`hand.py` 16、`bimanual.py` 15、`extra.py` 13……；`skill_jobs/pick.py` 2 处是 hook 里的 `rig.leave`，2.6 步换成 `build_clear`）。以前的粗数（约 190、180）是 grep，含注释和上面三个函数。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
 
 ### 9.4 代码放哪
 
