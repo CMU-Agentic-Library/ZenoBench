@@ -19045,7 +19045,7 @@
    18,
    19
   ],
-  "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
+  "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19111,7 +19111,7 @@
    15,
    16
   ],
-  "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
+  "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

@@ -64993,8 +64993,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
-     "instruction_zh": "孩子吃饭把汤洒了，拿点纸巾给他。",
+     "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
+     "instruction_zh": "孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。",
      "add": {
       "tissue": {
        "asset": "tissue_box",
@@ -65172,8 +65172,8 @@
      "conditions": [
       "referent_clue"
      ],
-     "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
-     "instruction_zh": "孩子吃饭把汤洒了，拿点纸巾给他。",
+     "instruction": "The kid spilled some soup at the dining table. Bring something to wipe it up and put it on the kid's side of the table.",
+     "instruction_zh": "孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。",
      "add": {
       "tissue": {
        "asset": "tissue_box",

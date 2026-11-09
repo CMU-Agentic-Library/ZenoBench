@@ -174,8 +174,9 @@ def t21():
                      watch=[TIS, *places],
                      route=fetch(TIS, T2, [3.10, places["kid_cup"]["xy"][1]]))
              for c, places in (("kid_north", kid_n), ("kid_south", kid_s))},
-            instruction="The kid spilled some soup at the dining table. Bring him some tissues.",
-            instruction_zh="孩子吃饭把汤洒了，拿点纸巾给他。"),
+            instruction="The kid spilled some soup at the dining table. Bring something to wipe it up and put it on "
+                        "the kid's side of the table.",
+            instruction_zh="孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。"),
         "tissue_or_sponge": fam(
             "tissue_on_tv_stand", ["resource_absent", "item_put_away", "dependent_decisions"],
             "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet "
