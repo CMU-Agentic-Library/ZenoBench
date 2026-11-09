@@ -3,13 +3,13 @@
       <visual>
          <origin xyz="0 0 0" rpy="0.279268 -1.563061 1.291955" />
          <geometry>
-            <mesh filename="mesh/book_green.obj" scale="0.109611 0.220000 0.220000" />
+            <mesh filename="mesh/book_green.obj" scale="0.220000 0.220000 0.220000" />
          </geometry>
       </visual>
       <collision>
          <origin xyz="0 0 0" rpy="0.279268 -1.563061 1.291955" />
          <geometry>
-            <mesh filename="mesh/book_green_collision.obj" scale="0.109611 0.220000 0.220000" />
+            <mesh filename="mesh/book_green_collision.obj" scale="0.220000 0.220000 0.220000" />
          </geometry>
          <gazebo>
             <mu1>0.80</mu1>
@@ -19,7 +19,7 @@
       <inertial>
          <mass value="0.4500" />
          <origin xyz="0 0 0" />
-         <inertia ixx="1.285e-03" ixy="0.0" ixz="0.0" iyy="1.846e-03" iyz="0.0" izz="3.072e-03" />
+         <inertia ixx="1.374e-03" ixy="0.0" ixz="0.0" iyy="1.935e-03" iyz="0.0" izz="3.072e-03" />
       </inertial>
       <extra_info>
          <scale>1.000000</scale>

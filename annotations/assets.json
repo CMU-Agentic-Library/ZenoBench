@@ -741,12 +741,12 @@
   "size": [
    0.24,
    0.1674,
-   0.025
+   0.04
   ],
   "origin_to_bottom_center": [
    -0.0,
    0.0,
-   -0.0127
+   -0.0204
   ],
   "min_pinch_width": 0.1668,
   "graspable_by_zeno": true,
@@ -754,7 +754,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.0245,
+    "pre_open": 0.032,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -773,12 +773,12 @@
   "size": [
    0.2201,
    0.183,
-   0.028
+   0.0562
   ],
   "origin_to_bottom_center": [
    0.0,
    -0.0001,
-   -0.0138
+   -0.0276
   ],
   "min_pinch_width": 0.1382,
   "graspable_by_zeno": true,
@@ -786,7 +786,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.026000000000000002,
+    "pre_open": 0.04,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -805,12 +805,12 @@
   "size": [
    0.2,
    0.1399,
-   0.028
+   0.0591
   ],
   "origin_to_bottom_center": [
    -0.0001,
    -0.0,
-   -0.0143
+   -0.0301
   ],
   "min_pinch_width": 0.1394,
   "graspable_by_zeno": true,
@@ -818,7 +818,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.026000000000000002,
+    "pre_open": 0.04,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -1461,12 +1461,12 @@
   "size": [
    0.18,
    0.12,
-   0.018
+   0.025
   ],
   "origin_to_bottom_center": [
    0.0001,
    0.0001,
-   -0.0089
+   -0.0123
   ],
   "min_pinch_width": 0.1196,
   "graspable_by_zeno": true,
@@ -1474,7 +1474,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.021,
+    "pre_open": 0.0245,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],

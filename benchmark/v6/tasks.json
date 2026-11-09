@@ -70977,9 +70977,9 @@
         "desk_1/top"
        ],
        [
-        "near_start",
+        "not on",
         "snack_box",
-        0.03
+        "desk_1/top"
        ],
        [
         "hand_empty",
@@ -71343,9 +71343,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "snack_apple",
-        "desk_3/top"
+        [
+         "desk_3/top",
+         "bookcase_4/top"
+        ]
        ],
        [
         "hand_empty",
@@ -71486,9 +71489,12 @@
          "desk_1/top"
         ],
         [
-         "on",
+         "on_any",
          "snack_banana",
-         "desk_3/top"
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
         ]
        ],
        [
@@ -71498,9 +71504,12 @@
          "desk_1/top"
         ],
         [
-         "on",
+         "on_any",
          "snack_apple",
-         "desk_3/top"
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
         ]
        ]
       ]
@@ -75006,7 +75015,10 @@
         [
          "bookcase_2/top",
          "bookcase_2/shelf_1",
-         "bookcase_2/shelf_0"
+         "bookcase_2/shelf_0",
+         "bookcase_3/top",
+         "bookcase_3/shelf_1",
+         "bookcase_3/shelf_0"
         ]
        ],
        [
@@ -75325,7 +75337,10 @@
         [
          "bookcase_2/top",
          "bookcase_2/shelf_1",
-         "bookcase_2/shelf_0"
+         "bookcase_2/shelf_0",
+         "bookcase_3/top",
+         "bookcase_3/shelf_1",
+         "bookcase_3/shelf_0"
         ]
        ],
        [
@@ -75451,9 +75466,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "living_bear",
-        "mattress_1/top"
+        [
+         "mattress_1/top",
+         "bookcase_3/top"
+        ]
        ],
        [
         "hand_empty",

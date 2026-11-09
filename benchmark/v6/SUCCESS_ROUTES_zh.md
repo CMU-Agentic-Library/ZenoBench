@@ -2996,14 +2996,14 @@
 
 ### dinner_soon（Task）
 
-**情况**：“还有半小时就吃晚饭了”：苹果和零食盒 → 拿苹果
+**情况**：“还有半小时就吃晚饭了”：苹果和零食盒 → 拿苹果，零食别送过去
 
 **指令**：孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。
 
 **成功条件**：
 
 - `snack_apple` 在 `desk_1/top` 上
-- `snack_box` 没被挪动（离开局位置不超过 3 cm）
+- `["not on", "snack_box", "desk_1/top"]`
 - 手里空着
 
 **参考调用顺序**：
@@ -3035,7 +3035,7 @@
   - `snack_apple` 在 `desk_1/top` 上
   - 手里空着
 - 摆法 `bedroom`：
-  - `snack_apple` 在 `desk_3/top` 上
+  - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
   - 手里空着
 
 **参考调用顺序**：
@@ -3055,10 +3055,10 @@
 - 满足下面任意一组：
   - 第 1 组：
     - `snack_apple` 在 `desk_1/top` 上
-    - `snack_banana` 在 `desk_3/top` 上
+    - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
   - 第 2 组：
     - `snack_banana` 在 `desk_1/top` 上
-    - `snack_apple` 在 `desk_3/top` 上
+    - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
 
 **参考调用顺序**：
 
@@ -3241,11 +3241,11 @@
 
 ### whose（Task）
 
-**情况**：电视柜上有一本和他书架上一样的蓝色精装书，还有一本大人的平装书 → 只拿他的那本，放到他的书架上（任一层都算），平装书不动
+**情况**：电视柜上有一本和他书架上一样的蓝色精装书，还有一本大人的平装书 → 只拿他的那本，放到他房间的书架上（两个书架、任一层都算），平装书不动
 
 **成功条件**：
 
-- `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+- `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
 - `adult_novel` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -3270,12 +3270,12 @@
 
 ### where_in_room（Task）
 
-**情况**：小车和他的一本书 → 小车进筐，书放到他的书架上（任一层都算）
+**情况**：小车和他的一本书 → 小车进筐，书放到他房间的书架上（两个书架、任一层都算）
 
 **成功条件**：
 
 - `living_car` 在 `kids_basket` 里
-- `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+- `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
 - 手里空着
 
 **参考调用顺序**：
@@ -3284,13 +3284,13 @@
 
 ### bear_to_bed（Task）
 
-**情况**：“孩子要睡觉了”：小熊在电视柜 → 放到他床上，不放筐里
+**情况**：“孩子要睡觉了”：小熊在电视柜 → 放到他床上或床头书架上，不放筐里
 
 **指令**：孩子要睡觉了，把他落在客厅的东西拿回他房间。
 
 **成功条件**：
 
-- `living_bear` 在 `mattress_1/top` 上
+- `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
 - 手里空着
 
 **参考调用顺序**：

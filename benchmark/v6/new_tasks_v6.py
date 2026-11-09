@@ -368,6 +368,9 @@ def t23():
 
 
 # ================================================================== T24 something to eat for the kid
+AT_DESK3 = [DESK3, "bookcase_4/top"]       # by the bedroom desk: the desk or the bookcase beside it
+
+
 def t24():
     AP = "snack_apple"
     hw = {"homework": on("notebook", DESK, -0.70, -5.95)}
@@ -395,7 +398,7 @@ def t24():
             "an apple and a box of snacks on the table; dinner is in half an hour",
             "with dinner close, the fruit, not the snacks",
             {"": dict(add={AP: on("apple", T2, 3.30, 6.70), SN: on("snack_carton", T2, 3.30, 7.10), **hw},
-                      watch=[AP, SN], goal={"all": [["on", AP, DESK], ["near_start", SN, 0.03], H]},
+                      watch=[AP, SN], goal={"all": [["on", AP, DESK], ["not on", SN, DESK], H]},   # the snacks not given
                       route=[look(T2)] + fetch(AP, DESK, [-1.10, -5.95]))},
             instruction="The kid is doing homework in the study and is hungry. Bring him something to eat; "
                         "dinner is in half an hour.",
@@ -416,7 +419,7 @@ def t24():
             "the kid is where his homework is: bring the food to that desk",
             {"study": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw}, goal={"all": [["on", AP, DESK], H]},
                            route=[nav(AP), pick(AP), look(DESK3), nav(DESK), place(AP, DESK, [-1.10, -5.95])]),
-             "bedroom": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw3}, goal={"all": [["on", AP, DESK3], H]},
+             "bedroom": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw3}, goal={"all": [["on_any", AP, AT_DESK3], H]},
                              route=[nav(AP), pick(AP), look(DESK), nav(DESK3), place(AP, DESK3, [6.20, -5.50])])},
             instruction="The kid is doing homework and is hungry. Bring him something to eat.",
             instruction_zh="孩子写作业饿了，给他拿点吃的。"),
@@ -426,8 +429,8 @@ def t24():
             "one snack for each kid: as many as there are kids doing homework, one to each desk",
             {"": dict(add={AP: on("apple", T2, 3.30, 6.70), BA: on("banana", T2, 3.30, 7.10), **hw, **hw3},
                       watch=[AP, BA],
-                      goal={"all": [H], "any": [[["on", AP, DESK], ["on", BA, DESK3]],
-                                                [["on", BA, DESK], ["on", AP, DESK3]]]},
+                      goal={"all": [H], "any": [[["on", AP, DESK], ["on_any", BA, AT_DESK3]],
+                                                [["on", BA, DESK], ["on_any", AP, AT_DESK3]]]},
                       route=fetch(AP, DESK, [-1.10, -5.95]) + fetch(BA, DESK3, [6.20, -5.50]))},
             instruction="The kids are doing homework and are hungry. Bring them something to eat.",
             instruction_zh="孩子们在写作业，饿了，给他们拿点吃的。"),
@@ -561,7 +564,7 @@ def t26():
                   {"all": [["inside", CAR, BASK], H]}, [S("explore_room", room="living_room_0_0")] + into(CAR, BASK),
                   [CAR, BASK])
     kb, nv = "kid_book", "adult_novel"
-    KIDS_CASE = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"]       # his bookcase, any level
+    KIDS_CASE = [f"bookcase_{i}/{lv}" for i in (2, 3) for lv in ("top", "shelf_1", "shelf_0")]   # a bookcase in his room
     fams = {
         "whose": fam(
             "car_in_living_room", ["referent_clue"], "the seed's layout only",
@@ -594,7 +597,7 @@ def t26():
             "his teddy bear on the TV stand; it is bedtime",
             "at bedtime the bear goes to his bed, not into the toy basket",
             {"": dict(add={"living_bear": on("teddy_bear", TV, 7.40, 0.36), **room}, watch=["living_bear", BASK],
-                      goal={"all": [["on", "living_bear", "mattress_1/top"], H]},
+                      goal={"all": [["on_any", "living_bear", ["mattress_1/top", "bookcase_3/top"]], H]},
                       route=[look(TV)] + fetch("living_bear", "mattress_1/top", [0.00, -4.00]))},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),

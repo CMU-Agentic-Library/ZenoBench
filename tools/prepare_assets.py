@@ -63,8 +63,7 @@ SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the 
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 # lay-flat assets whose generated mesh is too thick: resting height (m); the
 # footprint keeps the uniform scale from SPECS
-# thinner books (2026-11-09): a thickness pinch on a 2-3 cm book leaves the pads room; the 4-6 cm ones did not
-THICKNESS = {"book_red": 0.025, "book_green": 0.028, "book_blue": 0.028}
+THICKNESS = {"book_red": 0.040}
 
 # the open hand's palm over a top pinch: the right gripper's palm and camera collision spheres
 # (the cuRobo model the planner checks the grasp pose with) must stay this far above the object
