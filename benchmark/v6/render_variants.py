@@ -496,13 +496,16 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         goal_places = used_goal or places[:1]
     if not goal_places:                          # done where it is (a stack, a flip, a roll, a look, nothing to do):
         bases = [i for i in takes if role.get(views[i][0]) == "base"]          # the base the stack goes on, or
-        goal_places = bases[:1] or [i for i, x in enumerate(kind) if x in ("view", "point")][:1] or takes[-1:]
+        goal_places = bases[:1] or [i for i, x in enumerate(kind) if x in ("view", "point")][:1]
+    in_place = [] if goal_places else takes[-1:]  # flipped / rolled where it lies: its own picture, as the goal too
     takes = [i for i in takes if i not in goal_places]
     notes = [i for i, x in enumerate(kind) if x in ("view", "point") and i not in goal_places][:2]
-    tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places] + [("note_", i) for i in notes]
+    tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places + in_place] + [("note_", i) for i in notes]
     tagged.sort(key=lambda p: p[1])
     head = {"find_": "要找的 · ", "goal_": "目标结果 · ", "note_": "注意 · "}
-    views = [(pre + views[i][0], views[i][1], views[i][2], head[pre] + views[i][3]) for pre, i in tagged]
+    tail = {i: "（就在原处完成）" for i in in_place}
+    views = [(pre + views[i][0], views[i][1], views[i][2],
+              head[pre] + views[i][3] + (tail.get(i, "") if pre == "goal_" else "")) for pre, i in tagged]
     # the start layout: the whole area the variant uses, from high above, everything in it starred
     pts, marks0 = [], []
     bx, by, _ = rig.base_pose()
