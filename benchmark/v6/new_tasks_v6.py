@@ -108,13 +108,19 @@ HOUSE_CUPS = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table", "mug_din
 
 
 # ================================================================== T21 bring tissues to the spill
+# the task asks for "something to wipe it up"; where a sponge and tissues are both about, "something to wipe with":
+# either one does
+TISSUES_ASKED = dict(instruction="Some soup got spilled at the dining table. Bring something to wipe it with.",
+                     instruction_zh="餐桌上洒了点汤，拿个能擦的用具过去。")
+
+
 def t21():
     TIS = "tissue"
     meal = {"soup_bowl": on("oatmeal_bowl", T2, 3.10, 6.95), "meal_spoon": on("breakfast_spoon", T2, 3.10, 7.14)}
     ctl = {"note": "the tissue box on the TV stand, a bowl of soup on the dining table",
            "add": {TIS: on("tissue_box", TV, 7.60, 0.36), **meal}}
-    t = base_task("T21_bring_tissues", "ZB-T21", "Some soup got spilled at the dining table. Bring some tissues over.",
-                  "餐桌上洒了点汤，拿点纸巾过去。", "tissue_on_tv_stand", ctl,
+    t = base_task("T21_bring_tissues", "ZB-T21", "Some soup got spilled at the dining table. Bring something to wipe "
+                  "it up.", "餐桌上洒了点汤，拿点擦的东西过去。", "tissue_on_tv_stand", ctl,
                   {"all": [["on", TIS, T2], H]}, fetch(TIS, T2, [3.30, 6.65]), [TIS, "soup_bowl"])
     to_table = lambda x=TIS, sup=T2, hint=(3.30, 6.65): fetch(x, sup, hint)  # noqa: E731
     west_meal = {"soup_bowl": on("oatmeal_bowl", T1, -7.95, 7.60), "meal_spoon": on("breakfast_spoon", T1, -7.95, 7.79)}
@@ -148,7 +154,8 @@ def t21():
             "the purpose is to wipe the spill: bring the closest thing that does that (the sponge)",
             {"": dict(add={"spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
                       goal={"all": [["on", "spare_sponge", T2], H]}, watch=["spare_sponge", "soup_bowl"],
-                      route=[look(TV)] + to_table("spare_sponge"))}),
+                      route=[look(TV)] + to_table("spare_sponge"))},
+            **TISSUES_ASKED),
         "tissue_put_away": fam(
             "tissue_on_tv_stand", ["item_put_away"], "which low cabinet holds the tissues (seed)",
             "the tissue box was put away in one of the two low wall cabinets",
@@ -159,7 +166,10 @@ def t21():
                 goal={"all": [["on", TIS, T2], ["is_closed", C4], ["is_closed", C6], H]},
                 route=explore(o) + [S("close", articulated=o)] + explore(a) + from_closed(TIS, a)
                 + [nav(T2), place(TIS, T2, [3.30, 6.65])])
-             for a, o, xy in ((C4, C6, (1.40, 0.42)), (C6, C4, (3.50, 0.36)))}),
+             for a, o, xy in ((C4, C6, (1.40, 0.42)), (C6, C4, (3.50, 0.36)))},
+            instruction="Some soup got spilled at the dining table. Bring something to wipe it up; the tissues are "
+                        "put away in a cabinet, close its door again afterwards.",
+            instruction_zh="餐桌上洒了点汤，拿点擦的东西过去。纸巾收在柜子里了，拿完把柜门关好。"),
         "the_kids_side": fam(
             "tissue_on_tv_stand", ["referent_clue"], "which end of the table the kid sits at (seed)",
             "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
@@ -168,28 +178,9 @@ def t21():
                      watch=[TIS, *places],
                      route=fetch(TIS, T2, [3.10, places["kid_cup"]["xy"][1]]))
              for c, places in (("kid_north", kid_n), ("kid_south", kid_s))},
-            instruction="The kid spilled some soup at the dining table. Bring him some tissues.",
-            instruction_zh="孩子吃饭把汤洒了，拿点纸巾给他。"),
-        "tissue_or_sponge": fam(
-            "tissue_on_tv_stand", ["resource_absent", "item_put_away", "dependent_decisions"],
-            "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet "
-            "looks the same until its door is open",
-            "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall "
-            "cabinets, or nowhere",
-            "the usual place is empty, so look where such things are kept; each cabinet decides the next step: "
-            "tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the "
-            "sponge does the wiping",
-            {c: dict(add={**({TIS: on("tissue_box", f"{cab}/inside_shelf", *xy)} if cab else {}),
-                          "spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
-                     remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
-                     watch=([TIS] if cab else []) + ["spare_sponge", "soup_bowl"],
-                     goal={"all": ([["on", TIS, T2], ["not on", "spare_sponge", T2]] if cab else
-                                   [["on", "spare_sponge", T2]]) + [["is_closed", C4], ["is_closed", C6], H]},
-                     route=[look(TV)] + explore(C4)
-                     + (from_closed(TIS, C4) if cab == C4 else [S("close", articulated=C4)] + explore(C6)
-                        + (from_closed(TIS, C6) if cab == C6 else [S("close", articulated=C6)]))
-                     + ([nav(T2), place(TIS, T2, [3.30, 6.65])] if cab else to_table("spare_sponge")))
-             for c, cab, xy in (("in_first", C4, (1.40, 0.42)), ("in_second", C6, (3.50, 0.36)), ("none", None, None))}),
+            instruction="The kid spilled some soup at the dining table. Bring something to wipe it up and put it on "
+                        "the kid's side of the table.",
+            instruction_zh="孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。"),
     }
     return t, fams
 
@@ -199,8 +190,11 @@ def t22():
     J, A, SN = "bought_juice", "bought_apple", "bought_snack"
     BASKET = "home_basket"
     ctl = {"note": "a bottle of juice from the shop on the dining table", "add": {J: on("juice_bottle", T2, 3.30, 6.70)}}
-    jgoal = [["on", J, FS], ["upright", J], ["is_closed", FR]]
-    t = base_task("T22_put_away_shopping", "ZB-T22", "Put the shopping away.", "买回来的东西放好。",
+    # bought juice keeps in the fridge, a low cabinet or on a kitchen counter: any of them is put away
+    JUICE_SPOTS = [FS, f"{C4}/inside_shelf", f"{C6}/inside_shelf", "kitchen_counter_1/top", "kitchen_counter_2/top"]
+    jgoal = [["on_any", J, JUICE_SPOTS], ["upright", J], ["is_closed", FR], ["is_closed", C4], ["is_closed", C6]]
+    t = base_task("T22_put_away_shopping", "ZB-T22", "I just got back from the shop and left the shopping on the "
+                  "dining table. Please put it away.", "我刚买东西回来，放在餐桌上了，帮我收好。",
                   "juice_on_table", ctl, {"all": jgoal + [H]}, fridge([J]), [J],
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     pantry = {"old_snack": on("snack_carton", f"{C6}/inside_shelf", 3.35, 0.36)}
@@ -215,6 +209,10 @@ def t22():
         """lying in the serving tray on the west dining table (table top 0.71 m, tray floor 1 cm up)"""
         return {"asset": asset, "support": None, "z": 0.72, "xy": [round(-8.00 + dx, 3), round(7.40 + dy, 3)],
                 "yaw_deg": 0.0}
+    # fruit and snacks may both go in the fruit basket or in a low cabinet: any such pairing is put away
+    keep_spots = lambda x: [["inside", x, BASKET], ["on", x, f"{C6}/inside_shelf"], ["on", x, f"{C4}/inside_shelf"]]  # noqa: E731
+    loose_goal = {"any": [[a, b] for a in keep_spots(A) for b in keep_spots(SN)],
+                  "all": jgoal + [["is_closed", C6], ["is_closed", C4], H]}
     snack_away = [nav(C6), S("open", articulated=C6), S("inspect", receptacle=C6), nav(SN), pick(SN), nav(C6),
                   place(SN, f"{C6}/inside_shelf", [3.60, 0.36]), S("close", articulated=C6)]
     fams = {
@@ -228,9 +226,10 @@ def t22():
                            SN: on("snack_carton", T2, 3.30, 7.30), BASKET: on("fruit_basket", ISL, 7.10, 1.78),
                            **pantry},
                       remove=no_dishes, watch=[J, A, SN, BASKET],
-                      goal={"all": jgoal + [["inside", A, BASKET], ["on", SN, f"{C6}/inside_shelf"],
-                                            ["is_closed", C6], H]},
-                      route=fridge([J]) + into(A, BASKET) + snack_away)}),
+                      goal=loose_goal,
+                      route=fridge([J]) + into(A, BASKET) + snack_away)},
+            instruction="I just got back from the shop; the juice, an apple and some snacks are on the dining table. Put each where things of its kind are kept, and close any door you open.",
+            instruction_zh="我刚买东西回来，果汁、苹果和零食都在餐桌上。每样都收到平时放同类东西的地方，开过的门记得关上。"),
         "eat_now": fam(
             "juice_on_table", ["preference_allocation"], "the seed's layout only",
             "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
@@ -239,9 +238,9 @@ def t22():
                            "homework": on("notebook", DESK, -0.70, -5.95)},
                       watch=[J, SN], goal={"all": jgoal + [["on", SN, DESK], H]},
                       route=fridge([J]) + fetch(SN, DESK, [-1.10, -5.95]))},
-            instruction="Put the shopping away. The kid says he wants the snacks now; he is doing homework in "
-                        "the study.",
-            instruction_zh="买回来的东西放好。孩子说零食现在就要吃，他在书房写作业。"),
+            instruction="I just got back from the shop and left the shopping on the dining table. Please put it "
+                        "away. The kid says he wants the snacks now; he is doing homework in the study.",
+            instruction_zh="我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。"),
         "basket_missing": fam(
             "juice_on_table", ["container_absent", "storage_place"], "the seed's layout only",
             "juice and an apple; no fruit basket in the house, a serving tray on the island",
@@ -250,7 +249,9 @@ def t22():
                            "fruit_tray": on("serving_tray", ISL, 7.20, 1.75)},
                       watch=[J, A, "fruit_tray"],
                       goal={"all": jgoal + [["inside", A, "fruit_tray"], H]},
-                      route=fridge([J]) + into(A, "fruit_tray"))}),
+                      route=fridge([J]) + into(A, "fruit_tray"))},
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
         "not_shopping": fam(
             "juice_on_table", ["goal_items_unstated"], "the seed's layout only",
             "the juice from the shop, and the kid's toy car and picture book on the same table",
@@ -269,9 +270,10 @@ def t22():
                            SN: on("snack_carton", ISL, 7.85, 1.75), BASKET: on("fruit_basket", ISL, 7.10, 1.78),
                            **pantry},
                       remove=no_dishes, watch=[J, A, SN, BASKET],
-                      goal={"all": jgoal + [["inside", A, BASKET], ["on", SN, f"{C6}/inside_shelf"],
-                                            ["is_closed", C6], H]},
-                      route=[look(T2)] + fridge([J]) + [look(ISL)] + into(A, BASKET) + snack_away)}),
+                      goal=loose_goal,
+                      route=[look(T2)] + fridge([J]) + [look(ISL)] + into(A, BASKET) + snack_away)},
+            instruction="I just got back from the shop with two bags and unpacked them in two different places. Put everything I bought away.",
+            instruction_zh="我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。"),
         "tray_elsewhere": fam(
             "juice_on_table", ["container_absent", "not_in_view", "destination_full", "dependent_decisions"],
             "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
@@ -292,7 +294,9 @@ def t22():
              for c, on_tray in (("orange_in_it", {"tray_orange": inside_tray("orange", -0.12, 0.08)}),
                                 ("books_on_it", {f"tray_book_{k + 1}": inside_tray("book_blue", dx, dy)
                                                  for k, (dx, dy) in enumerate(((-0.10, -0.075), (0.10, -0.075),
-                                                                               (-0.10, 0.075), (0.10, 0.075)))}))}),
+                                                                               (-0.10, 0.075), (0.10, 0.075)))}))},
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
     }
     return t, fams
 
@@ -304,7 +308,7 @@ def t23():
     ctl = {"note": "a spoon on the kitchen floor; the spoons are kept on the kitchen counter",
            "add": {SP: floor("breakfast_spoon", -0.85, 7.70, 30.0)}}
     # either kitchen counter is where a spoon belongs (the kitchen's two counters stand 1.7 m apart)
-    sgoal = [["on_any", SP, [COUNTER, "kitchen_counter_1/top"]]]
+    sgoal = [["on_any", SP, [COUNTER, "kitchen_counter_1/top", ISL]]]          # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
                   {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, [-0.10, 7.60]), [SP], start=START)
@@ -353,7 +357,7 @@ def t23():
             {"": dict(add={**spoon, "dropped_pencil": floor("pencil", -0.45, -5.55, 20.0),
                            "homework": on("notebook", DESK, -0.70, -5.95)},
                       watch=[SP, "dropped_pencil"],
-                      goal={"all": sgoal + [["on", "dropped_pencil", DESK], H]},
+                      goal={"all": sgoal + [["on_any", "dropped_pencil", [DESK, "desk_3/top"]], H]},
                       route=[look(COUNTER)] + back + [S("search", object="dropped_pencil", region="living_room_0_1")]
                       + fetch("dropped_pencil", DESK, [-1.05, -5.95]))},
             instruction="Some things fell on the floor around the house. Please pick them up and put them where "
@@ -364,6 +368,9 @@ def t23():
 
 
 # ================================================================== T24 something to eat for the kid
+AT_DESK3 = [DESK3, "bookcase_4/top"]       # by the bedroom desk: the desk or the bookcase beside it
+
+
 def t24():
     AP = "snack_apple"
     hw = {"homework": on("notebook", DESK, -0.70, -5.95)}
@@ -391,7 +398,7 @@ def t24():
             "an apple and a box of snacks on the table; dinner is in half an hour",
             "with dinner close, the fruit, not the snacks",
             {"": dict(add={AP: on("apple", T2, 3.30, 6.70), SN: on("snack_carton", T2, 3.30, 7.10), **hw},
-                      watch=[AP, SN], goal={"all": [["on", AP, DESK], ["near_start", SN, 0.03], H]},
+                      watch=[AP, SN], goal={"all": [["on", AP, DESK], ["not on", SN, DESK], H]},   # the snacks not given
                       route=[look(T2)] + fetch(AP, DESK, [-1.10, -5.95]))},
             instruction="The kid is doing homework in the study and is hungry. Bring him something to eat; "
                         "dinner is in half an hour.",
@@ -412,7 +419,7 @@ def t24():
             "the kid is where his homework is: bring the food to that desk",
             {"study": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw}, goal={"all": [["on", AP, DESK], H]},
                            route=[nav(AP), pick(AP), look(DESK3), nav(DESK), place(AP, DESK, [-1.10, -5.95])]),
-             "bedroom": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw3}, goal={"all": [["on", AP, DESK3], H]},
+             "bedroom": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw3}, goal={"all": [["on_any", AP, AT_DESK3], H]},
                              route=[nav(AP), pick(AP), look(DESK), nav(DESK3), place(AP, DESK3, [6.20, -5.50])])},
             instruction="The kid is doing homework and is hungry. Bring him something to eat.",
             instruction_zh="孩子写作业饿了，给他拿点吃的。"),
@@ -422,8 +429,8 @@ def t24():
             "one snack for each kid: as many as there are kids doing homework, one to each desk",
             {"": dict(add={AP: on("apple", T2, 3.30, 6.70), BA: on("banana", T2, 3.30, 7.10), **hw, **hw3},
                       watch=[AP, BA],
-                      goal={"all": [H], "any": [[["on", AP, DESK], ["on", BA, DESK3]],
-                                                [["on", BA, DESK], ["on", AP, DESK3]]]},
+                      goal={"all": [H], "any": [[["on", AP, DESK], ["on_any", BA, AT_DESK3]],
+                                                [["on", BA, DESK], ["on_any", AP, AT_DESK3]]]},
                       route=fetch(AP, DESK, [-1.10, -5.95]) + fetch(BA, DESK3, [6.20, -5.50]))},
             instruction="The kids are doing homework and are hungry. Bring them something to eat.",
             instruction_zh="孩子们在写作业，饿了，给他们拿点吃的。"),
@@ -518,9 +525,8 @@ def t25():
              for c, n_tv, n_in in (("one_there", 1, 1), ("none_one_inside", 0, 1), ("none_two_inside", 0, 2),
                                    ("two_there", 2, 1))},
             instruction="Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup "
-                        "each. What is already on their table need not be brought again; if there are not enough "
-                        "ordinary cups, a mug will do.",
-            instruction_zh="两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。"),
+                        "each, ordinary cups where possible; what is already on their table need not be brought again.",
+            instruction_zh="两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。"),
         "two_guests": fam(
             "drink_on_island", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
             "two guests; one bottle of juice and two cups on the island",
@@ -558,13 +564,14 @@ def t26():
                   {"all": [["inside", CAR, BASK], H]}, [S("explore_room", room="living_room_0_0")] + into(CAR, BASK),
                   [CAR, BASK])
     kb, nv = "kid_book", "adult_novel"
+    KIDS_CASE = [f"bookcase_{i}/{lv}" for i in (2, 3) for lv in ("top", "shelf_1", "shelf_0")]   # a bookcase in his room
     fams = {
         "whose": fam(
             "car_in_living_room", ["referent_clue"], "the seed's layout only",
             "a picture book like the ones on the kid's bookcase and a grown-up's novel on the TV stand",
             "only the kid's things go: the picture book to his bookcase, the novel stays",
             {"": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36), **room},
-                      watch=[kb, nv], goal={"all": [["on", kb, "bookcase_2/top"], ["near_start", nv, 0.03], H]},
+                      watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], ["near_start", nv, 0.03], H]},
                       route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.43]))}),
         "scattered": fam(
             "car_in_living_room", ["goal_items_unstated", "multi_object_goal"], "the seed's layout only",
@@ -582,7 +589,7 @@ def t26():
             "in his room each by kind: the car into the toy basket, the book onto his bookcase",
             {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36), **room},
                       watch=[CAR, kb, BASK],
-                      goal={"all": [["inside", CAR, BASK], ["on", kb, "bookcase_2/top"], H]},
+                      goal={"all": [["inside", CAR, BASK], ["on_any", kb, KIDS_CASE], H]},
                       route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)
                       + fetch(kb, "bookcase_2/top", [1.12, -0.43]))}),
         "bear_to_bed": fam(
@@ -590,7 +597,7 @@ def t26():
             "his teddy bear on the TV stand; it is bedtime",
             "at bedtime the bear goes to his bed, not into the toy basket",
             {"": dict(add={"living_bear": on("teddy_bear", TV, 7.40, 0.36), **room}, watch=["living_bear", BASK],
-                      goal={"all": [["on", "living_bear", "mattress_1/top"], H]},
+                      goal={"all": [["on_any", "living_bear", ["mattress_1/top", "bookcase_3/top"]], H]},
                       route=[look(TV)] + fetch("living_bear", "mattress_1/top", [0.00, -4.00]))},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),
@@ -671,23 +678,6 @@ def t28():
                   {"all": [["on_any", KC, SIDES], ["upright", KC], H]}, fetch(KC, side, [2.10, -4.88]), [KC])
     to_side = fetch(KC, side, [2.10, -4.88])
     fams = {
-        "which_cup": fam(
-            "cup_on_counter", ["referent_clue"], "the seed's layout only",
-            "on the counter: the kid's plastic cup, a china cup and a mug",
-            "his cup is the plastic one: bring that one",
-            {"": dict(add={KC: on("plastic_cup", COUNTER, -0.20, 7.60), "counter_mug": on("breakfast_mug", COUNTER, -0.30, 9.00),
-                           **BEAR},
-                      watch=[KC, "cup_counter_b", "counter_mug"],
-                      goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
-                                    ["near_start", "counter_mug", 0.03], H]},
-                      route=[look(COUNTER)] + to_side)}),
-        "cup_put_away": fam(
-            "cup_on_counter", ["item_put_away"], "the seed's layout only",
-            "the cup was put away in the low wall cabinet",
-            "look in the cabinet, take the cup, close the door",
-            {"": dict(add={KC: on("plastic_cup", f"{C4}/inside_shelf", 1.40, 0.42), **BEAR},
-                      goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["is_closed", C4], H]},
-                      route=explore(C4) + from_closed(KC, C4) + [nav(side), place(KC, side, [2.10, -4.88])])}),
         "which_bed": fam(
             "cup_on_counter", ["referent_clue"], "which bed is his (seed: the teddy bear on one of the two beds)",
             "two bedrooms with a bed each; his teddy bear lies on his",
@@ -748,7 +738,8 @@ def t29():
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     setting = {"set_bowl": on("breakfast_bowl", T2, 3.30, 7.30), "set_spoon": on("breakfast_spoon", T2, 3.30, 7.49)}
     keep = [["near_start", "set_bowl", 0.03], ["near_start", "set_spoon", 0.03]]
-    shelves = ["bookcase_2/top", "bookcase_3/top", "large_shelf_2/shelf_1", "large_shelf_2/shelf_2"]
+    shelves = [f"bookcase_{i}/{lv}" for i in (1, 2, 3, 4) for lv in ("top", "shelf_1", "shelf_0")] + \
+        [f"large_shelf_2/shelf_{k}" for k in range(4)]                      # a book goes on any bookshelf
     fams = {
         "belongs_on_table": fam(
             "car_on_table", ["category_rule"], "the seed's layout only",
@@ -852,9 +843,8 @@ def t30():
                         from_closed("soup_bowl_2", C6) + [nav(ISL), place("soup_bowl_2", ISL, [7.85, 1.75])]
                         + fetch("spare_mug", ISL, [8.05, 1.75])))
              for c, n in (("two_inside", 2), ("one_inside", 1))},
-            instruction="The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, "
-                        "a mug will do.",
-            instruction_zh="汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。"),
+            instruction="The soup is almost ready. Bring bowls over for serving it.",
+            instruction_zh="汤快好了，拿碗过来准备盛。"),
         "clean_one": fam(
             "bowl_on_cabinet", ["referent_clue"], "the seed's layout only",
             "two bowls on the cabinet: one still has oatmeal in it, the other is empty",
