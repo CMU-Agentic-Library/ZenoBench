@@ -66,7 +66,7 @@ PickPolicy.execute
 
 `plan_pick` 只有一个：搜索时用它证明"在这个停车点能做完"，执行时用它复核、从当前状态重做剩下的。
 
-9.3 第 1 步以后，pick / place / navigate 都走 `motion_skills.run_skill`（2.3）：`skills.pick` → `_pick_pinch_core` → `run_skill(SKILLS["pick"])`，`pick_job` 给出 `Problem`（`_pick_problem`）、开到以后的计划和 hooks（`_pick_ready`）、结果判断（`_pick_judged`）；place 是 `_set_down` → `run_skill(SKILLS["place"])`，`place_job`；navigate 是 `navigate_job`（`plan_navigate`）。其余技能还不走 ①–④，直接调 `rig.move_to` / `joint_path` 等旧入口。
+9.3 第 1 步以后，pick / place / navigate 都走 `motion_skills.run_skill`（2.3）：`skills.pick` → `_pick_pinch_core` → `run_skill(SKILLS["pick"])`，`skill_jobs/pick.py` 的 `pick_job` 给出 `Problem`（`_pick_problem`）、开到以后的计划和 hooks（`_pick_ready`）、结果判断（`_pick_judged`）；place 是 `_set_down` → `run_skill(SKILLS["place"])`，`skill_jobs/place.py`；navigate 是 `skill_jobs/navigate.py`（`plan_navigate`）。其余技能还不走 ①–④，直接调 `rig.move_to` / `joint_path` 等旧入口。
 
 ### 2.3 第 ⑤ 层：所有技能的统一形式
 
@@ -105,7 +105,7 @@ Skill(
 
 复合技能（drop、heat、collect）在任务层把几个 `run_skill` 串起来；两个技能之间天然是一个锚点（下一个技能的"到达"）。
 
-**`SKILLS` 是数据，不是 Python 字典。** 上表 7 个形状覆盖约 40 个技能，彼此的差别在数据里是：用哪个 `build` 模板、选不选停车点、`arrive` / `travel` 姿态（将来加几个 `Spec` 常数）；代码部分是 `job`（目标采样、hooks、失败出口）和轨迹函数 `traj`。数据写进 `zeno_skills/motion_skills.json`（schema 1，和 `interface_ids.json` / `contract_profiles.json` 放在一起），`motion_skills.load` 加载时逐条校验（字段和类型、形状、姿态、模板是 `skill_plans` 里的构造函数、`job` 能 import），`SKILLS[name]` 第一次用时组装。不放进 `skill_library/catalog.json`：那份是 `tools/build_skill_library.py` 生成的索引，手加的字段下次生成就没了。
+**`SKILLS` 是数据，不是 Python 字典。** 上表 7 个形状覆盖约 40 个技能，彼此的差别在数据里是：用哪个 `build` 模板、选不选停车点、`arrive` / `travel` 姿态（将来加几个 `Spec` 常数）；代码部分是 `job`（目标采样、hooks、失败出口）和轨迹函数 `traj`。数据写进 `skill_library/catalog.json` 的 `motion_skills` 块（schema 1，每条带同一动词的 SkillNode 的 `skill_id`）。那份索引是 `tools/build_skill_library.py` 生成的，所以数据的出处是生成器里的 `MOTION_SKILLS`，手改 catalog 会被下次生成覆盖；生成器顺带检查每条都有同名动词的 SkillNode。`motion_skills.load` 加载时逐条校验（字段和类型、形状、姿态、模板是 `skill_plans` 里的构造函数、`job` 能 import），`SKILLS[name]` 第一次用时组装。
 
 这样做的理由：
 - 覆盖率、静态审计、v6 步数统计可以直接读 catalog，不用解析 Python，也不会再出现"文档说 116 个策略、代码里是另一个数"；
@@ -613,7 +613,7 @@ if why is not None:
 - 原语：`free_leg`（`Joint`、`Pose`、`PoseSet`、`JointSet`）、`straight`、`contact_extent`、`contact_segment`，三个"还在碰"判据，`exit_length`；`drive`、`drive_straight`（5.4）。
 - 计划：`plan_pick`、`plan_place`、`set_down_length`；`HELD_POSE_MARGIN` 5 mm。
 - 计划（续）：`plan_navigate`、`travel_chain`、`Carry`（`skill_plans/navigate.py`）。
-- 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`SKILLS` 从 `motion_skills.json` 加载）；navigate、pick、place 走它（`skills.navigate_job` / `pick_job` / `place_job`）。
+- 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载）；navigate、pick、place 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`，加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
 - 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`，pick / place 在用，微波炉里取物也是（cc2dbb2；写死的 `search_near` 和 `microwave_retrieval_q` 还在，9.3 第 8 步删）。
 - 执行：`run.observe`、`holds`、`execute`、`run(act, plan, rebuild, hooks)`（`rebuild=None` 合法，8.8）；`skills._pick_ready`、`_place_ready`。
 - 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`。
@@ -660,8 +660,8 @@ if why is not None:
    
    navigate 一项就覆盖 1099 步。（原文说"四件事都是零行为改动"不对：1.3、1.4 本来就改行为，只有 1.1、1.2、1.5 是零行为。）
 
-   **已完成（11-08，afaef2d、79f5ed5、f6d16de）。** 五项合成一次提交：它们都经过 `skills.py` 的 navigate / pick / place，拆开的中间状态跑不起来。和计划的出入：`find_park` 多一个参数 `base`（2.5）；catalog 是独立的 `zeno_skills/motion_skills.json`（第 10 节）；协议方法叫 `arm_kin`；`run_skill` 的技能接口是过渡形式 `Job`（2.3）；`job` 暂放在 `skills.py`（9.4）。
-   验证（只跑针对性，v6 nominal，未跑全量）：单测 260 + benchmark 69 通过。v6 nominal 10 集（T02 s10/s11、T04、T06、T07、T10、T20、T21、T23、T29，后八个 s10）中 6 集成功（T02×2、T04、T07、T10、T20）。失败的 4 集在第 1 步之前的 38bc6e0 上同样失败、失败点相同：T06 / T29 的 face 原地转身判碰（11% 处 0 mm、67% 处 6 mm），T21 "slide to edge: no graspable free edge"，T23 place 找不到停车点；T07 在 38bc6e0 上失败（heat 的按钮没有 IK），第 1 步上成功。搬运姿态全部"保持"，没有多余的手臂动作；运动记录里 fallback 为 0。结果在 `benchmark/runs/v6_step1_1108`、`v6_step1_carry_1108`（新）和 `v6_step1_old_1108`（38bc6e0）。
+   **已完成（11-08，afaef2d、79f5ed5、f6d16de、2c600bc）。** 五项合成一次提交：它们都经过 `skills.py` 的 navigate / pick / place，拆开的中间状态跑不起来。和计划的出入：`find_park` 多一个参数 `base`（2.5）；协议方法叫 `arm_kin`；`run_skill` 的技能接口是过渡形式 `Job`（2.3）；`min_bottom_z` 是"能抬就抬"不是约束（第 6 节）。catalog 在 `skill_library/catalog.json`（经生成器，第 10 节），job 在 `skill_jobs/`，`skills.py` 2281 行（9.4）。
+   验证（只跑针对性，v6 nominal，未跑全量）：单测 260 + benchmark 69 通过。v6 nominal 10 集（T02 s10/s11、T04、T06、T07、T10、T20、T21、T23、T29，后八个 s10）中 6 集成功（T02×2、T04、T07、T10、T20）。失败的 4 集在第 1 步之前的 38bc6e0 上同样失败、失败点相同：T06 / T29 的 face 原地转身判碰（11% 处 0 mm、67% 处 6 mm），T21 "slide to edge: no graspable free edge"，T23 place 找不到停车点；T07 在 38bc6e0 上失败（heat 的按钮没有 IK），第 1 步上成功。搬运姿态全部"保持"，没有多余的手臂动作；运动记录里 fallback 为 0。`motion_signature --compare`：(a) 第 1 步对 38bc6e0，同 5 集——新增的只有 T07 走得更远的 heat 按钮两行，少掉的是 4 行 `tuck`（旧 navigate 每次都调 `Rig.tuck`，手臂已在收起位也记一段零长度运动；`plan_navigate` 已在就省掉），都是 1.3 要的行为改动；(b) job 搬出 `skills.py`（2c600bc，零行为）前后，T02 s11、T04、T07 三集：无差异。结果在 `benchmark/runs/v6_step1_1108`、`v6_step1_carry_1108`（新）和 `v6_step1_old_1108`（38bc6e0）。
 2. **pick / place 收尾**，每项单独提交：
    1. 先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志，跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL`；同一次提交里建 `tolerances.py`（4.5），把四处散落的阈值搬进去、补上来源标记；
    2. `decide_ik`、`Plan.decisions`、`build` 的 `prior`（取代 `plan_pick` / `plan_place` 的 `q_seed` 和 `build` 的 `q_rank` 参数；`free_leg` 的 `Pose.q_hint` 不变，它是定下的分支）；
@@ -692,9 +692,9 @@ if why is not None:
 | 放什么 | 放哪 |
 |---|---|
 | `build`（第 ② 层） | `skill_plans/` 包，**按 2.3 的形状分文件**：`pick.py`、`place.py`、`navigate.py`、`door.py`、`contact.py`、`posture.py`，共用部分在 `_common.py` |
-| `Skill` 的数据部分 | `zeno_skills/motion_skills.json`（2.3） |
+| `Skill` 的数据部分 | `skill_library/catalog.json` 的 `motion_skills`，出处是 `tools/build_skill_library.py` 的 `MOTION_SKILLS`（2.3） |
 | `Skill` 的代码部分里不碰 rig 的（轨迹函数 `traj`） | 和它的 `build` 同一个文件 |
-| `Skill` 的 `job`（目标采样、hooks、结果判断：要读 rig 的标注和状态，属第 ⑤ 层） | 不能放进 `skill_plans/`（它不许碰 rig）。第 1 步先放在 `skills.py`（`navigate_job` / `pick_job` / `place_job`、`RigBase`、`_carry`），`skills.py` 因此从 2666 行涨到 2831 行，违反了下面"只减不增"；该搬到第 ⑤ 层自己的包（例如 `zeno_skills/skill_jobs/`，按形状分文件），在第 2 步开工前做 |
+| `Skill` 的 `job`（目标采样、hooks、结果判断：要读 rig 的标注和状态，属第 ⑤ 层）、`RigBase` | `zeno_skills/skill_jobs/`，一个技能一个文件。不能放进 `skill_plans/`（它不许碰 rig），也不放 `skills.py`（只减不增：第 1 步之后 2281 行，之前 2666 行） |
 | 阈值常数 | `tolerances.py`（4.5） |
 | `Actuator` 协议 | `motion_state.py`（和 `State` / `Spec` 一起，它也是层间接口） |
 | 退役的旧实现 | **删掉**，靠 git 回退，不靠注释保留 |
@@ -716,7 +716,7 @@ if why is not None:
 | 开门：手臂走圆弧还是底盘带门 | 两种都作为目标集合里的做法，由搜索挑 |
 | 力的几何替身够不够 | 先够；不够再加力反馈 |
 | 两手搬的闭链 | 9.3 第 9 步再定 |
-| ~~`SKILLS` 的 catalog 是独立一份还是并进 `skill_library/catalog.json`~~ | 定了：独立一份 `zeno_skills/motion_skills.json`。`skill_library/catalog.json` 是 `tools/build_skill_library.py` 生成的，手加的字段会被覆盖 |
+| ~~`SKILLS` 的 catalog 是独立一份还是并进 `skill_library/catalog.json`~~ | 定了：并进去，作为 `motion_skills` 块；因为 catalog 是生成的，数据放在生成器的 `MOTION_SKILLS` 里（9.3 第 1 步） |
 | `Observation`（4.6）什么时候做 | 没有使用方就不做。第一个要接的外部策略出现时再定它的形状，现在只守住"不塞进 `State`" |
 | 路线里 navigate(x) 选一次底盘位置，后面的技能又选一次停车点 | 两者目的不同：navigate 只开到 x 那一带，停车点由技能定，接受。另一种是 navigate(x) 后面紧跟技能时不动，会改路线语义 |
 | 复合技能（drop、heat、collect）放在哪一层 | 任务层串几个 `run_skill`，每个子技能各有锚点。做成一个大 `build` 搜索时能往后看得更远，但计划长、重做范围大 |
