@@ -222,12 +222,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         robot comes from first, else any side, else straight above."""
         bx, by, _ = rig.base_pose()
         a0 = math.atan2(by - tgt[1], bx - tgt[0])
-        for k in (0, 1, -1, 2, -2, 3, -3, 4):
-            a = a0 + k * math.pi / 4
-            eye = [tgt[0] + dist * math.cos(a), tgt[1] + dist * math.sin(a), tgt[2] + height]
-            if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
-                return eye
-        return [tgt[0] + 0.05, tgt[1], tgt[2] + dist + height]
+        for d_, h_ in ((dist, height), (dist * 0.7, height * 0.8), (dist * 1.3, height * 0.6), (dist * 0.5, height)):
+            for k in (0, 1, -1, 2, -2, 3, -3, 4):
+                a = a0 + k * math.pi / 4
+                eye = [tgt[0] + d_ * math.cos(a), tgt[1] + d_ * math.sin(a), tgt[2] + h_]
+                if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
+                    return eye
+        # nothing clear around: from just above (low enough to stay under wall cupboards over a counter)
+        return [tgt[0] + 0.05, tgt[1], tgt[2] + 0.45]
 
     st = rig.state()
     objs = st["objects"]
@@ -369,6 +371,10 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             shown.add(sp.split("/")[0])           # the furniture to open: this picture shows it
             views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在里面）")], img,
                           f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
+        elif "/shelf_" in sp:                     # on an open shelf level: from in front of that level
+            eye, _c = support_eye(sp)
+            img = shot(eye, pos(n))
+            views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置，{sp}）"))
         else:
             img = shot(around(pos(n), 0.6, 0.6), pos(n))    # steep enough to see over an edge lip
             views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置）"))
