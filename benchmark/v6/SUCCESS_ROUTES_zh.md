@@ -581,6 +581,8 @@
 
 ### clear_the_drinks_spot（Task）
 
+**情况**：早饭后燕麦碗和锅盖留在饮品角上，把柜顶占满了；指令是“早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶”，没点名是哪些东西、收到哪 → 认出碗和锅盖就是用过的餐厨用品，都收回厨房（岛台、灶台或厨房台面都算），再在腾出的地方放一个杯子
+
 **指令**：早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。
 
 **成功条件**：
@@ -673,7 +675,7 @@
 
 ## T05_pen_or_pencil_to_desk
 
-> 孩子写作业要用笔，把一支钢笔拿到书桌上；没有钢笔就拿铅笔。
+> 孩子写作业要用铅笔，拿一支铅笔到书房书桌上。
 
 ### e1_pencil_asked（对照）
 
@@ -707,29 +709,11 @@
 
 1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `navigate(destination=pen)` → 4. `navigate(destination=dining_table_2/top)`（补救） → 5. `look(target=dining_table_2/top)`（补救） → 6. `navigate(destination=pencil)` → 7. `pick(object=pencil)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=pencil, receptacle=desk_1/top)`
 
-### h_task_pencil_in_cabinet（Action + Task）
-
-**情况**：没钢笔（换铅笔），铅笔在关着门的矮柜里 → 开柜门拿铅笔，再关上
-
-**指令**：孩子写作业需要笔。请把钢笔拿到书房书桌上；没有钢笔就拿铅笔。铅笔收在矮墙柜里，拿完请把柜门关好。
-
-**成功条件**：
-
-- 手里空着
-- `kitchen_cabinet_6` 关着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `pen` 在 `desk_1/top` 上
-  - 第 2 组：
-    - `pencil` 在 `desk_1/top` 上
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()`（补救） → 4. `explore_furniture(furniture=kitchen_cabinet_6)`（补救） → 5. `straighten()`（补救） → 6. `navigate(destination=pencil)` → 7. `pick(object=pencil)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `close(articulated=kitchen_cabinet_6)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=pencil, receptacle=desk_1/top)`
-
 ### check_desk_first（Task）
 
 **情况**：指令照常（拿钢笔，没有就拿铅笔），但书桌上其实已经有了：钢笔在桌上；或者家里没有钢笔、铅笔已经在桌上 → 先看书桌，确认已经有了就停手；再拿一支来算失败，别处的笔要原地不动
+
+**指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。
 
 **成功条件**：
 
@@ -927,7 +911,7 @@
 
 **情况**：两个矮柜里一个放钢笔、一个放铅笔 → 都打开看，优先拿钢笔，关好柜门
 
-**指令**：孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。
+**指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。
 
 **成功条件**：
 

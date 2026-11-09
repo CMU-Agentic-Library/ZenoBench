@@ -1,7 +1,7 @@
 {
- "variants": 169,
- "episodes": 1690,
- "static_ok": 1690,
+ "variants": 168,
+ "episodes": 1680,
+ "static_ok": 1680,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -21,8 +21,8 @@
    "static_ok": 50
   },
   "T05_pen_or_pencil_to_desk": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 80,
+   "static_ok": 80
   },
   "T06_block_destination_occupied": {
    "episodes": 60,
@@ -127,8 +127,8 @@
  },
  "categories": {
   "control": 30,
-  "action_task": 9,
+  "action_task": 8,
   "task": 130
  },
- "tasks_sha1": "e623e4eb8a2ceb730f5e4426bcac2245b8b220be"
+ "tasks_sha1": "16cfbf41b0c783f86aba3df27dc44f109d925aa8"
 }

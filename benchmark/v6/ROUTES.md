@@ -123,10 +123,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `x6_gd_pen_or_pencil_cabinets__pen_in_4` (v6_x6_gd_pen_or_pencil_cabinets__pen_in_4, 17 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(pen) pick(pen) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(desk_1/top) place(pen,desk_1/top)
 * `x6_gd_pen_or_pencil_cabinets__pen_in_6` (v6_x6_gd_pen_or_pencil_cabinets__pen_in_6, 17 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(pen) pick(pen) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(desk_1/top) place(pen,desk_1/top)
 
-### Action + Task
-
-* `h_task_pencil_in_cabinet` (v5_h_task_pencil_in_cabinet, 11 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) +bend() +explore_furniture(kitchen_cabinet_6) +straighten() navigate(pencil) pick(pencil) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(desk_1/top) place(pencil,desk_1/top)
-
 ## T06_block_destination_occupied
 
 ### Control

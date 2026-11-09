@@ -1,6 +1,6 @@
 {
- "routes": 289,
- "ok": 289,
+ "routes": 288,
+ "ok": 288,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -888,16 +888,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "no_pen_pencil_away"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
-   "layout": "h_task_pencil_in_cabinet",
-   "steps": 11,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "h_task_pencil_in_cabinet"
   },
   {
    "task": "T05_pen_or_pencil_to_desk",

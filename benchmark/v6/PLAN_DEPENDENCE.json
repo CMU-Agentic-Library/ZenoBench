@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 259,
-   "variants": 139,
+   "layouts": 258,
+   "variants": 138,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 61,
-   "goal_not_met": 96,
+   "goal_not_met": 95,
    "not_observed": 60,
    "resource_missing": 36,
    "argument_mismatch": 6
@@ -136,7 +136,12 @@
    "instructions: no variant / layout name, the same for every layout (except INSTRUCTION_CLUES, where the person's words are the clue)",
    "oracle routes and configuration notes: not in any planner-facing field above"
   ],
-  "leaks": [],
+  "leaks": [
+   {
+    "where": "instructions",
+    "what": "the instruction differs between layouts: T05 check_desk_first"
+   }
+  ],
   "names_may_tell": {
    "T01 no_room_fallback": [
     "clutter_cereal_a",
@@ -1854,19 +1859,6 @@
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
-   "variant": "h_task_pencil_in_cabinet",
-   "layout": "h_task_pencil_in_cabinet",
-   "steps": 11,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "x6_gd_pen_or_pencil_cabinets__pen_in_4"
-   ]
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
    "variant": "check_desk_first",
    "layout": "check_desk_first__pen_on_desk",
    "steps": 3,
@@ -2040,7 +2032,7 @@
    "steps": 17,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "goal_not_met",
+   "control_route": "not_observed",
    "other_layouts": {
     "x6_gd_pen_or_pencil_cabinets__pen_in_6": "argument_mismatch"
    },
@@ -5053,7 +5045,7 @@
    "candidates": [
     "x6_gd_pen_or_pencil_cabinets__pen_in_4",
     "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-    "h_task_pencil_in_cabinet"
+    "e1_pencil_asked"
    ],
    "passes_all": []
   },

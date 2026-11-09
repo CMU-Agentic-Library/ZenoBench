@@ -21551,8 +21551,8 @@
     "skill_library/tasks.json:desk_prep",
     "tasks/desk_prep"
    ],
-   "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
-   "instruction_zh": "孩子写作业要用笔，把一支钢笔拿到书桌上；没有钢笔就拿铅笔。",
+   "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
+   "instruction_zh": "孩子写作业要用铅笔，拿一支铅笔到书房书桌上。",
    "scene": {
     "base": "tasks/desk_prep",
     "remove": [
@@ -21579,7 +21579,6 @@
     "no_pen_pencil_away": {
      "note": "no pen; the pencil lies on the dining table in another room",
      "conditions": [
-      "no_pen",
       "not_in_view"
      ],
      "remove": [
@@ -21613,6 +21612,9 @@
       "existing": true,
       "seed_vary_added": true
      },
+     "conditions_ignored": [
+      "no_pen"
+     ],
      "layout": {
       "clusters": [
        {
@@ -21772,119 +21774,13 @@
       }
      }
     },
-    "h_task_pencil_in_cabinet": {
-     "remove": [
-      "pen",
-      "plate_inside_kitchen_cabinet"
-     ],
-     "conditions": [
-      "no_pen"
-     ],
-     "move": {
-      "pencil": {
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.63,
-        0.36
-       ],
-       "yaw_deg": 90
-      }
-     },
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ]
-      ]
-     },
-     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
-     "instruction_zh": "孩子写作业需要笔。请把钢笔拿到书房书桌上；没有钢笔就拿铅笔。铅笔收在矮墙柜里，拿完请把柜门关好。",
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "is_closed",
-         "kitchen_cabinet_6"
-        ],
-        [
-         "on",
-         "pencil",
-         "kitchen_cabinet_6/inside_shelf"
-        ]
-       ]
-      }
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "no pen; the pencil is behind a closed cabinet door: open, take it, close again",
-     "v5": {
-      "tier": "hard",
-      "challenge": "no pen; the pencil is behind a closed cabinet door: open, take it, close again",
-      "derived_from": "no_pen",
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.08,
-         -0.4081,
-         1.22,
-         -0.3919
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.2,
-         0.14
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "check_desk_first__pen_on_desk": {
      "remove": [],
      "conditions": [
       "goal_already_met"
      ],
-     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
-     "instruction_zh": "孩子写作业要用笔，把一支钢笔拿到书桌上；没有钢笔就拿铅笔。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
      "move": {
       "pen": {
        "support": "desk_1/top",
@@ -21931,15 +21827,15 @@
       "pencil"
      ],
      "since": "v6",
-     "note": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+     "note": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
      "v6": {
       "family": "check_desk_first",
       "case": "pen_on_desk",
-      "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+      "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
       "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "what is already on the desk (seed: the pen, or the pencil when there is no pen)",
+      "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -21996,8 +21892,8 @@
      "conditions": [
       "goal_already_met"
      ],
-     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
-     "instruction_zh": "孩子写作业要用笔，把一支钢笔拿到书桌上；没有钢笔就拿铅笔。",
+     "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
+     "instruction_zh": "孩子写作业要用铅笔，拿一支铅笔到书房书桌上。",
      "move": {
       "pencil": {
        "support": "desk_1/top",
@@ -22047,15 +21943,15 @@
       "pencil_2"
      ],
      "since": "v6",
-     "note": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+     "note": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
      "v6": {
       "family": "check_desk_first",
       "case": "pencil_on_desk",
-      "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+      "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
       "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "what is already on the desk (seed: the pen, or the pencil when there is no pen)",
+      "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -24392,8 +24288,8 @@
      "conditions": [
       "no_pen"
      ],
-     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
-     "instruction_zh": "孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
      "goal": {
       "all": [
        [
@@ -24435,7 +24331,7 @@
       "family": "x6_gd_pen_or_pencil_cabinets",
       "case": "pen_in_4",
       "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-      "rationale": "the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+      "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
       "factor": "which cabinet holds the preferred item",
@@ -24476,8 +24372,8 @@
      "conditions": [
       "no_pen"
      ],
-     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
-     "instruction_zh": "孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
      "goal": {
       "all": [
        [
@@ -24519,7 +24415,7 @@
       "family": "x6_gd_pen_or_pencil_cabinets",
       "case": "pen_in_6",
       "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-      "rationale": "the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+      "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
       "factor": "which cabinet holds the preferred item",
@@ -24568,7 +24464,6 @@
    "oracle": {
     "no_pen_pencil_away": "v5fix_hard_search_pencil",
     "e1_pencil_asked": "v5_e1_pencil_asked",
-    "h_task_pencil_in_cabinet": "v5_h_task_pencil_in_cabinet",
     "check_desk_first__pen_on_desk": "v6_check_desk_first__pen_on_desk",
     "check_desk_first__pencil_on_desk": "v6_check_desk_first__pencil_on_desk",
     "all_pens__two": "v6_all_pens__two",
@@ -24684,80 +24579,6 @@
      "kind": "v5_skill_coverage",
      "variant": "e1_pencil_asked",
      "edited_from": "v5_e1_pencil_asked"
-    },
-    "v5_h_task_pencil_in_cabinet": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {},
-       "role": "recover"
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "straighten",
-       "args": {},
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top"
-       }
-      }
-     ],
-     "kind": "v5_skill_coverage",
-     "variant": "h_task_pencil_in_cabinet",
-     "edited_from": "v5_h_task_pencil_in_cabinet"
     },
     "v5fix_hard_search_pencil": {
      "steps": [
@@ -26071,25 +25892,6 @@
       "19": "no_pen_pencil_away"
      }
     },
-    "h_task_pencil_in_cabinet": {
-     "origin": "v5",
-     "control": "e1_pencil_asked",
-     "layouts": [
-      "h_task_pencil_in_cabinet"
-     ],
-     "seeds": {
-      "10": "h_task_pencil_in_cabinet",
-      "11": "h_task_pencil_in_cabinet",
-      "12": "h_task_pencil_in_cabinet",
-      "13": "h_task_pencil_in_cabinet",
-      "14": "h_task_pencil_in_cabinet",
-      "15": "h_task_pencil_in_cabinet",
-      "16": "h_task_pencil_in_cabinet",
-      "17": "h_task_pencil_in_cabinet",
-      "18": "h_task_pencil_in_cabinet",
-      "19": "h_task_pencil_in_cabinet"
-     }
-    },
     "check_desk_first": {
      "origin": "v6",
      "control": "e1_pencil_asked",
@@ -26097,7 +25899,7 @@
       "check_desk_first__pen_on_desk",
       "check_desk_first__pencil_on_desk"
      ],
-     "factor": "what is already on the desk (seed: the pen, or the pencil when there is no pen)",
+     "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
      "seeds": {
       "10": "check_desk_first__pencil_on_desk",
       "11": "check_desk_first__pen_on_desk",
@@ -26199,7 +26001,7 @@
     },
     "x6_gd_pen_or_pencil_cabinets": {
      "origin": "v6",
-     "control": "h_task_pencil_in_cabinet",
+     "control": "e1_pencil_asked",
      "layouts": [
       "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "x6_gd_pen_or_pencil_cabinets__pen_in_6"
@@ -26220,14 +26022,17 @@
     }
    },
    "v6_replaced": {
+    "h_task_pencil_in_cabinet": "removed: with the pencil asked for, opening the cabinet it is in is all that is left (Action-Level)",
+    "h_action_grasp_and_ik": "removed: the same design as h_task_pencil_in_cabinet",
     "h_dynamic_pencil_taken": "removed: no dynamic events in T05 (someone takes the pencil away)",
     "no_pen": "removed: no_pen_pencil_away is the same choice over a longer horizon"
    },
    "v6_dropped": {
     "e2_pencil_asked_far": "same as e1_pencil_asked but for the layout (object poses / start)",
     "m_grasp_pencil": "same as no_pen without its injected action failures",
-    "h_action_grasp_and_ik": "same as h_task_pencil_in_cabinet without its injected action failures",
+    "h_action_grasp_and_ik": "removed: the same design as h_task_pencil_in_cabinet",
     "h_mixed_cabinet_ik": "same as h_task_pencil_in_cabinet without its injected action failures",
+    "h_task_pencil_in_cabinet": "removed: with the pencil asked for, opening the cabinet it is in is all that is left (Action-Level)",
     "h_dynamic_pencil_taken": "removed: no dynamic events in T05 (someone takes the pencil away)",
     "no_pen": "removed: no_pen_pencil_away is the same choice over a longer horizon"
    },
@@ -26241,17 +26046,7 @@
      "category": "task",
      "local": [],
      "longer": [
-      "no_pen",
       "not_in_view"
-     ]
-    },
-    "h_task_pencil_in_cabinet": {
-     "category": "action_task",
-     "local": [
-      "clear the object on the target / open the door first"
-     ],
-     "longer": [
-      "no_pen"
      ]
     },
     "check_desk_first": {

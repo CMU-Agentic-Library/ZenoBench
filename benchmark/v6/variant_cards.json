@@ -7363,7 +7363,7 @@
    18,
    19
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
+  "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -7375,7 +7375,6 @@
     "pen"
    ],
    "conditions": [
-    "no_pen",
     "not_in_view"
    ],
    "initial_checks": []
@@ -7411,93 +7410,6 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/h_task_pencil_in_cabinet": {
-  "variant": "h_task_pencil_in_cabinet",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pencil"
-   ],
-   "added": [],
-   "removed": [
-    "pen",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "no_pen"
-   ],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "on",
-     "pencil",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v5_h_task_pencil_in_cabinet",
-  "challenge": "no pen; the pencil is behind a closed cabinet door: open, take it, close again",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T05_pen_or_pencil_to_desk/check_desk_first__pen_on_desk": {
   "variant": "check_desk_first",
   "category": "task",
@@ -7508,7 +7420,7 @@
    14,
    15
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -7549,7 +7461,7 @@
   },
   "control": "e1_pencil_asked",
   "oracle_route": "v6_check_desk_first__pen_on_desk",
-  "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+  "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
   "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -7563,7 +7475,7 @@
    18,
    19
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
+  "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -7607,7 +7519,7 @@
   },
   "control": "e1_pencil_asked",
   "oracle_route": "v6_check_desk_first__pencil_on_desk",
-  "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+  "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
   "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -8539,7 +8451,7 @@
    17,
    19
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -8594,10 +8506,10 @@
     ]
    ]
   },
-  "control": "h_task_pencil_in_cabinet",
+  "control": "e1_pencil_asked",
   "oracle_route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
   "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-  "rationale": "the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+  "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/x6_gd_pen_or_pencil_cabinets__pen_in_6": {
@@ -8610,7 +8522,7 @@
    16,
    18
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -8665,10 +8577,10 @@
     ]
    ]
   },
-  "control": "h_task_pencil_in_cabinet",
+  "control": "e1_pencil_asked",
   "oracle_route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
   "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-  "rationale": "the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+  "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/free": {

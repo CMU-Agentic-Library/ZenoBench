@@ -623,9 +623,15 @@ def T04(t):
 
 
 def T05(t):
+    # every instruction names the one kind of pen wanted, no "if there is no pen, a pencil" fallback
+    PENCIL_TXT = ("The kid needs a pencil for homework. Bring a pencil to the study desk.",
+                  "孩子写作业要用铅笔，拿一支铅笔到书房书桌上。")
+    PEN_TXT = ("The kid needs a pen for homework. Bring a pen to the study desk.",
+               "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。")
+    t["instruction"], t["instruction_zh"] = PENCIL_TXT
     tail_desk = [nav("desk_1/top"), place("pencil", "desk_1/top")]
-    two_cab = ("The kid needs something to write with for homework. Bring a pen to the study desk; if there is no "
-               "pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.")
+    two_cab = ("The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the "
+               "two low kitchen cabinets; close them again afterwards.")
     in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90}
 
     def fetch(x, art):
@@ -641,7 +647,7 @@ def T05(t):
     BOOK, DT, TV, KC = "bookcase_2/top", "dining_table_2/top", "tv_stand_2/top", "kitchen_counter_2/top"
     REG = {BOOK: "bedroom_0_1", DT: "dining_room_0_1", TV: "living_room_0_0", KC: "kitchen_0_1"}
     PENCIL0 = P(BOOK, 0.9646, -0.4948, -72.1)            # the pencil where the base scene has it (bedroom bookcase)
-    base_instr = dict(instruction=t["instruction"], instruction_zh=t["instruction_zh"])
+    base_instr = dict(instruction=PENCIL_TXT[0], instruction_zh=PENCIL_TXT[1])
 
     def put(name, sup, x, y, yaw=0.0, asset=None):
         """A pose (move) or, with ``asset``, an added object."""
@@ -655,6 +661,7 @@ def T05(t):
     # check_desk_first: what the instruction asks for is already on the desk (the usual instruction)
     check_cases = {
         "pen_on_desk": dict(move={"pen": P(DESK, -0.65, -5.95, 90.0), "pencil": PENCIL0},
+                            instruction=PEN_TXT[0], instruction_zh=PEN_TXT[1],
                             goal={"all": [["on", "pen", DESK], ["near_start", "pen", 0.10], ["near_start", "pencil", 0.03],
                                           ["hand_empty", "right"]]},
                             watch=["pen", "pencil"]),
@@ -737,9 +744,9 @@ def T05(t):
     return {
         "check_desk_first": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_already_met"], **base_instr,
-            factor="what is already on the desk (seed: the pen, or the pencil when there is no pen)",
-            challenge="what the instruction asks for already lies on the study desk (the pen; or, with no pen in the "
-                      "house, a pencil); another writing thing is on the bedroom bookcase",
+            factor="what is asked for and already on the desk (seed: a pen, or a pencil)",
+            challenge="what the instruction asks for (a pen; or a pencil) already lies on the study desk; another "
+                      "writing thing is on the bedroom bookcase",
             rationale="look before fetching: the goal already holds, so the right plan is to check the desk and stop; "
                       "fetching another pen or pencil is a wasted errand (the other one stays where it is)",
             cases=check_cases),
@@ -798,11 +805,11 @@ def T05(t):
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
             factor="which cabinet holds the preferred item",
             instruction=two_cab,
-            instruction_zh="孩子写作业要支笔。拿一支钢笔到书房书桌上，没有钢笔就拿铅笔。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
+            instruction_zh="孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
             challenge="writing things are in the two low cabinets: a pencil in one, the pen in the other (seed "
                       "decides which)",
-            rationale="the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are "
-                      "inspected until the pen is found (reference route: the pencil's cabinet first)",
+            rationale="a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the "
+                      "pen is found (reference route: the pencil's cabinet first)",
             cases={"pen_in_4": dict(move={"pen": in4}, goal=pen_goal, route=pen4,
                                     failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/inside_shelf"]],
                                                         fid="resource_pen_in_cabinet")]),
@@ -2215,6 +2222,9 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T05_pen_or_pencil_to_desk", "h_task_pencil_in_cabinet"): "removed: with the pencil asked for, opening the "
+                                                               "cabinet it is in is all that is left (Action-Level)",
+    ("T05_pen_or_pencil_to_desk", "h_action_grasp_and_ik"): "removed: the same design as h_task_pencil_in_cabinet",
     ("T04_cup_or_mug_to_cabinet", "h_task_spot_taken"): "replaced by clear_the_drinks_spot (tidy the used kitchen "
                                                         "things off the cabinet, then set the cup)",
     ("T10_trash_the_can", "h_task_can_in_microwave"): "removed: opening the microwave first is a local precondition "
@@ -2525,6 +2535,8 @@ SPLIT = {("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere")}
 
 # conditions that are no challenge for the variant's own instruction: it names the substitute itself
 NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
+                   # a pencil is asked for: no pen in the house is no longer a substitution
+                   ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen"],
                    ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"]}
 
 
