@@ -6708,8 +6708,8 @@
   "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/h_task_spot_taken": {
-  "variant": "h_task_spot_taken",
+ "T04_cup_or_mug_to_cabinet/clear_the_drinks_spot": {
+  "variant": "clear_the_drinks_spot",
   "category": "task",
   "seeds": [
    10,
@@ -6723,7 +6723,7 @@
    18,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+  "instruction": "Breakfast is over. Tidy away the used kitchen things on the low wall cabinet and set out a cup there; a guest is coming for tea soon.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6737,31 +6737,13 @@
    "removed": [
     "juice_bottle"
    ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "oatmeal",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "pot_lid",
-     "kitchen_cabinet_6/top"
-    ]
-   ]
+   "conditions": [
+    "goal_items_unstated",
+    "destination_occupied"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "destination_initial",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "any": [
     [
@@ -6785,27 +6767,76 @@
       "upright",
       "mug"
      ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ]
     ]
    ],
    "all": [
     [
-     "hand_empty",
-     "right"
+     "on_any",
+     "oatmeal",
+     [
+      "kitchen_island/top",
+      "kitchen_stove/top",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
+    ],
+    [
+     "on_any",
+     "pot_lid",
+     [
+      "kitchen_island/top",
+      "kitchen_stove/top",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
      "oatmeal"
     ],
     [
-     "upright",
-     "pot_lid"
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "cup_available",
-  "oracle_route": "v5_h_task_spot_taken",
-  "challenge": "the drinks spot is taken by the oatmeal bowl and the pot lid (no free spot for a cup): make room first (move the bowl), then set the cup",
-  "rationale": "",
+  "oracle_route": "v6_clear_the_drinks_spot",
+  "challenge": "the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; the instruction does not name them nor say where the kitchen things go",
+  "rationale": "the used kitchen things on the cabinet are the oatmeal bowl and the pot lid: take both back to the kitchen (island, stove or a counter), then set a cup on the cleared spot",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/two_guests__dining": {

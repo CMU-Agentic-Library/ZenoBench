@@ -560,7 +560,7 @@
 
 ### no_cup（Task）
 
-**情况**：家里没有杯子 → 用马克杯代替
+**情况**：家里没有杯子 → 用马克杯代替；马克杯不在眼前时先去找
 
 **成功条件**：
 
@@ -579,14 +579,16 @@
 - 摆法 `no_cup_mug_away`：1. `look(target=kitchen_island/top)` → 2. `count(category=cup)` → 3. `search(object=cup)` → 4. `search(object=mug, region=living_room_0_0)`（换做法） → 5. `navigate(destination=mug)` → 6. `pick(object=mug)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
 - 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `count(category=cup)` → 3. `search(object=cup)` → 4. `search(object=mug, region=dining_room_0_1)`（换做法） → 5. `navigate(destination=mug)` → 6. `pick(object=mug)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
 
-### h_task_spot_taken（Task）
+### clear_the_drinks_spot（Task）
 
-**情况**：饮品角被燕麦碗和锅盖占满 → 先把碗挪到另一个柜顶腾地方，再放杯子
+**指令**：早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。
 
 **成功条件**：
 
+- `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+- `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+- `oatmeal` 立着
 - 手里空着
-- `oatmeal`、`pot_lid` 立着
 - 满足下面任意一组：
   - 第 1 组：
     - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
@@ -594,10 +596,19 @@
   - 第 2 组：
     - `mug` 在 `kitchen_cabinet_6/top` 上
     - `mug` 立着
+  - 第 3 组：
+    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+    - `mug_dining_cabinet` 立着
+  - 第 4 组：
+    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+    - `mug_shelf` 立着
+  - 第 5 组：
+    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+    - `mug_counter` 立着
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6/top)` → 3. `look(target=kitchen_cabinet_6/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_cabinet_4/top)` → 7. `place(object=oatmeal, receptacle=kitchen_cabinet_4/top)` → 8. `navigate(destination=cup_counter_b)` → 9. `pick(object=cup_counter_b)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6/top)` → 3. `look(target=kitchen_cabinet_6/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_island/top)` → 7. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[6.7, 1.84])` → 8. `navigate(destination=pot_lid)` → 9. `pick(object=pot_lid)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=pot_lid, receptacle=kitchen_island/top, hint_xy=[7.1, 1.85])` → 12. `navigate(destination=cup_counter_b)` → 13. `pick(object=cup_counter_b)` → 14. `navigate(destination=kitchen_cabinet_6/top)` → 15. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
 
 ### two_guests（Task）
 

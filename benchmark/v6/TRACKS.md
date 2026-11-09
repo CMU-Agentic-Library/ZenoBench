@@ -18,7 +18,7 @@ Variants per task:
 | Task-Level | 1 | 4 | 4 | 4 | 7 | 5 | 5 | 4 | 3 | 6 | 4 | 5 | 3 | 2 | 2 | 3 | 4 | 3 | 2 | 5 | 6 | 5 | 5 | 5 | 6 | 5 | 5 | 6 | 5 | 6 |
 | Action + Task | 4 | 1 |  |  | 1 |  |  |  | 2 |  |  |  |  |  |  |  |  |  |  |  |  | 1 |  |  |  |  |  |  |  |  |
 
-Removed with the injected action failures: 135 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
+Removed with the injected action failures: 136 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
 
 ## Variants
 
@@ -43,7 +43,7 @@ Removed with the injected action failures: 135 variants (21 had nothing else, 61
 | T03 | utensils_apart | Task-Level | - | item_out_of_view; not_in_view | 2 |
 | T04 | cup_available | Control | - | - | 1 |
 | T04 | no_cup | Task-Level | - | no_cup; not_in_view | 3 |
-| T04 | h_task_spot_taken | Task-Level | - | destination | 1 |
+| T04 | clear_the_drinks_spot | Task-Level | - | destination_occupied; goal_items_unstated | 1 |
 | T04 | two_guests | Task-Level | - | missing_piece; not_in_view | 2 |
 | T04 | x6_gd_cup_in_cabinets | Task-Level | - | no_cup | 2 |
 | T05 | e1_pencil_asked | Control | - | - | 1 |

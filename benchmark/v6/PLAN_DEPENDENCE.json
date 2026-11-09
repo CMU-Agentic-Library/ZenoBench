@@ -6,8 +6,8 @@
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 62,
-   "goal_not_met": 95,
+   "passes": 61,
+   "goal_not_met": 96,
    "not_observed": 60,
    "resource_missing": 36,
    "argument_mismatch": 6
@@ -20,7 +20,6 @@
    "T01 which_table",
    "T02 crowded_use_another",
    "T03 which_bin_by_contents",
-   "T04 h_task_spot_taken",
    "T06 display_spot_or_tv",
    "T06 occupied",
    "T07 microwave_broken",
@@ -128,7 +127,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 350,
+  "geometric_atoms_unchecked": 352,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -1742,22 +1741,21 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "h_task_spot_taken",
-   "layout": "h_task_spot_taken",
-   "steps": 11,
+   "variant": "clear_the_drinks_spot",
+   "layout": "clear_the_drinks_spot",
+   "steps": 15,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright oatmeal",
-    "upright pot_lid",
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
-   "control_route": "passes",
+   "control_route": "goal_not_met",
    "other_layouts": {},
-   "other_variants_passing": [
-    "no_cup",
-    "no_cup_mug_away"
-   ]
+   "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",

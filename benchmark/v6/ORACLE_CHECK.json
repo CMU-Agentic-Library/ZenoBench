@@ -784,18 +784,20 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "h_task_spot_taken",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 4,
+   "layout": "clear_the_drinks_spot",
+   "steps": 15,
+   "atoms_checked": 8,
+   "atoms_geometric": 6,
    "geometric_atoms": [
     "upright oatmeal",
-    "upright pot_lid",
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
    "problems": [],
-   "variant": "h_task_spot_taken"
+   "variant": "clear_the_drinks_spot"
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",

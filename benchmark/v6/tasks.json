@@ -19326,224 +19326,6 @@
       }
      }
     },
-    "h_task_spot_taken": {
-     "move": {
-      "cup_counter_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.62,
-        1.64
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.335,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.629,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.95,
-        1.665
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "remove": [
-      "juice_bottle"
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup_counter_b",
-         "kitchen_cabinet_6/top"
-        ],
-        [
-         "upright",
-         "cup_counter_b"
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "kitchen_cabinet_6/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "upright",
-        "oatmeal"
-       ],
-       [
-        "upright",
-        "pot_lid"
-       ]
-      ]
-     },
-     "failures": [
-      {
-       "id": "destination_initial",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "oatmeal",
-         "kitchen_cabinet_6/top"
-        ],
-        [
-         "on",
-         "pot_lid",
-         "kitchen_cabinet_6/top"
-        ]
-       ]
-      }
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the drinks spot is taken by the oatmeal bowl and the pot lid (no free spot for a cup): make room first (move the bowl), then set the cup",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the drinks spot is taken by the oatmeal bowl and the pot lid (no free spot for a cup): make room first (move the bowl), then set the cup",
-      "derived_from": "cup_available",
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "cup_counter_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.5662,
-         1.5852,
-         7.6738,
-         1.6948
-        ],
-        "dx": [
-         -1.01,
-         0.57
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.9037,
-         1.6017,
-         7.9963,
-         1.7283
-        ],
-        "dx": [
-         -1.35,
-         0.25
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.235,
-         3.46,
-         0.485
-        ],
-        [
-         3.54,
-         0.2722,
-         3.718,
-         0.4478
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "no_cup_mug_away__alt_dining_table_2": {
      "note": "no cup in the house and the mug stands on the TV stand, out of the first view (here the mug is on dining_table_2/top)",
      "conditions": [
@@ -19641,6 +19423,284 @@
         "cup",
         "mug"
        ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "clear_the_drinks_spot": {
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.64
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.335,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.629,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "juice_bottle"
+     ],
+     "conditions": [
+      "goal_items_unstated",
+      "destination_occupied"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "cup_counter_b",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "cup_counter_b"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug_dining_cabinet",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug_dining_cabinet"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug_shelf",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug_counter",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug_counter"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "on_any",
+        "oatmeal",
+        [
+         "kitchen_island/top",
+         "kitchen_stove/top",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
+       ],
+       [
+        "on_any",
+        "pot_lid",
+        [
+         "kitchen_island/top",
+         "kitchen_stove/top",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Breakfast is over. Tidy away the used kitchen things on the low wall cabinet and set out a cup there; a guest is coming for tea soon.",
+     "instruction_zh": "早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。",
+     "watch": [
+      "cup_counter_b",
+      "mug",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter",
+      "oatmeal",
+      "pot_lid"
+     ],
+     "since": "v6",
+     "note": "the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; the instruction does not name them nor say where the kitchen things go",
+     "v6": {
+      "family": "clear_the_drinks_spot",
+      "case": null,
+      "challenge": "the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; the instruction does not name them nor say where the kitchen things go",
+      "rationale": "the used kitchen things on the cabinet are the oatmeal bowl and the pot lid: take both back to the kitchen (island, stove or a counter), then set a cup on the cleared spot",
+      "control": "cup_available",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "h_task_spot_taken"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "cup_counter_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.5662,
+         1.5852,
+         7.6738,
+         1.6948
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ],
+        "dy": [
+         -0.06,
+         0.07
+        ]
+       },
+       {
+        "names": [
+         "mug"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.9038,
+         1.6017,
+         7.9964,
+         1.7283
+        ],
+        "dx": [
+         -1.35,
+         0.25
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.6109,
+         1.7522,
+         6.7891,
+         1.9279
+        ],
+        [
+         6.975,
+         1.725,
+         7.225,
+         1.975
+        ]
+       ],
+       "kitchen_cabinet_6/top": [
+        [
+         3.21,
+         0.235,
+         3.46,
+         0.485
+        ],
+        [
+         3.54,
+         0.2722,
+         3.718,
+         0.4478
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
        "look": [
         "kitchen_island/top"
        ]
@@ -20602,8 +20662,8 @@
     "cup_available": "nominal",
     "no_cup": "alternative_mug",
     "no_cup_mug_away": "hard_count_search_mug",
-    "h_task_spot_taken": "v5_h_task_spot_taken",
     "no_cup_mug_away__alt_dining_table_2": "v6_no_cup_mug_away__alt_dining_table_2",
+    "clear_the_drinks_spot": "v6_clear_the_drinks_spot",
     "two_guests__dining": "v6_two_guests__dining",
     "two_guests__study": "v6_two_guests__study",
     "x6_gd_cup_in_cabinets__cup_in_4": "v6_x6_gd_cup_in_cabinets__cup_in_4",
@@ -20770,80 +20830,6 @@
      ],
      "since": "v2"
     },
-    "v5_h_task_spot_taken": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "oatmeal"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "oatmeal"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "oatmeal",
-        "receptacle": "kitchen_cabinet_4/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup_counter_b"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup_counter_b"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup_counter_b",
-        "receptacle": "kitchen_cabinet_6/top"
-       }
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_task_spot_taken"
-    },
     "v6_no_cup_mug_away__alt_dining_table_2": {
      "steps": [
       {
@@ -20902,6 +20888,113 @@
      ],
      "kind": "v6_seed_extension",
      "variant": "no_cup_mug_away__alt_dining_table_2"
+    },
+    "v6_clear_the_drinks_spot": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         6.7,
+         1.84
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pot_lid",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.1,
+         1.85
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "clear_the_drinks_spot"
     },
     "v6_two_guests__dining": {
      "steps": [
@@ -21337,23 +21430,24 @@
      },
      "factor": "where the mug is (seed: on the island in view, on the TV stand or on the dining table, out of view)"
     },
-    "h_task_spot_taken": {
-     "origin": "v5",
+    "clear_the_drinks_spot": {
+     "origin": "v6",
      "control": "cup_available",
      "layouts": [
-      "h_task_spot_taken"
+      "clear_the_drinks_spot"
      ],
+     "factor": null,
      "seeds": {
-      "10": "h_task_spot_taken",
-      "11": "h_task_spot_taken",
-      "12": "h_task_spot_taken",
-      "13": "h_task_spot_taken",
-      "14": "h_task_spot_taken",
-      "15": "h_task_spot_taken",
-      "16": "h_task_spot_taken",
-      "17": "h_task_spot_taken",
-      "18": "h_task_spot_taken",
-      "19": "h_task_spot_taken"
+      "10": "clear_the_drinks_spot",
+      "11": "clear_the_drinks_spot",
+      "12": "clear_the_drinks_spot",
+      "13": "clear_the_drinks_spot",
+      "14": "clear_the_drinks_spot",
+      "15": "clear_the_drinks_spot",
+      "16": "clear_the_drinks_spot",
+      "17": "clear_the_drinks_spot",
+      "18": "clear_the_drinks_spot",
+      "19": "clear_the_drinks_spot"
      }
     },
     "two_guests": {
@@ -21400,6 +21494,7 @@
     }
    },
    "v6_replaced": {
+    "h_task_spot_taken": "replaced by clear_the_drinks_spot (tidy the used kitchen things off the cabinet, then set the cup)",
     "h_dynamic_cup_taken": "removed: no dynamic events in T04 (someone takes the cup away)"
    },
    "v6_dropped": {
@@ -21407,6 +21502,7 @@
     "e2_from_dining_room": "same as cup_available but for the layout (object poses / start)",
     "m_ik_cup": "only injected action failures",
     "h_mixed_spot_taken_ik": "same as h_task_spot_taken without its injected action failures",
+    "h_task_spot_taken": "replaced by clear_the_drinks_spot (tidy the used kitchen things off the cabinet, then set the cup)",
     "h_dynamic_cup_taken": "removed: no dynamic events in T04 (someone takes the cup away)"
    },
    "v6_tracks": {
@@ -21423,11 +21519,12 @@
       "not_in_view"
      ]
     },
-    "h_task_spot_taken": {
+    "clear_the_drinks_spot": {
      "category": "task",
      "local": [],
      "longer": [
-      "destination"
+      "destination_occupied",
+      "goal_items_unstated"
      ]
     },
     "two_guests": {

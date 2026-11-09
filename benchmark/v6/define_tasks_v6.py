@@ -572,7 +572,29 @@ def T04(t):
                          route=base[:4] + [place(C, SPOT, [3.36, 0.36]), S("search", object="mug", region=region),
                                            nav("mug"), pick("mug"), nav(SPOT), place("mug", SPOT, [3.62, 0.36])])
                  for c, (pose, region) in away.items()}
+    # clear_the_drinks_spot: breakfast is over and the bowl of oatmeal and the pot lid were left on the drinks spot;
+    # tidy them back to the kitchen and set out a cup.  Which things are meant ("the used kitchen things") and where
+    # the kitchen is the robot works out; the cup then has room.
+    KITCHEN = ["kitchen_island/top", "kitchen_stove/top", "kitchen_counter_1/top", "kitchen_counter_2/top"]
+    ISL = "kitchen_island/top"
+    spot_route = [look(ISL), nav(SPOT), look(SPOT), nav("oatmeal"), pick("oatmeal"), nav(ISL),
+                  place("oatmeal", ISL, [6.70, 1.84]), nav("pot_lid"), pick("pot_lid"), nav(ISL),
+                  place("pot_lid", ISL, [7.10, 1.85]), nav(C), pick(C), nav(SPOT), place(C, SPOT)]
     return {
+        "clear_the_drinks_spot": dict(
+            base="h_task_spot_taken", control="cup_available", conditions=["goal_items_unstated", "destination_occupied"],
+            instruction="Breakfast is over. Tidy away the used kitchen things on the low wall cabinet and set out a "
+                        "cup there; a guest is coming for tea soon.",
+            instruction_zh="早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。",
+            goal={"any": [[["on", x, SPOT], ["upright", x]] for x in (C, *MUGS)],
+                  "all": [["on_any", "oatmeal", KITCHEN], ["on_any", "pot_lid", KITCHEN], ["upright", "oatmeal"],
+                          ["hand_empty", "right"]]},
+            watch=[C, *MUGS, "oatmeal", "pot_lid"],
+            challenge="the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; "
+                      "the instruction does not name them nor say where the kitchen things go",
+            rationale="the used kitchen things on the cabinet are the oatmeal bowl and the pot lid: take both back to "
+                      "the kitchen (island, stove or a counter), then set a cup on the cleared spot",
+            cases={"": dict(route=spot_route)}),
         "two_guests": dict(
             base="cup_available", control="cup_available", conditions=["missing_piece", "not_in_view"],
             instruction="Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not "
@@ -2193,6 +2215,8 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T04_cup_or_mug_to_cabinet", "h_task_spot_taken"): "replaced by clear_the_drinks_spot (tidy the used kitchen "
+                                                        "things off the cabinet, then set the cup)",
     ("T10_trash_the_can", "h_task_can_in_microwave"): "removed: opening the microwave first is a local precondition "
                                                       "(Action); x6_gd_can_put_away is its Task form",
     ("T10_trash_the_can", "h_dynamic_can_moved"): "removed: no dynamic events in T10 (someone takes the can)",
