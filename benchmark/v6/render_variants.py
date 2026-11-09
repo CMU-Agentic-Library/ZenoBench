@@ -296,6 +296,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         a, k = stp["args"], stp["skill"]
         if k == "pick":
             mark(a["object"], "take")
+        elif k in ("flip", "roll", "roll_object", "rotate", "expose"):    # worked on where it lies
+            mark(a.get("object"), "take")
         elif k in ("place", "drop", "hide"):
             if k == "hide":                      # hide picks the thing up itself
                 mark(a.get("object"), "take")
