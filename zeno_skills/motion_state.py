@@ -10,7 +10,7 @@ backend takes a State and a Spec as one query (Motion.query)."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
-from typing import Mapping
+from typing import Mapping, Protocol
 
 import numpy as np
 
@@ -73,8 +73,10 @@ class Spec:
 
 @dataclass(frozen=True)
 class Segment:
-    """One step of a plan.  kind "move": joint waypoints ``qs`` after ``q_from``; "action": no arm
-    motion, ``action`` says what (("grip", width), ...).  ``target``: what the segment is for --
+    """One step of a plan.  kind "move": joint waypoints ``qs`` after ``q_from`` (of the arm
+    ``info["side"]``, default right); "action": no arm motion, ``action`` says what (("grip", width),
+    ...); "drive": the base, ``info["steps"]`` (BaseModel.plan's), ``qs`` the right arm's postures after
+    each swing on the way; "anchor": where an error comes in (docs 8.2), nothing moves.  ``target``: what the segment is for --
     a pose (p, R), a joint goal q, or None -- checked again before it runs.  ``info``: what the
     primitive measured or chose (a straight's length, how a free leg was made)."""
     name: str
@@ -142,3 +144,56 @@ def released(s: State, side, name, T_frame) -> State:
 
 def with_object(s: State, name, T_frame) -> State:
     return replace(s, objects={**s.objects, name: np.asarray(T_frame, float).copy()})
+
+
+# --------------------------------------------------------------------- the simulator, as layer 4 sees it
+class Actuator(Protocol):
+    """All of the simulator the execution (run.py, layer 4) may touch (docs/MOTION_ARCHITECTURE.md
+    2.5): the writes ``execute`` makes, the read ``observe`` makes.  Rig implements it; another
+    robot or simulator implements this and the kinematics, nothing above.
+
+    Writes:
+      follow(qs, steps_per_wp, smooth=False)   arm waypoints (slower with a load in the hand)
+      grip(width, steps, gradual)              the gripper
+      drive_base(path, allow=...)              the base along waypoints [(x, y, yaw_deg)]
+      swing(q_right, q_left, label)            both arms straight in joint space (a travel-posture switch)
+      declare(name, allow, side, follows)      the segment to the contact monitor (Clearance.motion)
+      contact_allow(kin, allow)                a from-contact Allow narrowed to what the hand touches now
+    Reads:
+      snapshot() -> State                      the robot and the world now (synced into the collision model)
+      arm(side) -> ArmKin                      that arm's kinematics (its collision queries)
+      log(label, **kw)"""
+
+    def follow(self, qs, steps_per_wp=3, smooth=False): ...
+    def grip(self, width, steps=100, gradual=False): ...
+    def drive_base(self, path, **kw): ...
+    def swing(self, q_right, q_left, label, **kw): ...
+    def declare(self, name, allow, side="right", follows=True): ...
+    def contact_allow(self, kin, allow): ...
+    def snapshot(self) -> State: ...
+    def arm(self, side="right"): ...
+    def log(self, label, **kw): ...
+
+
+class BaseModel(Protocol):
+    """The whole-body base model the drive primitives and the park search query (docs/MOTION_ARCHITECTURE.md
+    5.4): the base planner over the robot's sphere model, what the hands hold included.  Like ``kin`` it
+    is handed down, never imported: skills.RigBase implements it on a rig.  It plans from the robot as it
+    stands (``state`` is the State now, or now with the arms elsewhere: the loads ride as they sit in the
+    hands now).
+
+      plan(state, goal, chain, label, quiet=False) -> (steps | None, why)
+            the base from state.base to goal (x, y, yaw_deg; None: as little as possible) with the arms
+            leaving state's posture through ``chain`` [(name, (q_right, q_left))]; steps
+            [("drive", [(x, y, yaw_deg)...]) | ("swing", name, q_right, q_left)]
+      straight(state, target, label) -> (path | None, why)   the straight base move to target (the yaw the
+                                                      short way round), the arms as they are
+      depths(state, poses) -> [m]                     penetration in the travel posture at each base pose
+      reachable(state, poses) -> [bool]               the base column can drive there (a distance field)
+      drivable(state, goal) -> bool                   plan in the travel chain (skill_plans.travel_chain)"""
+
+    def plan(self, state, goal, chain, label, quiet=False): ...
+    def straight(self, state, target, label): ...
+    def depths(self, state, poses): ...
+    def reachable(self, state, poses): ...
+    def drivable(self, state, goal): ...

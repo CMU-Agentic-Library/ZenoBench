@@ -18,7 +18,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import Failure, Segment
+from .motion_state import Failure, Segment, Spec
 
 LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its load) still touches it
 LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
@@ -49,6 +49,13 @@ class PoseSet:
     cost: tuple | None = None
     prefer: np.ndarray | None = None
     weights: np.ndarray | None = None
+
+
+@dataclass(frozen=True)
+class JointSet:
+    """Any one of the joint goals ``goals``, in order of preference: the first one free where it stands
+    (the fold before hanging at the side: Rig.tuck, the place's tuck), then as a Joint."""
+    goals: tuple
 
 
 @dataclass(frozen=True)
@@ -157,9 +164,19 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
     spec.hold_tilt), else a trajectory; a tilt-held trajectory ends at the goal's pose, so it must
     end at the goal itself or a free, level joint move must join it there.  Pose: the straight TCP
     line, else to q_hint (its solution) as a Joint is, else (no q_hint) the planner to the pose.
-    PoseSet: the cheapest reachable goal (batched IK), then as a Pose with its solution."""
+    PoseSet: the cheapest reachable goal (batched IK), then as a Pose with its solution.  JointSet:
+    the first goal free where it stands, then as a Joint."""
     q0 = np.asarray(state.q(kin.side) if q_from is None else q_from, float)
     with query(kin, state, spec):
+        if isinstance(goal, JointSet):
+            i = next((i for i, g in enumerate(goal.goals) if kin.free(np.asarray(g, float))), None)
+            if i is None:
+                return Failure(f"every goal of {len(goal.goals)} collides", name)
+            seg = free_leg(kin, state, spec, Joint(np.asarray(goal.goals[i], float)), name, step, q0)
+            if isinstance(seg, Segment):
+                seg = Segment(seg.name, seg.spec, seg.q_from, seg.qs, target=seg.target,
+                              info={**seg.info, "chosen": i, "goals": len(goal.goals)})
+            return seg
         if isinstance(goal, PoseSet):
             ref = q0 if goal.prefer is None else np.asarray(goal.prefer, float)
             w = np.ones(len(ref)) if goal.weights is None else np.asarray(goal.weights, float)
@@ -260,3 +277,33 @@ def contact_segment(spec, extent, name):
     """The contact a contact_extent measured, as a segment run under spec.allow (a contact Allow:
     LEAVE_CONTACT, lifting; unchecked, only what is touched at its start may be touched)."""
     return Segment(name, spec, extent.q_from, extent.qs, target=None, info={"length": extent.length})
+
+
+# ------------------------------------------------------------------------- the base (5.4)
+def drive(base, state, goal, chain, name, spec=None, **drive_kw):
+    """The base to ``goal`` (x, y, yaw_deg; None: as little as possible) on a whole-body plan of
+    ``base`` (motion_state.BaseModel: what the hands hold counts), the arms leaving the state's
+    posture through ``chain`` [(name, (q_right, q_left))] where the planner puts each switch (a
+    checked straight joint move: Rig.swing).  One segment, kind "drive": the drives and swings in
+    info["steps"], ``drive_kw`` (speed, turn, ramp) for the execution.  Failure when there is none."""
+    from .clearance import FREE
+    steps, why = base.plan(state, goal, chain, name)
+    if steps is None:
+        return Failure(why, name)
+    arm = tuple(np.asarray(st[2], float) for st in steps if st[0] == "swing")
+    return Segment(name, spec or Spec(allow=FREE), np.asarray(state.q_right, float), arm, kind="drive",
+                   target=("base", None if goal is None else tuple(map(float, goal))),
+                   info={"steps": tuple(steps), "drive_kw": drive_kw})
+
+
+def drive_straight(base, state, target, name, spec=None, **drive_kw):
+    """The base straight to ``target`` (x, y, yaw_deg) -- a turn in place, a sidestep, a retreat:
+    the motion the caller asks for, not a search -- the whole robot checked along it, the arms as
+    they are (BaseModel.straight).  Failure, nothing moves, when it is blocked."""
+    from .clearance import FREE
+    path, why = base.straight(state, target, name)
+    if path is None:
+        return Failure(why, name)
+    path = [tuple(map(float, w)) for w in path]
+    return Segment(name, spec or Spec(allow=FREE), np.asarray(state.q_right, float), (), kind="drive",
+                   target=("base", path[-1]), info={"steps": (("drive", path),), "drive_kw": drive_kw})

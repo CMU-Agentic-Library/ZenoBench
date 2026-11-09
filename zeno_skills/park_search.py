@@ -146,13 +146,12 @@ def score(kin, cands, sols):
     return out
 
 
-def find_park(rig, problem, state):
+def find_park(kin, world, problem, state, log, base=None):
     """The park for ``problem`` (Problem) from ``state`` (motion_state.State, now): Found with the
     plan the skill's builder made there, or None; the counts of every test in ``diag`` either way
-    (also logged as park_search)."""
-    from .planner import _drivable, _whole_body
-    from .skills import base_reachable
-    kin, world = rig.kin, rig.world
+    (also logged as park_search through ``log``).  ``kin`` the arm's kinematics, ``world`` the
+    WorldModel (footprints), ``base`` the motion_state.BaseModel (the whole robot in its travel
+    posture at a park, the base reaching it; None: neither is tested).  No rig: docs 2.5."""
     t0 = time.time()
     diag = {"candidates": 0, "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "drive": 0, "ik": 0,
             "built": 0, "no_path": 0, "build_failed": {}, "stage_s": {}}
@@ -178,17 +177,16 @@ def find_park(rig, problem, state):
         if min(per) >= MAX_PER_GOAL:
             break
     # batched: the whole robot in its travel posture at each park; the base can drive there
-    body = _whole_body(kin, problem.travel)
+    travel = with_arm(state, problem.travel, kin.side)
     moving = [c for c in pool if not is_here(c)]
-    if body is not None and moving:
-        depths, sets, _ = body
-        d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw, _ in moving]), sets)[0]
+    if base is not None and moving:
+        d = base.depths(travel, [c[1:4] for c in moving])
         blocked = {c[1:4] for c, dc in zip(moving, d) if dc > 1e-4}
         diag["travel_pose"] = len(blocked)
         pool = [c for c in pool if is_here(c) or c[1:4] not in blocked]
         moving = [c for c in pool if not is_here(c)]
-    if moving:
-        reach = base_reachable(rig, [c[1:4] for c in moving])
+    if base is not None and moving:
+        reach = base.reachable(state, [c[1:4] for c in moving])
         unreachable = {c[1:4] for c, r in zip(moving, reach) if not r}
         diag["drive"] = len(unreachable)
         pool = [c for c in pool if is_here(c) or c[1:4] not in unreachable]
@@ -213,15 +211,14 @@ def find_park(rig, problem, state):
             key = f"{plan.segment}: {plan.why.split(' (')[0]}"
             diag["build_failed"][key] = diag["build_failed"].get(key, 0) + 1
             continue
-        if not is_here(ranked[i][0]) and body is not None and \
-                not _drivable(kin, world, body, tuple(state.base), (x, y, yaw)):
+        if not is_here(ranked[i][0]) and base is not None and not base.drivable(travel, (x, y, yaw)):
             diag["no_path"] += 1
             continue
         found = Found(x, y, yaw, k, plan, q_rank)
         break
     diag["seconds"] = round(time.time() - t0, 2)
     diag["build_seconds"] = round(time.time() - t_build, 2)
-    rig.log("park_search", target=problem.label, found=None if found is None else
+    log("park_search", target=problem.label, found=None if found is None else
             [round(found.x, 3), round(found.y, 3), round(found.yaw, 1), found.k], **diag)
     if found is not None:
         found.diag = diag

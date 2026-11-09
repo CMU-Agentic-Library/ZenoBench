@@ -396,10 +396,13 @@ class Rig:
                 return
             self.step(2)
 
-    def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
-        """Waypoints time-scaled to the joint speeds of _vmax; with an object in the hand always
-        follow_smooth's gentle start and stop (a jerk shakes it out of the pinch)."""
-        if self._carrying():
+    def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01, smooth=False, side="right"):
+        """Waypoints time-scaled to the joint speeds of _vmax; with an object in the hand (or
+        ``smooth``) always follow_smooth's gentle start and stop (a jerk shakes it out of the pinch).
+        ``side`` "left": the left arm's waypoints (torso and waist first, as left_kin's chain), left_follow."""
+        if side == "left":
+            return self.left_follow([np.asarray(q, float) for q in qs], steps_per_wp)
+        if smooth or self._carrying():
             return self.follow_smooth(qs, steps_per_wp, settle, tol)
         self.clear.executing()
         vmax = self._vmax()
@@ -810,6 +813,43 @@ class Rig:
     def _exit_length(kin, start, qs, touching=None):
         """primitives.exit_length (the one measure of a contact's extent)."""
         return exit_length(kin, start, qs, touching)
+
+    # ---------------------------------------------------- motion_state.Actuator (run.py's only door)
+    def snapshot(self):
+        """The State now (motion_state.State): the base, the commanded arm postures, the head, each
+        hand's finger opening (the wider finger, as Motion.live_locks) and what it holds (its box
+        frame in the TCP frame, Motion.held_in_tcp), the objects' box frames and the parts' joint
+        values, all as synced into the collision model (sync_world)."""
+        from .kinematics import FINGER_OPEN
+        from .motion_state import Hand, Held, State
+        self.sync_world()
+        motion = self.kin.motion
+        hands = {}
+        for side, kin, q, held, fingers in (
+                ("right", self.kin, self.q_cmd, self.held, self.fingers),
+                ("left", self.left_kin, np.r_[self.q_cmd[:2], self.left_q_cmd], self.left_held, self.left_fingers)):
+            width = float(np.clip(np.asarray(fingers(), float)[:2].max(), 0.0, FINGER_OPEN))
+            h = None
+            if held is not None:
+                name = held["name"]
+                T = motion.held_in_tcp(kin, q, name) if motion is not None and motion.by_owner.get(f"object:{name}") \
+                    else np.eye(4)
+                h = Held(name, T, held.get("kind", "pinch"))
+            hands[side] = Hand(width=width, held=h)
+        return State(base=tuple(self.base_pose()), q_right=np.asarray(self.q_cmd, float).copy(),
+                     q_left=np.asarray(self.left_q_cmd, float).copy(), head=dict(self.head_q()), hands=hands,
+                     objects=motion.object_frames() if motion is not None else {},
+                     parts={a["name"]: self.joint(a["name"]) for a in self.ann.articulated})
+
+    def arm(self, side="right"):
+        return self.kin if side == "right" else self.left_kin
+
+    def declare(self, name, allow, side="right", follows=True):
+        """The next motion to the contact monitor (Clearance.motion)."""
+        self.clear.motion(name, allow, side=side, follows=follows)
+
+    def contact_allow(self, kin, allow):
+        return self._from_contact(kin, allow)
 
     def _from_contact(self, kin, allow):
         """A from_contact Allow (clearance.LEAVE_CONTACT) with what ``kin``'s hand and its load touch

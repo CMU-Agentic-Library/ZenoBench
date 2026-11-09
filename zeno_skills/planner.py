@@ -100,10 +100,15 @@ def _drivable(kin, world, body, origin, goal):
     if body is None:
         return plan_path(world, origin, goal) is not None
     from . import base_planner
-    from .skills import posture_sets, scene_area, travel_postures
+    from .motion_state import Hand, Held, State
+    from .skill_plans import travel_chain
+    from .skills import posture_sets, scene_area
     depths, _, travel = body
     rig = kin.motion.rig
-    chain = [p for _, p in travel_postures(rig, travel, travel)]
+    hand = lambda h: Hand(0.0, None if h is None else Held(h["name"], np.eye(4)))
+    st = State(base=tuple(origin), q_right=np.asarray(travel[0], float), q_left=np.asarray(travel[1], float),
+               hands={"right": hand(rig.held), "left": hand(rig.left_held)})
+    chain = [p for _, p in travel_chain(rig.kin, rig.left_kin, st)]
     if any(np.max(np.abs(p[0] - chain[0][0])) >= 0.02 for p in chain):
         sets, switches, dense = posture_sets(rig, chain)
     else:

@@ -113,18 +113,27 @@ def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
 
 # ------------------------------------------------------------------------------- run
 class FakeRig:
+    """A motion_state.Actuator: the arm goes where it is told, the State is read off it (observe is
+    patched in the tests)."""
+
     def __init__(self, kin, q):
-        self.kin, self.q_cmd, self.events, self.ran = kin, np.asarray(q, float), [], []
-        self.clear = SimpleNamespace(motion=lambda *a, **k: None)
+        self.kin, self.q_cmd, self.events, self.ran, self.declared = kin, np.asarray(q, float), [], [], []
 
     def log(self, ev, **kw):
         self.events.append((ev, kw))
 
-    def follow(self, qs, steps_per_wp=3):
+    def arm(self, side="right"):
+        return self.kin
+
+    def declare(self, name, allow, side="right", follows=True):
+        self.declared.append((name, side))
+
+    def contact_allow(self, kin, allow):
+        return allow
+
+    def follow(self, qs, steps_per_wp=3, smooth=False, side="right"):
         self.ran.append(len(qs))
         self.q_cmd = np.asarray(qs[-1], float)
-
-    follow_smooth = follow
 
 
 def _seg(name, q0, q1):

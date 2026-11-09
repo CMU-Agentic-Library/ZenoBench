@@ -108,7 +108,7 @@ class NavigateToPlacePolicy(AtomicPolicy):
             min_bottom_z = _carry_bottom_z(rig, place)
             # the carry posture the drive will use, before the stand-offs are checked in it
             # (navigate re-takes it; a pick that ended short of it changed it there, P15)
-            skills._carry_pose(rig, min_bottom_z=min_bottom_z)
+            skills.carry_posture(rig, min_bottom_z=min_bottom_z)
         poses = standoff_poses(rig, place)
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")

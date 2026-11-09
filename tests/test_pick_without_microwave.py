@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from zeno_skills import skills
+from zeno_skills import motion_skills, skills
 from zeno_skills.rig import SkillFailure
 
 
@@ -31,11 +31,12 @@ def test_pick_without_microwave_uses_generic_grasp_search(monkeypatch):
         state=lambda: {"objects": {"apple": {"pos": [1.0, 2.0, 0.75], "quat": [1.0, 0.0, 0.0, 0.0]}}},
         sync_world=lambda: None,
         base_pose=lambda: (0.0, 0.0, 0.0),
+        log=lambda *args, **kwargs: None,
     )
     monkeypatch.setattr(skills, "find_park", lambda *args, **kwargs: None)
-    monkeypatch.setattr(skills, "observe", lambda rig: None)
-    monkeypatch.setattr(skills, "_carry_goal_set", lambda rig, name: None)
-    monkeypatch.setattr(skills, "find_skill_park", lambda *args, **kwargs: (None, {}))
+    monkeypatch.setattr(motion_skills, "observe", lambda rig: None)
+    monkeypatch.setattr(skills, "_carry_goal_set", lambda rig, name, min_bottom_z=None: None)
+    monkeypatch.setattr(motion_skills, "find_park", lambda *args, **kwargs: (None, {}))
 
     with pytest.raises(SkillFailure, match="no reachable grasp"):
         skills._pick_pinch(rig, "apple", max_candidates=1)

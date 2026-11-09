@@ -1,0 +1,142 @@
+"""Layer 5 of docs/MOTION_ARCHITECTURE.md (2.3): a skill on the motion layers is one ``Skill`` --
+its data from the catalog (motion_skills.json), its Python part a ``job`` function -- and every
+skill runs through the one ``run_skill``:
+
+    1. job = skill.job(rig, args, state)                       what this call asks for
+    2. job.problem: park_search.find_park (no park found: job.no_park)
+       no problem: the skill runs where it stands (navigate: its goal is given)
+    3. not at the park: navigate there (itself run_skill), job.travel its arguments
+    4. plan, build, hooks = job.ready(found); run.run(rig, plan, build, hooks)
+    5. job.done() -> the skill's result
+
+Job is the form of 9.3 step 1: the skill's own steps between the layers -- a re-measure after the
+drive, the logs, the result judged -- sit in its callbacks.  The re-measure leaves with 9.3 step
+2.3 (the targets read from the State by build), the hooks that move the robot with 2.6
+(build_clear)."""
+
+from __future__ import annotations
+
+import importlib
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Callable
+
+from .park_search import find_park
+from .run import observe, run
+
+CATALOG = Path(__file__).with_name("motion_skills.json")
+SHAPES = ("drive", "perceive", "pick_place", "part", "posture", "contact", "bimanual")     # 2.3's table
+POSTURES = ("fold", "carry", "fold_or_carry")
+FIELDS = {"name": str, "shape": str, "template": str, "park": bool, "arrive": str, "travel": str, "job": str}
+
+
+@dataclass
+class Job:
+    """What one call of a skill asks of run_skill (see the module docstring).
+    problem:  park_search.Problem, or None (no park to choose)
+    no_park:  (diag) -> the exception when the search finds none
+    found:    (Found) -> None, after the search (logs, captions)
+    travel:   navigate's arguments for the drive to the park (min_bottom_z)
+    ready:    (Found | None) -> (plan, build, hooks): the plan to run, its builder for the rest
+              (build(state, segment name) -> Plan | Failure, or None), the hooks
+    failed:   (exception from run) -> the exception to raise instead, or None (raise it as it is)
+    done:     () -> the skill's result"""
+    problem: object = None
+    no_park: Callable | None = None
+    found: Callable | None = None
+    travel: dict = field(default_factory=dict)
+    ready: Callable | None = None
+    failed: Callable | None = None
+    done: Callable | None = None
+
+
+@dataclass(frozen=True)
+class Skill:
+    """One catalog entry (motion_skills.json) with its job function resolved."""
+    name: str
+    shape: str
+    template: str
+    park: bool
+    arrive: str
+    travel: str
+    job: Callable
+
+
+def run_skill(rig, skill, args):
+    """Run ``skill`` (Skill) with ``args`` on ``rig`` (see the module docstring)."""
+    from .rig import SkillFailure
+    from .skills import RigBase, _at_park
+    state = observe(rig)
+    job = skill.job(rig, args, state)
+    if skill.park != (job.problem is not None):
+        raise SkillFailure(f"{skill.name}: the catalog says park={skill.park}, the job "
+                           f"{'has' if job.problem is not None else 'has no'} park problem")
+    found = None
+    if job.problem is not None:
+        # read again: the job may have moved the arm first (place settles its carry posture)
+        found, diag = find_park(rig.kin, rig.world, job.problem, observe(rig), rig.log, base=RigBase(rig))
+        if found is None:
+            raise job.no_park(diag) if job.no_park is not None else SkillFailure(f"{skill.name}: no park")
+        if job.found is not None:
+            job.found(found)
+        if not _at_park(rig, found.x, found.y, found.yaw):
+            run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
+    plan, build, hooks = job.ready(found)
+    try:
+        run(rig, plan, build, hooks)
+    except Exception as exc:
+        other = job.failed(exc) if job.failed is not None else None
+        if other is not None:
+            raise other from exc
+        raise
+    return job.done() if job.done is not None else None
+
+
+def load(path=CATALOG):
+    """{name: Skill} from the catalog, every entry checked (fields and their types, the shape, the
+    postures, the template a builder of skill_plans, the job importable); ValueError naming what
+    is wrong."""
+    from . import skill_plans
+    data = json.loads(Path(path).read_text())
+    if data.get("schema_version") != 1 or data.get("kind") != "motion_skill_catalog":
+        raise ValueError(f"{path}: not a schema 1 motion_skill_catalog")
+    out = {}
+    for i, e in enumerate(data.get("skills", [])):
+        where = f"{path}: skills[{i}]"
+        missing = [k for k in FIELDS if k not in e]
+        extra = [k for k in e if k not in FIELDS]
+        if missing or extra:
+            raise ValueError(f"{where}: missing {missing}, unknown {extra}")
+        bad = [k for k, t in FIELDS.items() if not isinstance(e[k], t)]
+        if bad:
+            raise ValueError(f"{where}: wrong type of {bad}")
+        if e["name"] in out:
+            raise ValueError(f"{where}: {e['name']} twice")
+        if e["shape"] not in SHAPES:
+            raise ValueError(f"{where}: shape {e['shape']!r} not one of {SHAPES}")
+        if e["arrive"] not in POSTURES or e["travel"] not in POSTURES:
+            raise ValueError(f"{where}: arrive / travel not among {POSTURES}")
+        if not callable(getattr(skill_plans, e["template"], None)):
+            raise ValueError(f"{where}: no builder skill_plans.{e['template']}")
+        mod, _, fn = e["job"].partition(":")
+        job = getattr(importlib.import_module(mod), fn, None)
+        if not callable(job):
+            raise ValueError(f"{where}: no job {e['job']}")
+        out[e["name"]] = Skill(e["name"], e["shape"], e["template"], e["park"], e["arrive"], e["travel"], job)
+    return out
+
+
+class _Skills(dict):
+    """SKILLS[name]: the catalog, loaded on first use (the jobs live in skills.py, which imports
+    this module)."""
+
+    def __missing__(self, name):
+        if not self:
+            self.update(load())
+            if name in self:
+                return self[name]
+        raise KeyError(name)
+
+
+SKILLS = _Skills()

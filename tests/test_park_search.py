@@ -32,9 +32,26 @@ class Kin:
         return np.eye(6, 9), None, None
 
 
-def _rig(log):
-    return SimpleNamespace(kin=Kin(), world=SimpleNamespace(footprint_clear=lambda x, y, yaw: True),
-                           log=lambda ev, **kw: log.append((ev, kw)))
+class Base:
+    """motion_state.BaseModel: every park clear in the travel posture and drivable; ``reach`` says
+    which the column reaches."""
+
+    def __init__(self, reach=True):
+        self.reach = reach
+
+    def depths(self, state, poses):
+        return [0.0] * len(poses)
+
+    def reachable(self, state, poses):
+        return [self.reach] * len(poses)
+
+    def drivable(self, state, goal):
+        return True
+
+
+def _find(log, problem, state, reach=True):
+    return PS.find_park(Kin(), SimpleNamespace(footprint_clear=lambda x, y, yaw: True), problem, state,
+                        lambda ev, **kw: log.append((ev, kw)), base=Base(reach))
 
 
 def _state():
@@ -64,24 +81,21 @@ def test_the_ranking_ik_takes_the_relay_pose_into_each_parks_base_frame_without_
 
 
 def test_plans_are_built_in_rank_order_and_the_first_made_wins(monkeypatch):
-    monkeypatch.setattr(skills, "base_reachable", lambda rig, poses: [True] * len(poses))
     log, tried = [], []
 
     def build(state, k, q_rank):
         tried.append(state.base)
         return Failure("no straight", "pick_grasp") if len(tried) < 3 else Plan(())
-    found, diag = PS.find_park(_rig(log), _problem(build), _state())
+    found, diag = _find(log, _problem(build), _state())
     assert found is not None and diag["built"] == 3 and diag["build_failed"] == {"pick_grasp: no straight": 2}
     assert found.pose == tried[-1] and log[-1][0] == "park_search"
 
 
 def test_the_build_budget_ends_the_search(monkeypatch):
-    monkeypatch.setattr(skills, "base_reachable", lambda rig, poses: [True] * len(poses))
-    found, diag = PS.find_park(_rig([]), _problem(lambda s, k, q: Failure("never", "x")), _state())
+    found, diag = _find([], _problem(lambda s, k, q: Failure("never", "x")), _state())
     assert found is None and (diag["built"] == PS.BUILD_MAX or diag["build_seconds"] >= PS.BUILD_S)
 
 
 def test_parks_the_base_cannot_drive_to_are_not_built(monkeypatch):
-    monkeypatch.setattr(skills, "base_reachable", lambda rig, poses: [False] * len(poses))
-    found, diag = PS.find_park(_rig([]), _problem(lambda s, k, q: Plan(())), _state())
+    found, diag = _find([], _problem(lambda s, k, q: Plan(())), _state(), reach=False)
     assert found is None and diag["built"] == 0 and diag["drive"] > 0

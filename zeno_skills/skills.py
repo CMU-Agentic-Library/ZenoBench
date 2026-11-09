@@ -32,7 +32,7 @@ from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .motion_state import Failure, at_base, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
-from .park_search import Problem, find_park as find_skill_park
+from .park_search import Problem
 from .run import observe, run
 from .skill_plans import plan_pick, plan_place
 from .sticky import SHUT, note_grasp, rest_R, welded
@@ -99,67 +99,97 @@ def _carry_ref(kin, q):
     return upright, np.r_[CARRY_BODY_W, CARRY_BODY_W, np.ones(len(upright) - 2)]
 
 
-def _carry_goal_set(rig, name):
-    """carry_goals for skill_plans.plan_pick: at a State with ``name`` held and the hand at q, the
-    carry goal set of _carry_pose (its spots from the base, heights from the load's bottom up to
-    CARRY_Z, the turns about the vertical), sought near the upright body (_carry_ref); a container
-    on a rim pinch slower and smooth (it swings out of the pads on a fast sweep)."""
+def _carry_floor(rig, name, min_bottom_z=None):
+    """The lowest a carried load's bottom may ride: CARRY_Z (floor picks), or ``min_bottom_z`` (a
+    rim the destination asks to clear) -- an edge-held book 6 cm more, its free end droops on the
+    way (step 3c: the droop goes into the held object's model with place_flat)."""
+    z = CARRY_Z
+    if min_bottom_z is not None:
+        h = rig.held if rig.held is not None and rig.held.get("name") == name else {}
+        z = max(z, float(min_bottom_z) + (0.06 if h.get("kind") == "edge" else 0.0))
+    return z
+
+
+def _carry_goal_set(rig, name, min_bottom_z=None):
+    """carry_goals for skill_plans.plan_pick / plan_navigate: at a State with ``name`` held and the
+    hand at q, the carry goal set (CARRY_SPOTS from the base, heights from the load's bottom at
+    _carry_floor up, the turns about the vertical), sought near the upright body (_carry_ref); a
+    container on a rim pinch slower and smooth (it swings out of the pads on a fast sweep)."""
     from .primitives import PoseSet
     from .skill_plans import held_frame
     kin = rig.kin
     frame, lo, hi = kin.motion._box_of(name)
     corners = np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
     rim = bool(rig.ann.asset_of(rig.ann.objects[name]).get("container"))
+    floor = _carry_floor(rig, name, min_bottom_z)
 
     def carry_goals(state, q):
         held = state.held(kin.side)
         tcp, R = kin.tcp(np.asarray(q, float))
         T = held_frame(kin, q, held)
         hang = max(0.0, float(tcp[2] - (corners @ T[:3, :3].T + T[:3, 3])[:, 2].min()))
-        goals, cost = _carry_goals(state.base, tcp, R, CARRY_Z + hang)
+        goals, cost = _carry_goals(state.base, tcp, R, floor + hang)
         upright, weights = _carry_ref(kin, q)
         return PoseSet(tuple(goals), tuple(cost), upright, weights), \
             {"step": 0.005 if rim else 0.01, "steps_per_wp": 6 if rim else 4, "smooth": rim}
     return carry_goals
 
 
-def _carry_pose(rig, min_bottom_z=None):
-    """Held object: bring it in front of the body, near its centre line (held out to the side,
-    objects caught on door frames), its bottom at least CARRY_Z (floor picks) or ``min_bottom_z``
-    up and not lowered.  The carry spots and heights are one goal set (Rig.move_to_any, _carry_goals),
-    each with the hand turned about the world vertical through the TCP in CARRY_YAWS steps (a level
-    load does not care where it faces; the grasp's own heading may need the arm on another IK
-    branch): the planner takes the load there with its tilt held and the load in the collision
-    model."""
-    rig.sync_world()
-    tcp, R = rig.kin.tcp(rig.q_cmd)
-    # the fingers in the model too: a carry planned without them dragged them through the island
-    # right after a pick (P15), the load left behind
-    rig.kin.coll_kw = {}
-    hang = max(0.0, tcp[2] - float(rig.geo.bottom(rig.held["name"], rig.state())[2]))
-    if min_bottom_z is not None and rig.held.get("kind") == "edge":
-        # an edge-held book droops further on the way: its free end needs more clearance (step 3c:
-        # the droop goes into the held object's model with place_flat)
-        min_bottom_z += 0.06
-    goals, cost = _carry_goals(rig.base_pose(), tcp, R, max(CARRY_Z, min_bottom_z or 0.0) + hang)
-    if any(np.linalg.norm(p - tcp) < 0.01 and
-           np.linalg.norm(Rotation.from_matrix(Rg @ R.T).as_rotvec()) < 0.05 for p, Rg in goals):
-        return                # already at a carry spot (a skill brought it there before its park search)
-    rim = bool(rig.ann.asset_of(rig.ann.objects[rig.held["name"]]).get("container"))
-    upright, weights = _carry_ref(rig.kin, rig.q_cmd)
-    try:
-        # a rim-pinched bowl swings out of the pads on a fast sweep
-        rig.move_to_any(goals, step=0.005 if rim else 0.01, steps_per_wp=6 if rim else 4, label="carry_in",
-                        allow=FREE_ELSE_STRAIGHT, smooth=rim, cost=cost, prefer=upright, weights=weights)
-    except Dropped:
-        raise
-    except SkillFailure as exc:
-        # no carry spot the planner takes the load to from here (the arm left on an IK branch
-        # none of them is on, e.g. after a far pick: step 3b makes pick choose a branch that joins
-        # the carry pose): nothing has moved, and the load rides as it is -- the base planner
-        # checks the whole robot with it (navigate, relocate)
-        rig.log("carry_pose_kept", reason=str(exc))
-    check_held(rig, "carry_in")
+CARRY_FRONT_X = (0.25, 0.55)  # m: base-frame TCP x of a carry posture (CARRY_SPOTS' 0.35-0.45, 0.10 either way)
+CARRY_FRONT_Y = (-0.40, 0.00) # m: ...and y (CARRY_SPOTS' -0.30 - -0.10, 0.10 either way)
+CARRY_LOW_TOL = 0.01          # m a load's bottom may sit below its carry floor (the old 1 cm "at a carry spot")
+
+
+def _carry(rig, name, min_bottom_z=None):
+    """skill_plans.Carry for ``name`` in the right hand: the constraints a posture to drive in meets
+    (docs/MOTION_ARCHITECTURE.md 6, navigate) -- the load in front of the body near its centre line
+    (CARRY_FRONT_*: held out to the side, objects caught on door frames), its bottom no lower than
+    _carry_floor, the whole robot clear where it stands in that posture (poses_clear) -- and the carry
+    goal set when it does not."""
+    from .skill_plans import Carry, held_frame
+    from . import base_planner
+    kin, base = rig.kin, RigBase(rig)
+    floor = _carry_floor(rig, name, min_bottom_z)
+    frame, lo, hi = kin.motion._box_of(name) if kin.motion is not None else (None, None, None)
+    corners = None if lo is None else \
+        np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+
+    def check(state):
+        q = state.q(kin.side)
+        tcp, _ = kin.tcp(q)
+        x, y, yaw = state.base
+        c, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+        lx, ly = c * (tcp[0] - x) + s_ * (tcp[1] - y), -s_ * (tcp[0] - x) + c * (tcp[1] - y)
+        if not (CARRY_FRONT_X[0] <= lx <= CARRY_FRONT_X[1] and CARRY_FRONT_Y[0] <= ly <= CARRY_FRONT_Y[1]):
+            return f"the load is not in front of the body (TCP at {lx:.2f}, {ly:.2f} m in the base frame)"
+        held = state.held(kin.side)
+        if corners is not None and held is not None:
+            T = held_frame(kin, q, held)
+            bottom = float((corners @ T[:3, :3].T + T[:3, 3])[:, 2].min())
+            if bottom < floor - CARRY_LOW_TOL:
+                return f"the load's bottom at {bottom:.3f} m is below {floor:.3f} m"
+        if kin.motion is not None and base.depths(state, [tuple(state.base)])[0] > base_planner.DEPTH_TOL:
+            return "the robot is not clear where it stands in this posture"
+        return None
+    return Carry(check, _carry_goal_set(rig, name, min_bottom_z))
+
+
+def carry_posture(rig, min_bottom_z=None, label="carry_in"):
+    """With a load in the right hand: the posture checked against the carry constraints (_carry) and
+    kept when it meets them -- pick's carry_in chose it -- else planned to the carry goal set
+    (free space, the tilt held), SkillFailure when there is none (no unchecked straight, no posture
+    kept that fails them: docs 9.3 step 1.3).  plan_navigate's first stage, run on its own: a skill
+    that settles the posture before its park search (place, a stand-off check)."""
+    if rig.held is None:
+        return
+    from .skill_plans import plan_navigate
+    state = observe(rig)
+    plan = plan_navigate(rig.kin, rig.left_kin, state, None, None, carry=_carry(rig, rig.held["name"], min_bottom_z),
+                         stop="arm")
+    if isinstance(plan, Failure):
+        raise SkillFailure(f"{label}: {plan.why}")
+    rig.log("carry_posture", how=plan.info.get("carry"), moved=bool(plan.segments))
+    run(rig, plan, None, {"carry_in": {"after": lambda r: check_held(r, "carry_in")}})
 
 
 def check_held(rig, label):
@@ -244,52 +274,82 @@ def check_left_held(rig, label):
 
 
 def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
-    """Drive to ``pose`` on a whole-body base plan (relocate).  Empty-handed the arm folds first
-    where it stands when the arm planner finds a way (else where the base plan finds room) and
-    drives folded, hanging both arms at the side only along the stretches the fold does not fit
-    (the planner's choice, travel_postures); with a load in a hand it is brought into the carry
-    pose first, the arms stay as they are and the base drives slower (Rig.drive_base caps the speed by
-    what the hands hold).  ``arrive``: the arm posture to arrive in instead of the
-    fold (right-arm joints, or (right, left))."""
-    if rig.held is None:
-        rig.tuck()              # where the arm planner cannot fold it here, the base plan does (relocate)
-    else:
-        _carry_pose(rig, min_bottom_z=min_bottom_z)
-        if min_bottom_z is not None:
-            bottom_z = float(rig.geo.bottom(rig.held["name"], rig.state())[2])
-            rig.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(min_bottom_z), 3))
-        check_held(rig, "carry_up")
-    _fold_left(rig)
-    rest = _rest_posture(rig)
-    if arrive is None:
-        end = rest
-    elif isinstance(arrive, tuple):
-        end = (np.asarray(arrive[0], float), np.asarray(arrive[1], float)[-7:])
-    else:
-        end = (np.asarray(arrive, float), rest[1])
-    relocate(rig, pose, travel_postures(rig, rest, end), label=label)
-    if rig.held is not None:
-        check_held(rig, "carry")
-    if rig.left_held is not None:
-        check_left_held(rig, "left_carry")
+    """Drive to ``pose`` (skill_plans.plan_navigate, run by motion_skills.run_skill): empty-handed
+    the arm folds first where it stands when the arm planner finds a way (else where the base plan
+    finds room) and drives folded, hanging both arms at the side only along the stretches the fold
+    does not fit (the planner's choice, travel_chain); with a load in a hand its posture is checked
+    against the carry constraints and kept, or planned to the carry goal set (``min_bottom_z``: a
+    rim to clear), and the base drives slower (Rig.drive_base caps the speed by what the hands
+    hold).  ``arrive``: the arm posture to arrive in instead of the fold (right-arm joints, or
+    (right, left))."""
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["navigate"], {"pose": tuple(pose), "label": label, "min_bottom_z": min_bottom_z,
+                                               "arrive": arrive})
+
+
+def navigate_job(rig, args, state):
+    """motion_skills.Job of navigate: no park to choose (the pose is given), plan_navigate from the
+    state now; the hooks check the load before and after the drive."""
+    from .motion_skills import Job
+    from .skill_plans import NAV_STAGES, plan_navigate
+    pose, label, mbz, arrive = args["pose"], args.get("label", "navigate"), args.get("min_bottom_z"), args.get("arrive")
+    carry = _carry(rig, rig.held["name"], mbz) if rig.held is not None else None
+    base = RigBase(rig)
+    stage_of = {"tuck": "arm", "carry_in": "arm", "left_fold": "left_fold", label: "drive", "arrive": "arrive"}
+
+    def build(st, frm="arm"):
+        return plan_navigate(rig.kin, rig.left_kin, st, pose, base, carry=carry, arrive=arrive, label=label,
+                             start=stage_of.get(frm, frm))
+
+    def ready(found):
+        plan = build(state)
+        if isinstance(plan, Failure):
+            raise SkillFailure(plan.why if plan.segment == label else f"{label}: {plan.segment}: {plan.why}")
+        for what, why in plan.info.get("skipped", {}).items():
+            rig.log(f"{what}_blocked", reason=str(why)[:200])
+        if "carry" in plan.info:
+            rig.log("carry_posture", how=plan.info["carry"], moved=any(sg.name == "carry_in" for sg in plan.segments))
+
+        def before_drive(r):
+            if r.held is not None:
+                if mbz is not None:
+                    bottom_z = float(r.geo.bottom(r.held["name"], r.state())[2])
+                    r.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(mbz), 3))
+                check_held(r, "carry_up")
+
+        def after_drive(r):
+            if r.held is not None:
+                check_held(r, "carry")
+            if r.left_held is not None:
+                check_left_held(r, "left_carry")
+        hooks = {"carry_in": {"after": lambda r: check_held(r, "carry_in")},
+                 label: {"before": before_drive, "after": after_drive}}
+        return plan, (lambda st, frm: build(st, frm)), hooks
+    return Job(ready=ready)
 
 
 def base_reachable(rig, poses):
     """Per base pose (x, y, yaw_deg): whether the column's inscribed circle can drive there from
-    where the robot stands -- one field over all of them (base_planner.distance_field rooted at the
-    robot; it is symmetric), the cheap test that base_planner.plan makes first, for a goal set.
-    Over the whole scene, as plan has it (relocate's area): a route may leave the box around the
-    start and the poses (T12 s11: bookcase to desk_1 through the doorway)."""
-    from . import base_planner as bp
-    x, y, _ = rig.base_pose()
-    cells = [(int(round((p[0] - x) / bp.RES)), int(round((p[1] - y) / bp.RES))) for p in poses]
+    where the robot stands (RigBase.reachable)."""
     rig.sync_world()
-    a = scene_area(rig.world)
+    return _reachable(rig.world, rig.base_pose(), poses)
+
+
+def _reachable(world, base, poses):
+    """Per base pose (x, y, yaw_deg): whether the column's inscribed circle can drive there from
+    ``base`` -- one field over all of them (base_planner.distance_field rooted at the robot; it is
+    symmetric), the cheap test that base_planner.plan makes first, for a goal set.  Over the whole
+    scene, as plan has it (relocate's area): a route may leave the box around the start and the
+    poses (T12 s11: bookcase to desk_1 through the doorway)."""
+    from . import base_planner as bp
+    x, y = float(base[0]), float(base[1])
+    cells = [(int(round((p[0] - x) / bp.RES)), int(round((p[1] - y) / bp.RES))) for p in poses]
+    a = scene_area(world)
     bounds = (min(int(math.floor((a[0] - x) / bp.RES)), 0, *[c[0] for c in cells]),
               min(int(math.floor((a[1] - y) / bp.RES)), 0, *[c[1] for c in cells]),
               max(int(math.ceil((a[2] - x) / bp.RES)), 0, *[c[0] for c in cells]),
               max(int(math.ceil((a[3] - y) / bp.RES)), 0, *[c[1] for c in cells]))
-    D, i0, j0 = bp.distance_field(rig.world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
+    D, i0, j0 = bp.distance_field(world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
     return reached_cells(D, i0, j0, cells)
 
 
@@ -304,12 +364,11 @@ def reached_cells(D, i0, j0, cells):
     return out
 
 
-def travel_postures(rig, rest, end):
-    """navigate's posture chain: the fold, the hanging detour (empty-handed: both arms at the side,
-    kin.drive), the arrival.  Where the arrival is the fold the planner passes to it without a
-    swing and hangs only where the path needs it (base_planner.Lattice.skip)."""
-    hang = rest if rig.held is not None or rig.left_held is not None else (rig.kin.drive, rig.left_kin.drive[2:])
-    return [("fold", rest), ("hang", hang), ("arrive", end)]
+def travel_postures(rig, arrive=None):
+    """navigate's posture chain from the robot as it stands (skill_plans.travel_chain, the one
+    source the park search's drive check uses too)."""
+    from .skill_plans import travel_chain
+    return travel_chain(rig.kin, rig.left_kin, observe(rig), arrive)
 
 
 def posture_sets(rig, postures):
@@ -340,26 +399,73 @@ def relocate(rig, goal, postures=(), label="relocate", **drive):
     the arms anywhere between the two postures (a straight joint move).
     Nothing near the start or goal is exempt.  ``drive``: drive_base speeds.  SkillFailure when
     there is no such plan."""
-    from .clearance import FREE
-    steps, chain = _base_plan(rig, goal, postures, label)
-    for st in steps:
-        if st.kind == "drive":
-            rig.log("path", target=label, posture=chain[st.mode][0],
-                    waypoints=[[round(v, 2) for v in w] for w in st.path[1:]])
-            rig.drive_base(st.path[1:], allow=FREE, **drive)
-        else:
-            name, (qr, ql) = chain[st.mode + 1]
-            rig.swing(qr, ql, f"{label}_{name}")
+    from .primitives import drive as drive_segment
+    from .run import execute
+    seg = drive_segment(RigBase(rig), observe(rig), goal, list(postures), label, **drive)
+    if isinstance(seg, Failure):
+        raise SkillFailure(seg.why)
+    execute(rig, seg)
 
 
-def _base_plan(rig, goal, postures, label):
-    """relocate's plan: ([base_planner.Step], the posture chain), or SkillFailure."""
+class RigBase:
+    """motion_state.BaseModel on a rig: the whole-body base planner (base_planner over
+    Motion.body_spheres / base_depths), what the hands hold riding as they sit in them now."""
+
+    def __init__(self, rig):
+        self.rig = rig
+
+    def plan(self, state, goal, chain, label, quiet=False):
+        try:
+            steps, used = _base_plan(self.rig, goal, chain, label, state=state, quiet=quiet)
+        except SkillFailure as exc:
+            return None, str(exc)
+        out = []
+        for st in steps:
+            if st.kind == "drive":
+                out.append(("drive", [tuple(float(v) for v in w) for w in st.path[1:]], used[st.mode][0]))
+            else:
+                name, (qr, ql) = used[st.mode + 1]
+                out.append(("swing", name, np.asarray(qr, float), np.asarray(ql, float)))
+        return out, None
+
+    def straight(self, state, target, label):
+        return _straight_base_check(self.rig, state, target, label)
+
+    def depths(self, state, poses):
+        from .skill_plans import travel_chain
+        rig = self.rig
+        motion = rig.kin.motion
+        if motion is None or not len(poses):
+            return [0.0] * len(poses)
+        posture = travel_chain(rig.kin, rig.left_kin, state)[0][1]
+        return list(motion.base_depths(rig, np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses]),
+                                       motion.body_spheres(rig, [posture]))[0])
+
+    def reachable(self, state, poses):
+        return _reachable(self.rig.world, state.base, poses)
+
+    def drivable(self, state, goal):
+        from .planner import plan_path
+        from .skill_plans import travel_chain
+        rig = self.rig
+        if rig.kin.motion is None:
+            return plan_path(rig.world, tuple(state.base), goal) is not None
+        return self.plan(state, goal, travel_chain(rig.kin, rig.left_kin, state), "drivable", quiet=True)[0] is not None
+
+
+def _base_plan(rig, goal, postures, label, state=None, quiet=False):
+    """relocate's plan from ``state`` (default: the robot as it stands): ([base_planner.Step], the
+    posture chain), or SkillFailure.  ``quiet``: no base_plan event, no probes of a blocked plan
+    (the park search's drive check)."""
     from . import base_planner
-    rig.sync_world()
+    if state is None:
+        rig.sync_world()
     motion = rig.kin.motion
     if motion is None:
         raise SkillFailure(f"{label}: no whole-body model (cuRobo) to plan the base with")
-    chain = [("start", (rig.q_cmd.copy(), rig.left_q_cmd.copy()))]
+    q_r, q_l = (rig.q_cmd, rig.left_q_cmd) if state is None else (state.q_right, state.q_left)
+    origin = rig.base_pose() if state is None else tuple(state.base)
+    chain = [("start", (np.asarray(q_r, float).copy(), np.asarray(q_l, float).copy()))]
     for name, (qr, ql) in postures:
         qr, ql = np.asarray(qr, float), np.asarray(ql, float)[-7:]
         if np.max(np.abs(qr - chain[-1][1][0])) < SAME_POSTURE and np.max(np.abs(ql - chain[-1][1][1])) < SAME_POSTURE:
@@ -370,9 +476,13 @@ def _base_plan(rig, goal, postures, label):
     t0 = time.perf_counter()
     area = scene_area(rig.world)
     with motion.base_world(area[:2], area[2:]):
-        steps, lat = base_planner.plan(lambda poses, sph: motion.base_depths(rig, poses, sph), rig.base_pose(),
+        steps, lat = base_planner.plan(lambda poses, sph: motion.base_depths(rig, poses, sph), origin,
                                        goal, sets, switches, area=area, footprint=rig.world.footprints_clear,
                                        passable=rig.world.circles_clear, dense_switches=dense)
+    if quiet:
+        if steps is None:
+            raise SkillFailure(f"{label}: {lat.why}")
+        return steps, chain
     rig.log("base_plan", target=label, goal=None if goal is None else [round(float(v), 3) for v in goal],
             postures=[c[0] for c in chain], poses_checked=lat.evaluated, found=steps is not None,
             expanded=getattr(lat, "expanded", 0), rounds=getattr(lat, "rounds", 0),
@@ -430,16 +540,24 @@ def straight_base_move(rig, target, label, **drive):
     """Drive straight to ``target`` (x, y, yaw_deg) -- a turn in place, a sidestep: the motion the
     caller asks for, not a search -- after checking the whole robot (arms as they are, what the
     hands hold, base column) along it; it may not sink deeper than it starts.  SkillFailure
-    (nothing moves) when it is blocked."""
+    (nothing moves) when it is blocked.  primitives.drive_straight, run.execute."""
+    from .primitives import drive_straight
+    from .run import execute
+    seg = drive_straight(RigBase(rig), observe(rig), target, label, **drive)
+    if isinstance(seg, Failure):
+        raise SkillFailure(seg.why)
+    execute(rig, seg)
+
+
+def _straight_base_check(rig, state, target, label):
+    """RigBase.straight: ([target, the yaw the short way round], None), or (None, why)."""
     from . import base_planner
-    from .clearance import FREE
-    rig.sync_world()
     motion = rig.kin.motion
-    x, y, yaw = rig.base_pose()
+    x, y, yaw = state.base
     tx, ty, tyaw = target
     tyaw = yaw + (tyaw - yaw + 180.0) % 360.0 - 180.0
     if motion is not None:
-        sph = motion.body_spheres(rig, [(rig.q_cmd, rig.left_q_cmd)])
+        sph = motion.body_spheres(rig, [(state.q_right, state.q_left)])
         poses = base_planner.segment((x, y, math.radians(yaw)), (tx, ty, math.radians(tyaw)),
                                      float(np.max(np.hypot(sph[0][:, 0], sph[0][:, 1]))))
         us = np.linspace(0, 1, len(poses))
@@ -449,9 +567,10 @@ def straight_base_move(rig, target, label, **drive):
         bad[0] = False
         if bad.any():
             k = int(np.argmax(bad))
-            raise SkillFailure(f"{label}: blocked {us[k] * 100:.0f}% of the way (" +
-                               (f"{d[k] * 1000:.0f} mm into the world)" if d[k] > d[0] + base_planner.DEPTH_TOL else "base footprint)"))
-    rig.drive_base([(tx, ty, tyaw)], allow=FREE, **drive)
+            return None, (f"{label}: blocked {us[k] * 100:.0f}% of the way (" +
+                          (f"{d[k] * 1000:.0f} mm into the world)" if d[k] > d[0] + base_planner.DEPTH_TOL
+                           else "base footprint)"))
+    return [(float(tx), float(ty), float(tyaw))], None
 
 
 def drive_to(rig, goal, label="drive_to", **drive):
@@ -578,15 +697,14 @@ def _grasp_of(name, g):
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
 
-def _pick_find_park(rig, name, cands, near, prefer=()):
+def _pick_problem(rig, name, cands, near, prefer=(), state=None):
     """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
     the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
     relay pose the ranking solves), and a park counts when the whole pick plans from it
     (skill_plans.plan_pick, from the posture the arm arrives in, the hand opened to the
     candidate's width).  ``near`` / ``prefer`` as Problem's (the fridge shelf's open side, the pose a
-    microwave was loaded from).  (Found or None, diag, the carry goal set)."""
+    microwave was loaded from).  (Problem, the carry goal set)."""
     kin = rig.kin
-    state = observe(rig)
     carry_goals = _carry_goal_set(rig, name)
     goals = []
     for i, g in enumerate(cands):
@@ -603,15 +721,15 @@ def _pick_find_park(rig, name, cands, near, prefer=()):
     travel = _travel_q(rig)
     arrive = lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else travel
     problem = Problem(tuple(goals), build, arrive, travel, near=near, prefer=tuple(prefer), label=f"pick {name}")
-    found, diag = find_skill_park(rig, problem, state)
-    return found, diag, carry_goals
+    return problem, carry_goals
 
 
-def _pick_run(rig, name, g, park, plan, carry_goals):
-    """Run the pick's plan from the park (run.run).  A grasp re-read off the one planned for
-    (HINT_REACH / HINT_TURN) has the plan made again from here first.  Between the segments the
-    pick's own steps: the object watched on the way in, the reach checked, the pinch judged and
-    the load registered as held, the carry checked.  Returns the TCP where the hand closed."""
+def _pick_ready(rig, name, g, plan, carry_goals, out):
+    """The pick's plan to run from the park, its builder for the rest, its hooks (run.run).  A grasp
+    re-read off the one planned for (HINT_REACH / HINT_TURN) has the plan made again from here
+    first.  Between the segments the pick's own steps: the object watched on the way in, the reach
+    checked, the pinch judged and the load registered as held (``out["tcp0"]``: the TCP where the
+    hand closed), the carry checked."""
     kin = rig.kin
     grasp = _grasp_of(name, g)
     u, L = _grasp_approach(g)
@@ -624,7 +742,6 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
             raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
     reach = next((sg for sg in plan.segments if sg.name == "pick_reach" and sg.qs), None)
     seed = None if reach is None else reach.q_end      # the plan's solution of the reach-in's start
-    out = {}
 
     def rebuild(state, frm):
         return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_seed=seed, step=APPROACH_STEP)
@@ -685,11 +802,7 @@ def _pick_run(rig, name, g, park, plan, carry_goals):
     hooks = {"pick_reach": {"around": watch}, "pick_grasp": {"around": watch, "after": after_grasp},
              "pick_close": {"before": before_close, "after": after_close},
              "carry_in": {"after": lambda rig: check_held(rig, "carry_in")}}
-    try:
-        run(rig, plan, rebuild, hooks)
-    except Dropped as exc:
-        raise SkillFailure(f"pick {name}: not held ({exc})")
-    return out["tcp0"]
+    return plan, rebuild, hooks
 
 
 # ---- retired 2026-11-08 with the old pick search (see _relay_check above)
@@ -1359,6 +1472,17 @@ def contact_obstacles(rig, name, label):
 
 
 def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
+    """The pinch pick of ``name`` (motion_skills.run_skill of pick_job)."""
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["pick"], {"name": name, "max_candidates": max_candidates, "kinds": kinds})
+
+
+def pick_job(rig, args, state):
+    """motion_skills.Job of the pinch pick: every grasp candidate one goal of the park search (the
+    whole pick planned there, skill_plans.plan_pick); after the drive the candidate re-read, the plan
+    run with the pick's hooks; then judged (_pick_judged)."""
+    from .motion_skills import Job
+    name, max_candidates, kinds = args["name"], args.get("max_candidates", 12), args.get("kinds", PINCH_KINDS)
     obj = rig.ann.objects[name]
     pos, quat = rig.obj_pose(name)
     st = rig.state()
@@ -1410,30 +1534,44 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=PINCH_KINDS):
         prefer = (search_near,) if len(search_near) == 3 else ()
     elif fridge_shelf:
         near, prefer = rig.base_pose()[:2], (search_near,)
-    found, diag, carry_goals = _pick_find_park(rig, name, cands[:max_candidates] + extra, near, prefer)
-    if found is None:
+    goal_cands = cands[:max_candidates] + extra
+    problem, carry_goals = _pick_problem(rig, name, goal_cands, near, prefer, state)
+    ctx = {"out": {}}
+
+    def no_park(diag):
         getattr(rig, "log", lambda *a, **k: None)("pick_no_park", obj=name, pos=[round(float(v), 3) for v in pos],
                 quat=[round(float(v), 3) for v in quat], n_cands=len(cands), diag=diag)
-        raise SkillFailure(f"pick {name}: no reachable grasp from any base pose")
-    g = (cands[:max_candidates] + extra)[found.k]
-    park, plan = (found.x, found.y, found.yaw, None), found.plan
-    x, y, yaw, _ = park
-    rig.log("pick_park", obj=name, kind=g["kind"], park=[round(x, 3), round(y, 3), round(yaw, 1)],
-            floor=bool(floor_z < 0.05))
-    rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
-    _goto_park(rig, park)
-    # re-read after driving (the drive may have knocked it): the same candidate at the object's
-    # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
-    # tolerance dropped every re-read of an object turned by a tenth of a degree)
-    pos, quat = rig.obj_pose(name)
-    now_c, now_x = _pinch_candidates(rig, obj, pos, quat, kinds, _surface_under(rig, name, rig.state()))
-    g = next((c for c in now_c + now_x if c["idx"] == g["idx"]), g)
-    rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in pos],
-            quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
-            kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
-    note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
-    tcp0 = _pick_run(rig, name, g, park, plan, carry_goals)
-    return _pick_judged(rig, name, g, tcp0, pos)
+        return SkillFailure(f"pick {name}: no reachable grasp from any base pose")
+
+    def found_park(found):
+        g = goal_cands[found.k]
+        rig.log("pick_park", obj=name, kind=g["kind"], park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)],
+                floor=bool(floor_z < 0.05))
+        rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
+
+    def ready(found):
+        g = goal_cands[found.k]
+        # re-read after driving (the drive may have knocked it): the same candidate at the object's
+        # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
+        # tolerance dropped every re-read of an object turned by a tenth of a degree)
+        p_now, q_now = rig.obj_pose(name)
+        now_c, now_x = _pinch_candidates(rig, obj, p_now, q_now, kinds, _surface_under(rig, name, rig.state()))
+        g = next((c for c in now_c + now_x if c["idx"] == g["idx"]), g)
+        rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in p_now],
+                quat=[round(float(v), 3) for v in q_now], p=[round(float(v), 3) for v in g["p"]],
+                kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
+        note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
+        ctx["g"], ctx["pos"] = g, p_now
+        return _pick_ready(rig, name, g, found.plan, carry_goals, ctx["out"])
+
+    def failed(exc):
+        if isinstance(exc, Dropped):
+            return SkillFailure(f"pick {name}: not held ({exc})")
+        return None
+
+    def done():
+        return _pick_judged(rig, name, ctx["g"], ctx["out"]["tcp0"], ctx["pos"])
+    return Job(problem=problem, no_park=no_park, found=found_park, ready=ready, failed=failed, done=done)
 
     # ---- retired 2026-11-08 (docs/MOTION_ARCHITECTURE.md steps 3-4): the old execution after the
     # reach-in (Rig.move_relay, Rig.leave for the lift with its halving, the microwave's written
@@ -1919,11 +2057,12 @@ def place(rig, name, support, xy=None, spots=None):
     return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
 
 
-def _place_run(rig, name, s, p, R, open_w, plan):
-    """Run the place's plan (run.run) to set ``name`` down at (p, R), the pose re-measured after
-    the drive: a plan made for a set-down pose off it by more than HINT_REACH / HINT_TURN (the
-    load turned in the pinch on the way) is made again from here first.  Between the segments the
-    place's own steps: the reach checked, the release logged and the load no longer held."""
+def _place_ready(rig, name, s, p, R, open_w, plan):
+    """The place's plan to run (run.run) to set ``name`` down at (p, R), the pose re-measured after
+    the drive, its builder for the rest, its hooks: a plan made for a set-down pose off it by more
+    than HINT_REACH / HINT_TURN (the load turned in the pinch on the way) is made again from here
+    first.  Between the segments the place's own steps: the reach checked, the release logged and
+    the load no longer held."""
     kin = rig.kin
     u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
     planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
@@ -1965,18 +2104,30 @@ def _place_run(rig, name, s, p, R, open_w, plan):
 
     hooks = {"place_reach": {"before": set_down_caption}, "place_down": {"after": after_down},
              "place_release": {"after": after_release}, "place_pull_out": {"before": before_pull_out}}
-    run(rig, plan, rebuild, hooks)
+    return plan, rebuild, hooks
 
 
 def _set_down(rig, name, s, spots, tray=None):
-    """place onto the support ``s`` (an annotated one, or a tray's floor) at one of ``spots``."""
+    """place onto the support ``s`` (an annotated one, or a tray's floor) at one of ``spots``
+    (motion_skills.run_skill of place_job)."""
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["place"], {"name": name, "support": s, "spots": spots, "tray": tray})
+
+
+def place_job(rig, args, state):
+    """motion_skills.Job of the set-down: the carry posture settled for the support's rim first
+    (carry_posture), every spot x hold x wrist turn one goal of the park search (the whole place
+    planned there, skill_plans.plan_place); after the drive the set-down pose re-measured, the plan
+    run with the place's hooks; then the result judged."""
+    from .motion_skills import Job
+    name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
     kin = rig.kin
     asset = rig.ann.asset_of(rig.ann.objects[name])
     # the carry posture of the drive to the park, before the park search checks it there
     from .policies.plan_helpers import _carry_bottom_z
     clear_z = _carry_bottom_z(rig, tray or s["name"])
     carry_bottom_z = max(s["z"] + 0.03, clear_z or 0.0)
-    _carry_pose(rig, min_bottom_z=carry_bottom_z)
+    carry_posture(rig, min_bottom_z=carry_bottom_z)
     rig.sync_world()
     # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
     # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
@@ -2019,35 +2170,49 @@ def _set_down(rig, name, s, spots, tray=None):
                           step=APPROACH_STEP)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
                       lambda x, y, yaw: rig.q_cmd.copy(), travel_q, near=search_near, label=f"place {name}")
-    found, diag = find_skill_park(rig, problem, observe(rig))
-    if found is None:
-        raise SkillFailure(f"place {name}: no spot of {len(spots)} on {s['name']} reachable "
-                           f"({len(leg_sets)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
-    park, k, plan = (found.x, found.y, found.yaw, None), found.k, found.plan
-    spot, R, levelled, deg, hang = goals[k]
-    x, y, yaw, _ = park
-    reach = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_reach"), None)
-    L = None if reach is None else reach.info.get("set_down_m")
-    rig.log("place_park", obj=name, park=[round(x, 3), round(y, 3), round(yaw, 1)], spot=[round(v, 3) for v in spot],
-            yaw_deg=deg, levelled=levelled, goals=len(leg_sets), set_down_m=None if L is None else round(L, 4))
-    rig.caption = f"PLACE {name}: carry"
-    rig.focus_z = s["z"]
-    # arrive with the load above the target surface (and the loose objects on it): the carry pose
-    # taken above (_carry_bottom_z, kept until the base planner changes the carry height itself)
-    _goto_park(rig, park, min_bottom_z=carry_bottom_z)
-    # the object may have turned in the pinch on the way (bowls held at the rim, spoons):
-    # re-measure how it hangs and aim it at the spot again
-    tcp_now, R_now = kin.tcp(rig.q())
-    body_now, _ = rig.obj_pose(name)
-    body_now = np.asarray(body_now, float)
-    if levelled is None:
-        hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
-    p = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP]) + (R @ R_now.T) @ (tcp_now - body_now)
-    moved = float(np.linalg.norm(p - leg_sets[k][0][0]))
-    rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
-            pos=np.round(body_now, 4).tolist())
-    kind = rig.held["kind"]
-    _place_run(rig, name, s, p, R, open_w, plan)
+    ctx = {}
+
+    def no_park(diag):
+        return SkillFailure(f"place {name}: no spot of {len(spots)} on {s['name']} reachable "
+                            f"({len(leg_sets)} goals; rejected: { {k: v for k, v in diag.items() if v} })")
+
+    def found_park(found):
+        spot, R, levelled, deg, hang = goals[found.k]
+        plan = found.plan
+        reach = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_reach"), None)
+        L = None if reach is None else reach.info.get("set_down_m")
+        rig.log("place_park", obj=name, park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)],
+                spot=[round(v, 3) for v in spot], yaw_deg=deg, levelled=levelled, goals=len(leg_sets),
+                set_down_m=None if L is None else round(L, 4))
+        rig.caption = f"PLACE {name}: carry"
+        rig.focus_z = s["z"]
+
+    def ready(found):
+        # arrived with the load above the target surface (Job.travel: the carry posture's
+        # min_bottom_z).  The object may have turned in the pinch on the way (bowls held at the rim,
+        # spoons): re-measure how it hangs and aim it at the spot again
+        spot, R, levelled, deg, hang = goals[found.k]
+        ctx["spot"] = spot
+        tcp_now, R_now = kin.tcp(rig.q())
+        body_now, _ = rig.obj_pose(name)
+        body_now = np.asarray(body_now, float)
+        if levelled is None:
+            hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
+        p = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP]) + (R @ R_now.T) @ (tcp_now - body_now)
+        moved = float(np.linalg.norm(p - leg_sets[found.k][0][0]))
+        rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
+                pos=np.round(body_now, 4).tolist())
+        ctx["kind"] = rig.held["kind"]
+        return _place_ready(rig, name, s, p, R, open_w, found.plan)
+
+    def done():
+        return _place_result(rig, name, s, ctx["spot"], ctx["kind"], tray)
+    return Job(problem=problem, no_park=no_park, found=found_park, travel={"min_bottom_z": carry_bottom_z},
+               ready=ready, done=done)
+
+
+def _place_result(rig, name, s, spot, kind, tray):
+    """Did the set-down leave ``name`` on ``s`` near ``spot`` (or inside the tray)?  SkillFailure when not."""
     rig.step(90)
     rig.focus_z = None
     st = rig.state()
@@ -2098,7 +2263,7 @@ def drop_into(rig, name, container):
         rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
     else:
         from .policies.plan_helpers import _carry_bottom_z
-        _carry_pose(rig, min_bottom_z=_carry_bottom_z(rig, container))
+        carry_posture(rig, min_bottom_z=_carry_bottom_z(rig, container), label="drop_carry")
         check_held(rig, "drop_carry")
         st = rig.state()
         tcp, R = rig.kin.tcp(rig.q_cmd)
