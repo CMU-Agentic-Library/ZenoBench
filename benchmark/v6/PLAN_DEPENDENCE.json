@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 261,
+   "layouts": 262,
    "variants": 138,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 61,
-   "goal_not_met": 95,
+   "passes": 63,
+   "goal_not_met": 94,
    "not_observed": 61,
    "resource_missing": 38,
    "argument_mismatch": 6
@@ -37,6 +37,7 @@
    "T16 everything_near_the_edge",
    "T16 pin_out_of_view",
    "T17 h_task_lid_elsewhere",
+   "T17 hide_somewhere",
    "T18 enough_for_dinner",
    "T19 lookalike_bin",
    "T19 m_can_in_dining_room",
@@ -60,7 +61,7 @@
    "T30 clean_one"
   ],
   "routes_between_layouts": {
-   "passes": 95,
+   "passes": 97,
    "goal_not_met": 151,
    "not_observed": 12,
    "argument_mismatch": 90,
@@ -77,9 +78,10 @@
    "T14 next_in_series",
    "T14 within_kids_reach",
    "T16 everything_near_the_edge",
+   "T17 hide_somewhere",
    "T27 two_leftovers"
   ],
-  "multi_layout_variants": 79,
+  "multi_layout_variants": 80,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -3428,7 +3430,8 @@
    "control_route": "passes",
    "other_layouts": {},
    "other_variants_passing": [
-    "hide_both__tv_stand"
+    "hide_both__tv_stand",
+    "hide_somewhere__pot_ready"
    ]
   },
   {
@@ -3459,14 +3462,35 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "variant": "new_spot_this_time",
-   "layout": "new_spot_this_time",
-   "steps": 8,
+   "variant": "hide_somewhere",
+   "layout": "hide_somewhere__pot_ready",
+   "steps": 5,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "goal_not_met",
-   "other_layouts": {},
-   "other_variants_passing": []
+   "control_route": "passes",
+   "other_layouts": {
+    "hide_somewhere__lid_away": "passes"
+   },
+   "other_variants_passing": [
+    "h_task_lid_elsewhere",
+    "hide_both__tv_stand"
+   ]
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "hide_somewhere",
+   "layout": "hide_somewhere__lid_away",
+   "steps": 10,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "passes",
+   "other_layouts": {
+    "hide_somewhere__pot_ready": "passes"
+   },
+   "other_variants_passing": [
+    "h_task_lid_elsewhere",
+    "hide_both__tv_stand"
+   ]
   },
   {
    "task": "T18_check_cabinet_dishes",
@@ -5457,6 +5481,20 @@
     "lid_off"
    ],
    "passes_all": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "hide_somewhere",
+   "candidates": [
+    "hide_somewhere__pot_ready",
+    "hide_somewhere__lid_away",
+    "lid_off"
+   ],
+   "passes_all": [
+    "hide_somewhere__pot_ready",
+    "hide_somewhere__lid_away",
+    "lid_off"
+   ]
   },
   {
    "task": "T18_check_cabinet_dishes",
@@ -7876,6 +7914,19 @@
    "same_before_key_observation": false,
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "hide_somewhere",
+   "layouts": [
+    "hide_somewhere__pot_ready",
+    "hide_somewhere__lid_away"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "passes",
    "hidden_state_branch": false
   },
   {

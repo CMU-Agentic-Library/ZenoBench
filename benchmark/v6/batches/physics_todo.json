@@ -5882,72 +5882,72 @@
 {
 "task": "T17_hide_and_seek_block",
 "seed": 10,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__lid_away",
+"route": "v6_hide_somewhere__lid_away",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 11,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__pot_ready",
+"route": "v6_hide_somewhere__pot_ready",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 12,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__lid_away",
+"route": "v6_hide_somewhere__lid_away",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 13,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__pot_ready",
+"route": "v6_hide_somewhere__pot_ready",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 14,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__lid_away",
+"route": "v6_hide_somewhere__lid_away",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 15,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__lid_away",
+"route": "v6_hide_somewhere__lid_away",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 16,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__lid_away",
+"route": "v6_hide_somewhere__lid_away",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 17,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__pot_ready",
+"route": "v6_hide_somewhere__pot_ready",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 18,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__pot_ready",
+"route": "v6_hide_somewhere__pot_ready",
+"family": "hide_somewhere"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 19,
-"variant": "new_spot_this_time",
-"route": "v6_new_spot_this_time",
-"family": "new_spot_this_time"
+"variant": "hide_somewhere__pot_ready",
+"route": "v6_hide_somewhere__pot_ready",
+"family": "hide_somewhere"
 },
 {
 "task": "T18_check_cabinet_dishes",

@@ -2225,21 +2225,23 @@
 - 摆法 `tv_stand`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=living_room_0_0)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
 - 摆法 `dining`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=dining_room_0_1)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
 
-### new_spot_this_time（Task）
+### hide_somewhere（Task）
 
-**情况**：“上次藏在锅里孩子一下就找到了，这次换个地方” → 选别的能藏住的地方（比如先腾手开矮柜门，放进去关上），不能再用锅
+**情况**：指令只说“把木积木藏到孩子一眼看不到的地方，别藏进电器里，危险”，没说藏哪 → 自己挑能藏住又不是电器的地方：锅盖在手边就藏进灶上的锅里盖好；锅盖被收到靠墙柜上了，就藏进矮柜里关好门（藏进微波炉或冰箱算失败）
 
-**指令**：再玩一次藏积木。上次藏在灶上的锅里，孩子一下就找到了，这次换个地方藏好。
+**指令**：陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。
 
 **成功条件**：
 
 - `wooden_block_b` 藏好了（从房间里看不到）
-- `wooden_block_b` 不在 `handled_cooking_pot` 里
+- `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+- `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
 - 手里空着
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `navigate(destination=wooden_block_b)` → 5. `pick(object=wooden_block_b)` → 6. `navigate(destination=kitchen_cabinet_4)` → 7. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 8. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `pot_ready`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `lid_away`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_stove/top)` → 3. `look(target=kitchen_stove/top)` → 4. `navigate(destination=kitchen_cabinet_4)` → 5. `open(articulated=kitchen_cabinet_4)` → 6. `navigate(destination=wooden_block_b)` → 7. `pick(object=wooden_block_b)` → 8. `navigate(destination=kitchen_cabinet_4)` → 9. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 10. `close(articulated=kitchen_cabinet_4)`
 
 ---
 

@@ -1,6 +1,6 @@
 {
- "routes": 291,
- "ok": 291,
+ "routes": 292,
+ "ok": 292,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2196,13 +2196,23 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "new_spot_this_time",
-   "steps": 8,
-   "atoms_checked": 3,
+   "layout": "hide_somewhere__pot_ready",
+   "steps": 5,
+   "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "new_spot_this_time"
+   "variant": "hide_somewhere"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "layout": "hide_somewhere__lid_away",
+   "steps": 10,
+   "atoms_checked": 4,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "hide_somewhere"
   },
   {
    "task": "T18_check_cabinet_dishes",

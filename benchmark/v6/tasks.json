@@ -55720,7 +55720,7 @@
       }
      }
     },
-    "new_spot_this_time": {
+    "hide_somewhere__pot_ready": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -55768,7 +55768,7 @@
       "plate_inside_kitchen_cabinet"
      ],
      "conditions": [
-      "history_exclusion"
+      "storage_place"
      ],
      "goal": {
       "all": [
@@ -55777,9 +55777,14 @@
         "wooden_block_b"
        ],
        [
-        "not inside",
+        "not on",
         "wooden_block_b",
-        "handled_cooking_pot"
+        "kitchen_microwave/inside_floor"
+       ],
+       [
+        "not on",
+        "wooden_block_b",
+        "breakfast_fridge/inside_shelf"
        ],
        [
         "hand_empty",
@@ -55787,23 +55792,23 @@
        ]
       ]
      },
-     "instruction": "Let's play hide-and-seek with the block again. Last time it was in the pot on the stove and the kid found it at once, so hide it somewhere else this time.",
-     "instruction_zh": "再玩一次藏积木。上次藏在灶上的锅里，孩子一下就找到了，这次换个地方藏好。",
+     "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
+     "instruction_zh": "陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。",
      "watch": [
       "wooden_block_b",
       "handled_cooking_pot",
       "pot_lid"
      ],
      "since": "v6",
-     "note": "the usual hiding place (the pot with its lid) is excluded by what happened last time",
+     "note": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
      "v6": {
-      "family": "new_spot_this_time",
-      "case": null,
-      "challenge": "the usual hiding place (the pot with its lid) is excluded by what happened last time",
-      "rationale": "choose another place that hides the block: a closed cabinet (open it first with the free hand, put the block in, close it) or another covered container; not the pot",
+      "family": "hide_somewhere",
+      "case": "pot_ready",
+      "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
+      "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
       "control": "lid_off",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what is at hand for hiding (seed: the empty pot with its lid beside it on the stove; or the lid put away on the wall cabinet, so a low cabinet serves)",
       "derived_from": "lid_off"
      },
      "layout": {
@@ -55894,6 +55899,203 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [],
+       "look": []
+      }
+     }
+    },
+    "hide_somewhere__lid_away": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.335,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.83
+       ],
+       "yaw_deg": 168.5
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.7,
+        1.635
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
+     ],
+     "conditions": [
+      "storage_place"
+     ],
+     "goal": {
+      "all": [
+       [
+        "hidden",
+        "wooden_block_b"
+       ],
+       [
+        "not on",
+        "wooden_block_b",
+        "kitchen_microwave/inside_floor"
+       ],
+       [
+        "not on",
+        "wooden_block_b",
+        "breakfast_fridge/inside_shelf"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
+     "instruction_zh": "陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。",
+     "watch": [
+      "wooden_block_b",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     "since": "v6",
+     "note": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
+     "v6": {
+      "family": "hide_somewhere",
+      "case": "lid_away",
+      "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
+      "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "what is at hand for hiding (seed: the empty pot with its lid beside it on the stove; or the lid put away on the wall cabinet, so a low cabinet serves)",
+      "derived_from": "lid_off"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.5852,
+         1.7262,
+         6.7948,
+         1.9338
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.2,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.59,
+         1.6119,
+         6.81,
+         1.6582
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.08,
+         0.31
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.045,
+         1.6,
+         7.095,
+         1.65
+        ],
+        "dx": [
+         -0.49,
+         1.15
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_cabinet_6/top": [
+        [
+         3.4054,
+         0.3164,
+         3.5926,
+         0.4018
+        ],
+        [
+         3.21,
+         0.235,
+         3.46,
+         0.485
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
        "look": [
         "kitchen_island/top"
        ]
@@ -55931,7 +56133,8 @@
     "h_task_lid_elsewhere": "v5_h_task_lid_elsewhere",
     "hide_both__tv_stand": "v6_hide_both__tv_stand",
     "hide_both__dining": "v6_hide_both__dining",
-    "new_spot_this_time": "v6_new_spot_this_time"
+    "hide_somewhere__pot_ready": "v6_hide_somewhere__pot_ready",
+    "hide_somewhere__lid_away": "v6_hide_somewhere__lid_away"
    },
    "routes": {
     "nominal": {
@@ -56262,12 +56465,62 @@
      "kind": "v6_oracle",
      "variant": "hide_both__dining"
     },
-    "v6_new_spot_this_time": {
+    "v6_hide_somewhere__pot_ready": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "hide_somewhere__pot_ready"
+    },
+    "v6_hide_somewhere__lid_away": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
        }
       },
       {
@@ -56319,7 +56572,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "new_spot_this_time"
+     "variant": "hide_somewhere__lid_away"
     }
    },
    "vary": {
@@ -56476,24 +56729,25 @@
       "19": "hide_both__tv_stand"
      }
     },
-    "new_spot_this_time": {
+    "hide_somewhere": {
      "origin": "v6",
      "control": "lid_off",
      "layouts": [
-      "new_spot_this_time"
+      "hide_somewhere__pot_ready",
+      "hide_somewhere__lid_away"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what is at hand for hiding (seed: the empty pot with its lid beside it on the stove; or the lid put away on the wall cabinet, so a low cabinet serves)",
      "seeds": {
-      "10": "new_spot_this_time",
-      "11": "new_spot_this_time",
-      "12": "new_spot_this_time",
-      "13": "new_spot_this_time",
-      "14": "new_spot_this_time",
-      "15": "new_spot_this_time",
-      "16": "new_spot_this_time",
-      "17": "new_spot_this_time",
-      "18": "new_spot_this_time",
-      "19": "new_spot_this_time"
+      "10": "hide_somewhere__lid_away",
+      "11": "hide_somewhere__pot_ready",
+      "12": "hide_somewhere__lid_away",
+      "13": "hide_somewhere__pot_ready",
+      "14": "hide_somewhere__lid_away",
+      "15": "hide_somewhere__lid_away",
+      "16": "hide_somewhere__lid_away",
+      "17": "hide_somewhere__pot_ready",
+      "18": "hide_somewhere__pot_ready",
+      "19": "hide_somewhere__pot_ready"
      }
     }
    },
@@ -56533,11 +56787,11 @@
       "not_in_view"
      ]
     },
-    "new_spot_this_time": {
+    "hide_somewhere": {
      "category": "task",
      "local": [],
      "longer": [
-      "history_exclusion"
+      "storage_place"
      ]
     }
    }

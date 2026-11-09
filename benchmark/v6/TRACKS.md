@@ -108,7 +108,7 @@ Removed with the injected action failures: 137 variants (21 had nothing else, 60
 | T17 | lid_off | Control | - | - | 1 |
 | T17 | h_task_lid_elsewhere | Task-Level | - | resource | 1 |
 | T17 | hide_both | Task-Level | - | multi_object_goal; not_in_view | 2 |
-| T17 | new_spot_this_time | Task-Level | - | history_exclusion | 1 |
+| T17 | hide_somewhere | Task-Level | - | storage_place | 2 |
 | T18 | at_island | Control | - | - | 1 |
 | T18 | h_task_two_cabinets | Task-Level | - | resource | 1 |
 | T18 | x6_gd_bowl_elsewhere__two_places | Task-Level | - | resource | 1 |

@@ -1838,22 +1838,28 @@ def T17(t):
             cases={c: dict(move={F: to}, route=both(region))
                    for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
                                          ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))}),
-        "new_spot_this_time": dict(
-            base="lid_off", control="lid_off", conditions=["history_exclusion"],
+        "hide_somewhere": dict(
+            base="lid_off", control="lid_off", conditions=["storage_place"],
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
-            instruction="Let's play hide-and-seek with the block again. Last time it was in the pot on the stove and "
-                        "the kid found it at once, so hide it somewhere else this time.",
-            instruction_zh="再玩一次藏积木。上次藏在灶上的锅里，孩子一下就找到了，这次换个地方藏好。",
-            goal={"all": [["hidden", B], ["not inside", B, POT], ["hand_empty", "right"]]},
+            instruction="We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it "
+                        "at a glance. Not inside an appliance, that is dangerous.",
+            instruction_zh="陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。",
+            goal={"all": [["hidden", B], ["not on", B, "kitchen_microwave/inside_floor"],
+                          ["not on", B, "breakfast_fridge/inside_shelf"], ["hand_empty", "right"]]},
             watch=[B, POT, LID],
-            factor="the seed's layout only",
-            challenge="the usual hiding place (the pot with its lid) is excluded by what happened last time",
-            rationale="choose another place that hides the block: a closed cabinet (open it first with the free "
-                      "hand, put the block in, close it) or another covered container; not the pot",
-            cases={"": dict(route=[look("kitchen_island/top"), nav("kitchen_cabinet_4"),
-                                   S("open", articulated="kitchen_cabinet_4"), nav(B), pick(B), nav("kitchen_cabinet_4"),
-                                   place(B, "kitchen_cabinet_4/inside_shelf", [1.40, 0.42]),
-                                   S("close", articulated="kitchen_cabinet_4")])}),
+            factor="what is at hand for hiding (seed: the empty pot with its lid beside it on the stove; or the lid "
+                   "put away on the wall cabinet, so a low cabinet serves)",
+            challenge="the instruction names no hiding place, only rules out appliances (the microwave and the fridge "
+                      "would hide the block too); the pot on the stove hides it when its lid is at hand",
+            rationale="pick a place that hides the block and is not an appliance: the pot under its lid when the lid "
+                      "is there, else a low cabinet (open it with the free hand, put the block in, close it)",
+            cases={"pot_ready": dict(route=base),
+                   "lid_away": dict(move={LID: P("kitchen_cabinet_6/top", 3.335, 0.36)},
+                                    route=[look("kitchen_island/top"), nav("kitchen_stove/top"), look("kitchen_stove/top"),
+                                           nav("kitchen_cabinet_4"), S("open", articulated="kitchen_cabinet_4"), nav(B),
+                                           pick(B), nav("kitchen_cabinet_4"),
+                                           place(B, "kitchen_cabinet_4/inside_shelf", [1.40, 0.42]),
+                                           S("close", articulated="kitchen_cabinet_4")])}),
     }
 
 

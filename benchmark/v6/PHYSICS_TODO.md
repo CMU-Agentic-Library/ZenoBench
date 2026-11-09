@@ -91,7 +91,7 @@
 | T17 | lid_off | control | 0/0 of 10 | - |
 | T17 | h_task_lid_elsewhere | task | 0/0 of 10 | - |
 | T17 | hide_both | task | 0/0 of 10 | - |
-| T17 | new_spot_this_time | task | 0/0 of 10 | low cabinet doors |
+| T17 | hide_somewhere | task | 0/0 of 10 | low cabinet doors |
 | T18 | at_island | control | 0/0 of 10 | low cabinet doors |
 | T18 | h_task_two_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T18 | x6_gd_bowl_elsewhere__two_places | task | 0/0 of 10 | low cabinet doors |

@@ -16384,22 +16384,17 @@
   "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/new_spot_this_time": {
-  "variant": "new_spot_this_time",
+ "T17_hide_and_seek_block/hide_somewhere__pot_ready": {
+  "variant": "hide_somewhere",
   "category": "task",
   "seeds": [
-   10,
    11,
-   12,
    13,
-   14,
-   15,
-   16,
    17,
    18,
    19
   ],
-  "instruction": "Let's play hide-and-seek with the block again. Last time it was in the pot on the stove and the kid found it at once, so hide it somewhere else this time.",
+  "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -16416,7 +16411,7 @@
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [
-    "history_exclusion"
+    "storage_place"
    ],
    "initial_checks": []
   },
@@ -16428,9 +16423,14 @@
      "wooden_block_b"
     ],
     [
-     "not inside",
+     "not on",
      "wooden_block_b",
-     "handled_cooking_pot"
+     "kitchen_microwave/inside_floor"
+    ],
+    [
+     "not on",
+     "wooden_block_b",
+     "breakfast_fridge/inside_shelf"
     ],
     [
      "hand_empty",
@@ -16439,9 +16439,69 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_new_spot_this_time",
-  "challenge": "the usual hiding place (the pot with its lid) is excluded by what happened last time",
-  "rationale": "choose another place that hides the block: a closed cabinet (open it first with the free hand, put the block in, close it) or another covered container; not the pot",
+  "oracle_route": "v6_hide_somewhere__pot_ready",
+  "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
+  "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T17_hide_and_seek_block/hide_somewhere__lid_away": {
+  "variant": "hide_somewhere",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   14,
+   15,
+   16
+  ],
+  "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid",
+    "rolling_pin",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hidden",
+     "wooden_block_b"
+    ],
+    [
+     "not on",
+     "wooden_block_b",
+     "kitchen_microwave/inside_floor"
+    ],
+    [
+     "not on",
+     "wooden_block_b",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_hide_somewhere__lid_away",
+  "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
+  "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T18_check_cabinet_dishes/at_island": {

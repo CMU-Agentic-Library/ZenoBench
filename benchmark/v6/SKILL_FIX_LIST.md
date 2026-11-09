@@ -24,7 +24,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | drop | rubber_duck | 23 | 15 | 39% | carry slip 7, IK / reach / base pose 4, other 4 | T12 | 1 | no IK for drop_prelift |
 | place | cup_counter_b | 27 | 14 | 34% | carry slip 10, placement result 3, other 1 | T04 | 4 | place_above: cup_counter_b slipped out of the hand while carrying it |
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 8 | pick breakfast_spoon: not held (lift -0.001 m) |
-| hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 1 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
+| hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 2 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
 | pick | wooden_block_b | 80 | 11 | 12% | grasp miss 10, IK / reach / base pose 1 | T02 T08 | 7 | pick wooden_block_b: not held (lift 0.000 m) |
 | place | wooden_block_a | 127 | 10 | 7% | carry slip 10 | T06 T15 | 7 | carry_stand_up: wooden_block_a slipped out of the hand while carrying it |
 | search | pot_lid | 0 | 10 | 100% | perception / search 10 | T17 | 0 | search pot_lid: not seen at ['kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'tv_stand_2', 'kitchen_microwave', 'kitchen_cabinet_6',  |
@@ -59,7 +59,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | variants |
 |---|---|---|
 | close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_missing, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/fruit_stays_out, T27/still_eating, T27/two_leftovers, T27/which_is_leftover |
-| close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/new_spot_this_time, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_or_sponge, T21/tissue_put_away, T25/cups_for_two, T28/cup_put_away, T28/where_his_cup_is, T30/bowl_put_away |
+| close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/hide_somewhere, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_or_sponge, T21/tissue_put_away, T25/cups_for_two, T28/cup_put_away, T28/where_his_cup_is, T30/bowl_put_away |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | empty_can | T29/several |
 | drop | fridge_tomato | T09/tomato_in_fridge |
