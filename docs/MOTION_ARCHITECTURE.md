@@ -448,7 +448,7 @@ run.observe(act)    -> (State, Observation | None)
 
 持物时第 1 段是复核加按需决定：pick 的 `carry_in` 已经定了搬运姿态，满足就原样用，不重新决定（第 1 节第 2 条）。只有 place 才知道的要求（容器边沿高度 `min_bottom_z`）不满足时才动。第 1 步以前的 `_carry_pose` 按"离某个目标点 1 cm、0.05 rad 以内"判断已在搬运姿态，几乎总判不在，11-08 全量里又动了约 169 次手臂，还有 1 次退成不查碰撞的直线（T19 s10，`FREE_ELSE_STRAIGHT`）。
 
-实现（9.3 第 1 步）：判据在 `skills._carry`，三条——TCP 在底盘系里落在 `CARRY_SPOTS` 外扩 10 cm 的范围（`CARRY_FRONT_X` 0.25–0.55 m、`CARRY_FRONT_Y` −0.40–0 m）；物体底面不低于 `_carry_floor`（`CARRY_Z`，或 `min_bottom_z`，边夹的书再加 6 cm）减 `CARRY_LOW_TOL` 1 cm；整机在这个姿态下原地不碰（`RigBase.depths` ≤ `DEPTH_TOL`）。不满足就 `free_leg(搬运目标集合)`，做不出来技能失败（不再 `carry_pose_kept`）。`carry_posture(rig, min_bottom_z)` 是这第 1 段单独跑：place 在停车点搜索之前（这样搜索假设的搬运姿态就是开车时的姿态）、drop、去停靠点前的检查、`stow_load` 用它。空手的 `tuck`、左臂收起做不出来就省掉，由底盘规划在路上换（和以前的 `Rig.tuck` / `_fold_left` 一样）。
+实现（9.3 第 1 步）：判据在 `skills._carry`，三条——TCP 在底盘系里落在 `CARRY_SPOTS` 外扩 10 cm 的范围（`CARRY_FRONT_X` 0.25–0.55 m、`CARRY_FRONT_Y` −0.40–0 m）；物体底面不低于 `CARRY_Z` 减 `CARRY_LOW_TOL` 1 cm；整机在这个姿态下原地不碰（`RigBase.depths` ≤ `DEPTH_TOL`）。不满足就 `free_leg(搬运目标集合)`（要求的高度优先），做不出来技能失败（不再 `carry_pose_kept`，不再不查碰撞的直线）。`min_bottom_z`（`_carry_floor`：目的地的边沿高度，边夹的书再加 6 cm）不是约束而是"能抬就抬"：够得着那个高度的搬运目标就抬上去，够不着就原样带着走，日志写明原因——带物开车的整机底盘规划本来就查物体和世界的碰撞。第一版把它当约束，v6 T07 microwave_works / T23 spoon_on_floor 要的 1.15–1.18 m 够不着，navigate 直接失败，而旧代码在那里是保持原姿态（f6d16de 改正）。`carry_posture(rig, min_bottom_z)` 是这第 1 段单独跑：place 在停车点搜索之前（这样搜索假设的搬运姿态就是开车时的姿态）、drop、去停靠点前的检查、`stow_load` 用它。空手的 `tuck`、左臂收起做不出来就省掉，由底盘规划在路上换（和以前的 `Rig.tuck` / `_fold_left` 一样）。
 
 navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选（2.3、第 10 节）。
 
@@ -658,7 +658,10 @@ if why is not None:
    4. `_drivable` 和 `plan_navigate` 用同一组行驶姿态；
    5. `drive` 包住两个底盘入口。
    
-   navigate 一项就覆盖 1099 步。第 1 项的四件事都是零行为改动，和"`motion_signature --compare` 无差异"这个验收条件正好配套；先做它们，后面 9 步就不用在同一批代码上改两遍。
+   navigate 一项就覆盖 1099 步。（原文说"四件事都是零行为改动"不对：1.3、1.4 本来就改行为，只有 1.1、1.2、1.5 是零行为。）
+
+   **已完成（11-08，afaef2d、79f5ed5、f6d16de）。** 五项合成一次提交：它们都经过 `skills.py` 的 navigate / pick / place，拆开的中间状态跑不起来。和计划的出入：`find_park` 多一个参数 `base`（2.5）；catalog 是独立的 `zeno_skills/motion_skills.json`（第 10 节）；协议方法叫 `arm_kin`；`run_skill` 的技能接口是过渡形式 `Job`（2.3）；`job` 暂放在 `skills.py`（9.4）。
+   验证（只跑针对性，v6 nominal，未跑全量）：单测 260 + benchmark 69 通过。v6 nominal 10 集（T02 s10/s11、T04、T06、T07、T10、T20、T21、T23、T29，后八个 s10）中 6 集成功（T02×2、T04、T07、T10、T20）。失败的 4 集在第 1 步之前的 38bc6e0 上同样失败、失败点相同：T06 / T29 的 face 原地转身判碰（11% 处 0 mm、67% 处 6 mm），T21 "slide to edge: no graspable free edge"，T23 place 找不到停车点；T07 在 38bc6e0 上失败（heat 的按钮没有 IK），第 1 步上成功。搬运姿态全部"保持"，没有多余的手臂动作；运动记录里 fallback 为 0。结果在 `benchmark/runs/v6_step1_1108`、`v6_step1_carry_1108`（新）和 `v6_step1_old_1108`（38bc6e0）。
 2. **pick / place 收尾**，每项单独提交：
    1. 先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志，跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL`；同一次提交里建 `tolerances.py`（4.5），把四处散落的阈值搬进去、补上来源标记；
    2. `decide_ik`、`Plan.decisions`、`build` 的 `prior`（取代 `plan_pick` / `plan_place` 的 `q_seed` 和 `build` 的 `q_rank` 参数；`free_leg` 的 `Pose.q_hint` 不变，它是定下的分支）；
