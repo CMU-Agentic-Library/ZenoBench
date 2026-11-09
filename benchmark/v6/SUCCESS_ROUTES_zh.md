@@ -2879,7 +2879,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
 - 手里空着
 
 **参考调用顺序**：
@@ -2892,7 +2892,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
 - `dropped_block` 在 `toy_box` 里
 - 手里空着
 
@@ -2906,7 +2906,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
 - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -2920,7 +2920,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
 - 手里空着
 
 **参考调用顺序**：
@@ -2935,7 +2935,7 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
 - `living_car` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -2951,8 +2951,8 @@
 
 **成功条件**：
 
-- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`
-- `dropped_pencil` 在 `desk_1/top` 上
+- `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+- `dropped_pencil` 在其中任一处上：`desk_1/top`、`desk_3/top`
 - 手里空着
 
 **参考调用顺序**：

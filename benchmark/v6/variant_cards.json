@@ -20647,7 +20647,8 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
@@ -20706,7 +20707,8 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
@@ -20769,7 +20771,8 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
@@ -20835,7 +20838,8 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
@@ -20892,7 +20896,8 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
@@ -20956,13 +20961,17 @@
      "dropped_spoon",
      [
       "kitchen_counter_2/top",
-      "kitchen_counter_1/top"
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
      ]
     ],
     [
-     "on",
+     "on_any",
      "dropped_pencil",
-     "desk_1/top"
+     [
+      "desk_1/top",
+      "desk_3/top"
+     ]
     ],
     [
      "hand_empty",

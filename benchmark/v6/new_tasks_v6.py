@@ -308,7 +308,7 @@ def t23():
     ctl = {"note": "a spoon on the kitchen floor; the spoons are kept on the kitchen counter",
            "add": {SP: floor("breakfast_spoon", -0.85, 7.70, 30.0)}}
     # either kitchen counter is where a spoon belongs (the kitchen's two counters stand 1.7 m apart)
-    sgoal = [["on_any", SP, [COUNTER, "kitchen_counter_1/top"]]]
+    sgoal = [["on_any", SP, [COUNTER, "kitchen_counter_1/top", ISL]]]          # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
                   {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, [-0.10, 7.60]), [SP], start=START)
@@ -357,7 +357,7 @@ def t23():
             {"": dict(add={**spoon, "dropped_pencil": floor("pencil", -0.45, -5.55, 20.0),
                            "homework": on("notebook", DESK, -0.70, -5.95)},
                       watch=[SP, "dropped_pencil"],
-                      goal={"all": sgoal + [["on", "dropped_pencil", DESK], H]},
+                      goal={"all": sgoal + [["on_any", "dropped_pencil", [DESK, "desk_3/top"]], H]},
                       route=[look(COUNTER)] + back + [S("search", object="dropped_pencil", region="living_room_0_1")]
                       + fetch("dropped_pencil", DESK, [-1.05, -5.95]))},
             instruction="Some things fell on the floor around the house. Please pick them up and put them where "
