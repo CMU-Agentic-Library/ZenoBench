@@ -1195,10 +1195,10 @@ def T09(t):
 
 def T10(t):
     CAN = "soda_can"
-    instr = ("Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it "
-             "out. Throw it into the trash can, and close whatever you open.")
+    instr = ("An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, "
+             "throw it into the trash can, and close the doors you opened at the end.")
     goal = {"all": [["inside", CAN, "trash_can"], ["hand_empty", "right"], ["is_closed", "kitchen_microwave"],
-                    ["is_closed", "kitchen_cabinet_6"]]}
+                    ["is_closed", "kitchen_cabinet_6"], ["is_closed", "breakfast_fridge"]]}
     mw = [nav("kitchen_microwave"), S("open", articulated="kitchen_microwave"), look("kitchen_microwave/inside_floor")]
     take = lambda art: [nav(CAN), pick(CAN), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art),  # noqa: E731
                         nav("trash_can"), S("drop", object=CAN, container="trash_can")]
@@ -1331,10 +1331,11 @@ def T10(t):
             cases=guest_cases),
         "x6_gd_can_put_away": dict(
             base="can_on_island", control="can_on_island",
-            factor="which closed place holds the item",
             instruction=instr, goal=goal, remove=["plate_inside_kitchen_cabinet"],
-            instruction_zh="有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
-            challenge="the can was put away in one of two closed places (microwave or wall cabinet)",
+            instruction_zh="厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。",
+            factor="which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
+            challenge="the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the "
+                      "fridge); the instruction names none of them",
             rationale="the item's location is a disjunction the planner must resolve by inspecting both candidates "
                       "(reference route: the worse order, the can is in the second place); each door is opened "
                       "and closed again",
@@ -1345,7 +1346,14 @@ def T10(t):
                    "in_microwave": dict(move={CAN: in_mw}, route=open_explore("kitchen_cabinet_6")
                                         + [S("close", articulated="kitchen_cabinet_6")] + mw + take("kitchen_microwave"),
                                         failures=[f_initial("resource", [["on", CAN, "kitchen_microwave/inside_floor"]],
-                                                            fid="resource_can_put_away")])}),
+                                                            fid="resource_can_put_away")]),
+                   "in_fridge": dict(move={CAN: {"support": "breakfast_fridge/inside_shelf", "xy": [5.90, 3.30],
+                                                 "yaw_deg": 0.0}},
+                                     route=mw + [S("close", articulated="kitchen_microwave")]
+                                     + open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")]
+                                     + open_explore("breakfast_fridge") + take("breakfast_fridge"),
+                                     failures=[f_initial("resource", [["on", CAN, "breakfast_fridge/inside_shelf"]],
+                                                         fid="resource_can_put_away")])}),
     }
 
 

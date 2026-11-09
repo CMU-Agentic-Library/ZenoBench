@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 258,
+   "layouts": 259,
    "variants": 138,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 61,
    "goal_not_met": 95,
-   "not_observed": 60,
+   "not_observed": 61,
    "resource_missing": 36,
    "argument_mismatch": 6
   },
@@ -62,8 +62,8 @@
   "routes_between_layouts": {
    "passes": 92,
    "goal_not_met": 148,
-   "not_observed": 10,
-   "argument_mismatch": 84,
+   "not_observed": 12,
+   "argument_mismatch": 86,
    "resource_missing": 62
   },
   "universal_fixed_sequence": [
@@ -2827,7 +2827,8 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_can_put_away__in_microwave": "argument_mismatch"
+    "x6_gd_can_put_away__in_microwave": "argument_mismatch",
+    "x6_gd_can_put_away__in_fridge": "argument_mismatch"
    },
    "other_variants_passing": []
   },
@@ -2840,7 +2841,22 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_can_put_away__in_cabinet": "argument_mismatch"
+    "x6_gd_can_put_away__in_cabinet": "argument_mismatch",
+    "x6_gd_can_put_away__in_fridge": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "x6_gd_can_put_away",
+   "layout": "x6_gd_can_put_away__in_fridge",
+   "steps": 21,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "x6_gd_can_put_away__in_cabinet": "not_observed",
+    "x6_gd_can_put_away__in_microwave": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -5265,6 +5281,7 @@
    "candidates": [
     "x6_gd_can_put_away__in_cabinet",
     "x6_gd_can_put_away__in_microwave",
+    "x6_gd_can_put_away__in_fridge",
     "can_on_island"
    ],
    "passes_all": []
@@ -7415,6 +7432,32 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "x6_gd_can_put_away",
+   "layouts": [
+    "x6_gd_can_put_away__in_cabinet",
+    "x6_gd_can_put_away__in_fridge"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "x6_gd_can_put_away",
+   "layouts": [
+    "x6_gd_can_put_away__in_microwave",
+    "x6_gd_can_put_away__in_fridge"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "not_observed",
    "route_b_on_a": "argument_mismatch",
    "hidden_state_branch": true
   },

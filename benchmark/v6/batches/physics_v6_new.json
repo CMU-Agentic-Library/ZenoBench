@@ -2739,15 +2739,15 @@
 {
 "task": "T10_trash_the_can",
 "seed": 11,
-"variant": "x6_gd_can_put_away__in_cabinet",
-"route": "v6_x6_gd_can_put_away__in_cabinet",
+"variant": "x6_gd_can_put_away__in_fridge",
+"route": "v6_x6_gd_can_put_away__in_fridge",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 12,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__in_cabinet",
+"route": "v6_x6_gd_can_put_away__in_cabinet",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2760,8 +2760,8 @@
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "x6_gd_can_put_away__in_cabinet",
-"route": "v6_x6_gd_can_put_away__in_cabinet",
+"variant": "x6_gd_can_put_away__in_microwave",
+"route": "v6_x6_gd_can_put_away__in_microwave",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2774,15 +2774,15 @@
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "x6_gd_can_put_away__in_cabinet",
-"route": "v6_x6_gd_can_put_away__in_cabinet",
+"variant": "x6_gd_can_put_away__in_fridge",
+"route": "v6_x6_gd_can_put_away__in_fridge",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 17,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__in_cabinet",
+"route": "v6_x6_gd_can_put_away__in_cabinet",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2795,8 +2795,8 @@
 {
 "task": "T10_trash_the_can",
 "seed": 19,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__in_fridge",
+"route": "v6_x6_gd_can_put_away__in_fridge",
 "family": "x6_gd_can_put_away"
 },
 {

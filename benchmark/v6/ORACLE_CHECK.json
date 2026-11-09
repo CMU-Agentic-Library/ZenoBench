@@ -1,6 +1,6 @@
 {
- "routes": 288,
- "ok": 288,
+ "routes": 289,
+ "ok": 289,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1656,7 +1656,7 @@
    "task": "T10_trash_the_can",
    "layout": "x6_gd_can_put_away__in_cabinet",
    "steps": 15,
-   "atoms_checked": 4,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -1666,7 +1666,17 @@
    "task": "T10_trash_the_can",
    "layout": "x6_gd_can_put_away__in_microwave",
    "steps": 15,
-   "atoms_checked": 4,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "x6_gd_can_put_away"
+  },
+  {
+   "task": "T10_trash_the_can",
+   "layout": "x6_gd_can_put_away__in_fridge",
+   "steps": 21,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

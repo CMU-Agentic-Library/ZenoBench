@@ -40651,11 +40651,15 @@
        [
         "is_closed",
         "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
        ]
       ]
      },
-     "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
-     "instruction_zh": "有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
+     "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+     "instruction_zh": "厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -40671,15 +40675,15 @@
       }
      ],
      "since": "v6",
-     "note": "the can was put away in one of two closed places (microwave or wall cabinet)",
+     "note": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
      "v6": {
       "family": "x6_gd_can_put_away",
       "case": "in_cabinet",
-      "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
+      "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
       "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
       "control": "can_on_island",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
       "derived_from": "can_on_island"
      },
      "layout": {
@@ -40724,11 +40728,15 @@
        [
         "is_closed",
         "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
        ]
       ]
      },
-     "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
-     "instruction_zh": "有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
+     "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+     "instruction_zh": "厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -40744,15 +40752,92 @@
       }
      ],
      "since": "v6",
-     "note": "the can was put away in one of two closed places (microwave or wall cabinet)",
+     "note": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
      "v6": {
       "family": "x6_gd_can_put_away",
       "case": "in_microwave",
-      "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
+      "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
       "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
       "control": "can_on_island",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "x6_gd_can_put_away__in_fridge": {
+     "move": {
+      "soda_can": {
+       "support": "breakfast_fridge/inside_shelf",
+       "xy": [
+        5.9,
+        3.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "plate_inside_kitchen_cabinet"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ]
+      ]
+     },
+     "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+     "instruction_zh": "厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。",
+     "failures": [
+      {
+       "id": "resource_can_put_away",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "soda_can",
+         "breakfast_fridge/inside_shelf"
+        ]
+       ]
+      }
+     ],
+     "since": "v6",
+     "note": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
+     "v6": {
+      "family": "x6_gd_can_put_away",
+      "case": "in_fridge",
+      "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
+      "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
       "derived_from": "can_on_island"
      },
      "layout": {
@@ -40798,7 +40883,8 @@
     "guests_coming__can_block": "v6_guests_coming__can_block",
     "guests_coming__can_mug": "v6_guests_coming__can_mug",
     "x6_gd_can_put_away__in_cabinet": "v6_x6_gd_can_put_away__in_cabinet",
-    "x6_gd_can_put_away__in_microwave": "v6_x6_gd_can_put_away__in_microwave"
+    "x6_gd_can_put_away__in_microwave": "v6_x6_gd_can_put_away__in_microwave",
+    "x6_gd_can_put_away__in_fridge": "v6_x6_gd_can_put_away__in_fridge"
    },
    "routes": {
     "nominal": {
@@ -42040,6 +42126,132 @@
      ],
      "kind": "v6_oracle",
      "variant": "x6_gd_can_put_away__in_microwave"
+    },
+    "v6_x6_gd_can_put_away__in_fridge": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_can_put_away__in_fridge"
     }
    },
    "benchmark_version": "v6",
@@ -42194,20 +42406,21 @@
      "control": "can_on_island",
      "layouts": [
       "x6_gd_can_put_away__in_cabinet",
-      "x6_gd_can_put_away__in_microwave"
+      "x6_gd_can_put_away__in_microwave",
+      "x6_gd_can_put_away__in_fridge"
      ],
-     "factor": "which closed place holds the item",
+     "factor": "which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
      "seeds": {
       "10": "x6_gd_can_put_away__in_cabinet",
-      "11": "x6_gd_can_put_away__in_cabinet",
-      "12": "x6_gd_can_put_away__in_microwave",
+      "11": "x6_gd_can_put_away__in_fridge",
+      "12": "x6_gd_can_put_away__in_cabinet",
       "13": "x6_gd_can_put_away__in_microwave",
-      "14": "x6_gd_can_put_away__in_cabinet",
+      "14": "x6_gd_can_put_away__in_microwave",
       "15": "x6_gd_can_put_away__in_cabinet",
-      "16": "x6_gd_can_put_away__in_cabinet",
-      "17": "x6_gd_can_put_away__in_microwave",
+      "16": "x6_gd_can_put_away__in_fridge",
+      "17": "x6_gd_can_put_away__in_cabinet",
       "18": "x6_gd_can_put_away__in_microwave",
-      "19": "x6_gd_can_put_away__in_microwave"
+      "19": "x6_gd_can_put_away__in_fridge"
      }
     }
    },

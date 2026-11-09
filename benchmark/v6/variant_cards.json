@@ -12508,12 +12508,11 @@
   "category": "task",
   "seeds": [
    10,
-   11,
-   14,
+   12,
    15,
-   16
+   17
   ],
-  "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
+  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -12562,12 +12561,16 @@
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
     ]
    ]
   },
   "control": "can_on_island",
   "oracle_route": "v6_x6_gd_can_put_away__in_cabinet",
-  "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
+  "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -12575,13 +12578,11 @@
   "variant": "x6_gd_can_put_away",
   "category": "task",
   "seeds": [
-   12,
    13,
-   17,
-   18,
-   19
+   14,
+   18
   ],
-  "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
+  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -12630,12 +12631,86 @@
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
     ]
    ]
   },
   "control": "can_on_island",
   "oracle_route": "v6_x6_gd_can_put_away__in_microwave",
-  "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
+  "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
+  "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/x6_gd_can_put_away__in_fridge": {
+  "variant": "x6_gd_can_put_away",
+  "category": "task",
+  "seeds": [
+   11,
+   16,
+   19
+  ],
+  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [],
+   "initial_checks": [
+    [
+     "on",
+     "soda_can",
+     "breakfast_fridge/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_can_put_away",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_x6_gd_can_put_away__in_fridge",
+  "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

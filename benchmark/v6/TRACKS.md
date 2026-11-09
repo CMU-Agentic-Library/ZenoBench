@@ -83,7 +83,7 @@ Removed with the injected action failures: 137 variants (21 had nothing else, 60
 | T10 | trash_moved | Task-Level | - | destination_unnamed; not_in_view | 2 |
 | T10 | after_dinner_clear | Task-Level | - | disposal_by_state; multi_object_goal | 3 |
 | T10 | guests_coming | Task-Level | - | goal_items_unstated; multi_object_goal | 3 |
-| T10 | x6_gd_can_put_away | Task-Level | - | resource | 2 |
+| T10 | x6_gd_can_put_away | Task-Level | - | resource | 3 |
 | T11 | fruits_on_table | Control | - | - | 1 |
 | T11 | basket_missing | Task-Level | - | container_absent | 1 |
 | T11 | basket_gone_bowl_there | Task-Level | - | decoy_destination | 1 |
