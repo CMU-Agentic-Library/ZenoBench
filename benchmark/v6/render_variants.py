@@ -457,7 +457,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     takes = [i for i, x in enumerate(kind) if x == "take"]
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
     found = [i for i in takes if views[i][0] in searched]      # what the robot had to find (the duck): shown too
-    pick = (found + [i for i in takes if i not in found])[:2] if found else takes[:1]
+    pick = (found + [i for i in takes if i not in found])[:3]          # up to three things to take (all of a sort)
     places = [i for i, x in enumerate(kind) if x == "place"]
     places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
     goal_places = [i for i in places if views[i][0].replace("_", "/") in {g.replace("_", "/") for g in in_goal}]

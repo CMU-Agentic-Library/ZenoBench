@@ -1281,13 +1281,13 @@ def T10(t):
     return {
         "keep_kids_can": dict(
             base="can_on_island", control="can_on_island", conditions=["referent_clue", "not_in_view"],
-            instruction="Throw the empty soda can into the trash can. The kid is keeping one can for a craft "
-                        "project; leave that one.",
-            instruction_zh="把喝完的空易拉罐扔进垃圾桶。孩子留着做手工的那个别扔。",
+            instruction="Throw the finished soda can into the trash can. Leave the one the kid is drinking from "
+                        "while doing homework.",
+            instruction_zh="把喝完的易拉罐扔进垃圾桶。孩子一边写作业一边喝的那罐别扔。",
             watch=[CAN, KID, "craft_notebook", "craft_pencil"],
-            factor="which can is the kid's (seed: the one on the study desk among the craft things, or the one on "
+            factor="which can is the kid's (seed: the one on the study desk among the homework things, or the one on "
                    "the island among them)",
-            challenge="two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), "
+            challenge="two identical cans: one stands among the kid's homework things (a notebook and a pencil), "
                       "the other on its own; one of them is on the island, the other on the study desk",
             rationale="the instruction excludes one can by a clue: tell the kid's can from what stands around it "
                       "and throw out only the other one (throwing the kid's out fails)",

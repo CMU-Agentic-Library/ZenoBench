@@ -11866,7 +11866,7 @@
    14,
    19
   ],
-  "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+  "instruction": "Throw the finished soda can into the trash can. Leave the one the kid is drinking from while doing homework.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11920,7 +11920,7 @@
   },
   "control": "can_on_island",
   "oracle_route": "v6_keep_kids_can__kid_desk",
-  "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+  "challenge": "two identical cans: one stands among the kid's homework things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
   "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -11934,7 +11934,7 @@
    17,
    18
   ],
-  "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+  "instruction": "Throw the finished soda can into the trash can. Leave the one the kid is drinking from while doing homework.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11988,7 +11988,7 @@
   },
   "control": "can_on_island",
   "oracle_route": "v6_keep_kids_can__kid_island",
-  "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+  "challenge": "two identical cans: one stands among the kid's homework things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
   "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
