@@ -2680,7 +2680,7 @@
 
 **情况**：家里没有纸巾，岛台上有块干海绵 → 拿海绵代替
 
-**指令**：餐桌上洒了点汤，拿点纸巾过去。
+**指令**：餐桌上洒了点汤，拿个能擦的用具过去。
 
 **成功条件**：
 
@@ -2694,6 +2694,8 @@
 ### tissue_put_away（Task）
 
 **情况**：纸巾收在两个矮柜之一 → 逐个打开找，拿出来后关好门
+
+**指令**：餐桌上洒了点汤，拿点擦的东西过去。纸巾收在柜子里了，拿完把柜门关好。
 
 **成功条件**：
 
@@ -2724,32 +2726,6 @@
 
 - 摆法 `kid_north`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 7.45])`
 - 摆法 `kid_south`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 6.4])`
-
-### tissue_or_sponge（Task）
-
-**情况**：电视柜上没纸巾，岛台上有块干海绵；纸巾在第一个矮柜、第二个矮柜，或者家里没有（开门前看不出来） → 老地方没有 → 去收纳的柜子看 → 有纸巾就拿纸巾（海绵不拿）；空的就去第二个柜子；两个都空才拿海绵；柜门都关好
-
-**指令**：餐桌上洒了点汤，拿点纸巾过去。
-
-**成功条件**：
-
-- 摆法 `none`：
-  - `spare_sponge` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - 手里空着
-- 摆法 `in_first`、`in_second`：
-  - `tissue` 在 `dining_table_2/top` 上
-  - `["not on", "spare_sponge", "dining_table_2/top"]`
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - 手里空着
-
-**参考调用顺序**：
-
-- 摆法 `in_first`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `navigate(destination=tissue)` → 8. `pick(object=tissue)` → 9. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 10. `close(articulated=kitchen_cabinet_4)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
-- 摆法 `in_second`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `close(articulated=kitchen_cabinet_4)` → 8. `navigate(destination=kitchen_cabinet_6)` → 9. `open(articulated=kitchen_cabinet_6)` → 10. `bend()` → 11. `explore_furniture(furniture=kitchen_cabinet_6)` → 12. `straighten()` → 13. `navigate(destination=tissue)` → 14. `pick(object=tissue)` → 15. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 16. `close(articulated=kitchen_cabinet_6)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
-- 摆法 `none`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `close(articulated=kitchen_cabinet_4)` → 8. `navigate(destination=kitchen_cabinet_6)` → 9. `open(articulated=kitchen_cabinet_6)` → 10. `bend()` → 11. `explore_furniture(furniture=kitchen_cabinet_6)` → 12. `straighten()` → 13. `close(articulated=kitchen_cabinet_6)` → 14. `navigate(destination=spare_sponge)` → 15. `pick(object=spare_sponge)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
 
 ---
 

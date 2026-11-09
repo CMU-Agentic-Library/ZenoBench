@@ -7,12 +7,12 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
-| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 24 | carry: paperback_book slipped out of the hand while carrying it |
+| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 23 | carry: paperback_book slipped out of the hand while carrying it |
 | navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 19 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
-| open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 13 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
-| open | kitchen_cabinet_6 | 95 | 34 | 26% | grasp miss 26, IK / reach / base pose 6, articulation (door does not move) 2 | T05 T18 | 14 | grasp handle kitchen_cabinet_6: no finger contact |
+| open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 12 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
+| open | kitchen_cabinet_6 | 95 | 34 | 26% | grasp miss 26, IK / reach / base pose 6, articulation (door does not move) 2 | T05 T18 | 13 | grasp handle kitchen_cabinet_6: no finger contact |
 | flip | paperback_book | 52 | 34 | 40% | IK / reach / base pose 13, other 11, placement result 7 | T15 | 1 | POSTCONDITION_FAILED: flipped(object=paperback_book) is false (z dot -0.38) |
 | separate | wooden_block_b | 15 | 21 | 58% | other 15, perception / search 6 | T02 T17 | 0 | PRECONDITION_FAILED: hand_empty(hand=right) is false (right holds wooden_block_b); not grasp_clearance(object=wooden_block_b) is false (pinc |
 | approach | soda_can | 20 | 20 | 50% | IK / reach / base pose 20 | T10 | 0 | approach soda_can: no base pose reaches it (rejected: {'candidates': 3432, 'out_of_reach': 44, 'footprint': 799, 'travel_pose': 112, 'ik': 4 |
@@ -59,7 +59,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | variants |
 |---|---|---|
 | close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_missing, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/fruit_stays_out, T27/still_eating, T27/two_leftovers, T27/which_is_leftover |
-| close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/hide_somewhere, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_or_sponge, T21/tissue_put_away, T25/cups_for_two, T28/cup_put_away, T28/where_his_cup_is, T30/bowl_put_away |
+| close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/hide_somewhere, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_put_away, T25/cups_for_two, T28/cup_put_away, T28/where_his_cup_is, T30/bowl_put_away |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | empty_can | T29/several |
 | drop | fridge_tomato | T09/tomato_in_fridge |
@@ -134,7 +134,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | pick | spare_mug | T30/bowls_in_cabinet, T30/no_bowl |
-| pick | spare_sponge | T21/no_tissue, T21/tissue_or_sponge |
+| pick | spare_sponge | T21/no_tissue |
 | pick | steel_lunch_box | T07/vessel_decides_appliance |
 | pick | stock_cup_1 | T25/cups_for_two |
 | pick | stock_cup_2 | T25/cups_for_two |
@@ -143,7 +143,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | table_car | T29/belongs_on_table, T29/several |
 | pick | takeout_tray | T10/after_dinner_clear |
 | pick | teddy_bear | T12/find_all_toys |
-| pick | tissue | T21/the_kids_side, T21/tissue_or_sponge, T21/tissue_out_of_view, T21/tissue_put_away, T21/which_table |
+| pick | tissue | T21/the_kids_side, T21/tissue_out_of_view, T21/tissue_put_away, T21/which_table |
 | pick | toy_block | T02/third_toy_elsewhere |
 | pick | toy_east | T29/which_table |
 | pick | toy_west | T29/which_table |
@@ -205,7 +205,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |
 | place | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | place | spare_mug | T30/bowls_in_cabinet, T30/no_bowl |
-| place | spare_sponge | T21/no_tissue, T21/tissue_or_sponge |
+| place | spare_sponge | T21/no_tissue |
 | place | steel_lunch_box | T07/vessel_decides_appliance |
 | place | stock_cup_1 | T25/cups_for_two |
 | place | stock_cup_2 | T25/cups_for_two |
@@ -213,7 +213,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | table_book | T29/several |
 | place | table_car | T29/belongs_on_table, T29/several |
 | place | teddy_bear | T12/find_all_toys |
-| place | tissue | T21/the_kids_side, T21/tissue_or_sponge, T21/tissue_out_of_view, T21/tissue_put_away, T21/which_table |
+| place | tissue | T21/the_kids_side, T21/tissue_out_of_view, T21/tissue_put_away, T21/which_table |
 | place | toy_east | T29/which_table |
 | place | toy_west | T29/which_table |
 | place | tray_book_1 | T22/tray_elsewhere |

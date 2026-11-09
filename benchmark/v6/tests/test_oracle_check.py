@@ -74,7 +74,7 @@ def test_cup_on_the_desk_beside_the_bed_passes():
     assert edited("T28", "cup_on_counter", to_desk) == []
 
 
-DEPENDENT = [("T21", "tissue_or_sponge"), ("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
+DEPENDENT = [("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
              ("T28", "where_his_cup_is"), ("T30", "bowls_in_cabinet")]
 
 

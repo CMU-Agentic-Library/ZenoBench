@@ -1,6 +1,6 @@
 {
- "routes": 292,
- "ok": 292,
+ "routes": 289,
+ "ok": 289,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2635,36 +2635,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "the_kids_side"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_or_sponge__in_first",
-   "steps": 12,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_or_sponge"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_or_sponge__in_second",
-   "steps": 18,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_or_sponge"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_or_sponge__none",
-   "steps": 17,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_or_sponge"
   },
   {
    "task": "T22_put_away_shopping",

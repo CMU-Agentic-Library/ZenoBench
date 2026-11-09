@@ -108,9 +108,10 @@ HOUSE_CUPS = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table", "mug_din
 
 
 # ================================================================== T21 bring tissues to the spill
-# the task asks for "something to wipe it up"; the designs built on a sponge standing in for tissues ask for tissues
-TISSUES_ASKED = dict(instruction="Some soup got spilled at the dining table. Bring some tissues over.",
-                     instruction_zh="餐桌上洒了点汤，拿点纸巾过去。")
+# the task asks for "something to wipe it up"; where a sponge and tissues are both about, "something to wipe with":
+# either one does
+TISSUES_ASKED = dict(instruction="Some soup got spilled at the dining table. Bring something to wipe it with.",
+                     instruction_zh="餐桌上洒了点汤，拿个能擦的用具过去。")
 
 
 def t21():
@@ -165,7 +166,10 @@ def t21():
                 goal={"all": [["on", TIS, T2], ["is_closed", C4], ["is_closed", C6], H]},
                 route=explore(o) + [S("close", articulated=o)] + explore(a) + from_closed(TIS, a)
                 + [nav(T2), place(TIS, T2, [3.30, 6.65])])
-             for a, o, xy in ((C4, C6, (1.40, 0.42)), (C6, C4, (3.50, 0.36)))}),
+             for a, o, xy in ((C4, C6, (1.40, 0.42)), (C6, C4, (3.50, 0.36)))},
+            instruction="Some soup got spilled at the dining table. Bring something to wipe it up; the tissues are "
+                        "put away in a cabinet, close its door again afterwards.",
+            instruction_zh="餐桌上洒了点汤，拿点擦的东西过去。纸巾收在柜子里了，拿完把柜门关好。"),
         "the_kids_side": fam(
             "tissue_on_tv_stand", ["referent_clue"], "which end of the table the kid sits at (seed)",
             "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
@@ -177,27 +181,6 @@ def t21():
             instruction="The kid spilled some soup at the dining table. Bring something to wipe it up and put it on "
                         "the kid's side of the table.",
             instruction_zh="孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。"),
-        "tissue_or_sponge": fam(
-            "tissue_on_tv_stand", ["resource_absent", "item_put_away", "dependent_decisions"],
-            "where the tissues are (seed: the first low cabinet, the second, or none in the house); every cabinet "
-            "looks the same until its door is open",
-            "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall "
-            "cabinets, or nowhere",
-            "the usual place is empty, so look where such things are kept; each cabinet decides the next step: "
-            "tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the "
-            "sponge does the wiping",
-            {c: dict(add={**({TIS: on("tissue_box", f"{cab}/inside_shelf", *xy)} if cab else {}),
-                          "spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80), **meal},
-                     remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
-                     watch=([TIS] if cab else []) + ["spare_sponge", "soup_bowl"],
-                     goal={"all": ([["on", TIS, T2], ["not on", "spare_sponge", T2]] if cab else
-                                   [["on", "spare_sponge", T2]]) + [["is_closed", C4], ["is_closed", C6], H]},
-                     route=[look(TV)] + explore(C4)
-                     + (from_closed(TIS, C4) if cab == C4 else [S("close", articulated=C4)] + explore(C6)
-                        + (from_closed(TIS, C6) if cab == C6 else [S("close", articulated=C6)]))
-                     + ([nav(T2), place(TIS, T2, [3.30, 6.65])] if cab else to_table("spare_sponge")))
-             for c, cab, xy in (("in_first", C4, (1.40, 0.42)), ("in_second", C6, (3.50, 0.36)), ("none", None, None))},
-            **TISSUES_ASKED),
     }
     return t, fams
 

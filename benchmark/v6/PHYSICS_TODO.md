@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1680 episodes remain (1160 of the 116 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1670 episodes remain (1150 of the 115 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -116,7 +116,6 @@
 | T21 | no_tissue | task | 0/0 of 10 | - |
 | T21 | tissue_put_away | task | 0/0 of 10 | low cabinet doors |
 | T21 | the_kids_side | task | 0/0 of 10 | - |
-| T21 | tissue_or_sponge | task | 0/0 of 10 | low cabinet doors |
 | T22 | juice_on_table | control | 0/0 of 10 | - |
 | T22 | by_kind | task | 0/0 of 10 | low cabinet doors |
 | T22 | eat_now | task | 0/0 of 10 | - |

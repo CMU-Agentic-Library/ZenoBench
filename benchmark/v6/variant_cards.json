@@ -18885,7 +18885,7 @@
    18,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it with.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18931,7 +18931,7 @@
    17,
    18
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up; the tissues are put away in a cabinet, close its door again afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -18988,7 +18988,7 @@
    16,
    19
   ],
-  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up.",
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it up; the tissues are put away in a cabinet, close its door again afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19165,190 +19165,6 @@
   "oracle_route": "v6_the_kids_side__kid_south",
   "challenge": "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
   "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T21_bring_tissues/tissue_or_sponge__in_first": {
-  "variant": "tissue_or_sponge",
-  "category": "task",
-  "seeds": [
-   10,
-   13,
-   14,
-   15
-  ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "meal_spoon",
-    "soup_bowl",
-    "spare_sponge",
-    "tissue"
-   ],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "resource_absent",
-    "item_put_away",
-    "dependent_decisions"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "tissue",
-     "dining_table_2/top"
-    ],
-    [
-     "not on",
-     "spare_sponge",
-     "dining_table_2/top"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "tissue_on_tv_stand",
-  "oracle_route": "v6_tissue_or_sponge__in_first",
-  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
-  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T21_bring_tissues/tissue_or_sponge__in_second": {
-  "variant": "tissue_or_sponge",
-  "category": "task",
-  "seeds": [
-   11,
-   17,
-   19
-  ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "meal_spoon",
-    "soup_bowl",
-    "spare_sponge",
-    "tissue"
-   ],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "resource_absent",
-    "item_put_away",
-    "dependent_decisions"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "tissue",
-     "dining_table_2/top"
-    ],
-    [
-     "not on",
-     "spare_sponge",
-     "dining_table_2/top"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "tissue_on_tv_stand",
-  "oracle_route": "v6_tissue_or_sponge__in_second",
-  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
-  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T21_bring_tissues/tissue_or_sponge__none": {
-  "variant": "tissue_or_sponge",
-  "category": "task",
-  "seeds": [
-   12,
-   16,
-   18
-  ],
-  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "meal_spoon",
-    "soup_bowl",
-    "spare_sponge"
-   ],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "resource_absent",
-    "item_put_away",
-    "dependent_decisions"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "spare_sponge",
-     "dining_table_2/top"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "tissue_on_tv_stand",
-  "oracle_route": "v6_tissue_or_sponge__none",
-  "challenge": "no tissues on the TV stand; a dry sponge on the island; the tissues in one of the two low wall cabinets, or nowhere",
-  "rationale": "the usual place is empty, so look where such things are kept; each cabinet decides the next step: tissues -> take them (the sponge was only a fallback); empty -> the other cabinet; both empty -> the sponge does the wiping",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T22_put_away_shopping/juice_on_table": {
