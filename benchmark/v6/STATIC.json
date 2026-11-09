@@ -1,7 +1,7 @@
 {
- "variants": 171,
- "episodes": 1710,
- "static_ok": 1710,
+ "variants": 169,
+ "episodes": 1690,
+ "static_ok": 1690,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -13,12 +13,12 @@
    "static_ok": 60
   },
   "T03_utensils_one_container": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T04_cup_or_mug_to_cabinet": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T05_pen_or_pencil_to_desk": {
    "episodes": 90,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 9,
-  "task": 132
+  "task": 130
  },
- "tasks_sha1": "e77ef0430e2503bd08c7d8778d4c6c7a1ce0c740"
+ "tasks_sha1": "ccf8453ed558658542b0895e9685a6f0f6d7ba04"
 }

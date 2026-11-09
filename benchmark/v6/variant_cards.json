@@ -5873,7 +5873,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/small_bin_or_bedroom_bin": {
+ "T03_utensils_one_container/small_bin_or_bedroom_bin__on_island": {
   "variant": "small_bin_or_bedroom_bin",
   "category": "task",
   "seeds": [
@@ -5881,8 +5881,72 @@
    11,
    12,
    13,
+   15
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "mug",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "small_bin_block_1",
+    "small_bin_block_2",
+    "small_storage_bin"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "small_container_present",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "inside",
+     "small_bin_block_1",
+     "small_storage_bin"
+    ],
+    [
+     "inside",
+     "small_bin_block_2",
+     "small_storage_bin"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_small_bin_or_bedroom_bin__on_island",
+  "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
+  "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/small_bin_or_bedroom_bin__beside_wide_bin": {
+  "variant": "small_bin_or_bedroom_bin",
+  "category": "task",
+  "seeds": [
    14,
-   15,
    16,
    17,
    18,
@@ -5942,82 +6006,9 @@
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_small_bin_or_bedroom_bin",
-  "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
-  "rationale": "measure what room is left: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T03_utensils_one_container/three_containers_bedroom": {
-  "variant": "three_containers_bedroom",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "rolling_pin",
-    "wide_storage_bin"
-   ],
-   "added": [
-    "small_bin_block_1",
-    "small_bin_block_2",
-    "small_storage_bin"
-   ],
-   "removed": [
-    "mug"
-   ],
-   "conditions": [
-    "joint_capacity",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "rolling_pin",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "breakfast_spoon",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "inside",
-     "small_bin_block_1",
-     "small_storage_bin"
-    ],
-    [
-     "inside",
-     "small_bin_block_2",
-     "small_storage_bin"
-    ]
-   ]
-  },
-  "control": "large_only",
-  "oracle_route": "v6_three_containers_bedroom",
-  "challenge": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
-  "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
+  "oracle_route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
+  "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
+  "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T03_utensils_one_container/which_bin_by_contents__toys_near": {
@@ -6190,7 +6181,7 @@
    14,
    18
   ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6261,7 +6252,7 @@
   "control": "large_only",
   "oracle_route": "v6_no_bin_substitute__basket",
   "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-  "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+  "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T03_utensils_one_container/no_bin_substitute__tray": {
@@ -6274,7 +6265,7 @@
    17,
    19
   ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6345,7 +6336,7 @@
   "control": "large_only",
   "oracle_route": "v6_no_bin_substitute__tray",
   "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-  "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+  "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T03_utensils_one_container/utensils_apart__dining": {
@@ -6471,7 +6462,7 @@
    18,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6529,18 +6520,12 @@
   "variant": "no_cup",
   "category": "task",
   "seeds": [
-   10,
    11,
-   12,
-   13,
    14,
    15,
-   16,
-   17,
-   18,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6596,16 +6581,14 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/no_cup_mug_away": {
-  "variant": "no_cup_mug_away",
+  "variant": "no_cup",
   "category": "task",
   "seeds": [
-   10,
-   14,
-   15,
+   12,
    16,
-   19
+   17
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6662,16 +6645,14 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/no_cup_mug_away__alt_dining_table_2": {
-  "variant": "no_cup_mug_away",
+  "variant": "no_cup",
   "category": "task",
   "seeds": [
-   11,
-   12,
+   10,
    13,
-   17,
    18
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6742,7 +6723,7 @@
    18,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

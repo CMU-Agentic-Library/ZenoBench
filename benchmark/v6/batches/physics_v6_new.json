@@ -702,142 +702,72 @@
 {
 "task": "T03_utensils_one_container",
 "seed": 10,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 11,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 12,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 13,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 14,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 15,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 16,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 17,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 18,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 19,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 10,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 11,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 12,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 13,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 14,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 15,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 16,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 17,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 18,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 19,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
 },
 {
 "task": "T03_utensils_one_container",

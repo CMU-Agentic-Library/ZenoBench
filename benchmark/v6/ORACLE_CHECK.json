@@ -652,7 +652,7 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "small_bin_or_bedroom_bin",
+   "layout": "small_bin_or_bedroom_bin__on_island",
    "steps": 14,
    "atoms_checked": 5,
    "atoms_geometric": 0,
@@ -662,13 +662,13 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "three_containers_bedroom",
+   "layout": "small_bin_or_bedroom_bin__beside_wide_bin",
    "steps": 14,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "three_containers_bedroom"
+   "variant": "small_bin_or_bedroom_bin"
   },
   {
    "task": "T03_utensils_one_container",
@@ -767,7 +767,7 @@
     "upright mug"
    ],
    "problems": [],
-   "variant": "no_cup_mug_away"
+   "variant": "no_cup"
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
@@ -780,7 +780,7 @@
     "upright mug"
    ],
    "problems": [],
-   "variant": "no_cup_mug_away"
+   "variant": "no_cup"
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",

@@ -15926,7 +15926,7 @@
       }
      }
     },
-    "small_bin_or_bedroom_bin": {
+    "small_bin_or_bedroom_bin__on_island": {
      "move": {
       "mug": {
        "support": "kitchen_island/top",
@@ -16036,15 +16036,15 @@
       "small_bin_block_2"
      ],
      "since": "v6",
-     "note": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
      "v6": {
       "family": "small_bin_or_bedroom_bin",
-      "case": null,
-      "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
-      "rationale": "measure what room is left: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
+      "case": "on_island",
+      "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
+      "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
       "control": "large_only",
       "contrast": null,
-      "factor": null,
+      "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
       "derived_from": "small_and_large"
      },
      "layout": {
@@ -16160,8 +16160,16 @@
       }
      }
     },
-    "three_containers_bedroom": {
+    "small_bin_or_bedroom_bin__beside_wide_bin": {
      "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      },
       "wide_storage_bin": {
        "support": "bookcase_2/top",
        "xy": [
@@ -16187,6 +16195,13 @@
        "yaw_deg": 130.74
       }
      },
+     "conditions": [
+      "small_container_present",
+      "not_in_view"
+     ],
+     "remove": [
+      "mug"
+     ],
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
@@ -16218,13 +16233,6 @@
        "yaw_deg": 90.0
       }
      },
-     "conditions": [
-      "joint_capacity",
-      "not_in_view"
-     ],
-     "remove": [
-      "mug"
-     ],
      "goal": {
       "all": [
        [
@@ -16261,22 +16269,40 @@
       "small_bin_block_1",
       "small_bin_block_2"
      ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
      "since": "v6",
-     "note": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
      "v6": {
-      "family": "three_containers_bedroom",
-      "case": null,
-      "challenge": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
-      "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
+      "family": "small_bin_or_bedroom_bin",
+      "case": "beside_wide_bin",
+      "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
+      "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
       "control": "large_only",
       "contrast": null,
-      "factor": null,
-      "derived_from": "three_containers"
+      "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
+      "derived_from": "small_and_large"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "mug"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.9038,
+         1.6017,
+         7.9964,
+         1.7283
+        ],
+        "dx": [
+         -1.35,
+         0.25
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
        {
         "names": [
          "breakfast_spoon"
@@ -16940,8 +16966,8 @@
       "decoy_destination",
       "not_in_view"
      ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
-     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。",
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进一个容器里。",
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
@@ -17067,7 +17093,7 @@
       "family": "no_bin_substitute",
       "case": "basket",
       "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-      "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+      "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
       "factor": "which substitute and where (seed: the storage basket on the bedroom floor or the serving tray on the study desk)",
@@ -17245,8 +17271,8 @@
       "decoy_destination",
       "not_in_view"
      ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
-     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。",
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+     "instruction_zh": "烘焙结束了，把擀面杖和勺子一起收进一个容器里。",
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
@@ -17371,7 +17397,7 @@
       "family": "no_bin_substitute",
       "case": "tray",
       "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-      "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+      "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
       "factor": "which substitute and where (seed: the storage basket on the bedroom floor or the serving tray on the study desk)",
@@ -17950,8 +17976,8 @@
    "nominal": "nominal",
    "oracle": {
     "large_only": "nominal",
-    "small_bin_or_bedroom_bin": "v6_small_bin_or_bedroom_bin",
-    "three_containers_bedroom": "v6_three_containers_bedroom",
+    "small_bin_or_bedroom_bin__on_island": "v6_small_bin_or_bedroom_bin__on_island",
+    "small_bin_or_bedroom_bin__beside_wide_bin": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
     "which_bin_by_contents__toys_near": "v6_which_bin_by_contents__toys_near",
     "which_bin_by_contents__tools_near": "v6_which_bin_by_contents__tools_near",
     "no_bin_substitute__basket": "v6_no_bin_substitute__basket",
@@ -18032,7 +18058,7 @@
      ],
      "since": "v2"
     },
-    "v6_small_bin_or_bedroom_bin": {
+    "v6_small_bin_or_bedroom_bin__on_island": {
      "steps": [
       {
        "skill": "look",
@@ -18123,9 +18149,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "small_bin_or_bedroom_bin"
+     "variant": "small_bin_or_bedroom_bin__on_island"
     },
-    "v6_three_containers_bedroom": {
+    "v6_small_bin_or_bedroom_bin__beside_wide_bin": {
      "steps": [
       {
        "skill": "look",
@@ -18216,7 +18242,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "three_containers_bedroom"
+     "variant": "small_bin_or_bedroom_bin__beside_wide_bin"
     },
     "v6_which_bin_by_contents__toys_near": {
      "steps": [
@@ -18797,40 +18823,21 @@
      "origin": "v6",
      "control": "large_only",
      "layouts": [
-      "small_bin_or_bedroom_bin"
+      "small_bin_or_bedroom_bin__on_island",
+      "small_bin_or_bedroom_bin__beside_wide_bin"
      ],
-     "factor": null,
+     "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
      "seeds": {
-      "10": "small_bin_or_bedroom_bin",
-      "11": "small_bin_or_bedroom_bin",
-      "12": "small_bin_or_bedroom_bin",
-      "13": "small_bin_or_bedroom_bin",
-      "14": "small_bin_or_bedroom_bin",
-      "15": "small_bin_or_bedroom_bin",
-      "16": "small_bin_or_bedroom_bin",
-      "17": "small_bin_or_bedroom_bin",
-      "18": "small_bin_or_bedroom_bin",
-      "19": "small_bin_or_bedroom_bin"
-     }
-    },
-    "three_containers_bedroom": {
-     "origin": "v6",
-     "control": "large_only",
-     "layouts": [
-      "three_containers_bedroom"
-     ],
-     "factor": null,
-     "seeds": {
-      "10": "three_containers_bedroom",
-      "11": "three_containers_bedroom",
-      "12": "three_containers_bedroom",
-      "13": "three_containers_bedroom",
-      "14": "three_containers_bedroom",
-      "15": "three_containers_bedroom",
-      "16": "three_containers_bedroom",
-      "17": "three_containers_bedroom",
-      "18": "three_containers_bedroom",
-      "19": "three_containers_bedroom"
+      "10": "small_bin_or_bedroom_bin__on_island",
+      "11": "small_bin_or_bedroom_bin__on_island",
+      "12": "small_bin_or_bedroom_bin__on_island",
+      "13": "small_bin_or_bedroom_bin__on_island",
+      "14": "small_bin_or_bedroom_bin__beside_wide_bin",
+      "15": "small_bin_or_bedroom_bin__on_island",
+      "16": "small_bin_or_bedroom_bin__beside_wide_bin",
+      "17": "small_bin_or_bedroom_bin__beside_wide_bin",
+      "18": "small_bin_or_bedroom_bin__beside_wide_bin",
+      "19": "small_bin_or_bedroom_bin__beside_wide_bin"
      }
     },
     "which_bin_by_contents": {
@@ -18901,7 +18908,7 @@
     "small_and_large": "replaced by small_bin_or_bedroom_bin (a small bin near, the wide bin in the bedroom; a mug is no candidate for a rolling pin)",
     "h_dynamic_pin_taken": "removed: no dynamic events in T03 (someone takes the rolling pin away)",
     "far_small_and_large": "removed: the bin on the TV stand is the in-place choice small_bin_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
-    "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
+    "three_containers": "replaced by small_bin_or_bedroom_bin, seed beside_wide_bin (both bins in the bedroom)"
    },
    "v6_dropped": {
     "e2_from_dining_room": "same as large_only but for the layout (object poses / start)",
@@ -18911,7 +18918,7 @@
     "small_and_large": "replaced by small_bin_or_bedroom_bin (a small bin near, the wide bin in the bedroom; a mug is no candidate for a rolling pin)",
     "h_dynamic_pin_taken": "removed: no dynamic events in T03 (someone takes the rolling pin away)",
     "far_small_and_large": "removed: the bin on the TV stand is the in-place choice small_bin_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
-    "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
+    "three_containers": "replaced by small_bin_or_bedroom_bin, seed beside_wide_bin (both bins in the bedroom)"
    },
    "v6_tracks": {
     "large_only": {
@@ -18925,14 +18932,6 @@
      "longer": [
       "not_in_view",
       "small_container_present"
-     ]
-    },
-    "three_containers_bedroom": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "joint_capacity",
-      "not_in_view"
      ]
     },
     "which_bin_by_contents": {
@@ -18970,8 +18969,8 @@
     "skill_library/tasks.json:breakfast_setup",
     "k_handle_mug / k_brace (mug rim pick)"
    ],
-   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
-   "instruction_zh": "有客人要来，在靠墙矮柜上的饮品角摆一个杯子；没有杯子的话马克杯也行。",
+   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+   "instruction_zh": "有客人要来，在靠墙矮柜上的饮品角摆一个杯子。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -21320,41 +21319,23 @@
      "origin": "v5",
      "control": "cup_available",
      "layouts": [
-      "no_cup"
-     ],
-     "seeds": {
-      "10": "no_cup",
-      "11": "no_cup",
-      "12": "no_cup",
-      "13": "no_cup",
-      "14": "no_cup",
-      "15": "no_cup",
-      "16": "no_cup",
-      "17": "no_cup",
-      "18": "no_cup",
-      "19": "no_cup"
-     }
-    },
-    "no_cup_mug_away": {
-     "origin": "v5",
-     "control": "cup_available",
-     "layouts": [
+      "no_cup",
       "no_cup_mug_away",
       "no_cup_mug_away__alt_dining_table_2"
      ],
      "seeds": {
-      "10": "no_cup_mug_away",
-      "11": "no_cup_mug_away__alt_dining_table_2",
-      "12": "no_cup_mug_away__alt_dining_table_2",
+      "10": "no_cup_mug_away__alt_dining_table_2",
+      "11": "no_cup",
+      "12": "no_cup_mug_away",
       "13": "no_cup_mug_away__alt_dining_table_2",
-      "14": "no_cup_mug_away",
-      "15": "no_cup_mug_away",
+      "14": "no_cup",
+      "15": "no_cup",
       "16": "no_cup_mug_away",
-      "17": "no_cup_mug_away__alt_dining_table_2",
+      "17": "no_cup_mug_away",
       "18": "no_cup_mug_away__alt_dining_table_2",
-      "19": "no_cup_mug_away"
+      "19": "no_cup"
      },
-     "factor": "where the resource is to be found (seed extension)"
+     "factor": "where the mug is (seed: on the island in view, on the TV stand or on the dining table, out of view)"
     },
     "h_task_spot_taken": {
      "origin": "v5",
@@ -21435,13 +21416,6 @@
      "longer": []
     },
     "no_cup": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "no_cup"
-     ]
-    },
-    "no_cup_mug_away": {
      "category": "task",
      "local": [],
      "longer": [

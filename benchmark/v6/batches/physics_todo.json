@@ -912,142 +912,72 @@
 {
 "task": "T03_utensils_one_container",
 "seed": 10,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 11,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 12,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 13,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 14,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 15,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__on_island",
+"route": "v6_small_bin_or_bedroom_bin__on_island",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 16,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 17,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 18,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 19,
-"variant": "small_bin_or_bedroom_bin",
-"route": "v6_small_bin_or_bedroom_bin",
+"variant": "small_bin_or_bedroom_bin__beside_wide_bin",
+"route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
 "family": "small_bin_or_bedroom_bin"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 10,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 11,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 12,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 13,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 14,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 15,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 16,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 17,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 18,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
-},
-{
-"task": "T03_utensils_one_container",
-"seed": 19,
-"variant": "three_containers_bedroom",
-"route": "v6_three_containers_bedroom",
-"family": "three_containers_bedroom"
 },
 {
 "task": "T03_utensils_one_container",
@@ -1332,8 +1262,8 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 10,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away__alt_dining_table_2",
+"route": "v6_no_cup_mug_away__alt_dining_table_2",
 "family": "no_cup"
 },
 {
@@ -1346,15 +1276,15 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 12,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away",
+"route": "hard_count_search_mug",
 "family": "no_cup"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 13,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away__alt_dining_table_2",
+"route": "v6_no_cup_mug_away__alt_dining_table_2",
 "family": "no_cup"
 },
 {
@@ -1374,22 +1304,22 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 16,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away",
+"route": "hard_count_search_mug",
 "family": "no_cup"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 17,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away",
+"route": "hard_count_search_mug",
 "family": "no_cup"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 18,
-"variant": "no_cup",
-"route": "alternative_mug",
+"variant": "no_cup_mug_away__alt_dining_table_2",
+"route": "v6_no_cup_mug_away__alt_dining_table_2",
 "family": "no_cup"
 },
 {
@@ -1398,76 +1328,6 @@
 "variant": "no_cup",
 "route": "alternative_mug",
 "family": "no_cup"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 10,
-"variant": "no_cup_mug_away",
-"route": "hard_count_search_mug",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 11,
-"variant": "no_cup_mug_away__alt_dining_table_2",
-"route": "v6_no_cup_mug_away__alt_dining_table_2",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 12,
-"variant": "no_cup_mug_away__alt_dining_table_2",
-"route": "v6_no_cup_mug_away__alt_dining_table_2",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 13,
-"variant": "no_cup_mug_away__alt_dining_table_2",
-"route": "v6_no_cup_mug_away__alt_dining_table_2",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 14,
-"variant": "no_cup_mug_away",
-"route": "hard_count_search_mug",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 15,
-"variant": "no_cup_mug_away",
-"route": "hard_count_search_mug",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 16,
-"variant": "no_cup_mug_away",
-"route": "hard_count_search_mug",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 17,
-"variant": "no_cup_mug_away__alt_dining_table_2",
-"route": "v6_no_cup_mug_away__alt_dining_table_2",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 18,
-"variant": "no_cup_mug_away__alt_dining_table_2",
-"route": "v6_no_cup_mug_away__alt_dining_table_2",
-"family": "no_cup_mug_away"
-},
-{
-"task": "T04_cup_or_mug_to_cabinet",
-"seed": 19,
-"variant": "no_cup_mug_away",
-"route": "hard_count_search_mug",
-"family": "no_cup_mug_away"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",

@@ -465,7 +465,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:max(0, 4 - len(pick))]
     views = [views[i] for i in sorted(pick)]
     out_dir.mkdir(parents=True, exist_ok=True)
-    lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""
+    tag_l = lid.split('__', 1)[1] if '__' in lid else lid           # a merged v5 variant keeps its own name
+    lay = f" · 摆法 {tag_l}" if lid != vid else ""
     for i, (tag, marks, img, label) in enumerate(views, 1):
         im = Image.fromarray(np.asarray(img, dtype=np.uint8))
         if im.width < RES[1]:
@@ -473,7 +474,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if marks:
             star(im, marks)
         im = caption(im, [f"{tid.split('_')[0]} · {vid}（{cat}）{lay} · seed {seed} · {label}", situation])
-        path = out_dir / f"{(lid.split('__', 1)[1] + '_') if lid != vid else ''}{i}_{tag}.png"
+        path = out_dir / f"{(tag_l + '_') if lid != vid else ''}{i}_{tag}.png"
         im.save(path)
         print(f"[render] {path}", flush=True)
     ep.close()

@@ -2,7 +2,7 @@
  "summary": {
   "scope": {
    "layouts": 259,
-   "variants": 141,
+   "variants": 139,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
@@ -61,15 +61,16 @@
    "T30 clean_one"
   ],
   "routes_between_layouts": {
-   "passes": 89,
+   "passes": 92,
    "goal_not_met": 148,
-   "not_observed": 8,
-   "argument_mismatch": 83,
+   "not_observed": 10,
+   "argument_mismatch": 84,
    "resource_missing": 62
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
    "T01 which_book",
+   "T03 small_bin_or_bedroom_bin",
    "T05 check_desk_first",
    "T06 seen_from_bed",
    "T09 x6_gd_tomato_elsewhere",
@@ -79,7 +80,7 @@
    "T16 everything_near_the_edge",
    "T27 two_leftovers"
   ],
-  "multi_layout_variants": 78,
+  "multi_layout_variants": 79,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -1580,28 +1581,30 @@
   {
    "task": "T03_utensils_one_container",
    "variant": "small_bin_or_bedroom_bin",
-   "layout": "small_bin_or_bedroom_bin",
+   "layout": "small_bin_or_bedroom_bin__on_island",
    "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
-   "other_layouts": {},
+   "other_layouts": {
+    "small_bin_or_bedroom_bin__beside_wide_bin": "passes"
+   },
    "other_variants_passing": [
-    "three_containers_bedroom",
     "which_bin_by_contents__toys_near"
    ]
   },
   {
    "task": "T03_utensils_one_container",
-   "variant": "three_containers_bedroom",
-   "layout": "three_containers_bedroom",
+   "variant": "small_bin_or_bedroom_bin",
+   "layout": "small_bin_or_bedroom_bin__beside_wide_bin",
    "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
-   "other_layouts": {},
+   "other_layouts": {
+    "small_bin_or_bedroom_bin__on_island": "passes"
+   },
    "other_variants_passing": [
-    "small_bin_or_bedroom_bin",
     "which_bin_by_contents__toys_near"
    ]
   },
@@ -1617,8 +1620,8 @@
     "which_bin_by_contents__tools_near": "not_observed"
    },
    "other_variants_passing": [
-    "small_bin_or_bedroom_bin",
-    "three_containers_bedroom"
+    "small_bin_or_bedroom_bin__on_island",
+    "small_bin_or_bedroom_bin__beside_wide_bin"
    ]
   },
   {
@@ -1697,14 +1700,15 @@
     "upright mug"
    ],
    "control_route": "resource_missing",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "no_cup_mug_away"
-   ]
+   "other_layouts": {
+    "no_cup_mug_away": "passes",
+    "no_cup_mug_away__alt_dining_table_2": "argument_mismatch"
+   },
+   "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "no_cup_mug_away",
+   "variant": "no_cup",
    "layout": "no_cup_mug_away",
    "steps": 8,
    "own_route_passes": true,
@@ -1714,13 +1718,14 @@
    ],
    "control_route": "resource_missing",
    "other_layouts": {
+    "no_cup": "not_observed",
     "no_cup_mug_away__alt_dining_table_2": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "no_cup_mug_away",
+   "variant": "no_cup",
    "layout": "no_cup_mug_away__alt_dining_table_2",
    "steps": 8,
    "own_route_passes": true,
@@ -1730,6 +1735,7 @@
    ],
    "control_route": "resource_missing",
    "other_layouts": {
+    "no_cup": "not_observed",
     "no_cup_mug_away": "argument_mismatch"
    },
    "other_variants_passing": []
@@ -4916,6 +4922,19 @@
   },
   {
    "task": "T03_utensils_one_container",
+   "variant": "small_bin_or_bedroom_bin",
+   "candidates": [
+    "small_bin_or_bedroom_bin__on_island",
+    "small_bin_or_bedroom_bin__beside_wide_bin",
+    "large_only"
+   ],
+   "passes_all": [
+    "small_bin_or_bedroom_bin__on_island",
+    "small_bin_or_bedroom_bin__beside_wide_bin"
+   ]
+  },
+  {
+   "task": "T03_utensils_one_container",
    "variant": "which_bin_by_contents",
    "candidates": [
     "which_bin_by_contents__toys_near",
@@ -4946,8 +4965,9 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "no_cup_mug_away",
+   "variant": "no_cup",
    "candidates": [
+    "no_cup",
     "no_cup_mug_away",
     "no_cup_mug_away__alt_dining_table_2",
     "cup_available"
@@ -6696,6 +6716,19 @@
   },
   {
    "task": "T03_utensils_one_container",
+   "variant": "small_bin_or_bedroom_bin",
+   "layouts": [
+    "small_bin_or_bedroom_bin__on_island",
+    "small_bin_or_bedroom_bin__beside_wide_bin"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T03_utensils_one_container",
    "variant": "which_bin_by_contents",
    "layouts": [
     "which_bin_by_contents__toys_near",
@@ -6735,7 +6768,33 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "no_cup_mug_away",
+   "variant": "no_cup",
+   "layouts": [
+    "no_cup",
+    "no_cup_mug_away"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "layouts": [
+    "no_cup",
+    "no_cup_mug_away__alt_dining_table_2"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
    "layouts": [
     "no_cup_mug_away",
     "no_cup_mug_away__alt_dining_table_2"

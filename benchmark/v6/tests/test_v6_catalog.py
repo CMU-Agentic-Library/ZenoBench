@@ -186,12 +186,13 @@ def test_every_layout_has_its_route():
 def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
     for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
-                          ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
+                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin"),
                           ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"
-        assert any(s["skill"] == "search" for s in t["routes"][t["oracle"][new]]["steps"])
+        assert all(any(s["skill"] == "search" for s in t["routes"][t["oracle"][lid]]["steps"])
+                   for lid in t["v6_variants"][new]["layouts"])
     assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
     # T04 has no dynamic events (user ruling): the cup taken away, the drinks spot filled after the pick
     for vid in ("h_dynamic_cup_taken", "cup_taken_mug_in_living_room", "x6_dr_spot_filled_dynamic__bowl",

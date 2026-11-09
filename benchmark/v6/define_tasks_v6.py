@@ -2031,24 +2031,23 @@ def T03_long(t):
             move={bin_: copy.deepcopy(BEDROOM_BIN)}, remove=["mug"],
             add=small_bin_with_blocks("kitchen_island/top", (7.1, 1.75)),
             goal={"all": bin_goal["all"] + blocks_stay}, watch=[pin, spoon, bin_, "small_storage_bin", *SMALL_BIN_BLOCKS],
-            challenge="a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the "
-                      "utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; "
-                      "the wide storage bin is on the low bookcase in the bedroom",
-            rationale="measure what room is left: the near bin cannot take the rolling pin, and both go into one "
-                      "container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
-            cases={"": dict(route=[look("kitchen_island/top"), S("measure", object="small_storage_bin"),
-                                   S("measure", object=pin)] + find_bins[1:] + put_both)}),
-        "three_containers_bedroom": dict(
-            base="three_containers", control="large_only", conditions=["joint_capacity", "not_in_view"],
-            move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}}, remove=["mug"],
-            add=small_bin_with_blocks("bookcase_2/top", (1.195, -0.43), 90.0),
-            goal={"all": bin_goal["all"] + blocks_stay}, watch=[pin, spoon, bin_, "small_storage_bin", *SMALL_BIN_BLOCKS],
-            challenge="a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on "
-                      "the low bookcase in the bedroom",
-            rationale="by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then "
-                      "carry both utensils there",
-            cases={"": dict(route=find_bins + [S("measure", object="small_storage_bin"),
-                                                S("measure", object=pin)] + put_both)}),
+            factor="where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on "
+                   "the bedroom bookcase)",
+            challenge="a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm "
+                      "rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in "
+                      "the bedroom; the small bin stands either on the island next to the utensils (in view, near) "
+                      "or beside the wide bin",
+            rationale="measure what room is left: the small bin cannot take the rolling pin, and both go into one "
+                      "container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small "
+                      "bin).  With the small bin on the island it has to be ruled out before any other container is "
+                      "in view",
+            cases={"on_island": dict(route=[look("kitchen_island/top"), S("measure", object="small_storage_bin"),
+                                            S("measure", object=pin)] + find_bins[1:] + put_both),
+                   "beside_wide_bin": dict(
+                       move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}},
+                       add=small_bin_with_blocks("bookcase_2/top", (1.195, -0.43), 90.0),
+                       route=find_bins + [S("measure", object="small_storage_bin"), S("measure", object=pin)]
+                       + put_both)}),
     }
 
 
@@ -2141,15 +2140,14 @@ def T03_more(t):
             base="large_only", control="large_only", conditions=["container_absent", "small_container_present",
                                                                  "decoy_destination", "not_in_view"],
             remove=[bin_],
-            instruction="Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there "
-                        "is none, use something else that holds both.",
-            instruction_zh="烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。",
+            instruction="Baking is done. Put the rolling pin and the spoon away together in one container.",
+            instruction_zh="烘焙结束了，把擀面杖和勺子一起收进一个容器里。",
             factor="which substitute and where (seed: the storage basket on the bedroom floor or the serving tray "
                    "on the study desk)",
             challenge="no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) "
                       "has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an "
                       "orange; a basket or a tray in another room holds both",
-            rationale="the named bin is absent: measure the near bin, rule it out by size, do not use the "
+            rationale="no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the "
                       "fruit basket (food), find the substitute in another room and put both utensils in it",
             cases=sub_cases),
         "utensils_apart": dict(
@@ -2249,7 +2247,7 @@ REPLACED = {
     ("T03_utensils_one_container", "far_small_and_large"): "removed: the bin on the TV stand is the in-place choice "
                                                            "small_bin_or_bedroom_bin replaced, and its route tried the "
                                                            "rolling pin in the mug first",
-    ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
+    ("T03_utensils_one_container", "three_containers"): "replaced by small_bin_or_bedroom_bin, seed beside_wide_bin (both bins in the bedroom)",
     ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "removed: no dynamic events in T04 (someone takes the cup away)",
     ("T09_tomato_soup", "cookware_choice"): "replaced by pot_in_dining_room (the pot in the dining room)",
     ("T02_stack_blocks", "h_dynamic_base_moved_to_edge"): "removed: no dynamic events in T02 (someone pushes the "
@@ -2381,6 +2379,12 @@ SEED_EXT = {
 }
 
 
+# v5 variants that are one design with the layout changed: merged into the first as its seeds
+MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away"]}
+MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed: on the island in view, on the TV "
+                                                         "stand or on the dining table, out of view)"}
+
+
 def ext_target(t, fam):
     """(mode, object, its place in the v5 variant, trigger skill args or None) when the family qualifies."""
     v = t["variants"][fam]
@@ -2503,6 +2507,9 @@ NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
 # a task whose v5 instruction spelled out every place and fallback: one short instruction for the task and all of
 # its v5 variants (where things go is for the robot to work out)
 TASK_TEXT = {
+    # asks for a cup only (no "a mug will do"): a mug is a cup too, whether to settle for it the robot decides
+    "T04_cup_or_mug_to_cabinet": ("A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+                                  "有客人要来，在靠墙矮柜上的饮品角摆一个杯子。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
     "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
@@ -2543,6 +2550,12 @@ def build_task(t: dict) -> dict:
                 fam["layouts"] = [vid, alt]
                 fam["seeds"] = seed_cases(t["task_id"], vid, fam["layouts"])
                 fam["factor"] = "where the resource is to be found (seed extension)"
+    for (tid, into), parts in MERGE.items():        # one design, the layouts differ: one family, the parts its seeds
+        if tid == t["task_id"]:
+            fam = families[into]
+            fam["layouts"] = [*fam["layouts"], *[lid for p in parts for lid in families.pop(p)["layouts"]]]
+            fam["seeds"] = seed_cases(t["task_id"], into, fam["layouts"])
+            fam["factor"] = MERGE_FACTOR[(tid, into)]
     for vid, fix in ROUTE_FIX.get(t["task_id"], {}).items():
         for lid in families[vid]["layouts"]:
             t["routes"][f"v6_{lid}"] = {"steps": fix(t), "kind": "v6_route_fix", "variant": lid}
