@@ -380,6 +380,10 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((n, None, img, f"放进 {n}（开局位置）"))
             shown.add(n)
             continue
+        try:
+            rig.ann.support(n)
+        except KeyError:                         # a container the layout does not have (the missing basket)
+            continue
         if n.endswith("/inside_shelf"):           # inside closed furniture: the furniture from outside
             eye, c = inside_eye(n, rig.ann.support(n)["z"] + 0.05)
             shown.add(n.split("/")[0])            # the same furniture needs no second picture to open it
