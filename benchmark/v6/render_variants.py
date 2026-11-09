@@ -330,6 +330,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
                     inside = at[0] in ("inside", "fully_inside") and len(at) > 2 and at[2] in objs and \
                         math.dist(pos(n)[:2], pos(at[2])[:2]) < 0.15        # the blocks already in the full bin
                     role[n] = "keep" if inside or at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
+    for at in atoms(goal):                       # what only has to be seen (grandma's plate and bowl)
+        if at[0] == "observed" and at[1] in objs and at[1] not in role:
+            role[at[1]] = "see"
     for at in atoms(goal):                       # what the place is judged against (the coffee drinker's mug)
         if at[0] == "near_any":
             for n in at[2]:
@@ -348,7 +351,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if n in objs and n not in role:
             role[n] = "other"
     LABEL = {"take": "要拿", "base": "叠在它上面", "keep": "别动", "other": "相关", "use": "要用",
-             "alt": "也可以用", "ref": "参照"}
+             "alt": "也可以用", "ref": "参照", "see": "要看到"}
     views, shown = [], set()
 
     def stars(names):
@@ -357,7 +360,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     kind = []                                   # per view: take / place / point (what the variant is about)
     # 1) what the robot takes (or stacks on): a close-up; in closed furniture, the furniture with the item starred
     for n, r in role.items():
-        if r not in ("take", "base", "use", "alt") or n not in objs or n in shown:   # alt: any one of them will do
+        if r not in ("take", "base", "use", "alt", "see") or n not in objs or n in shown:   # alt: any one of them will do
             continue
         sp = sup_of(n)
         if sp.endswith("/inside_shelf"):
@@ -399,6 +402,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         stay = [x for x, rr in role.items() if rr in ("keep", "other", "ref", "alt") and sup_of(x) == n]
         if not marks and n.endswith("/inside_shelf"):
             marks = [(project(c), f"放进 {n.split('/')[0]} 里")]
+        elif not marks and not spots:            # no route point and no distance rule: anywhere on the top
+            bb = rig.ann.support(n)["aabb_xy"]
+            marks = [(project([(bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2, z + 0.03]), f"放到 {n} 上（台面上任意位置都算）")]
         marks += stars([x for x in stay if role[x] in ("other", "ref", "alt")])
         kept = [x for x in stay if role[x] == "keep"]
         shown.update([n, *stay])
