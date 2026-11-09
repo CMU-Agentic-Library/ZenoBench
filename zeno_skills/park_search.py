@@ -24,8 +24,12 @@ YAW_OFFSETS = (-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90)   # deg 
 SHOULDER = (0.09, -0.18)               # m: right shoulder in the base frame
 REACH_XY = 0.78                        # m: the arm's horizontal reach from the shoulder (prefilter)
 REACH_Z = (0.0, 1.5)                   # m: TCP heights the torso lift reaches (down to the floor)
-FACE_LEFT = 30                         # deg: the right arm on the -y side, facing slightly left is cheaper...
-FACE_COST = 0.002                      # m of cost per deg off that
+FACE_LEFT = 30                         # deg: the right arm on the -y side, facing slightly left of the goal is
+                                       # cheaper -- the goal FACE_LEFT to the right (yaw = face + FACE_LEFT)...
+FACE_COST = 0.002                      # m of cost per deg off that.  (Before 11-09 the term was |off + FACE_LEFT|,
+                                       # the goal 30 deg to the LEFT, against its own comment; the 11-08 parks
+                                       # had 89% of the grasps on the right, median -15 deg: the ranking IK
+                                       # overrode it.  Changes the candidates' order: a full run to confirm.)
 NEAR_COST = 0.15                       # m of cost per m away from ``near``
 MAX_PER_GOAL = 120                     # cheapest candidates per goal past the reach and footprint tests
 LIMIT_CLEAR = 0.15                     # rad: arm joints closer than this to a limit cost (planner.LIMIT_CLEAR)
@@ -47,12 +51,13 @@ class Problem:
             posture now where the base will not move).
     near:   (x, y) or (x, y, yaw): parks cost NEAR_COST per m away from it; with a yaw it is the
             current pose, a candidate of its own, tried first.
-    prefer: base poses tried before the rings (a scene's known good park, the fridge's open side).
-    travel: the arm posture the base drives in (the whole-body test at the parks)."""
+    prefer: base poses tried before the rings (in front of a door's free edge: skill_jobs.pick).
+    travel: the arm posture the base drives in (the whole-body test at the parks).
+    arrive / travel come from the skill's catalog entry (motion_skills.run_skill sets them)."""
     goals: tuple
     build: Callable
-    arrive: Callable
-    travel: np.ndarray
+    arrive: Callable | None = None
+    travel: np.ndarray | None = None
     near: tuple | None = None
     prefer: tuple = ()
     label: str = "park"
@@ -83,7 +88,7 @@ def candidates(problem):
                 x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
                 face = math.degrees(math.atan2(c[1] - y, c[0] - x))
                 for off in YAW_OFFSETS:
-                    cost = r + FACE_COST * abs(off + FACE_LEFT) + float(gcost)
+                    cost = r + FACE_COST * abs(off - FACE_LEFT) + float(gcost)
                     if problem.near is not None:
                         cost += NEAR_COST * math.hypot(x - problem.near[0], y - problem.near[1])
                     out.append((cost, x, y, face + off, k))
@@ -146,16 +151,22 @@ def score(kin, cands, sols):
     return out
 
 
-def find_park(rig, problem, state):
+def find_park(kin, world, problem, state, log, base=None):
     """The park for ``problem`` (Problem) from ``state`` (motion_state.State, now): Found with the
     plan the skill's builder made there, or None; the counts of every test in ``diag`` either way
-    (also logged as park_search)."""
-    from .planner import _drivable, _whole_body
-    from .skills import base_reachable
-    kin, world = rig.kin, rig.world
+    (also logged as park_search through ``log``).  ``kin`` the arm's kinematics, ``world`` the
+    WorldModel (footprints), ``base`` the motion_state.BaseModel (the whole robot in its travel
+    posture at a park, the base reaching it; None: neither is tested).  No rig: docs 2.5."""
     t0 = time.time()
     diag = {"candidates": 0, "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "drive": 0, "ik": 0,
-            "built": 0, "no_path": 0, "build_failed": {}, "stage_s": {}}
+            "built": 0, "no_path": 0, "build_failed": {}, "stage_s": {}, "filter_s": {}}
+    lap = [time.time()]
+
+    def timed(key):                     # where the time before the building goes (filter_s)
+        now = time.time()
+        diag["filter_s"][key] = round(now - lap[0], 2)
+        lap[0] = now
+
     cands = candidates(problem)
     diag["candidates"] = len(cands)
     here = None if problem.near is None or len(problem.near) != 3 else tuple(map(float, problem.near))
@@ -177,27 +188,32 @@ def find_park(rig, problem, state):
         per[k] += 1
         if min(per) >= MAX_PER_GOAL:
             break
+    timed("candidates_reach_footprint")
     # batched: the whole robot in its travel posture at each park; the base can drive there
-    body = _whole_body(kin, problem.travel)
+    travel = with_arm(state, problem.travel, kin.side)
     moving = [c for c in pool if not is_here(c)]
-    if body is not None and moving:
-        depths, sets, _ = body
-        d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw, _ in moving]), sets)[0]
+    if base is not None and moving:
+        d = base.depths(travel, [c[1:4] for c in moving])
         blocked = {c[1:4] for c, dc in zip(moving, d) if dc > 1e-4}
         diag["travel_pose"] = len(blocked)
         pool = [c for c in pool if is_here(c) or c[1:4] not in blocked]
         moving = [c for c in pool if not is_here(c)]
-    if moving:
-        reach = base_reachable(rig, [c[1:4] for c in moving])
+    timed("travel_pose")
+    if base is not None and moving:
+        reach = base.reachable(state, [c[1:4] for c in moving])
         unreachable = {c[1:4] for c, r in zip(moving, reach) if not r}
         diag["drive"] = len(unreachable)
         pool = [c for c in pool if is_here(c) or c[1:4] not in unreachable]
+    timed("drive")
     # ranking: a kinematic IK of each relay pose, then joint margin, manipulability and cost
     sols = rank_ik(kin, pool, problem, problem.travel)
+    timed("rank_ik")
     diag["ik"] = sum(q is None for q in sols)
     ranked = [(c, q) for c, q in zip(pool, sols) if q is not None]
     scores = score(kin, [c for c, _ in ranked], [q for _, q in ranked])
     order = sorted(range(len(ranked)), key=lambda i: (not is_here(ranked[i][0]), scores[i]))
+    timed("score")
+    diag["pool"] = len(pool)
     # the skill's plan, in that order
     found, t_build = None, time.time()
     for i in order:
@@ -213,15 +229,14 @@ def find_park(rig, problem, state):
             key = f"{plan.segment}: {plan.why.split(' (')[0]}"
             diag["build_failed"][key] = diag["build_failed"].get(key, 0) + 1
             continue
-        if not is_here(ranked[i][0]) and body is not None and \
-                not _drivable(kin, world, body, tuple(state.base), (x, y, yaw)):
+        if not is_here(ranked[i][0]) and base is not None and not base.drivable(travel, (x, y, yaw)):
             diag["no_path"] += 1
             continue
         found = Found(x, y, yaw, k, plan, q_rank)
         break
     diag["seconds"] = round(time.time() - t0, 2)
     diag["build_seconds"] = round(time.time() - t_build, 2)
-    rig.log("park_search", target=problem.label, found=None if found is None else
+    log("park_search", target=problem.label, found=None if found is None else
             [round(found.x, 3), round(found.y, 3), round(found.yaw, 1), found.k], **diag)
     if found is not None:
         found.diag = diag

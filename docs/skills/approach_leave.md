@@ -5,7 +5,7 @@
 - **直线进入中继位姿**（`skill_plans._reach` + `primitives.straight`）：到直线起点，再从那一段实际停下的关节解走直线到中继位姿。pick 的伸入段、place 的放下段。
 - **接触段**（`primitives.contact_extent` + `contact_segment`）：从接触里退到不碰为止的直线，长度由碰撞模型量。pick 的抬起段；place 的放下段长度也这样量。
 - **撤手直线**（`primitives.straight`，`Spec.touch`）：place 的抽出段。
-- 旧机制：**接近**（`Rig._approach`，`move_to` 带 `approach=`，wipe 的按压）；**离开**（`Rig.leave`，pick 抓空 / 被挡住时的 `pick_fail_clear`、微波炉里的取物）；`Rig.move_relay` + `rig.relay_approach`（只剩微波炉里的取物用，计划 6.4）。
+- 旧机制：**接近**（`Rig._approach`，`move_to` 带 `approach=`，wipe 的按压）；**离开**（`Rig.leave`，pick 抓空 / 被挡住时的 `pick_fail_clear`、开关门）。（`Rig.move_relay` + `rig.relay_approach` 11-08 已注释掉。）
 
 技能只给中继位姿、方向和直线长度；直线从哪里开始、接触段多长，由碰撞模型算出来，不是技能里写死的点。
 
