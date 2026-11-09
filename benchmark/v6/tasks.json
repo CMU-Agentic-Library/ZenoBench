@@ -66059,8 +66059,8 @@
    "source": [
     "benchmark/v6/new_tasks_v6.py"
    ],
-   "instruction": "Put the shopping away.",
-   "instruction_zh": "买回来的东西放好。",
+   "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away.",
+   "instruction_zh": "我刚买东西回来，放在餐桌上了，帮我收好。",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -66146,6 +66146,8 @@
       "storage_place",
       "multi_object_goal"
      ],
+     "instruction": "I just got back from the shop; the juice, an apple and some snacks are on the dining table. Put each where things of its kind are kept, and close any door you open.",
+     "instruction_zh": "我刚买东西回来，果汁、苹果和零食都在餐桌上。每样都收到平时放同类东西的地方，开过的门记得关上。",
      "remove": [
       "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
@@ -66198,11 +66200,127 @@
       }
      },
      "goal": {
+      "any": [
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      ],
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66213,18 +66331,20 @@
         "breakfast_fridge"
        ],
        [
-        "inside",
-        "bought_apple",
-        "home_basket"
-       ],
-       [
-        "on",
-        "bought_snack",
-        "kitchen_cabinet_6/inside_shelf"
+        "is_closed",
+        "kitchen_cabinet_4"
        ],
        [
         "is_closed",
         "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
        ],
        [
         "hand_empty",
@@ -66327,8 +66447,8 @@
      "conditions": [
       "preference_allocation"
      ],
-     "instruction": "Put the shopping away. The kid says he wants the snacks now; he is doing homework in the study.",
-     "instruction_zh": "买回来的东西放好。孩子说零食现在就要吃，他在书房写作业。",
+     "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away. The kid says he wants the snacks now; he is doing homework in the study.",
+     "instruction_zh": "我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。",
      "add": {
       "bought_juice": {
        "asset": "juice_bottle",
@@ -66361,9 +66481,15 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66372,6 +66498,14 @@
        [
         "is_closed",
         "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
        ],
        [
         "on",
@@ -66486,6 +66620,8 @@
       "container_absent",
       "storage_place"
      ],
+     "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+     "instruction_zh": "我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。",
      "add": {
       "bought_juice": {
        "asset": "juice_bottle",
@@ -66518,9 +66654,15 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66529,6 +66671,14 @@
        [
         "is_closed",
         "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
        ],
        [
         "inside",
@@ -66666,9 +66816,15 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66677,6 +66833,14 @@
        [
         "is_closed",
         "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
        ],
        [
         "near_start",
@@ -66771,6 +66935,8 @@
       "goal_items_unstated",
       "not_in_view"
      ],
+     "instruction": "I just got back from the shop with two bags and unpacked them in two different places. Put everything I bought away.",
+     "instruction_zh": "我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。",
      "remove": [
       "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
@@ -66823,11 +66989,127 @@
       }
      },
      "goal": {
+      "any": [
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "bought_apple",
+         "home_basket"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_6/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "inside",
+         "bought_snack",
+         "home_basket"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ],
+       [
+        [
+         "on",
+         "bought_apple",
+         "kitchen_cabinet_4/inside_shelf"
+        ],
+        [
+         "on",
+         "bought_snack",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      ],
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66838,18 +67120,20 @@
         "breakfast_fridge"
        ],
        [
-        "inside",
-        "bought_apple",
-        "home_basket"
-       ],
-       [
-        "on",
-        "bought_snack",
-        "kitchen_cabinet_6/inside_shelf"
+        "is_closed",
+        "kitchen_cabinet_4"
        ],
        [
         "is_closed",
         "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
        ],
        [
         "hand_empty",
@@ -66938,6 +67222,8 @@
       "destination_full",
       "dependent_decisions"
      ],
+     "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+     "instruction_zh": "我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。",
      "add": {
       "bought_juice": {
        "asset": "juice_bottle",
@@ -66980,9 +67266,15 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -66991,6 +67283,14 @@
        [
         "is_closed",
         "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
        ],
        [
         "fully_inside",
@@ -67128,6 +67428,8 @@
       "destination_full",
       "dependent_decisions"
      ],
+     "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+     "instruction_zh": "我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。",
      "add": {
       "bought_juice": {
        "asset": "juice_bottle",
@@ -67200,9 +67502,15 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "bought_juice",
-        "breakfast_fridge/inside_shelf"
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -67211,6 +67519,14 @@
        [
         "is_closed",
         "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
        ],
        [
         "fully_inside",
@@ -67534,9 +67850,15 @@
    "goal": {
     "all": [
      [
-      "on",
+      "on_any",
       "bought_juice",
-      "breakfast_fridge/inside_shelf"
+      [
+       "breakfast_fridge/inside_shelf",
+       "kitchen_cabinet_4/inside_shelf",
+       "kitchen_cabinet_6/inside_shelf",
+       "kitchen_counter_1/top",
+       "kitchen_counter_2/top"
+      ]
      ],
      [
       "upright",
@@ -67545,6 +67867,14 @@
      [
       "is_closed",
       "breakfast_fridge"
+     ],
+     [
+      "is_closed",
+      "kitchen_cabinet_4"
+     ],
+     [
+      "is_closed",
+      "kitchen_cabinet_6"
      ],
      [
       "hand_empty",

@@ -19182,7 +19182,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19198,9 +19198,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19209,6 +19215,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "hand_empty",
@@ -19237,7 +19251,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop; the juice, an apple and some snacks are on the dining table. Put each where things of its kind are kept, and close any door you open.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19261,11 +19275,127 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
+   "any": [
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ]
+   ],
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19276,18 +19406,20 @@
      "breakfast_fridge"
     ],
     [
-     "inside",
-     "bought_apple",
-     "home_basket"
-    ],
-    [
-     "on",
-     "bought_snack",
-     "kitchen_cabinet_6/inside_shelf"
+     "is_closed",
+     "kitchen_cabinet_4"
     ],
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
     ],
     [
      "hand_empty",
@@ -19316,7 +19448,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away. The kid says he wants the snacks now; he is doing homework in the study.",
+  "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away. The kid says he wants the snacks now; he is doing homework in the study.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19336,9 +19468,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19347,6 +19485,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "on",
@@ -19380,7 +19526,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19401,9 +19547,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19412,6 +19564,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "inside",
@@ -19445,7 +19605,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19465,9 +19625,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19476,6 +19642,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "near_start",
@@ -19514,7 +19688,7 @@
    18,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop with two bags and unpacked them in two different places. Put everything I bought away.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19538,11 +19712,127 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
+   "any": [
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "inside",
+      "bought_apple",
+      "home_basket"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_6/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "inside",
+      "bought_snack",
+      "home_basket"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_6/inside_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "bought_apple",
+      "kitchen_cabinet_4/inside_shelf"
+     ],
+     [
+      "on",
+      "bought_snack",
+      "kitchen_cabinet_4/inside_shelf"
+     ]
+    ]
+   ],
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19553,18 +19843,20 @@
      "breakfast_fridge"
     ],
     [
-     "inside",
-     "bought_apple",
-     "home_basket"
-    ],
-    [
-     "on",
-     "bought_snack",
-     "kitchen_cabinet_6/inside_shelf"
+     "is_closed",
+     "kitchen_cabinet_4"
     ],
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
     ],
     [
      "hand_empty",
@@ -19588,7 +19880,7 @@
    16,
    19
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19612,9 +19904,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19623,6 +19921,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "fully_inside",
@@ -19655,7 +19961,7 @@
    17,
    18
   ],
-  "instruction": "Put the shopping away.",
+  "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -19682,9 +19988,15 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
+     "on_any",
      "bought_juice",
-     "breakfast_fridge/inside_shelf"
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
     ],
     [
      "upright",
@@ -19693,6 +20005,14 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "fully_inside",

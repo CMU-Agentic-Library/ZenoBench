@@ -190,8 +190,11 @@ def t22():
     J, A, SN = "bought_juice", "bought_apple", "bought_snack"
     BASKET = "home_basket"
     ctl = {"note": "a bottle of juice from the shop on the dining table", "add": {J: on("juice_bottle", T2, 3.30, 6.70)}}
-    jgoal = [["on", J, FS], ["upright", J], ["is_closed", FR]]
-    t = base_task("T22_put_away_shopping", "ZB-T22", "Put the shopping away.", "买回来的东西放好。",
+    # bought juice keeps in the fridge, a low cabinet or on a kitchen counter: any of them is put away
+    JUICE_SPOTS = [FS, f"{C4}/inside_shelf", f"{C6}/inside_shelf", "kitchen_counter_1/top", "kitchen_counter_2/top"]
+    jgoal = [["on_any", J, JUICE_SPOTS], ["upright", J], ["is_closed", FR], ["is_closed", C4], ["is_closed", C6]]
+    t = base_task("T22_put_away_shopping", "ZB-T22", "I just got back from the shop and left the shopping on the "
+                  "dining table. Please put it away.", "我刚买东西回来，放在餐桌上了，帮我收好。",
                   "juice_on_table", ctl, {"all": jgoal + [H]}, fridge([J]), [J],
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
     pantry = {"old_snack": on("snack_carton", f"{C6}/inside_shelf", 3.35, 0.36)}
@@ -206,6 +209,10 @@ def t22():
         """lying in the serving tray on the west dining table (table top 0.71 m, tray floor 1 cm up)"""
         return {"asset": asset, "support": None, "z": 0.72, "xy": [round(-8.00 + dx, 3), round(7.40 + dy, 3)],
                 "yaw_deg": 0.0}
+    # fruit and snacks may both go in the fruit basket or in a low cabinet: any such pairing is put away
+    keep_spots = lambda x: [["inside", x, BASKET], ["on", x, f"{C6}/inside_shelf"], ["on", x, f"{C4}/inside_shelf"]]  # noqa: E731
+    loose_goal = {"any": [[a, b] for a in keep_spots(A) for b in keep_spots(SN)],
+                  "all": jgoal + [["is_closed", C6], ["is_closed", C4], H]}
     snack_away = [nav(C6), S("open", articulated=C6), S("inspect", receptacle=C6), nav(SN), pick(SN), nav(C6),
                   place(SN, f"{C6}/inside_shelf", [3.60, 0.36]), S("close", articulated=C6)]
     fams = {
@@ -219,9 +226,10 @@ def t22():
                            SN: on("snack_carton", T2, 3.30, 7.30), BASKET: on("fruit_basket", ISL, 7.10, 1.78),
                            **pantry},
                       remove=no_dishes, watch=[J, A, SN, BASKET],
-                      goal={"all": jgoal + [["inside", A, BASKET], ["on", SN, f"{C6}/inside_shelf"],
-                                            ["is_closed", C6], H]},
-                      route=fridge([J]) + into(A, BASKET) + snack_away)}),
+                      goal=loose_goal,
+                      route=fridge([J]) + into(A, BASKET) + snack_away)},
+            instruction="I just got back from the shop; the juice, an apple and some snacks are on the dining table. Put each where things of its kind are kept, and close any door you open.",
+            instruction_zh="我刚买东西回来，果汁、苹果和零食都在餐桌上。每样都收到平时放同类东西的地方，开过的门记得关上。"),
         "eat_now": fam(
             "juice_on_table", ["preference_allocation"], "the seed's layout only",
             "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
@@ -230,9 +238,9 @@ def t22():
                            "homework": on("notebook", DESK, -0.70, -5.95)},
                       watch=[J, SN], goal={"all": jgoal + [["on", SN, DESK], H]},
                       route=fridge([J]) + fetch(SN, DESK, [-1.10, -5.95]))},
-            instruction="Put the shopping away. The kid says he wants the snacks now; he is doing homework in "
-                        "the study.",
-            instruction_zh="买回来的东西放好。孩子说零食现在就要吃，他在书房写作业。"),
+            instruction="I just got back from the shop and left the shopping on the dining table. Please put it "
+                        "away. The kid says he wants the snacks now; he is doing homework in the study.",
+            instruction_zh="我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。"),
         "basket_missing": fam(
             "juice_on_table", ["container_absent", "storage_place"], "the seed's layout only",
             "juice and an apple; no fruit basket in the house, a serving tray on the island",
@@ -241,7 +249,9 @@ def t22():
                            "fruit_tray": on("serving_tray", ISL, 7.20, 1.75)},
                       watch=[J, A, "fruit_tray"],
                       goal={"all": jgoal + [["inside", A, "fruit_tray"], H]},
-                      route=fridge([J]) + into(A, "fruit_tray"))}),
+                      route=fridge([J]) + into(A, "fruit_tray"))},
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
         "not_shopping": fam(
             "juice_on_table", ["goal_items_unstated"], "the seed's layout only",
             "the juice from the shop, and the kid's toy car and picture book on the same table",
@@ -260,9 +270,10 @@ def t22():
                            SN: on("snack_carton", ISL, 7.85, 1.75), BASKET: on("fruit_basket", ISL, 7.10, 1.78),
                            **pantry},
                       remove=no_dishes, watch=[J, A, SN, BASKET],
-                      goal={"all": jgoal + [["inside", A, BASKET], ["on", SN, f"{C6}/inside_shelf"],
-                                            ["is_closed", C6], H]},
-                      route=[look(T2)] + fridge([J]) + [look(ISL)] + into(A, BASKET) + snack_away)}),
+                      goal=loose_goal,
+                      route=[look(T2)] + fridge([J]) + [look(ISL)] + into(A, BASKET) + snack_away)},
+            instruction="I just got back from the shop with two bags and unpacked them in two different places. Put everything I bought away.",
+            instruction_zh="我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。"),
         "tray_elsewhere": fam(
             "juice_on_table", ["container_absent", "not_in_view", "destination_full", "dependent_decisions"],
             "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
@@ -283,7 +294,9 @@ def t22():
              for c, on_tray in (("orange_in_it", {"tray_orange": inside_tray("orange", -0.12, 0.08)}),
                                 ("books_on_it", {f"tray_book_{k + 1}": inside_tray("book_blue", dx, dy)
                                                  for k, (dx, dy) in enumerate(((-0.10, -0.075), (0.10, -0.075),
-                                                                               (-0.10, 0.075), (0.10, 0.075)))}))}),
+                                                                               (-0.10, 0.075), (0.10, 0.075)))}))},
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
     }
     return t, fams
 

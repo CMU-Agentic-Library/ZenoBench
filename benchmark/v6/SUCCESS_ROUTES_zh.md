@@ -2731,7 +2731,7 @@
 
 ## T22_put_away_shopping
 
-> 买回来的东西放好。
+> 我刚买东西回来，放在餐桌上了，帮我收好。
 
 ### juice_on_table（对照）
 
@@ -2739,9 +2739,11 @@
 
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
+- `kitchen_cabinet_4` 关着
+- `kitchen_cabinet_6` 关着
 - 手里空着
 
 **参考调用顺序**：
@@ -2750,17 +2752,48 @@
 
 ### by_kind（Task）
 
-**情况**：果汁、苹果、零食盒 → 冰箱 / 岛台上的果篮 / 矮柜里（那里已有一盒零食）
+**情况**：果汁、苹果、零食盒 → 果汁进冰箱；苹果和零食放进岛台上的果篮或矮柜里都算（参考路线：苹果进果篮，零食进已有一盒零食的矮柜），柜门关好
+
+**指令**：我刚买东西回来，果汁、苹果和零食都在餐桌上。每样都收到平时放同类东西的地方，开过的门记得关上。
 
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
-- `bought_apple` 在 `home_basket` 里
-- `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+- `kitchen_cabinet_4` 关着
 - `kitchen_cabinet_6` 关着
+- `kitchen_cabinet_6` 关着
+- `kitchen_cabinet_4` 关着
 - 手里空着
+- 满足下面任意一组：
+  - 第 1 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `home_basket` 里
+  - 第 2 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 3 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
+  - 第 4 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `home_basket` 里
+  - 第 5 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 6 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
+  - 第 7 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `home_basket` 里
+  - 第 8 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 9 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
 
 **参考调用顺序**：
 
@@ -2770,13 +2803,15 @@
 
 **情况**：“孩子说零食现在就要吃，他在书房写作业” → 零食送书桌，果汁进冰箱
 
-**指令**：买回来的东西放好。孩子说零食现在就要吃，他在书房写作业。
+**指令**：我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。
 
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
+- `kitchen_cabinet_4` 关着
+- `kitchen_cabinet_6` 关着
 - `bought_snack` 在 `desk_1/top` 上
 - 手里空着
 
@@ -2788,11 +2823,15 @@
 
 **情况**：果汁和苹果，家里没有果篮，岛台上有托盘 → 苹果放托盘
 
+**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
+
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
+- `kitchen_cabinet_4` 关着
+- `kitchen_cabinet_6` 关着
 - `bought_apple` 在 `fruit_tray` 里
 - 手里空着
 
@@ -2806,9 +2845,11 @@
 
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
+- `kitchen_cabinet_4` 关着
+- `kitchen_cabinet_6` 关着
 - `table_car`、`table_book` 没被挪动（离开局位置不超过 3 cm）
 - 手里空着
 
@@ -2818,17 +2859,48 @@
 
 ### two_spots（Task）
 
-**情况**：买的东西分在餐桌和岛台两处 → 都找到，各归各位
+**情况**：买的东西分在餐桌和岛台两处 → 都找到；果汁进冰箱，苹果和零食放进果篮或矮柜都算，柜门关好
+
+**指令**：我刚买东西回来，两袋东西拆开放在了两个不同的地方，买的东西都帮我收好。
 
 **成功条件**：
 
-- `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+- `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
 - `bought_juice` 立着
 - `breakfast_fridge` 关着
-- `bought_apple` 在 `home_basket` 里
-- `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+- `kitchen_cabinet_4` 关着
 - `kitchen_cabinet_6` 关着
+- `kitchen_cabinet_6` 关着
+- `kitchen_cabinet_4` 关着
 - 手里空着
+- 满足下面任意一组：
+  - 第 1 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `home_basket` 里
+  - 第 2 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 3 组：
+    - `bought_apple` 在 `home_basket` 里
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
+  - 第 4 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `home_basket` 里
+  - 第 5 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 6 组：
+    - `bought_apple` 在 `kitchen_cabinet_6/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
+  - 第 7 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `home_basket` 里
+  - 第 8 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_6/inside_shelf` 上
+  - 第 9 组：
+    - `bought_apple` 在 `kitchen_cabinet_4/inside_shelf` 上
+    - `bought_snack` 在 `kitchen_cabinet_4/inside_shelf` 上
 
 **参考调用顺序**：
 
@@ -2838,19 +2910,25 @@
 
 **情况**：果汁和苹果在餐桌上，果篮不在；西边餐厅的桌上有个托盘，到了才看得到上面是什么：一个橙子，或者四本书平铺占满了托盘 → 果篮没有 → 找别的能装水果的（另一个房间的托盘）→ 有橙子：苹果直接放进去（水果可以放一起，不用挪）；被书占满：先把书放回那个房间的书架（任何书架都算），再放苹果；果汁进冰箱。挪书属于“目的地被占”（A），去别的房间找替代容器是独立的 Task 要求，所以是 A+T
 
+**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
+
 **成功条件**：
 
 - 摆法 `orange_in_it`：
-  - `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `bought_juice` 立着
   - `breakfast_fridge` 关着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
   - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
   - `west_tray` 不在地上
   - 手里空着
 - 摆法 `books_on_it`：
-  - `bought_juice` 在 `breakfast_fridge/inside_shelf` 上
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `bought_juice` 立着
   - `breakfast_fridge` 关着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
   - `bought_apple` 完全在 `west_tray` 里（没有露出边沿）
   - `west_tray` 不在地上
   - `tray_book_1` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`

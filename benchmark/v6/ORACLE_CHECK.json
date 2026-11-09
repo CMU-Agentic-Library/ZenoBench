@@ -2640,7 +2640,7 @@
    "task": "T22_put_away_shopping",
    "layout": "juice_on_table",
    "steps": 9,
-   "atoms_checked": 3,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2652,7 +2652,7 @@
    "task": "T22_put_away_shopping",
    "layout": "by_kind",
    "steps": 21,
-   "atoms_checked": 6,
+   "atoms_checked": 25,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2664,7 +2664,7 @@
    "task": "T22_put_away_shopping",
    "layout": "eat_now",
    "steps": 13,
-   "atoms_checked": 4,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2676,7 +2676,7 @@
    "task": "T22_put_away_shopping",
    "layout": "basket_missing",
    "steps": 13,
-   "atoms_checked": 4,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2688,7 +2688,7 @@
    "task": "T22_put_away_shopping",
    "layout": "not_shopping",
    "steps": 8,
-   "atoms_checked": 5,
+   "atoms_checked": 7,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2700,7 +2700,7 @@
    "task": "T22_put_away_shopping",
    "layout": "two_spots",
    "steps": 21,
-   "atoms_checked": 6,
+   "atoms_checked": 25,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2712,7 +2712,7 @@
    "task": "T22_put_away_shopping",
    "layout": "tray_elsewhere__orange_in_it",
    "steps": 15,
-   "atoms_checked": 5,
+   "atoms_checked": 7,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -2724,7 +2724,7 @@
    "task": "T22_put_away_shopping",
    "layout": "tray_elsewhere__books_on_it",
    "steps": 31,
-   "atoms_checked": 9,
+   "atoms_checked": 11,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
