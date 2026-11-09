@@ -8353,9 +8353,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "paperback_book",
-        "dining_table_2/top"
+        [
+         "dining_table_2/top",
+         "dining_table_1/top"
+        ]
        ],
        [
         "near_start",
@@ -8538,9 +8541,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "paperback_book",
-        "dining_table_2/top"
+        [
+         "dining_table_2/top",
+         "dining_table_1/top"
+        ]
        ],
        [
         "near_start",
@@ -8687,9 +8693,12 @@
    "goal": {
     "all": [
      [
-      "on",
+      "on_any",
       "paperback_book",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "hand_empty",
@@ -11438,17 +11447,40 @@
        [
         [
          "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
          "wooden_block_b",
          "wooden_block_a"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
         ]
        ]
       ],
       "all": [
-       [
-        "near_start",
-        "floor_block",
-        0.02
-       ],
        [
         "near_start",
         "oatmeal",
@@ -13277,8 +13309,8 @@
        ]
       ]
      },
-     "instruction": "The kid wants to look at a three-level tower on the dining table. Find the toy blocks in the house and stack them into a tower on the dining table; if there are not enough blocks, use another of the kid's toys for the missing level.",
-     "instruction_zh": "孩子想在餐桌上看一座三层的塔。把家里的积木找来，在餐桌上叠成塔；积木不够的话，用孩子别的玩具补上缺的那一层。",
+     "instruction": "The kid wants to look at a three-level tower on the dining table. Build one there out of the kid's toys.",
+     "instruction_zh": "孩子想在餐桌上看一座三层的塔，用他的玩具在餐桌上搭一座。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -13636,8 +13668,8 @@
        ]
       ]
      },
-     "instruction": "The kid wants to look at a three-level tower on the dining table. Find the toy blocks in the house and stack them into a tower on the dining table; if there are not enough blocks, use another of the kid's toys for the missing level.",
-     "instruction_zh": "孩子想在餐桌上看一座三层的塔。把家里的积木找来，在餐桌上叠成塔；积木不够的话，用孩子别的玩具补上缺的那一层。",
+     "instruction": "The kid wants to look at a three-level tower on the dining table. Build one there out of the kid's toys.",
+     "instruction_zh": "孩子想在餐桌上看一座三层的塔，用他的玩具在餐桌上搭一座。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -13979,8 +14011,8 @@
        ]
       ]
      },
-     "instruction": "Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I put the third one away in one of the two low cabinets with doors along the living-room wall: the one nearer the island, or the next one along the wall, further from the island. Close the cabinet doors again afterwards.",
-     "instruction_zh": "把三块积木在岛台上叠成一座塔。两块在岛台上；第三块我收进了客厅靠墙的两个带门矮柜之一：离岛台近的那个，或者沿墙再往外、离岛台远的那个。找完把柜门关好。",
+     "instruction": "Stack the three toy blocks into one tower on the kitchen island. I put one of them away in a low cabinet along the living-room wall; close the cabinet doors again afterwards.",
+     "instruction_zh": "把三块积木在岛台上叠成一座塔。有一块我收进客厅靠墙的矮柜里了，找完把柜门关好。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -14272,8 +14304,8 @@
        ]
       ]
      },
-     "instruction": "Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I put the third one away in one of the two low cabinets with doors along the living-room wall: the one nearer the island, or the next one along the wall, further from the island. Close the cabinet doors again afterwards.",
-     "instruction_zh": "把三块积木在岛台上叠成一座塔。两块在岛台上；第三块我收进了客厅靠墙的两个带门矮柜之一：离岛台近的那个，或者沿墙再往外、离岛台远的那个。找完把柜门关好。",
+     "instruction": "Stack the three toy blocks into one tower on the kitchen island. I put one of them away in a low cabinet along the living-room wall; close the cabinet doors again afterwards.",
+     "instruction_zh": "把三块积木在岛台上叠成一座塔。有一块我收进客厅靠墙的矮柜里了，找完把柜门关好。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -19855,8 +19887,8 @@
        ]
       ]
      },
-     "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other; if there are not enough cups, a mug will do for one.",
-     "instruction_zh": "有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着；杯子不够的话，可以用马克杯顶一个。",
+     "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other.",
+     "instruction_zh": "有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。",
      "watch": [
       "cup_counter_b",
       "mug",
@@ -20156,8 +20188,8 @@
        ]
       ]
      },
-     "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other; if there are not enough cups, a mug will do for one.",
-     "instruction_zh": "有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着；杯子不够的话，可以用马克杯顶一个。",
+     "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other.",
+     "instruction_zh": "有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。",
      "watch": [
       "cup_counter_b",
       "mug",
@@ -20331,8 +20363,8 @@
        ]
       ]
      },
-     "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the cabinets again.",
-     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。",
+     "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
      "failures": [
       {
        "id": "resource_cup_in_cabinet",
@@ -20348,11 +20380,11 @@
       }
      ],
      "since": "v6",
-     "note": "the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+     "note": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
      "v6": {
       "family": "x6_gd_cup_in_cabinets",
       "case": "cup_in_4",
-      "challenge": "the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+      "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
       "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
       "control": "no_cup",
       "contrast": null,
@@ -20497,8 +20529,8 @@
        ]
       ]
      },
-     "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in the two low kitchen cabinets. If there is no cup, the mug on the island will do. Close the cabinets again.",
-     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子收在厨房那两个矮柜里。要是没有杯子，岛台上的马克杯也行。用完把柜门关好。",
+     "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
      "failures": [
       {
        "id": "resource_cup_in_cabinet",
@@ -20514,11 +20546,11 @@
       }
      ],
      "since": "v6",
-     "note": "the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+     "note": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
      "v6": {
       "family": "x6_gd_cup_in_cabinets",
       "case": "cup_in_6",
-      "challenge": "the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+      "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
       "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
       "control": "no_cup",
       "contrast": null,
@@ -20647,6 +20679,39 @@
       [
        "upright",
        "mug"
+      ]
+     ],
+     [
+      [
+       "on",
+       "mug_dining_cabinet",
+       "kitchen_cabinet_6/top"
+      ],
+      [
+       "upright",
+       "mug_dining_cabinet"
+      ]
+     ],
+     [
+      [
+       "on",
+       "mug_shelf",
+       "kitchen_cabinet_6/top"
+      ],
+      [
+       "upright",
+       "mug_shelf"
+      ]
+     ],
+     [
+      [
+       "on",
+       "mug_counter",
+       "kitchen_cabinet_6/top"
+      ],
+      [
+       "upright",
+       "mug_counter"
       ]
      ]
     ],
@@ -21827,15 +21892,15 @@
       "pencil"
      ],
      "since": "v6",
-     "note": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
+     "note": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
      "v6": {
       "family": "check_desk_first",
       "case": "pen_on_desk",
-      "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
-      "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
+      "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+      "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
+      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -21886,14 +21951,12 @@
      }
     },
     "check_desk_first__pencil_on_desk": {
-     "remove": [
-      "pen"
-     ],
+     "remove": [],
      "conditions": [
       "goal_already_met"
      ],
-     "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
-     "instruction_zh": "孩子写作业要用铅笔，拿一支铅笔到书房书桌上。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
      "move": {
       "pencil": {
        "support": "desk_1/top",
@@ -21902,11 +21965,8 @@
         -5.95
        ],
        "yaw_deg": 90.0
-      }
-     },
-     "add": {
-      "pencil_2": {
-       "asset": "pencil",
+      },
+      "pen": {
        "support": "bookcase_2/top",
        "xy": [
         0.96,
@@ -21919,7 +21979,7 @@
       "all": [
        [
         "on",
-        "pencil",
+        "pen",
         "desk_1/top"
        ],
        [
@@ -21928,53 +21988,47 @@
         0.1
        ],
        [
-        "near_start",
-        "pencil_2",
-        0.03
-       ],
-       [
         "hand_empty",
         "right"
        ]
       ]
      },
      "watch": [
-      "pencil",
-      "pencil_2"
+      "pen",
+      "pencil"
      ],
      "since": "v6",
-     "note": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
+     "note": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
      "v6": {
       "family": "check_desk_first",
       "case": "pencil_on_desk",
-      "challenge": "what the instruction asks for (a pen; or a pencil) already lies on the study desk; another writing thing is on the bedroom bookcase",
-      "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
+      "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+      "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
+      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "pen",
-         "pencil_2"
+         "pen"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.9242,
-         -0.5783,
-         1.22,
-         -0.3919
+         0.9308,
+         -0.5591,
+         0.9892,
+         -0.4209
         ],
         "dx": [
-         -0.2,
-         0.06
+         -0.21,
+         0.29
         ],
         "dy": [
-         -0.03,
-         0.1
+         -0.04,
+         0.09
         ]
        },
        {
@@ -21998,7 +22052,16 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "desk_1/top": [
+        [
+         -0.37,
+         -5.9581,
+         -0.23,
+         -5.9419
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
        "hide": [],
@@ -23967,9 +24030,12 @@
         "desk_1/top"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -24117,9 +24183,12 @@
         "desk_1/top"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
        ],
        [
         "upright",
@@ -24687,6 +24756,42 @@
        "skill": "identify",
        "args": {
         "object": "pencil"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pen",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pen"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pen",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.3,
+         -5.95
+        ]
        }
       }
      ],
@@ -25899,7 +26004,7 @@
       "check_desk_first__pen_on_desk",
       "check_desk_first__pencil_on_desk"
      ],
-     "factor": "what is asked for and already on the desk (seed: a pen, or a pencil)",
+     "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
      "seeds": {
       "10": "check_desk_first__pencil_on_desk",
       "11": "check_desk_first__pen_on_desk",
@@ -26297,544 +26402,6 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "occupied": {
-     "note": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.335,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.7,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.22,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "destination_occupied"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "destination_occupied"
-     ],
-     "decisions": [
-      "alternative"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
-      "derived_from": "occupied",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.9038,
-         1.6017,
-         7.9963,
-         1.7283
-        ],
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.235,
-         3.46,
-         0.485
-        ],
-        [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "occupied_block_away": {
-     "note": "the cabinet top is full and the block was left on the dining table",
-     "conditions": [
-      "destination_occupied",
-      "not_in_view"
-     ],
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.335,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.7,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.3
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "since": "v2",
-     "condition_types": [
-      "destination_occupied",
-      "search_target"
-     ],
-     "decisions": [
-      "alternative",
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v5": {
-      "tier": "medium",
-      "challenge": "the cabinet top is full and the block was left on the dining table",
-      "derived_from": "occupied_block_away",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.76,
-         1.62
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.835,
-         6.405,
-         3.135,
-         6.795
-        ]
-       ],
-       "kitchen_island/top": [
-        [
-         7.9038,
-         1.6017,
-         7.9963,
-         1.7283
-        ],
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.235,
-         3.46,
-         0.485
-        ],
-        [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [
-        "wooden_block_a"
-       ],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "occupied_block_away__alt_bookcase_2": {
-     "note": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on bookcase_2/top)",
-     "conditions": [
-      "destination_occupied",
-      "not_in_view"
-     ],
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.335,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_cabinet_6/top",
-       "xy": [
-        3.7,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_a": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "since": "v6",
-     "condition_types": [
-      "destination_occupied",
-      "search_target"
-     ],
-     "decisions": [
-      "alternative",
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v6": {
-      "family": "occupied_block_away",
-      "case": "alt_bookcase_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on bookcase_2/top)",
-      "derived_from": "occupied_block_away",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the wooden_block_a ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.975,
-         -0.455,
-         1.025,
-         -0.405
-        ],
-        "dx": [
-         -0.26,
-         0.26
-        ],
-        "dy": [
-         -0.15,
-         0.0
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.9038,
-         1.6017,
-         7.9963,
-         1.7283
-        ],
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.235,
-         3.46,
-         0.485
-        ],
-        [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [
-        "wooden_block_a"
-       ],
        "look": [
         "kitchen_island/top"
        ]
@@ -27495,8 +27062,8 @@
       "infeasible_fallback",
       "spot_quality"
      ],
-     "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room. Leave the boxes and the bottle on the cabinet where they are; if they leave no place where the block can be seen, put it on the TV stand instead.",
-     "instruction_zh": "把积木摆到靠墙矮柜顶上展示，要从房间里看得见。柜顶上的盒子和瓶子都别挪；要是它们挡得没有看得见的位置，就摆到电视柜上。",
+     "instruction": "Put the toy block on display where it can be seen from the room, best on top of the low wall cabinet. Leave the boxes and the bottle on the cabinet where they are.",
+     "instruction_zh": "把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -27506,21 +27073,41 @@
       "clutter_cereal_c"
      ],
      "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "tv_stand_2/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_4/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ]
+      ],
       "all": [
-       [
-        "on",
-        "wooden_block_a",
-        "tv_stand_2/top"
-       ],
-       [
-        "front_visible",
-        "wooden_block_a"
-       ],
-       [
-        "away_from_edge",
-        "wooden_block_a",
-        0.02
-       ],
        [
         "near_start",
         "clutter_cereal_a",
@@ -27564,15 +27151,15 @@
       ]
      },
      "since": "v6",
-     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
+     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
      "v6": {
       "family": "display_spot_or_tv",
       "case": "front_taken",
-      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
-      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (the TV stand then fails); if the boxes fill the front row, moving one back is ruled out, so take the TV stand",
+      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
       "control": "free",
       "contrast": null,
-      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back)",
+      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
       "derived_from": "display_hidden"
      },
      "layout": {
@@ -27787,8 +27374,8 @@
       "infeasible_fallback",
       "spot_quality"
      ],
-     "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room. Leave the boxes and the bottle on the cabinet where they are; if they leave no place where the block can be seen, put it on the TV stand instead.",
-     "instruction_zh": "把积木摆到靠墙矮柜顶上展示，要从房间里看得见。柜顶上的盒子和瓶子都别挪；要是它们挡得没有看得见的位置，就摆到电视柜上。",
+     "instruction": "Put the toy block on display where it can be seen from the room, best on top of the low wall cabinet. Leave the boxes and the bottle on the cabinet where they are.",
+     "instruction_zh": "把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。",
      "watch": [
       "wooden_block_a",
       "wooden_block_b",
@@ -27856,15 +27443,15 @@
       ]
      },
      "since": "v6",
-     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
+     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
      "v6": {
       "family": "display_spot_or_tv",
       "case": "front_free",
-      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
-      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (the TV stand then fails); if the boxes fill the front row, moving one back is ruled out, so take the TV stand",
+      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
       "control": "free",
       "contrast": null,
-      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back)",
+      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
       "derived_from": "display_hidden"
      },
      "layout": {
@@ -27907,6 +27494,630 @@
         "dy": [
          -0.07,
          0.06
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.045,
+         1.6,
+         7.095,
+         1.65
+        ],
+        "dx": [
+         -0.49,
+         1.15
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ]
+       ],
+       "kitchen_cabinet_6/top": [
+        [
+         3.215,
+         0.2275,
+         3.3403,
+         0.3325
+        ],
+        [
+         3.37,
+         0.2275,
+         3.4954,
+         0.3325
+        ],
+        [
+         3.681,
+         0.251,
+         3.739,
+         0.309
+        ],
+        [
+         3.5253,
+         0.2275,
+         3.6507,
+         0.3325
+        ],
+        [
+         3.408,
+         0.44,
+         3.458,
+         0.49
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "display_spot_or_tv__front_taken_block_away": {
+     "move": {
+      "clutter_cereal_a": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.2777,
+        0.44
+       ],
+       "yaw_deg": 90
+      },
+      "clutter_cereal_b": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.4327,
+        0.44
+       ],
+       "yaw_deg": 90
+      },
+      "juice_bottle": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.71,
+        0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.83
+       ],
+       "yaw_deg": 168.5
+      }
+     },
+     "add": {
+      "clutter_cereal_c": {
+       "asset": "cereal_box",
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.588,
+        0.44
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "infeasible_fallback",
+      "spot_quality"
+     ],
+     "instruction": "Put the toy block on display where it can be seen from the room, best on top of the low wall cabinet. Leave the boxes and the bottle on the cabinet where they are.",
+     "instruction_zh": "把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "juice_bottle",
+      "clutter_cereal_c"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "tv_stand_2/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_4/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.02
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.02
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.02
+       ],
+       [
+        "near_start",
+        "clutter_cereal_c",
+        0.02
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "clutter_cereal_c"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+     "v6": {
+      "family": "display_spot_or_tv",
+      "case": "front_taken_block_away",
+      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+      "control": "free",
+      "contrast": null,
+      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
+      "derived_from": "display_hidden"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.675,
+         6.275,
+         3.725,
+         6.325
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.76,
+         1.62
+        ]
+       },
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.5852,
+         1.7262,
+         6.7948,
+         1.9338
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.2,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.045,
+         1.6,
+         7.095,
+         1.65
+        ],
+        "dx": [
+         -0.49,
+         1.15
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ]
+       ],
+       "kitchen_cabinet_6/top": [
+        [
+         3.215,
+         0.3875,
+         3.3403,
+         0.4925
+        ],
+        [
+         3.37,
+         0.3875,
+         3.4954,
+         0.4925
+        ],
+        [
+         3.681,
+         0.421,
+         3.739,
+         0.479
+        ],
+        [
+         3.5253,
+         0.3875,
+         3.6507,
+         0.4925
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "display_spot_or_tv__front_free_block_away": {
+     "move": {
+      "clutter_cereal_a": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.2777,
+        0.28
+       ],
+       "yaw_deg": 90
+      },
+      "clutter_cereal_b": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.4327,
+        0.28
+       ],
+       "yaw_deg": 90
+      },
+      "juice_bottle": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.71,
+        0.28
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.83
+       ],
+       "yaw_deg": 168.5
+      }
+     },
+     "add": {
+      "clutter_cereal_c": {
+       "asset": "cereal_box",
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.588,
+        0.28
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "infeasible_fallback",
+      "spot_quality"
+     ],
+     "instruction": "Put the toy block on display where it can be seen from the room, best on top of the low wall cabinet. Leave the boxes and the bottle on the cabinet where they are.",
+     "instruction_zh": "把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "juice_bottle",
+      "clutter_cereal_c"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "wooden_block_a",
+        "kitchen_cabinet_6/top"
+       ],
+       [
+        "front_visible",
+        "wooden_block_a"
+       ],
+       [
+        "away_from_edge",
+        "wooden_block_a",
+        0.02
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.02
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.02
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.02
+       ],
+       [
+        "near_start",
+        "clutter_cereal_c",
+        0.02
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "clutter_cereal_c"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+     "v6": {
+      "family": "display_spot_or_tv",
+      "case": "front_free_block_away",
+      "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
+      "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+      "control": "free",
+      "contrast": null,
+      "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
+      "derived_from": "display_hidden"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.975,
+         -0.455,
+         1.025,
+         -0.405
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.15,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.5852,
+         1.7262,
+         6.7948,
+         1.9338
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.2,
+         0.04
         ]
        },
        {
@@ -28587,13 +28798,12 @@
    "nominal": "nominal",
    "oracle": {
     "free": "nominal",
-    "occupied": "v6_occupied",
-    "occupied_block_away": "v6_occupied_block_away",
-    "occupied_block_away__alt_bookcase_2": "v6_occupied_block_away__alt_bookcase_2",
     "display_row__island_floor": "v6_display_row__island_floor",
     "display_row__spread": "v6_display_row__spread",
     "display_spot_or_tv__front_taken": "v6_display_spot_or_tv__front_taken",
     "display_spot_or_tv__front_free": "v6_display_spot_or_tv__front_free",
+    "display_spot_or_tv__front_taken_block_away": "v6_display_spot_or_tv__front_taken_block_away",
+    "display_spot_or_tv__front_free_block_away": "v6_display_spot_or_tv__front_free_block_away",
     "seen_from_bed__boxes_middle": "v6_seen_from_bed__boxes_middle",
     "seen_from_bed__boxes_corner": "v6_seen_from_bed__boxes_corner"
    },
@@ -28637,157 +28847,6 @@
       }
      ],
      "since": "v2"
-    },
-    "v6_occupied_block_away__alt_bookcase_2": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "wooden_block_a",
-        "region": "bedroom_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      }
-     ],
-     "kind": "v6_look_first",
-     "variant": "occupied_block_away__alt_bookcase_2"
-    },
-    "v6_occupied": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      }
-     ],
-     "kind": "v6_look_first",
-     "variant": "occupied"
-    },
-    "v6_occupied_block_away": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "wooden_block_a",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_a"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/top"
-       },
-       "role": "alternative"
-      }
-     ],
-     "kind": "v6_look_first",
-     "variant": "occupied_block_away"
     },
     "v6_display_row__island_floor": {
      "steps": [
@@ -29098,6 +29157,110 @@
      "kind": "v6_oracle",
      "variant": "display_spot_or_tv__front_free"
     },
+    "v6_display_spot_or_tv__front_taken_block_away": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_a",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "tv_stand_2/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "display_spot_or_tv__front_taken_block_away"
+    },
+    "v6_display_spot_or_tv__front_free_block_away": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_a",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_cabinet_6/top",
+        "hint_xy": [
+         3.433,
+         0.465
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "display_spot_or_tv__front_free_block_away"
+    },
     "v6_seen_from_bed__boxes_middle": {
      "steps": [
       {
@@ -29254,46 +29417,6 @@
       "19": "free"
      }
     },
-    "occupied": {
-     "origin": "v5",
-     "control": "free",
-     "layouts": [
-      "occupied"
-     ],
-     "seeds": {
-      "10": "occupied",
-      "11": "occupied",
-      "12": "occupied",
-      "13": "occupied",
-      "14": "occupied",
-      "15": "occupied",
-      "16": "occupied",
-      "17": "occupied",
-      "18": "occupied",
-      "19": "occupied"
-     }
-    },
-    "occupied_block_away": {
-     "origin": "v5",
-     "control": "free",
-     "layouts": [
-      "occupied_block_away",
-      "occupied_block_away__alt_bookcase_2"
-     ],
-     "seeds": {
-      "10": "occupied_block_away__alt_bookcase_2",
-      "11": "occupied_block_away",
-      "12": "occupied_block_away",
-      "13": "occupied_block_away__alt_bookcase_2",
-      "14": "occupied_block_away__alt_bookcase_2",
-      "15": "occupied_block_away",
-      "16": "occupied_block_away",
-      "17": "occupied_block_away__alt_bookcase_2",
-      "18": "occupied_block_away__alt_bookcase_2",
-      "19": "occupied_block_away"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
     "display_row": {
      "origin": "v6",
      "control": "free",
@@ -29320,20 +29443,22 @@
      "control": "free",
      "layouts": [
       "display_spot_or_tv__front_taken",
-      "display_spot_or_tv__front_free"
+      "display_spot_or_tv__front_free",
+      "display_spot_or_tv__front_taken_block_away",
+      "display_spot_or_tv__front_free_block_away"
      ],
-     "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back)",
+     "factor": "where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
      "seeds": {
-      "10": "display_spot_or_tv__front_taken",
-      "11": "display_spot_or_tv__front_taken",
+      "10": "display_spot_or_tv__front_taken_block_away",
+      "11": "display_spot_or_tv__front_taken_block_away",
       "12": "display_spot_or_tv__front_taken",
       "13": "display_spot_or_tv__front_free",
       "14": "display_spot_or_tv__front_free",
       "15": "display_spot_or_tv__front_free",
       "16": "display_spot_or_tv__front_taken",
-      "17": "display_spot_or_tv__front_free",
+      "17": "display_spot_or_tv__front_free_block_away",
       "18": "display_spot_or_tv__front_taken",
-      "19": "display_spot_or_tv__front_free"
+      "19": "display_spot_or_tv__front_free_block_away"
      }
     },
     "seen_from_bed": {
@@ -29359,6 +29484,8 @@
     }
    },
    "v6_replaced": {
+    "occupied": "removed: the lid and the bowl leave room for a 5 cm block, and either display place counts; display_spot_or_tv is the design",
+    "occupied_block_away": "merged into display_spot_or_tv as the seeds with the block to be found",
     "display_hidden": "replaced by display_spot_or_tv (the same scene, plus a layout with the front free)",
     "h_dynamic_cabinet_filled": "removed: no dynamic events in T06 (someone fills the cabinet top)"
    },
@@ -29367,6 +29494,8 @@
     "m_slip_block": "only injected action failures",
     "h_action_slip_and_ik": "same as display_hidden without its injected action failures",
     "h_mixed_hidden_grasp": "same as display_hidden without its injected action failures",
+    "occupied": "removed: the lid and the bowl leave room for a 5 cm block, and either display place counts; display_spot_or_tv is the design",
+    "occupied_block_away": "merged into display_spot_or_tv as the seeds with the block to be found",
     "display_hidden": "replaced by display_spot_or_tv (the same scene, plus a layout with the front free)",
     "h_dynamic_cabinet_filled": "removed: no dynamic events in T06 (someone fills the cabinet top)"
    },
@@ -29375,21 +29504,6 @@
      "category": "control",
      "local": [],
      "longer": []
-    },
-    "occupied": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "destination_occupied"
-     ]
-    },
-    "occupied_block_away": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "destination_occupied",
-      "not_in_view"
-     ]
     },
     "display_row": {
      "category": "task",
@@ -29761,8 +29875,6 @@
      "conditions": [
       "appliance_occupied"
      ],
-     "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
-     "instruction_zh": "请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
      "goal": {
       "all": [
        [
@@ -32425,41 +32537,23 @@
      "origin": "v5",
      "control": "microwave_works",
      "layouts": [
-      "microwave_broken"
-     ],
-     "seeds": {
-      "10": "microwave_broken",
-      "11": "microwave_broken",
-      "12": "microwave_broken",
-      "13": "microwave_broken",
-      "14": "microwave_broken",
-      "15": "microwave_broken",
-      "16": "microwave_broken",
-      "17": "microwave_broken",
-      "18": "microwave_broken",
-      "19": "microwave_broken"
-     }
-    },
-    "broken_oatmeal_away": {
-     "origin": "v5",
-     "control": "microwave_works",
-     "layouts": [
+      "microwave_broken",
       "broken_oatmeal_away",
       "broken_oatmeal_away__alt_dining_table_2"
      ],
      "seeds": {
-      "10": "broken_oatmeal_away__alt_dining_table_2",
-      "11": "broken_oatmeal_away__alt_dining_table_2",
-      "12": "broken_oatmeal_away__alt_dining_table_2",
-      "13": "broken_oatmeal_away__alt_dining_table_2",
-      "14": "broken_oatmeal_away",
-      "15": "broken_oatmeal_away__alt_dining_table_2",
-      "16": "broken_oatmeal_away",
-      "17": "broken_oatmeal_away",
+      "10": "broken_oatmeal_away",
+      "11": "microwave_broken",
+      "12": "microwave_broken",
+      "13": "broken_oatmeal_away",
+      "14": "microwave_broken",
+      "15": "microwave_broken",
+      "16": "broken_oatmeal_away__alt_dining_table_2",
+      "17": "broken_oatmeal_away__alt_dining_table_2",
       "18": "broken_oatmeal_away",
-      "19": "broken_oatmeal_away"
+      "19": "broken_oatmeal_away__alt_dining_table_2"
      },
-     "factor": "where the resource is to be found (seed extension)"
+     "factor": "where the oatmeal is (seed: by the microwave, or elsewhere and to be found first)"
     },
     "microwave_holds_pot": {
      "origin": "v5",
@@ -32543,13 +32637,6 @@
      "longer": []
     },
     "microwave_broken": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "microwave_broken"
-     ]
-    },
-    "broken_oatmeal_away": {
      "category": "task",
      "local": [],
      "longer": [
@@ -36948,8 +37035,8 @@
       "cookware_choice",
       "not_in_view"
      ],
-     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
-     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
+     "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+     "instruction_zh": "午饭做个番茄汤：把小番茄放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
      "watch": [
       "cherry_tomato_1",
       "cherry_tomato_2",
@@ -39693,8 +39780,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
      "add": {
       "takeout_tray": {
        "asset": "foil_takeout_tray",
@@ -39801,8 +39888,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
      "add": {
       "leftovers": {
        "asset": "glass_food_container",
@@ -39840,9 +39927,13 @@
         "breakfast_fridge"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top",
+         "kitchen_island/top"
+        ]
        ],
        [
         "upright",
@@ -39913,8 +40004,8 @@
       "disposal_by_state",
       "multi_object_goal"
      ],
-     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
-     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "instruction": "Dinner is over; clear the dining table and take each thing where it should go. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净，每样东西拿到它该去的地方。麦片盒留在桌上。",
      "add": {
       "takeout_tray": {
        "asset": "foil_takeout_tray",
@@ -39948,9 +40039,13 @@
         "trash_can"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top",
+         "kitchen_island/top"
+        ]
        ],
        [
         "upright",
@@ -40046,8 +40141,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -40077,9 +40172,13 @@
         "trash_can"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top",
+         "kitchen_island/top"
+        ]
        ],
        [
         "upright",
@@ -40260,8 +40359,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -40445,8 +40544,8 @@
       "goal_items_unstated",
       "multi_object_goal"
      ],
-     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
-     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs, and leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，本来就该在那儿的东西别动。",
      "add": {
       "toy_box": {
        "asset": "toy_box",
@@ -40476,9 +40575,13 @@
         "trash_can"
        ],
        [
-        "on",
+        "on_any",
         "used_mug",
-        "kitchen_counter_2/top"
+        [
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top",
+         "kitchen_island/top"
+        ]
        ],
        [
         "upright",
@@ -44723,39 +44826,22 @@
      "origin": "v5",
      "control": "fruits_on_table",
      "layouts": [
-      "basket_missing"
-     ],
-     "seeds": {
-      "10": "basket_missing",
-      "11": "basket_missing",
-      "12": "basket_missing",
-      "13": "basket_missing",
-      "14": "basket_missing",
-      "15": "basket_missing",
-      "16": "basket_missing",
-      "17": "basket_missing",
-      "18": "basket_missing",
-      "19": "basket_missing"
-     }
-    },
-    "basket_gone_bowl_there": {
-     "origin": "v5",
-     "control": "fruits_on_table",
-     "layouts": [
+      "basket_missing",
       "basket_gone_bowl_there"
      ],
      "seeds": {
       "10": "basket_gone_bowl_there",
       "11": "basket_gone_bowl_there",
       "12": "basket_gone_bowl_there",
-      "13": "basket_gone_bowl_there",
-      "14": "basket_gone_bowl_there",
+      "13": "basket_missing",
+      "14": "basket_missing",
       "15": "basket_gone_bowl_there",
-      "16": "basket_gone_bowl_there",
-      "17": "basket_gone_bowl_there",
-      "18": "basket_gone_bowl_there",
+      "16": "basket_missing",
+      "17": "basket_missing",
+      "18": "basket_missing",
       "19": "basket_gone_bowl_there"
-     }
+     },
+     "factor": "what stands where the basket used to be (seed: nothing, or a used breakfast bowl)"
     },
     "leave_one_for_kid": {
      "origin": "v6",
@@ -44802,6 +44888,7 @@
     }
    },
    "v6_replaced": {
+    "h_mixed_bowl_there_grasp": "the same design as basket_gone_bowl_there, now a seed of basket_missing",
     "h_dynamic_basket_taken": "removed: no dynamic events in T11 (someone takes the basket)"
    },
    "v6_dropped": {
@@ -44809,7 +44896,7 @@
     "e2_from_kitchen": "same as fruits_on_table but for the layout (object poses / start)",
     "m_grasp_apple": "only injected action failures",
     "m_ik_basket": "only injected action failures",
-    "h_mixed_bowl_there_grasp": "same as basket_gone_bowl_there without its injected action failures",
+    "h_mixed_bowl_there_grasp": "the same design as basket_gone_bowl_there, now a seed of basket_missing",
     "h_dynamic_basket_taken": "removed: no dynamic events in T11 (someone takes the basket)"
    },
    "v6_tracks": {
@@ -44822,13 +44909,7 @@
      "category": "task",
      "local": [],
      "longer": [
-      "container_absent"
-     ]
-    },
-    "basket_gone_bowl_there": {
-     "category": "task",
-     "local": [],
-     "longer": [
+      "container_absent",
       "decoy_destination"
      ]
     },
@@ -56863,8 +56944,16 @@
       }
      }
     },
-    "h_task_two_cabinets": {
+    "dishes_spread__in_cabinet_4": {
      "move": {
+      "plate_inside_kitchen_cabinet": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.6299,
+        0.3599
+       ],
+       "yaw_deg": 0.0
+      },
       "bowl_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
@@ -56872,94 +56961,11 @@
         0.42
        ],
        "yaw_deg": 0.0
-      },
-      "plate_inside_kitchen_cabinet": {
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.6299,
-        0.3599
-       ],
-       "yaw_deg": 0.0
       }
      },
-     "goal": {
-      "all": [
-       [
-        "observed",
-        "plate_inside_kitchen_cabinet"
-       ],
-       [
-        "observed",
-        "bowl_inside_kitchen_cabinet"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_cabinet_4"
-       ]
-      ]
-     },
-     "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinets for dinner. Have a look inside and close the cabinet doors properly afterwards.",
-     "instruction_zh": "奶奶想知道矮墙柜里还有没有干净的盘子和碗做晚饭用。请看一下柜子里面，看完把柜门关好。",
-     "failures": [
-      {
-       "id": "resource_initial",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl_inside_kitchen_cabinet",
-         "kitchen_cabinet_4/inside_shelf"
-        ]
-       ]
-      }
+     "conditions": [
+      "item_put_away"
      ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the bowl is not in the first cabinet: check the other low cabinet too and close both",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the bowl is not in the first cabinet: check the other low cabinet too and close both",
-      "derived_from": "at_island",
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "x6_gd_bowl_elsewhere__two_places": {
-     "move": {
-      "plate_inside_kitchen_cabinet": {
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.6299,
-        0.3599
-       ],
-       "yaw_deg": 0.0
-      },
-      "bowl_inside_kitchen_cabinet": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "goal": {
       "all": [
        [
@@ -56981,11 +56987,15 @@
        [
         "hand_empty",
         "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
        ]
       ]
      },
-     "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner, in the low wall cabinet or the microwave. Have a look and close every door properly afterwards.",
-     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗，看看靠墙矮柜和微波炉里有没有。看完把门都关好。",
+     "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner. Have a look behind the kitchen doors and close every door properly afterwards.",
+     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗。去厨房带门的地方看一看，看完把门都关好。",
      "failures": [
       {
        "id": "resource_bowl_elsewhere",
@@ -56995,21 +57005,21 @@
         [
          "on",
          "bowl_inside_kitchen_cabinet",
-         "kitchen_microwave/inside_floor"
+         "kitchen_cabinet_4/inside_shelf"
         ]
        ]
       }
      ],
      "since": "v6",
-     "note": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
+     "note": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
      "v6": {
-      "family": "x6_gd_bowl_elsewhere",
-      "case": "two_places",
-      "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
-      "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
+      "family": "dishes_spread",
+      "case": "in_cabinet_4",
+      "challenge": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
+      "rationale": "the first place answers only half of the question: keep looking behind the other doors until both dishes are seen, closing each door again",
       "control": "at_island",
       "contrast": null,
-      "factor": "how many candidate places (and an empty one) the instruction names",
+      "factor": "where the bowl is (seed: in the other low cabinet, or in the microwave)",
       "derived_from": "at_island"
      },
      "layout": {
@@ -57022,7 +57032,7 @@
       }
      }
     },
-    "x6_gd_bowl_elsewhere__three_places": {
+    "dishes_spread__in_microwave": {
      "move": {
       "plate_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
@@ -57041,6 +57051,9 @@
        "yaw_deg": 0.0
       }
      },
+     "conditions": [
+      "item_put_away"
+     ],
      "goal": {
       "all": [
        [
@@ -57069,8 +57082,8 @@
        ]
       ]
      },
-     "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner somewhere in the low kitchen cabinets or the microwave. Have a look and close every door properly afterwards.",
-     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗，看看厨房的矮柜和微波炉里有没有。看完把门都关好。",
+     "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner. Have a look behind the kitchen doors and close every door properly afterwards.",
+     "instruction_zh": "奶奶想知道晚饭还有没有干净的盘子和碗。去厨房带门的地方看一看，看完把门都关好。",
      "failures": [
       {
        "id": "resource_bowl_elsewhere",
@@ -57086,15 +57099,15 @@
       }
      ],
      "since": "v6",
-     "note": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
+     "note": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
      "v6": {
-      "family": "x6_gd_bowl_elsewhere",
-      "case": "three_places",
-      "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
-      "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
+      "family": "dishes_spread",
+      "case": "in_microwave",
+      "challenge": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
+      "rationale": "the first place answers only half of the question: keep looking behind the other doors until both dishes are seen, closing each door again",
       "control": "at_island",
       "contrast": null,
-      "factor": "how many candidate places (and an empty one) the instruction names",
+      "factor": "where the bowl is (seed: in the other low cabinet, or in the microwave)",
       "derived_from": "at_island"
      },
      "layout": {
@@ -57416,9 +57429,8 @@
    "nominal": "nominal",
    "oracle": {
     "at_island": "nominal",
-    "h_task_two_cabinets": "v5_h_task_two_cabinets",
-    "x6_gd_bowl_elsewhere__two_places": "v6_x6_gd_bowl_elsewhere__two_places",
-    "x6_gd_bowl_elsewhere__three_places": "v6_x6_gd_bowl_elsewhere__three_places",
+    "dishes_spread__in_cabinet_4": "v6_dishes_spread__in_cabinet_4",
+    "dishes_spread__in_microwave": "v6_dishes_spread__in_microwave",
     "enough_for_dinner__enough": "v6_enough_for_dinner__enough",
     "enough_for_dinner__one_short": "v6_enough_for_dinner__one_short",
     "enough_for_dinner__two_short": "v6_enough_for_dinner__two_short"
@@ -57457,7 +57469,7 @@
      ],
      "since": "v3"
     },
-    "v5_h_task_two_cabinets": {
+    "v6_dishes_spread__in_cabinet_4": {
      "steps": [
       {
        "skill": "navigate",
@@ -57508,10 +57520,10 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_task_two_cabinets"
+     "kind": "v6_oracle",
+     "variant": "dishes_spread__in_cabinet_4"
     },
-    "v6_x6_gd_bowl_elsewhere__two_places": {
+    "v6_dishes_spread__in_microwave": {
      "steps": [
       {
        "skill": "navigate",
@@ -57563,85 +57575,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_bowl_elsewhere__two_places"
-    },
-    "v6_x6_gd_bowl_elsewhere__three_places": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "inspect",
-       "args": {
-        "receptacle": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "inspect",
-       "args": {
-        "receptacle": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_gd_bowl_elsewhere__three_places"
+     "variant": "dishes_spread__in_microwave"
     },
     "v6_enough_for_dinner__enough": {
      "steps": [
@@ -57907,61 +57841,25 @@
       "19": "at_island"
      }
     },
-    "h_task_two_cabinets": {
-     "origin": "v5",
-     "control": "at_island",
-     "layouts": [
-      "h_task_two_cabinets"
-     ],
-     "seeds": {
-      "10": "h_task_two_cabinets",
-      "11": "h_task_two_cabinets",
-      "12": "h_task_two_cabinets",
-      "13": "h_task_two_cabinets",
-      "14": "h_task_two_cabinets",
-      "15": "h_task_two_cabinets",
-      "16": "h_task_two_cabinets",
-      "17": "h_task_two_cabinets",
-      "18": "h_task_two_cabinets",
-      "19": "h_task_two_cabinets"
-     }
-    },
-    "x6_gd_bowl_elsewhere__two_places": {
+    "dishes_spread": {
      "origin": "v6",
      "control": "at_island",
      "layouts": [
-      "x6_gd_bowl_elsewhere__two_places"
+      "dishes_spread__in_cabinet_4",
+      "dishes_spread__in_microwave"
      ],
+     "factor": "where the bowl is (seed: in the other low cabinet, or in the microwave)",
      "seeds": {
-      "10": "x6_gd_bowl_elsewhere__two_places",
-      "11": "x6_gd_bowl_elsewhere__two_places",
-      "12": "x6_gd_bowl_elsewhere__two_places",
-      "13": "x6_gd_bowl_elsewhere__two_places",
-      "14": "x6_gd_bowl_elsewhere__two_places",
-      "15": "x6_gd_bowl_elsewhere__two_places",
-      "16": "x6_gd_bowl_elsewhere__two_places",
-      "17": "x6_gd_bowl_elsewhere__two_places",
-      "18": "x6_gd_bowl_elsewhere__two_places",
-      "19": "x6_gd_bowl_elsewhere__two_places"
-     }
-    },
-    "x6_gd_bowl_elsewhere__three_places": {
-     "origin": "v6",
-     "control": "at_island",
-     "layouts": [
-      "x6_gd_bowl_elsewhere__three_places"
-     ],
-     "seeds": {
-      "10": "x6_gd_bowl_elsewhere__three_places",
-      "11": "x6_gd_bowl_elsewhere__three_places",
-      "12": "x6_gd_bowl_elsewhere__three_places",
-      "13": "x6_gd_bowl_elsewhere__three_places",
-      "14": "x6_gd_bowl_elsewhere__three_places",
-      "15": "x6_gd_bowl_elsewhere__three_places",
-      "16": "x6_gd_bowl_elsewhere__three_places",
-      "17": "x6_gd_bowl_elsewhere__three_places",
-      "18": "x6_gd_bowl_elsewhere__three_places",
-      "19": "x6_gd_bowl_elsewhere__three_places"
+      "10": "dishes_spread__in_microwave",
+      "11": "dishes_spread__in_microwave",
+      "12": "dishes_spread__in_cabinet_4",
+      "13": "dishes_spread__in_cabinet_4",
+      "14": "dishes_spread__in_cabinet_4",
+      "15": "dishes_spread__in_cabinet_4",
+      "16": "dishes_spread__in_cabinet_4",
+      "17": "dishes_spread__in_microwave",
+      "18": "dishes_spread__in_microwave",
+      "19": "dishes_spread__in_microwave"
      }
     },
     "enough_for_dinner": {
@@ -57988,6 +57886,7 @@
     }
    },
    "v6_replaced": {
+    "h_task_two_cabinets": "merged into dishes_spread (seed: the bowl in the other low cabinet)",
     "m_door_left_open": "removed: a door already open is Action-Level",
     "h_dynamic_door_closed": "removed: no dynamic events in T18"
    },
@@ -57997,6 +57896,7 @@
     "m_ik_close": "only injected action failures",
     "h_action_ik_open_and_close": "same as h_task_two_cabinets without its injected action failures",
     "h_mixed_two_cabinets_ik": "same as h_task_two_cabinets without its injected action failures",
+    "h_task_two_cabinets": "merged into dishes_spread (seed: the bowl in the other low cabinet)",
     "m_door_left_open": "removed: a door already open is Action-Level",
     "h_dynamic_door_closed": "removed: no dynamic events in T18"
    },
@@ -58006,25 +57906,11 @@
      "local": [],
      "longer": []
     },
-    "h_task_two_cabinets": {
+    "dishes_spread": {
      "category": "task",
      "local": [],
      "longer": [
-      "resource"
-     ]
-    },
-    "x6_gd_bowl_elsewhere__two_places": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "resource"
-     ]
-    },
-    "x6_gd_bowl_elsewhere__three_places": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "resource"
+      "item_put_away"
      ]
     },
     "enough_for_dinner": {
@@ -58709,8 +58595,8 @@
        ]
       ]
      },
-     "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
-     "instruction_zh": "看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。",
+     "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
+     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -58804,8 +58690,8 @@
        ]
       ]
      },
-     "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
-     "instruction_zh": "看完电影了。有人把空易拉罐收进了厨房的一个矮柜里，快递里的泡沫块还在客厅地上；把这两样都放进卧室矮书架上那个装回收的宽收纳箱里，再把柜门关好。",
+     "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
+     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -61239,9 +61125,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "book_red",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_3/top"
+        ]
        ],
        [
         "on_top_of",
@@ -61350,9 +61239,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "desk_book_green",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_3/top"
+        ]
        ],
        [
         "on_top_of",
@@ -61464,9 +61356,12 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "desk_book_green",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_3/top"
+        ]
        ],
        [
         "on_top_of",
@@ -61773,9 +61668,13 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "blue_book",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "near_start",
@@ -61943,9 +61842,14 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "paperback",
-        "large_shelf_2/shelf_2"
+        [
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3"
+        ]
        ],
        [
         "near_start",
@@ -62152,14 +62056,23 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "blue_book",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
-        "on",
+        "on_any",
         "paperback",
-        "large_shelf_2/shelf_2"
+        [
+         "large_shelf_2/shelf_0",
+         "large_shelf_2/shelf_1",
+         "large_shelf_2/shelf_2",
+         "large_shelf_2/shelf_3"
+        ]
        ],
        [
         "near_start",
@@ -62286,9 +62199,13 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "book_red",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "on",
@@ -62462,9 +62379,13 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "book_red",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "on",
@@ -62621,9 +62542,13 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "book_red",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "on",
@@ -62792,9 +62717,13 @@
    "goal": {
     "all": [
      [
-      "on",
+      "on_any",
       "book_red",
-      "bookcase_2/top"
+      [
+       "bookcase_2/top",
+       "bookcase_2/shelf_1",
+       "bookcase_2/shelf_0"
+      ]
      ],
      [
       "hand_empty",
@@ -68889,26 +68818,6 @@
       "19": "eat_now"
      }
     },
-    "basket_missing": {
-     "origin": "v6",
-     "control": "juice_on_table",
-     "layouts": [
-      "basket_missing"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "basket_missing",
-      "11": "basket_missing",
-      "12": "basket_missing",
-      "13": "basket_missing",
-      "14": "basket_missing",
-      "15": "basket_missing",
-      "16": "basket_missing",
-      "17": "basket_missing",
-      "18": "basket_missing",
-      "19": "basket_missing"
-     }
-    },
     "not_shopping": {
      "origin": "v6",
      "control": "juice_on_table",
@@ -68954,20 +68863,21 @@
      "control": "juice_on_table",
      "layouts": [
       "tray_elsewhere__orange_in_it",
-      "tray_elsewhere__books_on_it"
+      "tray_elsewhere__books_on_it",
+      "basket_missing"
      ],
-     "factor": "what lies on the tray (seed: an orange, or books covering it); seen only on arrival",
+     "factor": "where the stand-in for the basket is and what lies on it (seed: a tray on the island; the tray in the west dining room with an orange, or covered with books)",
      "seeds": {
-      "10": "tray_elsewhere__books_on_it",
+      "10": "basket_missing",
       "11": "tray_elsewhere__books_on_it",
       "12": "tray_elsewhere__orange_in_it",
       "13": "tray_elsewhere__books_on_it",
-      "14": "tray_elsewhere__orange_in_it",
+      "14": "basket_missing",
       "15": "tray_elsewhere__orange_in_it",
-      "16": "tray_elsewhere__orange_in_it",
-      "17": "tray_elsewhere__books_on_it",
-      "18": "tray_elsewhere__books_on_it",
-      "19": "tray_elsewhere__orange_in_it"
+      "16": "tray_elsewhere__books_on_it",
+      "17": "tray_elsewhere__orange_in_it",
+      "18": "tray_elsewhere__orange_in_it",
+      "19": "basket_missing"
      }
     }
    },
@@ -68994,14 +68904,6 @@
       "preference_allocation"
      ]
     },
-    "basket_missing": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "container_absent",
-      "storage_place"
-     ]
-    },
     "not_shopping": {
      "category": "task",
      "local": [],
@@ -69025,7 +68927,8 @@
      "longer": [
       "container_absent",
       "dependent_decisions",
-      "not_in_view"
+      "not_in_view",
+      "storage_place"
      ]
     }
    }
@@ -72120,8 +72023,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
-     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each, ordinary cups where possible; what is already on their table need not be brought again.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。",
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -72308,8 +72211,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
-     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each, ordinary cups where possible; what is already on their table need not be brought again.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。",
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -72443,8 +72346,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
-     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each, ordinary cups where possible; what is already on their table need not be brought again.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。",
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -72591,8 +72494,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each. What is already on their table need not be brought again; if there are not enough ordinary cups, a mug will do.",
-     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子。桌上已有的不用重复拿；普通杯不够时，可以用马克杯。",
+     "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each, ordinary cups where possible; what is already on their table need not be brought again.",
+     "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。",
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -74433,9 +74336,13 @@
      "goal": {
       "all": [
        [
-        "on",
+        "on_any",
         "kid_book",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "near_start",
@@ -74748,9 +74655,13 @@
         "kids_basket"
        ],
        [
-        "on",
+        "on_any",
         "kid_book",
-        "bookcase_2/top"
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
        ],
        [
         "hand_empty",
@@ -77263,187 +77174,6 @@
       }
      }
     },
-    "which_cup": {
-     "conditions": [
-      "referent_clue"
-     ],
-     "add": {
-      "kid_cup": {
-       "asset": "plastic_cup",
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.2,
-        7.6
-       ],
-       "yaw_deg": 0.0
-      },
-      "counter_mug": {
-       "asset": "breakfast_mug",
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.3,
-        9.0
-       ],
-       "yaw_deg": 0.0
-      },
-      "bed_bear": {
-       "asset": "teddy_bear",
-       "support": "mattress_1/top",
-       "xy": [
-        -0.2,
-        -4.2
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on_any",
-        "kid_cup",
-        [
-         "bookcase_3/top",
-         "desk_1/top"
-        ]
-       ],
-       [
-        "upright",
-        "kid_cup"
-       ],
-       [
-        "near_start",
-        "cup_counter_b",
-        0.03
-       ],
-       [
-        "near_start",
-        "counter_mug",
-        0.03
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "kid_cup",
-      "cup_counter_b",
-      "counter_mug"
-     ],
-     "since": "v6",
-     "note": "on the counter: the kid's plastic cup, a china cup and a mug",
-     "v6": {
-      "family": "which_cup",
-      "case": null,
-      "challenge": "on the counter: the kid's plastic cup, a china cup and a mug",
-      "rationale": "his cup is the plastic one: bring that one",
-      "control": "cup_on_counter",
-      "contrast": null,
-      "factor": "the seed's layout only",
-      "derived_from": "bare"
-     },
-     "move": {},
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "counter_mug"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.3463,
-         8.9367,
-         -0.2537,
-         9.0633
-        ],
-        "dx": [
-         -0.16,
-         0.0
-        ],
-        "dy": [
-         -1.95,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "kid_cup"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.24,
-         7.56,
-         -0.16,
-         7.64
-        ],
-        "dx": [
-         -0.27,
-         0.0
-        ],
-        "dy": [
-         -0.58,
-         1.78
-        ]
-       },
-       {
-        "names": [
-         "bed_bear"
-        ],
-        "support": "mattress_1/top",
-        "box": [
-         -0.2528,
-         -4.28,
-         -0.1472,
-         -4.12
-        ],
-        "dx": [
-         -0.41,
-         0.0
-        ],
-        "dy": [
-         -0.56,
-         0.51
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_counter_2/top"
-       ]
-      }
-     }
-    },
     "cup_put_away": {
      "conditions": [
       "item_put_away"
@@ -78376,7 +78106,6 @@
    "nominal": "nominal",
    "oracle": {
     "cup_on_counter": "nominal",
-    "which_cup": "v6_which_cup",
     "cup_put_away": "v6_cup_put_away",
     "which_bed__east": "v6_which_bed__east",
     "which_bed__south": "v6_which_bed__south",
@@ -78434,47 +78163,6 @@
        }
       }
      ]
-    },
-    "v6_which_cup": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kid_cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kid_cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_3/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kid_cup",
-        "receptacle": "bookcase_3/top",
-        "hint_xy": [
-         2.1,
-         -4.88
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "which_cup"
     },
     "v6_cup_put_away": {
      "steps": [
@@ -78880,26 +78568,6 @@
       "19": "cup_on_counter"
      }
     },
-    "which_cup": {
-     "origin": "v6",
-     "control": "cup_on_counter",
-     "layouts": [
-      "which_cup"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "which_cup",
-      "11": "which_cup",
-      "12": "which_cup",
-      "13": "which_cup",
-      "14": "which_cup",
-      "15": "which_cup",
-      "16": "which_cup",
-      "17": "which_cup",
-      "18": "which_cup",
-      "19": "which_cup"
-     }
-    },
     "cup_put_away": {
      "origin": "v6",
      "control": "cup_on_counter",
@@ -79010,13 +78678,6 @@
      "category": "control",
      "local": [],
      "longer": []
-    },
-    "which_cup": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "referent_clue"
-     ]
     },
     "cup_put_away": {
      "category": "task",
@@ -79456,6 +79117,27 @@
         [
          "on",
          "table_book",
+         "bookcase_1/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_1/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_1/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
          "bookcase_2/top"
         ]
        ],
@@ -79463,7 +79145,63 @@
         [
          "on",
          "table_book",
+         "bookcase_2/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
          "bookcase_3/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_3/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_3/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_4/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_4/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "bookcase_4/shelf_0"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "large_shelf_2/shelf_0"
         ]
        ],
        [
@@ -79478,6 +79216,13 @@
          "on",
          "table_book",
          "large_shelf_2/shelf_2"
+        ]
+       ],
+       [
+        [
+         "on",
+         "table_book",
+         "large_shelf_2/shelf_3"
         ]
        ]
       ]
@@ -80752,8 +80497,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。",
+     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+     "instruction_zh": "汤快好了，拿碗过来准备盛。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",
@@ -80941,8 +80686,8 @@
       "resource_absent",
       "dependent_decisions"
      ],
-     "instruction": "The soup is almost ready. Bring bowls over for serving it; if there are not enough bowls, a mug will do.",
-     "instruction_zh": "汤快好了，拿碗过来准备盛；碗不够的话，马克杯也行。",
+     "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+     "instruction_zh": "汤快好了，拿碗过来准备盛。",
      "remove": [
       "bowl_dining_cabinet",
       "bowl_inside_kitchen_cabinet",

@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1670 episodes remain (1150 of the 115 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1590 episodes remain (1120 of the 112 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -38,14 +38,11 @@
 | T05 | errand_combined | task | 0/0 of 10 | - |
 | T05 | x6_gd_pen_or_pencil_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T06 | free | control | 0/0 of 10 | - |
-| T06 | occupied | task | 0/0 of 10 | - |
-| T06 | occupied_block_away | task | 0/0 of 10 | - |
 | T06 | display_row | task | 0/0 of 10 | - |
 | T06 | display_spot_or_tv | task | 0/0 of 10 | - |
 | T06 | seen_from_bed | task | 0/0 of 10 | - |
 | T07 | microwave_works | control | 0/0 of 10 | - |
 | T07 | microwave_broken | task | 0/0 of 10 | - |
-| T07 | broken_oatmeal_away | task | 0/0 of 10 | - |
 | T07 | microwave_holds_pot | task | 0/0 of 10 | - |
 | T07 | vessel_decides_appliance | task | 0/0 of 10 | - |
 | T07 | two_portions | task | 0/0 of 10 | - |
@@ -69,7 +66,6 @@
 | T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
-| T11 | basket_gone_bowl_there | task | 0/0 of 10 | - |
 | T11 | leave_one_for_kid | task | 0/0 of 10 | - |
 | T11 | fruit_plate_for_guests | task | 0/0 of 10 | - |
 | T12 | toys_out | control | 0/0 of 10 | - |
@@ -93,9 +89,7 @@
 | T17 | hide_both | task | 0/0 of 10 | - |
 | T17 | hide_somewhere | task | 0/0 of 10 | low cabinet doors |
 | T18 | at_island | control | 0/0 of 10 | low cabinet doors |
-| T18 | h_task_two_cabinets | task | 0/0 of 10 | low cabinet doors |
-| T18 | x6_gd_bowl_elsewhere__two_places | task | 0/0 of 10 | low cabinet doors |
-| T18 | x6_gd_bowl_elsewhere__three_places | task | 0/0 of 10 | low cabinet doors |
+| T18 | dishes_spread | task | 0/0 of 10 | low cabinet doors |
 | T18 | enough_for_dinner | task | 0/0 of 10 | low cabinet doors |
 | T19 | bin_on_bookcase | control | 0/0 of 10 | - |
 | T19 | m_can_in_dining_room | task | 0/0 of 10 | - |
@@ -119,7 +113,6 @@
 | T22 | juice_on_table | control | 0/0 of 10 | - |
 | T22 | by_kind | task | 0/0 of 10 | low cabinet doors |
 | T22 | eat_now | task | 0/0 of 10 | - |
-| T22 | basket_missing | task | 0/0 of 10 | - |
 | T22 | not_shopping | task | 0/0 of 10 | - |
 | T22 | two_spots | task | 0/0 of 10 | low cabinet doors |
 | T22 | tray_elsewhere | action_task | 0/0 of 10 | - |
@@ -155,7 +148,6 @@
 | T27 | fridge_out_of_view | task | 0/0 of 10 | - |
 | T27 | fruit_stays_out | task | 0/0 of 10 | - |
 | T28 | cup_on_counter | control | 0/0 of 10 | - |
-| T28 | which_cup | task | 0/0 of 10 | - |
 | T28 | cup_put_away | task | 0/0 of 10 | low cabinet doors |
 | T28 | which_bed | task | 0/0 of 10 | - |
 | T28 | where_his_cup_is | task | 0/0 of 10 | low cabinet doors |

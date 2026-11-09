@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 
-from benchmark.v6.define_tasks_v6 import TASK_TEXT
+from benchmark.v6.define_tasks_v6 import INSTR_TO_TASK, TASK_TEXT
 import subprocess
 import sys
 from collections import Counter
@@ -40,7 +40,9 @@ def test_v5_designs_unchanged():
                 continue
             old, new = v5[tid]["variants"][vid], t["variants"][vid]
             assert old.get("goal") == new.get("goal"), vid
-            if tid not in TASK_TEXT:                # TASK_TEXT: the task's instruction was shortened on purpose
+            if (tid, vid) in INSTR_TO_TASK:         # a form-like instruction: the task's own instead
+                assert "instruction" not in new, vid
+            elif tid not in TASK_TEXT:              # TASK_TEXT: the task's instruction was shortened on purpose
                 assert old.get("instruction") == new.get("instruction"), vid
             else:
                 assert "instruction" not in new and t["instruction"] == TASK_TEXT[tid][0], vid

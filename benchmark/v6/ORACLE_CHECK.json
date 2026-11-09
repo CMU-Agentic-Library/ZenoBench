@@ -1,6 +1,6 @@
 {
- "routes": 289,
- "ok": 289,
+ "routes": 286,
+ "ok": 286,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -506,7 +506,7 @@
    "task": "T02_stack_blocks",
    "layout": "crowded_use_another__loose",
    "steps": 6,
-   "atoms_checked": 6,
+   "atoms_checked": 9,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright oatmeal"
@@ -734,11 +734,14 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "cup_available",
    "steps": 5,
-   "atoms_checked": 3,
-   "atoms_geometric": 2,
+   "atoms_checked": 6,
+   "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
    "problems": [],
    "variant": "cup_available"
@@ -747,11 +750,14 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "no_cup",
    "steps": 7,
-   "atoms_checked": 3,
-   "atoms_geometric": 2,
+   "atoms_checked": 6,
+   "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
    "problems": [],
    "variant": "no_cup"
@@ -760,11 +766,14 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "no_cup_mug_away",
    "steps": 8,
-   "atoms_checked": 3,
-   "atoms_geometric": 2,
+   "atoms_checked": 6,
+   "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
    "problems": [],
    "variant": "no_cup"
@@ -773,11 +782,14 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "no_cup_mug_away__alt_dining_table_2",
    "steps": 8,
-   "atoms_checked": 3,
-   "atoms_geometric": 2,
+   "atoms_checked": 6,
+   "atoms_geometric": 5,
    "geometric_atoms": [
     "upright cup_counter_b",
-    "upright mug"
+    "upright mug",
+    "upright mug_dining_cabinet",
+    "upright mug_shelf",
+    "upright mug_counter"
    ],
    "problems": [],
    "variant": "no_cup"
@@ -902,8 +914,8 @@
   {
    "task": "T05_pen_or_pencil_to_desk",
    "layout": "check_desk_first__pencil_on_desk",
-   "steps": 3,
-   "atoms_checked": 4,
+   "steps": 8,
+   "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -1045,36 +1057,6 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "occupied",
-   "steps": 6,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "occupied"
-  },
-  {
-   "task": "T06_block_destination_occupied",
-   "layout": "occupied_block_away",
-   "steps": 7,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "occupied_block_away"
-  },
-  {
-   "task": "T06_block_destination_occupied",
-   "layout": "occupied_block_away__alt_bookcase_2",
-   "steps": 7,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "occupied_block_away"
-  },
-  {
-   "task": "T06_block_destination_occupied",
    "layout": "display_row__island_floor",
    "steps": 14,
    "atoms_checked": 4,
@@ -1117,6 +1099,25 @@
    "task": "T06_block_destination_occupied",
    "layout": "display_spot_or_tv__front_taken",
    "steps": 6,
+   "atoms_checked": 7,
+   "atoms_geometric": 8,
+   "geometric_atoms": [
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b",
+    "upright juice_bottle",
+    "upright clutter_cereal_c",
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02",
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02"
+   ],
+   "problems": [],
+   "variant": "display_spot_or_tv"
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "layout": "display_spot_or_tv__front_free",
+   "steps": 6,
    "atoms_checked": 6,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -1132,8 +1133,27 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "display_spot_or_tv__front_free",
-   "steps": 6,
+   "layout": "display_spot_or_tv__front_taken_block_away",
+   "steps": 7,
+   "atoms_checked": 7,
+   "atoms_geometric": 8,
+   "geometric_atoms": [
+    "upright clutter_cereal_a",
+    "upright clutter_cereal_b",
+    "upright juice_bottle",
+    "upright clutter_cereal_c",
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02",
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02"
+   ],
+   "problems": [],
+   "variant": "display_spot_or_tv"
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "layout": "display_spot_or_tv__front_free_block_away",
+   "steps": 7,
    "atoms_checked": 6,
    "atoms_geometric": 6,
    "geometric_atoms": [
@@ -1204,7 +1224,7 @@
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "broken_oatmeal_away"
+   "variant": "microwave_broken"
   },
   {
    "task": "T07_heat_oatmeal",
@@ -1214,7 +1234,7 @@
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "broken_oatmeal_away"
+   "variant": "microwave_broken"
   },
   {
    "task": "T07_heat_oatmeal",
@@ -1710,7 +1730,7 @@
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "basket_gone_bowl_there"
+   "variant": "basket_missing"
   },
   {
    "task": "T11_collect_fruits",
@@ -2226,33 +2246,23 @@
   },
   {
    "task": "T18_check_cabinet_dishes",
-   "layout": "h_task_two_cabinets",
+   "layout": "dishes_spread__in_cabinet_4",
    "steps": 8,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "h_task_two_cabinets"
-  },
-  {
-   "task": "T18_check_cabinet_dishes",
-   "layout": "x6_gd_bowl_elsewhere__two_places",
-   "steps": 8,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_bowl_elsewhere__two_places"
-  },
-  {
-   "task": "T18_check_cabinet_dishes",
-   "layout": "x6_gd_bowl_elsewhere__three_places",
-   "steps": 12,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "x6_gd_bowl_elsewhere__three_places"
+   "variant": "dishes_spread"
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "layout": "dishes_spread__in_microwave",
+   "steps": 8,
+   "atoms_checked": 6,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "dishes_spread"
   },
   {
    "task": "T18_check_cabinet_dishes",
@@ -2674,18 +2684,6 @@
   },
   {
    "task": "T22_put_away_shopping",
-   "layout": "basket_missing",
-   "steps": 13,
-   "atoms_checked": 6,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright bought_juice"
-   ],
-   "problems": [],
-   "variant": "basket_missing"
-  },
-  {
-   "task": "T22_put_away_shopping",
    "layout": "not_shopping",
    "steps": 8,
    "atoms_checked": 7,
@@ -2725,6 +2723,18 @@
    "layout": "tray_elsewhere__books_on_it",
    "steps": 31,
    "atoms_checked": 11,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "tray_elsewhere"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "basket_missing",
+   "steps": 13,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
@@ -3140,18 +3150,6 @@
   },
   {
    "task": "T28_cup_to_bedside",
-   "layout": "which_cup",
-   "steps": 5,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright kid_cup"
-   ],
-   "problems": [],
-   "variant": "which_cup"
-  },
-  {
-   "task": "T28_cup_to_bedside",
    "layout": "cup_put_away",
    "steps": 11,
    "atoms_checked": 3,
@@ -3266,7 +3264,7 @@
    "task": "T29_clear_table_for_dinner",
    "layout": "several",
    "steps": 13,
-   "atoms_checked": 7,
+   "atoms_checked": 19,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

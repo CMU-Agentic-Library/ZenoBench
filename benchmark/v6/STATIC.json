@@ -1,7 +1,7 @@
 {
- "variants": 167,
- "episodes": 1670,
- "static_ok": 1670,
+ "variants": 159,
+ "episodes": 1590,
+ "static_ok": 1590,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -25,12 +25,12 @@
    "static_ok": 80
   },
   "T06_block_destination_occupied": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T07_heat_oatmeal": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T08_wipe_island": {
    "episodes": 50,
@@ -45,8 +45,8 @@
    "static_ok": 70
   },
   "T11_collect_fruits": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 40,
+   "static_ok": 40
   },
   "T12_tidy_toys": {
    "episodes": 60,
@@ -69,8 +69,8 @@
    "static_ok": 40
   },
   "T18_check_cabinet_dishes": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 30,
+   "static_ok": 30
   },
   "T19_recycling": {
    "episodes": 40,
@@ -89,8 +89,8 @@
    "static_ok": 60
   },
   "T22_put_away_shopping": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T23_pick_up_dropped": {
    "episodes": 60,
@@ -113,8 +113,8 @@
    "static_ok": 60
   },
   "T28_cup_to_bedside": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T29_clear_table_for_dinner": {
    "episodes": 60,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 129
+  "task": 121
  },
- "tasks_sha1": "02fe9715064d0abffe89e3c8b7bb5fbdd2f28b94"
+ "tasks_sha1": "0852946a8502498e4f6dd9a1bc5810bf30bb864f"
 }
