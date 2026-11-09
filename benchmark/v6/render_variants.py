@@ -297,6 +297,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if k == "pick":
             mark(a["object"], "take")
         elif k in ("place", "drop", "hide"):
+            if k == "hide":                      # hide picks the thing up itself
+                mark(a.get("object"), "take")
             mark(a.get("receptacle") or a.get("container"), "place")
         elif k == "stack":
             mark(a["base"], "base")
