@@ -61449,7 +61449,7 @@
       }
      }
     },
-    "whose_book__picture_book": {
+    "whose_book__blue_book": {
      "move": {
       "book_red": {
        "support": "desk_1/top",
@@ -61470,7 +61470,7 @@
       "book_red"
      ],
      "add": {
-      "kid_book_1": {
+      "blue_shelved_1": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61479,7 +61479,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "kid_book_2": {
+      "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61488,7 +61488,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "novel_1": {
+      "paperback_shelved_1": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61497,7 +61497,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "novel_2": {
+      "paperback_shelved_2": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61506,7 +61506,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "picture_book": {
+      "blue_book": {
        "asset": "book_blue",
        "support": "desk_1/top",
        "xy": [
@@ -61520,27 +61520,27 @@
       "all": [
        [
         "on",
-        "picture_book",
+        "blue_book",
         "bookcase_2/top"
        ],
        [
         "near_start",
-        "kid_book_1",
+        "blue_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "kid_book_2",
+        "blue_shelved_2",
         0.03
        ],
        [
         "near_start",
-        "novel_1",
+        "paperback_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "novel_2",
+        "paperback_shelved_2",
         0.03
        ],
        [
@@ -61550,30 +61550,30 @@
       ]
      },
      "watch": [
-      "picture_book",
-      "kid_book_1",
-      "kid_book_2",
-      "novel_1",
-      "novel_2"
+      "blue_book",
+      "blue_shelved_1",
+      "blue_shelved_2",
+      "paperback_shelved_1",
+      "paperback_shelved_2"
      ],
      "since": "v6",
-     "note": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+     "note": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
      "v6": {
       "family": "whose_book",
-      "case": "picture_book",
-      "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-      "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+      "case": "blue_book",
+      "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+      "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
+      "factor": "which books are on the desk (seed: a blue hardcover, a paperback, or both)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "book_red",
-         "picture_book"
+         "blue_book",
+         "book_red"
         ],
         "support": "desk_1/top",
         "box": [
@@ -61589,8 +61589,8 @@
        },
        {
         "names": [
-         "novel_1",
-         "novel_2"
+         "paperback_shelved_1",
+         "paperback_shelved_2"
         ],
         "support": "large_shelf_2/shelf_2",
         "box": [
@@ -61619,7 +61619,7 @@
       }
      }
     },
-    "whose_book__novel": {
+    "whose_book__paperback": {
      "move": {
       "book_red": {
        "support": "desk_1/top",
@@ -61640,7 +61640,7 @@
       "book_red"
      ],
      "add": {
-      "kid_book_1": {
+      "blue_shelved_1": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61649,7 +61649,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "kid_book_2": {
+      "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61658,7 +61658,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "novel_1": {
+      "paperback_shelved_1": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61667,7 +61667,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "novel_2": {
+      "paperback_shelved_2": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61676,7 +61676,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "novel": {
+      "paperback": {
        "asset": "paperback_book",
        "support": "desk_1/top",
        "xy": [
@@ -61690,27 +61690,27 @@
       "all": [
        [
         "on",
-        "novel",
+        "paperback",
         "large_shelf_2/shelf_2"
        ],
        [
         "near_start",
-        "kid_book_1",
+        "blue_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "kid_book_2",
+        "blue_shelved_2",
         0.03
        ],
        [
         "near_start",
-        "novel_1",
+        "paperback_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "novel_2",
+        "paperback_shelved_2",
         0.03
        ],
        [
@@ -61720,30 +61720,30 @@
       ]
      },
      "watch": [
-      "novel",
-      "kid_book_1",
-      "kid_book_2",
-      "novel_1",
-      "novel_2"
+      "paperback",
+      "blue_shelved_1",
+      "blue_shelved_2",
+      "paperback_shelved_1",
+      "paperback_shelved_2"
      ],
      "since": "v6",
-     "note": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+     "note": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
      "v6": {
       "family": "whose_book",
-      "case": "novel",
-      "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-      "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+      "case": "paperback",
+      "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+      "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
+      "factor": "which books are on the desk (seed: a blue hardcover, a paperback, or both)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "kid_book_1",
-         "kid_book_2"
+         "blue_shelved_1",
+         "blue_shelved_2"
         ],
         "support": "bookcase_2/top",
         "box": [
@@ -61764,7 +61764,7 @@
        {
         "names": [
          "book_red",
-         "novel"
+         "paperback"
         ],
         "support": "desk_1/top",
         "box": [
@@ -61780,8 +61780,8 @@
        },
        {
         "names": [
-         "novel_1",
-         "novel_2"
+         "paperback_shelved_1",
+         "paperback_shelved_2"
         ],
         "support": "large_shelf_2/shelf_2",
         "box": [
@@ -61840,7 +61840,7 @@
       "book_red"
      ],
      "add": {
-      "kid_book_1": {
+      "blue_shelved_1": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61849,7 +61849,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "kid_book_2": {
+      "blue_shelved_2": {
        "asset": "book_blue",
        "support": "bookcase_2/top",
        "xy": [
@@ -61858,7 +61858,7 @@
        ],
        "yaw_deg": 0.0
       },
-      "novel_1": {
+      "paperback_shelved_1": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61867,7 +61867,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "novel_2": {
+      "paperback_shelved_2": {
        "asset": "paperback_book",
        "support": "large_shelf_2/shelf_2",
        "xy": [
@@ -61876,7 +61876,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "picture_book": {
+      "blue_book": {
        "asset": "book_blue",
        "support": "desk_1/top",
        "xy": [
@@ -61885,7 +61885,7 @@
        ],
        "yaw_deg": 90.0
       },
-      "novel": {
+      "paperback": {
        "asset": "paperback_book",
        "support": "desk_1/top",
        "xy": [
@@ -61899,32 +61899,32 @@
       "all": [
        [
         "on",
-        "picture_book",
+        "blue_book",
         "bookcase_2/top"
        ],
        [
         "on",
-        "novel",
+        "paperback",
         "large_shelf_2/shelf_2"
        ],
        [
         "near_start",
-        "kid_book_1",
+        "blue_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "kid_book_2",
+        "blue_shelved_2",
         0.03
        ],
        [
         "near_start",
-        "novel_1",
+        "paperback_shelved_1",
         0.03
        ],
        [
         "near_start",
-        "novel_2",
+        "paperback_shelved_2",
         0.03
        ],
        [
@@ -61934,32 +61934,32 @@
       ]
      },
      "watch": [
-      "picture_book",
-      "novel",
-      "kid_book_1",
-      "kid_book_2",
-      "novel_1",
-      "novel_2"
+      "blue_book",
+      "paperback",
+      "blue_shelved_1",
+      "blue_shelved_2",
+      "paperback_shelved_1",
+      "paperback_shelved_2"
      ],
      "since": "v6",
-     "note": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
+     "note": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
      "v6": {
       "family": "whose_book",
       "case": "both",
-      "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-      "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+      "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+      "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
+      "factor": "which books are on the desk (seed: a blue hardcover, a paperback, or both)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
       "clusters": [
        {
         "names": [
+         "blue_book",
          "book_red",
-         "novel",
-         "picture_book"
+         "paperback"
         ],
         "support": "desk_1/top",
         "box": [
@@ -61975,8 +61975,8 @@
        },
        {
         "names": [
-         "novel_1",
-         "novel_2"
+         "paperback_shelved_1",
+         "paperback_shelved_2"
         ],
         "support": "large_shelf_2/shelf_2",
         "box": [
@@ -62557,8 +62557,8 @@
     "stack_them_stably__green_paperback": "v6_stack_them_stably__green_paperback",
     "stack_them_stably__blue_green_paperback": "v6_stack_them_stably__blue_green_paperback",
     "homework_stays": "v6_homework_stays",
-    "whose_book__picture_book": "v6_whose_book__picture_book",
-    "whose_book__novel": "v6_whose_book__novel",
+    "whose_book__blue_book": "v6_whose_book__blue_book",
+    "whose_book__paperback": "v6_whose_book__paperback",
     "whose_book__both": "v6_whose_book__both",
     "next_in_series__on_bookcase": "v6_next_in_series__on_bookcase",
     "next_in_series__on_other_bookcase": "v6_next_in_series__on_other_bookcase",
@@ -63068,7 +63068,7 @@
      "kind": "v6_oracle",
      "variant": "homework_stays"
     },
-    "v6_whose_book__picture_book": {
+    "v6_whose_book__blue_book": {
      "steps": [
       {
        "skill": "look",
@@ -63079,13 +63079,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "picture_book"
+        "destination": "blue_book"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "picture_book"
+        "object": "blue_book"
        }
       },
       {
@@ -63097,7 +63097,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "picture_book",
+        "object": "blue_book",
         "receptacle": "bookcase_2/top",
         "hint_xy": [
          1.0,
@@ -63107,9 +63107,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "whose_book__picture_book"
+     "variant": "whose_book__blue_book"
     },
-    "v6_whose_book__novel": {
+    "v6_whose_book__paperback": {
      "steps": [
       {
        "skill": "look",
@@ -63120,13 +63120,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "novel"
+        "destination": "paperback"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "novel"
+        "object": "paperback"
        }
       },
       {
@@ -63138,7 +63138,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "novel",
+        "object": "paperback",
         "receptacle": "large_shelf_2/shelf_2",
         "hint_xy": [
          -1.86,
@@ -63148,7 +63148,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "whose_book__novel"
+     "variant": "whose_book__paperback"
     },
     "v6_whose_book__both": {
      "steps": [
@@ -63161,13 +63161,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "picture_book"
+        "destination": "blue_book"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "picture_book"
+        "object": "blue_book"
        }
       },
       {
@@ -63179,7 +63179,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "picture_book",
+        "object": "blue_book",
         "receptacle": "bookcase_2/top",
         "hint_xy": [
          1.0,
@@ -63190,13 +63190,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "novel"
+        "destination": "paperback"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "novel"
+        "object": "paperback"
        }
       },
       {
@@ -63208,7 +63208,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "novel",
+        "object": "paperback",
         "receptacle": "large_shelf_2/shelf_2",
         "hint_xy": [
          -1.86,
@@ -63600,22 +63600,22 @@
      "origin": "v6",
      "control": "e1_book_ready",
      "layouts": [
-      "whose_book__picture_book",
-      "whose_book__novel",
+      "whose_book__blue_book",
+      "whose_book__paperback",
       "whose_book__both"
      ],
-     "factor": "which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
+     "factor": "which books are on the desk (seed: a blue hardcover, a paperback, or both)",
      "seeds": {
-      "10": "whose_book__picture_book",
+      "10": "whose_book__blue_book",
       "11": "whose_book__both",
-      "12": "whose_book__novel",
-      "13": "whose_book__novel",
-      "14": "whose_book__picture_book",
+      "12": "whose_book__paperback",
+      "13": "whose_book__paperback",
+      "14": "whose_book__blue_book",
       "15": "whose_book__both",
-      "16": "whose_book__picture_book",
+      "16": "whose_book__blue_book",
       "17": "whose_book__both",
-      "18": "whose_book__picture_book",
-      "19": "whose_book__novel"
+      "18": "whose_book__blue_book",
+      "19": "whose_book__paperback"
      }
     },
     "next_in_series": {

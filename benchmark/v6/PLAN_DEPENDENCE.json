@@ -219,10 +219,6 @@
     "homework",
     "hw_pencil"
    ],
-   "T14 whose_book": [
-    "kid_book_1",
-    "kid_book_2"
-   ],
    "T18 enough_for_dinner": [
     "clean_bowl_2",
     "clean_bowl_3"
@@ -3787,13 +3783,13 @@
   {
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
-   "layout": "whose_book__picture_book",
+   "layout": "whose_book__blue_book",
    "steps": 5,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "whose_book__novel": "resource_missing",
+    "whose_book__paperback": "resource_missing",
     "whose_book__both": "resource_missing"
    },
    "other_variants_passing": []
@@ -3801,13 +3797,13 @@
   {
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
-   "layout": "whose_book__novel",
+   "layout": "whose_book__paperback",
    "steps": 5,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "whose_book__picture_book": "resource_missing",
+    "whose_book__blue_book": "resource_missing",
     "whose_book__both": "resource_missing"
    },
    "other_variants_passing": []
@@ -3821,8 +3817,8 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "whose_book__picture_book": "goal_not_met",
-    "whose_book__novel": "goal_not_met"
+    "whose_book__blue_book": "goal_not_met",
+    "whose_book__paperback": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -5552,8 +5548,8 @@
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
    "candidates": [
-    "whose_book__picture_book",
-    "whose_book__novel",
+    "whose_book__blue_book",
+    "whose_book__paperback",
     "whose_book__both",
     "e1_book_ready"
    ],
@@ -8042,8 +8038,8 @@
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
    "layouts": [
-    "whose_book__picture_book",
-    "whose_book__novel"
+    "whose_book__blue_book",
+    "whose_book__paperback"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": true,
@@ -8055,7 +8051,7 @@
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
    "layouts": [
-    "whose_book__picture_book",
+    "whose_book__blue_book",
     "whose_book__both"
    ],
    "start_room": "bedroom_0_1",
@@ -8068,7 +8064,7 @@
    "task": "T14_shelve_the_book",
    "variant": "whose_book",
    "layouts": [
-    "whose_book__novel",
+    "whose_book__paperback",
     "whose_book__both"
    ],
    "start_room": "bedroom_0_1",

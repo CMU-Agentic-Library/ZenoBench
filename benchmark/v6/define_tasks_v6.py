@@ -1653,16 +1653,16 @@ def T14(t):
             add={**hw, "desk_mug": {"asset": "breakfast_mug", "support": DESK, "xy": [mug_at, -5.90], "yaw_deg": 0.0}},
             route=[look(DESK)] + shelve(B) + [nav("desk_mug"), pick("desk_mug"), nav("kitchen_counter_2/top"),
                                               place("desk_mug", "kitchen_counter_2/top", [-0.30, 7.60])])
-    # whose_book: the kid's picture book back to the kid's bookcase (where the other picture books are), a grown-up's
-    # novel to the shelf in the living room (where the other novels are)
+    # whose_book: each book from the desk to the shelf that holds books of its kind: the blue hardcovers stand on
+    # the bedroom bookcase, the paperbacks on the living-room shelf
     KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
-    shelves = {"kid_book_1": book("book_blue", KIDS, 0.85, -0.45), "kid_book_2": book("book_blue", KIDS, 1.10, -0.45),
-               "novel_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
-               "novel_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
+    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.45), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.45),
+               "paperback_shelved_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
+               "paperback_shelved_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
     whose_cases = {}
-    for c, items in (("picture_book", {"picture_book": ("book_blue", KIDS)}),
-                     ("novel", {"novel": ("paperback_book", ADULT)}),
-                     ("both", {"picture_book": ("book_blue", KIDS), "novel": ("paperback_book", ADULT)})):
+    for c, items in (("blue_book", {"blue_book": ("book_blue", KIDS)}),
+                     ("paperback", {"paperback": ("paperback_book", ADULT)}),
+                     ("both", {"blue_book": ("book_blue", KIDS), "paperback": ("paperback_book", ADULT)})):
         add = dict(shelves)
         add.update({n: on_desk(a, x) for (n, (a, _)), x in zip(items.items(), (-0.95, -0.55))})
         whose_cases[c] = dict(
@@ -1734,10 +1734,11 @@ def T14(t):
             base="e1_book_ready", control="e1_book_ready", conditions=["storage_place", "referent_clue"],
             instruction="Put the books from the study desk on the shelves with books of the same kind.",
             instruction_zh="把书房书桌上的书收好，放到摆着同类书的书架上。",
-            factor="which books are on the desk (seed: the kid's picture book, a grown-up's novel, or both)",
-            challenge="the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the "
-                      "living-room shelf; the desk holds one or both kinds",
-            rationale="where each book goes follows from whose it is, read off the books already shelved",
+            factor="which books are on the desk (seed: a blue hardcover, a paperback, or both)",
+            challenge="blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the "
+                      "desk holds one or both kinds",
+            rationale="where each book goes follows from the books already shelved: each to the shelf holding its "
+                      "kind",
             cases=whose_cases),
         "next_in_series": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["referent_clue", "not_in_view"],

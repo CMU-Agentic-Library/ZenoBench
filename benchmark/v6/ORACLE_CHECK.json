@@ -2478,7 +2478,7 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "whose_book__picture_book",
+   "layout": "whose_book__blue_book",
    "steps": 5,
    "atoms_checked": 6,
    "atoms_geometric": 0,
@@ -2488,7 +2488,7 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "whose_book__novel",
+   "layout": "whose_book__paperback",
    "steps": 5,
    "atoms_checked": 6,
    "atoms_geometric": 0,

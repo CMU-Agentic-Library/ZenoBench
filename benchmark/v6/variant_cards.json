@@ -18200,7 +18200,7 @@
   "rationale": "each thing by what it is and what the instruction says about it: the book back on a bookcase, the mug to a kitchen worktop, the homework stays as it lies",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/whose_book__picture_book": {
+ "T14_shelve_the_book/whose_book__blue_book": {
   "variant": "whose_book",
   "category": "task",
   "seeds": [
@@ -18217,11 +18217,11 @@
     "book_red"
    ],
    "added": [
-    "kid_book_1",
-    "kid_book_2",
-    "novel_1",
-    "novel_2",
-    "picture_book"
+    "blue_book",
+    "blue_shelved_1",
+    "blue_shelved_2",
+    "paperback_shelved_1",
+    "paperback_shelved_2"
    ],
    "removed": [
     "book_red"
@@ -18237,27 +18237,27 @@
    "all": [
     [
      "on",
-     "picture_book",
+     "blue_book",
      "bookcase_2/top"
     ],
     [
      "near_start",
-     "kid_book_1",
+     "blue_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "kid_book_2",
+     "blue_shelved_2",
      0.03
     ],
     [
      "near_start",
-     "novel_1",
+     "paperback_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "novel_2",
+     "paperback_shelved_2",
      0.03
     ],
     [
@@ -18267,12 +18267,12 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_whose_book__picture_book",
-  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+  "oracle_route": "v6_whose_book__blue_book",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/whose_book__novel": {
+ "T14_shelve_the_book/whose_book__paperback": {
   "variant": "whose_book",
   "category": "task",
   "seeds": [
@@ -18288,11 +18288,11 @@
     "book_red"
    ],
    "added": [
-    "kid_book_1",
-    "kid_book_2",
-    "novel",
-    "novel_1",
-    "novel_2"
+    "blue_shelved_1",
+    "blue_shelved_2",
+    "paperback",
+    "paperback_shelved_1",
+    "paperback_shelved_2"
    ],
    "removed": [
     "book_red"
@@ -18308,27 +18308,27 @@
    "all": [
     [
      "on",
-     "novel",
+     "paperback",
      "large_shelf_2/shelf_2"
     ],
     [
      "near_start",
-     "kid_book_1",
+     "blue_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "kid_book_2",
+     "blue_shelved_2",
      0.03
     ],
     [
      "near_start",
-     "novel_1",
+     "paperback_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "novel_2",
+     "paperback_shelved_2",
      0.03
     ],
     [
@@ -18338,9 +18338,9 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_whose_book__novel",
-  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+  "oracle_route": "v6_whose_book__paperback",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/whose_book__both": {
@@ -18359,12 +18359,12 @@
     "book_red"
    ],
    "added": [
-    "kid_book_1",
-    "kid_book_2",
-    "novel",
-    "novel_1",
-    "novel_2",
-    "picture_book"
+    "blue_book",
+    "blue_shelved_1",
+    "blue_shelved_2",
+    "paperback",
+    "paperback_shelved_1",
+    "paperback_shelved_2"
    ],
    "removed": [
     "book_red"
@@ -18380,32 +18380,32 @@
    "all": [
     [
      "on",
-     "picture_book",
+     "blue_book",
      "bookcase_2/top"
     ],
     [
      "on",
-     "novel",
+     "paperback",
      "large_shelf_2/shelf_2"
     ],
     [
      "near_start",
-     "kid_book_1",
+     "blue_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "kid_book_2",
+     "blue_shelved_2",
      0.03
     ],
     [
      "near_start",
-     "novel_1",
+     "paperback_shelved_1",
      0.03
     ],
     [
      "near_start",
-     "novel_2",
+     "paperback_shelved_2",
      0.03
     ],
     [
@@ -18416,8 +18416,8 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_whose_book__both",
-  "challenge": "the kid's picture books stand on his bookcase in the bedroom, the grown-ups' novels on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from whose it is, read off the books already shelved",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
+  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/next_in_series__on_bookcase": {

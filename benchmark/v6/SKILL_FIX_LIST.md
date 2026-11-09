@@ -76,6 +76,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | measure | example_spoon | T13/copy_the_setting |
 | measure | toy_bin_small_2 | T12/bins_capacity |
 | open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_missing, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/fruit_stays_out, T27/still_eating, T27/two_leftovers, T27/which_is_leftover |
+| pick | blue_book | T14/whose_book |
 | pick | bought_apple | T22/basket_missing, T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_juice | T22/basket_missing, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
@@ -119,12 +120,11 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | lunch_orange | T11/fruit_plate_for_guests, T11/leave_one_for_kid |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
-| pick | novel | T14/whose_book |
 | pick | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
+| pick | paperback | T14/whose_book |
 | pick | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | pick | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | pick | pencil_2 | T05/all_pens |
-| pick | picture_book | T14/whose_book |
 | pick | plate_counter_a | T13/copy_the_setting |
 | pick | red_book_2 | T14/next_in_series |
 | pick | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |
@@ -152,6 +152,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | tray_book_3 | T22/tray_elsewhere |
 | pick | tray_book_4 | T22/tray_elsewhere |
 | pick | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
+| place | blue_book | T14/whose_book |
 | place | bought_apple | T22/basket_missing, T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | place | bought_juice | T22/basket_missing, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | place | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
@@ -190,12 +191,11 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | lunch_orange | T11/fruit_plate_for_guests, T11/leave_one_for_kid |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
-| place | novel | T14/whose_book |
 | place | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
+| place | paperback | T14/whose_book |
 | place | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | place | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | place | pencil_2 | T05/all_pens |
-| place | picture_book | T14/whose_book |
 | place | plate_counter_a | T13/copy_the_setting |
 | place | red_book_2 | T14/next_in_series |
 | place | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |

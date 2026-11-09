@@ -4132,8 +4132,8 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 10,
-"variant": "whose_book__picture_book",
-"route": "v6_whose_book__picture_book",
+"variant": "whose_book__blue_book",
+"route": "v6_whose_book__blue_book",
 "family": "whose_book"
 },
 {
@@ -4146,22 +4146,22 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 12,
-"variant": "whose_book__novel",
-"route": "v6_whose_book__novel",
+"variant": "whose_book__paperback",
+"route": "v6_whose_book__paperback",
 "family": "whose_book"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 13,
-"variant": "whose_book__novel",
-"route": "v6_whose_book__novel",
+"variant": "whose_book__paperback",
+"route": "v6_whose_book__paperback",
 "family": "whose_book"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 14,
-"variant": "whose_book__picture_book",
-"route": "v6_whose_book__picture_book",
+"variant": "whose_book__blue_book",
+"route": "v6_whose_book__blue_book",
 "family": "whose_book"
 },
 {
@@ -4174,8 +4174,8 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 16,
-"variant": "whose_book__picture_book",
-"route": "v6_whose_book__picture_book",
+"variant": "whose_book__blue_book",
+"route": "v6_whose_book__blue_book",
 "family": "whose_book"
 },
 {
@@ -4188,15 +4188,15 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 18,
-"variant": "whose_book__picture_book",
-"route": "v6_whose_book__picture_book",
+"variant": "whose_book__blue_book",
+"route": "v6_whose_book__blue_book",
 "family": "whose_book"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 19,
-"variant": "whose_book__novel",
-"route": "v6_whose_book__novel",
+"variant": "whose_book__paperback",
+"route": "v6_whose_book__paperback",
 "family": "whose_book"
 },
 {

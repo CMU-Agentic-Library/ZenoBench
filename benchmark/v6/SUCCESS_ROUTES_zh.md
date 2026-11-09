@@ -2579,31 +2579,31 @@
 
 ### whose_book（Task）
 
-**情况**：“把书房书桌上的书收好”：孩子的绘本在卧室书架上，大人的小说在客厅书架上 → 看书是谁的、跟同类放一起
+**情况**：“把书房书桌上的书收好，放到摆着同类书的书架上”：卧室书柜上摆着蓝色精装书，客厅书架上摆着平装书；书桌上有其中一类或两类 → 看每本书是哪一类，放到摆着同类书的那个书架上
 
 **指令**：把书房书桌上的书收好，放到摆着同类书的书架上。
 
 **成功条件**：
 
-- 摆法 `novel`：
-  - `novel` 在 `large_shelf_2/shelf_2` 上
-  - `kid_book_1`、`kid_book_2`、`novel_1`、`novel_2` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- 摆法 `picture_book`：
-  - `picture_book` 在 `bookcase_2/top` 上
-  - `kid_book_1`、`kid_book_2`、`novel_1`、`novel_2` 没被挪动（离开局位置不超过 3 cm）
+- 摆法 `blue_book`：
+  - `blue_book` 在 `bookcase_2/top` 上
+  - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - 摆法 `both`：
-  - `picture_book` 在 `bookcase_2/top` 上
-  - `novel` 在 `large_shelf_2/shelf_2` 上
-  - `kid_book_1`、`kid_book_2`、`novel_1`、`novel_2` 没被挪动（离开局位置不超过 3 cm）
+  - `blue_book` 在 `bookcase_2/top` 上
+  - `paperback` 在 `large_shelf_2/shelf_2` 上
+  - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `paperback`：
+  - `paperback` 在 `large_shelf_2/shelf_2` 上
+  - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `picture_book`：1. `look(target=desk_1/top)` → 2. `navigate(destination=picture_book)` → 3. `pick(object=picture_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=picture_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])`
-- 摆法 `novel`：1. `look(target=desk_1/top)` → 2. `navigate(destination=novel)` → 3. `pick(object=novel)` → 4. `navigate(destination=large_shelf_2/shelf_2)` → 5. `place(object=novel, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
-- 摆法 `both`：1. `look(target=desk_1/top)` → 2. `navigate(destination=picture_book)` → 3. `pick(object=picture_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=picture_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=novel)` → 7. `pick(object=novel)` → 8. `navigate(destination=large_shelf_2/shelf_2)` → 9. `place(object=novel, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
+- 摆法 `blue_book`：1. `look(target=desk_1/top)` → 2. `navigate(destination=blue_book)` → 3. `pick(object=blue_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])`
+- 摆法 `paperback`：1. `look(target=desk_1/top)` → 2. `navigate(destination=paperback)` → 3. `pick(object=paperback)` → 4. `navigate(destination=large_shelf_2/shelf_2)` → 5. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
+- 摆法 `both`：1. `look(target=desk_1/top)` → 2. `navigate(destination=blue_book)` → 3. `pick(object=blue_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=paperback)` → 7. `pick(object=paperback)` → 8. `navigate(destination=large_shelf_2/shelf_2)` → 9. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
 
 ### next_in_series（Task）
 
