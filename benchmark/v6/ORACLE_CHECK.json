@@ -1,6 +1,6 @@
 {
- "routes": 286,
- "ok": 286,
+ "routes": 285,
+ "ok": 285,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -3147,18 +3147,6 @@
    ],
    "problems": [],
    "variant": "cup_on_counter"
-  },
-  {
-   "task": "T28_cup_to_bedside",
-   "layout": "cup_put_away",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright kid_cup"
-   ],
-   "problems": [],
-   "variant": "cup_put_away"
   },
   {
    "task": "T28_cup_to_bedside",

@@ -16274,7 +16274,7 @@
    18,
    19
   ],
-  "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
+  "instruction": "We are about to make dumplings, and the rolling pin has rolled to the front edge of the island. Roll it back in so it does not fall off.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -16330,7 +16330,7 @@
    18,
    19
   ],
-  "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
+  "instruction": "We are about to make dumplings, and the rolling pin has rolled to the front edge of the island. Roll it back in so it does not fall off.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": [
@@ -22982,67 +22982,6 @@
   "oracle_route": "nominal",
   "challenge": "the kid's plastic cup on the kitchen counter; his bed has the teddy bear on it",
   "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T28_cup_to_bedside/cup_put_away": {
-  "variant": "cup_put_away",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [],
-   "added": [
-    "bed_bear",
-    "kid_cup"
-   ],
-   "removed": [],
-   "conditions": [
-    "item_put_away"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "kid_cup",
-     [
-      "bookcase_3/top",
-      "desk_1/top"
-     ]
-    ],
-    [
-     "upright",
-     "kid_cup"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "cup_on_counter",
-  "oracle_route": "v6_cup_put_away",
-  "challenge": "the cup was put away in the low wall cabinet",
-  "rationale": "look in the cabinet, take the cup, close the door",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T28_cup_to_bedside/which_bed__east": {

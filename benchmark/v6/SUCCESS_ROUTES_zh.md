@@ -2076,7 +2076,7 @@
 
 ## T16_rolling_pin_at_edge
 
-> 准备包饺子了，擀面杖滚到岛台前沿快掉下去了。把它往里滚回去别让它掉下来，顺便看看滚得顺不顺。
+> 准备包饺子了，擀面杖滚到岛台前沿快掉下去了，把它往里滚回去，别让它掉下来。
 
 ### pin_free（对照）
 
@@ -3410,21 +3410,6 @@
 **参考调用顺序**：
 
 1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
-
-### cup_put_away（Task）
-
-**情况**：杯子收在矮柜里 → 打开找，拿出来关好
-
-**成功条件**：
-
-- `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-- `kid_cup` 立着
-- `kitchen_cabinet_4` 关着
-- 手里空着
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=kid_cup)` → 7. `pick(object=kid_cup)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `close(articulated=kitchen_cabinet_4)` → 10. `navigate(destination=bookcase_3/top)` → 11. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
 
 ### which_bed（Task）
 

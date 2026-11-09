@@ -501,7 +501,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Task-Level
 
-* `cup_put_away` (v6_cup_put_away, 11 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(kid_cup) pick(kid_cup) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
 * `which_bed__east` (v6_which_bed__east, 7 steps): navigate(kitchen_counter_2/top) look(kitchen_counter_2/top) navigate(kid_cup) pick(kid_cup) look(mattress_2/top) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
 * `which_bed__south` (v6_which_bed__south, 7 steps): navigate(kitchen_counter_2/top) look(kitchen_counter_2/top) navigate(kid_cup) pick(kid_cup) look(mattress_1/top) navigate(cell_shelf_2/top) place(kid_cup,cell_shelf_2/top,[1.42, -10.8])
 * `where_his_cup_is__on_counter` (v6_where_his_cup_is__on_counter, 5 steps): look(kitchen_counter_2/top) navigate(kid_cup) pick(kid_cup) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])

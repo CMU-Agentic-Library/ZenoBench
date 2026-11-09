@@ -2650,6 +2650,10 @@ NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
 # a task whose v5 instruction spelled out every place and fallback: one short instruction for the task and all of
 # its v5 variants (where things go is for the robot to work out)
 TASK_TEXT = {
+    # "and see whether it rolls smoothly" asked for nothing the goal checks: dropped
+    "T16_rolling_pin_at_edge": ("We are about to make dumplings, and the rolling pin has rolled to the front edge of "
+                                "the island. Roll it back in so it does not fall off.",
+                                "准备包饺子了，擀面杖滚到岛台前沿快掉下去了，把它往里滚回去，别让它掉下来。"),
     # asks for a cup only (no "a mug will do"): a mug is a cup too, whether to settle for it the robot decides
     "T04_cup_or_mug_to_cabinet": ("A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
                                   "有客人要来，在靠墙矮柜上的饮品角摆一个杯子。"),

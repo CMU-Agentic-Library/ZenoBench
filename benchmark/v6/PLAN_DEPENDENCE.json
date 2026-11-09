@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 256,
-   "variants": 124,
+   "layouts": 255,
+   "variants": 123,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 61,
    "goal_not_met": 93,
-   "not_observed": 59,
+   "not_observed": 58,
    "resource_missing": 37,
    "argument_mismatch": 6
   },
@@ -124,7 +124,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 380,
+  "geometric_atoms_unchecked": 379,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -381,9 +381,6 @@
     "kid_cup"
    ],
    "T28 cup_out_of_view": [
-    "kid_cup"
-   ],
-   "T28 cup_put_away": [
     "kid_cup"
    ],
    "T28 where_his_cup_is": [
@@ -4532,21 +4529,6 @@
   },
   {
    "task": "T28_cup_to_bedside",
-   "variant": "cup_put_away",
-   "layout": "cup_put_away",
-   "steps": 11,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright kid_cup"
-   ],
-   "control_route": "not_observed",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "where_his_cup_is__in_cabinet"
-   ]
-  },
-  {
-   "task": "T28_cup_to_bedside",
    "variant": "which_bed",
    "layout": "which_bed__east",
    "steps": 7,
@@ -4607,9 +4589,7 @@
    "other_layouts": {
     "where_his_cup_is__on_counter": "not_observed"
    },
-   "other_variants_passing": [
-    "cup_put_away"
-   ]
+   "other_variants_passing": []
   },
   {
    "task": "T28_cup_to_bedside",

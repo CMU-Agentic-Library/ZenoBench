@@ -675,13 +675,6 @@ def t28():
                   {"all": [["on_any", KC, SIDES], ["upright", KC], H]}, fetch(KC, side, [2.10, -4.88]), [KC])
     to_side = fetch(KC, side, [2.10, -4.88])
     fams = {
-        "cup_put_away": fam(
-            "cup_on_counter", ["item_put_away"], "the seed's layout only",
-            "the cup was put away in the low wall cabinet",
-            "look in the cabinet, take the cup, close the door",
-            {"": dict(add={KC: on("plastic_cup", f"{C4}/inside_shelf", 1.40, 0.42), **BEAR},
-                      goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["is_closed", C4], H]},
-                      route=explore(C4) + from_closed(KC, C4) + [nav(side), place(KC, side, [2.10, -4.88])])}),
         "which_bed": fam(
             "cup_on_counter", ["referent_clue"], "which bed is his (seed: the teddy bear on one of the two beds)",
             "two bedrooms with a bed each; his teddy bear lies on his",
