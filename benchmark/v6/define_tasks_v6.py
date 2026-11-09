@@ -574,13 +574,6 @@ def T04(t):
                          route=base[:4] + [place(C, SPOT, [3.36, 0.36]), S("search", object="mug", region=region),
                                            nav("mug"), pick("mug"), nav(SPOT), place("mug", SPOT, [3.62, 0.36])])
                  for c, (pose, region) in away.items()}
-    # hot_tea_mug: the guest wants hot tea, so something with a handle: the cup on the island has none, a mug is in
-    # another room
-    tea_goal = {"any": [[["on", m, SPOT], ["upright", m]] for m in MUGS], "all": [["hand_empty", "right"]]}
-    tea_cases = {c: dict(move={"mug": pose},
-                         route=[look("kitchen_island/top"), S("search", object="mug", region=region), nav("mug"),
-                                pick("mug"), nav(SPOT), place("mug", SPOT)])
-                 for c, (pose, region) in away.items()}
     return {
         "two_guests": dict(
             base="cup_available", control="cup_available", conditions=["missing_piece", "not_in_view"],
@@ -594,18 +587,6 @@ def T04(t):
             rationale="set out the cup, notice there is no second cup, and fetch a mug from another room for the "
                       "second place; the two stand apart on the spot",
             cases=two_cases),
-        "hot_tea_mug": dict(
-            base="cup_available", control="cup_available", conditions=["not_in_view"],
-            instruction="A guest would like hot tea. Set out a cup with a handle at the drinks spot on the low wall "
-                        "cabinet.",
-            instruction_zh="客人想喝热茶。在靠墙矮柜上的饮品角摆一个带把手的杯子。",
-            goal=tea_goal, watch=[C, *MUGS],
-            factor="where the mug is (seed: the dining table or the study desk)",
-            challenge="the cup on the island is in plain view but has no handle; the mug (with a handle) is in another "
-                      "room, out of view",
-            rationale="hot tea wants a handle: the cup in view does not fit the request, the mug does; find it in "
-                      "another room",
-            cases=tea_cases),
         "x6_gd_cup_in_cabinets": dict(
             base="no_cup", control="no_cup",
             factor="which cabinet holds the preferred item",

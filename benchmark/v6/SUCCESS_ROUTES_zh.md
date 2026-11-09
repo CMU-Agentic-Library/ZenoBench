@@ -650,34 +650,6 @@
 - 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=cup_counter_b)` → 3. `pick(object=cup_counter_b)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.36, 0.36])` → 6. `search(object=mug, region=dining_room_0_1)` → 7. `navigate(destination=mug)` → 8. `pick(object=mug)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
 - 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=cup_counter_b)` → 3. `pick(object=cup_counter_b)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.36, 0.36])` → 6. `search(object=mug, region=living_room_0_1)` → 7. `navigate(destination=mug)` → 8. `pick(object=mug)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
 
-### hot_tea_mug（Task）
-
-**情况**：客人想喝热茶，指令要一个带把手的杯子；岛台上的杯子就在眼前但没有把手，马克杯在别的房间 → 不拿眼前的杯子凑合，去找马克杯
-
-**指令**：客人想喝热茶。在靠墙矮柜上的饮品角摆一个带把手的杯子。
-
-**成功条件**：
-
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `mug` 在 `kitchen_cabinet_6/top` 上
-    - `mug` 立着
-  - 第 2 组：
-    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-    - `mug_dining_cabinet` 立着
-  - 第 3 组：
-    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-    - `mug_shelf` 立着
-  - 第 4 组：
-    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-    - `mug_counter` 立着
-
-**参考调用顺序**：
-
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=mug, region=dining_room_0_1)` → 3. `navigate(destination=mug)` → 4. `pick(object=mug)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
-- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `search(object=mug, region=living_room_0_1)` → 3. `navigate(destination=mug)` → 4. `pick(object=mug)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
-
 ### x6_gd_cup_in_cabinets（Task）
 
 **情况**：马克杯就在眼前，但更想要杯子；杯子收在两个关着的矮柜之一 → 逐个打开找，找完关门

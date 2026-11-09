@@ -1,6 +1,6 @@
 {
- "routes": 291,
- "ok": 291,
+ "routes": 289,
+ "ok": 289,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -842,36 +842,6 @@
    ],
    "problems": [],
    "variant": "two_guests"
-  },
-  {
-   "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "hot_tea_mug__dining",
-   "steps": 6,
-   "atoms_checked": 5,
-   "atoms_geometric": 4,
-   "geometric_atoms": [
-    "upright mug",
-    "upright mug_dining_cabinet",
-    "upright mug_shelf",
-    "upright mug_counter"
-   ],
-   "problems": [],
-   "variant": "hot_tea_mug"
-  },
-  {
-   "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "hot_tea_mug__study",
-   "steps": 6,
-   "atoms_checked": 5,
-   "atoms_geometric": 4,
-   "geometric_atoms": [
-    "upright mug",
-    "upright mug_dining_cabinet",
-    "upright mug_shelf",
-    "upright mug_counter"
-   ],
-   "problems": [],
-   "variant": "hot_tea_mug"
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
