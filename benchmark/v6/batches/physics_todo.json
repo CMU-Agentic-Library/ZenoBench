@@ -6162,8 +6162,8 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 10,
-"variant": "m_bottle_on_tv_stand__alt_dining_table_2",
-"route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+"variant": "m_bottle_on_tv_stand__alt_bookcase_2",
+"route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
 "family": "m_bottle_on_tv_stand"
 },
 {
@@ -6183,8 +6183,8 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 13,
-"variant": "m_bottle_on_tv_stand__alt_dining_table_2",
-"route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+"variant": "m_bottle_on_tv_stand__alt_bookcase_2",
+"route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
 "family": "m_bottle_on_tv_stand"
 },
 {
@@ -6197,22 +6197,22 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 15,
-"variant": "m_bottle_on_tv_stand__alt_dining_table_2",
-"route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+"variant": "m_bottle_on_tv_stand__alt_bookcase_2",
+"route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
 "family": "m_bottle_on_tv_stand"
 },
 {
 "task": "T20_juice_back_to_table",
 "seed": 16,
-"variant": "m_bottle_on_tv_stand__alt_dining_table_2",
-"route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+"variant": "m_bottle_on_tv_stand__alt_bookcase_2",
+"route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
 "family": "m_bottle_on_tv_stand"
 },
 {
 "task": "T20_juice_back_to_table",
 "seed": 17,
-"variant": "m_bottle_on_tv_stand__alt_dining_table_2",
-"route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+"variant": "m_bottle_on_tv_stand__alt_bookcase_2",
+"route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
 "family": "m_bottle_on_tv_stand"
 },
 {

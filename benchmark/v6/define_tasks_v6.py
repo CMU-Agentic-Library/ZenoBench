@@ -2489,7 +2489,7 @@ SEED_EXT = {
     ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
     ('T19_recycling', 'lookalike_bin'): 1,
     ('T19_recycling', 'm_can_in_dining_room'): 1,
-    ('T20_juice_back_to_table', 'm_bottle_on_tv_stand'): 0,
+    ('T20_juice_back_to_table', 'm_bottle_on_tv_stand'): 4,     # not 0: the dining table is where it goes
 }
 
 

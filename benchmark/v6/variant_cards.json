@@ -17846,7 +17846,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T20_juice_back_to_table/m_bottle_on_tv_stand__alt_dining_table_2": {
+ "T20_juice_back_to_table/m_bottle_on_tv_stand__alt_bookcase_2": {
   "variant": "m_bottle_on_tv_stand",
   "category": "task",
   "seeds": [
@@ -17889,8 +17889,8 @@
    ]
   },
   "control": "bottle_on_cabinet",
-  "oracle_route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
-  "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on dining_table_2/top)",
+  "oracle_route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
+  "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
   "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

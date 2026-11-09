@@ -60523,13 +60523,13 @@
       }
      }
     },
-    "m_bottle_on_tv_stand__alt_dining_table_2": {
+    "m_bottle_on_tv_stand__alt_bookcase_2": {
      "move": {
       "juice_bottle": {
-       "support": "dining_table_2/top",
+       "support": "bookcase_2/top",
        "xy": [
-        3.7,
-        6.3
+        1.0,
+        -0.43
        ],
        "yaw_deg": 0.0
       }
@@ -60539,13 +60539,13 @@
      ],
      "difficulty": "medium",
      "since": "v6",
-     "note": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on dining_table_2/top)",
+     "note": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
      "v6": {
       "family": "m_bottle_on_tv_stand",
-      "case": "alt_dining_table_2",
+      "case": "alt_bookcase_2",
       "tier": "medium",
       "hard_category": null,
-      "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on dining_table_2/top)",
+      "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
       "derived_from": "m_bottle_on_tv_stand",
       "seed_extension": true,
       "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
@@ -60556,48 +60556,30 @@
         "names": [
          "juice_bottle"
         ],
-        "support": "dining_table_2/top",
+        "support": "bookcase_2/top",
         "box": [
-         3.671,
-         6.271,
-         3.729,
-         6.329
+         0.971,
+         -0.459,
+         1.029,
+         -0.401
         ],
         "dx": [
-         -0.04,
-         0.09
+         -0.25,
+         0.25
         ],
         "dy": [
-         -0.76,
-         1.61
+         -0.14,
+         0.0
         ]
        }
       ],
       "static": {
-       "dining_table_2/top": [
+       "bookcase_2/top": [
         [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.971,
-         7.271,
-         3.029,
-         7.329
+         0.7993,
+         -0.5765,
+         1.1294,
+         -0.2791
         ]
        ]
       },
@@ -60789,7 +60771,7 @@
    "oracle": {
     "bottle_on_cabinet": "nominal",
     "m_bottle_on_tv_stand": "v5_m_bottle_on_tv_stand",
-    "m_bottle_on_tv_stand__alt_dining_table_2": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+    "m_bottle_on_tv_stand__alt_bookcase_2": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
     "x6_gd_bottle_put_away__in_cabinet_4": "v6_x6_gd_bottle_put_away__in_cabinet_4",
     "x6_gd_bottle_put_away__in_cabinet_6": "v6_x6_gd_bottle_put_away__in_cabinet_6"
    },
@@ -60886,13 +60868,13 @@
      "kind": "v5_oracle",
      "variant": "m_bottle_on_tv_stand"
     },
-    "v6_m_bottle_on_tv_stand__alt_dining_table_2": {
+    "v6_m_bottle_on_tv_stand__alt_bookcase_2": {
      "steps": [
       {
        "skill": "search",
        "args": {
         "object": "juice_bottle",
-        "region": "dining_room_0_1"
+        "region": "bedroom_0_1"
        }
       },
       {
@@ -60926,7 +60908,7 @@
       }
      ],
      "kind": "v6_seed_extension",
-     "variant": "m_bottle_on_tv_stand__alt_dining_table_2"
+     "variant": "m_bottle_on_tv_stand__alt_bookcase_2"
     },
     "v6_x6_gd_bottle_put_away__in_cabinet_4": {
      "steps": [
@@ -61213,17 +61195,17 @@
      "control": "bottle_on_cabinet",
      "layouts": [
       "m_bottle_on_tv_stand",
-      "m_bottle_on_tv_stand__alt_dining_table_2"
+      "m_bottle_on_tv_stand__alt_bookcase_2"
      ],
      "seeds": {
-      "10": "m_bottle_on_tv_stand__alt_dining_table_2",
+      "10": "m_bottle_on_tv_stand__alt_bookcase_2",
       "11": "m_bottle_on_tv_stand",
       "12": "m_bottle_on_tv_stand",
-      "13": "m_bottle_on_tv_stand__alt_dining_table_2",
+      "13": "m_bottle_on_tv_stand__alt_bookcase_2",
       "14": "m_bottle_on_tv_stand",
-      "15": "m_bottle_on_tv_stand__alt_dining_table_2",
-      "16": "m_bottle_on_tv_stand__alt_dining_table_2",
-      "17": "m_bottle_on_tv_stand__alt_dining_table_2",
+      "15": "m_bottle_on_tv_stand__alt_bookcase_2",
+      "16": "m_bottle_on_tv_stand__alt_bookcase_2",
+      "17": "m_bottle_on_tv_stand__alt_bookcase_2",
       "18": "m_bottle_on_tv_stand",
       "19": "m_bottle_on_tv_stand"
      },

@@ -3669,14 +3669,14 @@
    ],
    "control_route": "not_observed",
    "other_layouts": {
-    "m_bottle_on_tv_stand__alt_dining_table_2": "argument_mismatch"
+    "m_bottle_on_tv_stand__alt_bookcase_2": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T20_juice_back_to_table",
    "variant": "m_bottle_on_tv_stand",
-   "layout": "m_bottle_on_tv_stand__alt_dining_table_2",
+   "layout": "m_bottle_on_tv_stand__alt_bookcase_2",
    "steps": 5,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -5465,7 +5465,7 @@
    "variant": "m_bottle_on_tv_stand",
    "candidates": [
     "m_bottle_on_tv_stand",
-    "m_bottle_on_tv_stand__alt_dining_table_2",
+    "m_bottle_on_tv_stand__alt_bookcase_2",
     "bottle_on_cabinet"
    ],
    "passes_all": []
@@ -8173,7 +8173,7 @@
    "variant": "m_bottle_on_tv_stand",
    "layouts": [
     "m_bottle_on_tv_stand",
-    "m_bottle_on_tv_stand__alt_dining_table_2"
+    "m_bottle_on_tv_stand__alt_bookcase_2"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
