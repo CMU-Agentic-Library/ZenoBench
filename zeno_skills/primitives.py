@@ -156,7 +156,7 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
     Joint: the straight joint move when it is free (and keeps a held load level with
     spec.hold_tilt), else a trajectory; a tilt-held trajectory ends at the goal's pose, so it must
     end at the goal itself or a free, level joint move must join it there.  Pose: the straight TCP
-    line, else the planner to the pose (the tilt held with spec.hold_tilt), else to q_hint.
+    line, else to q_hint (its solution) as a Joint is, else (no q_hint) the planner to the pose.
     PoseSet: the cheapest reachable goal (batched IK), then as a Pose with its solution."""
     q0 = np.asarray(state.q(kin.side) if q_from is None else q_from, float)
     with query(kin, state, spec):
@@ -194,15 +194,21 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
         qs, ok = kin.cart_path(q0, p, R, step=step)
         if ok:
             return Segment(name, spec, q0, tuple(qs), target=("pose", p, R), info={"how": "straight"})
-        if spec.hold_tilt and goal.q_hint is not None:
-            # a load in the hand and a solution of the goal: the joint plan to it, else (it tilts the
-            # load, or fails) the tilt-held plan to its pose (Kinematics.plan, carry).  Not plan_to's
-            # tilt-held pose first: that one and the same plan again after the joint plan is a retry
-            # -- T01 s11 11-08, 6.1 s to FINETUNE_TRAJOPT_FAIL, then 0.7 s to the same pose
-            qs, status = kin.plan(q0, np.asarray(goal.q_hint, float), carry=True)
-            how = "planned (tilt held)"
+        if goal.q_hint is not None:
+            # a solution of the goal (the park search's, the PoseSet's IK): the straight joint move
+            # to it when free, else the joint plan, with a load the tilt held (Kinematics.plan,
+            # carry: else the tilt-held plan to its pose).  Not plan_to's pose plan first: with a
+            # load that and the same plan again after the joint plan is a retry (T01 s11 11-08,
+            # 6.1 s to FINETUNE_TRAJOPT_FAIL, then 0.7 s to the same pose); without one it never
+            # made pick_reach (11-08 run: 0 of 150 planned) and may end on another solution than
+            # the one the park search ranked
+            qh = np.asarray(goal.q_hint, float)
+            if kin.segment_free(q0, qh) and not (spec.hold_tilt and tips_over(kin, q0, qh)):
+                return Segment(name, spec, q0, tuple(dense(q0, qh)), target=("pose", p, R), info={"how": "joint"})
+            qs, status = kin.plan(q0, qh, carry=spec.hold_tilt)
+            how = "planned (tilt held)" if spec.hold_tilt else "joint"
         else:
-            qs, status = kin.plan_to(q0, p, R, carry=spec.hold_tilt, q_goal=goal.q_hint)
+            qs, status = kin.plan_to(q0, p, R, carry=spec.hold_tilt)
             how = status
         if qs is None:
             return Failure(f"no collision-free path to the pose ({status})", name)

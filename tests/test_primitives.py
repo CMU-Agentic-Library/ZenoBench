@@ -117,18 +117,23 @@ def test_a_tilt_held_trajectory_must_end_at_the_joint_goal():
     assert isinstance(seg, Failure) and "off the joint goal" in seg.why and ("plan", True) in kin.calls
 
 
-def test_a_pose_goal_goes_straight_when_it_can_else_plans_with_the_hint():
+def test_a_pose_goal_goes_straight_when_it_can_else_to_its_solution():
     seg = P.free_leg(FakeKin(), _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3)), "to")
     assert seg.info["how"] == "straight"
-    hint = _q(0.5, 0.5, 0.5)
-    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan_to=([_q(0.1, 0, 0)], "pose"))
+    hint = _q(0.1, 0, 0)
+    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, seg_free=False, plan=([hint], None))
     seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "to")
-    assert seg.info["how"] == "pose" and kin.calls[-1] == ("plan_to", False, (0.5, 0.5, 0.5))
+    assert seg.info["how"] == "joint" and ("plan", False) in kin.calls
+    assert not any(c[0] == "plan_to" for c in kin.calls)
+    # no solution: the planner to the pose
+    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan_to=([_q(0.1, 0, 0)], "pose"))
+    seg = P.free_leg(kin, _state(), FREE_SPEC, P.Pose(np.array([0.1, 0, 0]), np.eye(3)), "to")
+    assert seg.info["how"] == "pose" and kin.calls[-1] == ("plan_to", False, None)
 
 
 def test_a_load_with_a_goal_solution_is_planned_to_it_with_the_tilt_held():
     hint = _q(0.1, 0, 0)
-    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, plan=([hint], None))
+    kin = FakeKin(wall=lambda p: 0.04 < p[0] < 0.06, seg_free=False, plan=([hint], None))
     seg = P.free_leg(kin, _state(), Spec(hold_tilt=True), P.Pose(np.array([0.1, 0, 0]), np.eye(3), hint), "carry")
     assert seg.info["how"] == "planned (tilt held)" and ("plan", True) in kin.calls
     assert not any(c[0] == "plan_to" for c in kin.calls)
