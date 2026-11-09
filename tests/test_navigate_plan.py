@@ -140,12 +140,13 @@ def test_the_catalog_names_each_skill_once_with_a_builder_and_a_job(tmp_path):
     skills = MS.load()
     assert set(skills) >= {"navigate", "pick", "place"}
     assert skills["pick"].park and not skills["navigate"].park and skills["place"].template == "plan_place"
+    assert skills["navigate"].skill_id == "skill_001"
     bad = json.loads(MS.CATALOG.read_text())
-    bad["skills"][0]["template"] = "plan_nothing"
+    bad["motion_skills"]["skills"][0]["template"] = "plan_nothing"
     (tmp_path / "c.json").write_text(json.dumps(bad))
     with pytest.raises(ValueError, match="no builder"):
         MS.load(tmp_path / "c.json")
-    bad["skills"][0].update(template="plan_navigate", shape="dance")
+    bad["motion_skills"]["skills"][0].update(template="plan_navigate", shape="dance")
     (tmp_path / "c.json").write_text(json.dumps(bad))
     with pytest.raises(ValueError, match="shape"):
         MS.load(tmp_path / "c.json")

@@ -492,5 +492,41 @@
    "contract_id": "contract_079",
    "definition": "skills/skill_071/skill.json"
   }
- ]
+ ],
+ "motion_skills": {
+  "schema_version": 1,
+  "kind": "motion_skill_catalog",
+  "skills": [
+   {
+    "name": "navigate",
+    "shape": "drive",
+    "template": "plan_navigate",
+    "park": false,
+    "arrive": "fold",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.navigate:navigate_job",
+    "skill_id": "skill_001"
+   },
+   {
+    "name": "pick",
+    "shape": "pick_place",
+    "template": "plan_pick",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.pick:pick_job",
+    "skill_id": "skill_017"
+   },
+   {
+    "name": "place",
+    "shape": "pick_place",
+    "template": "plan_place",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.place:place_job",
+    "skill_id": "skill_018"
+   }
+  ]
+ }
 }
