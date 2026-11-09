@@ -68,6 +68,16 @@ def test_the_execution_reads_and_writes_the_simulator_only_through_the_actuator(
              if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
              and n.func.value.id == "act"}
     actuator = {"act." + m for m in ("follow", "grip", "drive_base", "swing", "declare", "contact_allow",
-                                     "snapshot", "arm", "log")}
+                                     "snapshot", "arm_kin", "log")}
     assert calls and calls <= actuator, calls - actuator
     assert "rig." not in src
+
+
+def test_no_rig_attribute_shadows_an_actuator_method():
+    # Rig.arm is the articulation's joint index tensor: an Actuator method of that name was shadowed
+    # by it (a TypeError at the first segment, 11-08)
+    from zeno_skills.motion_state import Actuator
+    methods = [m for m in vars(Actuator) if not m.startswith("_")]
+    src = (PKG / "rig.py").read_text()
+    shadowed = [m for m in methods if f"self.{m} =" in src]
+    assert methods and not shadowed, shadowed

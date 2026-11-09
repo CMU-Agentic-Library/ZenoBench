@@ -122,7 +122,7 @@ class FakeRig:
     def log(self, ev, **kw):
         self.events.append((ev, kw))
 
-    def arm(self, side="right"):
+    def arm_kin(self, side="right"):
         return self.kin
 
     def declare(self, name, allow, side="right", follows=True):

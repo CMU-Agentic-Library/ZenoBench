@@ -83,7 +83,7 @@ def execute(act, seg):
     if not seg.qs:
         return
     side = seg.info.get("side", "right")
-    kin = act.arm(side)
+    kin = act.arm_kin(side)
     allow = act.contact_allow(kin, seg.spec.allow) if seg.spec.allow.from_contact else seg.spec.allow
     act.declare(seg.name, allow, side=side)
     act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
@@ -109,7 +109,7 @@ def run(act, plan, rebuild, hooks=None):
     while i < len(segs):
         seg = segs[i]
         state = observe(act)
-        why = holds(act.arm(seg.info.get("side", "right")), state, seg)
+        why = holds(act.arm_kin(seg.info.get("side", "right")), state, seg)
         if why is not None:
             if rebuild is None:
                 raise SkillFailure(f"{seg.name}: {why}")
