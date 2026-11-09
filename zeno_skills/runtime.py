@@ -125,6 +125,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
     world = WorldModel(ann)
     kin.scene = world
     kin.motion = Motion(stage, ann)          # cuRobo against the stage's PhysX colliders
+    world.use_colliders(kin.motion.cols, kin.motion.body0.get)   # the base against the same colliders
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
               first_person_camera=first_person_camera, wrist_cameras=wrist)

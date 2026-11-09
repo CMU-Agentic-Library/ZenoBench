@@ -5,9 +5,9 @@ a chain of postures ("modes", e.g. current -> tucked -> hanging -> tucked).  A m
 is the same as a later one's (the tuck and the arrival) passes to it where it stands without
 moving an arm: the modes between (hanging at the side, narrower) are a detour the search takes
 only where the path needs it.  A pose is feasible in a
-mode when the whole robot there is clear: the base column's footprint of the annotated furniture
-(WorldModel.footprints_clear -- the house's collision shells close doorways near the floor and
-the base collider is off in the simulator), both arms at that posture and what the hands hold of
+mode when the whole robot there is clear: the base's footprint, chassis and column, of the static
+colliders at their heights (WorldModel.footprints_clear, a hand-made shape: the base collider is
+off in the simulator and has no spheres in cuRobo), both arms at that posture and what the hands hold of
 the scene's real colliders (Motion.base_depths); a posture switch m -> m+1 is allowed at a pose
 where the straight joint interpolation between the two postures is.  A* finds the cheapest path from
 the start through every mode to the goal pose (or, without a goal, to the nearest pose where the
