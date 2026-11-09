@@ -476,7 +476,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     takes = [i for i, x in enumerate(kind) if x == "take"]
     places = [i for i, x in enumerate(kind) if x == "place"]
     gset = {g.replace("_", "/") for g in in_goal}
-    goal_places = [i for i in places if views[i][0].replace("_", "/") in gset] or places[:1]
+    goal_places = [i for i in places if views[i][0].replace("_", "/") in gset]
+    used_goal = [i for i in takes if role.get(views[i][0]) == "use" and views[i][0] in in_goal]   # the pot itself
+    if not goal_places:
+        goal_places = used_goal or places[:1]
+    takes = [i for i in takes if i not in goal_places]
     notes = [i for i, x in enumerate(kind) if x in ("view", "point")][:2]
     tagged = [("find_", i) for i in takes] + [("goal_", i) for i in goal_places] + [("note_", i) for i in notes]
     tagged.sort(key=lambda p: p[1])
