@@ -2942,71 +2942,71 @@
 {
 "task": "T12_tidy_toys",
 "seed": 10,
-"variant": "bins_capacity__left_full",
-"route": "v6_bins_capacity__left_full",
+"variant": "bins_capacity__side_left_full",
+"route": "v6_bins_capacity__side_left_full",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 11,
-"variant": "bins_capacity__left_full",
-"route": "v6_bins_capacity__left_full",
+"variant": "bins_capacity__side_left_full",
+"route": "v6_bins_capacity__side_left_full",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 12,
-"variant": "bins_capacity__right_full",
-"route": "v6_bins_capacity__right_full",
+"variant": "bins_capacity__side_right_full",
+"route": "v6_bins_capacity__side_right_full",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 13,
-"variant": "bins_capacity__right_full",
-"route": "v6_bins_capacity__right_full",
+"variant": "bins_capacity__apart_empty_on_desk",
+"route": "v6_bins_capacity__apart_empty_on_desk",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 14,
-"variant": "bins_capacity__right_full",
-"route": "v6_bins_capacity__right_full",
+"variant": "bins_capacity__side_right_full",
+"route": "v6_bins_capacity__side_right_full",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 15,
-"variant": "bins_capacity__left_full",
-"route": "v6_bins_capacity__left_full",
+"variant": "bins_capacity__apart_full_on_tv",
+"route": "v6_bins_capacity__apart_full_on_tv",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 16,
-"variant": "bins_capacity__right_full",
-"route": "v6_bins_capacity__right_full",
+"variant": "bins_capacity__apart_empty_on_desk",
+"route": "v6_bins_capacity__apart_empty_on_desk",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 17,
-"variant": "bins_capacity__left_full",
-"route": "v6_bins_capacity__left_full",
+"variant": "bins_capacity__side_left_full",
+"route": "v6_bins_capacity__side_left_full",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 18,
-"variant": "bins_capacity__left_full",
-"route": "v6_bins_capacity__left_full",
+"variant": "bins_capacity__apart_full_on_tv",
+"route": "v6_bins_capacity__apart_full_on_tv",
 "family": "bins_capacity"
 },
 {
 "task": "T12_tidy_toys",
 "seed": 19,
-"variant": "bins_capacity__right_full",
-"route": "v6_bins_capacity__right_full",
+"variant": "bins_capacity__side_right_full",
+"route": "v6_bins_capacity__side_right_full",
 "family": "bins_capacity"
 },
 {

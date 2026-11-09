@@ -45633,7 +45633,7 @@
       }
      }
     },
-    "bins_capacity__left_full": {
+    "bins_capacity__side_left_full": {
      "move": {
       "rubber_duck": {
        "support": "desk_1/top",
@@ -45683,8 +45683,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.762,
-        -0.485
+        0.788,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45693,8 +45693,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.762,
-        -0.43
+        0.788,
+        -0.402
        ],
        "yaw_deg": 0
       },
@@ -45703,8 +45703,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.762,
-        -0.375
+        0.84,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45713,8 +45713,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.918,
-        -0.485
+        0.84,
+        -0.402
        ],
        "yaw_deg": 0
       },
@@ -45723,8 +45723,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.918,
-        -0.43
+        0.892,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45733,8 +45733,68 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        0.918,
-        -0.375
+        0.892,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_7": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.788,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_8": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.788,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_9": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.84,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_10": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.84,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_11": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.892,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_12": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.892,
+        -0.402
        ],
        "yaw_deg": 0
       }
@@ -45773,13 +45833,43 @@
        ],
        [
         "fully_inside",
+        "stored_block_7",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_8",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_9",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_10",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_11",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_12",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
         "toy_car",
         "toy_bin_small_2"
        ],
        [
         "fully_inside",
         "rubber_duck",
-        "toy_bin_small"
+        "toy_bin_small_2"
        ],
        [
         "upright",
@@ -45796,15 +45886,15 @@
       ]
      },
      "since": "v6",
-     "note": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
      "v6": {
       "family": "bins_capacity",
-      "case": "left_full",
-      "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
-      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+      "case": "side_left_full",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
       "control": "toys_out",
       "contrast": null,
-      "factor": "which bin is already half full (capacity)",
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
       "derived_from": "toys_out"
      },
      "layout": {
@@ -45812,11 +45902,17 @@
        {
         "names": [
          "stored_block_1",
+         "stored_block_10",
+         "stored_block_11",
+         "stored_block_12",
          "stored_block_2",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
+         "stored_block_7",
+         "stored_block_8",
+         "stored_block_9",
          "toy_bin_small",
          "toy_bin_small_2"
         ],
@@ -45861,7 +45957,7 @@
       }
      }
     },
-    "bins_capacity__right_full": {
+    "bins_capacity__side_right_full": {
      "move": {
       "rubber_duck": {
        "support": "desk_1/top",
@@ -45888,15 +45984,6 @@
       "toy_car"
      ],
      "add": {
-      "toy_bin_small": {
-       "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
-       "xy": [
-        0.84,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      },
       "toy_bin_small_2": {
        "asset": "small_storage_bin",
        "support": "bookcase_2/top",
@@ -45906,13 +45993,22 @@
        ],
        "yaw_deg": 0.0
       },
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
       "stored_block_1": {
        "asset": "wooden_block",
        "support": null,
        "z": 0.718,
        "xy": [
-        1.052,
-        -0.485
+        1.078,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45921,8 +46017,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.052,
-        -0.43
+        1.078,
+        -0.402
        ],
        "yaw_deg": 0
       },
@@ -45931,8 +46027,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.052,
-        -0.375
+        1.13,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45941,8 +46037,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.208,
-        -0.485
+        1.13,
+        -0.402
        ],
        "yaw_deg": 0
       },
@@ -45951,8 +46047,8 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.208,
-        -0.43
+        1.182,
+        -0.458
        ],
        "yaw_deg": 0
       },
@@ -45961,8 +46057,68 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.208,
-        -0.375
+        1.182,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_7": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.078,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_8": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.078,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_9": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.13,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_10": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.13,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_11": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.182,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_12": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.182,
+        -0.402
        ],
        "yaw_deg": 0
       }
@@ -46001,13 +46157,43 @@
        ],
        [
         "fully_inside",
+        "stored_block_7",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_8",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_9",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_10",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_11",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_12",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
         "toy_car",
         "toy_bin_small"
        ],
        [
         "fully_inside",
         "rubber_duck",
-        "toy_bin_small_2"
+        "toy_bin_small"
        ],
        [
         "upright",
@@ -46024,15 +46210,15 @@
       ]
      },
      "since": "v6",
-     "note": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
      "v6": {
       "family": "bins_capacity",
-      "case": "right_full",
-      "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
-      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+      "case": "side_right_full",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
       "control": "toys_out",
       "contrast": null,
-      "factor": "which bin is already half full (capacity)",
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
       "derived_from": "toys_out"
      },
      "layout": {
@@ -46040,11 +46226,17 @@
        {
         "names": [
          "stored_block_1",
+         "stored_block_10",
+         "stored_block_11",
+         "stored_block_12",
          "stored_block_2",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
+         "stored_block_7",
+         "stored_block_8",
+         "stored_block_9",
          "toy_bin_small",
          "toy_bin_small_2"
         ],
@@ -46078,6 +46270,681 @@
         "dy": [
          -0.24,
          0.0
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "bins_capacity__apart_full_on_tv": {
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_bin_small_2": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.548,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.548,
+        0.388
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.6,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.6,
+        0.388
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.652,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.652,
+        0.388
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_7": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.548,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_8": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.548,
+        0.388
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_9": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.6,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_10": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.6,
+        0.388
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_11": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.652,
+        0.332
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_12": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.544,
+       "xy": [
+        7.652,
+        0.388
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_7",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_8",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_9",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_10",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_11",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_12",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "toy_car",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "rubber_duck",
+        "toy_bin_small_2"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small_2"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "bins_capacity",
+      "case": "apart_full_on_tv",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "toy_bin_small_2"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.89,
+         -0.515,
+         1.11,
+         -0.345
+        ],
+        "dx": [
+         -0.17,
+         0.17
+        ],
+        "dy": [
+         -0.09,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.0038,
+         -6.0757,
+         -0.8962,
+         -5.9643
+        ],
+        "dx": [
+         -0.39,
+         0.86
+        ],
+        "dy": [
+         -0.24,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "stored_block_1",
+         "stored_block_10",
+         "stored_block_11",
+         "stored_block_12",
+         "stored_block_2",
+         "stored_block_3",
+         "stored_block_4",
+         "stored_block_5",
+         "stored_block_6",
+         "stored_block_7",
+         "stored_block_8",
+         "stored_block_9",
+         "toy_bin_small"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.49,
+         0.275,
+         7.71,
+         0.445
+        ],
+        "dx": [
+         -0.83,
+         0.65
+        ],
+        "dy": [
+         -0.05,
+         0.05
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "bins_capacity__apart_empty_on_desk": {
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_bin_small_2": {
+       "asset": "small_storage_bin",
+       "support": "desk_1/top",
+       "xy": [
+        -0.45,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.948,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.948,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.0,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.0,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.052,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.052,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_7": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.948,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_8": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        0.948,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_9": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.0,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_10": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.0,
+        -0.402
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_11": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.052,
+        -0.458
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_12": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.769,
+       "xy": [
+        1.052,
+        -0.402
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_7",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_8",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_9",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_10",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_11",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_12",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "toy_car",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "rubber_duck",
+        "toy_bin_small_2"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small_2"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "bins_capacity",
+      "case": "apart_empty_on_desk",
+      "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+      "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "stored_block_1",
+         "stored_block_10",
+         "stored_block_11",
+         "stored_block_12",
+         "stored_block_2",
+         "stored_block_3",
+         "stored_block_4",
+         "stored_block_5",
+         "stored_block_6",
+         "stored_block_7",
+         "stored_block_8",
+         "stored_block_9",
+         "toy_bin_small"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.89,
+         -0.515,
+         1.11,
+         -0.345
+        ],
+        "dx": [
+         -0.17,
+         0.17
+        ],
+        "dy": [
+         -0.09,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "rubber_duck",
+         "toy_bin_small_2"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.0038,
+         -6.0757,
+         -0.34,
+         -5.865
+        ],
+        "dx": [
+         -0.39,
+         0.3
+        ],
+        "dy": [
+         0.0,
+         0.14
         ]
        }
       ],
@@ -47129,8 +47996,10 @@
     "toys_everywhere": "hard_allocate_by_size",
     "duck_in_study__alt_dining_table_2": "v6_duck_in_study__alt_dining_table_2",
     "toys_everywhere__alt_dining_table_2": "v6_toys_everywhere__alt_dining_table_2",
-    "bins_capacity__left_full": "v6_bins_capacity__left_full",
-    "bins_capacity__right_full": "v6_bins_capacity__right_full",
+    "bins_capacity__side_left_full": "v6_bins_capacity__side_left_full",
+    "bins_capacity__side_right_full": "v6_bins_capacity__side_right_full",
+    "bins_capacity__apart_full_on_tv": "v6_bins_capacity__apart_full_on_tv",
+    "bins_capacity__apart_empty_on_desk": "v6_bins_capacity__apart_empty_on_desk",
     "find_all_toys__car_duck": "v6_find_all_toys__car_duck",
     "find_all_toys__car_duck_bear": "v6_find_all_toys__car_duck_bear",
     "find_all_toys__all_four": "v6_find_all_toys__all_four",
@@ -47651,7 +48520,7 @@
      "kind": "v6_seed_extension",
      "variant": "toys_everywhere__alt_dining_table_2"
     },
-    "v6_bins_capacity__left_full": {
+    "v6_bins_capacity__side_left_full": {
      "steps": [
       {
        "skill": "navigate",
@@ -47730,21 +48599,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "toy_bin_small"
+        "destination": "toy_bin_small_2"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "rubber_duck",
-        "container": "toy_bin_small"
+        "container": "toy_bin_small_2"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "bins_capacity__left_full"
+     "variant": "bins_capacity__side_left_full"
     },
-    "v6_bins_capacity__right_full": {
+    "v6_bins_capacity__side_right_full": {
      "steps": [
       {
        "skill": "navigate",
@@ -47761,13 +48630,13 @@
       {
        "skill": "measure",
        "args": {
-        "object": "toy_bin_small"
+        "object": "toy_bin_small_2"
        }
       },
       {
        "skill": "measure",
        "args": {
-        "object": "toy_bin_small_2"
+        "object": "toy_bin_small"
        }
       },
       {
@@ -47823,6 +48692,106 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "bins_capacity__side_right_full"
+    },
+    "v6_bins_capacity__apart_full_on_tv": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "toy_bin_small_2",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "toy_bin_small_2"
        }
       },
@@ -47835,7 +48804,107 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "bins_capacity__right_full"
+     "variant": "bins_capacity__apart_full_on_tv"
+    },
+    "v6_bins_capacity__apart_empty_on_desk": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "toy_bin_small_2",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small_2"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "bins_capacity__apart_empty_on_desk"
     },
     "v6_find_all_toys__car_duck": {
      "steps": [
@@ -48527,21 +49596,23 @@
      "origin": "v6",
      "control": "toys_out",
      "layouts": [
-      "bins_capacity__left_full",
-      "bins_capacity__right_full"
+      "bins_capacity__side_left_full",
+      "bins_capacity__side_right_full",
+      "bins_capacity__apart_full_on_tv",
+      "bins_capacity__apart_empty_on_desk"
      ],
-     "factor": "which bin is already half full (capacity)",
+     "factor": "which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full one in the bedroom and the empty one on the study desk)",
      "seeds": {
-      "10": "bins_capacity__left_full",
-      "11": "bins_capacity__left_full",
-      "12": "bins_capacity__right_full",
-      "13": "bins_capacity__right_full",
-      "14": "bins_capacity__right_full",
-      "15": "bins_capacity__left_full",
-      "16": "bins_capacity__right_full",
-      "17": "bins_capacity__left_full",
-      "18": "bins_capacity__left_full",
-      "19": "bins_capacity__right_full"
+      "10": "bins_capacity__side_left_full",
+      "11": "bins_capacity__side_left_full",
+      "12": "bins_capacity__side_right_full",
+      "13": "bins_capacity__apart_empty_on_desk",
+      "14": "bins_capacity__side_right_full",
+      "15": "bins_capacity__apart_full_on_tv",
+      "16": "bins_capacity__apart_empty_on_desk",
+      "17": "bins_capacity__side_left_full",
+      "18": "bins_capacity__apart_full_on_tv",
+      "19": "bins_capacity__side_right_full"
      }
     },
     "find_all_toys": {
@@ -59888,8 +60959,8 @@
       "subgoal_order",
       "multi_object_goal"
      ],
-     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
-     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞。",
+     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
+     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
      "remove": [],
      "add": {
       "desk_paperback_book": {
@@ -59997,8 +61068,8 @@
       "subgoal_order",
       "multi_object_goal"
      ],
-     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
-     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞。",
+     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
+     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
      "remove": [
       "book_red"
      ],
@@ -60102,8 +61173,8 @@
       "subgoal_order",
       "multi_object_goal"
      ],
-     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
-     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞。",
+     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
+     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
      "remove": [
       "book_red"
      ],

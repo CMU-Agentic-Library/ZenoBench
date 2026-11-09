@@ -92,7 +92,7 @@ Removed with the injected action failures: 137 variants (21 had nothing else, 60
 | T12 | toys_out | Control | - | - | 1 |
 | T12 | duck_in_study | Task-Level | - | not_in_view | 2 |
 | T12 | toys_everywhere | Task-Level | - | joint_capacity | 2 |
-| T12 | bins_capacity | Task-Level | - | joint_capacity | 2 |
+| T12 | bins_capacity | Task-Level | - | joint_capacity | 4 |
 | T12 | find_all_toys | Task-Level | - | goal_items_unstated; multi_object_goal; not_in_view | 3 |
 | T12 | castle_stays | Task-Level | - | multi_object_goal; relational_exception | 3 |
 | T13 | dishes_on_tv_stand | Control | - | - | 1 |

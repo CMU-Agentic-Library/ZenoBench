@@ -13688,15 +13688,13 @@
   "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T12_tidy_toys/bins_capacity__left_full": {
+ "T12_tidy_toys/bins_capacity__side_left_full": {
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
    10,
    11,
-   15,
-   17,
-   18
+   17
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
   "initial_conditions": {
@@ -13707,11 +13705,17 @@
    ],
    "added": [
     "stored_block_1",
+    "stored_block_10",
+    "stored_block_11",
+    "stored_block_12",
     "stored_block_2",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
     "stored_block_6",
+    "stored_block_7",
+    "stored_block_8",
+    "stored_block_9",
     "toy_bin_small",
     "toy_bin_small_2"
    ],
@@ -13758,13 +13762,43 @@
     ],
     [
      "fully_inside",
+     "stored_block_7",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_8",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_9",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_10",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_11",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
      "fully_inside",
      "rubber_duck",
-     "toy_bin_small"
+     "toy_bin_small_2"
     ],
     [
      "upright",
@@ -13781,19 +13815,17 @@
    ]
   },
   "control": "toys_out",
-  "oracle_route": "v6_bins_capacity__left_full",
-  "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
-  "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+  "oracle_route": "v6_bins_capacity__side_left_full",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T12_tidy_toys/bins_capacity__right_full": {
+ "T12_tidy_toys/bins_capacity__side_right_full": {
   "variant": "bins_capacity",
   "category": "task",
   "seeds": [
    12,
-   13,
    14,
-   16,
    19
   ],
   "instruction": "It is nearly bedtime. Put the kid's toys away.",
@@ -13805,11 +13837,17 @@
    ],
    "added": [
     "stored_block_1",
+    "stored_block_10",
+    "stored_block_11",
+    "stored_block_12",
     "stored_block_2",
     "stored_block_3",
     "stored_block_4",
     "stored_block_5",
     "stored_block_6",
+    "stored_block_7",
+    "stored_block_8",
+    "stored_block_9",
     "toy_bin_small",
     "toy_bin_small_2"
    ],
@@ -13856,13 +13894,43 @@
     ],
     [
      "fully_inside",
+     "stored_block_7",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_8",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_9",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_10",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_11",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "stored_block_12",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
      "toy_car",
      "toy_bin_small"
     ],
     [
      "fully_inside",
      "rubber_duck",
-     "toy_bin_small_2"
+     "toy_bin_small"
     ],
     [
      "upright",
@@ -13879,9 +13947,271 @@
    ]
   },
   "control": "toys_out",
-  "oracle_route": "v6_bins_capacity__right_full",
-  "challenge": "no storage basket; two small bins on the bedroom bookcase, one of them already half full of blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
-  "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+  "oracle_route": "v6_bins_capacity__side_right_full",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bins_capacity__apart_full_on_tv": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   15,
+   18
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_10",
+    "stored_block_11",
+    "stored_block_12",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "stored_block_7",
+    "stored_block_8",
+    "stored_block_9",
+    "toy_bin_small",
+    "toy_bin_small_2"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_7",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_8",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_9",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_10",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_11",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "toy_car",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "rubber_duck",
+     "toy_bin_small_2"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small_2"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__apart_full_on_tv",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bins_capacity__apart_empty_on_desk": {
+  "variant": "bins_capacity",
+  "category": "task",
+  "seeds": [
+   13,
+   16
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_10",
+    "stored_block_11",
+    "stored_block_12",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "stored_block_7",
+    "stored_block_8",
+    "stored_block_9",
+    "toy_bin_small",
+    "toy_bin_small_2"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_7",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_8",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_9",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_10",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_11",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_12",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "toy_car",
+     "toy_bin_small_2"
+    ],
+    [
+     "fully_inside",
+     "rubber_duck",
+     "toy_bin_small_2"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small_2"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bins_capacity__apart_empty_on_desk",
+  "challenge": "no storage basket; two small bins, one already full of toy blocks (two layers), the other empty; they stand side by side or in different rooms; the car on the living-room floor, the duck on the study desk",
+  "rationale": "the full bin has no room left: both toys go into the empty one, which may have to be found in another room; the blocks stay in the full bin",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/find_all_toys__car_duck": {
@@ -17614,7 +17944,7 @@
    16,
    19
   ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
@@ -17670,7 +18000,7 @@
    17,
    18
   ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
@@ -17723,7 +18053,7 @@
    12,
    15
   ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
+  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,

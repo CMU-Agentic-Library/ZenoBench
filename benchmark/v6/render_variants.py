@@ -327,7 +327,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if at[0] in PUT and not set(names(at[1])) & stay:     # a castle block on another one stays put
             for n in names(at[1]):
                 if n in objs and n not in role:     # already where the goal wants it: it stays (the juice in the fridge)
-                    role[n] = "keep" if at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
+                    inside = at[0] in ("inside", "fully_inside") and len(at) > 2 and at[2] in objs and \
+                        math.dist(pos(n)[:2], pos(at[2])[:2]) < 0.15        # the blocks already in the full bin
+                    role[n] = "keep" if inside or at[0] == "on" and len(at) > 2 and sup_of(n) == at[2] else "alt"
     for at in atoms(goal):                       # what the place is judged against (the coffee drinker's mug)
         if at[0] == "near_any":
             for n in at[2]:
@@ -494,7 +496,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     img0 = shot(eye0, c0)
     marks0.append((project([bx, by, 0.3]), "机器人起点"))
     for n, r in role.items():
-        if r in LABEL and n in objs and r != "ref":
+        if r in LABEL and n in objs and r != "ref" and not (r == "keep" and not sup_of(n)):   # not each block in a bin
             marks0.append((project(pos(n)), f"{LABEL[r]}：{n}"))
         elif r == "place" and n not in objs:
             try:

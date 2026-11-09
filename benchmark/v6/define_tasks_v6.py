@@ -1360,31 +1360,45 @@ def T10(t):
 def T12(t):
     CAR, DUCK, BASKET, LIVING = "toy_car", "rubber_duck", "storage_basket", "living_room_0_0"
     BEAR, BLOCK, SPONGE = "teddy_bear", "stray_block", "kitchen_sponge"
-    # bins_capacity: no basket; two small bins on the bookcase, one already half full of blocks: the duck fits
-    # between the block columns, the car needs the empty bin
+    # bins_capacity: no basket; two small bins, one already full of blocks (two layers): car and duck both go into
+    # the empty one.  The seed sets which bin is full and whether the two stand side by side on the bedroom bookcase
+    # or far apart (the full one in view first, the empty one in another room)
     ev = t["variants"]["toys_everywhere"]
-    bins = {"left": (0.84, -0.43), "right": (1.13, -0.43)}
-    bin_names = {"left": "toy_bin_small", "right": "toy_bin_small_2"}
+    FULL, EMPTY = "toy_bin_small", "toy_bin_small_2"
+    SZ = {"bookcase_2/top": 0.709, "tv_stand_2/top": 0.484, "desk_1/top": 0.70}
+    REG_OF = {"bookcase_2/top": "bedroom_0_1", "tv_stand_2/top": LIVING, "desk_1/top": "living_room_0_1"}
+    N_STORED = 12
 
-    def half_full(side):
-        x0, y0 = bins[side]
-        return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": 0.718,
+    def full_of_blocks(sup, x0, y0):
+        """Twelve blocks, 3 x 2 per layer, two layers: inside the floor (smaller than the rim), the top layer just
+        above the rim: the bin looks and is full."""
+        z0 = SZ[sup] + 0.009
+        cells = [(dx, dy, dz) for dz in (0.0, 0.051) for dx in (-0.052, 0.0, 0.052) for dy in (-0.028, 0.028)]
+        return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": round(z0 + dz, 3),
                                           "xy": [round(x0 + dx, 3), round(y0 + dy, 3)], "yaw_deg": 0}
-                for i, (dx, dy) in enumerate((a, b) for a in (-0.078, 0.078) for b in (-0.055, 0.0, 0.055))}
+                for i, (dx, dy, dz) in enumerate(cells)}
 
-    def cap_case(full):
-        empty = "right" if full == "left" else "left"
-        add = {bin_names[k]: {"asset": "small_storage_bin", "support": "bookcase_2/top", "xy": list(bins[k]),
-                              "yaw_deg": 0.0} for k in bins}
-        add.update(half_full(full))
-        goal = {"all": [["fully_inside", f"stored_block_{i}", bin_names[full]] for i in range(1, 7)]
-                + [["fully_inside", CAR, bin_names[empty]], ["fully_inside", DUCK, bin_names[full]],
-                   ["upright", bin_names[full]], ["upright", bin_names[empty]], ["hand_empty", "right"]]}
-        route = [nav("bookcase_2/top"), look("bookcase_2/top"), S("measure", object=bin_names["left"]),
-                 S("measure", object=bin_names["right"]), S("explore_room", room=LIVING), nav(CAR), pick(CAR),
-                 nav(bin_names[empty]), place(CAR, bin_names[empty]), S("search", object=DUCK, region="living_room_0_1"),
-                 nav(DUCK), pick(DUCK), nav(bin_names[full]), S("drop", object=DUCK, container=bin_names[full])]
+    def cap_case(full_at, empty_at, swap=False):
+        """``swap``: the bin called EMPTY is the full one (side by side, the full one on the right)."""
+        (fs, fxy), (es, exy) = full_at, empty_at
+        FULL_, EMPTY_ = (EMPTY, FULL) if swap else (FULL, EMPTY)
+        add = {FULL_: {"asset": "small_storage_bin", "support": fs, "xy": list(fxy), "yaw_deg": 0.0},
+               EMPTY_: {"asset": "small_storage_bin", "support": es, "xy": list(exy), "yaw_deg": 0.0}}
+        add.update(full_of_blocks(fs, *fxy))
+        goal = {"all": [["fully_inside", f"stored_block_{i}", FULL_] for i in range(1, N_STORED + 1)]
+                + [["fully_inside", CAR, EMPTY_], ["fully_inside", DUCK, EMPTY_],
+                   ["upright", FULL_], ["upright", EMPTY_], ["hand_empty", "right"]]}
+        find_empty = [] if fs == es else [S("search", object=EMPTY_, region=REG_OF[es])]
+        route = [nav(fs), look(fs), S("measure", object=FULL_), *find_empty, S("measure", object=EMPTY_),
+                 S("explore_room", room=LIVING), nav(CAR), pick(CAR), nav(EMPTY_), place(CAR, EMPTY_),
+                 S("search", object=DUCK, region="living_room_0_1"), nav(DUCK), pick(DUCK), nav(EMPTY_),
+                 S("drop", object=DUCK, container=EMPTY_)]
         return dict(add=add, goal=goal, route=route)
+    BC = "bookcase_2/top"
+    cap_cases = {"side_left_full": cap_case((BC, (0.84, -0.43)), (BC, (1.13, -0.43))),
+                 "side_right_full": cap_case((BC, (1.13, -0.43)), (BC, (0.84, -0.43)), swap=True),
+                 "apart_full_on_tv": cap_case(("tv_stand_2/top", (7.60, 0.36)), (BC, (1.00, -0.43))),
+                 "apart_empty_on_desk": cap_case((BC, (1.00, -0.43)), ("desk_1/top", (-0.45, -5.95)))}
 
     def put_away(x):
         return [nav(x), pick(x), nav(BASKET), place(x, BASKET)]
@@ -1432,13 +1446,16 @@ def T12(t):
         "bins_capacity": dict(
             conditions=["joint_capacity"], base="toys_out", control="toys_out",
             remove=[BASKET], move={DUCK: copy.deepcopy(ev["move"][DUCK])},
-            watch=[CAR, DUCK, *bin_names.values()], may_end_on_floor=[CAR],
-            factor="which bin is already half full (capacity)",
-            challenge="no storage basket; two small bins on the bedroom bookcase, one of them already half full of "
-                      "blocks (seed decides which); the car on the living-room floor, the duck on the study desk",
-            rationale="the half-full bin only has room for the duck (between the block columns), the car needs the "
-                      "empty bin: allocate by remaining capacity, which flips with the seed",
-            cases={"left_full": cap_case("left"), "right_full": cap_case("right")}),
+            watch=[CAR, DUCK, FULL, EMPTY], may_end_on_floor=[CAR],
+            factor="which bin is full and where the two stand (seed: side by side on the bedroom bookcase, either "
+                   "one full; or apart: the full one on the TV stand and the empty one in the bedroom, or the full "
+                   "one in the bedroom and the empty one on the study desk)",
+            challenge="no storage basket; two small bins, one already full of toy blocks (two layers), the other "
+                      "empty; they stand side by side or in different rooms; the car on the living-room floor, the "
+                      "duck on the study desk",
+            rationale="the full bin has no room left: both toys go into the empty one, which may have to be found in "
+                      "another room; the blocks stay in the full bin",
+            cases=cap_cases),
         "find_all_toys": dict(
             base="toys_out", control="toys_out", conditions=["goal_items_unstated", "not_in_view", "multi_object_goal"],
             factor="which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
@@ -1687,8 +1704,9 @@ def T14(t):
             cases=reach_cases),
         "stack_them_stably": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["subgoal_order", "multi_object_goal"],
-            instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile.",
-            instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞。",
+            instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the "
+                        "biggest at the bottom and the smallest on top.",
+            instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
             factor="which books are on the desk (seed: three or two, of different sizes)",
             challenge="two or three books of different sizes on the desk; one pile on the bookcase",
             rationale="the order follows from the sizes: the largest at the bottom, each smaller one on top, so no "

@@ -1,7 +1,7 @@
 {
  "summary": {
   "scope": {
-   "layouts": 259,
+   "layouts": 261,
    "variants": 138,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
@@ -9,7 +9,7 @@
    "passes": 61,
    "goal_not_met": 95,
    "not_observed": 61,
-   "resource_missing": 36,
+   "resource_missing": 38,
    "argument_mismatch": 6
   },
   "control_route_passes": [
@@ -60,10 +60,10 @@
    "T30 clean_one"
   ],
   "routes_between_layouts": {
-   "passes": 92,
-   "goal_not_met": 148,
+   "passes": 95,
+   "goal_not_met": 151,
    "not_observed": 12,
-   "argument_mismatch": 86,
+   "argument_mismatch": 90,
    "resource_missing": 62
   },
   "universal_fixed_sequence": [
@@ -128,7 +128,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 352,
+  "geometric_atoms_unchecked": 356,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -2999,7 +2999,9 @@
    "other_layouts": {
     "toys_everywhere__alt_dining_table_2": "argument_mismatch"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "bins_capacity__side_right_full"
+   ]
   },
   {
    "task": "T12_tidy_toys",
@@ -3019,7 +3021,7 @@
   {
    "task": "T12_tidy_toys",
    "variant": "bins_capacity",
-   "layout": "bins_capacity__left_full",
+   "layout": "bins_capacity__side_left_full",
    "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -3028,14 +3030,16 @@
    ],
    "control_route": "resource_missing",
    "other_layouts": {
-    "bins_capacity__right_full": "goal_not_met"
+    "bins_capacity__side_right_full": "goal_not_met",
+    "bins_capacity__apart_full_on_tv": "passes",
+    "bins_capacity__apart_empty_on_desk": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T12_tidy_toys",
    "variant": "bins_capacity",
-   "layout": "bins_capacity__right_full",
+   "layout": "bins_capacity__side_right_full",
    "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -3044,7 +3048,45 @@
    ],
    "control_route": "resource_missing",
    "other_layouts": {
-    "bins_capacity__left_full": "goal_not_met"
+    "bins_capacity__side_left_full": "goal_not_met",
+    "bins_capacity__apart_full_on_tv": "goal_not_met",
+    "bins_capacity__apart_empty_on_desk": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layout": "bins_capacity__apart_full_on_tv",
+   "steps": 15,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright toy_bin_small",
+    "upright toy_bin_small_2"
+   ],
+   "control_route": "resource_missing",
+   "other_layouts": {
+    "bins_capacity__side_left_full": "passes",
+    "bins_capacity__side_right_full": "goal_not_met",
+    "bins_capacity__apart_empty_on_desk": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layout": "bins_capacity__apart_empty_on_desk",
+   "steps": 15,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright toy_bin_small",
+    "upright toy_bin_small_2"
+   ],
+   "control_route": "resource_missing",
+   "other_layouts": {
+    "bins_capacity__side_left_full": "passes",
+    "bins_capacity__side_right_full": "goal_not_met",
+    "bins_capacity__apart_full_on_tv": "argument_mismatch"
    },
    "other_variants_passing": []
   },
@@ -5331,8 +5373,10 @@
    "task": "T12_tidy_toys",
    "variant": "bins_capacity",
    "candidates": [
-    "bins_capacity__left_full",
-    "bins_capacity__right_full",
+    "bins_capacity__side_left_full",
+    "bins_capacity__side_right_full",
+    "bins_capacity__apart_full_on_tv",
+    "bins_capacity__apart_empty_on_desk",
     "toys_out"
    ],
    "passes_all": []
@@ -7543,14 +7587,79 @@
    "task": "T12_tidy_toys",
    "variant": "bins_capacity",
    "layouts": [
-    "bins_capacity__left_full",
-    "bins_capacity__right_full"
+    "bins_capacity__side_left_full",
+    "bins_capacity__side_right_full"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
    "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layouts": [
+    "bins_capacity__side_left_full",
+    "bins_capacity__apart_full_on_tv"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layouts": [
+    "bins_capacity__side_left_full",
+    "bins_capacity__apart_empty_on_desk"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layouts": [
+    "bins_capacity__side_right_full",
+    "bins_capacity__apart_full_on_tv"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layouts": [
+    "bins_capacity__side_right_full",
+    "bins_capacity__apart_empty_on_desk"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "bins_capacity",
+   "layouts": [
+    "bins_capacity__apart_full_on_tv",
+    "bins_capacity__apart_empty_on_desk"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
   },
   {
    "task": "T12_tidy_toys",
