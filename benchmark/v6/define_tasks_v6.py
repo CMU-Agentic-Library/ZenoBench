@@ -544,6 +544,9 @@ def T02(t):
 
 def T04(t):
     C = "cup_counter_b"
+    # h_task_spot_taken (from v5): the bowl sat 15 cm from the lid, room enough for the cup (11 cm), so nothing had
+    # to be moved.  Centred in the free stretch it leaves 8 cm either side: no spot fits a cup until it is moved
+    t["variants"]["h_task_spot_taken"]["move"]["oatmeal"]["xy"] = [3.629, 0.36]
     base = OR(t, "cup_available")                       # look, nav cup, pick cup, nav cab6, place cup
     cab_goal = {"all": [["on", C, "kitchen_cabinet_6/top"], ["upright", C], ["hand_empty", "right"],
                         ["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]}
