@@ -267,7 +267,7 @@ def entity_attrs(rig, name, st, values=None):
         span = abs(rec["open_q"] - rec["closed_q"])
         base.update({"type": rec["type"], "category": rec.get("category"), "has_handle": bool(rec.get("handle")),
                      "powered": "door_button" in rec, "is_open": abs(q - rec["closed_q"]) / max(span, 1e-9) >= 0.6,
-                     "wide_open_q": rec["closed_q"] + (0.75 if rec.get("category") == "refrigerator" else 0.65)
+                     "wide_open_q": rec["closed_q"] + (0.9 if rec.get("category") == "refrigerator" else 0.65)
                      * (rec["open_q"] - rec["closed_q"]),
                      "power_button": None})
     elif kind == "appliance":
