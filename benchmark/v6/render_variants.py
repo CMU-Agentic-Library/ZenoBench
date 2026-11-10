@@ -217,19 +217,22 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
                 return False
         return True
 
-    def around(tgt, dist, height):
+    def around(tgt, dist, height, close=False):
         """A clear eye on a circle around the target (no furniture and not the robot in between); the side the
         robot comes from first, else any side, else straight above."""
         bx, by, _ = rig.base_pose()
         a0 = math.atan2(by - tgt[1], bx - tgt[0])
-        for d_, h_ in ((dist, height), (dist * 0.7, height * 0.8), (dist * 1.3, height * 0.6), (dist * 0.5, height)):
+        tries = ((dist, height), (dist * 0.7, height * 0.8), (dist * 1.3, height * 0.6), (dist * 0.5, height)) \
+            if close else ((dist, height),)
+        for d_, h_ in tries:
             for k in (0, 1, -1, 2, -2, 3, -3, 4):
                 a = a0 + k * math.pi / 4
                 eye = [tgt[0] + d_ * math.cos(a), tgt[1] + d_ * math.sin(a), tgt[2] + h_]
                 if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
                     return eye
-        # nothing clear around: from just above (low enough to stay under wall cupboards over a counter)
-        return [tgt[0] + 0.05, tgt[1], tgt[2] + 0.45]
+        # nothing clear around: a close-up from just above (under wall cupboards over a counter); a surface
+        # from high above
+        return [tgt[0] + 0.05, tgt[1], tgt[2] + (0.45 if close else dist + height)]
 
     st = rig.state()
     objs = st["objects"]
@@ -380,7 +383,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             img = shot(eye, pos(n))
             views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置，{sp}）"))
         else:
-            img = shot(around(pos(n), 0.6, 0.6), pos(n))    # steep enough to see over an edge lip
+            img = shot(around(pos(n), 0.6, 0.6, close=True), pos(n))    # steep enough to see over an edge lip
             views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置）"))
         shown.add(n)
     kind += ["take"] * (len(views) - len(kind))
