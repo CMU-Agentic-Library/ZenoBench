@@ -1235,7 +1235,9 @@ def T10(t):
                            route=[look(ISL), S("search", object=CAN, region="living_room_0_1")] + throw(CAN))}
     # trash_moved: the trash can is not by the island today (dining room, or the bathroom); the can is on the island
     moved = {"dining": ({"support": None, "z": 0.0, "xy": [4.60, 6.00], "yaw_deg": 0}, "dining_room_0_1"),
-             "bathroom": ({"support": None, "z": 0.0, "xy": [-0.40, 6.00], "yaw_deg": 0}, "bathroom_0_1")}
+             "bathroom": ({"support": None, "z": 0.0, "xy": [-0.75, 3.25], "yaw_deg": 0}, "bathroom_0_1")}
+    # (-0.40, 6.00) was inside the wall north of the toilet; (-0.75, 3.25) stands by the bathroom's east wall, 10 cm
+    # clear of everything, 0.42 m from a start cell
     moved_cases = {c: dict(move={TRASH: pose},
                            route=[look(ISL), nav(CAN), pick(CAN), S("lift", object=CAN, height_m=0.95),
                                   S("search", object=TRASH, region=region), nav(TRASH),
