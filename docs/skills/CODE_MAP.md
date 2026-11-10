@@ -51,7 +51,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | 模块 | 谁调它 | 做什么 |
 |---|---|---|
 | `park_search.py` | `motion_skills.run_skill`（pick、place） | **新的停车点搜索** `find_park(kin, world, Problem, state, log, base)`：能做出技能整份计划的停车点，连计划一起返回；不碰 rig，整机底盘的查询问传进来的 `base`（`MOTION_ARCHITECTURE.md` 第 7 节）|
-| `planner.py` | skills、policies | **旧的停车点搜索** `find_park` / `find_park_set`（微波炉取物和其他技能还在用）：在哪个底盘位姿，手臂能无碰撞地走完给定的一串目标位姿。另有 `joint_reachable`、`_whole_body`、`_drivable`（只剩旧搜索用；行驶姿态取 `skill_plans.travel_chain`）和旧的网格路径 `plan_path` |
+| `planner.py` | skills、policies | **旧的停车点搜索** `find_park` / `find_park_set`（微波炉取物和其他技能还在用）：在哪个底盘位姿，手臂能无碰撞地走完给定的一串目标位姿。另有 `joint_reachable`、`_whole_body`、`_drivable`（只剩旧搜索用；行驶姿态取 `skill_plans.travel_chain`；没有整机模型时不查，由开车决定）。旧的网格路径 `plan_path` 11-10 删了 |
 | `base_planner.py` | `skills._base_plan`（经 `skill_jobs.base.RigBase`） | **底盘路径规划**：在 (x, y, yaw) 网格上做 A*，同时考虑手臂姿态链（收臂 → 下垂 → 收臂）|
 | `clearance.py` | rig、skills、policies | `Allow`：一段运动允许碰什么（第 3 节）；`rig.clear`：接触监视器、fallback 计数 |
 | `collision.py` | planner | 标注包围盒，只给底盘的占地检查和网格用；手臂不用 |

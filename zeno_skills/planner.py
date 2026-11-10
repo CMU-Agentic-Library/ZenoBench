@@ -6,24 +6,15 @@ find_park   search base poses around a set of TCP targets; a pose is feasible
             collision-free continuous IK path (optionally while the base rides
             along with an articulated part) and the base can drive there
             (base_planner).
-plan_path   A* on a 5 cm grid over free base positions (circumscribed circle
-            of the base column), then shortcut smoothing: only without cuRobo
-            (base_planner plans the base drives).
 """
 
 from __future__ import annotations
 
-import heapq
 import math
 
 import numpy as np
 
 from .kinematics import manipulability, tips_over
-
-# The base drives facing along the path (drive_base yaws to the segment
-# direction), so laterally only the half width of the 0.49 m column matters;
-# the circumscribed radius (0.37 m) would close every interior doorway.
-R_BASE = 0.28
 
 
 def _ik_sequence(kin, targets, q0=None):
@@ -95,10 +86,12 @@ def _whole_body(kin, travel_q):
 
 def _drivable(kin, world, body, origin, goal):
     """The base can drive from ``origin`` to ``goal``: a whole-body base plan in the postures it
-    drives in (skills.navigate: the travel posture, hanging where it does not fit), or without
-    cuRobo the column's grid path (plan_path)."""
+    drives in (skills.navigate: the travel posture, hanging where it does not fit).  Without a
+    whole-body model -- no cuRobo, or a caller that names no travel posture -- there is nothing to
+    check the drive against and the drive itself decides (11-10: the 5 cm grid over a 0.28 m
+    cylinder that used to answer here was the base as it was modelled before the two layers)."""
     if body is None:
-        return plan_path(world, origin, goal) is not None
+        return True
     from . import base_planner
     from .motion_state import Hand, Held, State
     from .skill_plans import travel_chain
@@ -333,114 +326,3 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
         return found[0][1]
     print("find_park: no park", {k: v for k, v in LAST_PARK_DIAG.items() if v}, flush=True)
     return None
-
-
-class Grid:
-    def __init__(self, world, res=0.05, margin=0.02):
-        self.world, self.res, self.margin = world, res, margin
-        boxes = np.array(world.boxes[:-1])
-        tall = boxes[:, 2] < 1.0                     # anything the column (0..1.05 m) can hit
-        self.boxes = boxes[tall]
-        if len(world.base_only):
-            self.boxes = np.vstack([self.boxes, world.base_only])
-        lo = self.boxes[:, :2].min(0) - 1.0
-        hi = self.boxes[:, 3:5].max(0) + 1.0
-        self.lo = lo
-        self.shape = np.ceil((hi - lo) / res).astype(int)
-        self.cache = {}
-
-    def not_inside(self, ij, r=0.26):
-        """Lenient check for the tight cells next to a parked start/goal: the
-        base centre stays 0.26 m from every box, i.e. the base column
-        clears it (a skipped check let a short re-park cut through the island
-        corner; at 0.2 m the column still swept blocks off the island edge)."""
-        x, y = self.lo + (np.asarray(ij) + 0.5) * self.res
-        b = self.boxes
-        dx = np.maximum(np.maximum(b[:, 0] - x, x - b[:, 3]), 0)
-        dy = np.maximum(np.maximum(b[:, 1] - y, y - b[:, 4]), 0)
-        return bool(np.all(np.hypot(dx, dy) > r))
-
-    def free(self, ij):
-        if ij in self.cache:
-            return self.cache[ij]
-        x, y = self.lo + (np.asarray(ij) + 0.5) * self.res
-        b = self.boxes
-        dx = np.maximum(np.maximum(b[:, 0] - x, x - b[:, 3]), 0)
-        dy = np.maximum(np.maximum(b[:, 1] - y, y - b[:, 4]), 0)
-        ok = bool(np.all(np.hypot(dx, dy) > R_BASE + self.margin))
-        if ok:
-            ok = bool(np.all(self.world.moving_part_dist(np.array([[x, y, 0.4]])) > R_BASE + self.margin))
-        self.cache[ij] = ok
-        return ok
-
-    def ij(self, xy):
-        return tuple(((np.asarray(xy) - self.lo) / self.res).astype(int))
-
-    def xy(self, ij):
-        return self.lo + (np.asarray(ij) + 0.5) * self.res
-
-
-def plan_path(world, start, goal, res=0.05, margin=0.02):
-    """start/goal: (x, y, yaw_deg).  Returns waypoints [(x, y, yaw_deg), ...].
-    Start/goal cells may be tight (parked next to furniture); the search lets
-    the first/last 0.4 m ignore the clearance check.  ``margin``: extra
-    clearance around the base (larger while carrying something)."""
-    g = Grid(world, res, margin)
-    s, t = g.ij(start[:2]), g.ij(goal[:2])
-    relax = int(0.4 / res)
-
-    def ok(ij):
-        near_start = max(abs(ij[0] - s[0]), abs(ij[1] - s[1])) <= relax
-        near_goal = max(abs(ij[0] - t[0]), abs(ij[1] - t[1])) <= relax
-        if ij == s or ij == t:
-            return True
-        # near a tight park (start or goal) the base centre keeps 0.15 m from
-        # every box: no cutting through furniture, while a park 0.26 m from a
-        # counter or in a narrow aisle stays reachable (0.26 m blocked both)
-        return ((near_goal or near_start) and g.not_inside(ij, r=0.15)) or g.free(ij)
-
-    openq = [(0.0, s)]
-    came, cost = {s: None}, {s: 0.0}
-    nbrs = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-    while openq:
-        _, cur = heapq.heappop(openq)
-        if cur == t:
-            break
-        for dx, dy in nbrs:
-            n = (cur[0] + dx, cur[1] + dy)
-            if not ok(n):
-                continue
-            c = cost[cur] + math.hypot(dx, dy)
-            if c < cost.get(n, 1e18):
-                cost[n] = c
-                came[n] = cur
-                heapq.heappush(openq, (c + math.hypot(n[0] - t[0], n[1] - t[1]), n))
-    if t not in came:
-        return None
-    cells = []
-    n = t
-    while n is not None:
-        cells.append(n)
-        n = came[n]
-    cells.reverse()
-    # shortcut smoothing
-    pts = [np.asarray(start[:2], float)]
-    i = 0
-    while i < len(cells) - 1:
-        j = len(cells) - 1
-        while j > i + 1:
-            a, b = g.xy(cells[i]), g.xy(cells[j])
-            steps = int(np.linalg.norm(b - a) / res) + 1
-            if all(ok(g.ij(a + (b - a) * u)) for u in np.linspace(0, 1, steps)):
-                break
-            j -= 1
-        pts.append(g.xy(cells[j]))
-        i = j
-    if len(pts) == 1:                     # start and goal in the same cell: one short move (and turn)
-        pts.append(np.asarray(goal[:2], float))
-    pts[-1] = np.asarray(goal[:2], float)
-    out = []
-    for k, p in enumerate(pts[1:], 1):
-        yaw = goal[2] if k == len(pts) - 1 else math.degrees(math.atan2(p[1] - pts[k - 1][1], p[0] - pts[k - 1][0]))
-        out.append((float(p[0]), float(p[1]), float(yaw)))
-    return out

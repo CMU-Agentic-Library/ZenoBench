@@ -347,7 +347,7 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | 底盘规划慢：惰性边检查每轮从头重搜 | T13 s10 规划合计 129 s，拿着东西单次最长 52 s | 待定：复用上一轮的搜索树；捷径分批检查 |
 | 底盘规划无路可走时要搜完能到的区域才报错 | 极紧的停车点，几十秒；放完手臂伸着时 | 待定：搜索前先查终点附近能否接上 |
 | 底盘规划器拿着东西时不会自己换搬运高度 | 删掉 `_carry_bottom_z` 的避障抬高后 T13 bowl_on_cabinet 开往餐桌搜到上限 | 待定：姿态链里加搬运高度，之后才能删 `_carry_bottom_z` |
-| 占地检查只在 0.15、0.6 m 两个高度取点（`COLUMN_Z`），0.6–1.05 m 之间的台面边漏查（餐桌面约 0.75 m） | — | 待定 |
+| 占地检查只在 0.15、0.6 m 两个高度取点（`COLUMN_Z`），0.6–1.05 m 之间的台面边漏查（餐桌面约 0.75 m） | 地上 4 cm 的 `floor_block` 也漏查：v6 全量 19 个 "no base path" | 11-10 已改：底盘、立柱各是一段高度（`LOW_SPAN` / `COLUMN_SPAN`），高度重叠就挡路 |
 | 边走边伸手 / 抓 / 放（`policies/mobile.py`）已停用：底盘路径按出发姿态规划，没有整机检查 | 没有任务用到 | 整机规划之前不恢复 |
 <!-- | cuRobo 快速自碰撞内核上限 16384 对：超过后改用慢内核，单次 IK 约 25 ms → 0.8 s，停车点搜索在时间预算内找不到解 | 现在 16271 对 | 加球前先算对数（`build_curobo_robot.py` 打印） | -->
 
@@ -370,10 +370,10 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | `DRIVE_EMPTY` / `DRIVE_LOADED` / `DRIVE_SWINGING` | 继承的，没测过 | 测一次拿着容器开车、转身时物体的晃动 |
 | `STANDOFF_*`、`ROOM_SPOT_*`、`SAME_POSTURE`、`AT_PARK_*`、`FACE_ERR_DEG`、`RETREAT_*`、`BACK_OFF_SLACK`、`DEPTH_TOL`、`PHYSICS_HZ` 相关的"等一秒"、`REST_TOL` / `STOWED_TOL`、`HELD_CHECK_EVERY`、`BLOCKED_PROBE_M` | 有名字，没出处 | 改到所在技能时 |
 | 探索的 `COVER_*`、`VIEW_TURNS`、`SWEEP_*`、`VIEW_TRIES`，以及 `max_views` / `min_spacing` 的默认值（`perceive.py`） | 继承的，没测过 | 6.4（和清单 3.9 的"视点不可达就跳过"一起） |
-| `FOOTPRINT_MARGIN` 4.6 cm、`FOOTPRINT_GRID`、`COLUMN_Z` | 值没测过（开车终点误差都在 7 mm 以内，途中跟踪误差没记）；`COLUMN_Z` 漏查（第 7 节） | 待定，改了要针对性检查站位和路径 |
+| `FOOTPRINT_MARGIN` 4.6 cm、`FOOTPRINT_GRID` | 值没测过（开车终点误差都在 7 mm 以内，途中跟踪误差没记）；`COLUMN_Z` 11-10 换成高度区间 | 待定，改了要针对性检查站位和路径 |
 | `base_planner` 的 `TURN_COST`、`SWITCH_COST`、`GREEDY`、`MAX_EXPAND`、`DENSE` | 偏好和预算，没有数据 | 底盘规划提速时；`DENSE` 和摆臂擦墙一起看 |
 | 停车点搜索次数（pick 120、push 60、`ApproachTargetPolicy` 160） | 各处不同 | 改到所在技能时 |
-| `planner.Grid` / `plan_path` 的 `R_BASE` 0.28 m | 没有 cuRobo 时的旧规划，回归不走 | 步骤 5 清理 |
+| `planner.Grid` / `plan_path` 的 `R_BASE` 0.28 m | 没有 cuRobo 时的旧规划，回归不走 | 11-10 删了 |
 
 没动的：接触段里的底盘推速度（wipe 0.05、`hand.py` 0.06 m/s，步骤 4）、微波炉的 0.06 / 0.2 m/s（6.4）、bimanual 0.12 m/s（6.4）。
 

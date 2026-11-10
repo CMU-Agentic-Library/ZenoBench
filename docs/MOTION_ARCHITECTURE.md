@@ -309,7 +309,7 @@ class Spec:
 | `skill_plans/` | `HELD_POSE_MARGIN`（`pick.py`）、`SAME_POSTURE`（`navigate.py`；11-08 前 `skills.py` 里还有一份） |
 | `skill_jobs/` | `CARRY_FRONT_X/Y`、`CARRY_LOW_TOL`、`CARRY_LOW_COST`（`carry.py`）、`PICK_CAND_COST`、`FRONT_SEED_M`（`pick.py`） |
 | `park_search.py` | `RADII`、`YAW_OFFSETS`、`REACH_XY`、`MAX_PER_GOAL`、`BUILD_S`、`BUILD_MAX`…… |
-| `base_planner.py`、`collision.py` | `DEPTH_TOL`、`FOOTPRINT_MARGIN`、`COLUMN_Z`（inherited, unmeasured）…… |
+| `base_planner.py`、`collision.py` | `DEPTH_TOL`、`FOOTPRINT_MARGIN`（inherited, unmeasured）…… |
 | `COLLISION_PLAN.md` 第 8 节 | 力的几何替身（`PRESS_DEPTH`、`WIPE_PRESS`、`TOUCH_DEPTH`……） |
 | 还没有 | `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL`、`TRACK_TOL`（8.2） |
 

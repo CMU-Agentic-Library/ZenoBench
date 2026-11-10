@@ -45,11 +45,10 @@ class RigBase:
         return _reachable(self.rig.world, state.base, poses)
 
     def drivable(self, state, goal):
-        from ..planner import plan_path
         from ..skill_plans import travel_chain
         rig = self.rig
         if rig.kin.motion is None:
-            return plan_path(rig.world, tuple(state.base), goal) is not None
+            return True            # no whole-body model to plan the drive with: the drive decides
         return self.plan(state, goal, travel_chain(rig.kin, rig.left_kin, state), "drivable", quiet=True)[0] is not None
 
 

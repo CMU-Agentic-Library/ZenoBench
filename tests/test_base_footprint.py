@@ -46,6 +46,42 @@ def test_a_low_box_in_front_blocks_the_chassis():
     assert not world((0.2, -0.05, 0.0, 0.3, 0.05, 0.2)).footprint_clear(0.0, 0.0, 0.0)
 
 
+def test_a_block_too_low_for_the_old_sample_height_still_blocks_the_chassis():
+    # 4 cm tall, the height of floor_block: under the chassis' old 0.15 m sample and in its way all
+    # the same -- the chassis' underside is at LOW_BOTTOM (11-10)
+    block = (0.2, -0.05, 0.018, 0.3, 0.05, 0.058)
+    assert not world(block).footprint_clear(0.0, 0.0, 0.0)
+    assert world(block).footprint_clear(-0.2, 0.0, 0.0)              # a pose that keeps clear of it
+
+
+def test_a_loose_box_the_chassis_passes_under_is_no_pillar_to_the_circle():
+    # an object on a worktop beside the base: above the chassis, clear of the slim column behind the
+    # centre -- the disc must not block where the footprint is clear at every heading
+    w = world(WALL)
+    w.set_base_obstacles([[0.2, -0.1, 0.9, 0.4, 0.1, 1.0]])
+    assert w.circles_clear(np.array([[0.0, 0.0]]))[0]
+    assert w.footprint_clear(0.0, 0.0, 0.0)
+
+
+def test_the_circle_is_a_relaxation_of_the_footprint_at_every_heading():
+    """circles_clear may only block where footprints_clear blocks at every heading: the reachability
+    field and the base planner's cut-off refuse outright on it (11-10: a z-blind loose box blocked a
+    disc the footprint let through, which isolated the robot's own cell)."""
+    rng = np.random.default_rng(11)
+    w = world(WALL, (-0.8, 0.4, 0.0, -0.3, 0.9, 0.75), (0.05, -0.3, 0.55, 0.6, 0.3, 0.65))
+    boxes = np.c_[rng.uniform(-1.0, 1.0, (40, 2)), rng.uniform(0.0, 0.9, 40)]
+    boxes = np.c_[boxes[:, :2], boxes[:, 2], boxes[:, :2] + rng.uniform(0.03, 0.3, (40, 2)),
+                  boxes[:, 2] + rng.uniform(0.02, 0.4, 40)]
+    w.set_base_obstacles(boxes)
+    xy = np.c_[rng.uniform(-1.5, 1.5, 600), rng.uniform(-1.5, 1.5, 600)]
+    blocked = ~w.circles_clear(xy)
+    assert blocked.sum() > 50
+    headings = np.radians(np.arange(0, 360, 15))
+    for p in xy[blocked]:
+        poses = np.c_[np.full(len(headings), p[0]), np.full(len(headings), p[1]), headings]
+        assert not w.footprints_clear(poses).any(), f"the circle blocks {p} where the footprint does not"
+
+
 def test_batched_and_single_agree():
     w = world(WALL, (-0.8, 0.4, 0.0, -0.3, 0.9, 0.75), (0.05, -0.3, 0.55, 0.6, 0.3, 0.65))
     rng = np.random.default_rng(3)
