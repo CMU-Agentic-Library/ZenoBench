@@ -3899,7 +3899,7 @@
    "task": "T21_bring_tissues",
    "variant": "which_table",
    "layout": "which_table__east",
-   "steps": 5,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "passes",
@@ -3915,7 +3915,7 @@
    "task": "T21_bring_tissues",
    "variant": "which_table",
    "layout": "which_table__west",
-   "steps": 5,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -3965,7 +3965,7 @@
    "task": "T21_bring_tissues",
    "variant": "the_kids_side",
    "layout": "the_kids_side__kid_north",
-   "steps": 4,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -3978,7 +3978,7 @@
    "task": "T21_bring_tissues",
    "variant": "the_kids_side",
    "layout": "the_kids_side__kid_south",
-   "steps": 4,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -4192,7 +4192,7 @@
    "task": "T24_snack_for_kid",
    "variant": "where_is_he",
    "layout": "where_is_he__study",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "passes",
@@ -4208,7 +4208,7 @@
    "task": "T24_snack_for_kid",
    "variant": "where_is_he",
    "layout": "where_is_he__bedroom",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -4232,7 +4232,7 @@
    "task": "T25_drink_for_guest",
    "variant": "cup_elsewhere",
    "layout": "cup_elsewhere",
-   "steps": 9,
+   "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"
@@ -4343,7 +4343,7 @@
    "task": "T25_drink_for_guest",
    "variant": "two_guests",
    "layout": "two_guests",
-   "steps": 12,
+   "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"
@@ -4356,7 +4356,7 @@
    "task": "T25_drink_for_guest",
    "variant": "little_guest",
    "layout": "little_guest",
-   "steps": 8,
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"
@@ -4413,7 +4413,7 @@
    "task": "T26_kids_things_to_room",
    "variant": "two_bedrooms",
    "layout": "two_bedrooms__room_east",
-   "steps": 5,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "passes",
@@ -4426,7 +4426,7 @@
    "task": "T26_kids_things_to_room",
    "variant": "two_bedrooms",
    "layout": "two_bedrooms__room_south",
-   "steps": 5,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
@@ -4532,7 +4532,7 @@
    "task": "T28_cup_to_bedside",
    "variant": "which_bed",
    "layout": "which_bed__east",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"
@@ -4549,7 +4549,7 @@
    "task": "T28_cup_to_bedside",
    "variant": "which_bed",
    "layout": "which_bed__south",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"

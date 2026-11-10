@@ -2559,7 +2559,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "tissue_on_tv_stand",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2579,7 +2579,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "which_table__east",
-   "steps": 5,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2589,7 +2589,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "which_table__west",
-   "steps": 5,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2629,7 +2629,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "the_kids_side__kid_north",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2639,7 +2639,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "the_kids_side__kid_south",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2845,7 +2845,7 @@
   {
    "task": "T24_snack_for_kid",
    "layout": "where_is_he__study",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2855,7 +2855,7 @@
   {
    "task": "T24_snack_for_kid",
    "layout": "where_is_he__bedroom",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2875,7 +2875,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "drink_on_island",
-   "steps": 8,
+   "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2887,7 +2887,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cup_elsewhere",
-   "steps": 9,
+   "steps": 11,
    "atoms_checked": 3,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2971,7 +2971,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "two_guests",
-   "steps": 12,
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2983,7 +2983,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "little_guest",
-   "steps": 8,
+   "steps": 10,
    "atoms_checked": 4,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3045,7 +3045,7 @@
   {
    "task": "T26_kids_things_to_room",
    "layout": "two_bedrooms__room_east",
-   "steps": 5,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3055,7 +3055,7 @@
   {
    "task": "T26_kids_things_to_room",
    "layout": "two_bedrooms__room_south",
-   "steps": 5,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3151,7 +3151,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "which_bed__east",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3163,7 +3163,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "which_bed__south",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3291,7 +3291,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowl_on_cabinet",
-   "steps": 4,
+   "steps": 6,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],

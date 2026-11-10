@@ -2826,6 +2826,54 @@ def explore_for_floor(task: dict) -> None:
                 steps[i] = {"skill": "explore_room", "args": {"room": s["args"]["region"]}}
 
 
+# GT sequence fixes (2026-11-09 review): steps that find the object before the first navigate to it, and a navigate
+# before a look at a place in another room.  Only these variants (every layout); the rest of each route is unchanged.
+GT_PREFIX = {
+    ("T21", "tissue_on_tv_stand"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T21", "which_table"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T21", "the_kids_side"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T25", "drink_on_island"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "cup_elsewhere"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "two_guests"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "little_guest"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T26", "two_bedrooms"): [("explore_room", "living_room_0_0")],
+    ("T30", "bowl_on_cabinet"): [("navigate", "kitchen_cabinet_6/top"), ("look", "kitchen_cabinet_6/top")],
+}
+GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
+_GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}
+
+
+def gt_sequence_fixes(task: dict) -> list:
+    """Apply GT_PREFIX / GT_NAV_BEFORE_LOOK to every layout of the listed variants; a step already there is not
+    added again.  Returns [(layout, what)]."""
+    out, tid = [], task["task_id"][:3]
+    for vid, info in task.get("v6_variants", {}).items():
+        prefix = GT_PREFIX.get((tid, vid))
+        nav_look = (tid, vid) in GT_NAV_BEFORE_LOOK
+        if not prefix and not nav_look:
+            continue
+        for lid in info["layouts"]:
+            steps = task["routes"][task["oracle"][lid]]["steps"]
+            if prefix:
+                want = [{"skill": k, "args": {_GT_ARG[k]: x}} for k, x in prefix]
+                if steps[:len(want)] != want:
+                    steps[:0] = want
+                    out.append((lid, "prefix " + " -> ".join(f"{k}({x})" for k, x in prefix)))
+            if nav_look:
+                i = 0
+                while i < len(steps):
+                    st = steps[i]
+                    if st["skill"] == "look":
+                        tg = st["args"]["target"]
+                        last = next((x for x in reversed(steps[:i]) if x["skill"] in ("navigate", "explore_room", "search")), None)
+                        if not (last and last["skill"] == "navigate" and last["args"].get("destination") == tg):
+                            steps.insert(i, {"skill": "navigate", "args": {"destination": tg}})
+                            out.append((lid, f"navigate({tg}) before look({tg}) at step {i}"))
+                            i += 1
+                    i += 1
+    return out
+
+
 def build() -> dict:
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
@@ -2869,6 +2917,8 @@ def build() -> dict:
                 if observe_first(t, lid):
                     t["variants"][lid]["layout"] = layout_spec(t, lid, reg, ctl)
                     observe_first(t, lid)
+    for t in out["tasks"]:                       # GT: find the object first, go before looking at another room
+        gt_sequence_fixes(t)                     # (after the layouts: the seed's draws stay as they were)
     apply_tracks(out)
     # approach left the library (benchmark/retired_skills.py): its steps in the routes v6 inherits from v5
     # and in its own designs become the navigate they still need, or go when a navigate there precedes them

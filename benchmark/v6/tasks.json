@@ -75862,6 +75862,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "tissue"
        }
       },
@@ -75937,6 +75949,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "tissue"
        }
       },
@@ -75944,6 +75968,12 @@
        "skill": "pick",
        "args": {
         "object": "tissue"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_1/top"
        }
       },
       {
@@ -75978,6 +76008,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "tissue"
        }
       },
@@ -75985,6 +76027,12 @@
        "skill": "pick",
        "args": {
         "object": "tissue"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
        }
       },
       {
@@ -76278,6 +76326,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "tissue"
        }
       },
@@ -76310,6 +76370,18 @@
     },
     "v6_the_kids_side__kid_south": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -82818,6 +82890,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_3/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "desk_3/top"
@@ -82868,6 +82946,12 @@
        "skill": "pick",
        "args": {
         "object": "snack_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
        }
       },
       {
@@ -85010,6 +85094,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "guest_juice"
        }
       },
@@ -85069,6 +85165,18 @@
     },
     "v6_cup_elsewhere": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -85814,6 +85922,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "guest_juice"
        }
       },
@@ -85904,6 +86024,18 @@
     },
     "v6_little_guest": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -87603,6 +87735,12 @@
     "v6_two_bedrooms__room_east": {
      "steps": [
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "living_car"
@@ -87639,6 +87777,12 @@
     },
     "v6_two_bedrooms__room_south": {
      "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -90866,6 +91010,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "mattress_2/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "mattress_2/top"
@@ -90916,6 +91066,12 @@
        "skill": "pick",
        "args": {
         "object": "kid_cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mattress_1/top"
        }
       },
       {
@@ -94532,6 +94688,18 @@
       "bowl_on_cabinet"
      ],
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
