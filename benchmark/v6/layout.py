@@ -253,6 +253,40 @@ def reserved(task, vid, steps):
     return out
 
 
+RELATIONS = ("grouped", "near_any", "not near_any", "clear_of", "same_arrangement")
+
+
+def _atoms(g):
+    if isinstance(g, dict):
+        for x in g.values():
+            yield from _atoms(x)
+    elif isinstance(g, list):
+        if g and isinstance(g[0], str):
+            yield g
+        else:
+            for x in g:
+                yield from _atoms(x)
+
+
+def _names(x):
+    return [x] if isinstance(x, str) else [n for y in x for n in _names(y)] if isinstance(x, list) else []
+
+
+def relation_anchors(goal, steps):
+    """Objects the route leaves where they are that a goal relation (grouped, near_any, clear_of,
+    same_arrangement) ties to an object the route sets down at a fixed hint_xy: the seed keeps them, or the
+    hint lands away from them (T13: the bowl and cup set by a spoon moved 1.7 m away)."""
+    hinted = {s["args"]["object"] for s in steps if s["skill"] == "place" and s["args"].get("hint_xy")}
+    moved = {s["args"].get("object") for s in steps if s["skill"] in ("pick", "place")}
+    out = set()
+    for a in _atoms(goal):
+        if a[0] in RELATIONS:
+            ns = set(_names(a[1:])) - {x for x in a[1:] if isinstance(x, str) and "/" in x}
+            if ns & hinted:
+                out |= ns - moved
+    return out
+
+
 def _same_pose(a, b):
     return a.get("support") == b.get("support") and round(a.get("yaw_deg", 0.0)) == round(b.get("yaw_deg", 0.0)) \
         and all(abs(x - y) < 0.01 for x, y in zip(a.get("xy") or [], b.get("xy") or []))
@@ -304,6 +338,7 @@ def layout_spec(task, vid, registry, control=None):
                 any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)
+    fixed |= relation_anchors(v.get("goal") or task.get("goal") or {}, steps)
     movable = {}
     for n, m in placed.items():
         sup = m.get("support")

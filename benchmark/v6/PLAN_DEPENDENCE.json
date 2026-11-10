@@ -58,8 +58,8 @@
   "routes_between_layouts": {
    "passes": 108,
    "goal_not_met": 152,
-   "not_observed": 17,
-   "argument_mismatch": 96,
+   "not_observed": 21,
+   "argument_mismatch": 92,
    "resource_missing": 79
   },
   "universal_fixed_sequence": [
@@ -2675,7 +2675,9 @@
     "keep_kids_can__kid_island": "argument_mismatch"
    },
    "other_variants_passing": [
-    "can_in_dining_room__alt_tv_stand_2"
+    "can_in_dining_room__alt_tv_stand_2",
+    "trash_moved__dining",
+    "trash_moved__bathroom"
    ]
   },
   {
@@ -2702,7 +2704,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "trash_moved__bathroom": "argument_mismatch"
+    "trash_moved__bathroom": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -2715,7 +2717,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "trash_moved__dining": "argument_mismatch"
+    "trash_moved__dining": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -4113,6 +4115,7 @@
    "control_route": "passes",
    "other_layouts": {},
    "other_variants_passing": [
+    "dropped_out_of_view",
     "only_this_room"
    ]
   },
@@ -4137,7 +4140,8 @@
    "control_route": "passes",
    "other_layouts": {},
    "other_variants_passing": [
-    "belongs_on_floor"
+    "belongs_on_floor",
+    "dropped_out_of_view"
    ]
   },
   {
@@ -4417,7 +4421,7 @@
    "geometric_atoms": [],
    "control_route": "passes",
    "other_layouts": {
-    "two_bedrooms__room_south": "argument_mismatch"
+    "two_bedrooms__room_south": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -4430,7 +4434,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "two_bedrooms__room_east": "argument_mismatch"
+    "two_bedrooms__room_east": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -7449,8 +7453,8 @@
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": true
   },
   {
@@ -8502,8 +8506,8 @@
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": true
   },
   {

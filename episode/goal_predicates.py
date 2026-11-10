@@ -77,10 +77,16 @@ def _near_start(rig, ctx, object, tol_m, untouched_tol_m=None):
     from zeno_skills.predicates import memory
     st = _state(rig, ctx)
     s0 = memory(rig)["initial_support"].get(object) or rig.ann.objects[object].get("support")
-    ok, why = rig.geo.on(object, s0, st) if s0 else (float(rig.geo.bottom(object, st)[2]) < 0.05, "floor")
     p0 = (ctx.get("before") or {}).get("objects", {}).get(object, {}).get("pos")
     if p0 is None:
         return False, "no start pose"
+    if s0:
+        ok, why = rig.geo.on(object, s0, st)
+    else:
+        # no support: on the floor, or stacked on another object (a block of the castle); either way it is where
+        # it started when its height has not changed (the floor test alone failed every block above the bottom)
+        dz = abs(float(st["objects"][object]["pos"][2]) - float(p0[2]))
+        ok, why = dz <= max(float(tol_m), 0.02), f"height {dz:+.3f} m from its start"
     d = math.hypot(st["objects"][object]["pos"][0] - p0[0], st["objects"][object]["pos"][1] - p0[1])
     tol, how = float(tol_m), ""
     if untouched_tol_m is not None:

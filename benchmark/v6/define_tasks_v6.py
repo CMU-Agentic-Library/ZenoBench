@@ -2800,6 +2800,26 @@ def navigate_first(steps: list) -> list:
     return out + rest
 
 
+def explore_for_floor(task: dict) -> None:
+    """A search for an object on the floor becomes explore_room of the same room: search only aims the head at
+    the room's supports (tables, counters, shelves), so a thing on the floor is seen by chance or not at all (T23's
+    spoon by the dining-room wall, T26's basket); explore_room sweeps the room from several viewpoints."""
+    ann = {o["name"]: o for o in json.loads((ROOT / task["scene"]["base"] / "annotation.json").read_text())["objects"]}
+    for lid, rname in task["oracle"].items():
+        v = task["variants"].get(lid)
+        if v is None or rname not in task["routes"]:
+            continue
+        placed = {**task["scene"].get("move", {}), **task["scene"].get("add", {}), **v.get("move", {}), **v.get("add", {})}
+        steps = task["routes"][rname]["steps"]
+        for i, s in enumerate(steps):
+            n = s["args"].get("object") if s["skill"] == "search" else None
+            if not n or not s["args"].get("region"):
+                continue
+            sup = placed[n].get("support") if n in placed else (ann.get(n) or {}).get("support", "?")
+            if not sup or str(sup).startswith("floor"):
+                steps[i] = {"skill": "explore_room", "args": {"room": s["args"]["region"]}}
+
+
 def build() -> dict:
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
@@ -2818,6 +2838,7 @@ def build() -> dict:
     for t in out["tasks"]:                       # the start is drawn anywhere in the room: go there, then look
         for r in t["routes"].values():
             r["steps"] = navigate_first(r["steps"])
+        explore_for_floor(t)
     for t in out["tasks"]:                       # the seed draws the layout (benchmark/v6/layout.py)
         for info in t["v6_variants"].values():
             for lid in info["layouts"]:
