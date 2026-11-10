@@ -26,8 +26,8 @@ def test_typed_open_rejects_wrong_joint_type(monkeypatch):
 def test_cavity_pick_checks_open_door_and_withdrawal(monkeypatch):
     box=[0,0,0,1,1,1]
     pos=[0.5,0.5,0.5]
-    rig=SimpleNamespace(held=None, ann=SimpleNamespace(art=lambda name: {"cavity_aabb":box,"open_q":1.0}),
-                        joint=lambda name:1.0, obj_pose=lambda name:(np.array(pos),None))
+    rig=SimpleNamespace(held=None, ann=SimpleNamespace(art=lambda name: {"cavity_aabb":box,"open_q":1.0,"closed_q":0.0}),
+                        joint=lambda name:0.75, obj_pose=lambda name:(np.array(pos),None))   # 75 % open (a fridge opens to 90 %): open
     def pick(rig,name,max_candidates):
         rig.held={"name":name}
         pos[1]=-0.1

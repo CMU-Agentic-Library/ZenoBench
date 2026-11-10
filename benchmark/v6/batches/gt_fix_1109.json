@@ -1,0 +1,194 @@
+[
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "tissue_on_tv_stand",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "which_table__east",
+  "route": "v6_which_table__east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 11,
+  "variant": "which_table__west",
+  "route": "v6_which_table__west",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "the_kids_side__kid_north",
+  "route": "v6_the_kids_side__kid_north",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 11,
+  "variant": "the_kids_side__kid_south",
+  "route": "v6_the_kids_side__kid_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "seed": 10,
+  "variant": "where_is_he__study",
+  "route": "v6_where_is_he__study",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "seed": 11,
+  "variant": "where_is_he__bedroom",
+  "route": "v6_where_is_he__bedroom",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "seed": 10,
+  "variant": "which_bed__east",
+  "route": "v6_which_bed__east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T28_cup_to_bedside",
+  "seed": 13,
+  "variant": "which_bed__south",
+  "route": "v6_which_bed__south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "drink_on_island",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "cup_elsewhere",
+  "route": "v6_cup_elsewhere",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "two_guests",
+  "route": "v6_two_guests",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "little_guest",
+  "route": "v6_little_guest",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 13,
+  "variant": "two_bedrooms__room_east",
+  "route": "v6_two_bedrooms__room_east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 14,
+  "variant": "two_bedrooms__room_east",
+  "route": "v6_two_bedrooms__room_east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 15,
+  "variant": "two_bedrooms__room_east",
+  "route": "v6_two_bedrooms__room_east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 16,
+  "variant": "two_bedrooms__room_east",
+  "route": "v6_two_bedrooms__room_east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 18,
+  "variant": "two_bedrooms__room_east",
+  "route": "v6_two_bedrooms__room_east",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 10,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 11,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 12,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 17,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 19,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "seed": 10,
+  "variant": "bowl_on_cabinet",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ }
+]

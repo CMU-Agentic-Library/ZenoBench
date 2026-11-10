@@ -8,7 +8,8 @@ made of); the seed draws the rest of the layout:
   cluster is within ``EDGE_LOCK_M`` of the support edge does not move (an overhang stays), the cluster never goes
   deeper from the edge it is reached from than it was (or ``DEPTH_FREE_M``), it keeps out of the places the
   oracle route or an event puts objects on, and objects on those places, in closed furniture or on an appliance
-  do not move;
+  do not move.  On a top (``/top``) with an edge the base can stand at (``reach_edges``) the cluster goes anywhere
+  on the top where each of its objects lies within ``REACH_DEPTH_M`` (20 cm) of such an edge (``reachable``);
 * **start**: a random free, reachable cell of the variant's start room (``start_cells.json``) and a random yaw;
   when the variant hides an item (a search condition) the item is not in the start view, and the route's first
   ``look`` target is not behind a wall.
@@ -28,6 +29,8 @@ from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from zeno_skills.predicates import VIEW_RANGE_M  # noqa: E402  the look skill's range (5 m), not a copy
 CELLS = ROOT / "benchmark/v6/start_cells.json"
 
 CLUSTER_GAP_M = 0.03     # objects closer than this on one support move together
@@ -36,12 +39,18 @@ DEPTH_FREE_M = 0.15      # a cluster may always lie this deep from the edge it i
 CLEAR_M = 0.01           # clearance between a moved cluster and anything else on the support
 CELL_M = 0.2             # start-cell grid
 VIEW_HALF_DEG = 45.0     # half the start view (head camera, head straight)
-VIEW_RANGE_M = 6.0
 FLOOR_CLEAR_M = 0.45     # no start this close to an object on the floor (bottom below FLOOR_Z_M), as v5 checks
 FLOOR_Z_M = 0.15
 DESIGN_NEAR_M = 0.15     # an object this close to a design object is the other side of its relation
 EVENT_NEAR_M = 0.3       # objects this close to where an event puts something stay (the event is about them)
 TRIES = 40
+REACH_DEPTH_M = 0.20     # a cluster on a top lies within this of an edge the base can stand at (its far side)...
+REACH_NEAR_M = 0.08      # ...or its near side this close to that edge (a big thing set at the edge)
+REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
+REACH_TRIES = 200
+EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
+STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
+                                         # from 0.45 out is still well inside the arm's 0.78 m
 SEARCH_TYPES = ("search_target", "search_tool")
 
 
@@ -97,6 +106,230 @@ def _asset_of(base, name, add):
     if name in add:
         return add[name]["asset"]
     return {o["name"]: o for o in _ann(base)["objects"]}[name]["asset"]
+
+
+# ----------------------------------------------------------------- reach edges (define time)
+@lru_cache(maxsize=None)
+def _world(base):
+    from zeno_skills.annotations import SceneAnnotations
+    from zeno_skills.collision import WorldModel
+    return WorldModel(SceneAnnotations(ROOT / base / "annotation.json"))
+
+
+@lru_cache(maxsize=None)
+def reach_edges(base, sup):
+    """Where the base can stand at a top: [[k, s, E, l0, l1, depth], ...], each a stretch of the edge at
+    coordinate E on axis k (s = +1: the max edge, -1: the min edge) from l0 to l1 along the other axis, with the
+    base column clear (facing the top) at the nearest standoff that is; depth = how deep from that edge it
+    reaches (REACH_DEPTH_M).  A side against a wall or other furniture has none."""
+    world = _world(base)
+    a = _sups(base)[sup]["aabb_xy"]
+    out = []
+    for k in (0, 1):
+        j = 1 - k
+        for sgn in (1, -1):
+            E = a[k + 2] if sgn > 0 else a[k]
+            n = max(1, int(round((a[j + 2] - a[j]) / EDGE_STEP_M)))
+            run = None
+            for i in range(n + 1):
+                t = a[j] + (a[j + 2] - a[j]) * i / n
+                depth = None
+                for off in STANDOFFS_M:
+                    p = [0.0, 0.0]
+                    p[k], p[j] = E + sgn * off, t
+                    yaw = math.atan2(-sgn if k else 0.0, -sgn if not k else 0.0)
+                    if world.footprint_clear(p[0], p[1], yaw):
+                        depth = REACH_DEPTH_M
+                        break
+                if run and depth == run[5]:
+                    run[4] = round(t, 3)
+                    continue
+                if run:
+                    out.append(run)
+                run = [k, sgn, round(E, 4), round(t, 3), round(t, 3), depth] if depth is not None else None
+            if run:
+                out.append(run)
+    return out
+
+
+def reachable(b, edges):
+    """Box b ([x0, y0, x1, y1]) within reach of one of the ``edges`` (reach_edges)."""
+    for k, sgn, E, l0, l1, depth in edges:
+        j = 1 - k
+        c = (b[j] + b[j + 2]) / 2
+        if not l0 - REACH_LATERAL_M <= c <= l1 + REACH_LATERAL_M:
+            continue
+        far = E - b[k] if sgn > 0 else b[k + 2] - E
+        near = E - b[k + 2] if sgn > 0 else b[k] - E
+        if far <= depth or near <= REACH_NEAR_M:
+            return True
+    return False
+
+
+HINT_STEP_M = 0.02       # grid of the places a hint may move to
+HINT_CLEAR_M = 0.02      # a moved hint keeps this from the support's edge and from what stands there
+
+
+def _relations_ok(n, b, goal, where, before=None, sup=None):
+    """The goal relations about ``n`` that can be judged now hold with ``n`` at box ``b`` on ``sup`` (others where
+    they stand; only what is on that support yet counts: a mug still on the bookcase is not set down yet)."""
+    def box(k):
+        return where[k][1] if k in where and (sup is None or where[k][0] == sup) else None
+
+    def gap(p, q):
+        return math.hypot(max(0.0, max(p[0], q[0]) - min(p[2], q[2])), max(0.0, max(p[1], q[1]) - min(p[3], q[3])))
+    for a in _atoms(goal):
+        kind = a[0]
+        if kind in ("near_any", "not near_any", "clear_of") and a[1] == n:
+            bs = [box(k) for k in a[2] if k != n and box(k)]
+            if not bs:
+                continue
+            g = min(gap(b, q) for q in bs)
+            if (kind == "near_any" and g > a[3]) or (kind == "not near_any" and g < a[3]) or \
+                    (kind == "clear_of" and g < a[3]):
+                return False
+        elif kind in ("clear_of",) and n in a[2] and box(a[1]):
+            if gap(b, box(a[1])) < a[3]:
+                return False
+        elif kind == "near_any" and n in a[2] and box(a[1]) and before is not None:
+            if gap(before, box(a[1])) <= a[3] < gap(b, box(a[1])):
+                return False                           # the hint was what kept the subject near one of them
+        elif kind == "grouped" and n in a[1]:
+            c = ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
+            for k in a[1]:
+                q = box(k) if k != n else None
+                if q and math.hypot((q[0] + q[2]) / 2 - c[0], (q[1] + q[3]) / 2 - c[1]) > a[3]:
+                    return False
+        elif kind == "same_arrangement" and n in _names(a[1:]):
+            return False                               # an exact copy of a layout: never moved
+    return True
+
+
+def _nearest_free(base, sup, asset, xy, others, ok=lambda b: True):
+    """The grid place nearest ``xy`` on ``sup`` where an ``asset`` lies in reach, inside the top and clear of
+    ``others`` (boxes), and ``ok``; None if there is none."""
+    A, edges = _sups(base)[sup]["aabb_xy"], reach_edges(base, sup)
+    best = None
+    for ix in range(int((A[2] - A[0]) / HINT_STEP_M) + 1):
+        for iy in range(int((A[3] - A[1]) / HINT_STEP_M) + 1):
+            p = [round(A[0] + ix * HINT_STEP_M, 3), round(A[1] + iy * HINT_STEP_M, 3)]
+            d = math.hypot(p[0] - xy[0], p[1] - xy[1])
+            if best is not None and d >= best[0]:
+                continue
+            b = _box(asset, {"xy": p})
+            if b[0] < A[0] + HINT_CLEAR_M or b[1] < A[1] + HINT_CLEAR_M or b[2] > A[2] - HINT_CLEAR_M \
+                    or b[3] > A[3] - HINT_CLEAR_M or not reachable(b, edges) \
+                    or any(_overlap(b, o, HINT_CLEAR_M) for o in others) or not ok(b):
+                continue
+            best = (d, p)
+    return best[1] if best else None
+
+
+def poses_in_reach(task):
+    """Each variant's own pose of an object its route picks from a top, moved as little as it needs into reach of a
+    free edge, clear of what else stands there (the seed then draws from it; a pose the seed keeps -- the design --
+    is in reach too).  An object on an appliance, stacked, one of a group, or with no free place stays.
+    Returns [(variant, object, old, new)]."""
+    base = task["scene"]["base"]
+    sups = _sups(base)
+    ann = {o["name"]: o for o in _ann(base)["objects"]}
+    out = []
+    for lid, rname in task["oracle"].items():
+        v = task["variants"].get(lid)
+        if v is None or rname not in task["routes"]:
+            continue
+        steps = task["routes"][rname]["steps"]
+        picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
+        removed = set(task["scene"].get("remove", [])) | set(v.get("remove", []))
+        add = {**task["scene"].get("add", {}), **v.get("add", {})}
+        placed = {**task["scene"].get("move", {}), **add, **v.get("move", {})}
+        boxes = {}
+        for n, o in ann.items():
+            if n not in removed and n not in placed and o.get("support"):
+                boxes[n] = (o["support"], o["aabb"][:2] + o["aabb"][3:5])
+        for n, m in placed.items():
+            if n not in removed and m.get("xy") and m.get("support"):
+                try:
+                    boxes[n] = (m["support"], _box(_asset_of(base, n, add), m))
+                except KeyError:
+                    pass
+        stacked = {k for k, m in placed.items() if m.get("xy") and not m.get("support")}
+        for n in sorted(picked & set(placed) - removed):   # a relation judges where it ends up, not where it starts
+            m = placed[n]
+            sup = m.get("support")
+            if not m.get("xy") or not sup or not sup.endswith("/top") or sup not in sups or not reach_edges(base, sup):
+                continue
+            b = boxes[n][1]
+            if reachable(b, reach_edges(base, sup)) or _fixed_support(base, sup):
+                continue                               # in reach already, or on an appliance (a lid on its pot)
+            if any(_overlap(b, _box(_asset_of(base, k, add), placed[k]), CLUSTER_GAP_M) for k in stacked) or \
+                    any(k != n and _overlap(b, q, CLUSTER_GAP_M) for k, (_s, q) in boxes.items()):
+                continue                               # stacked, or one of a group: the seed moves the group
+            others = [q for k, (s_, q) in boxes.items() if s_ == sup and k != n]
+            p = _nearest_free(base, sup, _asset_of(base, n, add), m["xy"], others)
+            if p is None:
+                continue
+            where = v.setdefault("move", {}) if n in v.get("move", {}) or n not in v.get("add", {}) else v["add"]
+            new = dict(m, xy=p)
+            where[n] = new
+            boxes[n] = (sup, _box(_asset_of(base, n, add), new))
+            out.append((lid, n, m["xy"], p))
+    return out
+
+
+def hints_in_reach(task):
+    """Route ``place`` hints on a top moved, as little as they need, to where the object lies within reach of a free
+    edge (``reachable``) and clear of what stands on the top then; a hint already in reach, on a top with no free
+    edge, or with no such place nearby stays.  Returns [(route, step, old, new)]."""
+    base = task["scene"]["base"]
+    sups = _sups(base)
+    ann = {o["name"]: o for o in _ann(base)["objects"]}
+    out, done = [], set()
+    for lid, rname in task["oracle"].items():
+        v = task["variants"].get(lid)
+        if v is None or rname not in task["routes"] or rname in done:
+            continue
+        done.add(rname)
+        removed = set(task["scene"].get("remove", [])) | set(v.get("remove", []))
+        add = {**task["scene"].get("add", {}), **v.get("add", {})}
+        placed = {**task["scene"].get("move", {}), **add, **v.get("move", {})}
+        where = {}                                  # object -> (support, box) as the route goes
+        for n, o in ann.items():
+            if n not in removed and n not in placed and o.get("support"):
+                where[n] = (o["support"], o["aabb"][:2] + o["aabb"][3:5])
+        for n, m in placed.items():
+            if n not in removed and m.get("xy") and m.get("support"):
+                try:
+                    where[n] = (m["support"], _box(_asset_of(base, n, add), m))
+                except KeyError:
+                    pass
+        for i, st in enumerate(task["routes"][rname]["steps"]):
+            a = st["args"]
+            if st["skill"] == "pick":
+                where.pop(a.get("object"), None)
+                continue
+            if st["skill"] != "place" or not a.get("object"):
+                continue
+            n, sup, h = a["object"], a.get("receptacle"), a.get("hint_xy")
+            if not h or not sup or not sup.endswith("/top") or sup not in sups or not reach_edges(base, sup):
+                continue
+            try:
+                asset = _asset_of(base, n, add)
+            except KeyError:
+                continue
+            edges = reach_edges(base, sup)
+            others = [b for k, (s_, b) in where.items() if s_ == sup and k != n]
+            if reachable(_box(asset, {"xy": h}), edges):
+                where[n] = (sup, _box(asset, {"xy": h}))
+                continue
+            goal = v.get("goal") or task.get("goal") or {}
+            hb = _box(asset, {"xy": h})
+            p = _nearest_free(base, sup, asset, h, others, lambda b: _relations_ok(n, b, goal, where, hb, sup))
+            if p:
+                a["hint_xy"] = p
+                out.append((rname, i, h, p))
+            where[n] = (sup, _box(asset, {"xy": p or h}))
+    return out
 
 
 # ----------------------------------------------------------------- start cells (define time)
@@ -186,6 +419,40 @@ def reserved(task, vid, steps):
     return out
 
 
+RELATIONS = ("grouped", "near_any", "not near_any", "clear_of", "same_arrangement")
+
+
+def _atoms(g):
+    if isinstance(g, dict):
+        for x in g.values():
+            yield from _atoms(x)
+    elif isinstance(g, list):
+        if g and isinstance(g[0], str):
+            yield g
+        else:
+            for x in g:
+                yield from _atoms(x)
+
+
+def _names(x):
+    return [x] if isinstance(x, str) else [n for y in x for n in _names(y)] if isinstance(x, list) else []
+
+
+def relation_anchors(goal, steps):
+    """Objects the route leaves where they are that a goal relation (grouped, near_any, clear_of,
+    same_arrangement) ties to an object the route sets down at a fixed hint_xy: the seed keeps them, or the
+    hint lands away from them (T13: the bowl and cup set by a spoon moved 1.7 m away)."""
+    hinted = {s["args"]["object"] for s in steps if s["skill"] == "place" and s["args"].get("hint_xy")}
+    moved = {s["args"].get("object") for s in steps if s["skill"] in ("pick", "place")}
+    out = set()
+    for a in _atoms(goal):
+        if a[0] in RELATIONS:
+            ns = set(_names(a[1:])) - {x for x in a[1:] if isinstance(x, str) and "/" in x}
+            if ns & hinted:
+                out |= ns - moved
+    return out
+
+
 def _same_pose(a, b):
     return a.get("support") == b.get("support") and round(a.get("yaw_deg", 0.0)) == round(b.get("yaw_deg", 0.0)) \
         and all(abs(x - y) < 0.01 for x, y in zip(a.get("xy") or [], b.get("xy") or []))
@@ -204,6 +471,7 @@ def layout_spec(task, vid, registry, control=None):
     add = {**scene.get("add", {}), **v.get("add", {})}
     placed = {**move, **add}
     steps = task["routes"][task["oracle"][vid]]["steps"]
+    picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
     # stacked objects (no support) go with the object they stand on
@@ -237,6 +505,7 @@ def layout_spec(task, vid, registry, control=None):
                 any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)
+    fixed |= relation_anchors(v.get("goal") or task.get("goal") or {}, steps)
     movable = {}
     for n, m in placed.items():
         sup = m.get("support")
@@ -267,12 +536,15 @@ def layout_spec(task, vid, registry, control=None):
             rng = {}
             dist = {"x0": B[0] - A[0], "x1": A[2] - B[2], "y0": B[1] - A[1], "y1": A[3] - B[3]}
             near = min(dist, key=dist.get)                   # the edge the cluster is reached from
+            top = sup.endswith("/top") and bool(reach_edges(base, sup))   # anywhere within reach of a free edge
             for ax, lo_k, hi_k in (("dx", "x0", "x1"), ("dy", "y0", "y1")):
                 if min(dist[lo_k], dist[hi_k]) < EDGE_LOCK_M:
                     continue
                 lo, hi = -dist[lo_k] + CLEAR_M, dist[hi_k] - CLEAR_M
                 depth = max(dist[near], DEPTH_FREE_M)
-                if near == lo_k:
+                if top:
+                    pass
+                elif near == lo_k:
                     hi = min(hi, depth - dist[lo_k])
                 elif near == hi_k:
                     lo = max(lo, dist[hi_k] - depth)
@@ -280,7 +552,9 @@ def layout_spec(task, vid, registry, control=None):
                 if hi - lo >= 0.01:
                     rng[ax] = [min(lo, 0.0), max(hi, 0.0)]
             if rng:
-                clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng})
+                pk = sorted(set(g) & picked)
+                clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng,
+                                 **({"pick": pk} if pk else {})})
     # what stands on those supports and does not move: base-scene objects, other task objects, reserved places
     in_cluster = {n for c in clusters for n in c["names"]}
     static = {}
@@ -307,7 +581,9 @@ def layout_spec(task, vid, registry, control=None):
                 if nxt:
                     hide.append(nxt["args"]["object"])
     look = [steps[0]["args"]["target"]] if steps and steps[0]["skill"] == "look" else []
-    return {"clusters": clusters, "static": static,
+    reach = {c["support"]: reach_edges(base, c["support"]) for c in clusters
+             if c["support"].endswith("/top") and reach_edges(base, c["support"])}
+    return {"clusters": clusters, "static": static, "reach": reach,
             "start": {"room": room_of(base, s0[:2]), "hide": sorted(set(hide)), "look": look}}
 
 
@@ -382,18 +658,48 @@ def apply_layout(cfg, spec, rng):
     current = {i: list(c["box"]) for i, c in enumerate(spec["clusters"])}
     order = list(range(len(spec["clusters"])))
     rng.shuffle(order)
+    # the largest first: on a top every cluster wants the strip along a free edge, and a small one placed
+    # first can leave no room in it for a long one (T14: the red book before the mug, notebook and pencil)
+    area = lambda i: (spec["clusters"][i]["box"][2] - spec["clusters"][i]["box"][0]) * \
+        (spec["clusters"][i]["box"][3] - spec["clusters"][i]["box"][1])  # noqa: E731
+    order.sort(key=lambda i: -area(i))
     for i in order:
         c = spec["clusters"][i]
         others = list(spec["static"].get(c["support"], [])) + \
             [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == c["support"]]
         dx = dy = 0.0
-        for _ in range(TRIES):
+        edges = (spec.get("reach") or {}).get(c["support"])
+
+        members = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                   for n in c.get("pick") or c["names"]     # what the route picks must be in reach; the rest comes along
+                   if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+
+        every = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                 for n in c["names"] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")] \
+            or [c["box"]]
+
+        def fits(tx, ty, each=True):
+            sh = lambda r: [r[0] + tx, r[1] + ty, r[2] + tx, r[3] + ty]  # noqa: E731
+            b = sh(c["box"])
+            # each object against what stands there (the cluster's whole box takes in what lies between them)
+            if any(_overlap(sh(m), o, CLEAR_M) for m in every for o in others):
+                return False
+            # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
+            return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))
+        for _ in range(REACH_TRIES if edges is not None else TRIES):
             tx = _grid(rng, c["dx"]) if "dx" in c else 0.0
             ty = _grid(rng, c["dy"]) if "dy" in c else 0.0
-            b = [c["box"][0] + tx, c["box"][1] + ty, c["box"][2] + tx, c["box"][3] + ty]
-            if not any(_overlap(b, o, CLEAR_M) for o in others):
+            if fits(tx, ty):
                 dx, dy = tx, ty
                 break
+        else:
+            if edges is not None:                      # a crowded top: every free place in reach, one at random
+                axis = lambda k: [round(c[k][0] + i * 0.02, 2) for i in range(int((c[k][1] - c[k][0]) / 0.02) + 1)] \
+                    if k in c else [0.0]  # noqa: E731
+                grid = [(tx, ty) for tx in axis("dx") for ty in axis("dy")]
+                ok = [g for g in grid if fits(*g)] or [g for g in grid if fits(*g, each=False)]
+                if ok:
+                    dx, dy = rng.choice(ok)
         current[i] = [c["box"][0] + dx, c["box"][1] + dy, c["box"][2] + dx, c["box"][3] + dy]
         for n in c["names"]:
             where = cfg["move"] if n in cfg["move"] else cfg["add"]

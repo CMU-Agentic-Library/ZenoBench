@@ -202,7 +202,8 @@ def pick_job(rig, args, state, skill=None):
     door = _behind_door(rig, obj, pos)
     near, prefer = rig.base_pose(), ()
     if door is not None:
-        if abs(rig.joint(door["name"]) - door["open_q"]) > 0.10:
+        from ..predicates import OPEN_ENOUGH, _art_open
+        if _art_open(rig, door["name"])[0] < OPEN_ENOUGH:
             raise SkillFailure(f"pick {name}: {door['name']} door is closed")
         out = _outward(door)
         prefer, near = (_front_of(rig, door, pos),), rig.base_pose()[:2]

@@ -166,6 +166,8 @@ T01_IDLE = {DINING: {"wide_storage_bin": [2.985, 6.6], "clutter_cereal_b": [3.70
 
 def T01(t):
     B = "paperback_book"
+    t["instruction"] = "Bring the book on the island to the dining table to carry on reading over breakfast."
+    t["instruction_zh"] = "把岛台上那本书拿到餐桌，吃早饭时接着看。"
     # "the dining table": either dining table in the house will do where nothing tells them apart
     t["goal"] = {"all": [["on_any", B, ["dining_table_2/top", "dining_table_1/top"]], ["hand_empty", "right"]]}
     base = OR(t, "overhang_ready")                      # look, nav, approach, look, pick, nav table, place
@@ -244,10 +246,14 @@ def T01(t):
     books = {}
     for room, (sup, xy) in T01_BOOK_AT.items():
         osup, oxy = T01_BOOK_OTHER[room]
-        said = {"living": ("Last night the guest read for a while in the living room while watching TV and left "
-                           "the book there.", "客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。"),
-                "bedroom": ("Last night the guest read in the bedroom before going to sleep and left the book "
-                            "there.", "客人昨晚睡前在卧室看书，看完就放在那儿了。")}[room]
+        instructions = {
+            "living": ("The guest wants to carry on reading over breakfast the book they read in the living room "
+                       "last night. Bring it to the dining table. Leave everything else as it is.",
+                       "客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。"),
+            "bedroom": ("The guest wants to carry on reading over breakfast the book they read in the bedroom "
+                        "before bed last night. Bring it to the dining table. Leave everything else as it is.",
+                        "客人想吃早饭时接着看昨晚睡前在卧室读的那本书，帮忙拿到餐桌上。其他东西别动。"),
+        }[room]
         colour = {"living": "red", "bedroom": "green"}[room]
         if True:
             books[room] = dict(
@@ -255,21 +261,16 @@ def T01(t):
                 add={"book_island": {"asset": f"book_{colour}", "support": "kitchen_island/top", "xy": [7.30, 1.76],
                                      "yaw_deg": 0.0},
                      "book_other": {"asset": "book_blue", "support": osup, "xy": list(oxy), "yaw_deg": 0.0}},
-                instruction=said[0] + " Bring that book to the dining table; they want to go on reading at breakfast. "
-                                      "Apart from that book, do not move anything.",
-                instruction_zh=said[1] + "把那本书拿到餐桌上，客人想边吃早饭边接着看。除了那本书，别的东西都别挪动。",
+                instruction=instructions[0], instruction_zh=instructions[1],
                 goal={"all": [["on_any", B, [DINING, "dining_table_1/top"]], ["near_start", "book_island", 0.03],
                               ["near_start", "book_other", 0.03], ["hand_empty", "right"]]},
                 route=[look("kitchen_island/top"), nav(sup), look(sup), nav(B), S("approach", target=B), look(B),
                        pick(B), nav(DINING), place(B, DINING, [3.72, 6.5])])
-    # where the book goes is said (beside a guest's place, clear of the tableware); which free slot that is, and
-    # whether the book fits there, the robot judges from what it sees
-    suitable = dict(instruction="Breakfast is set on the dining table for the guests. Bring the paperback from the "
-                                "island and put it beside one of the guests' places, so they can read while they "
-                                "eat; leave some space between the book and the tableware, do not put it right "
-                                "against it. Apart from the book, do not move anything.",
-                    instruction_zh="餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，"
-                                   "方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。")
+    # State the reading purpose and preserve the breakfast setting; the robot judges a suitable place from view.
+    suitable = dict(instruction="Breakfast is set. Put the book from the island on the dining table so the guests "
+                                "can read while eating, without getting in the way of their meal. "
+                                "Leave everything else as it is.",
+                    instruction_zh="早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。")
     fams = {
         "table_seats": dict(
             base="table_set", control="overhang_ready", conditions=["spot_quality"], **suitable, keep_design=[DINING],
@@ -287,12 +288,9 @@ def T01(t):
             base="overhang_ready", control="overhang_ready",
             conditions=["destination_unnamed", "spot_quality"], keep_design=[DINING, FAR_DINING],
             remove=["spoon_side_table"], watch=[B, *T01_WARE6, "wide_storage_bin", "wooden_block_a", "wooden_block_b"],
-            instruction="The guests are having breakfast. Bring the paperback from the kitchen island to the table "
-                        "where they are eating and put it beside one of the guests' places, so they can read while "
-                        "they eat; leave some space between the book and the tableware, do not put it right against "
-                        "it. Apart from the book, do not move anything.",
-            instruction_zh="客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；"
-                           "书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。",
+            instruction="The guests are having breakfast. Put the book from the island on their table so they can "
+                        "read while eating, without getting in the way of their meal. Leave everything else as it is.",
+            instruction_zh="客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。",
             factor="which of the two dining tables the guests eat at, and its setting (seed: one of four)",
             challenge="the house has two dining tables, the near one "
                       "(6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the "
@@ -304,9 +302,10 @@ def T01(t):
         "no_room_fallback": dict(
             base="table_set", control="table_seats", conditions=["spot_quality", "infeasible_fallback"],
             keep_design=[DINING], watch=[B, *T01_WARE6],
-            instruction=suitable["instruction"][:-1] + "; if there is no such place on the table, put the book away "
-                        "on a bookcase instead.",
-            instruction_zh=suitable["instruction_zh"][:-1] + "；要是桌上没有这样的位置，就把书放到书柜收起来。",
+            instruction="Put the book from the island on the dining table so the guests can read while eating, "
+                        "without getting in the way of their meal; if there really is no suitable place, "
+                        "put it away on a bookcase for now. Leave everything else as it is.",
+            instruction_zh="把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。",
             factor="whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in "
                    "it)",
             challenge="breakfast is set for three as in table_seats; in one layout of three a cereal box stands in "
@@ -325,13 +324,10 @@ def T01(t):
         "reader_seat": dict(
             base="table_set", control="table_seats", conditions=["referent_clue", "spot_quality"],
             keep_design=[DINING], watch=[B, *T01_WARE6],
-            instruction="Breakfast is set on the dining table for the guests. The paperback on the island belongs to "
-                        "the guest who drinks coffee from a mug with a handle in the morning (the others have cups without "
-                        "a handle): put it beside "
-                        "that guest's place, so they can read while they eat; leave some space between the book and "
-                        "the tableware. Apart from the book, do not move anything.",
-            instruction_zh="餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），"
-                           "把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。",
+            instruction="The guest drinking coffee from a mug wants to read the book on the island over breakfast. "
+                        "Set it on the dining table for them without getting in the way of their meal. "
+                        "Leave everything else as it is.",
+            instruction_zh="用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。",
             factor="which seat has the coffee mug (seed: one of three)",
             challenge="three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one "
                       "seat has a coffee mug (with a handle), the other two a cup without one; the instruction says the "
@@ -728,14 +724,14 @@ def T05(t):
     from itertools import combinations
     per_cases = {}
     for n, xs in ((2, [-1.0, -0.45]), (3, [-1.15, -0.72, -0.29])):
-        nbs = {f"hw_notebook_{i + 1}": {"asset": "notebook", "support": DESK, "xy": [x, -5.92], "yaw_deg": 0.0}
+        nbs = {f"hw_notebook_{i + 1}": {"asset": "notebook", "support": DESK, "xy": [x, -6.22], "yaw_deg": 0.0}   # front strip
                for i, x in enumerate(xs)}
         per_cases[f"notebooks_{n}"] = dict(
             move=copy.deepcopy(W4), add={**copy.deepcopy(W4_add), **nbs}, watch=[*W_ALL, *nbs],
             goal={"any": [[*[["on", w, DESK] for w in sub], *[["near_start", w, 0.03] for w in W_ALL if w not in sub]]
                           for sub in combinations(W_ALL, n)],
                   "all": [*[["near_any", nb, W_ALL, 0.10] for nb in nbs], ["hand_empty", "right"]]},
-            route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -5.92])])
+            route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -6.22])])
 
     # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
     # pen first, so the trip to the desk also starts the mug's
@@ -1239,7 +1235,9 @@ def T10(t):
                            route=[look(ISL), S("search", object=CAN, region="living_room_0_1")] + throw(CAN))}
     # trash_moved: the trash can is not by the island today (dining room, or the bathroom); the can is on the island
     moved = {"dining": ({"support": None, "z": 0.0, "xy": [4.60, 6.00], "yaw_deg": 0}, "dining_room_0_1"),
-             "bathroom": ({"support": None, "z": 0.0, "xy": [-0.40, 6.00], "yaw_deg": 0}, "bathroom_0_1")}
+             "bathroom": ({"support": None, "z": 0.0, "xy": [-0.75, 3.25], "yaw_deg": 0}, "bathroom_0_1")}
+    # (-0.40, 6.00) was inside the wall north of the toilet; (-0.75, 3.25) stands by the bathroom's east wall, 10 cm
+    # clear of everything, 0.42 m from a start cell
     moved_cases = {c: dict(move={TRASH: pose},
                            route=[look(ISL), nav(CAN), pick(CAN), S("lift", object=CAN, height_m=0.95),
                                   S("search", object=TRASH, region=region), nav(TRASH),
@@ -1249,7 +1247,7 @@ def T10(t):
     # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
     # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
     TRAY, LEFT, MUG, FRIDGE = "takeout_tray", "leftovers", "used_mug", "breakfast_fridge"
-    on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.58, 6.45), LEFT: P(DINING, 3.58, 6.85),
+    on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.66, 6.45), LEFT: P(DINING, 3.66, 6.85),   # in reach
                 MUG: P(DINING, 3.62, 7.55)}
     asset = {TRAY: "foil_takeout_tray", LEFT: "glass_food_container", MUG: "breakfast_mug"}
     fate = {CAN: [["inside", CAN, TRASH]], TRAY: [["inside", TRAY, TRASH]],
@@ -1527,9 +1525,11 @@ def T13(t):
     # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
     # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
     # the room.  No cup in the house: the mug takes the cup's place.
-    B_SP, A_SP = [2.93, 7.30], [3.70, 6.55]
-    RIGHT = {"bowl": (0.0, 0.19), "cup": (0.17, 0.0)}
-    LEFT = {"plate": (0.0, 0.19), "bowl": (0.0, 0.19), "mug": (0.17, 0.36)}
+    B_SP, A_SP = [2.89, 7.30], [3.70, 6.55]     # the copy's spoon 10 cm from the west edge
+    # (forward, left) of the spoon; nothing forward of it: the diner sits at the table's edge and what is
+    # set there stays within 20 cm of it, in the robot's reach (the cup 17 cm forward lay 33 cm in)
+    RIGHT = {"bowl": (0.0, 0.19), "cup": (0.0, -0.15)}
+    LEFT = {"plate": (0.0, 0.19), "bowl": (0.0, 0.19), "mug": (0.0, 0.38)}
     copy_cases = {}
     for c, pattern, kinds, use in (("bowl_cup", RIGHT, {"bowl": "breakfast_bowl", "cup": "breakfast_cup"},
                                     {"bowl": BOWL, "cup": CUP}),
@@ -1560,9 +1560,10 @@ def T13(t):
                              watch=[*news, *refs, "example_spoon", SPOON], route=route)
     # finish_the_table: some places are set (adults: bowl and mug; the kid: bowl and a plastic cup, a toy beside it);
     # the empty places (a spoon each) are set by the rule of whoever sits there: a toy beside the spoon means the kid
-    ADULT, KID = {"bowl": (0.0, 0.19), "drink": (0.17, 0.0)}, {"bowl": (0.0, 0.19), "drink": (0.17, 0.0), "toy": (0.0, -0.16)}
-    seats = {"e_north": ([3.70, 7.55], E), "e_mid": ([3.70, 6.70], E), "w_north": ([2.93, 7.55], W),
-             "w_mid": ([2.93, 6.70], W), "w_south": ([2.93, 5.85], W)}
+    # the drink right of the spoon, level with it (within 20 cm of the edge), the kid's toy further right
+    ADULT, KID = {"bowl": (0.0, 0.19), "drink": (0.0, -0.15)}, {"bowl": (0.0, 0.19), "drink": (0.0, -0.15), "toy": (0.0, -0.30)}
+    seats = {"e_north": ([3.70, 7.55], E), "e_mid": ([3.70, 6.70], E), "w_north": ([2.89, 7.55], W),
+             "w_mid": ([2.89, 6.70], W), "w_south": ([2.89, 5.85], W)}   # the west spoons 10 cm from the edge
 
     def set_place(name, kind, toy_asset="rubber_duck"):
         sp, fc = seats[name]
@@ -1686,7 +1687,8 @@ def T14(t):
     # the bedroom bookcase, the paperbacks on the living-room shelf
     KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
-    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.45), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.45),
+    # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
+    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.50), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.50),
                "paperback_shelved_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
                "paperback_shelved_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
     whose_cases = {}
@@ -1700,13 +1702,13 @@ def T14(t):
             goal={"all": [["on_any", n, SHELF_LEVELS[sup]] for n, (_, sup) in items.items()]
                   + [["near_start", n, 0.03] for n in shelves] + [["hand_empty", "right"]]},
             route=[look(DESK)] + [st for n, (_, sup) in items.items()
-                                  for st in shelve(n, sup, [1.0, -0.45] if sup == KIDS else [-1.86, -0.95])])
+                                  for st in shelve(n, sup, [1.0, -0.50] if sup == KIDS else [-1.86, -0.95])])
     # next_in_series: the red book back, and the other book of its set (the same red cover, among other books) to
     # the desk for tomorrow
     others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
     series_cases = {}
-    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.00, -0.30), None)),
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.12, -0.45), None)),   # the green book's spot: in reach
                                  ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
                                  ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
         add = {**others, "red_book_2": book("book_red", sup, *xy)}
@@ -2786,6 +2788,92 @@ def exact_base_poses(t, v):
     return out
 
 
+def navigate_first(steps: list) -> list:
+    """The routes' opening looks with a navigate to their target before each: the v3 routes looked from the
+    scene's start beside the island, while v6 starts anywhere in the start room (up to 12 m away, behind
+    furniture or walls).  A navigate the route already makes to the place just looked at is not repeated."""
+    k = 0
+    while k < len(steps) and steps[k]["skill"] == "look":
+        k += 1
+    if not k:
+        return steps
+    out = []
+    for s in steps[:k]:
+        out += [{"skill": "navigate", "args": {"destination": s["args"]["target"]}}, s]
+    rest = steps[k:]
+    if rest and rest[0]["skill"] == "navigate" and rest[0]["args"].get("destination") == out[-1]["args"]["target"]:
+        rest = rest[1:]
+    return out + rest
+
+
+def explore_for_floor(task: dict) -> None:
+    """A search for an object on the floor becomes explore_room of the same room: search only aims the head at
+    the room's supports (tables, counters, shelves), so a thing on the floor is seen by chance or not at all (T23's
+    spoon by the dining-room wall, T26's basket); explore_room sweeps the room from several viewpoints."""
+    ann = {o["name"]: o for o in json.loads((ROOT / task["scene"]["base"] / "annotation.json").read_text())["objects"]}
+    for lid, rname in task["oracle"].items():
+        v = task["variants"].get(lid)
+        if v is None or rname not in task["routes"]:
+            continue
+        placed = {**task["scene"].get("move", {}), **task["scene"].get("add", {}), **v.get("move", {}), **v.get("add", {})}
+        steps = task["routes"][rname]["steps"]
+        for i, s in enumerate(steps):
+            n = s["args"].get("object") if s["skill"] == "search" else None
+            if not n or not s["args"].get("region"):
+                continue
+            sup = placed[n].get("support") if n in placed else (ann.get(n) or {}).get("support", "?")
+            if not sup or str(sup).startswith("floor"):
+                steps[i] = {"skill": "explore_room", "args": {"room": s["args"]["region"]}}
+
+
+# GT sequence fixes (2026-11-09 review): steps that find the object before the first navigate to it, and a navigate
+# before a look at a place in another room.  Only these variants (every layout); the rest of each route is unchanged.
+GT_PREFIX = {
+    ("T21", "tissue_on_tv_stand"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T21", "which_table"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T21", "the_kids_side"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
+    ("T25", "drink_on_island"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "cup_elsewhere"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "two_guests"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T25", "little_guest"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
+    ("T26", "two_bedrooms"): [("explore_room", "living_room_0_0")],
+    ("T30", "bowl_on_cabinet"): [("navigate", "kitchen_cabinet_6/top"), ("look", "kitchen_cabinet_6/top")],
+}
+GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
+_GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}
+
+
+def gt_sequence_fixes(task: dict) -> list:
+    """Apply GT_PREFIX / GT_NAV_BEFORE_LOOK to every layout of the listed variants; a step already there is not
+    added again.  Returns [(layout, what)]."""
+    out, tid = [], task["task_id"][:3]
+    for vid, info in task.get("v6_variants", {}).items():
+        prefix = GT_PREFIX.get((tid, vid))
+        nav_look = (tid, vid) in GT_NAV_BEFORE_LOOK
+        if not prefix and not nav_look:
+            continue
+        for lid in info["layouts"]:
+            steps = task["routes"][task["oracle"][lid]]["steps"]
+            if prefix:
+                want = [{"skill": k, "args": {_GT_ARG[k]: x}} for k, x in prefix]
+                if steps[:len(want)] != want:
+                    steps[:0] = want
+                    out.append((lid, "prefix " + " -> ".join(f"{k}({x})" for k, x in prefix)))
+            if nav_look:
+                i = 0
+                while i < len(steps):
+                    st = steps[i]
+                    if st["skill"] == "look":
+                        tg = st["args"]["target"]
+                        last = next((x for x in reversed(steps[:i]) if x["skill"] in ("navigate", "explore_room", "search")), None)
+                        if not (last and last["skill"] == "navigate" and last["args"].get("destination") == tg):
+                            steps.insert(i, {"skill": "navigate", "args": {"destination": tg}})
+                            out.append((lid, f"navigate({tg}) before look({tg}) at step {i}"))
+                            i += 1
+                    i += 1
+    return out
+
+
 def build() -> dict:
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
@@ -2798,9 +2886,13 @@ def build() -> dict:
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
                    "benchmark/v6/tracks.py.",
            "eval_seeds": SEEDS, "condition_registry": reg, "tasks": tasks}
-    from benchmark.v6.layout import layout_spec
+    from benchmark.v6.layout import hints_in_reach, layout_spec, poses_in_reach
     from benchmark.v6.tracks import apply_tracks, strip_injected
     strip_injected(out)
+    for t in out["tasks"]:                       # the start is drawn anywhere in the room: go there, then look
+        for r in t["routes"].values():
+            r["steps"] = navigate_first(r["steps"])
+        explore_for_floor(t)
     for t in out["tasks"]:                       # the seed draws the layout (benchmark/v6/layout.py)
         for info in t["v6_variants"].values():
             for lid in info["layouts"]:
@@ -2808,6 +2900,11 @@ def build() -> dict:
                 v["move"] = {**v.get("move", {}), **exact_base_poses(t, v)}
                 v["move"], _ = seed_vary(t, v)   # task objects still at their base pose join the overlay
                 v.pop("vary", None)
+        poses_in_reach(t)                        # what the route picks from a top starts within reach of an edge
+        hints_in_reach(t)                        # where the route sets things down on a top: within reach too
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
                 c = info.get("control")
                 ctl = t["v6_variants"][c]["layouts"][0] if c in t["v6_variants"] else None
                 v["layout"] = layout_spec(t, lid, reg, ctl)
@@ -2820,6 +2917,8 @@ def build() -> dict:
                 if observe_first(t, lid):
                     t["variants"][lid]["layout"] = layout_spec(t, lid, reg, ctl)
                     observe_first(t, lid)
+    for t in out["tasks"]:                       # GT: find the object first, go before looking at another room
+        gt_sequence_fixes(t)                     # (after the layouts: the seed's draws stay as they were)
     apply_tracks(out)
     # approach left the library (benchmark/retired_skills.py): its steps in the routes v6 inherits from v5
     # and in its own designs become the navigate they still need, or go when a navigate there precedes them

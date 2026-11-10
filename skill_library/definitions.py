@@ -910,7 +910,9 @@ skill("open", "articulated", "Open a door or drawer",
           Path("refrigerator", [W("articulated", "category", "equals", "refrigerator")],
                [St("policy_003"), St("policy_022", "$articulated", goal="@articulated.wide_open_q")],
                requires=[P("hand_empty", hand="right")],
-               note="Rides the door to 75 % of its annotated range (60 deg), wide enough to put a can on the shelf."),
+               note="Rides the door to 90 % of its annotated range (72 deg): at 75 % (60 deg) the open door's edge stood in "
+                    "front of the shelf's hinge half, over a bottle at the shelf's middle; farther the base, riding "
+                    "the handle round the hinge, meets the microwave stand."),
           Path("drawer", [W("articulated", "type", "equals", "prismatic")],
                [St("policy_003"), St("policy_046", "$articulated"), St("policy_050", "$articulated"),
                 St("policy_047", "$articulated")],

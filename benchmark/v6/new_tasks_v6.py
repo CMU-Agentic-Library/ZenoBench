@@ -338,7 +338,7 @@ def t23():
             "spoon_on_floor", ["not_in_view"], "the seed's layout only",
             "the spoon fell and slid into the dining room next door, out of view from the kitchen",
             "look around until the dropped thing is found, then put it back on the counter",
-            {"": dict(add={SP: floor("breakfast_spoon", 0.75, 7.50, 30.0)},
+            {"": dict(add={SP: floor("breakfast_spoon", 1.05, 7.50, 30.0)},   # 0.4 m off the wall, not 9 cm
                       route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")] + back)}),
         "only_this_room": fam(
             "spoon_on_floor", ["referent_clue"], "the seed's layout only",

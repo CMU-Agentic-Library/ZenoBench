@@ -96,10 +96,10 @@ def test_dependent_decisions_branch_on_what_is_found(tid, vid):
 
 
 def test_search_looks_only_in_its_room():
-    lid = "dropped_in_two_rooms"
-    steps = TASKS["T23"]["routes"][TASKS["T23"]["oracle"][lid]]["steps"]
+    lid = "vessel_decides_appliance__in_pot"         # the pot on the dining table (a search on the floor is an
+    steps = TASKS["T07"]["routes"][TASKS["T07"]["oracle"][lid]]["steps"]   # explore_room: T23's is one now)
     wrong = [dict(s, args={**s["args"], "region": "kitchen_0_0"}) if s["skill"] == "search" else s for s in steps]
-    assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T23", lid, lambda st: wrong))
+    assert any("is not in kitchen_0_0" in x["problem"] for x in edited("T07", lid, lambda st: wrong))
 
 
 def test_reference_routes_pass_the_gate():

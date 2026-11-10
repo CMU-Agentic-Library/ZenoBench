@@ -11,7 +11,7 @@
 
 ## T01_book_to_dining_table
 
-> 有人把平装书落在厨房岛台上了，把它拿到餐桌上，方便吃早饭时看。
+> 把岛台上那本书拿到餐桌，吃早饭时接着看。
 
 ### overhang_ready（对照）
 
@@ -24,13 +24,13 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
 
 ### table_seats（Action + Task）
 
 **情况**：指令要求把书放在某位客人吃饭的位置旁边、和餐具留出空隙，但没说是哪个空位。餐桌东侧摆了三人份早餐（每个座位一个盘子或碗加一个杯子，另有两盒麦片），桌边有好几个空位：两套餐具之间的窄缝（放得下但会挨着餐具）、麦片外侧桌子尽头的大空地（离座位远），还有一个座位旁边够宽的空位 → 看清桌面，自己判断哪个空位既在客人座位旁边、又放得下、和餐具留得出空隙，放在那里
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。
+**指令**：早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。
 
 **成功条件**：
 
@@ -43,18 +43,18 @@
 
 **参考调用顺序**：
 
-- 摆法 `seats_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
-- 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
-- 摆法 `seats_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
-- 摆法 `seats_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `seats_a`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `seats_b`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `seats_a_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `seats_b_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
 
 ### which_table（Action + Task）
 
 **情况**：家里有两张餐桌（近的在隔壁餐厅约 6 m，远的在西边另一间餐厅约 16 m），早餐只摆在其中一张上（三人份，和 table_seats 一样只有一个座位旁的合适空位），另一张上是孩子的积木和储物箱，桌边也有空位；指令只说放到客人吃饭的那张桌子上 → 先到近桌看，没摆早餐就改去另一间餐厅，在摆了早餐的桌子上选座位旁的空位放下；放到另一张桌子上算失败
 
-**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动。
+**指令**：客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。
 
 **成功条件**：
 
@@ -75,20 +75,20 @@
 
 **参考调用顺序**：
 
-- 摆法 `near_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
-- 摆法 `near_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `far_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
-- 摆法 `far_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
-- 摆法 `near_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
-- 摆法 `near_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `far_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
-- 摆法 `far_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
+- 摆法 `near_a`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `near_b`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `far_a`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
+- 摆法 `far_b`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=dining_table_1/top)` → 9. `look(target=dining_table_1/top)` → 10. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
+- 摆法 `near_a_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `near_b_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `far_a_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=dining_table_1/top)` → 10. `look(target=dining_table_1/top)` → 11. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
+- 摆法 `far_b_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=dining_table_1/top)` → 10. `look(target=dining_table_1/top)` → 11. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
 
 ### no_room_fallback（Action + Task）
 
 **情况**：和 table_seats 一样的三人份早餐；指令加了约束：餐具和麦片都别动，桌上没有合适位置就把书放到书柜收起来（家里四个书柜，哪个、哪层都算） → 先看桌子：有座位旁的合适空位就放那里（这时放书柜算失败）；唯一的宽空位被一盒麦片占着时，按指令放进书柜（参考路线：卧室的书柜，最近）（挪麦片腾位置算失败）
 
-**指令**：餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。除了这本书，别的东西都别挪动；要是桌上没有这样的位置，就把书放到书柜收起来。
+**指令**：把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。
 
 **成功条件**：
 
@@ -131,18 +131,18 @@
 
 **参考调用顺序**：
 
-- 摆法 `seats_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
-- 摆法 `full_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=bookcase_2/top)` → 8. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
-- 摆法 `seats_b_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
-- 摆法 `seats_c_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
-- 摆法 `full_a_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=bookcase_2/top)` → 9. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
+- 摆法 `seats_b`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `full_a`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `navigate(destination=bookcase_2/top)` → 9. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
+- 摆法 `seats_b_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `seats_c_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.35])`
+- 摆法 `full_a_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.15, -0.43])`
 
 ### reader_seat（Action + Task）
 
 **情况**：三个座位旁边都有够宽的空位；其中一个座位的饮料是马克杯，另外两个是没把手的杯子；指令说书是"早上用带把手的马克杯喝咖啡的那位客人"的（另外两位用没把手的杯子） → 从桌上认出用马克杯的座位，把书放在那个座位旁边（离它的盘子或马克杯不超过 15 cm，离别的座位的盘子超过 15 cm）
 
-**指令**：餐桌上已经给客人摆好了早餐。岛台上那本书是早上用带把手的马克杯喝咖啡的那位客人的（另外两位用的是没把手的杯子），把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。除了这本书，别的东西都别挪动。
+**指令**：用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。
 
 **成功条件**：
 
@@ -173,18 +173,18 @@
 
 **参考调用顺序**：
 
-- 摆法 `mug_1`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
-- 摆法 `mug_2`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
-- 摆法 `mug_3`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `look(target=paperback_book)`（补救） → 4. `pick(object=paperback_book)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
-- 摆法 `mug_1_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
-- 摆法 `mug_2_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
-- 摆法 `mug_3_flat`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `expose(object=paperback_book)` → 4. `look(target=paperback_book)` → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
+- 摆法 `mug_1`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
+- 摆法 `mug_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
+- 摆法 `mug_3`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
+- 摆法 `mug_1_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.69])`
+- 摆法 `mug_2_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
+- 摆法 `mug_3_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
 
 ### which_book（Task）
 
 **情况**：岛台上有一本书（不是要找的）；指令说客人昨晚在哪个房间看书（客厅看电视时，或卧室睡前），书就留在那里；另一个房间也有一本别的书 → 不拿眼前岛台上的书，去指令说的房间拿那本，送到餐桌；岛台上和另一个房间的书都不动
 
-**指令**：客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。除了那本书，别的东西都别挪动。
+**指令**：客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。
 
 **成功条件**：
 
@@ -194,8 +194,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `living`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
-- 摆法 `bedroom`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=bookcase_2/top)` → 3. `look(target=bookcase_2/top)` → 4. `navigate(destination=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
+- 摆法 `living`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=paperback_book)` → 6. `look(target=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
+- 摆法 `bedroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `navigate(destination=paperback_book)` → 6. `look(target=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
 
 ---
 
@@ -218,7 +218,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `rotate(object=wooden_block_b, degrees=30)` → 5. `navigate(destination=wooden_block_a)` → 6. `stack(object=wooden_block_b, base=wooden_block_a)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `pick(object=wooden_block_b)` → 5. `rotate(object=wooden_block_b, degrees=30)` → 6. `navigate(destination=wooden_block_a)` → 7. `stack(object=wooden_block_b, base=wooden_block_a)`
 
 ### crowded_use_another（Task）
 
@@ -257,9 +257,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `tight_tv`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `look(target=wooden_block_b)` → 4. `search(object=floor_block, region=living_room_0_0)` → 5. `navigate(destination=floor_block)` → 6. `pick(object=floor_block)` → 7. `navigate(destination=wooden_block_a)` → 8. `stack(object=floor_block, base=wooden_block_a)`
-- 摆法 `tight_dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `look(target=wooden_block_b)` → 4. `search(object=floor_block, region=dining_room_0_1)` → 5. `navigate(destination=floor_block)` → 6. `pick(object=floor_block)` → 7. `navigate(destination=wooden_block_a)` → 8. `stack(object=floor_block, base=wooden_block_a)`
-- 摆法 `loose`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `rotate(object=wooden_block_b, degrees=30)` → 5. `navigate(destination=wooden_block_a)` → 6. `stack(object=wooden_block_b, base=wooden_block_a)`
+- 摆法 `tight_tv`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `look(target=wooden_block_b)` → 5. `search(object=floor_block, region=living_room_0_0)` → 6. `navigate(destination=floor_block)` → 7. `pick(object=floor_block)` → 8. `navigate(destination=wooden_block_a)` → 9. `stack(object=floor_block, base=wooden_block_a)`
+- 摆法 `tight_dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `look(target=wooden_block_b)` → 5. `search(object=floor_block, region=dining_room_0_1)` → 6. `navigate(destination=floor_block)` → 7. `pick(object=floor_block)` → 8. `navigate(destination=wooden_block_a)` → 9. `stack(object=floor_block, base=wooden_block_a)`
+- 摆法 `loose`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `pick(object=wooden_block_b)` → 5. `rotate(object=wooden_block_b, degrees=30)` → 6. `navigate(destination=wooden_block_a)` → 7. `stack(object=wooden_block_b, base=wooden_block_a)`
 
 ### third_toy_elsewhere（Task）
 
@@ -310,8 +310,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `duck`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `rotate(object=wooden_block_b, degrees=30)` → 5. `navigate(destination=wooden_block_a)` → 6. `stack(object=wooden_block_b, base=wooden_block_a)` → 7. `search(object=rubber_duck, region=dining_room_0_1)`（补救） → 8. `navigate(destination=rubber_duck)`（补救） → 9. `pick(object=rubber_duck)`（补救） → 10. `navigate(destination=wooden_block_a)`（补救） → 11. `stack(object=rubber_duck, base=wooden_block_b)`（补救）
-- 摆法 `toy_block`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `rotate(object=wooden_block_b, degrees=30)` → 5. `navigate(destination=wooden_block_a)` → 6. `stack(object=wooden_block_b, base=wooden_block_a)` → 7. `search(object=toy_block, region=kitchen_0_1)`（补救） → 8. `navigate(destination=toy_block)`（补救） → 9. `pick(object=toy_block)`（补救） → 10. `navigate(destination=wooden_block_a)`（补救） → 11. `stack(object=toy_block, base=wooden_block_b)`（补救）
+- 摆法 `duck`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `pick(object=wooden_block_b)` → 5. `rotate(object=wooden_block_b, degrees=30)` → 6. `navigate(destination=wooden_block_a)` → 7. `stack(object=wooden_block_b, base=wooden_block_a)` → 8. `search(object=rubber_duck, region=dining_room_0_1)`（补救） → 9. `navigate(destination=rubber_duck)`（补救） → 10. `pick(object=rubber_duck)`（补救） → 11. `navigate(destination=wooden_block_a)`（补救） → 12. `stack(object=rubber_duck, base=wooden_block_b)`（补救）
+- 摆法 `toy_block`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_b)` → 4. `pick(object=wooden_block_b)` → 5. `rotate(object=wooden_block_b, degrees=30)` → 6. `navigate(destination=wooden_block_a)` → 7. `stack(object=wooden_block_b, base=wooden_block_a)` → 8. `search(object=toy_block, region=kitchen_0_1)`（补救） → 9. `navigate(destination=toy_block)`（补救） → 10. `pick(object=toy_block)`（补救） → 11. `navigate(destination=wooden_block_a)`（补救） → 12. `stack(object=toy_block, base=wooden_block_b)`（补救）
 
 ### tower_for_kid（Task）
 
@@ -363,8 +363,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `counter`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_0)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `stack(object=wooden_block_b, base=wooden_block_a)` → 12. `search(object=floor_block, region=kitchen_0_1)` → 13. `navigate(destination=floor_block)` → 14. `pick(object=floor_block)` → 15. `navigate(destination=wooden_block_a)` → 16. `stack(object=floor_block, base=wooden_block_b)`
-- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=floor_block, region=living_room_0_0)` → 8. `navigate(destination=floor_block)` → 9. `pick(object=floor_block)` → 10. `navigate(destination=wooden_block_a)` → 11. `stack(object=floor_block, base=wooden_block_a)` → 12. `search(object=wooden_block_b, region=living_room_0_1)` → 13. `navigate(destination=wooden_block_b)` → 14. `pick(object=wooden_block_b)` → 15. `navigate(destination=wooden_block_a)` → 16. `stack(object=wooden_block_b, base=floor_block)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=wooden_block_b, region=living_room_0_0)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=floor_block, region=kitchen_0_1)` → 14. `navigate(destination=floor_block)` → 15. `pick(object=floor_block)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=floor_block, base=wooden_block_b)`
+- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=floor_block, region=living_room_0_0)` → 9. `navigate(destination=floor_block)` → 10. `pick(object=floor_block)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=floor_block, base=wooden_block_a)` → 13. `search(object=wooden_block_b, region=living_room_0_1)` → 14. `navigate(destination=wooden_block_b)` → 15. `pick(object=wooden_block_b)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=wooden_block_b, base=floor_block)`
 
 ### tower_for_kid_duck（Task）
 
@@ -392,8 +392,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `counter`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_0)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `stack(object=wooden_block_b, base=wooden_block_a)` → 12. `search(object=rubber_duck, region=kitchen_0_1)` → 13. `navigate(destination=rubber_duck)` → 14. `pick(object=rubber_duck)` → 15. `navigate(destination=wooden_block_a)` → 16. `stack(object=rubber_duck, base=wooden_block_b)`
-- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_1)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `stack(object=wooden_block_b, base=wooden_block_a)` → 12. `search(object=rubber_duck, region=living_room_0_0)` → 13. `navigate(destination=rubber_duck)` → 14. `pick(object=rubber_duck)` → 15. `navigate(destination=wooden_block_a)` → 16. `stack(object=rubber_duck, base=wooden_block_b)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=wooden_block_b, region=living_room_0_0)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=rubber_duck, region=kitchen_0_1)` → 14. `navigate(destination=rubber_duck)` → 15. `pick(object=rubber_duck)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=rubber_duck, base=wooden_block_b)`
+- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=wooden_block_b, region=living_room_0_1)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=rubber_duck, region=living_room_0_0)` → 14. `navigate(destination=rubber_duck)` → 15. `pick(object=rubber_duck)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=rubber_duck, base=wooden_block_b)`
 
 ### block_put_away（Action + Task）
 
@@ -430,8 +430,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `in_4`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)`（换做法） → 4. `navigate(destination=wooden_block_b)` → 5. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `close(articulated=kitchen_cabinet_6)` → 12. `navigate(destination=kitchen_cabinet_4)` → 13. `open(articulated=kitchen_cabinet_4)` → 14. `bend()` → 15. `explore_furniture(furniture=kitchen_cabinet_4)` → 16. `straighten()` → 17. `navigate(destination=floor_block)` → 18. `pick(object=floor_block)` → 19. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 20. `close(articulated=kitchen_cabinet_4)` → 21. `navigate(destination=wooden_block_a)` → 22. `stack(object=floor_block, base=wooden_block_a)`
-- 摆法 `in_6`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)`（换做法） → 4. `navigate(destination=wooden_block_b)` → 5. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 6. `navigate(destination=kitchen_cabinet_4)` → 7. `open(articulated=kitchen_cabinet_4)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_4)` → 10. `straighten()` → 11. `close(articulated=kitchen_cabinet_4)` → 12. `navigate(destination=kitchen_cabinet_6)` → 13. `open(articulated=kitchen_cabinet_6)` → 14. `bend()` → 15. `explore_furniture(furniture=kitchen_cabinet_6)` → 16. `straighten()` → 17. `navigate(destination=floor_block)` → 18. `pick(object=floor_block)` → 19. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 20. `close(articulated=kitchen_cabinet_6)` → 21. `navigate(destination=wooden_block_a)` → 22. `stack(object=floor_block, base=wooden_block_a)`
+- 摆法 `in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `open(articulated=kitchen_cabinet_4)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_4)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 21. `close(articulated=kitchen_cabinet_4)` → 22. `navigate(destination=wooden_block_a)` → 23. `stack(object=floor_block, base=wooden_block_a)`
+- 摆法 `in_6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_4)` → 13. `navigate(destination=kitchen_cabinet_6)` → 14. `open(articulated=kitchen_cabinet_6)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_6)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 21. `close(articulated=kitchen_cabinet_6)` → 22. `navigate(destination=wooden_block_a)` → 23. `stack(object=floor_block, base=wooden_block_a)`
 
 ---
 
@@ -456,7 +456,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=wide_storage_bin)` → 6. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 7. `navigate(destination=rolling_pin)` → 8. `pick(object=rolling_pin)` → 9. `navigate(destination=wide_storage_bin)` → 10. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=wide_storage_bin)` → 8. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=wide_storage_bin)` → 12. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
 ### small_bin_or_bedroom_bin（Task）
 
@@ -472,8 +472,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `on_island`：1. `look(target=kitchen_island/top)` → 2. `measure(object=small_storage_bin)` → 3. `measure(object=rolling_pin)` → 4. `search(object=wide_storage_bin, region=bedroom_0_1)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 11. `navigate(destination=rolling_pin)` → 12. `pick(object=rolling_pin)` → 13. `navigate(destination=wide_storage_bin)` → 14. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-- 摆法 `beside_wide_bin`：1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `measure(object=rolling_pin)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 11. `navigate(destination=rolling_pin)` → 12. `pick(object=rolling_pin)` → 13. `navigate(destination=wide_storage_bin)` → 14. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `on_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=small_storage_bin)` → 4. `measure(object=rolling_pin)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `beside_wide_bin`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `measure(object=small_storage_bin)` → 7. `measure(object=rolling_pin)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
 ### which_bin_by_contents（Task）
 
@@ -493,8 +493,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `toys_near`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=breakfast_spoon)` → 7. `pick(object=breakfast_spoon)` → 8. `navigate(destination=wide_storage_bin)` → 9. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 10. `navigate(destination=rolling_pin)` → 11. `pick(object=rolling_pin)` → 12. `navigate(destination=wide_storage_bin)` → 13. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-- 摆法 `tools_near`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=wide_storage_bin)` → 6. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 7. `navigate(destination=rolling_pin)` → 8. `pick(object=rolling_pin)` → 9. `navigate(destination=wide_storage_bin)` → 10. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `toys_near`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `tools_near`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=wide_storage_bin)` → 8. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=wide_storage_bin)` → 12. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
 ### no_bin_substitute（Task）
 
@@ -523,8 +523,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `basket`：1. `look(target=kitchen_island/top)` → 2. `measure(object=rolling_pin)` → 3. `look(target=tv_stand_2/top)` → 4. `measure(object=small_storage_bin)` → 5. `search(object=storage_basket, region=bedroom_0_1)` → 6. `navigate(destination=storage_basket)` → 7. `look(target=storage_basket)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=storage_basket)` → 11. `drop(object=breakfast_spoon, container=storage_basket)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=rolling_pin, receptacle=storage_basket)`
-- 摆法 `tray`：1. `look(target=kitchen_island/top)` → 2. `measure(object=rolling_pin)` → 3. `look(target=tv_stand_2/top)` → 4. `measure(object=small_storage_bin)` → 5. `search(object=serving_tray, region=living_room_0_1)` → 6. `navigate(destination=serving_tray)` → 7. `look(target=serving_tray)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=serving_tray)` → 11. `place(object=breakfast_spoon, receptacle=serving_tray)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=serving_tray)` → 15. `place(object=rolling_pin, receptacle=serving_tray)`
+- 摆法 `basket`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `explore_room(room=bedroom_0_1)` → 7. `navigate(destination=storage_basket)` → 8. `look(target=storage_basket)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=storage_basket)` → 12. `drop(object=breakfast_spoon, container=storage_basket)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=rolling_pin, receptacle=storage_basket)`
+- 摆法 `tray`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `search(object=serving_tray, region=living_room_0_1)` → 7. `navigate(destination=serving_tray)` → 8. `look(target=serving_tray)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=serving_tray)` → 12. `place(object=breakfast_spoon, receptacle=serving_tray)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=serving_tray)` → 16. `place(object=rolling_pin, receptacle=serving_tray)`
 
 ### utensils_apart（Task）
 
@@ -538,8 +538,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `navigate(destination=rolling_pin)` → 6. `pick(object=rolling_pin)` → 7. `navigate(destination=wide_storage_bin)` → 8. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 9. `search(object=breakfast_spoon, region=dining_room_0_1)` → 10. `navigate(destination=breakfast_spoon)` → 11. `pick(object=breakfast_spoon)` → 12. `navigate(destination=wide_storage_bin)` → 13. `drop(object=breakfast_spoon, container=wide_storage_bin)`
-- 摆法 `counter`：1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `navigate(destination=rolling_pin)` → 6. `pick(object=rolling_pin)` → 7. `navigate(destination=wide_storage_bin)` → 8. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 9. `search(object=breakfast_spoon, region=kitchen_0_1)` → 10. `navigate(destination=breakfast_spoon)` → 11. `pick(object=breakfast_spoon)` → 12. `navigate(destination=wide_storage_bin)` → 13. `drop(object=breakfast_spoon, container=wide_storage_bin)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=dining_room_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=kitchen_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
 
 ---
 
@@ -573,7 +573,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=cup_counter_b)` → 3. `pick(object=cup_counter_b)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
 
 ### no_cup（Task）
 
@@ -601,9 +601,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `no_cup`：1. `look(target=kitchen_island/top)` → 2. `count(category=cup)` → 3. `search(object=cup)` → 4. `navigate(destination=mug)`（换做法） → 5. `pick(object=mug)`（换做法） → 6. `navigate(destination=kitchen_cabinet_6/top)` → 7. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
-- 摆法 `no_cup_mug_away`：1. `look(target=kitchen_island/top)` → 2. `count(category=cup)` → 3. `search(object=cup)` → 4. `search(object=mug, region=living_room_0_0)`（换做法） → 5. `navigate(destination=mug)` → 6. `pick(object=mug)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
-- 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `count(category=cup)` → 3. `search(object=cup)` → 4. `search(object=mug, region=dining_room_0_1)`（换做法） → 5. `navigate(destination=mug)` → 6. `pick(object=mug)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `no_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `navigate(destination=mug)`（换做法） → 6. `pick(object=mug)`（换做法） → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `no_cup_mug_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `search(object=mug, region=living_room_0_0)`（换做法） → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `alt_dining_table_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `search(object=mug, region=dining_room_0_1)`（换做法） → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
 
 ### clear_the_drinks_spot（Task）
 
@@ -636,7 +636,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6/top)` → 3. `look(target=kitchen_cabinet_6/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_island/top)` → 7. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[6.7, 1.84])` → 8. `navigate(destination=pot_lid)` → 9. `pick(object=pot_lid)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=pot_lid, receptacle=kitchen_island/top, hint_xy=[7.1, 1.85])` → 12. `navigate(destination=cup_counter_b)` → 13. `pick(object=cup_counter_b)` → 14. `navigate(destination=kitchen_cabinet_6/top)` → 15. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=oatmeal)` → 6. `pick(object=oatmeal)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[6.7, 1.84])` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=pot_lid, receptacle=kitchen_island/top, hint_xy=[7.1, 1.85])` → 13. `navigate(destination=cup_counter_b)` → 14. `pick(object=cup_counter_b)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
 
 ### two_guests（Task）
 
@@ -675,8 +675,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=cup_counter_b)` → 3. `pick(object=cup_counter_b)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.36, 0.36])` → 6. `search(object=mug, region=dining_room_0_1)` → 7. `navigate(destination=mug)` → 8. `pick(object=mug)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
-- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=cup_counter_b)` → 3. `pick(object=cup_counter_b)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.36, 0.36])` → 6. `search(object=mug, region=living_room_0_1)` → 7. `navigate(destination=mug)` → 8. `pick(object=mug)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=dining_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
+- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=living_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
 
 ### x6_gd_cup_in_cabinets（Task）
 
@@ -694,8 +694,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `cup_in_4`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6)` → 3. `open(articulated=kitchen_cabinet_6)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_6)` → 6. `straighten()` → 7. `close(articulated=kitchen_cabinet_6)` → 8. `navigate(destination=kitchen_cabinet_4)` → 9. `open(articulated=kitchen_cabinet_4)` → 10. `bend()` → 11. `explore_furniture(furniture=kitchen_cabinet_4)` → 12. `straighten()` → 13. `navigate(destination=cup_counter_b)` → 14. `pick(object=cup_counter_b)` → 15. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 16. `close(articulated=kitchen_cabinet_4)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
-- 摆法 `cup_in_6`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `close(articulated=kitchen_cabinet_4)` → 8. `navigate(destination=kitchen_cabinet_6)` → 9. `open(articulated=kitchen_cabinet_6)` → 10. `bend()` → 11. `explore_furniture(furniture=kitchen_cabinet_6)` → 12. `straighten()` → 13. `navigate(destination=cup_counter_b)` → 14. `pick(object=cup_counter_b)` → 15. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 16. `close(articulated=kitchen_cabinet_6)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `cup_in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6)` → 4. `open(articulated=kitchen_cabinet_6)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_6)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_6)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `open(articulated=kitchen_cabinet_4)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_4)` → 13. `straighten()` → 14. `navigate(destination=cup_counter_b)` → 15. `pick(object=cup_counter_b)` → 16. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 17. `close(articulated=kitchen_cabinet_4)` → 18. `navigate(destination=kitchen_cabinet_6/top)` → 19. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `cup_in_6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `navigate(destination=cup_counter_b)` → 15. `pick(object=cup_counter_b)` → 16. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 17. `close(articulated=kitchen_cabinet_6)` → 18. `navigate(destination=kitchen_cabinet_6/top)` → 19. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
 
 ---
 
@@ -756,7 +756,7 @@
 **参考调用顺序**：
 
 - 摆法 `pen_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pen)`
-- 摆法 `pencil_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)` → 4. `search(object=pen, region=bedroom_0_1)` → 5. `navigate(destination=pen)` → 6. `pick(object=pen)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -5.95])`
+- 摆法 `pencil_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)` → 4. `search(object=pen, region=bedroom_0_1)` → 5. `navigate(destination=pen)` → 6. `pick(object=pen)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
 ### all_pens（Task）
 
@@ -784,9 +784,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `two`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])`
-- 摆法 `three`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
-- 摆法 `four`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])` → 16. `search(object=pen_2, region=kitchen_0_1)` → 17. `navigate(destination=pen_2)` → 18. `pick(object=pen_2)` → 19. `navigate(destination=desk_1/top)` → 20. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.3, -5.95])`
+- 摆法 `two`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])`
+- 摆法 `three`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])`
+- 摆法 `four`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])` → 16. `search(object=pen_2, region=kitchen_0_1)` → 17. `navigate(destination=pen_2)` → 18. `pick(object=pen_2)` → 19. `navigate(destination=desk_1/top)` → 20. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
 ### homework_ready（Task）
 
@@ -835,9 +835,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `single`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 6. `search(object=notebook_1, region=dining_room_0_1)` → 7. `navigate(destination=notebook_1)` → 8. `expose(object=notebook_1)` → 9. `look(target=notebook_1)` → 10. `pick(object=notebook_1)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
-- 摆法 `several`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 6. `search(object=notebook_2, region=living_room_0_0)` → 7. `navigate(destination=notebook_2)` → 8. `expose(object=notebook_2)` → 9. `look(target=notebook_2)` → 10. `pick(object=notebook_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
-- 摆法 `pencil_only`：1. `search(object=notebook_1, region=bedroom_0_1)` → 2. `navigate(destination=notebook_1)` → 3. `expose(object=notebook_1)` → 4. `look(target=notebook_1)` → 5. `pick(object=notebook_1)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 8. `search(object=pencil, region=dining_room_0_1)` → 9. `navigate(destination=pencil)` → 10. `pick(object=pencil)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
+- 摆法 `single`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 6. `search(object=notebook_1, region=dining_room_0_1)` → 7. `navigate(destination=notebook_1)` → 8. `expose(object=notebook_1)` → 9. `look(target=notebook_1)` → 10. `pick(object=notebook_1)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.608, -6.166])`
+- 摆法 `several`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 6. `search(object=notebook_2, region=living_room_0_0)` → 7. `navigate(destination=notebook_2)` → 8. `expose(object=notebook_2)` → 9. `look(target=notebook_2)` → 10. `pick(object=notebook_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.166])`
+- 摆法 `pencil_only`：1. `search(object=notebook_1, region=bedroom_0_1)` → 2. `navigate(destination=notebook_1)` → 3. `expose(object=notebook_1)` → 4. `look(target=notebook_1)` → 5. `pick(object=notebook_1)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.908, -6.166])` → 8. `search(object=pencil, region=dining_room_0_1)` → 9. `navigate(destination=pencil)` → 10. `pick(object=pencil)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])`
 
 ### pens_per_notebook（Task）
 
@@ -911,8 +911,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `notebooks_2`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.85, -5.92])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -5.92])`
-- 摆法 `notebooks_3`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.0, -5.92])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.57, -5.92])` → 11. `search(object=pen_2, region=living_room_0_0)` → 12. `navigate(destination=pen_2)` → 13. `pick(object=pen_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.14, -5.92])`
+- 摆法 `notebooks_2`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.85, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -6.22])`
+- 摆法 `notebooks_3`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.0, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.57, -6.22])` → 11. `search(object=pen_2, region=living_room_0_0)` → 12. `navigate(destination=pen_2)` → 13. `pick(object=pen_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
 
 ### errand_combined（Task）
 
@@ -929,8 +929,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `pen_bedroom`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -5.95])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.15, 7.3])`
-- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -5.95])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.15, 7.3])`
+- 摆法 `pen_bedroom`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
+- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
 
 ### x6_gd_pen_or_pencil_cabinets（Task）
 
@@ -975,7 +975,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)`
 
 ### display_row（Task）
 
@@ -1001,8 +1001,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `island_floor`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 6. `navigate(destination=wooden_block_b)` → 7. `pick(object=wooden_block_b)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 10. `search(object=floor_block, region=living_room_0_0)` → 11. `navigate(destination=floor_block)` → 12. `pick(object=floor_block)` → 13. `navigate(destination=kitchen_cabinet_6/top)` → 14. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
-- 摆法 `spread`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 6. `search(object=wooden_block_b, region=dining_room_0_1)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 11. `search(object=floor_block, region=kitchen_0_1)` → 12. `navigate(destination=floor_block)` → 13. `pick(object=floor_block)` → 14. `navigate(destination=kitchen_cabinet_6/top)` → 15. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
+- 摆法 `island_floor`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 11. `explore_room(room=living_room_0_0)` → 12. `navigate(destination=floor_block)` → 13. `pick(object=floor_block)` → 14. `navigate(destination=kitchen_cabinet_6/top)` → 15. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
+- 摆法 `spread`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `search(object=wooden_block_b, region=dining_room_0_1)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 12. `search(object=floor_block, region=kitchen_0_1)` → 13. `navigate(destination=floor_block)` → 14. `pick(object=floor_block)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
 
 ### display_spot_or_tv（Task）
 
@@ -1035,10 +1035,10 @@
 
 **参考调用顺序**：
 
-- 摆法 `front_taken`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
-- 摆法 `front_free`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
-- 摆法 `front_taken_block_away`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `search(object=wooden_block_a, region=dining_room_0_1)` → 4. `navigate(destination=wooden_block_a)` → 5. `pick(object=wooden_block_a)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
-- 摆法 `front_free_block_away`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `search(object=wooden_block_a, region=bedroom_0_1)` → 4. `navigate(destination=wooden_block_a)` → 5. `pick(object=wooden_block_a)` → 6. `navigate(destination=kitchen_cabinet_6/top)` → 7. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
+- 摆法 `front_taken`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=wooden_block_a)` → 6. `pick(object=wooden_block_a)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
+- 摆法 `front_free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=wooden_block_a)` → 6. `pick(object=wooden_block_a)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
+- 摆法 `front_taken_block_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `search(object=wooden_block_a, region=dining_room_0_1)` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
+- 摆法 `front_free_block_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `search(object=wooden_block_a, region=bedroom_0_1)` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
 
 ### seen_from_bed（Task）
 
@@ -1063,8 +1063,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `boxes_middle`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
-- 摆法 `boxes_corner`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[2.15, -4.74])`
+- 摆法 `boxes_middle`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
+- 摆法 `boxes_corner`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[2.15, -4.74])`
 
 ---
 
@@ -1163,9 +1163,9 @@
 
 - 摆法 `in_ceramic_bowl`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=oatmeal_bowl)` → 5. `pick(object=oatmeal_bowl)` → 6. `navigate(destination=kitchen_microwave/inside_floor)` → 7. `place(object=oatmeal_bowl, receptacle=kitchen_microwave/inside_floor)` → 8. `close(articulated=kitchen_microwave)` → 9. `heat(food=oatmeal_bowl, appliance=kitchen_microwave, temp_c=40)`
 - 摆法 `in_glass_box`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=glass_food_container)` → 5. `expose(object=glass_food_container)` → 6. `look(target=glass_food_container)` → 7. `pick(object=glass_food_container)` → 8. `navigate(destination=kitchen_microwave/inside_floor)` → 9. `place(object=glass_food_container, receptacle=kitchen_microwave/inside_floor)` → 10. `close(articulated=kitchen_microwave)` → 11. `heat(food=glass_food_container, appliance=kitchen_microwave, temp_c=40)`
-- 摆法 `in_pot`：1. `look(target=kitchen_island/top)` → 2. `search(object=soup_pot, region=dining_room_0_1)` → 3. `navigate(destination=soup_pot)` → 4. `pick(object=soup_pot)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `place(object=soup_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 7. `heat(food=soup_pot, appliance=kitchen_stove, temp_c=40)`
-- 摆法 `in_steel_box`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=steel_lunch_box)` → 3. `expose(object=steel_lunch_box)` → 4. `look(target=steel_lunch_box)` → 5. `pick(object=steel_lunch_box)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=steel_lunch_box, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 8. `heat(food=steel_lunch_box, appliance=kitchen_stove, temp_c=40)`
-- 摆法 `in_foil_tray`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=foil_takeout_tray)` → 3. `expose(object=foil_takeout_tray)` → 4. `look(target=foil_takeout_tray)` → 5. `pick(object=foil_takeout_tray)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=foil_takeout_tray, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 8. `heat(food=foil_takeout_tray, appliance=kitchen_stove, temp_c=40)`
+- 摆法 `in_pot`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=soup_pot, region=dining_room_0_1)` → 4. `navigate(destination=soup_pot)` → 5. `pick(object=soup_pot)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=soup_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 8. `heat(food=soup_pot, appliance=kitchen_stove, temp_c=40)`
+- 摆法 `in_steel_box`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=steel_lunch_box)` → 4. `expose(object=steel_lunch_box)` → 5. `look(target=steel_lunch_box)` → 6. `pick(object=steel_lunch_box)` → 7. `navigate(destination=kitchen_stove/top)` → 8. `place(object=steel_lunch_box, receptacle=kitchen_stove/top, hint_xy=[8.4, 1.655])` → 9. `heat(food=steel_lunch_box, appliance=kitchen_stove, temp_c=40)`
+- 摆法 `in_foil_tray`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=foil_takeout_tray)` → 4. `expose(object=foil_takeout_tray)` → 5. `look(target=foil_takeout_tray)` → 6. `pick(object=foil_takeout_tray)` → 7. `navigate(destination=kitchen_stove/top)` → 8. `place(object=foil_takeout_tray, receptacle=kitchen_stove/top, hint_xy=[8.4, 1.655])` → 9. `heat(food=foil_takeout_tray, appliance=kitchen_stove, temp_c=40)`
 
 ### two_portions（Task）
 
@@ -1205,7 +1205,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=kitchen_sponge)` → 6. `pick(object=kitchen_sponge)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
 ### far_sponge_tv（Task）
 
@@ -1249,8 +1249,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `blocks`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=toy_box)` → 5. `place(object=wooden_block_a, receptacle=toy_box)` → 6. `navigate(destination=wooden_block_b)` → 7. `pick(object=wooden_block_b)` → 8. `navigate(destination=toy_box)` → 9. `place(object=wooden_block_b, receptacle=toy_box)` → 10. `look(target=tv_stand_2/top)` → 11. `navigate(destination=kitchen_sponge)` → 12. `pick(object=kitchen_sponge)` → 13. `navigate(destination=kitchen_island/top)` → 14. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 15. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
-- 摆法 `duck`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=toy_box)` → 5. `place(object=wooden_block_a, receptacle=toy_box)` → 6. `navigate(destination=rubber_duck)` → 7. `pick(object=rubber_duck)` → 8. `navigate(destination=toy_box)` → 9. `place(object=rubber_duck, receptacle=toy_box)` → 10. `look(target=tv_stand_2/top)` → 11. `navigate(destination=kitchen_sponge)` → 12. `pick(object=kitchen_sponge)` → 13. `navigate(destination=kitchen_island/top)` → 14. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 15. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `blocks`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=toy_box)` → 6. `place(object=wooden_block_a, receptacle=toy_box)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=toy_box)` → 10. `place(object=wooden_block_b, receptacle=toy_box)` → 11. `look(target=tv_stand_2/top)` → 12. `navigate(destination=kitchen_sponge)` → 13. `pick(object=kitchen_sponge)` → 14. `navigate(destination=kitchen_island/top)` → 15. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 16. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `duck`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=toy_box)` → 6. `place(object=wooden_block_a, receptacle=toy_box)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=toy_box)` → 10. `place(object=rubber_duck, receptacle=toy_box)` → 11. `look(target=tv_stand_2/top)` → 12. `navigate(destination=kitchen_sponge)` → 13. `pick(object=kitchen_sponge)` → 14. `navigate(destination=kitchen_island/top)` → 15. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 16. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
 ### return_sponge_home（Task）
 
@@ -1267,9 +1267,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=dining_room_0_1)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 7. `navigate(destination=sponge_tray)` → 8. `place(object=kitchen_sponge, receptacle=sponge_tray)`
-- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=living_room_0_1)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 7. `navigate(destination=sponge_tray)` → 8. `place(object=kitchen_sponge, receptacle=sponge_tray)`
-- 摆法 `far_dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=dining_room_0_0)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 7. `navigate(destination=sponge_tray)` → 8. `place(object=kitchen_sponge, receptacle=sponge_tray)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kitchen_sponge, region=dining_room_0_1)` → 4. `navigate(destination=kitchen_sponge)` → 5. `pick(object=kitchen_sponge)` → 6. `navigate(destination=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `place(object=kitchen_sponge, receptacle=sponge_tray)`
+- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kitchen_sponge, region=living_room_0_1)` → 4. `navigate(destination=kitchen_sponge)` → 5. `pick(object=kitchen_sponge)` → 6. `navigate(destination=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `place(object=kitchen_sponge, receptacle=sponge_tray)`
+- 摆法 `far_dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kitchen_sponge, region=dining_room_0_0)` → 4. `navigate(destination=kitchen_sponge)` → 5. `pick(object=kitchen_sponge)` → 6. `navigate(destination=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `place(object=kitchen_sponge, receptacle=sponge_tray)`
 
 ### which_surface（Task）
 
@@ -1292,8 +1292,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `island`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 5. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `navigate(destination=dining_table_2/top)` → 7. `wipe(surface=dining_table_2/top, tool=kitchen_sponge)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_2/top)` → 8. `wipe(surface=dining_table_2/top, tool=kitchen_sponge)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
 ---
 
@@ -1318,7 +1318,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `cover(container=handled_cooking_pot, lid=pot_lid)` → 13. `navigate(destination=kitchen_stove)` → 14. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### lid_on_spoon_away（Action + Task）
 
@@ -1337,8 +1337,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `lid_on_spoon_away`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `uncover(container=handled_cooking_pot)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `search(object=breakfast_spoon, region=living_room_0_0)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=handled_cooking_pot)` → 10. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 13. `navigate(destination=pot_lid)` → 14. `pick(object=pot_lid)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `cover(container=handled_cooking_pot, lid=pot_lid)` → 17. `navigate(destination=kitchen_stove)` → 18. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `uncover(container=handled_cooking_pot)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `search(object=breakfast_spoon, region=dining_room_0_1)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=handled_cooking_pot)` → 10. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 13. `navigate(destination=pot_lid)` → 14. `pick(object=pot_lid)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `cover(container=handled_cooking_pot, lid=pot_lid)` → 17. `navigate(destination=kitchen_stove)` → 18. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `lid_on_spoon_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=living_room_0_0)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `alt_dining_table_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=dining_room_0_1)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### pot_in_use（Task）
 
@@ -1361,8 +1361,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `in_use`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `pick(object=handled_cooking_pot)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.7, 1.725])` → 8. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `free`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `in_use`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.7, 1.725])` → 10. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 17. `navigate(destination=pot_lid)` → 18. `pick(object=pot_lid)` → 19. `navigate(destination=handled_cooking_pot)` → 20. `cover(container=handled_cooking_pot, lid=pot_lid)` → 21. `navigate(destination=kitchen_stove)` → 22. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `navigate(destination=breakfast_spoon)` → 7. `pick(object=breakfast_spoon)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 12. `navigate(destination=pot_lid)` → 13. `pick(object=pot_lid)` → 14. `navigate(destination=handled_cooking_pot)` → 15. `cover(container=handled_cooking_pot, lid=pot_lid)` → 16. `navigate(destination=kitchen_stove)` → 17. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### tomato_in_fridge（Action + Task）
 
@@ -1386,8 +1386,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `in_fridge`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `bend()` → 6. `explore_furniture(furniture=breakfast_fridge)` → 7. `straighten()` → 8. `navigate(destination=fridge_tomato)` → 9. `pick(object=fridge_tomato)` → 10. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 18. `navigate(destination=kitchen_island/top)` → 19. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 20. `navigate(destination=pot_lid)` → 21. `pick(object=pot_lid)` → 22. `navigate(destination=handled_cooking_pot)` → 23. `cover(container=handled_cooking_pot, lid=pot_lid)` → 24. `navigate(destination=kitchen_stove)` → 25. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `on_island`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2, fridge_tomato], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `cover(container=handled_cooking_pot, lid=pot_lid)` → 13. `navigate(destination=kitchen_stove)` → 14. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `in_fridge`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `bend()` → 7. `explore_furniture(furniture=breakfast_fridge)` → 8. `straighten()` → 9. `navigate(destination=fridge_tomato)` → 10. `pick(object=fridge_tomato)` → 11. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 12. `close(articulated=breakfast_fridge)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 15. `navigate(destination=breakfast_spoon)` → 16. `pick(object=breakfast_spoon)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 21. `navigate(destination=pot_lid)` → 22. `pick(object=pot_lid)` → 23. `navigate(destination=handled_cooking_pot)` → 24. `cover(container=handled_cooking_pot, lid=pot_lid)` → 25. `navigate(destination=kitchen_stove)` → 26. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `on_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2, fridge_tomato], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### x6_gd_tomato_elsewhere（Task）
 
@@ -1406,8 +1406,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 3. `search(object=cherry_tomato_2, region=dining_room_0_1)`（补救） → 4. `navigate(destination=cherry_tomato_2)`（补救） → 5. `pick(object=cherry_tomato_2)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `cabinet6`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 3. `search(object=cherry_tomato_2, region=living_room_0_0)`（补救） → 4. `navigate(destination=cherry_tomato_2)`（补救） → 5. `pick(object=cherry_tomato_2)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=dining_room_0_1)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `cabinet6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=living_room_0_0)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### pot_in_dining_room（Task）
 
@@ -1426,7 +1426,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `pick(object=handled_cooking_pot)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 8. `navigate(destination=cherry_tomato_1)`（补救） → 9. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 10. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 17. `navigate(destination=pot_lid)` → 18. `pick(object=pot_lid)` → 19. `navigate(destination=handled_cooking_pot)` → 20. `cover(container=handled_cooking_pot, lid=pot_lid)` → 21. `navigate(destination=kitchen_stove)` → 22. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 10. `navigate(destination=cherry_tomato_1)`（补救） → 11. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 12. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 13. `navigate(destination=breakfast_spoon)` → 14. `pick(object=breakfast_spoon)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 19. `navigate(destination=pot_lid)` → 20. `pick(object=pot_lid)` → 21. `navigate(destination=handled_cooking_pot)` → 22. `cover(container=handled_cooking_pot, lid=pot_lid)` → 23. `navigate(destination=kitchen_stove)` → 24. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ---
 
@@ -1445,7 +1445,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
 ### can_in_dining_room（Task）
 
@@ -1458,8 +1458,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `can_in_dining_room`：1. `look(target=kitchen_island/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `pick(object=soda_can)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
-- 摆法 `alt_tv_stand_2`：1. `look(target=kitchen_island/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `pick(object=soda_can)` → 4. `search(object=soda_can, region=living_room_0_0)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+- 摆法 `can_in_dining_room`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `pick(object=soda_can)` → 5. `search(object=soda_can, region=dining_room_0_1)` → 6. `navigate(destination=soda_can)` → 7. `pick(object=soda_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `alt_tv_stand_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `pick(object=soda_can)` → 5. `search(object=soda_can, region=living_room_0_0)` → 6. `navigate(destination=soda_can)` → 7. `pick(object=soda_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
 ### keep_kids_can（Task）
 
@@ -1476,8 +1476,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `kid_desk`：1. `look(target=kitchen_island/top)` → 2. `search(object=kids_can, region=living_room_0_1)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
-- 摆法 `kid_island`：1. `look(target=kitchen_island/top)` → 2. `search(object=soda_can, region=living_room_0_1)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+- 摆法 `kid_desk`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kids_can, region=living_room_0_1)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `kid_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=soda_can, region=living_room_0_1)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
 ### trash_moved（Task）
 
@@ -1490,8 +1490,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `search(object=trash_can, region=dining_room_0_1)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
-- 摆法 `bathroom`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `search(object=trash_can, region=bathroom_0_1)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=dining_room_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `bathroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=bathroom_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
 ### after_dinner_clear（Task）
 
@@ -1526,9 +1526,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `rubbish_leftovers`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=takeout_tray)` → 9. `pick(object=takeout_tray)` → 10. `lift(object=takeout_tray, height_m=0.95)` → 11. `navigate(destination=trash_can)` → 12. `drop(object=takeout_tray, container=trash_can)` → 13. `navigate(destination=breakfast_fridge)` → 14. `open(articulated=breakfast_fridge)` → 15. `navigate(destination=leftovers)` → 16. `pick(object=leftovers)` → 17. `navigate(destination=breakfast_fridge)` → 18. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 19. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 20. `close(articulated=breakfast_fridge)`
-- 摆法 `leftovers_mug`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=breakfast_fridge)` → 9. `open(articulated=breakfast_fridge)` → 10. `navigate(destination=leftovers)` → 11. `pick(object=leftovers)` → 12. `navigate(destination=breakfast_fridge)` → 13. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 14. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=used_mug)` → 17. `pick(object=used_mug)` → 18. `navigate(destination=kitchen_counter_2/top)` → 19. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
-- 摆法 `rubbish_mug`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=takeout_tray)` → 9. `pick(object=takeout_tray)` → 10. `lift(object=takeout_tray, height_m=0.95)` → 11. `navigate(destination=trash_can)` → 12. `drop(object=takeout_tray, container=trash_can)` → 13. `navigate(destination=used_mug)` → 14. `pick(object=used_mug)` → 15. `navigate(destination=kitchen_counter_2/top)` → 16. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
+- 摆法 `rubbish_leftovers`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=takeout_tray)` → 10. `pick(object=takeout_tray)` → 11. `lift(object=takeout_tray, height_m=0.95)` → 12. `navigate(destination=trash_can)` → 13. `drop(object=takeout_tray, container=trash_can)` → 14. `navigate(destination=breakfast_fridge)` → 15. `open(articulated=breakfast_fridge)` → 16. `navigate(destination=leftovers)` → 17. `pick(object=leftovers)` → 18. `navigate(destination=breakfast_fridge)` → 19. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 20. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 21. `close(articulated=breakfast_fridge)`
+- 摆法 `leftovers_mug`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=breakfast_fridge)` → 10. `open(articulated=breakfast_fridge)` → 11. `navigate(destination=leftovers)` → 12. `pick(object=leftovers)` → 13. `navigate(destination=breakfast_fridge)` → 14. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 15. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 16. `close(articulated=breakfast_fridge)` → 17. `navigate(destination=used_mug)` → 18. `pick(object=used_mug)` → 19. `navigate(destination=kitchen_counter_2/top)` → 20. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
+- 摆法 `rubbish_mug`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=takeout_tray)` → 10. `pick(object=takeout_tray)` → 11. `lift(object=takeout_tray, height_m=0.95)` → 12. `navigate(destination=trash_can)` → 13. `drop(object=takeout_tray, container=trash_can)` → 14. `navigate(destination=used_mug)` → 15. `pick(object=used_mug)` → 16. `navigate(destination=kitchen_counter_2/top)` → 17. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
 
 ### guests_coming（Task）
 
@@ -1559,9 +1559,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `can_mug_block`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=used_mug)` → 10. `pick(object=used_mug)` → 11. `navigate(destination=kitchen_counter_2/top)` → 12. `place(object=used_mug, receptacle=kitchen_counter_2/top)` → 13. `navigate(destination=wooden_block_a)` → 14. `pick(object=wooden_block_a)` → 15. `navigate(destination=toy_box)` → 16. `place(object=wooden_block_a, receptacle=toy_box)`
-- 摆法 `can_block`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=wooden_block_a)` → 10. `pick(object=wooden_block_a)` → 11. `navigate(destination=toy_box)` → 12. `place(object=wooden_block_a, receptacle=toy_box)`
-- 摆法 `can_mug`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=used_mug)` → 10. `pick(object=used_mug)` → 11. `navigate(destination=kitchen_counter_2/top)` → 12. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
+- 摆法 `can_mug_block`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `lift(object=soda_can, height_m=0.95)` → 8. `navigate(destination=trash_can)` → 9. `hover(object=soda_can, target=trash_can)` → 10. `drop(object=soda_can, container=trash_can)` → 11. `navigate(destination=used_mug)` → 12. `pick(object=used_mug)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `place(object=used_mug, receptacle=kitchen_counter_2/top)` → 15. `navigate(destination=wooden_block_a)` → 16. `pick(object=wooden_block_a)` → 17. `navigate(destination=toy_box)` → 18. `place(object=wooden_block_a, receptacle=toy_box)`
+- 摆法 `can_block`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `lift(object=soda_can, height_m=0.95)` → 8. `navigate(destination=trash_can)` → 9. `hover(object=soda_can, target=trash_can)` → 10. `drop(object=soda_can, container=trash_can)` → 11. `navigate(destination=wooden_block_a)` → 12. `pick(object=wooden_block_a)` → 13. `navigate(destination=toy_box)` → 14. `place(object=wooden_block_a, receptacle=toy_box)`
+- 摆法 `can_mug`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `lift(object=soda_can, height_m=0.95)` → 8. `navigate(destination=trash_can)` → 9. `hover(object=soda_can, target=trash_can)` → 10. `drop(object=soda_can, container=trash_can)` → 11. `navigate(destination=used_mug)` → 12. `pick(object=used_mug)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
 
 ### x6_gd_can_put_away（Task）
 
@@ -1658,9 +1658,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `apple_orange`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)`
-- 摆法 `orange_banana`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=lunch_banana)` → 4. `pick(object=lunch_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=lunch_banana, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)`
-- 摆法 `all_three`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_basket, region=bedroom_0_1)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.9, -6.0])` → 7. `navigate(destination=lunch_orange)` → 8. `pick(object=lunch_orange)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=lunch_orange, receptacle=fruit_basket)` → 11. `navigate(destination=lunch_banana)` → 12. `pick(object=lunch_banana)` → 13. `navigate(destination=bookcase_2/top)` → 14. `place(object=lunch_banana, receptacle=fruit_basket)`
+- 摆法 `apple_orange`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=apple)` → 5. `pick(object=apple)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.908, -6.166])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `orange_banana`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=lunch_banana)` → 5. `pick(object=lunch_banana)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=lunch_banana, receptacle=desk_1/top, hint_xy=[-0.908, -6.186])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `all_three`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=apple)` → 5. `pick(object=apple)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.908, -6.166])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)` → 12. `navigate(destination=lunch_banana)` → 13. `pick(object=lunch_banana)` → 14. `navigate(destination=bookcase_2/top)` → 15. `place(object=lunch_banana, receptacle=fruit_basket)`
 
 ### fruit_plate_for_guests（Task）
 
@@ -1683,8 +1683,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `tray_in_study`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_tray, region=living_room_0_1)` → 3. `navigate(destination=fruit_tray)` → 4. `pick(object=fruit_tray)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 7. `navigate(destination=apple)` → 8. `pick(object=apple)` → 9. `navigate(destination=fruit_tray)` → 10. `place(object=apple, receptacle=fruit_tray)` → 11. `navigate(destination=lunch_orange)` → 12. `pick(object=lunch_orange)` → 13. `navigate(destination=fruit_tray)` → 14. `place(object=lunch_orange, receptacle=fruit_tray)`
-- 摆法 `tray_by_table`：1. `look(target=dining_table_2/top)` → 2. `search(object=fruit_tray, region=dining_room_0_1)` → 3. `navigate(destination=fruit_tray)` → 4. `pick(object=fruit_tray)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 7. `navigate(destination=apple)` → 8. `pick(object=apple)` → 9. `navigate(destination=fruit_tray)` → 10. `place(object=apple, receptacle=fruit_tray)` → 11. `navigate(destination=lunch_orange)` → 12. `pick(object=lunch_orange)` → 13. `navigate(destination=fruit_tray)` → 14. `place(object=lunch_orange, receptacle=fruit_tray)`
+- 摆法 `tray_in_study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=living_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
+- 摆法 `tray_by_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=dining_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
 
 ---
 
@@ -1924,7 +1924,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `pick(object=cup)` → 10. `navigate(destination=dining_table_2/top)` → 11. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.948, 7.095])` → 9. `navigate(destination=cup)` → 10. `pick(object=cup)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[2.928, 7.295])`
 
 ### no_cup（Task）
 
@@ -1947,7 +1947,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[3.05, 7.1])` → 8. `navigate(destination=cup)` → 9. `navigate(destination=bookcase_2/top)`（换做法） → 10. `look(target=bookcase_2/top)`（换做法） → 11. `pick(object=mug)`（换做法） → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.2, 7.4])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.948, 7.095])` → 9. `navigate(destination=cup)` → 10. `navigate(destination=bookcase_2/top)`（换做法） → 11. `look(target=bookcase_2/top)`（换做法） → 12. `pick(object=mug)`（换做法） → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.928, 7.295])`
 
 ### copy_the_setting（Task）
 
@@ -1976,9 +1976,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `bowl_cup`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 9. `navigate(destination=cup)` → 10. `pick(object=cup)` → 11. `navigate(destination=dining_table_2/top)` → 12. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[3.1, 7.3])`
-- 摆法 `plate_bowl_mug_left`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=kitchen_counter_2/top)` → 4. `look(target=kitchen_counter_2/top)` → 5. `navigate(destination=plate_counter_a)` → 6. `pick(object=plate_counter_a)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=plate_counter_a, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 9. `navigate(destination=tv_stand_2/top)` → 10. `look(target=tv_stand_2/top)` → 11. `navigate(destination=bowl)` → 12. `pick(object=bowl)` → 13. `navigate(destination=dining_table_2/top)` → 14. `stack(object=bowl, base=plate_counter_a)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=mug)` → 18. `pick(object=mug)` → 19. `navigate(destination=dining_table_2/top)` → 20. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 7.66])`
-- 摆法 `no_cup`：1. `look(target=dining_table_2/top)` → 2. `measure(object=example_spoon)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 7.49])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 7.3])`
+- 摆法 `bowl_cup`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `measure(object=example_spoon)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `look(target=tv_stand_2/top)` → 6. `navigate(destination=bowl)` → 7. `pick(object=bowl)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 7.49])` → 10. `navigate(destination=cup)` → 11. `pick(object=cup)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=cup, receptacle=dining_table_2/top, hint_xy=[2.89, 7.15])`
+- 摆法 `plate_bowl_mug_left`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `measure(object=example_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `look(target=kitchen_counter_2/top)` → 6. `navigate(destination=plate_counter_a)` → 7. `pick(object=plate_counter_a)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=plate_counter_a, receptacle=dining_table_2/top, hint_xy=[2.89, 7.49])` → 10. `navigate(destination=tv_stand_2/top)` → 11. `look(target=tv_stand_2/top)` → 12. `navigate(destination=bowl)` → 13. `pick(object=bowl)` → 14. `navigate(destination=dining_table_2/top)` → 15. `stack(object=bowl, base=plate_counter_a)` → 16. `navigate(destination=bookcase_2/top)` → 17. `look(target=bookcase_2/top)` → 18. `navigate(destination=mug)` → 19. `pick(object=mug)` → 20. `navigate(destination=dining_table_2/top)` → 21. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 7.68])`
+- 摆法 `no_cup`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `measure(object=example_spoon)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `look(target=tv_stand_2/top)` → 6. `navigate(destination=bowl)` → 7. `pick(object=bowl)` → 8. `navigate(destination=dining_table_2/top)` → 9. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 7.49])` → 10. `navigate(destination=bookcase_2/top)` → 11. `look(target=bookcase_2/top)` → 12. `navigate(destination=mug)` → 13. `pick(object=mug)` → 14. `navigate(destination=dining_table_2/top)` → 15. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 7.15])`
 
 ### finish_the_table（Task）
 
@@ -2012,9 +2012,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `adult_seat`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 8. `navigate(destination=bookcase_2/top)` → 9. `look(target=bookcase_2/top)` → 10. `navigate(destination=mug)` → 11. `pick(object=mug)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])`
-- 摆法 `kid_seat`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 8. `navigate(destination=kitchen_counter_2/top)` → 9. `look(target=kitchen_counter_2/top)` → 10. `navigate(destination=kid_cup)` → 11. `pick(object=kid_cup)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])`
-- 摆法 `adult_and_kid`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=bowl)` → 5. `pick(object=bowl)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.93, 6.89])` → 8. `navigate(destination=bookcase_2/top)` → 9. `look(target=bookcase_2/top)` → 10. `navigate(destination=mug)` → 11. `pick(object=mug)` → 12. `navigate(destination=dining_table_2/top)` → 13. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[3.1, 6.7])` → 14. `navigate(destination=bowl_2)` → 15. `pick(object=bowl_2)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=bowl_2, receptacle=dining_table_2/top, hint_xy=[2.93, 6.04])` → 18. `navigate(destination=kitchen_counter_2/top)` → 19. `look(target=kitchen_counter_2/top)` → 20. `navigate(destination=kid_cup)` → 21. `pick(object=kid_cup)` → 22. `navigate(destination=dining_table_2/top)` → 23. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[3.1, 5.85])`
+- 摆法 `adult_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])`
+- 摆法 `kid_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `look(target=kitchen_counter_2/top)` → 11. `navigate(destination=kid_cup)` → 12. `pick(object=kid_cup)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])`
+- 摆法 `adult_and_kid`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])` → 15. `navigate(destination=bowl_2)` → 16. `pick(object=bowl_2)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=bowl_2, receptacle=dining_table_2/top, hint_xy=[2.89, 6.04])` → 19. `navigate(destination=kitchen_counter_2/top)` → 20. `look(target=kitchen_counter_2/top)` → 21. `navigate(destination=kid_cup)` → 22. `pick(object=kid_cup)` → 23. `navigate(destination=dining_table_2/top)` → 24. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[2.89, 5.7])`
 
 ---
 
@@ -2034,7 +2034,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `flip(object=paperback_book)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `flip(object=paperback_book)`
 
 ### book_out_of_view（Task）
 
@@ -2069,8 +2069,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `shelf_1`：1. `search(object=paperback_book, region=bedroom_0_1)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `flip(object=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `place(object=paperback_book, receptacle=bookcase_2/shelf_1, hint_xy=[1.0, -0.44])`
-- 摆法 `shelf_0`：1. `search(object=paperback_book, region=bedroom_0_1)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `flip(object=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `place(object=paperback_book, receptacle=bookcase_2/shelf_0, hint_xy=[1.0, -0.44])`
+- 摆法 `shelf_1`：1. `search(object=paperback_book, region=bedroom_0_1)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.005, -0.479])` → 6. `flip(object=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `place(object=paperback_book, receptacle=bookcase_2/shelf_1, hint_xy=[1.0, -0.44])`
+- 摆法 `shelf_0`：1. `search(object=paperback_book, region=bedroom_0_1)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=paperback_book, receptacle=bookcase_2/top, hint_xy=[1.005, -0.479])` → 6. `flip(object=paperback_book)` → 7. `pick(object=paperback_book)` → 8. `place(object=paperback_book, receptacle=bookcase_2/shelf_0, hint_xy=[1.0, -0.44])`
 
 ---
 
@@ -2091,7 +2091,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=rolling_pin)` → 4. `roll(object=rolling_pin, distance_m=0.12)`
 
 ### pin_out_of_view（Task）
 
@@ -2140,9 +2140,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `pin_and_mug`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)` → 4. `navigate(destination=edge_mug)` → 5. `pick(object=edge_mug)` → 6. `place(object=edge_mug, receptacle=kitchen_island/top, hint_xy=[7.3, 1.8])`
-- 摆法 `pin_and_bowl`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[7.3, 1.8])`
-- 摆法 `pin_only`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=rolling_pin)` → 3. `roll(object=rolling_pin, distance_m=0.12)`
+- 摆法 `pin_and_mug`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=rolling_pin)` → 4. `roll(object=rolling_pin, distance_m=0.12)` → 5. `navigate(destination=edge_mug)` → 6. `pick(object=edge_mug)` → 7. `place(object=edge_mug, receptacle=kitchen_island/top, hint_xy=[7.3, 1.855])`
+- 摆法 `pin_and_bowl`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=rolling_pin)` → 4. `roll(object=rolling_pin, distance_m=0.12)` → 5. `navigate(destination=oatmeal)` → 6. `pick(object=oatmeal)` → 7. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[7.14, 1.835])`
+- 摆法 `pin_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=rolling_pin)` → 4. `roll(object=rolling_pin, distance_m=0.12)`
 
 ---
 
@@ -2212,7 +2212,7 @@
 **参考调用顺序**：
 
 - 摆法 `pot_ready`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
-- 摆法 `lid_away`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_stove/top)` → 3. `look(target=kitchen_stove/top)` → 4. `navigate(destination=kitchen_cabinet_4)` → 5. `open(articulated=kitchen_cabinet_4)` → 6. `navigate(destination=wooden_block_b)` → 7. `pick(object=wooden_block_b)` → 8. `navigate(destination=kitchen_cabinet_4)` → 9. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 10. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `lid_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=kitchen_cabinet_4)` → 6. `open(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 11. `close(articulated=kitchen_cabinet_4)`
 
 ---
 
@@ -2371,7 +2371,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=juice_bottle)` → 4. `pick(object=juice_bottle)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[3.0, 7.3])`
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=juice_bottle)` → 4. `pick(object=juice_bottle)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ### m_bottle_on_tv_stand（Task）
 
@@ -2385,8 +2385,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `m_bottle_on_tv_stand`：1. `search(object=juice_bottle, region=living_room_0_0)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[3.0, 7.3])`
-- 摆法 `alt_bookcase_2`：1. `search(object=juice_bottle, region=bedroom_0_1)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[3.0, 7.3])`
+- 摆法 `m_bottle_on_tv_stand`：1. `search(object=juice_bottle, region=living_room_0_0)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+- 摆法 `alt_bookcase_2`：1. `search(object=juice_bottle, region=bedroom_0_1)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ### x6_gd_bottle_put_away（Task）
 
@@ -2404,8 +2404,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `in_cabinet_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[3.0, 7.3])`
-- 摆法 `in_cabinet_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_6)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[3.0, 7.3])`
+- 摆法 `in_cabinet_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+- 摆法 `in_cabinet_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_6)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ---
 
@@ -2464,8 +2464,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `set_on_large_shelf_4`：1. `look(target=desk_1/top)` → 2. `explore_room(room=bedroom_0_1)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=large_shelf_4/shelf_1)` → 6. `place(object=book_red, receptacle=large_shelf_4/shelf_1, hint_xy=[3.7, -5.15])`
-- 摆法 `set_on_large_shelf_5`：1. `look(target=desk_1/top)` → 2. `explore_room(room=bedroom_0_1)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=large_shelf_5/shelf_1)` → 6. `place(object=book_red, receptacle=large_shelf_5/shelf_1, hint_xy=[4.45, -0.35])`
+- 摆法 `set_on_large_shelf_4`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_4/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_4/shelf_1, hint_xy=[3.7, -5.15])`
+- 摆法 `set_on_large_shelf_5`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_5/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_5/shelf_1, hint_xy=[4.45, -0.35])`
 
 ### stack_them_stably（Task）
 
@@ -2492,9 +2492,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `red_blue_paperback`：1. `look(target=desk_1/top)` → 2. `navigate(destination=book_red)` → 3. `pick(object=book_red)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=desk_book_blue)` → 7. `pick(object=desk_book_blue)` → 8. `navigate(destination=bookcase_2/top)` → 9. `stack(object=desk_book_blue, base=book_red)` → 10. `navigate(destination=desk_paperback_book)` → 11. `pick(object=desk_paperback_book)` → 12. `navigate(destination=bookcase_2/top)` → 13. `stack(object=desk_paperback_book, base=desk_book_blue)`
-- 摆法 `green_paperback`：1. `look(target=desk_1/top)` → 2. `navigate(destination=desk_book_green)` → 3. `pick(object=desk_book_green)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=desk_paperback_book)` → 7. `pick(object=desk_paperback_book)` → 8. `navigate(destination=bookcase_2/top)` → 9. `stack(object=desk_paperback_book, base=desk_book_green)`
-- 摆法 `blue_green_paperback`：1. `look(target=desk_1/top)` → 2. `navigate(destination=desk_book_green)` → 3. `pick(object=desk_book_green)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=desk_book_blue)` → 7. `pick(object=desk_book_blue)` → 8. `navigate(destination=bookcase_2/top)` → 9. `stack(object=desk_book_blue, base=desk_book_green)` → 10. `navigate(destination=desk_paperback_book)` → 11. `pick(object=desk_paperback_book)` → 12. `navigate(destination=bookcase_2/top)` → 13. `stack(object=desk_paperback_book, base=desk_book_blue)`
+- 摆法 `red_blue_paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=book_red)` → 11. `navigate(destination=desk_paperback_book)` → 12. `pick(object=desk_paperback_book)` → 13. `navigate(destination=bookcase_2/top)` → 14. `stack(object=desk_paperback_book, base=desk_book_blue)`
+- 摆法 `green_paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_paperback_book)` → 8. `pick(object=desk_paperback_book)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_paperback_book, base=desk_book_green)`
+- 摆法 `blue_green_paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=desk_book_green)` → 11. `navigate(destination=desk_paperback_book)` → 12. `pick(object=desk_paperback_book)` → 13. `navigate(destination=bookcase_2/top)` → 14. `stack(object=desk_paperback_book, base=desk_book_blue)`
 
 ### homework_stays（Task）
 
@@ -2513,7 +2513,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=desk_1/top)` → 2. `navigate(destination=book_red)` → 3. `pick(object=book_red)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=book_red, receptacle=bookcase_2/top)` → 6. `navigate(destination=desk_mug)` → 7. `pick(object=desk_mug)` → 8. `navigate(destination=kitchen_counter_2/top)` → 9. `place(object=desk_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.3, 7.6])`
+1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top)` → 7. `navigate(destination=desk_mug)` → 8. `pick(object=desk_mug)` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `place(object=desk_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.384, 7.609])`
 
 ### whose_book（Task）
 
@@ -2539,9 +2539,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `blue_book`：1. `look(target=desk_1/top)` → 2. `navigate(destination=blue_book)` → 3. `pick(object=blue_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])`
-- 摆法 `paperback`：1. `look(target=desk_1/top)` → 2. `navigate(destination=paperback)` → 3. `pick(object=paperback)` → 4. `navigate(destination=large_shelf_2/shelf_2)` → 5. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
-- 摆法 `both`：1. `look(target=desk_1/top)` → 2. `navigate(destination=blue_book)` → 3. `pick(object=blue_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 6. `navigate(destination=paperback)` → 7. `pick(object=paperback)` → 8. `navigate(destination=large_shelf_2/shelf_2)` → 9. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
+- 摆法 `blue_book`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=blue_book)` → 4. `pick(object=blue_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.5])`
+- 摆法 `paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=paperback)` → 4. `pick(object=paperback)` → 5. `navigate(destination=large_shelf_2/shelf_2)` → 6. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
+- 摆法 `both`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=blue_book)` → 4. `pick(object=blue_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.5])` → 7. `navigate(destination=paperback)` → 8. `pick(object=paperback)` → 9. `navigate(destination=large_shelf_2/shelf_2)` → 10. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
 
 ### next_in_series（Task）
 
@@ -2558,9 +2558,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `on_bookcase`：1. `look(target=desk_1/top)` → 2. `navigate(destination=book_red)` → 3. `pick(object=book_red)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=red_book_2)` → 8. `pick(object=red_book_2)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.8, -6.05])`
-- 摆法 `on_other_bookcase`：1. `look(target=desk_1/top)` → 2. `navigate(destination=book_red)` → 3. `pick(object=book_red)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 6. `look(target=bookcase_2/top)` → 7. `search(object=red_book_2, region=bedroom_0_1)` → 8. `look(target=bookcase_3/top)` → 9. `navigate(destination=red_book_2)` → 10. `pick(object=red_book_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.8, -6.05])`
-- 摆法 `on_tall_shelf`：1. `look(target=desk_1/top)` → 2. `navigate(destination=book_red)` → 3. `pick(object=book_red)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 6. `look(target=bookcase_2/top)` → 7. `search(object=red_book_2, region=bedroom_0_1)` → 8. `look(target=large_shelf_4/shelf_1)` → 9. `navigate(destination=red_book_2)` → 10. `pick(object=red_book_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.8, -6.05])`
+- 摆法 `on_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=red_book_2)` → 9. `pick(object=red_book_2)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `on_other_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=bookcase_3/top)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `on_tall_shelf`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=red_book_2, region=bedroom_0_1)` → 9. `look(target=large_shelf_4/shelf_1)` → 10. `navigate(destination=red_book_2)` → 11. `pick(object=red_book_2)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=red_book_2, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
 
 ---
 
@@ -2579,7 +2579,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ### tissue_out_of_view（Task）
 
@@ -2592,7 +2592,7 @@
 
 **参考调用顺序**：
 
-1. `search(object=tissue, region=living_room_0_1)` → 2. `navigate(destination=tissue)` → 3. `pick(object=tissue)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
+1. `search(object=tissue, region=living_room_0_1)` → 2. `navigate(destination=tissue)` → 3. `pick(object=tissue)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ### which_table（Task）
 
@@ -2609,8 +2609,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `east`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `look(target=dining_table_1/top)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
-- 摆法 `west`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `look(target=dining_table_2/top)` → 4. `navigate(destination=dining_table_1/top)` → 5. `place(object=tissue, receptacle=dining_table_1/top, hint_xy=[-7.75, 7.4])`
+- 摆法 `east`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_1/top)` → 6. `look(target=dining_table_1/top)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
+- 摆法 `west`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `place(object=tissue, receptacle=dining_table_1/top, hint_xy=[-7.621, 7.409])`
 
 ### no_tissue（Task）
 
@@ -2625,7 +2625,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=spare_sponge)` → 3. `pick(object=spare_sponge)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=spare_sponge)` → 4. `pick(object=spare_sponge)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ### tissue_put_away（Task）
 
@@ -2642,8 +2642,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `in_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
-- 摆法 `in_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_6)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.3, 6.65])`
+- 摆法 `in_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
+- 摆法 `in_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_6)` → 16. `navigate(destination=dining_table_2/top)` → 17. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ### the_kids_side（Task）
 
@@ -2660,8 +2660,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `kid_north`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 7.45])`
-- 摆法 `kid_south`：1. `navigate(destination=tissue)` → 2. `pick(object=tissue)` → 3. `navigate(destination=dining_table_2/top)` → 4. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.1, 6.4])`
+- 摆法 `kid_north`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 7.555])`
+- 摆法 `kid_south`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 6.295])`
 
 ---
 
@@ -2753,7 +2753,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_snack)` → 11. `pick(object=bought_snack)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=bought_snack, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
+1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_snack)` → 11. `pick(object=bought_snack)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=bought_snack, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### not_shopping（Task）
 
@@ -2771,7 +2771,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=bought_juice)` → 5. `pick(object=bought_juice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
 
 ### two_spots（Task）
 
@@ -2820,7 +2820,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=bought_juice)` → 5. `pick(object=bought_juice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)` → 9. `look(target=kitchen_island/top)` → 10. `navigate(destination=bought_apple)` → 11. `pick(object=bought_apple)` → 12. `navigate(destination=home_basket)` → 13. `place(object=bought_apple, receptacle=home_basket)` → 14. `navigate(destination=kitchen_cabinet_6)` → 15. `open(articulated=kitchen_cabinet_6)` → 16. `inspect(receptacle=kitchen_cabinet_6)` → 17. `navigate(destination=bought_snack)` → 18. `pick(object=bought_snack)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `place(object=bought_snack, receptacle=kitchen_cabinet_6/inside_shelf, hint_xy=[3.6, 0.36])` → 21. `close(articulated=kitchen_cabinet_6)`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `look(target=kitchen_island/top)` → 11. `navigate(destination=bought_apple)` → 12. `pick(object=bought_apple)` → 13. `navigate(destination=home_basket)` → 14. `place(object=bought_apple, receptacle=home_basket)` → 15. `navigate(destination=kitchen_cabinet_6)` → 16. `open(articulated=kitchen_cabinet_6)` → 17. `inspect(receptacle=kitchen_cabinet_6)` → 18. `navigate(destination=bought_snack)` → 19. `pick(object=bought_snack)` → 20. `navigate(destination=kitchen_cabinet_6)` → 21. `place(object=bought_snack, receptacle=kitchen_cabinet_6/inside_shelf, hint_xy=[3.6, 0.36])` → 22. `close(articulated=kitchen_cabinet_6)`
 
 ### tray_elsewhere（Action + Task）
 
@@ -2864,7 +2864,7 @@
 **参考调用顺序**：
 
 - 摆法 `orange_in_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=bought_apple)` → 13. `pick(object=bought_apple)` → 14. `navigate(destination=west_tray)` → 15. `place(object=bought_apple, receptacle=west_tray)`
-- 摆法 `books_on_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.52])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
+- 摆法 `books_on_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.569, 6.528])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
 - 摆法 `basket_missing`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_apple)` → 11. `pick(object=bought_apple)` → 12. `navigate(destination=fruit_tray)` → 13. `place(object=bought_apple, receptacle=fruit_tray)`
 
 ---
@@ -2884,7 +2884,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=dropped_spoon)` → 3. `pick(object=dropped_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
 ### by_kind（Task）
 
@@ -2898,7 +2898,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=dropped_spoon)` → 3. `pick(object=dropped_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])` → 6. `navigate(destination=dropped_block)` → 7. `pick(object=dropped_block)` → 8. `explore_room(room=living_room_0_0)` → 9. `navigate(destination=toy_box)` → 10. `place(object=dropped_block, receptacle=toy_box)`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 7. `navigate(destination=dropped_block)` → 8. `pick(object=dropped_block)` → 9. `explore_room(room=living_room_0_0)` → 10. `navigate(destination=toy_box)` → 11. `place(object=dropped_block, receptacle=toy_box)`
 
 ### belongs_on_floor（Task）
 
@@ -2912,7 +2912,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=dropped_spoon)` → 3. `pick(object=dropped_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
 ### dropped_out_of_view（Task）
 
@@ -2925,7 +2925,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `search(object=dropped_spoon, region=dining_room_0_1)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
 ### only_this_room（Task）
 
@@ -2941,7 +2941,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=dropped_spoon)` → 3. `pick(object=dropped_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
 ### dropped_in_two_rooms（Task）
 
@@ -2957,7 +2957,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=dropped_spoon)` → 3. `pick(object=dropped_spoon)` → 4. `navigate(destination=kitchen_counter_2/top)` → 5. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.1, 7.6])` → 6. `search(object=dropped_pencil, region=living_room_0_1)` → 7. `navigate(destination=dropped_pencil)` → 8. `pick(object=dropped_pencil)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=dropped_pencil, receptacle=desk_1/top, hint_xy=[-1.05, -5.95])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `pick(object=dropped_spoon)` → 5. `navigate(destination=kitchen_counter_2/top)` → 6. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 7. `explore_room(room=living_room_0_1)` → 8. `navigate(destination=dropped_pencil)` → 9. `pick(object=dropped_pencil)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=dropped_pencil, receptacle=desk_1/top, hint_xy=[-1.048, -6.146])`
 
 ---
 
@@ -2976,7 +2976,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### no_apples_for_him（Task）
 
@@ -2992,7 +2992,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=snack_banana)` → 3. `pick(object=snack_banana)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_banana)` → 4. `pick(object=snack_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### dinner_soon（Task）
 
@@ -3008,7 +3008,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=snack_apple)` → 3. `pick(object=snack_apple)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### fruit_out_of_view（Task）
 
@@ -3021,7 +3021,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `search(object=home_basket, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `navigate(destination=snack_apple)` → 6. `pick(object=snack_apple)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=home_basket, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=snack_apple)` → 7. `pick(object=snack_apple)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### where_is_he（Task）
 
@@ -3040,8 +3040,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `look(target=desk_3/top)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])`
-- 摆法 `bedroom`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `look(target=desk_1/top)` → 6. `navigate(destination=desk_3/top)` → 7. `place(object=snack_apple, receptacle=desk_3/top, hint_xy=[6.2, -5.5])`
+- 摆法 `study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_3/top)` → 6. `look(target=desk_3/top)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `bedroom`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `look(target=desk_1/top)` → 7. `navigate(destination=desk_3/top)` → 8. `place(object=snack_apple, receptacle=desk_3/top, hint_xy=[6.194, -5.349])`
 
 ### two_kids（Task）
 
@@ -3062,7 +3062,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.1, -5.95])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.2, -5.5])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
 
 ---
 
@@ -3083,7 +3083,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=guest_juice)` → 2. `pick(object=guest_juice)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 5. `navigate(destination=guest_cup)` → 6. `pick(object=guest_cup)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cup_elsewhere（Task）
 
@@ -3098,7 +3098,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=guest_juice)` → 2. `pick(object=guest_juice)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 5. `search(object=cup_counter_b, region=kitchen_0_1)` → 6. `navigate(destination=cup_counter_b)` → 7. `pick(object=cup_counter_b)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=cup_counter_b, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=cup_counter_b, region=kitchen_0_1)` → 8. `navigate(destination=cup_counter_b)` → 9. `pick(object=cup_counter_b)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cup_counter_b, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cold_one（Task）
 
@@ -3117,7 +3117,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_juice)` → 6. `pick(object=cold_juice)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `close(articulated=breakfast_fridge)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 11. `navigate(destination=guest_cup)` → 12. `pick(object=guest_cup)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_juice)` → 6. `pick(object=cold_juice)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `close(articulated=breakfast_fridge)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 11. `navigate(destination=guest_cup)` → 12. `pick(object=guest_cup)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### drink_in_fridge（Task）
 
@@ -3133,7 +3133,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=breakfast_fridge/inside_shelf)` → 5. `look(target=breakfast_fridge/inside_shelf)` → 6. `navigate(destination=cold_juice)` → 7. `pick(object=cold_juice)` → 8. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 12. `navigate(destination=guest_cup)` → 13. `pick(object=guest_cup)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=breakfast_fridge/inside_shelf)` → 6. `look(target=breakfast_fridge/inside_shelf)` → 7. `navigate(destination=cold_juice)` → 8. `pick(object=cold_juice)` → 9. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 10. `close(articulated=breakfast_fridge)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 13. `navigate(destination=guest_cup)` → 14. `pick(object=guest_cup)` → 15. `navigate(destination=tv_stand_2/top)` → 16. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cups_for_two（Task）
 
@@ -3180,10 +3180,10 @@
 
 **参考调用顺序**：
 
-- 摆法 `one_there`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=guest_juice)` → 3. `pick(object=guest_juice)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 6. `navigate(destination=kitchen_cabinet_4)` → 7. `open(articulated=kitchen_cabinet_4)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_4)` → 10. `straighten()` → 11. `navigate(destination=stock_cup_1)` → 12. `pick(object=stock_cup_1)` → 13. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 14. `close(articulated=kitchen_cabinet_4)` → 15. `navigate(destination=tv_stand_2/top)` → 16. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
-- 摆法 `none_one_inside`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=guest_juice)` → 3. `pick(object=guest_juice)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 6. `navigate(destination=kitchen_cabinet_4)` → 7. `open(articulated=kitchen_cabinet_4)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_4)` → 10. `straighten()` → 11. `navigate(destination=stock_cup_1)` → 12. `pick(object=stock_cup_1)` → 13. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 14. `close(articulated=kitchen_cabinet_4)` → 15. `navigate(destination=tv_stand_2/top)` → 16. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])` → 17. `search(object=mug_shelf, region=dining_room_0_1)` → 18. `navigate(destination=mug_shelf)` → 19. `pick(object=mug_shelf)` → 20. `navigate(destination=tv_stand_2/top)` → 21. `place(object=mug_shelf, receptacle=tv_stand_2/top, hint_xy=[7.05, 0.36])`
-- 摆法 `none_two_inside`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=guest_juice)` → 3. `pick(object=guest_juice)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 6. `navigate(destination=kitchen_cabinet_4)` → 7. `open(articulated=kitchen_cabinet_4)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_4)` → 10. `straighten()` → 11. `navigate(destination=stock_cup_1)` → 12. `pick(object=stock_cup_1)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])` → 15. `navigate(destination=stock_cup_2)` → 16. `pick(object=stock_cup_2)` → 17. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 18. `close(articulated=kitchen_cabinet_4)` → 19. `navigate(destination=tv_stand_2/top)` → 20. `place(object=stock_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.05, 0.36])`
-- 摆法 `two_there`：1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=guest_juice)` → 3. `pick(object=guest_juice)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])`
+- 摆法 `one_there`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=stock_cup_1)` → 13. `pick(object=stock_cup_1)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `none_one_inside`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=stock_cup_1)` → 13. `pick(object=stock_cup_1)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 18. `search(object=mug_shelf, region=dining_room_0_1)` → 19. `navigate(destination=mug_shelf)` → 20. `pick(object=mug_shelf)` → 21. `navigate(destination=tv_stand_2/top)` → 22. `place(object=mug_shelf, receptacle=tv_stand_2/top, hint_xy=[7.044, 0.371])`
+- 摆法 `none_two_inside`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=stock_cup_1)` → 13. `pick(object=stock_cup_1)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 16. `navigate(destination=stock_cup_2)` → 17. `pick(object=stock_cup_2)` → 18. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 19. `close(articulated=kitchen_cabinet_4)` → 20. `navigate(destination=tv_stand_2/top)` → 21. `place(object=stock_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.044, 0.371])`
+- 摆法 `two_there`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])`
 
 ### two_guests（Task）
 
@@ -3200,7 +3200,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=guest_juice)` → 2. `pick(object=guest_juice)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 5. `navigate(destination=guest_cup)` → 6. `pick(object=guest_cup)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])` → 9. `navigate(destination=guest_cup_2)` → 10. `pick(object=guest_cup_2)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `place(object=guest_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.8, 0.36])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 11. `navigate(destination=guest_cup_2)` → 12. `pick(object=guest_cup_2)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.804, 0.371])`
 
 ### little_guest（Task）
 
@@ -3218,7 +3218,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=guest_juice)` → 2. `pick(object=guest_juice)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 5. `navigate(destination=kid_cup)` → 6. `pick(object=kid_cup)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=kid_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kid_cup)` → 8. `pick(object=kid_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=kid_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
 
 ---
 
@@ -3251,7 +3251,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=kid_book)` → 3. `pick(object=kid_book)` → 4. `navigate(destination=bookcase_2/top)` → 5. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kid_book)` → 4. `pick(object=kid_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
 
 ### scattered（Task）
 
@@ -3295,7 +3295,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=tv_stand_2/top)` → 2. `navigate(destination=living_bear)` → 3. `pick(object=living_bear)` → 4. `navigate(destination=mattress_1/top)` → 5. `place(object=living_bear, receptacle=mattress_1/top, hint_xy=[0.0, -4.0])`
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=mattress_1/top)` → 6. `place(object=living_bear, receptacle=mattress_1/top, hint_xy=[0.0, -4.0])`
 
 ### two_bedrooms（Task）
 
@@ -3308,8 +3308,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `room_east`：1. `navigate(destination=living_car)` → 2. `pick(object=living_car)` → 3. `search(object=kids_basket, region=bedroom_0_1)` → 4. `navigate(destination=kids_basket)` → 5. `place(object=living_car, receptacle=kids_basket)`
-- 摆法 `room_south`：1. `navigate(destination=living_car)` → 2. `pick(object=living_car)` → 3. `search(object=kids_basket, region=bedroom_0_0)` → 4. `navigate(destination=kids_basket)` → 5. `place(object=living_car, receptacle=kids_basket)`
+- 摆法 `room_east`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `pick(object=living_car)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=kids_basket)` → 6. `place(object=living_car, receptacle=kids_basket)`
+- 摆法 `room_south`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `pick(object=living_car)` → 4. `explore_room(room=bedroom_0_0)` → 5. `navigate(destination=kids_basket)` → 6. `place(object=living_car, receptacle=kids_basket)`
 
 ---
 
@@ -3356,9 +3356,9 @@
 
 **参考调用顺序**：
 
-- 摆法 `which_is_leftover`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
-- 摆法 `fruit_stays_out`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
-- 摆法 `still_eating`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `close(articulated=breakfast_fridge)`
+- 摆法 `which_is_leftover`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+- 摆法 `fruit_stays_out`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+- 摆法 `still_eating`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
 
 ### two_leftovers（Task）
 
@@ -3374,8 +3374,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `soup_on_table`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=breakfast_fridge)` → 3. `open(articulated=breakfast_fridge)` → 4. `navigate(destination=leftover_rice)` → 5. `pick(object=leftover_rice)` → 6. `navigate(destination=breakfast_fridge)` → 7. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 8. `navigate(destination=leftover_soup)` → 9. `pick(object=leftover_soup)` → 10. `navigate(destination=breakfast_fridge)` → 11. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 12. `close(articulated=breakfast_fridge)`
-- 摆法 `soup_on_stove`：1. `look(target=dining_table_2/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 13. `close(articulated=breakfast_fridge)`
+- 摆法 `soup_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 13. `close(articulated=breakfast_fridge)`
+- 摆法 `soup_on_stove`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=breakfast_fridge)` → 6. `open(articulated=breakfast_fridge)` → 7. `navigate(destination=leftover_rice)` → 8. `pick(object=leftover_rice)` → 9. `navigate(destination=breakfast_fridge)` → 10. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 11. `navigate(destination=leftover_soup)` → 12. `pick(object=leftover_soup)` → 13. `navigate(destination=breakfast_fridge)` → 14. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.98, 3.18])` → 15. `close(articulated=breakfast_fridge)`
 
 ### fridge_out_of_view（Task）
 
@@ -3389,7 +3389,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `navigate(destination=leftover_rice)` → 7. `pick(object=leftover_rice)` → 8. `navigate(destination=breakfast_fridge)` → 9. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 10. `close(articulated=breakfast_fridge)`
 
 ---
 
@@ -3409,7 +3409,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
 
 ### which_bed（Task）
 
@@ -3428,8 +3428,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `east`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `look(target=mattress_2/top)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
-- 摆法 `south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `look(target=mattress_1/top)` → 6. `navigate(destination=cell_shelf_2/top)` → 7. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.42, -10.8])`
+- 摆法 `east`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_2/top)` → 6. `look(target=mattress_2/top)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_1/top)` → 6. `look(target=mattress_1/top)` → 7. `navigate(destination=cell_shelf_2/top)` → 8. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.491, -10.846])`
 
 ### where_his_cup_is（Task）
 
@@ -3451,8 +3451,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `on_counter`：1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=kid_cup)` → 3. `pick(object=kid_cup)` → 4. `navigate(destination=bookcase_3/top)` → 5. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
-- 摆法 `in_cabinet`：1. `look(target=kitchen_counter_2/top)` → 2. `navigate(destination=kitchen_cabinet_4)` → 3. `open(articulated=kitchen_cabinet_4)` → 4. `bend()` → 5. `explore_furniture(furniture=kitchen_cabinet_4)` → 6. `straighten()` → 7. `navigate(destination=kid_cup)` → 8. `pick(object=kid_cup)` → 9. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 10. `close(articulated=kitchen_cabinet_4)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
+- 摆法 `on_counter`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 11. `close(articulated=kitchen_cabinet_4)` → 12. `navigate(destination=bookcase_3/top)` → 13. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
 
 ### cup_out_of_view（Task）
 
@@ -3466,7 +3466,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_counter_2/top)` → 2. `search(object=kid_cup, region=dining_room_0_1)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.1, -4.88])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
 
 ### already_there（Task）
 
@@ -3499,7 +3499,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
 
 ### belongs_on_table（Task）
 
@@ -3517,7 +3517,7 @@
 
 **参考调用顺序**：
 
-- 摆法 `belongs_on_table`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)`
+- 摆法 `belongs_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
 - 摆法 `nothing_to_clear`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)`
 
 ### homework_on_table（Task）
@@ -3532,7 +3532,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=hw_notebook)` → 3. `pick(object=hw_notebook)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=hw_notebook, receptacle=desk_1/top, hint_xy=[-0.7, -5.95])` → 6. `navigate(destination=hw_pencil)` → 7. `pick(object=hw_pencil)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=hw_pencil, receptacle=desk_1/top, hint_xy=[-0.35, -5.95])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=hw_notebook)` → 4. `pick(object=hw_notebook)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=hw_notebook, receptacle=desk_1/top, hint_xy=[-0.708, -6.166])` → 7. `navigate(destination=hw_pencil)` → 8. `pick(object=hw_pencil)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=hw_pencil, receptacle=desk_1/top, hint_xy=[-0.188, -5.946])`
 
 ### several（Task）
 
@@ -3579,7 +3579,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=table_car)` → 3. `pick(object=table_car)` → 4. `navigate(destination=toy_box)` → 5. `place(object=table_car, receptacle=toy_box)` → 6. `navigate(destination=empty_can)` → 7. `pick(object=empty_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=empty_can, container=trash_can)` → 10. `navigate(destination=table_book)` → 11. `pick(object=table_book)` → 12. `navigate(destination=bookcase_2/top)` → 13. `place(object=table_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.43])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)` → 7. `navigate(destination=empty_can)` → 8. `pick(object=empty_can)` → 9. `navigate(destination=trash_can)` → 10. `drop(object=empty_can, container=trash_can)` → 11. `navigate(destination=table_book)` → 12. `pick(object=table_book)` → 13. `navigate(destination=bookcase_2/top)` → 14. `place(object=table_book, receptacle=bookcase_2/top, hint_xy=[1.005, -0.479])`
 
 ### which_table（Task）
 
@@ -3598,8 +3598,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `east`：1. `look(target=dining_table_2/top)` → 2. `look(target=dining_table_1/top)` → 3. `navigate(destination=toy_east)` → 4. `pick(object=toy_east)` → 5. `navigate(destination=toy_box)` → 6. `place(object=toy_east, receptacle=toy_box)`
-- 摆法 `west`：1. `look(target=dining_table_2/top)` → 2. `look(target=dining_table_1/top)` → 3. `navigate(destination=toy_west)` → 4. `pick(object=toy_west)` → 5. `navigate(destination=toy_box)` → 6. `place(object=toy_west, receptacle=toy_box)`
+- 摆法 `east`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=dining_table_1/top)` → 4. `look(target=dining_table_1/top)` → 5. `navigate(destination=toy_east)` → 6. `pick(object=toy_east)` → 7. `navigate(destination=toy_box)` → 8. `place(object=toy_east, receptacle=toy_box)`
+- 摆法 `west`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=dining_table_1/top)` → 4. `look(target=dining_table_1/top)` → 5. `navigate(destination=toy_west)` → 6. `pick(object=toy_west)` → 7. `navigate(destination=toy_box)` → 8. `place(object=toy_west, receptacle=toy_box)`
 
 ---
 
@@ -3618,7 +3618,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=soup_bowl_1)` → 2. `pick(object=soup_bowl_1)` → 3. `navigate(destination=kitchen_island/top)` → 4. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
 
 ### how_many（Task）
 
@@ -3631,7 +3631,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=soup_bowl_2)` → 7. `pick(object=soup_bowl_2)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 10. `navigate(destination=soup_bowl_3)` → 11. `pick(object=soup_bowl_3)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=soup_bowl_2)` → 8. `pick(object=soup_bowl_2)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 11. `navigate(destination=soup_bowl_3)` → 12. `pick(object=soup_bowl_3)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
 
 ### bowls_in_cabinet（Task）
 
@@ -3651,8 +3651,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `two_inside`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `navigate(destination=soup_bowl_2)` → 12. `pick(object=soup_bowl_2)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 15. `navigate(destination=soup_bowl_3)` → 16. `pick(object=soup_bowl_3)` → 17. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 18. `close(articulated=kitchen_cabinet_6)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
-- 摆法 `one_inside`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.65, 1.75])` → 6. `navigate(destination=kitchen_cabinet_6)` → 7. `open(articulated=kitchen_cabinet_6)` → 8. `bend()` → 9. `explore_furniture(furniture=kitchen_cabinet_6)` → 10. `straighten()` → 11. `navigate(destination=soup_bowl_2)` → 12. `pick(object=soup_bowl_2)` → 13. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 14. `close(articulated=kitchen_cabinet_6)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.85, 1.75])` → 17. `navigate(destination=spare_mug)` → 18. `pick(object=spare_mug)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+- 摆法 `two_inside`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soup_bowl_2)` → 13. `pick(object=soup_bowl_2)` → 14. `navigate(destination=kitchen_island/top)` → 15. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 16. `navigate(destination=soup_bowl_3)` → 17. `pick(object=soup_bowl_3)` → 18. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 19. `close(articulated=kitchen_cabinet_6)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
+- 摆法 `one_inside`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soup_bowl_2)` → 13. `pick(object=soup_bowl_2)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_6)` → 16. `navigate(destination=kitchen_island/top)` → 17. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 18. `navigate(destination=spare_mug)` → 19. `pick(object=spare_mug)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])`
 
 ### bowl_put_away（Task）
 
@@ -3666,7 +3666,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=soup_bowl_1)` → 7. `pick(object=soup_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `close(articulated=kitchen_cabinet_4)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=soup_bowl_1)` → 7. `pick(object=soup_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `close(articulated=kitchen_cabinet_4)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
 
 ### no_bowl（Task）
 
@@ -3679,7 +3679,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=spare_mug)` → 3. `pick(object=spare_mug)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=spare_mug)` → 4. `pick(object=spare_mug)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])`
 
 ### bowl_not_plate（Task）
 
@@ -3698,6 +3698,6 @@
 
 **参考调用顺序**：
 
-- 摆法 `bowl_not_plate`：1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
-- 摆法 `clean_one`：1. `look(target=kitchen_cabinet_6/top)` → 2. `navigate(destination=soup_bowl_1)` → 3. `pick(object=soup_bowl_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.05, 1.75])`
+- 摆法 `bowl_not_plate`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
+- 摆法 `clean_one`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
 
