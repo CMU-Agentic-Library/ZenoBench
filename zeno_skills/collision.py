@@ -1,5 +1,5 @@
-"""The base's world: the footprint check and the navigation grid (planner.py)
-against the static scene -- its PhysX colliders sliced at the heights of the
+"""The base's world: the footprint check and the inscribed-circle relaxation
+(base_planner.py) against the static scene -- its PhysX colliders sliced at the heights of the
 base's two layers (StaticBands, WorldModel.use_colliders; the annotation's
 boxes where no stage is at hand) -- plus the moving parts of articulated
 furniture posed at their current joint value.
@@ -32,10 +32,11 @@ COLUMN_TOP = 1.05         # m: the column's top (boxes starting below it are in 
 # Each layer is a band of heights, and a box is in its way when their heights overlap -- never a
 # sample height (until 11-10 the chassis was one sample at 0.15 m and the column one at 0.6 m): a
 # 4 cm block on the floor passed under the chassis' sample while the real chassis, 2.7 cm off the
-# floor, drives into it.
+# floor, drives into it.  The bands are the base's own heights, with no margin up or down:
+# FOOTPRINT_MARGIN is a margin in xy only.
 LOW_SPAN = (LOW_BOTTOM, LOW_TOP)
 COLUMN_SPAN = (LOW_TOP, COLUMN_TOP)
-FOOTPRINT_MARGIN = 0.046  # m the base keeps from the boxes and moving parts: the one margin (it was 1.6 cm
+FOOTPRINT_MARGIN = 0.046  # m the base keeps from the boxes and moving parts in xy: the one margin (it was 1.6 cm
                           # inside BASE_HALF plus 3 cm on top, both inherited from 3ccd5e99; the sum is kept,
                           # unmeasured: docs/COLLISION_PLAN.md §2)
 LOW_SIDE_N = 8            # points per side of the chassis' inner square (the corners' centres) -- its
@@ -70,26 +71,27 @@ def _place(pts, x, y, c, s):
     return np.stack([x + c * pts[:, 0] - s * pts[:, 1], y + s * pts[:, 0] + c * pts[:, 1]], -1)
 
 
-def _spans_overlap(B, span, margin):
-    """(N,) bool: each box of ``B`` (N, 6) reaches into the height band ``span``, widened by margin."""
-    return (B[:, 5] + margin > span[0]) & (B[:, 2] - margin < span[1])
+def _spans_overlap(B, span):
+    """(N,) bool: each box of ``B`` (N, 6) reaches into the height band ``span``."""
+    return (B[:, 5] > span[0]) & (B[:, 2] < span[1])
 
 
 def _aabb_dist(pts, lo, hi, zspan=None):
     """Distance from each point to the box [lo, hi]; with ``zspan`` the points are vertical segments
-    spanning those heights (their own z is ignored)."""
+    spanning those heights (their own z is ignored): the distance in xy when the segment and the box
+    overlap in height, inf when they do not."""
     d = np.maximum(np.maximum(lo - pts, pts - hi), 0.0)
-    if zspan is not None:
-        d = np.c_[d[:, :2], np.full(len(pts), max(lo[2] - zspan[1], zspan[0] - hi[2], 0.0))]
-    return np.linalg.norm(d, axis=1)
+    if zspan is None:
+        return np.linalg.norm(d, axis=1)
+    if lo[2] >= zspan[1] or hi[2] <= zspan[0]:
+        return np.full(len(pts), np.inf)
+    return np.linalg.norm(d[:, :2], axis=1)
 
 
 # The static scene as the base sees it, from the colliders themselves (11-09): a table is its top and
 # legs, not the box from the floor to its top, so the low chassis may go under the top while the
 # column stays out.  Each layer of the base gets the xy footprint of the static colliders in the
 # heights it spans, rasterised once per scene, and a distance field over it.
-BAND_FLOOR = 0.02         # m: the chassis band starts here, just under LOW_BOTTOM: the floor, rugs
-                          # (3.6 mm) and the floor slabs stay out of it
 BAND_RES = 0.01           # m: raster of the bands
 BAND_SAMPLE = 0.004       # m between the samples laid on each collider triangle (< BAND_RES / 2)
 BAND_BATCH_STEPS = 64     # a triangle crossing a band's end with at most this many sample steps per edge
@@ -152,19 +154,19 @@ def static_triangles(cols, body_pose):
 
 class StaticBands:
     """Distance (m) in xy from a point to the static colliders within each band of heights:
-    ``low`` the chassis' (BAND_FLOOR to LOW_TOP), ``column`` the column's (LOW_TOP to COLUMN_TOP),
-    each widened by ``margin`` up and down.  Every collider triangle is clipped to the band,
+    ``low`` the chassis' (LOW_SPAN: the floor, the rugs (3.6 mm) and the floor slabs lie below it),
+    ``column`` the column's (COLUMN_SPAN).  Every collider triangle is clipped to the band,
     sampled BAND_SAMPLE apart and rasterised at BAND_RES; a Euclidean distance transform of the
     free cells gives the distance.  ``dist`` takes off what the raster may add (BAND_RES * 1.5:
     the point's and the sample's offsets from their cell centres), so it never exceeds the true
     distance to the samples."""
 
-    def __init__(self, tris, margin=FOOTPRINT_MARGIN, cache=None):
+    def __init__(self, tris, cache=None):
         """``cache``: a directory for the rasters, keyed by the triangles and the parameters (a scene
         takes ~12 s to rasterise, a cached one well under a second); None: no cache."""
         from scipy.ndimage import distance_transform_edt
         tris = np.asarray(tris, float).reshape(-1, 3, 3)
-        self.bands = {"low": (BAND_FLOOR, LOW_TOP + margin), "column": (LOW_TOP - margin, COLUMN_TOP + margin)}
+        self.bands = {"low": LOW_SPAN, "column": COLUMN_SPAN}
         xy = tris[..., :2].reshape(-1, 2)
         self.lo = (xy.min(0) if len(xy) else np.zeros(2)) - 1.0
         hi = (xy.max(0) if len(xy) else np.zeros(2)) + 1.0
@@ -344,7 +346,7 @@ class WorldModel:
             # the column is a slim rectangle behind the centre, not a cylinder around it -- counting
             # one here would block a disc the footprint lets through at every heading, and this is
             # the relaxation the reachability field and the search's cut-off trust
-            B = self.base_only[_spans_overlap(self.base_only, LOW_SPAN, 0.0)]
+            B = self.base_only[_spans_overlap(self.base_only, LOW_SPAN)]
             if len(B):
                 ok &= self._circles_clear_boxes(xy, B, r)
         if self.ann.articulated:
@@ -355,7 +357,7 @@ class WorldModel:
         """xy -> bool lookup of circles_clear against the static boxes, rasterised once."""
         cache = self.__dict__.setdefault("_circle_grids", {})
         if r not in cache:
-            B = self.B[(self.B[:, 2] > -0.5) & _spans_overlap(self.B, LOW_SPAN, 0.0)]
+            B = self.B[(self.B[:, 2] > -0.5) & _spans_overlap(self.B, LOW_SPAN)]
             lo, hi = B[:, :2].min(0) - 1.0, B[:, 3:5].max(0) + 1.0
             n = np.ceil((hi - lo) / CIRCLE_RES).astype(int) + 1
             free = np.ones(n, bool)
@@ -423,19 +425,17 @@ class WorldModel:
         ok = np.ones(len(poses), bool)
         reach = LOW_CORNER + margin
         if self.bands is not None:
-            if margin > FOOTPRINT_MARGIN:          # the bands' heights are widened by FOOTPRINT_MARGIN
-                raise ValueError(f"margin {margin} > FOOTPRINT_MARGIN with the colliders' bands")
             ok &= (self.bands.dist("low", L.reshape(-1, 2)) > reach).reshape(len(poses), -1).all(axis=1)
             ok &= (self.bands.dist("column", C.reshape(-1, 2)) > margin).reshape(len(poses), -1).all(axis=1)
         for k in range(0, len(B), 64):
             b = B[k:k + 64]
             dx = np.maximum(np.maximum(b[None, None, :, 0] - L[..., :1], L[..., :1] - b[None, None, :, 3]), 0)
             dy = np.maximum(np.maximum(b[None, None, :, 1] - L[..., 1:2], L[..., 1:2] - b[None, None, :, 4]), 0)
-            low = _spans_overlap(b, LOW_SPAN, margin)[None, None, :]
+            low = _spans_overlap(b, LOW_SPAN)[None, None, :]
             ok &= ~((np.hypot(dx, dy) <= reach) & low).any(axis=(1, 2))
             inside = np.all((C[:, :, None, :] > b[None, None, :, :2] - margin) &
                             (C[:, :, None, :] < b[None, None, :, 3:5] + margin), axis=-1)
-            ok &= ~(inside & _spans_overlap(b, COLUMN_SPAN, margin)[None, None, :]).any(axis=(1, 2))
+            ok &= ~(inside & _spans_overlap(b, COLUMN_SPAN)[None, None, :]).any(axis=(1, 2))
         if self.ann.articulated:
             ok &= (self.moving_part_dist(L.reshape(-1, 2), LOW_SPAN) > reach).reshape(len(poses), -1).all(axis=1)
             ok &= (self.moving_part_dist(C.reshape(-1, 2), COLUMN_SPAN) > margin).reshape(len(poses), -1).all(axis=1)

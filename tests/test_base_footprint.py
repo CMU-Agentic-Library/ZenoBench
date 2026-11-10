@@ -54,6 +54,30 @@ def test_a_block_too_low_for_the_old_sample_height_still_blocks_the_chassis():
     assert world(block).footprint_clear(-0.2, 0.0, 0.0)              # a pose that keeps clear of it
 
 
+def test_the_layers_keep_no_margin_up_or_down():
+    # FOOTPRINT_MARGIN is in xy only: a 2 cm thing on the floor is under the chassis' underside
+    w = world()
+    w.set_base_obstacles([[0.2, -0.05, 0.0, 0.3, 0.05, 0.02]])
+    assert w.footprint_clear(0.0, 0.0, 0.0)
+    w.set_base_obstacles([[0.2, -0.05, 0.0, 0.3, 0.05, 0.03]])
+    assert not w.footprint_clear(0.0, 0.0, 0.0)
+
+
+def test_a_moving_part_just_above_the_chassis_is_the_column_business():
+    # an open drawer 3 cm above the chassis' top, over its front: clear of the column behind the
+    # centre, so neither the footprint nor the circle blocks (it was a 3-d distance under LOW_CORNER
+    # + margin until 11-10); lowered into the chassis' heights it blocks both
+    def drawer(z0, z1):
+        a = {"name": "d", "closed_q": 0.0, "part_box": [(0.05, -0.3, z0), (0.6, 0.3, z1)]}
+        ann = SimpleNamespace(obstacles=[{"name": "wall", "kind": "furniture", "aabb": list(WALL)}],
+                              supports=[], articulated=[a], part_pose=lambda a, q: np.eye(4))
+        return WorldModel(ann)
+    above = drawer(0.30, 0.40)
+    assert above.footprint_clear(0.0, 0.0, 0.0) and above.circles_clear(np.array([[0.0, 0.0]]))[0]
+    inside = drawer(0.20, 0.40)
+    assert not inside.footprint_clear(0.0, 0.0, 0.0) and not inside.circles_clear(np.array([[0.0, 0.0]]))[0]
+
+
 def test_a_loose_box_the_chassis_passes_under_is_no_pillar_to_the_circle():
     # an object on a worktop beside the base: above the chassis, clear of the slim column behind the
     # centre -- the disc must not block where the footprint is clear at every heading
