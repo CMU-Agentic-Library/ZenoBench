@@ -154,9 +154,11 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 - **Stop 钩子**（`.claude/settings.json` → `tools/stop_check.py`）：Claude 每轮结束前，`zeno_skills/`、`tools/`、`tests/` 有改动时检查改过的 Python 能编译、审计计数没超基线，不过就不让结束；没改动直接放行。单元测试要在容器里跑半分多钟，不放进钩子。
 - **失败一览。** 全量跑完，把每个失败 episode 录像的最后一帧拼成一张图，格子上写第一个意外失败的调用和报错，按"新失败 / 一直失败"标颜色（`FAILURES_last_frame.png`）。
 
-**全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1106/drive.sh`（两个仿真并行约 7 小时，跑完自动评估、写 `COMPARE.md`、链接录像）。只在这些节点跑：6.2 结束、3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比：成功数、`contacts`、`disturbed`、`fallbacks`、`physx_unexpected`、`approach_moved`。
+**全量**（11-09 起跑 v6，不再跑 v3）：v6 每个 variant 一集（合并 main 6a663d3 后 115 task + 30 control + 8 action_task = 153 集，种子 10；分类变了就按 `category_*.json` 重切），批次 `benchmark/batches/v6_sticky_gt_all_video.json`：`benchmark/v6/batches/category_*.json` 的种子 10，profile 统一成 `sticky/gt`（原来 task 是 `sticky_snap/gt`、另外两类是 `benchmark`），录像。驱动 `/data/zenobench/bench_v6/start.sh <提交> <日期>`：在自己的 worktree 里跑（跑的时候主 checkout 可以改），两个仿真并行（11-09 那次不录像 5.7 小时）；跑完单独重跑基础设施失败、对基线写 `COMPARE.md`、链接录像、对比运动记录。不跑 `evaluate.py`：它的 scripted 路线过滤会丢掉 v6 带布局后缀的 variant（11-09 那次 171 集只数了 39 集），成功数以 `result.json` 为准。只在计划节点跑（`MOTION_ARCHITECTURE.md` 9.3 每步做完）。和上一次全量比：成功数、`contacts`、`disturbed`、`fallbacks`、`physx_unexpected`、`approach_moved`。
 
-**基线**：`543f600` 124/170，`benchmark/runs/v3_sticky_gt_1106_2seeds/`。之后 `9e7d6cb`（地上物体的表面）、`ba99d7c`（伸入段长度）只做过针对性运行，会改变停车点和接近路径。
+v6 全量覆盖不到 v3 的 21 个 P 探针（两手、手势、倒……），迁到用它们的那一步时针对性跑。合并 main 带进 v6 数据的变化（路线、布局、目标）时，下一次全量的变化先分清是数据变了还是运动变了。
+
+**基线**：合并 main（6a663d3）后的 v6 还没跑过全量，下一次全量就是基线。合并前的分类上：`2f12b6b` 67/172，`/data/zenobench/v6all_1109/runs/`（没录像；T06 display_row 一集 Isaac 启动崩溃，没有结果；和新批次重合 142 集）。104 个失败里 43 个首个失败在 benchmark 侧，其中 29 个第 0 / 1 步 look 就失败（v6 起始位姿配 v3 路线，路线没先 navigate），这些集测不到运动层。最后一次 v3 全量：`203d4d9` 140/170，`benchmark/runs/v3_sticky_gt_1108_2seeds/`。
 
 **倒退怎么处理**：每个新失败看日志和录像，归到三类之一：
 

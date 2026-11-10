@@ -647,7 +647,7 @@ if why is not None:
 - 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`，pick / place 在用；门后物体（柜子 / 冰箱 `inside_` 支撑面）的种子停车点 11-08 审计起由标注推出（`_front_of`）。微波炉腔体里取物不走这里：合约路由到 `PickFromCavity`（policy_048，旧实现，第 8 步）。
 - 执行：`run.observe`、`holds`、`execute`、`run(act, plan, rebuild, hooks)`（`rebuild=None` 合法，8.8）；`skill_jobs.pick._pick_ready`、`skill_jobs.place._place_ready`。
 - 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`、`test_motion_skills.py`。
-- 基线：v3 两个种子 140/170（11-08，`benchmark/runs/v3_sticky_gt_1108_2seeds`）。计划段 2045 段原样走、13 段执行时重做（2 段做不出来）。pick 搜索中位 8 s、p90 14 s；place 中位 16 s、p90 29 s。之后还没跑过的改动：`free_leg` 有 `q_hint` 时先走到它（空手也是），`_reach` 在碰撞模型里求伸入段 / 放下段起点（排序 IK 只当种子）。
+- 基线：11-09 起全量跑 v6（`COLLISION_PLAN.md` 第 5 节）；合并 main（6a663d3）以后还没跑过，下一次全量就是基线（合并前的分类上 `2f12b6b` 67/172，`/data/zenobench/v6all_1109/runs`）。最后一次 v3 全量是两个种子 140/170（11-08，`203d4d9`，`benchmark/runs/v3_sticky_gt_1108_2seeds`）：计划段 2045 段原样走、13 段执行时重做（2 段做不出来）；pick 搜索中位 8 s、p90 14 s，place 中位 16 s、p90 29 s。它之后的改动（`free_leg` 有 `q_hint` 时先走到它、`_reach` 在碰撞模型里求起点、第 1 步、11-08 审计修正）都没跑过 v3 全量，也没有改动前的 v6 全量可比。
 - 静态审计（`tools/audit_collision.py`，`tests/test_collision_audit.py` 的棘轮，`tools/stop_check.py` 每轮也跑）11-08 重新启用，`.claude/audit_paused` 删了。暂停期间要补的都补上了：
   - 认识 `Spec`：`Spec(allow=LEGACY / unchecked(...))` 算 LEGACY / unchecked，`Spec(exempt=...)`（不是 False）算 exempt，`Spec(fingers=False)` 算 ignore_fingers，和写在 `move_to` 上一样；
   - 执行入口（`EXECUTION`）：`run.py`（只经 `Actuator`，`tests/test_layering.py` 守住它只调 `act.`）和 `rig.py`（`Actuator` 的实现，也是旧入口本身）里的 follow / drive_base / 旧入口不算；
@@ -668,7 +668,7 @@ if why is not None:
   - `run.py` 不再 import `rig`；`Actuator.follow` 补 `side`；`SAME_POSTURE` 只剩一处；`_carry_bottom_z` 从 `policies/plan_helpers.py` 挪到 `skill_jobs/carry.py`；`plan_navigate` 开完推进 `State.base`；
   - `find_park` 的 `diag["filter_s"]`（构造之前各步耗时），`plan_place` 填 `stage_s`；静态审计的 `old_entry` 加上 `grip`（157 → 207，基线重建）。
   - 退役的注释代码删了（9.4）。
-  - 11-09 补：hook / 结果判断不再动机器人（失败出口是 `run` 执行的计划，8.6；`place_settle` 等待段，5.6）；停车点候选代价的 `FACE_LEFT` 符号改正（第 10 节）。这两项**没跑仿真**（用户叫停），单测 349 通过、`old_entry` 203。
+  - 11-09 补：hook / 结果判断不再动机器人（失败出口是 `run` 执行的计划，8.6；`place_settle` 等待段，5.6）；停车点候选代价的 `FACE_LEFT` 符号改正（第 10 节）。这两项当时没跑仿真（用户叫停），单测 349 通过、`old_entry` 203；第一次进仿真是 11-09 的 v6 全量（67/172）：失败出口一次都没触发；T15 book_free 的停车点挪了以后失败，可能是 `FACE_LEFT` 引起的。
   - 单测 344 + `skill_library/tests` 12 通过。
   - 针对性仿真对照（v3 / v6，sticky/gt，同时在 ff59b76 的 worktree 上跑旧代码，`benchmark/runs/audit_fix_1108_new`、`/data/zenobench/audit_1108/runs_old`；用户中途叫停，最后 2 集 v6 nominal 没跑）：
 
@@ -746,7 +746,7 @@ if why is not None:
 9. **左臂和两臂**：两手搬的物体进碰撞模型（闭链约束另议）；`q_body` 已在第 5 步拆好。
 10. **收尾**：删 `Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`、旧的 `planner.find_park`；`Motion.query` 改成直接实现。
 
-每步单独提交，先针对性检查再全量。
+每步单独提交，先针对性检查再全量（11-09 起全量跑 v6，`COLLISION_PLAN.md` 第 5 节）。
 
 **只降不升的计数**：静态审计的 `old_entry` 一类（11-08 起在棘轮里，按文件计）：执行入口（`run.py`、`rig.py`）以外直接调 rig 旧运动入口的地方（`OLD_ENTRIES`：`move_to`、`move_to_any`、`joint_path`、`joint_path_via`、`move_left_to`、`leave`、`tuck`、`swing`、`follow` / `follow_smooth` / `left_follow` / `follow_both`、`drive_base`，11-08 审计起加上 `grip`：计划里它是动作段，hook 里张手是 2.6 步要挪走的副作用）。`navigate`、`relocate`、`straight_base_move` 不再算：第 1 步之后它们跑在计划层上（`run_skill` / `drive` 段）。第 1 步之后 157 处；加上 `grip` 以后 207 处；2.6 步（hook 不动机器人）以后 203 处（`skills.py` 50、`orientation.py` 24、`hand.py` 19、`extra.py` 18、`bimanual.py` 17、`tooluse.py` 17、`embedded.py` 14……；`skill_jobs/` 0）。以前的粗数（约 190、180）是 grep，含注释和上面三个函数。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
 
@@ -786,6 +786,6 @@ if why is not None:
 | ~~`SKILLS` 的 catalog 是独立一份还是并进 `skill_library/catalog.json`~~ | 定了：并进去，作为 `motion_skills` 块；因为 catalog 是生成的，数据放在生成器的 `MOTION_SKILLS` 里（9.3 第 1 步） |
 | `Observation`（4.6）什么时候做 | 没有使用方就不做。第一个要接的外部策略出现时再定它的形状，现在只守住"不塞进 `State`" |
 | 路线里 navigate(x) 选一次底盘位置，后面的技能又选一次停车点 | 两者目的不同：navigate 只开到 x 那一带，停车点由技能定，接受。另一种是 navigate(x) 后面紧跟技能时不动，会改路线语义 |
-| ~~停车点候选代价里手臂朝哪边~~ | 11-09 改了：`park_search.candidates` 原来是 `FACE_COST * abs(off + FACE_LEFT)`，偏好目标在左侧 30°，和注释相反；11-08 选出的停车点 89% 的抓取点在右侧（中位 −15°），是排序 IK 压过去的。现在是 `abs(off - FACE_LEFT)`（目标在右臂那侧）。它改的是所有停车点的候选顺序，没跑仿真，要全量确认 |
+| ~~停车点候选代价里手臂朝哪边~~ | 11-09 改了：`park_search.candidates` 原来是 `FACE_COST * abs(off + FACE_LEFT)`，偏好目标在左侧 30°，和注释相反；11-08 选出的停车点 89% 的抓取点在右侧（中位 −15°），是排序 IK 压过去的。现在是 `abs(off - FACE_LEFT)`（目标在右臂那侧）。它改的是所有停车点的候选顺序。11-09 的 v6 全量（`2f12b6b` 67/172，合并 main 前的分类）已含它，没有改前的 v6 全量可比；合并后的 v6 还没有基线（9.2 的"基线"一条）。T15 book_free 的失败可能和它有关（9.2 的"11-09 补"一条） |
 | place 搜索构造之前的耗时 | 先看 `filter_s` 的大头；候选可以先按空位（不按手腕朝向）取，8 个朝向共用底盘的检查 |
 | 复合技能（drop、heat、collect）放在哪一层 | 任务层串几个 `run_skill`，每个子技能各有锚点。做成一个大 `build` 搜索时能往后看得更远，但计划长、重做范围大 |
