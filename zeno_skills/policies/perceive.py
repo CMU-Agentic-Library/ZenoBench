@@ -38,6 +38,8 @@ SWEEP_YAWS = (-1.0, -0.5, 0.0, 0.5, 1.0)   # rad: head yaws of a sweep...
 SWEEP_PITCH = 0.3               # rad: ...at this pitch (positive looks down)...
 SWEEP_STEPS = 50                # ...each reached in this many ticks
 VIEW_TRIES = 3                  # navigates a furniture exploration may try per view it wants
+SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a long support (one look at the
+                                # centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
 
 
 def drive_head(rig, yaw, pitch, steps=90):
@@ -282,10 +284,22 @@ class ExploreFurniturePolicy(AtomicPolicy):
         return {"seen": sorted(objects), "layers": sorted(seen)}
 
 
+def _search_aims(support, base_xy):
+    """Points search aims the head at on one support: its centre for a short one; along a long one, the centres
+    of equal parts at most SEARCH_AIM_SPACING_M long, nearest the base first."""
+    x0, y0, x1, y1 = support["aabb_xy"]
+    lx, ly = x1 - x0, y1 - y0
+    n = max(1, math.ceil(max(lx, ly) / SEARCH_AIM_SPACING_M - 1e-9))
+    pts = [np.array([x0 + (i + 0.5) / n * lx, (y0 + y1) / 2, support["z"]]) if lx >= ly else
+           np.array([(x0 + x1) / 2, y0 + (i + 0.5) / n * ly, support["z"]]) for i in range(n)]
+    return sorted(pts, key=lambda p: math.hypot(p[0] - base_xy[0], p[1] - base_xy[1]))
+
+
 class SearchObjectPolicy(AtomicPolicy):
     """Look for an object at candidate places in order of distance until it is
     seen.  Candidates are the supports of the region (a room, or the robot's room), grouped by
-    furniture; at each the head is aimed at every support, highest first."""
+    furniture; at each the head is aimed at every support, highest first, and along a long support at
+    several points (_search_aims), nearest first."""
 
     def execute(self, name, region=None):
         rig = self.rig
@@ -314,18 +328,17 @@ class SearchObjectPolicy(AtomicPolicy):
                 rig.log("search_skip", place=f, reason=str(exc))
                 continue
             for s in sorted(furniture[f], key=lambda s: -s["z"]):
-                x0, y0, x1, y1 = s["aabb_xy"]
-                p = np.array([(x0 + x1) / 2, (y0 + y1) / 2, s["z"]])
-                yaw, pitch = look_angles(rig, p)
-                drive_head(rig, yaw, pitch, steps=60)
-                record_view(rig)
-                c = rig.geo.centre(name, rig.state())
-                if project_to_head_camera(rig, c, exclude=name)[0]:
-                    found = rig.geo.support_under(name, rig.state())
-                    found_on = found["name"] if found else None
-                    memory(rig)["observed"][name] = rig.tick
-                    rig.log("search_result", obj=name, found_on=found_on, visited=visited)
-                    return {"found_on": found_on, "visited": visited}
+                for p in _search_aims(s, rig.base_pose()[:2]):
+                    yaw, pitch = look_angles(rig, p)
+                    drive_head(rig, yaw, pitch, steps=60)
+                    record_view(rig)
+                    c = rig.geo.centre(name, rig.state())
+                    if project_to_head_camera(rig, c, exclude=name)[0]:
+                        found = rig.geo.support_under(name, rig.state())
+                        found_on = found["name"] if found else None
+                        memory(rig)["observed"][name] = rig.tick
+                        rig.log("search_result", obj=name, found_on=found_on, visited=visited)
+                        return {"found_on": found_on, "visited": visited}
         raise SkillFailure(f"search {name}: not seen at {visited}")
 
 

@@ -218,7 +218,8 @@ class PickFromCavityPolicy(AtomicPolicy):
         pos, _ = rig.obj_pose(name)
         if not all(bounds[i] < pos[i] < bounds[i+3] for i in range(3)):
             raise SkillFailure(f"pick from cavity: {name} is outside {cavity}")
-        if abs(rig.joint(cavity)-art["open_q"]) > 0.10:
+        from ..predicates import OPEN_ENOUGH, _art_open
+        if _art_open(rig, cavity)[0] < OPEN_ENOUGH:
             raise SkillFailure(f"pick from cavity: {cavity} is closed")
         outward = np.asarray(art.get("handle", {}).get("outward", [0, -1, 0]), float)
         axis = int(np.argmax(np.abs(outward[:2])))

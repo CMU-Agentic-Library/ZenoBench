@@ -884,6 +884,11 @@ def _stirred(rig, ctx, container):
 
 
 # --------------------------------------------------------------------- articulated / thermal
+OPEN_ENOUGH = 0.6    # fraction of the way from closed to open_q that counts as open: is_open, and what pick
+                     # from behind a door asks (open rides a fridge to 75 %, wide_open_q: a pick that wanted the
+                     # door within 0.1 rad of open_q, 93 %, failed after every open -- T25 cold_one)
+
+
 def _art_open(rig, name):
     a = rig.ann.art(name)
     q = rig.joint(name)
@@ -896,7 +901,7 @@ def _art_open(rig, name):
            "Joint at least 60 % of the way from closed to its annotated open value.")
 def _is_open(rig, ctx, articulated):
     frac, q = _art_open(rig, articulated)
-    return frac >= 0.6, f"q {q:.3f} ({frac:.0%} open)"
+    return frac >= OPEN_ENOUGH, f"q {q:.3f} ({frac:.0%} open)"
 
 
 @predicate("is_closed", [("articulated", "articulated_ref")], "fluent",
