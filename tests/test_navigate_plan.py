@@ -132,8 +132,8 @@ def test_a_drive_segment_runs_its_drives_and_swings_through_the_actuator(monkeyp
                           swing=lambda qr, ql, label: ran.append(("swing", label)))
     RUN.execute(act, seg)
     assert ran[0][0] == "drive" and ran[0][2]["speed"] == 0.1 and ("swing", "navigate_fold") in ran
-    assert RUN.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5)), seg) is None
-    assert RUN.holds(Kin(), _state(q=_q(0.9, 0.0, 0.5)), seg) is not None       # the arm is not where it starts
+    assert P.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5)), seg) is None
+    assert P.holds(Kin(), _state(q=_q(0.9, 0.0, 0.5)), seg) is not None       # the arm is not where it starts
 
 
 def test_the_catalog_names_each_skill_once_with_a_builder_and_a_job(tmp_path):

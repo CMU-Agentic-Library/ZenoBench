@@ -1,5 +1,5 @@
 """Executing a plan (docs/MOTION_ARCHITECTURE.md section 8): ``run`` takes the segments one by one
--- checks that each still holds in the world as it is now (``holds``), else builds the rest of the
+-- checks that each still holds in the world as it is now (primitives.holds), else builds the rest of the
 plan again from here with the skill's own builder, runs it, and reads the State back
 (``observe``).  It touches the simulator only through motion_state.Actuator (docs 2.5): the reads
 in ``observe``, the writes in ``execute``."""
@@ -9,66 +9,13 @@ from __future__ import annotations
 from contextlib import ExitStack
 from dataclasses import replace
 
-import numpy as np
-
-from .motion_state import Failure, SkillFailure, aim_pose
-from .primitives import LEAVE_MARGIN, contact_extent, free_path, near_pose, query, turn
-
-PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
-                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
-EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this of the planned one is
-                          # that one -- its end still clears with half the margin, and it runs at most
-                          # this much further unchecked.  (One step, 2 mm, was the measure's own
-                          # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
+from .motion_state import Failure, SkillFailure
+from .primitives import holds
 
 
 def observe(act):
     """The State now (Actuator.snapshot: the rig syncs the collision model and reads it back)."""
     return act.snapshot()
-
-
-def holds(kin, state, seg):
-    """Why ``seg`` no longer holds in ``state``, or None: the arm not at its start (PLAN_AT_START);
-    a segment built for a contact pose the state no longer gives (info["aim"]: the object moved, the
-    load turned in the hand -- off the pose it was built for by more than near_pose's HINT_REACH /
-    HINT_TURN); a motion whose path is not free now (its Spec, the world as the state has it); a
-    contact whose extent measured again from here (contact_extent) ends elsewhere.  Actions and
-    anchors always hold; a drive holds while the arm is where it starts (its path is the base
-    planner's, made from this state when navigate was planned)."""
-    if seg.kind in ("action", "anchor"):
-        return None
-    q = state.q(kin.side)
-    if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
-        return "the arm is not where the segment starts"
-    aim = seg.info.get("aim")
-    if aim is not None:
-        now = aim_pose(state, aim)
-        if now is None:
-            return f"its target {aim.obj} is not in the state"
-        p0, R0 = seg.info["aimed"]
-        if not near_pose(p0, R0, *now):
-            return (f"its target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
-                    f"{np.degrees(turn(R0, now[1])):.2f} deg")
-    if seg.kind == "drive":
-        return None
-    if seg.spec.allow.from_contact:
-        from .skill_plans import TOUCHING
-        ext = contact_extent(kin, state, seg.spec, seg.info["u"], TOUCHING[seg.info["touching"]], seg.name,
-                             step=seg.info["step"], q_from=q)
-        if isinstance(ext, Failure):
-            return f"the contact measured again: {ext.why}"
-        if abs(ext.length - seg.info.get("length", 0.0)) > EXTENT_TOL:
-            return f"the contact measured again is {ext.length:.3f} m, planned {seg.info.get('length', 0.0):.3f} m"
-        return None
-    if not seg.qs:
-        return None
-    if not free_path(kin, state, seg.spec, [q] + list(seg.qs)):
-        with query(kin, state, seg.spec):
-            # where along it and into what
-            at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
-            what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"
-            return "its path collides now" + (what or " (between waypoints)")
-    return None
 
 
 def execute(act, seg):

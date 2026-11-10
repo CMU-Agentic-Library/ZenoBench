@@ -84,7 +84,7 @@ def test_no_rig_attribute_shadows_an_actuator_method():
 
 
 def test_the_execution_imports_neither_the_rig_nor_the_skills():
-    # run.py's criteria (PLAN_AT_START) and SkillFailure live below the rig (run, motion_state)
+    # run.py's check (primitives.holds) and SkillFailure live below the rig (primitives, motion_state)
     reached = _reach("zeno_skills.run")
     assert not reached & {"zeno_skills.rig", "zeno_skills.skills", "zeno_skills.planner", "zeno_skills.motion_skills"}, \
         sorted(reached)

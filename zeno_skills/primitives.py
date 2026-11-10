@@ -6,6 +6,8 @@ from a State and a Spec, the same way for the park search and for the execution.
     straight         the collision-checked TCP straight from a given joint solution
     contact_extent   how far along u the robot (and its load) keeps touching the world
     contact_segment  that stretch as an unchecked segment under a contact Allow
+    holds            whether a segment made before still holds in a State (the converse: a check,
+                     not a motion; run's before every segment, build's on the segments of its prior)
 
 They know no skill and no simulator: ``kin`` (kinematics.ArmKin, its collision backend
 kin.motion) and the State / Spec say everything; a primitive that cannot make its segment
@@ -19,7 +21,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import Failure, Segment, Spec
+from .motion_state import Failure, Segment, Spec, aim_pose
 
 LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its load) still touches it
 LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
@@ -362,3 +364,74 @@ def drive_straight(base, state, target, name, spec=None, **drive_kw):
     path = [tuple(map(float, w)) for w in path]
     return Segment(name, spec or Spec(allow=FREE), np.asarray(state.q_right, float), (), kind="drive",
                    target=("base", path[-1]), info={"steps": (("drive", path),), "drive_kw": drive_kw})
+
+
+# ------------------------------------------------------------------------- checking a segment (docs 8.4)
+PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
+                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
+EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this of the planned one is
+                          # that one -- its end still clears with half the margin, and it runs at most
+                          # this much further unchecked.  (One step, 2 mm, was the measure's own
+                          # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
+TARGET_TOL = 0.005        # m: a segment built for a contact pose whose end, at the base as it stands, has
+                          # moved this far against that pose since it was built does not hold -- the
+                          # tolerance its execution is judged by (skills.PICK_REACH_TOL: a hand stopped
+                          # this far short of its pose is blocked), so a plan off by more before it runs
+                          # would end that way.  No measured error behind it (9.3 step 2.1 skipped)
+TARGET_TURN = HINT_TURN   # rad: ...turned this far
+TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}   # contact criteria by name
+
+
+def holds(kin, state, seg):
+    """Why ``seg`` no longer holds in ``state``, or None: the arm not at its start (PLAN_AT_START);
+    a segment built for a contact pose (info["aim"]) the state no longer gives -- off the pose it
+    was built for by more than near_pose's HINT_REACH / HINT_TURN (the object moved, the load turned
+    in the hand) -- or whose end, at the state's base, has moved against that pose by more than
+    TARGET_TOL / TARGET_TURN since it was built (info["end"]: the base stopped off the one it was
+    built at; the end's own offset from the pose, an IK solution's or a planner's, is what it was);
+    a motion whose path is not free now (its Spec, the world as the state has it); a contact whose
+    extent measured again from here (contact_extent) ends elsewhere.  Actions and anchors always
+    hold; a drive holds while the arm is where it starts (its path is the base planner's, made from
+    this state when navigate was planned).  The same check for the execution (run, before every
+    segment) and for a builder keeping its prior's segments (docs 8.3)."""
+    if seg.kind in ("action", "anchor"):
+        return None
+    q = state.q(kin.side)
+    if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
+        return "the arm is not where the segment starts"
+    aim = seg.info.get("aim")
+    if aim is not None:
+        now = aim_pose(state, aim)
+        if now is None:
+            return f"its target {aim.obj} is not in the state"
+        p0, R0 = seg.info["aimed"]
+        if not near_pose(p0, R0, *now):
+            return (f"its target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
+                    f"{np.degrees(turn(R0, now[1])):.2f} deg")
+        end = seg.info.get("end")
+        if end is not None:
+            with query(kin, state, seg.spec):            # kin.tcp at the state's base
+                p_e, R_e = kin.tcp(seg.q_end)
+            off = float(np.linalg.norm((p_e - now[0]) - (np.asarray(end[0], float) - p0)))
+            rot = turn(R_e @ now[1].T, np.asarray(end[1], float) @ R0.T)
+            if off > TARGET_TOL or rot > TARGET_TURN:
+                return f"its end moved {off:.4f} m, turned {np.degrees(rot):.2f} deg off its target"
+    if seg.kind == "drive":
+        return None
+    if seg.spec.allow.from_contact:
+        ext = contact_extent(kin, state, seg.spec, seg.info["u"], TOUCHING[seg.info["touching"]], seg.name,
+                             step=seg.info["step"], q_from=q)
+        if isinstance(ext, Failure):
+            return f"the contact measured again: {ext.why}"
+        if abs(ext.length - seg.info.get("length", 0.0)) > EXTENT_TOL:
+            return f"the contact measured again is {ext.length:.3f} m, planned {seg.info.get('length', 0.0):.3f} m"
+        return None
+    if not seg.qs:
+        return None
+    if not free_path(kin, state, seg.spec, [q] + list(seg.qs)):
+        with query(kin, state, seg.spec):
+            # where along it and into what
+            at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
+            what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"
+            return "its path collides now" + (what or " (between waypoints)")
+    return None

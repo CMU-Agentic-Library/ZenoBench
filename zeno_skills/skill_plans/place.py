@@ -9,7 +9,7 @@ import numpy as np
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
 from ..primitives import LEAVE_GAP, JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
-from ._common import FREE_HAND, FREE_LOAD, _move, _reach, held_frame
+from ._common import FREE_HAND, FREE_LOAD, _aimed, _move, _reach, held_frame
 
 PLACE_STAGES = ("place_reach", "place_down", "place_release", "place_pull_out", "tuck", "place_settle")
 PLACE_RELAY = "place_reach"   # the decision the park search's ranking IK solves for (park_search.Problem.relay)
@@ -106,12 +106,12 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, s
             start_q = line[-1] if line else None
             seg = _reach(kin, s, FREE_LOAD, p, R, down, L, q, start_q, stage, step, decision="set_down_start")
             if not isinstance(seg, Failure):
-                seg = _move(seg, steps_per_wp=8, smooth=True, set_down_m=L,
-                            decided={**seg.info.get("decided", {}), "place_reach": how}, aim=aim, aimed=aimed)
+                seg = _aimed(kin, seg, aim, aimed, steps_per_wp=8, smooth=True, set_down_m=L,
+                             decided={**seg.info.get("decided", {}), "place_reach": how})
         elif stage == "place_down":
             seg = straight(kin, s, FREE_LOAD, p, R, stage, step=step, q_from=q)
             if not isinstance(seg, Failure):
-                seg = _move(seg, steps_per_wp=8, smooth=True, aim=aim, aimed=aimed)
+                seg = _aimed(kin, seg, aim, aimed, steps_per_wp=8, smooth=True)
                 # place_reach: the set-down pose's solution as the plan reaches it -- the set-down's
                 # end, not q_p where the leg above went straight from elsewhere (_reach)
                 decided["place_reach"] = seg.q_end

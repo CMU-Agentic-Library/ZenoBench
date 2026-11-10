@@ -14,12 +14,11 @@ import numpy as np
 
 from ..clearance import FREE, LEAVE_CONTACT
 from ..motion_state import Failure, Plan, Segment, Spec, with_width
-from ..primitives import (ON_LINE, ON_LINE_TURN, Pose, contact_extent, contact_segment, decide_ik, free_leg, in_world,
-                          near_world, off_support, turn)
+from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg,
+                          turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
-TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}
 
 
 def T_of(R, p):
@@ -63,6 +62,14 @@ def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=Non
 def _move(seg, **info):
     """seg with how it is executed added to its info (steps per waypoint, smooth)."""
     return Segment(seg.name, seg.spec, seg.q_from, seg.qs, seg.kind, seg.target, seg.action, {**seg.info, **info})
+
+
+def _aimed(kin, seg, aim, aimed, **info):
+    """seg built for the contact pose ``aimed`` that ``aim`` (motion_state.Aim) derives from the
+    State: both recorded, and where its end stands (kin.tcp at the built State's base) -- what
+    primitives.holds checks again (the target the same, the end still as far from it)."""
+    p, R = kin.tcp(seg.q_end)
+    return _move(seg, aim=aim, aimed=aimed, end=(np.asarray(p, float).copy(), np.asarray(R, float).copy()), **info)
 
 
 def _contact(kin, state, spec, u, touching, name, step, q_from, **info):

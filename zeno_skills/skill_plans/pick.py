@@ -10,7 +10,7 @@ import numpy as np
 from ..clearance import LEAVE_CONTACT, closing
 from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
 from ..primitives import free_leg, query, straight
-from ._common import FREE_HAND, FREE_LOAD, T_of, _contact, _move, _reach
+from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _move, _reach
 
 PICK_STAGES = ("pick_open", "pick_reach", "pick_grasp", "pick_close", "pick_lift", "carry_in")
 PICK_RELAY = "pick_reach"     # the decision the park search's ranking IK solves for (park_search.Problem.relay)
@@ -65,12 +65,12 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior, step):
         elif stage == "pick_reach":
             seg = _reach(kin, s, FREE_HAND, p, R, u, L, q, prior.get(stage), stage, step)
             if not isinstance(seg, Failure):
-                seg = _move(seg, steps_per_wp=4, smooth=True, aim=aim, aimed=aimed)
+                seg = _aimed(kin, seg, aim, aimed, steps_per_wp=4, smooth=True)
                 if seg.qs:                                  # the reach-in's start as the plan reaches it
                     decided[stage] = seg.q_end
         elif stage == "pick_grasp":
             seg = straight(kin, s, FREE_HAND, p, R, stage, step=step, q_from=q)
-            seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=4, smooth=True, aim=aim, aimed=aimed)
+            seg = seg if isinstance(seg, Failure) else _aimed(kin, seg, aim, aimed, steps_per_wp=4, smooth=True)
         elif stage == "pick_close":
             seg = Segment(stage, Spec(allow=closing(name)), q, kind="action", action=("grip", 0.0, None, True))
             if name in s.objects:

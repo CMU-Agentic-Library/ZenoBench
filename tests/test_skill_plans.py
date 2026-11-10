@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from tests.test_primitives import IKKin as FakeKin, _q
-from zeno_skills import run as RUN
+from zeno_skills import primitives as P, run as RUN
 from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, Spec, State
 from zeno_skills.primitives import PoseSet
 from zeno_skills.rig import SkillFailure
@@ -319,17 +319,66 @@ def test_a_segment_whose_target_the_state_no_longer_gives_does_not_hold():
     q0 = _q(0.3, 0.0, 0.40)
     plan = plan_pick(kin, _state(q0, objects={"cup": np.eye(4)}), GRASP, _carry([]))
     reach = plan.segments[1]
-    assert RUN.holds(kin, _state(q0, objects={"cup": _at([0.0005, 0.0, 0.0])}), reach) is None   # within HINT_REACH
-    why = RUN.holds(kin, _state(q0, objects={"cup": _at([0.002, 0.0, 0.0])}), reach)
+    assert P.holds(kin, _state(q0, objects={"cup": _at([0.0005, 0.0, 0.0])}), reach) is None   # within HINT_REACH
+    why = P.holds(kin, _state(q0, objects={"cup": _at([0.002, 0.0, 0.0])}), reach)
     assert why is not None and "target moved 0.0020 m" in why
-    assert "not in the state" in RUN.holds(kin, _state(q0), reach)
+    assert "not in the state" in P.holds(kin, _state(q0), reach)
     # a set-down: the load turned in the pinch ~1.6 deg about z
     from zeno_skills.evaluator import quat_R
     q_p = _q(0.5, 0.0, 0.10)
     st = _state(q0, held=Held("cup", np.eye(4)))
     down = plan_place(_place_kin(), st, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)).segments[0]
     turned = _state(q0, held=Held("cup", _at([0.0, 0.0, 0.0], quat_R([0.9999, 0.0, 0.0, 0.0141]))))
-    assert RUN.holds(_place_kin(), st, down) is None and "turned 1.6" in RUN.holds(_place_kin(), turned, down)
+    assert P.holds(_place_kin(), st, down) is None and "turned 1.6" in P.holds(_place_kin(), turned, down)
+
+
+class BaseKin(FakeKin):
+    """FakeKin whose TCP stands at the State's base: q[:3] offset by base x, y inside a query
+    (primitives.query, as kin.tcp at the queried State's base)."""
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.offset = np.zeros(3)
+        kin = self
+
+        class Motion:
+            @staticmethod
+            def query(k, state, spec):
+                from contextlib import contextmanager
+
+                @contextmanager
+                def at():
+                    old = kin.offset
+                    kin.offset = np.array([state.base[0], state.base[1], 0.0])
+                    try:
+                        yield
+                    finally:
+                        kin.offset = old
+                return at()
+        self.motion = Motion()
+
+    def tcp(self, q):
+        p, R = super().tcp(q)
+        return p + self.offset, R
+
+
+def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_hold():
+    kin = BaseKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
+    q0 = _q(0.3, 0.0, 0.40)
+    st = _state(q0, objects={"cup": np.eye(4)})
+    plan = plan_pick(kin, st, GRASP, _carry([]))
+    reach, grasp = plan.segments[1], plan.segments[2]
+    assert np.allclose(grasp.info["end"][0], GRASP_P)                # recorded at the base it was built at
+    from dataclasses import replace
+    for seg in (reach, grasp):
+        at = replace(st, q_right=np.asarray(seg.q_from, float))                       # the arm where it starts
+        assert P.holds(kin, replace(at, base=(0.003, 0.0, 0.0)), seg) is None       # 3 mm: within TARGET_TOL
+        why = P.holds(kin, replace(at, base=(0.0, 0.006, 0.0)), seg)                 # 6 mm off
+        assert why is not None and "end moved 0.0060 m" in why
+    # the end's own offset from the pose (an IK solution's, a planner's) is what it was: not judged
+    off = Segment("pick_grasp", Spec(), grasp.q_from, (grasp.q_end + np.r_[0.004, np.zeros(8)],),
+                  info={**grasp.info, "end": (GRASP_P + [0.004, 0.0, 0.0], np.eye(3))})
+    assert P.holds(kin, replace(st, q_right=np.asarray(grasp.q_from, float)), off) is None
 
 
 def test_run_builds_a_pick_again_where_the_object_now_stands(monkeypatch):
@@ -426,12 +475,11 @@ def test_every_action_is_declared_to_the_contact_monitor(monkeypatch):
 
 
 def test_a_contact_exit_measured_again_within_half_the_margin_holds(monkeypatch):
-    from zeno_skills import primitives as P
     seg = Segment("pick_lift", Spec(allow=P_LEAVE()), np.zeros(9), (np.full(9, 0.01),),
                   info={"u": np.array([0, 0, 1.0]), "touching": "near_world", "step": 0.002, "length": 0.016})
-    for measured, holds in ((0.018, True), (0.014, True), (0.016 + RUN.EXTENT_TOL + 0.001, False)):
-        monkeypatch.setattr(RUN, "contact_extent", lambda *a, m=measured, **k: P.Extent(np.zeros(9), (), m, True))
-        assert (RUN.holds(FakeKin(), _state(np.zeros(9)), seg) is None) == holds, measured
+    for measured, holds in ((0.018, True), (0.014, True), (0.016 + P.EXTENT_TOL + 0.001, False)):
+        monkeypatch.setattr(P, "contact_extent", lambda *a, m=measured, **k: P.Extent(np.zeros(9), (), m, True))
+        assert (P.holds(FakeKin(), _state(np.zeros(9)), seg) is None) == holds, measured
 
 
 def P_LEAVE():

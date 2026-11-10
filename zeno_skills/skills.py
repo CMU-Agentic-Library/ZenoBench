@@ -33,6 +33,7 @@ from .motion_state import Failure, at_base, clearing, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
 from .park_search import Problem
+from .primitives import TARGET_TOL
 from .run import observe, run
 from .skill_plans import plan_pick, plan_place
 from .skill_plans.navigate import SAME_POSTURE       # one source (skill_plans: below the rig)
@@ -48,7 +49,7 @@ CARRY_Z = 0.55                # carried objects ride at least this high (floor p
 # the open hand reached the grasp pose within this, else it was stopped short (blocked) and does
 # not close: reach errors 0.1-0.4 mm in benchmark/runs/pick612_verify, 34.6 mm where a finger
 # rode on a mug's wall (T13 no_cup, fingers_cover_1105)
-PICK_REACH_TOL = 0.005
+PICK_REACH_TOL = TARGET_TOL   # m: a hand stopped this far short of its pose is blocked (the end check's tolerance too)
 APPROACH_STEP = 0.003         # m between the waypoints of a reach-in / set-down straight (the search's plan and its execution)
 # each finger closed at least this far from the opening it was given, and stopped short of shut:
 # it met the object (a finger left at the opening touched nothing -- [0.0102, 0.04] on T13's mug,
