@@ -595,10 +595,12 @@ def t26():
         "bear_to_bed": fam(
             "car_in_living_room", ["storage_place"], "the seed's layout only",
             "his teddy bear on the TV stand; it is bedtime",
-            "at bedtime the bear goes to his bed, not into the toy basket",
+            "at bedtime the bear goes to his bed or his bookcase, not into the toy basket",
             {"": dict(add={"living_bear": on("teddy_bear", TV, 7.40, 0.36), **room}, watch=["living_bear", BASK],
                       goal={"all": [["on_any", "living_bear", ["mattress_1/top", "bookcase_3/top"]], H]},
-                      route=[look(TV)] + fetch("living_bear", "mattress_1/top", [0.00, -4.00]))},
+                      # the reference sets it on his bookcase: the bed frame keeps the base 0.70 m from the
+                      # mattress's top, out of the arm's reach
+                      route=[look(TV)] + fetch("living_bear", "bookcase_3/top", [2.10, -4.78]))},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),
         "two_bedrooms": fam(

@@ -15435,6 +15435,7 @@
     "bowl",
     "cup",
     "mug",
+    "plate_counter_a",
     "spoon"
    ],
    "added": [
@@ -17296,6 +17297,7 @@
    "start": null,
    "moved": [
     "bowl_inside_kitchen_cabinet",
+    "bowl_side_table",
     "plate_inside_kitchen_cabinet"
    ],
    "added": [],
@@ -21456,7 +21458,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "cup_counter_b"
+   ],
    "added": [
     "guest_juice"
    ],
@@ -21763,7 +21767,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "mug_shelf"
+   ],
    "added": [
     "guest_juice",
     "stock_cup_1"
@@ -22467,7 +22473,7 @@
   "control": "car_in_living_room",
   "oracle_route": "v6_bear_to_bed",
   "challenge": "his teddy bear on the TV stand; it is bedtime",
-  "rationale": "at bedtime the bear goes to his bed, not into the toy basket",
+  "rationale": "at bedtime the bear goes to his bed or his bookcase, not into the toy basket",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T26_kids_things_to_room/two_bedrooms__room_east": {

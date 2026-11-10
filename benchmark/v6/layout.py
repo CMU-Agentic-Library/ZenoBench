@@ -48,6 +48,7 @@ REACH_DEPTH_M = 0.20     # a cluster on a top lies within this of an edge the ba
 REACH_NEAR_M = 0.08      # ...or its near side this close to that edge (a big thing set at the edge)
 REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
 REACH_TRIES = 200
+GROUP_STEP_M = 0.15     # one of a group moves at most this far into reach on its own
 EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
 STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
                                          # from 0.45 out is still well inside the arm's 0.78 m
@@ -225,6 +226,24 @@ def _nearest_free(base, sup, asset, xy, others, ok=lambda b: True):
     return best[1] if best else None
 
 
+@lru_cache(maxsize=None)
+def _base_poses(base):
+    """Base-scene poses ({support, xy, yaw_deg}) of the objects on a support: the annotation's box centre, the yaw
+    0 or 90 deg as the box reads (the v5 seed shift's rule)."""
+    out = {}
+    for o in _ann(base)["objects"]:
+        a = _assets().get(o.get("asset") or "")
+        if not o.get("support") or not a:
+            continue
+        b = o["aabb"]
+        w, d = b[3] - b[0], b[4] - b[1]
+        sx, sy = a["size"][0], a["size"][1]
+        yaw = 90.0 if abs(w - sy) + abs(d - sx) < abs(w - sx) + abs(d - sy) else 0.0
+        out[o["name"]] = {"support": o["support"], "xy": [round((b[0] + b[3]) / 2, 4), round((b[1] + b[4]) / 2, 4)],
+                          "yaw_deg": yaw}
+    return out
+
+
 def poses_in_reach(task):
     """Each variant's own pose of an object its route picks from a top, moved as little as it needs into reach of a
     free edge, clear of what else stands there (the seed then draws from it; a pose the seed keeps -- the design --
@@ -254,6 +273,10 @@ def poses_in_reach(task):
                 except KeyError:
                     pass
         stacked = {k for k, m in placed.items() if m.get("xy") and not m.get("support")}
+        base_pose = _base_poses(base)                      # picked things still where the base scene has them
+        for n in sorted(picked - set(placed) - removed):
+            if n in base_pose and n in boxes:
+                placed[n] = base_pose[n]
         for n in sorted(picked & set(placed) - removed):   # a relation judges where it ends up, not where it starts
             m = placed[n]
             sup = m.get("support")
@@ -262,13 +285,13 @@ def poses_in_reach(task):
             b = boxes[n][1]
             if reachable(b, reach_edges(base, sup)) or _fixed_support(base, sup):
                 continue                               # in reach already, or on an appliance (a lid on its pot)
-            if any(_overlap(b, _box(_asset_of(base, k, add), placed[k]), CLUSTER_GAP_M) for k in stacked) or \
-                    any(k != n and _overlap(b, q, CLUSTER_GAP_M) for k, (_s, q) in boxes.items()):
-                continue                               # stacked, or one of a group: the seed moves the group
+            if any(_overlap(b, _box(_asset_of(base, k, add), placed[k]), CLUSTER_GAP_M) for k in stacked):
+                continue                               # stacked: it moves with what it stands on
+            grouped = any(k != n and _overlap(b, q, CLUSTER_GAP_M) for k, (_s, q) in boxes.items())
             others = [q for k, (s_, q) in boxes.items() if s_ == sup and k != n]
             p = _nearest_free(base, sup, _asset_of(base, n, add), m["xy"], others)
-            if p is None:
-                continue
+            if p is None or (grouped and math.hypot(p[0] - m["xy"][0], p[1] - m["xy"][1]) > GROUP_STEP_M):
+                continue                               # one of a group: only a short step, so it stays with it
             where = v.setdefault("move", {}) if n in v.get("move", {}) or n not in v.get("add", {}) else v["add"]
             new = dict(m, xy=p)
             where[n] = new
