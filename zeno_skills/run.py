@@ -6,6 +6,7 @@ in ``observe``, the writes in ``execute``."""
 
 from __future__ import annotations
 
+import time
 from contextlib import ExitStack
 from dataclasses import replace
 
@@ -90,7 +91,10 @@ def run(act, plan, rebuild, hooks=None, clear=None):
     segment checked (holds); one that does not hold has the rest of the plan built again from here
     by ``rebuild(state, segment name, prior) -> Plan | Failure`` -- the skill's builder, the one the
     park search used; ``prior`` the plan as it stands, its decisions kept where they still hold
-    (decide_ik) -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).
+    (decide_ik) -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).  At
+    an anchor (where an error comes in: the base arrived, the hand closed, the load let go) the
+    rest is built again from the State now the same way, the builder keeping as they are the
+    motions that still hold (docs 8.3); with no ``rebuild`` an anchor checks nothing ahead.
     ``act``: the motion_state.Actuator (the rig).  ``rebuild`` None: a segment that does not hold
     fails the skill (a plan nobody can build again, docs 8.8).
     ``hooks``: {segment name: {"around": context factory, "before": fn(act), "after": fn(act)}},
@@ -130,6 +134,21 @@ def _run(act, plan, rebuild, hooks):
         else:
             act.log("segment", target=seg.name, reused=True, kind=seg.kind, waypoints=len(seg.qs),
                     how=seg.info.get("how"), **_how_decided(seg))
+        if seg.kind == "anchor" and rebuild is not None and i + 1 < len(segs):
+            # where an error comes in (docs 8.2): the rest checked whole from the State now -- the
+            # builder keeps every motion that still holds as it is and builds the others again
+            nxt, t0 = segs[i + 1].name, time.time()
+            new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
+            if isinstance(new, Failure):
+                act.log("anchor", target=seg.name, kept=None, rebuilt=None, why=new.why,
+                        seconds=round(time.time() - t0, 3))
+                raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
+            old = segs[i + 1:]
+            kept = [sg.name for sg in new.segments if sg.kind == "move" and any(sg is o for o in old)]
+            rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept]
+            segs = segs[:i + 1] + list(new.segments)
+            decisions.update(new.decisions)
+            act.log("anchor", target=seg.name, kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))
         h = hooks.get(seg.name, {})
         if "before" in h:
             h["before"](act)

@@ -9,9 +9,11 @@ import numpy as np
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
 from ..primitives import LEAVE_GAP, JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
-from ._common import FREE_HAND, FREE_LOAD, _aimed, _move, _reach, held_frame
+from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, held_frame
 
-PLACE_STAGES = ("place_reach", "place_down", "place_release", "place_pull_out", "tuck", "place_settle")
+PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_pull_out", "tuck",
+                "place_settle")
+PLACE_ANCHORS = ("place_arrive", "place_landed")   # the base and the hold as they are; where it landed (docs 8.2)
 PLACE_RELAY = "place_reach"   # the decision the park search's ranking IK solves for (park_search.Problem.relay)
 SETTLE_TICKS = 90           # physics ticks the object let go settles before the place is judged (inherited, unmeasured)
 
@@ -39,27 +41,31 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
     return L, None
 
 
-def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_reach", prior=None,
+def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arrive", prior=None,
                step=0.003, obj=None):
     """The set-down of what the hand holds with its box frame at the world pose ``goal`` (4x4) from
     ``state``: the set-down pose (p, R) the TCP that puts it there through the hold the State has
-    (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The free leg to
+    (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The anchor where
+    it arrives (the base and the hold as they are), the free leg to
     the set-down's start (the load's tilt held; the set-down's length set_down_length, from q_p, the
     solution of (p, R) decide_ik decides), the set-down straight down -- both carrying the Aim and
     the pose they were built for (info["aim"], ["aimed"]: run.holds checks it again) -- let go (the
-    load falls LEAVE_GAP onto the support: released, the hand opened), the pull-out of length
+    load falls LEAVE_GAP onto the support: released, the hand opened), the anchor where it landed,
+    the pull-out of length
     out_len back along the set-down pose's gripper axis (built after the release: the axis where
     the hand let go; the fingers may touch what they let go, the rest of the arm may not:
     Spec.touch), the
     tuck to the first free of ``rest_goals`` (JointSet: the fold, the hanging posture), the wait the
-    object settles in.  ``prior`` (decisions_of): the decision to keep -- place_reach, the set-down
-    pose's solution q_p (the park search's ranking solution, or a plan's own: where its set-down
-    ends; the tuck is chosen again every time).  ``obj``: the object
+    object settles in.  ``prior``: a Plan (run's rebuild) has each of its motions that still holds
+    from here kept as it is (_kept, docs 8.3), its decision tried first for the rest; else the
+    decision to keep (decisions_of: the park search's ranking solution) -- place_reach, the set-down
+    pose's solution q_p (where a plan's set-down ends; the tuck is no decision: chosen again
+    whenever it is built).  ``obj``: the object
     set down (default: what the state's hand holds) -- given, a plan built again after the release
     (the hand holds nothing then) lets the fingers touch it as the first one did.  From ``start``
     on.  Plan (its decisions) or Failure, info["stage_s"] the time per stage."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, decisions_of(prior), step, obj)
+        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj)
 
 
 def release_spec(side, obj):
@@ -73,8 +79,9 @@ def release_spec(side, obj):
                 fingers=True, exempt=False, touch=(obj,))
 
 
-def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj=None):
+def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None):
     i0 = PLACE_STAGES.index(start)
+    prior = decisions_of(prior_plan)
     q = state.q(kin.side)
     held = state.held(kin.side)
     obj = obj if obj is not None else (None if held is None else held.name)
@@ -89,7 +96,12 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, s
     down = np.array([0.0, 0.0, -1.0])
     for stage in PLACE_STAGES[i0:]:
         t0 = time.time()
-        if stage == "place_reach":
+        kept = _kept(kin, s, q, prior_plan, stage)
+        if stage in PLACE_ANCHORS:
+            seg = Segment(stage, Spec(), q, kind="anchor")
+        elif stage == "place_reach" and kept:
+            seg = kept
+        elif stage == "place_reach":
             d = decide_ik(kin, s, FREE_LOAD, p, R, prior.get(stage), seeds=(q,))
             if d is None:
                 return Failure("no collision-free IK at the set-down pose", stage, {"stage_s": times})
@@ -109,9 +121,9 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, s
                 seg = _aimed(kin, seg, aim, aimed, steps_per_wp=8, smooth=True, set_down_m=L,
                              decided={**seg.info.get("decided", {}), "place_reach": how})
         elif stage == "place_down":
-            seg = straight(kin, s, FREE_LOAD, p, R, stage, step=step, q_from=q)
+            seg = kept or straight(kin, s, FREE_LOAD, p, R, stage, step=step, q_from=q)
             if not isinstance(seg, Failure):
-                seg = _aimed(kin, seg, aim, aimed, steps_per_wp=8, smooth=True)
+                seg = kept or _aimed(kin, seg, aim, aimed, steps_per_wp=8, smooth=True)
                 # place_reach: the set-down pose's solution as the plan reaches it -- the set-down's
                 # end, not q_p where the leg above went straight from elsewhere (_reach)
                 decided["place_reach"] = seg.q_end
@@ -128,12 +140,13 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, s
             # it from) the axis where the hand let go
             p0, R0 = kin.tcp(q)
             u = (R if R is not None else R0)[:, 2]
-            seg = straight(kin, s, release_spec(kin.side, obj), p0 + out_len * u, R0, stage, step=0.004, q_from=q)
-            seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
-        elif stage == "tuck":   # the first free of the fold, hanging -- chosen again at every build: the
-            # last motion, it binds no segment after it (docs 8.1), and the fold is preferred whenever free
-            seg = free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)), stage,
-                           q_from=q)
+            seg = kept or straight(kin, s, release_spec(kin.side, obj), p0 + out_len * u, R0, stage, step=0.004,
+                                   q_from=q)
+            seg = seg if isinstance(seg, Failure) or kept else _move(seg, steps_per_wp=3, smooth=True)
+        elif stage == "tuck":   # the first free of the fold, hanging -- chosen again whenever it is built:
+            # the last motion, it binds no segment after it (docs 8.1), and the fold is preferred whenever free
+            seg = kept or free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)),
+                                   stage, q_from=q)
         else:                                               # place_settle: the world settles, nothing moves
             seg = Segment(stage, Spec(), q, kind="action", action=("wait", SETTLE_TICKS))
         times[stage] = round(time.time() - t0, 3)

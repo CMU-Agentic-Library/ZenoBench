@@ -28,6 +28,10 @@ def _at(p, R=np.eye(3)):
 GRASP = {"name": "cup", "T_obj_tcp": _at(GRASP_P), "u": DOWN, "L": 0.07, "pre_open": 0.03, "kind": "pinch"}
 
 
+def _named(plan, name):
+    return next(sg for sg in plan.segments if sg.name == name)
+
+
 def _state(q, held=None, objects=None):
     return State(base=(0.0, 0.0, 0.0), q_right=np.asarray(q, float), q_left=np.zeros(7),
                  hands={"right": Hand(width=0.03, held=held)}, objects=objects or {})
@@ -45,7 +49,7 @@ def test_a_pick_is_planned_in_order_and_holds_the_load_after_closing():
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])          # the lift touches up to 12 cm
     plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP, _carry(seen))
     assert isinstance(plan, Plan) and tuple(s.name for s in plan.segments) == PICK_STAGES
-    reach, grasp, lift = plan.segments[1], plan.segments[2], plan.segments[4]
+    reach, grasp, lift = (_named(plan, n) for n in ("pick_reach", "pick_grasp", "pick_lift"))
     assert np.allclose(grasp.q_from, reach.q_end)                   # the straight from where the leg ends
     assert np.allclose(reach.q_end[:3], GRASP_P - 0.07 * DOWN)
     assert lift.spec.allow.from_contact and lift.info["touching"] == "off_support"
@@ -68,8 +72,8 @@ def test_a_ranking_solution_off_the_reach_ins_start_only_seeds_its_solve_in_the_
                      _carry([]), prior={"pick_reach": rank})
     assert isinstance(plan, Plan), plan
     assert ("ik_global", 2) in kin.calls                     # rank first among the seeds, then the arm's
-    assert plan.segments[1].info["decided"] == {"pick_reach": "solved"}
-    assert np.allclose(plan.segments[1].q_end[:3], GRASP_P - 0.07 * DOWN)
+    assert _named(plan, "pick_reach").info["decided"] == {"pick_reach": "solved"}
+    assert np.allclose(_named(plan, "pick_reach").q_end[:3], GRASP_P - 0.07 * DOWN)
 
 
 def test_no_collision_free_solution_of_the_reach_ins_start_fails_the_plan():
@@ -96,12 +100,13 @@ def test_a_place_lets_go_and_tucks_with_the_load_an_obstacle():
     plan = plan_place(kin, _state(_q(0.3, 0.0, 0.40), held=held), _at(q_p[:3]), 0.03, 0.07,
                       (np.zeros(9),), prior={"place_reach": q_p})
     assert isinstance(plan, Plan), plan
-    assert [s.name for s in plan.segments] == ["place_reach", "place_down", "place_release", "place_pull_out", "tuck",
-                                               "place_settle"]
+    assert [s.name for s in plan.segments] == ["place_arrive", "place_reach", "place_down", "place_release",
+                                               "place_landed", "place_pull_out", "tuck", "place_settle"]
+    assert [s.name for s in plan.segments if s.kind == "anchor"] == ["place_arrive", "place_landed"]
     assert plan.segments[-1].action == ("wait", 90)                 # the 90 ticks _place_result used to step
-    down = plan.segments[1]
-    assert np.allclose(down.q_from, plan.segments[0].q_end) and np.allclose(down.q_end[:3], q_p[:3])
-    assert plan.segments[0].info["set_down_m"] > 0
+    down = _named(plan, "place_down")
+    assert np.allclose(down.q_from, _named(plan, "place_reach").q_end) and np.allclose(down.q_end[:3], q_p[:3])
+    assert _named(plan, "place_reach").info["set_down_m"] > 0
 
 
 def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
@@ -109,7 +114,7 @@ def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
     kin = _place_kin()
     plan = plan_place(kin, _state(q, held=Held("cup", np.eye(4))), _at(q[:3]), 0.03, 0.07,
                       (_q(0.3, 0.0, 0.40),), start="place_release")
-    pull = plan.segments[1]
+    pull = _named(plan, "place_pull_out")
     assert pull.name == "place_pull_out" and pull.spec.touch == ("cup",)
     assert pull.spec.allow.touch == ("cup",) and pull.spec.allow.links == "fingers"
 
@@ -122,9 +127,16 @@ def test_a_pick_records_its_decisions_and_a_rebuild_keeps_them():
     assert set(plan.decisions) == {"pick_reach", "carry_in"} and plan.decisions["carry_in"] == (0, 1)
     assert np.allclose(plan.decisions["pick_reach"][:3], GRASP_P - 0.07 * DOWN)
     kin.calls.clear()
-    again = plan_pick(kin, st, GRASP, _carry([]), start="pick_reach", prior=plan)
+    # the decisions alone (a search's prior): the reach built again on the decided solution
+    again = plan_pick(kin, st, GRASP, _carry([]), start="pick_reach", prior=dict(plan.decisions))
     assert again.segments[0].info["decided"] == {"pick_reach": "prior"} and not any(c[0] == "ik_global" for c in kin.calls)
     assert np.array_equal(again.decisions["pick_reach"], plan.decisions["pick_reach"])
+    # the plan (run's rebuild) from where it was built: every motion kept as it is, its decisions with them
+    kept = plan_pick(kin, st, GRASP, _carry([]), start="pick_reach", prior=plan)
+    assert all(a is b for a, b in zip((sg for sg in kept.segments if sg.kind == "move"),
+                                      (sg for sg in plan.segments if sg.kind == "move")))
+    assert np.array_equal(kept.decisions["pick_reach"], plan.decisions["pick_reach"])
+    assert kept.decisions["carry_in"] == plan.decisions["carry_in"]
 
 
 def test_a_place_records_its_decisions_and_a_rebuild_keeps_them():
@@ -135,10 +147,13 @@ def test_a_place_records_its_decisions_and_a_rebuild_keeps_them():
     plan = plan_place(kin, st, _at(q_p[:3]), 0.03, 0.07, rests)
     assert set(plan.decisions) == {"place_reach"}                        # the tuck is chosen again every time
     assert np.allclose(plan.decisions["place_reach"][:3], q_p[:3])
-    assert plan.segments[0].info["decided"] == {"set_down_start": "prior", "place_reach": "solved"}
+    assert _named(plan, "place_reach").info["decided"] == {"set_down_start": "prior", "place_reach": "solved"}
     kin.calls.clear()
-    again = plan_place(kin, st, _at(q_p[:3]), 0.03, 0.07, rests, prior=plan)
-    assert again.segments[0].info["decided"]["place_reach"] == "prior" and not any(c[0] == "ik_global" for c in kin.calls)
+    again = plan_place(kin, st, _at(q_p[:3]), 0.03, 0.07, rests, prior=dict(plan.decisions))
+    assert _named(again, "place_reach").info["decided"]["place_reach"] == "prior"
+    assert not any(c[0] == "ik_global" for c in kin.calls)
+    kept = plan_place(kin, st, _at(q_p[:3]), 0.03, 0.07, rests, prior=plan)
+    assert all(_named(kept, n) is _named(plan, n) for n in ("place_reach", "place_down", "place_pull_out", "tuck"))
 
 
 def test_a_decision_no_longer_reaching_its_pose_seeds_the_new_solve():
@@ -147,8 +162,8 @@ def test_a_decision_no_longer_reaching_its_pose_seeds_the_new_solve():
     prior = {"place_reach": np.r_[0.52, 0.0, 0.10, np.full(6, 0.2)]}    # 2 cm off: the base stopped off its park
     plan = plan_place(kin, _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.03,
                       0.07, (np.zeros(9),), prior=prior)
-    assert plan.segments[0].info["decided"]["place_reach"] == "solved" and ("ik_global", 2) in kin.calls  # the prior first
-    assert np.allclose(plan.decisions["place_reach"], plan.segments[1].q_end)   # recorded: where the set-down ends
+    assert _named(plan, "place_reach").info["decided"]["place_reach"] == "solved" and ("ik_global", 2) in kin.calls
+    assert np.allclose(plan.decisions["place_reach"], _named(plan, "place_down").q_end)   # where the set-down ends
 
 
 def test_a_reach_leg_made_straight_records_where_it_ends_not_the_solution_it_was_given():
@@ -158,18 +173,18 @@ def test_a_reach_leg_made_straight_records_where_it_ends_not_the_solution_it_was
     rank = np.r_[GRASP_P - 0.07 * DOWN, np.full(6, 0.7)]
     plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": np.eye(4)}), GRASP,
                      _carry([]), prior={"pick_reach": rank})
-    reach = plan.segments[1]
+    reach = _named(plan, "pick_reach")
     assert reach.info["decided"] == {"pick_reach": "prior"} and reach.info["how"] == "straight"
     assert np.allclose(plan.decisions["pick_reach"], reach.q_end) and not np.allclose(plan.decisions["pick_reach"], rank)
-    assert np.allclose(plan.segments[2].q_from, plan.decisions["pick_reach"])
+    assert np.allclose(_named(plan, "pick_grasp").q_from, plan.decisions["pick_reach"])
 
 
 def test_a_place_records_where_its_set_down_ends_not_the_solution_it_was_given():
     q_p = np.r_[0.5, 0.0, 0.10, np.full(6, 0.2)]                         # kept: at the pose, free
     plan = plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]),
                       0.03, 0.07, (np.zeros(9),), prior={"place_reach": q_p})
-    down = plan.segments[1]
-    assert plan.segments[0].info["decided"]["place_reach"] == "prior"
+    down = _named(plan, "place_down")
+    assert _named(plan, "place_reach").info["decided"]["place_reach"] == "prior"
     assert np.allclose(plan.decisions["place_reach"], down.q_end) and np.allclose(down.q_end[3:], 0.0)
 
 
@@ -292,7 +307,7 @@ def test_a_pick_takes_its_grasp_from_where_the_state_has_the_object():
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     moved = _at([0.02, 0.0, 0.0])                                   # the cup 2 cm along x
     plan = plan_pick(kin, _state(_q(0.3, 0.0, 0.40), objects={"cup": moved}), GRASP, _carry([]))
-    reach, grasp = plan.segments[1], plan.segments[2]
+    reach, grasp = _named(plan, "pick_reach"), _named(plan, "pick_grasp")
     assert np.allclose(grasp.q_end[:3], GRASP_P + [0.02, 0.0, 0.0])
     assert np.allclose(reach.q_end[:3], GRASP_P + [0.02, 0.0, 0.0] - 0.07 * DOWN)
     for seg in (reach, grasp):                                      # what run checks again
@@ -307,7 +322,7 @@ def test_a_place_takes_its_set_down_pose_from_the_hold_the_state_has():
     # held 1 cm below the TCP: the TCP sets it down 1 cm higher
     st = _state(_q(0.3, 0.0, 0.40), held=Held("cup", _at([0.0, 0.0, -0.01])))
     plan = plan_place(_place_kin(), st, goal, 0.03, 0.07, (np.zeros(9),))
-    down = plan.segments[1]
+    down = _named(plan, "place_down")
     assert np.allclose(down.q_end[:3], q_p[:3] + [0.0, 0.0, 0.01])
     assert down.info["aim"].held and np.allclose(down.info["aimed"][0], q_p[:3] + [0.0, 0.0, 0.01])
     assert isinstance(plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40)), goal, 0.03, 0.07, (np.zeros(9),)),
@@ -318,7 +333,7 @@ def test_a_segment_whose_target_the_state_no_longer_gives_does_not_hold():
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     q0 = _q(0.3, 0.0, 0.40)
     plan = plan_pick(kin, _state(q0, objects={"cup": np.eye(4)}), GRASP, _carry([]))
-    reach = plan.segments[1]
+    reach = _named(plan, "pick_reach")
     assert P.holds(kin, _state(q0, objects={"cup": _at([0.0005, 0.0, 0.0])}), reach) is None   # within HINT_REACH
     why = P.holds(kin, _state(q0, objects={"cup": _at([0.002, 0.0, 0.0])}), reach)
     assert why is not None and "target moved 0.0020 m" in why
@@ -327,7 +342,7 @@ def test_a_segment_whose_target_the_state_no_longer_gives_does_not_hold():
     from zeno_skills.evaluator import quat_R
     q_p = _q(0.5, 0.0, 0.10)
     st = _state(q0, held=Held("cup", np.eye(4)))
-    down = plan_place(_place_kin(), st, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)).segments[0]
+    down = _named(plan_place(_place_kin(), st, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)), "place_reach")
     turned = _state(q0, held=Held("cup", _at([0.0, 0.0, 0.0], quat_R([0.9999, 0.0, 0.0, 0.0141]))))
     assert P.holds(_place_kin(), st, down) is None and "turned 1.6" in P.holds(_place_kin(), turned, down)
 
@@ -367,7 +382,7 @@ def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_
     q0 = _q(0.3, 0.0, 0.40)
     st = _state(q0, objects={"cup": np.eye(4)})
     plan = plan_pick(kin, st, GRASP, _carry([]))
-    reach, grasp = plan.segments[1], plan.segments[2]
+    reach, grasp = _named(plan, "pick_reach"), _named(plan, "pick_grasp")
     assert np.allclose(grasp.info["end"][0], GRASP_P)                # recorded at the base it was built at
     from dataclasses import replace
     for seg in (reach, grasp):
@@ -382,8 +397,8 @@ def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_
 
 
 def test_run_builds_a_pick_again_where_the_object_now_stands(monkeypatch):
-    # the drive knocked the cup 2 cm: the reach no longer holds, the rest is built from the State
-    # read now, the found plan's decisions its prior -- no separate re-plan in the job (docs 8.3)
+    # the drive knocked the cup 2 cm: at the anchor where the pick arrives the rest is built again
+    # from the State read now, the found plan its prior -- no separate re-plan in the job (docs 8.3)
     kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     q0 = _q(0.3, 0.0, 0.40)
     plan = plan_pick(kin, _state(q0, objects={"cup": np.eye(4)}), GRASP, _carry([]))
@@ -396,11 +411,35 @@ def test_run_builds_a_pick_again_where_the_object_now_stands(monkeypatch):
     def rebuild(state, frm, prior):
         rebuilt.append((frm, prior.decisions["pick_reach"]))
         return plan_pick(kin, state, GRASP, _carry([]), start=frm, prior=prior)
-    done = RUN.run(rig, Plan(plan.segments[:3], decisions=plan.decisions), rebuild)
-    assert [r[0] for r in rebuilt] == ["pick_reach"] and np.array_equal(rebuilt[0][1], plan.decisions["pick_reach"])
+    done = RUN.run(rig, plan, rebuild)
+    assert rebuilt[0][0] == "pick_open" and np.array_equal(rebuilt[0][1], plan.decisions["pick_reach"])
     grasp = next(sg for sg in done if sg.name == "pick_grasp")
     assert np.allclose(grasp.q_end[:3], GRASP_P + [0.02, 0.0, 0.0])
     assert [sg.name for sg in done] == list(PICK_STAGES)              # the rest of the pick, built from there
+    arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "pick_arrive")
+    assert arrive["kept"] == [] and arrive["rebuilt"] == ["pick_reach", "pick_grasp", "pick_lift", "carry_in"]
+
+
+def test_an_anchor_keeps_the_rest_as_it_is_while_it_holds(monkeypatch):
+    kin = FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
+    q0 = _q(0.3, 0.0, 0.40)
+    st = _state(q0, objects={"cup": np.eye(4)})
+    plan = plan_pick(kin, st, GRASP, _carry([]))
+    rig = FakeRig(kin, q0)
+    rig.grip = lambda *a, **k: None
+    monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd, objects={"cup": np.eye(4)}))
+    done = RUN.run(rig, plan, lambda state, frm, prior: plan_pick(kin, state, GRASP, _carry([]), start=frm,
+                                                                  prior=prior))
+    moves = [sg for sg in plan.segments if sg.kind == "move"]
+    assert all(any(d is m for d in done) for m in moves)               # the very segments the search made
+    arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "pick_arrive")
+    assert arrive["rebuilt"] == [] and arrive["kept"] == [m.name for m in moves]
+    assert not any(e == "segment" and kw.get("reused") is False for e, kw in rig.events)
+    # no rebuild (a plan from elsewhere, docs 8.8): an anchor checks nothing ahead
+    rig2 = FakeRig(kin, q0)
+    rig2.grip = lambda *a, **k: None
+    RUN.run(rig2, plan, None)
+    assert not any(e == "anchor" for e, _ in rig2.events)
 
 
 def _job_rig():
@@ -444,8 +483,8 @@ def test_a_pull_out_built_again_after_the_release_still_lets_the_fingers_touch_w
                          (_q(0.3, 0.0, 0.40),), start="place_release")
     rebuilt = plan_place(kin, _state(q), _at(q[:3]), 0.03, 0.07, (_q(0.3, 0.0, 0.40),),
                          start="place_pull_out", obj="cup")
-    assert planned.segments[1].spec.touch == rebuilt.segments[0].spec.touch == ("cup",)
-    assert planned.segments[0].spec.allow.touch == ("cup",)        # the release declares it too
+    assert _named(planned, "place_pull_out").spec.touch == _named(rebuilt, "place_pull_out").spec.touch == ("cup",)
+    assert _named(planned, "place_release").spec.allow.touch == ("cup",)        # the release declares it too
     assert "place_pull_out" in planned.info["stage_s"]
 
 

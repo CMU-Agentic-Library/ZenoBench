@@ -13,9 +13,9 @@ from __future__ import annotations
 import numpy as np
 
 from ..clearance import FREE, LEAVE_CONTACT
-from ..motion_state import Failure, Plan, Segment, Spec, with_width
+from ..motion_state import Failure, Plan, Segment, Spec, with_arm, with_width
 from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg,
-                          turn)
+                          holds, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
@@ -57,6 +57,19 @@ def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=Non
     q_s, how = d
     seg = free_leg(kin, state, spec, Pose(s, R, q_s), name, step=step, q_from=q_from)
     return seg if isinstance(seg, Failure) else _move(seg, decided={decision or name: how})
+
+
+def _kept(kin, state, q, prior, name):
+    """``prior``'s motion ``name`` (a Plan's: run's rebuild) as it is, when it still holds from q in
+    ``state`` (primitives.holds: the check run makes before a segment, docs 8.3) -- else None, built
+    again.  Moves only: an action or an anchor holds wherever the arm is, so one made for another
+    start would carry that start on; they are made again, at no cost."""
+    if not isinstance(prior, Plan):
+        return None
+    seg = next((sg for sg in prior.segments if sg.name == name), None)
+    if seg is None or seg.kind != "move":
+        return None
+    return seg if holds(kin, with_arm(state, q, kin.side), seg) is None else None
 
 
 def _move(seg, **info):

@@ -33,7 +33,7 @@
 **抓**（`skill_jobs/pick.py` 的 `_pick_ready` → `run.run`，见 `../MOTION_ARCHITECTURE.md` 第 8 节）
 
 6. **记下这次抓取**（`pick_target`，sticky hands 用它）：抓取位姿是候选在物体框里的位姿乘上物体现在的位姿。开到以后不另做重新测量、整份重做（9.3 第 2.3 步删了 `pick_plan_again`）：抓取写在物体框里（`_grasp_of`：`T_obj_tcp`，伸入方向在 TCP 框里），`plan_pick` 每次都从 `State` 里物体的位姿推出世界系的抓取位姿；开车碰动了物体，由下一步的复核发现。
-7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）；伸入段起点和伸入段（`pick_reach`、`pick_grasp`）的抓取位姿，按现在的物体位姿推出来和建这段时的差不超过 `HINT_REACH`（1 mm）/ `HINT_TURN`（0.01 rad）（`info["aim"]`，`run.holds`，记 `its target moved ...`）；路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。
+7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）；伸入段起点和伸入段（`pick_reach`、`pick_grasp`）的抓取位姿，按现在的物体位姿推出来和建这段时的差不超过 `HINT_REACH`（1 mm）/ `HINT_TURN`（0.01 rad）（`info["aim"]`，`run.holds`，记 `its target moved ...`）；路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。计划里有两个锚点（`pick_arrive`：开到以后、张手之前；`pick_held`：合爪之后、抬起之前）：走到锚点时用同一个 `plan_pick` 从下一段起复核剩下的整份，还成立的运动段原样留下，不成立的从那里重做（`anchor` 事件记 `kept` / `rebuilt` 和耗时）；合爪后的那一次用的是实测握法、不放大。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。
 8. **张开夹爪**（40 帧）。
 9. **到伸入段起点、伸入**（`pick_reach`、`pick_grasp`）：途中逐 tick 盯着物体（`approach_moved`）。走完后等到 TCP 离指令位姿 1 mm 以内或手停下（`Rig._settle`）；手离抓取位姿（按物体现在的位姿推出）超过 `PICK_REACH_TOL`（5 mm）就算被挡住：不合爪，pick 失败，失败出口竖直离开接触（`fail_clear` 段）。
 10. **合上夹爪**（`pick_close`，120 帧内逐渐合上）：手臂不动。声明 `closing`：这只手的手指可以碰这个物体。
