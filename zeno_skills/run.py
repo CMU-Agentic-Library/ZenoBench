@@ -11,8 +11,8 @@ from dataclasses import replace
 
 import numpy as np
 
-from .motion_state import Failure, SkillFailure
-from .primitives import LEAVE_MARGIN, contact_extent, free_path, query
+from .motion_state import Failure, SkillFailure, aim_pose
+from .primitives import LEAVE_MARGIN, contact_extent, free_path, near_pose, query, turn
 
 PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
                           # there (q_cmd is a command: the posture a drive arrives in is set exactly)
@@ -29,15 +29,26 @@ def observe(act):
 
 def holds(kin, state, seg):
     """Why ``seg`` no longer holds in ``state``, or None: the arm not at its start (PLAN_AT_START);
-    a motion whose path is not free now (its Spec, the world as the state has it); a contact whose
-    extent measured again from here (contact_extent) ends elsewhere.  Actions and anchors always
-    hold; a drive holds while the arm is where it starts (its path is the base planner's, made from
-    this state when navigate was planned)."""
+    a segment built for a contact pose the state no longer gives (info["aim"]: the object moved, the
+    load turned in the hand -- off the pose it was built for by more than near_pose's HINT_REACH /
+    HINT_TURN); a motion whose path is not free now (its Spec, the world as the state has it); a
+    contact whose extent measured again from here (contact_extent) ends elsewhere.  Actions and
+    anchors always hold; a drive holds while the arm is where it starts (its path is the base
+    planner's, made from this state when navigate was planned)."""
     if seg.kind in ("action", "anchor"):
         return None
     q = state.q(kin.side)
     if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
         return "the arm is not where the segment starts"
+    aim = seg.info.get("aim")
+    if aim is not None:
+        now = aim_pose(state, aim)
+        if now is None:
+            return f"its target {aim.obj} is not in the state"
+        p0, R0 = seg.info["aimed"]
+        if not near_pose(p0, R0, *now):
+            return (f"its target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
+                    f"{np.degrees(turn(R0, now[1])):.2f} deg")
     if seg.kind == "drive":
         return None
     if seg.spec.allow.from_contact:

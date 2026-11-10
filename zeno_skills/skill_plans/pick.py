@@ -8,7 +8,7 @@ from dataclasses import replace
 import numpy as np
 
 from ..clearance import LEAVE_CONTACT, closing
-from ..motion_state import Failure, Held, Plan, Segment, Spec, decisions_of, holding, with_width
+from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
 from ..primitives import free_leg, query, straight
 from ._common import FREE_HAND, FREE_LOAD, T_of, _contact, _move, _reach
 
@@ -22,25 +22,34 @@ PICK_RELAY = "pick_reach"     # the decision the park search's ranking IK solves
 HELD_POSE_MARGIN = 0.005
 
 
-def plan_pick(kin, state, grasp, u, L, carry_goals, start="pick_open", prior=None, step=0.003):
-    """The pick of grasp = {name, p, R, pre_open, kind} from ``state``: open the hand (the State's
-    hand at pre_open from there on, for the search and every rebuild alike), the free leg
-    to the reach-in's start (its solution decided in the collision model: _reach, decide_ik), the
-    reach-in straight of length L along u, close, the lift off the support (contact_extent,
+def plan_pick(kin, state, grasp, carry_goals, start="pick_open", prior=None, step=0.003):
+    """The pick of grasp = {name, T_obj_tcp, u, L, pre_open, kind} from ``state``: the grasp pose
+    the TCP at T_obj_tcp in the box frame of ``name`` as the State has it (Aim, aim_pose: the object
+    where it stands now, in the search and every rebuild alike), ``u`` the reach-in's direction
+    in the TCP frame, ``L`` its length.  Open the hand (the State's hand at pre_open from there
+    on), the free leg to the reach-in's start (its solution decided in the collision model: _reach,
+    decide_ik), the reach-in straight, close, the lift off the support (contact_extent,
     off_support), the free leg to the carry pose (``carry_goals(state, q) -> (PoseSet, {step,
-    steps_per_wp, smooth})``, the load's tilt held).  From ``start`` on (the stages before it
-    done).  ``prior`` (decisions_of): the decisions to keep -- pick_reach, the reach-in start's
+    steps_per_wp, smooth})``, the load's tilt held).  The reach and the reach-in carry the Aim and
+    the pose they were built for (info["aim"], ["aimed"]: run.holds checks it again).  From
+    ``start`` on (the stages before it done).  ``prior`` (decisions_of): the decisions to keep -- pick_reach, the reach-in start's
     solution (the park search's ranking solution, or a plan's own: where its reach leg ends);
     carry_in, the carry goal chosen ((index, set size): free_leg's first).  Plan (its decisions) or
     Failure."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_pick(kin, state, grasp, u, L, carry_goals, start, decisions_of(prior), step)
+        return _plan_pick(kin, state, grasp, carry_goals, start, decisions_of(prior), step)
 
 
-def _plan_pick(kin, state, grasp, u, L, carry_goals, start, prior, step):
+def _plan_pick(kin, state, grasp, carry_goals, start, prior, step):
     i0 = PICK_STAGES.index(start)
-    name, p, R = grasp["name"], np.asarray(grasp["p"], float), np.asarray(grasp["R"], float)
-    u = np.asarray(u, float) / np.linalg.norm(u)
+    name = grasp["name"]
+    aim = Aim(name, np.asarray(grasp["T_obj_tcp"], float), side=kin.side)
+    aimed = aim_pose(state, aim)
+    if aimed is None and i0 <= PICK_STAGES.index("pick_grasp"):
+        return Failure(f"{name} is not in the State", start)
+    p, R = aimed if aimed is not None else (None, None)
+    u = None if R is None else R @ (np.asarray(grasp["u"], float) / np.linalg.norm(grasp["u"]))
+    L = float(grasp["L"])
     q = state.q(kin.side)
     segs, decided = [], {}
     s = state
@@ -56,12 +65,12 @@ def _plan_pick(kin, state, grasp, u, L, carry_goals, start, prior, step):
         elif stage == "pick_reach":
             seg = _reach(kin, s, FREE_HAND, p, R, u, L, q, prior.get(stage), stage, step)
             if not isinstance(seg, Failure):
-                seg = _move(seg, steps_per_wp=4, smooth=True)
+                seg = _move(seg, steps_per_wp=4, smooth=True, aim=aim, aimed=aimed)
                 if seg.qs:                                  # the reach-in's start as the plan reaches it
                     decided[stage] = seg.q_end
         elif stage == "pick_grasp":
             seg = straight(kin, s, FREE_HAND, p, R, stage, step=step, q_from=q)
-            seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=4, smooth=True)
+            seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=4, smooth=True, aim=aim, aimed=aimed)
         elif stage == "pick_close":
             seg = Segment(stage, Spec(allow=closing(name)), q, kind="action", action=("grip", 0.0, None, True))
             if name in s.objects:

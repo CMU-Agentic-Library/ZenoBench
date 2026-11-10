@@ -7,15 +7,14 @@ import numpy as np
 
 from ..annotations import rz
 from ..evaluator import quat_R
-from ..motion_state import Failure
+from ..motion_state import Aim, aim_pose
 from ..park_search import Problem
 from ..rig import FREE_SPACE_KW
-from ..primitives import near_pose
 from ..rig import LEAVE_GAP
 from ..rig import SkillFailure
 from ..primitives import query
 from ..run import observe
-from ..skill_plans import FREE_HAND, PLACE_RELAY
+from ..skill_plans import FREE_HAND, PLACE_RELAY, T_of
 from ..sticky import rest_R
 from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
 from .carry import _carry_bottom_z, carry_posture
@@ -24,8 +23,9 @@ from .carry import _carry_bottom_z, carry_posture
 def place_job(rig, args, state, skill=None):
     """motion_skills.Job of the set-down: the carry posture settled for the support's rim first
     (carry_posture), every spot x hold x wrist turn one goal of the park search (the whole place
-    planned there, skill_plans.plan_place); after the drive the set-down pose re-measured, the plan
-    run with the place's hooks; then the result judged."""
+    planned there, skill_plans.plan_place, the goal the object's pose); after the drive the plan run
+    with the place's hooks (run.holds builds it again when the hold no longer gives its set-down
+    pose); then the result judged."""
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
     kin = rig.kin
@@ -39,7 +39,7 @@ def place_job(rig, args, state, skill=None):
     # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
     # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
     # the TCP rotation, how far the origin stands above the object's lowest point.  The TCP is the
-    # commanded one (q_cmd), here and in ready's re-measure: the arm sags under the load (q - q_cmd,
+    # commanded one (q_cmd), here and in the State's hold (Rig.snapshot): the arm sags under the load (q - q_cmd,
     # up to 0.013 rad in the 11-08 run), and a hold taken from the commanded TCP is what a
     # commanded set-down pose reproduces -- the measured TCP on one side only read that sag as a
     # shifted hold (32 of 148 places planned again from scratch, 11-08)
@@ -72,13 +72,18 @@ def place_job(rig, args, state, skill=None):
                             (PLACE_TILTED_COST if levelled is None and len(relations) > 1 else 0.0))
     open_w = float(rig.held.get("pre_open", 0.04))
     rests = (kin.rest, kin.drive)
+    # what plan_place takes: the pose of the object's box frame each set-down pose puts it at,
+    # through the hold the State has now (the plan derives the TCP back from the hold it is built
+    # with: the same pose while the hold is the same, the object at its pose when it turned)
+    held = observe(rig).held(kin.side)
+    T_hold = np.eye(4) if held is None else np.asarray(held.T_tcp_obj, float)
+    targets = [T_of(ls[0][1], ls[0][0]) @ T_hold for ls in leg_sets]
 
     # every set-down pose is one goal of the park search (park_search.find_park), and a park is one
     # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
     def build(st, k, prior):
-        p_k, R_k = leg_sets[k][0][0], leg_sets[k][0][1]
-        return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, prior=prior,
-                          step=APPROACH_STEP, obj=name)
+        return plan_place(kin, st, targets[k], open_w, pick_approach(), rests, prior=prior, step=APPROACH_STEP,
+                          obj=name)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
                       PLACE_RELAY, near=search_near, label=f"place {name}")
     ctx = {}
@@ -101,21 +106,11 @@ def place_job(rig, args, state, skill=None):
     def ready(found):
         # arrived with the load above the target surface (Job.travel: the carry posture's
         # min_bottom_z).  Without a weld the object may have turned in the pinch on the way (bowls
-        # held at the rim, spoons): re-measure how it hangs from the commanded TCP, as the search
-        # took it (see the relations above), and aim it at the spot again
-        spot, R, levelled, deg, hang = goals[found.k]
-        ctx["spot"] = spot
-        tcp_now, R_now = kin.tcp(rig.q_cmd)
-        body_now, _ = rig.obj_pose(name)
-        body_now = np.asarray(body_now, float)
-        if levelled is None:
-            hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
-        p = np.array([spot[0], spot[1], s["z"] + hang + LEAVE_GAP]) + (R @ R_now.T) @ (tcp_now - body_now)
-        moved = float(np.linalg.norm(p - leg_sets[found.k][0][0]))
-        rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
-                pos=np.round(body_now, 4).tolist())
+        # held at the rim, spoons): the plan's set-down checks its pose against the hold the State
+        # has now (run.holds) and is built again from there when it is off
+        ctx["spot"] = goals[found.k][0]
         ctx["kind"] = rig.held["kind"]
-        return _place_ready(rig, name, s, p, R, open_w, found.plan, plan_place)
+        return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place)
 
     def done():
         return _place_result(rig, name, s, ctx["spot"], ctx["kind"], tray)
@@ -130,28 +125,19 @@ def _plan_place():
     return plan_place
 
 
-def _place_ready(rig, name, s, p, R, open_w, plan, plan_place=None):
-    """The place's plan to run (run.run) to set ``name`` down at (p, R), the pose re-measured after
-    the drive, its builder for the rest, its hooks: a plan made for a set-down pose off it by more
-    than HINT_REACH / HINT_TURN (primitives.near_pose; the load turned in the pinch on the way) is made again from here
-    first, its decisions the prior (decide_ik: the planned q_p the first seed of the new one).
-    Between the segments the place's own steps: the reach checked, the release logged and the load
-    no longer held."""
+def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
+    """The place's plan to run (run.run) to set ``name`` down with its box frame at ``goal`` (the
+    park search's plan: a set-down pose the hold no longer gives has run build it again,
+    run.holds), its builder for the rest, its hooks.  Between the segments the place's own steps:
+    the reach checked, the release logged and the load no longer held."""
     kin = rig.kin
     plan_place = plan_place or _plan_place()
-    u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
-    planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
-    if planned is None or not near_pose(planned.target[1], planned.target[2], p, R):
-        rig.log("place_plan_again", obj=name, why="no plan" if planned is None else
-                f"the set-down pose moved {np.linalg.norm(planned.target[1] - p):.4f} m")
-        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, prior=plan, step=APPROACH_STEP,
-                          obj=name)
-        if isinstance(plan, Failure):
-            raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
+    out_len, rests = pick_approach(), (kin.rest, kin.drive)
+    aim = Aim(name, np.asarray(goal, float), held=True, side=kin.side)
 
     def rebuild(state, frm, prior):
-        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, prior=prior,
-                          step=APPROACH_STEP, obj=name)
+        return plan_place(kin, state, goal, open_w, out_len, rests, start=frm, prior=prior, step=APPROACH_STEP,
+                          obj=name)
 
     def before_pull_out(rig):
         # let go, it may have settled against a finger: allowed on the pull-out, recorded -- a query
@@ -162,7 +148,9 @@ def _place_ready(rig, name, s, p, R, open_w, plan, plan_place=None):
                 rig.log("place_pull_out_touching", obj=name, why=kin.explain(st.q(kin.side)))
 
     def after_down(rig):
-        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - p))
+        # against the set-down pose the hold gives now (the one the set-down was built for)
+        now = aim_pose(observe(rig), aim)
+        err = 0.0 if now is None else float(np.linalg.norm(kin.tcp(rig.q())[0] - now[0]))
         if err > PICK_REACH_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")

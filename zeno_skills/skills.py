@@ -491,8 +491,16 @@ def _at_park(rig, x, y, yaw):
     return math.hypot(x - bx, y - by) <= AT_PARK_M and abs((yaw - byaw + 180) % 360 - 180) <= AT_PARK_DEG
 
 
-def _grasp_of(name, g):
-    return {"name": name, "p": np.asarray(g["p"], float), "R": np.asarray(g["R"], float),
+def _grasp_of(name, g, T_obj):
+    """skill_plans.plan_pick's grasp of candidate ``g`` (its TCP pose in the world) on ``name``, whose
+    box frame stands at T_obj (the State's): the pose in that frame, the reach-in (_grasp_approach)
+    in the TCP frame -- what the plan derives from the object wherever the State has it."""
+    R = np.asarray(g["R"], float)
+    T = np.eye(4)
+    T[:3, :3], T[:3, 3] = R, np.asarray(g["p"], float)
+    u, L = _grasp_approach(g)
+    return {"name": name, "T_obj_tcp": np.linalg.inv(np.asarray(T_obj, float)) @ T,
+            "u": R.T @ np.asarray(u, float), "L": float(L),
             "pre_open": float(g["pre_open"]), "kind": "edge" if g["kind"] == "thickness_pinch" else "pinch"}
 
 

@@ -47,6 +47,20 @@ class Held:
     pad: float = 0.0
 
 
+@dataclass(frozen=True, eq=False)
+class Aim:
+    """A contact pose as a State gives it (docs/MOTION_ARCHITECTURE.md section 6): the TCP at ``T``
+    in the box frame of ``obj`` standing in the world (``held`` False: a grasp), or the TCP that
+    puts the box frame of ``obj``, held in ``side``'s hand, at the world pose ``T`` (``held`` True: a
+    set-down, through the hold Held.T_tcp_obj).  A plan derives its contact pose from the State it
+    is built from this way and records the Aim with the pose it got (Segment.info["aim"],
+    ["aimed"]); run.holds checks that the State now still gives that pose (aim_pose)."""
+    obj: str
+    T: np.ndarray
+    held: bool = False
+    side: str = "right"
+
+
 @dataclass(frozen=True)
 class Hand:
     width: float                     # m per finger, as the fingers stand (or will)
@@ -140,6 +154,22 @@ def decisions_of(prior):
     if prior is None:
         return {}
     return dict(prior.decisions if isinstance(prior, Plan) else prior)
+
+
+def aim_pose(state, aim):
+    """(p, R) of the TCP ``aim`` (Aim) gives in ``state``, or None: the object not in the State, or
+    not in that hand."""
+    if aim.held:
+        h = state.held(aim.side)
+        if h is None or h.name != aim.obj:
+            return None
+        T = np.asarray(aim.T, float) @ np.linalg.inv(np.asarray(h.T_tcp_obj, float))
+    else:
+        T_obj = state.objects.get(aim.obj)
+        if T_obj is None:
+            return None
+        T = np.asarray(T_obj, float) @ np.asarray(aim.T, float)
+    return T[:3, 3].copy(), T[:3, :3].copy()
 
 
 # --------------------------------------------------------------------- new states from a state

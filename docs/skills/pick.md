@@ -32,10 +32,10 @@
 
 **抓**（`skill_jobs/pick.py` 的 `_pick_ready` → `run.run`，见 `../MOTION_ARCHITECTURE.md` 第 8 节）
 
-6. **重新测量物体**（开车可能碰动了它），按序号找回同一个候选。抓取位姿和计划时差 `HINT_REACH`（1 mm）/ `HINT_TURN`（0.01 rad）以上，就从当前状态把整份 pick 计划重做（`pick_plan_again`），做不出来就失败。sticky hands 记下这次抓取。
-7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）、路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。
+6. **记下这次抓取**（`pick_target`，sticky hands 用它）：抓取位姿是候选在物体框里的位姿乘上物体现在的位姿。开到以后不另做重新测量、整份重做（9.3 第 2.3 步删了 `pick_plan_again`）：抓取写在物体框里（`_grasp_of`：`T_obj_tcp`，伸入方向在 TCP 框里），`plan_pick` 每次都从 `State` 里物体的位姿推出世界系的抓取位姿；开车碰动了物体，由下一步的复核发现。
+7. **逐段执行计划**：每段执行前读状态（`observe`）并复核——手臂在这段的起点上（`PLAN_AT_START`）；伸入段起点和伸入段（`pick_reach`、`pick_grasp`）的抓取位姿，按现在的物体位姿推出来和建这段时的差不超过 `HINT_REACH`（1 mm）/ `HINT_TURN`（0.01 rad）（`info["aim"]`，`run.holds`，记 `its target moved ...`）；路点在现在的世界里不碰（接触段改为从当前姿态重量，和计划长度比）。不成立就用同一个 `plan_pick` 从这一段起把剩下的重做，做不出来 pick 失败，没有退路。每段记一条 `segment`（`reused`、`why`、`rebuilt`）。
 8. **张开夹爪**（40 帧）。
-9. **到伸入段起点、伸入**（`pick_reach`、`pick_grasp`）：途中逐 tick 盯着物体（`approach_moved`）。走完后等到 TCP 离指令位姿 1 mm 以内或手停下（`Rig._settle`）；手离抓取位姿超过 `PICK_REACH_TOL`（5 mm）就算被挡住：不合爪，pick 失败，失败出口竖直离开接触（`fail_clear` 段）。
+9. **到伸入段起点、伸入**（`pick_reach`、`pick_grasp`）：途中逐 tick 盯着物体（`approach_moved`）。走完后等到 TCP 离指令位姿 1 mm 以内或手停下（`Rig._settle`）；手离抓取位姿（按物体现在的位姿推出）超过 `PICK_REACH_TOL`（5 mm）就算被挡住：不合爪，pick 失败，失败出口竖直离开接触（`fail_clear` 段）。
 10. **合上夹爪**（`pick_close`，120 帧内逐渐合上）：手臂不动。声明 `closing`：这只手的手指可以碰这个物体。
 11. **夹住了吗？** 两根手指都要比张开时合拢至少 `GRIP_CLOSED_BY`（3 mm），又都没合到底（> 3 mm）。否则 pick 失败、不焊，失败出口（`run` 执行的计划：`clearing` + `plan_clear`，`MOTION_ARCHITECTURE.md` 8.6）把夹爪张到最大、竖直离开接触。夹住了就登记为手里的物体：碰撞模型里挂在夹爪上、不再是障碍物，sticky hands 把它焊住，持法按手的实际位姿记；记一条 `held_offset`（计划推算的持法和实测的差，sticky 下 0–0.2 mm）。
 

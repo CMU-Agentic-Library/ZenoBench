@@ -5,10 +5,10 @@ from __future__ import annotations
 import math
 import numpy as np
 
-from ..motion_state import Failure, clearing
+from ..motion_state import Aim, aim_pose, clearing
 from ..park_search import Problem
 from ..rig import Dropped
-from ..primitives import near_pose, turn
+from ..primitives import turn
 from ..rig import SkillFailure
 from ..run import observe
 from ..sticky import SHUT
@@ -20,16 +20,18 @@ from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REAC
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
 
-def _pick_problem(rig, name, cands, near, prefer=(), build_with=None):
-    """The park of the pick of ``name``: every grasp candidate is one goal (its reach-in's start,
-    the grasp, the first of the lift as the points the arm must reach; the reach-in's start as the
-    relay pose the ranking solves), and a park counts when the whole pick plans from it
-    (``build_with``: the catalog's builder, skill_plans.plan_pick, from the posture the arm arrives
-    in -- run_skill sets it from the catalog -- the hand opened to the candidate's width).  ``near`` /
-    ``prefer`` as Problem's (in front of a door's free edge: _front_of).  (Problem, the carry goal set)."""
+def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None):
+    """The park of the pick of ``name`` (its box frame at T_obj, the State's): every grasp candidate
+    is one goal (its reach-in's start, the grasp, the first of the lift as the points the arm must
+    reach; the reach-in's start as the relay pose the ranking solves), and a park counts when the
+    whole pick plans from it (``build_with``: the catalog's builder, skill_plans.plan_pick, from the
+    posture the arm arrives in -- run_skill sets it from the catalog -- the hand opened to the
+    candidate's width; the grasp in the object's frame, _grasp_of).  ``near`` / ``prefer`` as
+    Problem's (in front of a door's free edge: _front_of).  (Problem, the carry goal set, the grasps)."""
     kin = rig.kin
     build_with = build_with or _plan_pick()
     carry_goals = _carry_goal_set(rig, name)
+    grasps = [_grasp_of(name, g, T_obj) for g in cands]
     goals = []
     for i, g in enumerate(cands):
         u, L = _grasp_approach(g)
@@ -38,12 +40,10 @@ def _pick_problem(rig, name, cands, near, prefer=(), build_with=None):
                       (start, np.asarray(g["R"], float)), PICK_CAND_COST * i))
 
     def build(s, k, prior):
-        g = cands[k]
-        return build_with(kin, s, _grasp_of(name, g), *_grasp_approach(g), carry_goals, prior=prior,
-                          step=APPROACH_STEP)
+        return build_with(kin, s, grasps[k], carry_goals, prior=prior, step=APPROACH_STEP)
 
     problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), label=f"pick {name}")
-    return problem, carry_goals
+    return problem, carry_goals, grasps
 
 
 FRONT_SEED_M = 0.65            # m in front of a door's free edge the first park of a pick behind it stands
@@ -97,28 +97,25 @@ def _plan_pick():
     return plan_pick
 
 
-def _pick_ready(rig, name, g, plan, carry_goals, out, plan_pick=None):
-    """The pick's plan to run from the park, its builder for the rest, its hooks (run.run).  A grasp
-    re-read off the one planned for (primitives.near_pose) has the plan made again from here
-    first, its decisions kept as they still hold (the prior: decide_ik).  Between the segments the
-    pick's own steps: the object watched on the way in, the reach checked, the pinch judged and the
-    load registered as held (``out["tcp0"]``: the TCP where the hand closed), the carry checked."""
+def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None):
+    """The pick's plan to run from the park (the park search's: a grasp the object no longer gives
+    has run build it again, run.holds), its builder for the rest, its hooks (run.run).  Between the
+    segments the pick's own steps: the object watched on the way in, the reach checked, the pinch
+    judged and the load registered as held (``out["tcp0"]``: the TCP where the hand closed), the
+    carry checked.  ``grasp``: plan_pick's (_grasp_of), ``g`` the candidate it came from."""
     kin = rig.kin
     plan_pick = plan_pick or _plan_pick()
-    grasp = _grasp_of(name, g)
-    u, L = _grasp_approach(g)
-    planned = next((sg for sg in plan.segments if sg.name == "pick_grasp"), None) if plan is not None else None
-    if planned is None or not near_pose(planned.target[1], planned.target[2], grasp["p"], grasp["R"]):
-        rig.log("pick_plan_again", obj=name, why="no plan" if planned is None else "the grasp moved")
-        plan = plan_pick(kin, observe(rig), grasp, u, L, carry_goals, prior=plan, step=APPROACH_STEP)
-        if isinstance(plan, Failure):
-            raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
+    aim = Aim(name, grasp["T_obj_tcp"], side=kin.side)
 
     def rebuild(state, frm, prior):
-        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, prior=prior, step=APPROACH_STEP)
+        return plan_pick(kin, state, grasp, carry_goals, start=frm, prior=prior, step=APPROACH_STEP)
 
     def after_grasp(rig):
-        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - grasp["p"]))
+        # against the grasp on the object where it stands now (the one the reach-in was built for)
+        now = aim_pose(observe(rig), aim)
+        if now is None:
+            raise SkillFailure(f"pick {name}: not in the collision model")
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - now[0]))
         if kin.motion is not None:
             # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
             rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
@@ -177,8 +174,9 @@ def _pick_ready(rig, name, g, plan, carry_goals, out, plan_pick=None):
 
 def pick_job(rig, args, state, skill=None):
     """motion_skills.Job of the pinch pick: every grasp candidate one goal of the park search (the
-    whole pick planned there, skill_plans.plan_pick); after the drive the candidate re-read, the plan
-    run with the pick's hooks; then judged (_pick_judged)."""
+    whole pick planned there, skill_plans.plan_pick, the grasp in the object's frame); after the drive
+    the plan run with the pick's hooks (run.holds builds it again when the object no longer gives
+    its grasp); then judged (_pick_judged)."""
     from ..motion_skills import Job
     name, max_candidates, kinds = args["name"], args.get("max_candidates", 12), args.get("kinds", PINCH_KINDS)
     obj = rig.ann.objects[name]
@@ -189,6 +187,10 @@ def pick_job(rig, args, state, skill=None):
     cands, extra = _pinch_candidates(rig, obj, pos, quat, kinds, surface_z)
     if not cands:
         raise SkillFailure(f"pick {name}: no pinch grasp annotated")
+    # the grasps in the object's box frame as the State has it (the plan derives them from there)
+    T_obj = (getattr(state, "objects", None) or {}).get(name)
+    if T_obj is None:
+        raise SkillFailure(f"pick {name}: not in the collision model")
     rig.sync_world()
     rig.focus_z = float(pos[2])
     bx, by, _ = rig.base_pose()
@@ -215,7 +217,7 @@ def pick_job(rig, args, state, skill=None):
     # one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
     goal_cands = cands[:max_candidates] + extra
     build_with = skill.build if skill is not None else None
-    problem, carry_goals = _pick_problem(rig, name, goal_cands, near, prefer, build_with)
+    problem, carry_goals, grasps = _pick_problem(rig, name, goal_cands, T_obj, near, prefer, build_with)
     ctx = {"out": {}}
 
     def no_park(diag):
@@ -230,19 +232,20 @@ def pick_job(rig, args, state, skill=None):
         rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
 
     def ready(found):
-        g = goal_cands[found.k]
-        # re-read after driving (the drive may have knocked it): the same candidate at the object's
-        # pose now -- found by its place in the candidate list, not by an equal pose (a 1e-3 rotation
-        # tolerance dropped every re-read of an object turned by a tenth of a degree)
+        # after the drive: the candidate's grasp on the object where it stands now (the drive may
+        # have knocked it) -- the plan's reach checks the same against the State (run.holds) and
+        # is built again from there when it is off
+        g, grasp = goal_cands[found.k], grasps[found.k]
         p_now, q_now = rig.obj_pose(name)
-        now_c, now_x = _pinch_candidates(rig, obj, p_now, q_now, kinds, _surface_under(rig, name, rig.state()))
-        g = next((c for c in now_c + now_x if c["idx"] == g["idx"]), g)
+        now = aim_pose(observe(rig), Aim(name, grasp["T_obj_tcp"], side=rig.kin.side))
+        if now is None:
+            raise SkillFailure(f"pick {name}: not in the collision model")
         rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in p_now],
-                quat=[round(float(v), 3) for v in q_now], p=[round(float(v), 3) for v in g["p"]],
+                quat=[round(float(v), 3) for v in q_now], p=[round(float(v), 3) for v in now[0]],
                 kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
-        note_grasp(rig, name, g["p"], g["R"], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
+        note_grasp(rig, name, now[0], now[1], "edge" if g["kind"] == "thickness_pinch" else "pinch", g["pre_open"])
         ctx["g"], ctx["pos"] = g, p_now
-        return _pick_ready(rig, name, g, found.plan, carry_goals, ctx["out"], build_with)
+        return _pick_ready(rig, name, g, grasp, found.plan, carry_goals, ctx["out"], build_with)
 
     def failed(exc):
         if isinstance(exc, Dropped):

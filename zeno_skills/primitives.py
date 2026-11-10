@@ -159,7 +159,7 @@ def turn(Ra, Rb):
 
 def near_pose(p_a, R_a, p_b, R_b):
     """Two TCP poses the same one: within HINT_REACH and HINT_TURN (a decided solution still decides
-    its pose: decide_ik, Rig._goal; a target still the one planned for: _pick_ready, _place_ready)."""
+    its pose: decide_ik, Rig._goal; a target still the one planned for: run.holds)."""
     return float(np.linalg.norm(np.asarray(p_a, float) - np.asarray(p_b, float))) <= HINT_REACH and \
         turn(R_a, R_b) <= HINT_TURN
 

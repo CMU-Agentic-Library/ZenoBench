@@ -20,7 +20,7 @@
 | 层 | 在哪 | 负责 | 不负责 |
 |---|---|---|---|
 | ① 运动原语 | `primitives.py` | 从给定 `State` 和关节角出发生成一段运动（`Segment`），做不出来返回 `Failure(why)`；要做决定的（`decide_ik`）先试给它的旧决定 | 不知道是哪个技能，不知道是搜索还是执行 |
-| ② 技能计划（`build`） | `skill_plans/`（按形状分文件，9.4） | 按技能顺序把原语和动作串成 `Plan`，每段从上一段的实际终点出发，动作之间用小函数推进 `State`；目标从 `State` 推出〔待加，2.3 步〕；`prior` 里还成立的段原样拿来〔待加，2.4 步；2.2 步起复用的只是决定：接触位姿的解、目标集合的选择〕 | 不选停车点，不执行 |
+| ② 技能计划（`build`） | `skill_plans/`（按形状分文件，9.4） | 按技能顺序把原语和动作串成 `Plan`，每段从上一段的实际终点出发，动作之间用小函数推进 `State`；目标从 `State` 推出（2.3 步：`motion_state.Aim` / `aim_pose`）；`prior` 里还成立的段原样拿来〔待加，2.4 步；2.2 步起复用的只是决定：接触位姿的解、目标集合的选择〕 | 不选停车点，不执行 |
 | ③ 停车点搜索（`find_park`） | `park_search.py` | 底盘候选、批量便宜过滤、排序，按顺序调用 `build`，返回（停车点，目标组，计划） | 手臂运动细节 |
 | ④ 执行（`run`） | `run.py` | 每段前复核这一段，到锚点复核剩下的整份〔待加，2.4 步〕；不成立就用 `build` 重做剩下的；执行，读回状态，监视，日志 | 发明运动，另写判断 |
 | ⑤ 技能（`Skill` + `run_skill`） | 每个技能一份 `Skill`；`run_skill` 一个 | 技能参数 → 目标集合、`build`、hooks、失败出口；`run_skill` 依次调 ③、开车、④ | 运动细节、重做判断（都在 ①–④） |
@@ -95,7 +95,7 @@ Skill(
 
 `AtomicPolicy.execute` 只剩 `run_skill(self.rig, SKILLS[name], args)`。迁一个技能 = 给它写 `problem`（目标集合）和 `build`（尽量用下表的模板），hooks 照搬，然后不再调旧入口。
 
-**过渡形式（9.3 第 1 步，`zeno_skills/motion_skills.py`）**：技能的 Python 部分是一个 `job(rig, args, state, skill) -> Job`（`skill.build` 是 catalog 的 `template`，job 用它构造计划），`Job` 按 `run_skill` 的步骤给回调：`problem`（没有就原地做，如 navigate）、`no_park(diag)`、`found(found)`（日志）、`travel`（开到停车点时给 navigate 的参数，如 `min_bottom_z`）、`ready(found) -> (plan, build, hooks)`、`failed(exc)`、`done()`。开到以后的"重新测量、整份重做"现在在 `ready` 里，9.3 第 2.3 步删；hooks 里动机器人的部分 2.6 步换成 `build_clear`。到那时 `Job` 就收缩成上面的三样。现在走 `run_skill` 的是 navigate、pick、place；它们的 policy 照旧调 `skills.navigate / pick / place`，这三个函数内部转到 `run_skill`。
+**过渡形式（9.3 第 1 步，`zeno_skills/motion_skills.py`）**：技能的 Python 部分是一个 `job(rig, args, state, skill) -> Job`（`skill.build` 是 catalog 的 `template`，job 用它构造计划），`Job` 按 `run_skill` 的步骤给回调：`problem`（没有就原地做，如 navigate）、`no_park(diag)`、`found(found)`（日志）、`travel`（开到停车点时给 navigate 的参数，如 `min_bottom_z`）、`ready(found) -> (plan, build, hooks)`、`failed(exc)`、`done()`。开到以后的"重新测量、整份重做"原来在 `ready` 里，9.3 第 2.3 步删了（目标从 `State` 推出，`run.holds` 复核）；hooks 里动机器人的部分 2.6 步换成了 `build_clear`。到那时 `Job` 就收缩成上面的三样。现在走 `run_skill` 的是 navigate、pick、place；它们的 policy 照旧调 `skills.navigate / pick / place`，这三个函数内部转到 `run_skill`。
 
 形状相同的技能共用一个 `build` 模板（括号里是 v6 路线里的步数，共 2992 步）：
 
@@ -423,6 +423,7 @@ run.observe(act)    -> (State, Observation | None)
 
 每个技能的 `build(state, k, prior, start=...)` 按下表的顺序构造：
 - `k`：目标组。目标写在物体框里，TCP 位姿由 `build` 从 `State` 推出：pick 的抓取候选在物体框里，用 `State.objects` 换到世界；place 的目标是物体的放置位姿，TCP 位姿用 `State` 里的握法（`Held.T_tcp_obj`）推出。物体动了、握法变了，从实测状态做出来的就是新目标，不另写"目标偏了就整份重做"。
+  实现（2.3 步）：`motion_state.Aim(obj, T, held)` 说怎么推——`held=False` 是物体碰撞框框架里的 TCP 位姿（pick：`skills._grasp_of` 给 `T_obj_tcp`，伸入方向 `u` 在 TCP 框里），`held=True` 是持物框架在世界里的目标位姿（place：`place_job` 用开车前的握法把每个放下位姿换成物体位姿），`aim_pose(state, aim)` 给出 TCP 位姿。`plan_pick(kin, state, grasp, carry_goals, ...)`、`plan_place(kin, state, goal, pre_open, out_len, rests, ...)` 只拿这些；接触位姿所在的段（`pick_reach`、`pick_grasp`、`place_reach`、`place_down`）在 `info["aim"]` / `["aimed"]` 记下 `Aim` 和建这段时推出的位姿，`run.holds` 拿它复核（8.4）。抽出段沿放下位姿的夹爪轴，从抽出段起重做（手里已经没东西、推不出放下位姿）时沿松手时实际的夹爪轴（不再由调用方传 `u_out`）。
 - `prior`：搜索时是排序 IK 给的 {决定名: 关节角}；执行时重做是当前 `Plan`。每一段先看 `prior` 里同名的段从现在的起点是否还成立（`holds`，8.4），成立就原样拿来〔待加，2.4 步〕；不成立再用原语做，要做决定的（`decide_ik`、目标集合的序号）先试 `prior.decisions` 里的值（2.2 步已做）。
 - `start`：从哪一段开始，执行时重做剩下的计划用。
 
@@ -577,12 +578,13 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 某段不成立就用原语重新做，决定先原样复用；它后面的段起点变了，也跟着重做。
 - 两个锚点之间只复核下一段：世界没变，只有意外（被挡住、碰动了东西）才会让它不成立。
 
-只有这一处触发重做。`skill_jobs/pick.py` 的 `_pick_ready`、`skill_jobs/place.py` 的 `_place_ready` 开头"重新测量的目标偏了 `HINT_REACH` 就整份重做"那一套要删掉（2.3 步；place 那份 11-08 起至少和搜索用同一个参照——指令 TCP，见 8.2）：目标由 `build` 从 `State` 推出以后（第 6 节），到达锚点做的就是这件事，而且会复用旧决定。
+只有这一处触发重做。`skill_jobs/pick.py` 的 `_pick_ready`、`skill_jobs/place.py` 的 `_place_ready` 开头"重新测量的目标偏了 `HINT_REACH` 就整份重做"那一套 2.3 步删了：目标由 `build` 从 `State` 推出（第 6 节），"目标还对不对"由 `holds` 在接触位姿所在的段之前查（8.4），不成立就是 `run` 普通的重做——从这一段起，复用旧决定。到达锚点（2.4 步）以前，这个检查挂在段上：开到以后第一段动手臂的就是 `pick_reach` / `place_reach`。
 
 ### 8.4 复核 `holds`
 
-`holds(kin, state, seg, target)`，`target` 是 `build` 从现在的 `State` 推出的这一段的目标：
+`holds(kin, state, seg)`；这一段的目标由它自己记的 `Aim` 从现在的 `State` 推出（2.3 步）：
 - 手臂在这段的起点（`PLAN_AT_START`）；
+- 目标（2.3 步）：带 `info["aim"]` 的段（接触位姿所在的段），从现在的 `State` 推出的接触位姿和建这段时推出的（`info["aimed"]`）差不超过 `HINT_REACH` / `HINT_TURN`（`near_pose`，和删掉的整份重做同一个阈值），不成立记 `its target moved ... m, turned ... deg`；物体不在 `State` 里（不在手里）也不成立。比的是世界系里的两个目标，不经过运动学：物体被碰动、在手里转了在这里发现，底盘误差不在这里（下一条）；
 - 路点在现在的世界里不碰：按这段的 `Spec`，含 `touch`，零余量；
 - 终点〔待加，2.4 步〕：有位姿目标的段，在实测底盘下，终点的 TCP 离 `target` 不超过 `TARGET_TOL`。底盘误差、物体被碰动都在这里发现；
 - 离开段：用 `contact_extent` 从当前姿态重量，长度和计划差超过 `EXTENT_TOL`（`LEAVE_MARGIN` 的一半：终点仍至少留半个余量离开接触，多走的不查碰撞部分也不超过它）就不成立。11-08 前容差是一个步长（2 mm，等于测量本身的分辨率），执行时 13 次重做里 7 次是 ±1 步的抖动；
@@ -709,8 +711,8 @@ if why is not None:
 | ~~张手后的手指宽度~~ | `plan_pick` 的张手段 | ~~搜索的调用方先套 `with_width`，执行时的整份重做没套~~ | 已去掉：`plan_pick` 自己推进（11-08 审计） |
 | ~~抬不抬高搬运~~ | `carry_posture` | ~~navigate 再试一次~~ | 已去掉：`raise_load=False`（11-08 审计） |
 | ~~`q_p` 的分支~~ | `plan_place` | ~~搜索时 `q_seed = q_rank`，执行时重做和整份重做不带种子~~ | 已去掉：`decide_ik` + `prior`，重做和整份重做都带计划的决定（2.2 步） |
-| 什么时候重做 | `run`（锚点 + `holds`） | `_pick_ready` / `_place_ready` 开头按 `HINT_REACH` 比较目标，偏了就整份重做（2.2 步起带找到的计划的决定） | 目标从 `State` 推出，删掉开头那段（8.3） |
-| TCP 到不到得了目标 | `holds` 的终点检查 | 没人查：底盘误差直接变成抓取 / 放下误差 | `holds` 加终点检查（8.4） |
+| ~~什么时候重做~~ | `run`（锚点 + `holds`） | ~~`_pick_ready` / `_place_ready` 开头按 `HINT_REACH` 比较目标，偏了就整份重做~~ | 已去掉：目标从 `State` 推出，`holds` 查目标（8.3、8.4，2.3 步） |
+| TCP 到不到得了目标 | `holds` 的终点检查 | 目标本身变了的（物体碰动、握法变了）2.3 步起 `holds` 查；底盘误差没人查，直接变成抓取 / 放下误差 | `holds` 加终点检查（8.4，2.4 步） |
 | 搬运姿态 | `plan_pick` 的 `carry_in` | ~~navigate 和 place 之前又调旧的 `_carry_pose`~~ | 已去掉：`plan_navigate` 第 1 段按约束复核，满足就不动（9.3 第 1 步） |
 | 开车时的行驶姿态 | `plan_navigate` | ~~搜索的 `_drivable` 和 `navigate` 给 `travel_postures` 的参数不同~~ | 已去掉：两边都取 `travel_chain`（9.3 第 1 步） |
 | ~~失败后退出接触~~ | 失败出口的计划 | ~~hook 里直接 `rig.grip` / `rig.leave`~~ | 已去掉：`clearing` + `plan_clear`，由 `run` 执行（8.6，11-09） |
@@ -737,6 +739,8 @@ if why is not None:
       针对性对照（v6 sticky/gt，8 集：11-09 走过重做的 T05 notebooks_3、T09 ×2、T25、T20、T24，加 T13 adult_seat、T02 clear；旧代码 = `60ae868`，各一个仿真并行，`/data/zenobench/step22_1109`）：新 4/8、旧 3/8。只有 T20 bottle_on_cabinet 不同（旧：搜索前两个候选 `place_down: no collision-free straight`，第三个执行时放下停短 6 mm 失败；新：第一个候选就做成、成功）。原因是放下段起点：改前 `_reach` 把从 `q_p` 沿直线往上推出的解只当种子重解，`Motion.ik` 的可操作度项（`IK_MANIP_W` 0.3）会换到离它最多约 0.3 rad 的解，从那里下放的直线就和 `q_p` 推出的那条不一致；现在它不碰就原样用。其余 7 集成败和失败原因两边一样。`decide_ik` 的结果：`pick_reach` 10 个原样 / 1 个重解，放下段起点 11 / 0，`q_p` 9 / 2（T20 排序解不能直接用；T09 锅在手里偏了 1.2 cm 后整份重做，按原来的解重解）。这是给出的解，不全是执行到的：原样的里头 `pick_reach` 5 个、放下段起点 8 个的腿走的是直线，停在直线自己的解上（这 8 个 place 的放下段终点也就不是 `q_p`）。`motion_signature` 对旧代码没有新增或消失的运动。这 8 集里 `run` 的执行时重做和原地重做都没出现；单测只覆盖 `run` 把计划交给重做、原地重做传找到的计划这两处，`_pick_ready` / `_place_ready` 的整份重做没有单测。
       审查后修正（11-09，未跑仿真）：navigate 的 `rebuild` 补上 `prior` 参数（改前 `run` 一重做 navigate 的段就 TypeError，`Job` 的说明也还是两个参数）；`pick_reach` / `place_reach` 记实际走到的解（改前记 `decide_ik` 给的解，`run` 重做伸入段时会走到计划从没用过的构型；HEAD 的重做种子本来是 `reach.q_end`）；目标集合的决定带集合大小（改前只记序号，`_carry_goals` 换了高度层数时同一个序号是另一个目标）；`decide_ik` 第 2 步的说明改正（全局选法，不是就近重解）。第二轮：`run` 交给重做的计划是复制的（`replace`，决定是当时的一份，改前和 `run` 自己的字典是同一个，之后会被改）；`Problem.relay` 必填，决定名用 `skill_plans.PICK_RELAY` / `PLACE_RELAY`（改前默认空串时静默不传排序解）；收臂不再复用序号（改前计划选了下垂、执行时收起已经不碰也还下垂，下一次 navigate 多摆一次）；"目标没偏"的判据合成 `primitives.near_pose`，删 `skills._turn`；段的 `info["decided"]` 统一成 {决定名: 怎么定的}，`run` 不再认 builder 专用的键，重做事件记的是马上执行的那一段；`decide_ik` 做不出来返回 None、不带名字；`_pick_ready` / `_place_ready` 的整份重做、转角判据补了单测。单测 400 通过。
    3. 目标从 `State` 推出（pick 的抓取候选放在物体框里，place 的目标是物体位姿），删 `_pick_ready` / `_place_ready` 开头的整份重做；
+      **已做（11-10）。** 和计划的出入：删掉的整份重做不等 2.4 的到达锚点接手——"目标还对不对"现在就挂在段上，`holds` 查（8.4 第二条），这是 2.4 终点检查里"目标本身变了"那一半提前做；底盘误差那一半（实测底盘下终点 TCP 到不到目标）还是 2.4。实现见第 6 节 `k` 那一条。行为上：sticky/gt 下应该没有差别——11-09 全量 153 集里删掉的那段一次都没触发（`place_remeasure` 偏移 75 次里 72 次 0、3 次 1 mm），只有 2.2 对照里 T09 锅在手里偏了 1.2 cm 那一次会改走 `run` 的重做（从 `place_reach` 起，不再是整份）。会变的地方：(a) `run` 执行中途的重做（如 T09 pot_in_use / T17 hide_both 的 `place_down` "collides now"）以前用开车前算死的 TCP 目标，现在按实测握法推，物体终点仍在支撑面上方 `LEAVE_GAP`；(b) 不焊时物体在手里转了，推出的 TCP 把物体放回计划的朝向（以前 TCP 朝向不变、只挪位置）；(c) pick 开到以后不再按序号重新生成候选（`_pinch_candidates`），抓取跟着物体刚体走；(d) `after_grasp` / `after_down` 的到位误差对的是按现在状态推出的目标。删了日志 `pick_plan_again`、`place_plan_again`、`place_remeasure`；重做记在 `segment` 的 `why` 里。单测 339 + benchmark 476 通过（`benchmark/v5/tests` 2 个、`skill_ext/tests` 1 个在 HEAD 上同样失败，与此无关）。
+      针对性对照（v6 sticky/gt，各一个仿真，旧 = `a0719ec`，`/data/zenobench/step23_1110`）：5 集成败两边一样（T02 clear 成功；T09 pot_in_use、T04 two_guests、T20 bottle_on_cabinet 失败点相同），事件日志逐条比：T02（115 条）、T04（195 条）全同；T17 hide_both 和旧代码的重跑 493 条全同——旧代码自己跑两次就在 pick 锅盖的排序 IK 处分叉（GPU 批量 IK 不确定，`ik` 拒绝数 879 / 877），一次成功一次失败，所以 T17 的成败不能拿来比；T20 停车点搜索的构造份数不同（11 / 9，`BUILD_S` 20 s 的墙钟预算），两边都找不到停车点。新检查只在 T09 触发一次：`place_reach` 途中锅撞上灶台（7.8 mm，接触监视记了），在手里偏了 4.7 mm、转了 1.87°，`place_down` 判 `its target moved`（旧代码判同一处 `collides now`），按新握法重做的放下段起点就在碰撞里，失败——T09 的根子是 `place_reach` 执行时撞上，不在 2.3。第一版抽出段沿松手时的 TCP 轴，和旧代码差 IK 精度级别的一点，T17 在抽出段就开始分叉（settle 帧数 112 / 128），改成有放下位姿时沿放下位姿的夹爪轴以后才逐条相同。
    4. 锚点段、`holds` 的终点检查、`run` 在锚点复核剩下的整份；
    5. 余量：place 计划带 `HOLD_DRIFT`；
    6. ~~hooks 不动机器人：`build_clear`~~（11-09 做完：`clearing` + `plan_clear`，8.6）；

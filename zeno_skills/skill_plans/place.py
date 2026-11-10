@@ -7,7 +7,7 @@ import time
 import numpy as np
 
 from ..clearance import Allow
-from ..motion_state import Failure, Plan, Segment, Spec, decisions_of, released, with_width
+from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
 from ..primitives import LEAVE_GAP, JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
 from ._common import FREE_HAND, FREE_LOAD, _move, _reach, held_frame
 
@@ -39,13 +39,18 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
     return L, None
 
 
-def plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start="place_reach", prior=None,
+def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_reach", prior=None,
                step=0.003, obj=None):
-    """The set-down of what the hand holds at (p, R) from ``state``: the free leg to the set-down's
-    start (the load's tilt held; the set-down's length set_down_length, from q_p, the solution of
-    (p, R) decide_ik decides), the set-down straight down, let go (the load falls LEAVE_GAP onto the
-    support: released, the hand opened), the pull-out of length out_len along u_out (the gripper
-    axis back; the fingers may touch what they let go, the rest of the arm may not: Spec.touch), the
+    """The set-down of what the hand holds with its box frame at the world pose ``goal`` (4x4) from
+    ``state``: the set-down pose (p, R) the TCP that puts it there through the hold the State has
+    (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The free leg to
+    the set-down's start (the load's tilt held; the set-down's length set_down_length, from q_p, the
+    solution of (p, R) decide_ik decides), the set-down straight down -- both carrying the Aim and
+    the pose they were built for (info["aim"], ["aimed"]: run.holds checks it again) -- let go (the
+    load falls LEAVE_GAP onto the support: released, the hand opened), the pull-out of length
+    out_len back along the set-down pose's gripper axis (built after the release: the axis where
+    the hand let go; the fingers may touch what they let go, the rest of the arm may not:
+    Spec.touch), the
     tuck to the first free of ``rest_goals`` (JointSet: the fold, the hanging posture), the wait the
     object settles in.  ``prior`` (decisions_of): the decision to keep -- place_reach, the set-down
     pose's solution q_p (the park search's ranking solution, or a plan's own: where its set-down
@@ -54,8 +59,7 @@ def plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start="pl
     (the hand holds nothing then) lets the fingers touch it as the first one did.  From ``start``
     on.  Plan (its decisions) or Failure, info["stage_s"] the time per stage."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, decisions_of(prior), step,
-                           obj)
+        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, decisions_of(prior), step, obj)
 
 
 def release_spec(side, obj):
@@ -69,12 +73,18 @@ def release_spec(side, obj):
                 fingers=True, exempt=False, touch=(obj,))
 
 
-def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, prior, step, obj=None):
+def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj=None):
     i0 = PLACE_STAGES.index(start)
-    p, R = np.asarray(p, float), np.asarray(R, float)
     q = state.q(kin.side)
     held = state.held(kin.side)
     obj = obj if obj is not None else (None if held is None else held.name)
+    aim = aimed = None
+    if held is not None:
+        aim = Aim(held.name, np.asarray(goal, float), held=True, side=kin.side)
+        aimed = aim_pose(state, aim)
+    if aimed is None and i0 <= PLACE_STAGES.index("place_down"):
+        return Failure("nothing in the hand to set down", start)
+    p, R = aimed if aimed is not None else (None, None)
     segs, s, times, decided = [], state, {}, {}
     down = np.array([0.0, 0.0, -1.0])
     for stage in PLACE_STAGES[i0:]:
@@ -97,11 +107,11 @@ def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, p
             seg = _reach(kin, s, FREE_LOAD, p, R, down, L, q, start_q, stage, step, decision="set_down_start")
             if not isinstance(seg, Failure):
                 seg = _move(seg, steps_per_wp=8, smooth=True, set_down_m=L,
-                            decided={**seg.info.get("decided", {}), "place_reach": how})
+                            decided={**seg.info.get("decided", {}), "place_reach": how}, aim=aim, aimed=aimed)
         elif stage == "place_down":
             seg = straight(kin, s, FREE_LOAD, p, R, stage, step=step, q_from=q)
             if not isinstance(seg, Failure):
-                seg = _move(seg, steps_per_wp=8, smooth=True)
+                seg = _move(seg, steps_per_wp=8, smooth=True, aim=aim, aimed=aimed)
                 # place_reach: the set-down pose's solution as the plan reaches it -- the set-down's
                 # end, not q_p where the leg above went straight from elsewhere (_reach)
                 decided["place_reach"] = seg.q_end
@@ -113,9 +123,11 @@ def _plan_place(kin, state, p, R, pre_open, u_out, out_len, rest_goals, start, p
                 s = released(s, kin.side, held.name, T)
             s = with_width(s, kin.side, pre_open)    # the hand opened to the grasp's width
         elif stage == "place_pull_out":
-            # back along the gripper axis, a finger's length (release_spec: the fingers may touch obj)
+            # back along the gripper axis, a finger's length (release_spec: the fingers may touch
+            # obj): the set-down pose's, else (built again after the release: nothing held to derive
+            # it from) the axis where the hand let go
             p0, R0 = kin.tcp(q)
-            u = np.asarray(u_out, float) / np.linalg.norm(u_out)
+            u = (R if R is not None else R0)[:, 2]
             seg = straight(kin, s, release_spec(kin.side, obj), p0 + out_len * u, R0, stage, step=0.004, q_from=q)
             seg = seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
         elif stage == "tuck":   # the first free of the fold, hanging -- chosen again at every build: the
