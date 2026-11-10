@@ -15,14 +15,52 @@ from contextlib import contextmanager
 
 import numpy as np
 
-BASE_HALF = 0.2442        # m: half size of the base column's square (base_link.STL's bounding box: +-0.2442 m,
-COLUMN_TOP = 1.05         # z 0.027-1.053 m); the column's height (boxes starting below it are in its way)
-FOOTPRINT_MARGIN = 0.046  # m the column keeps from the boxes and moving parts: the one margin (it was 1.6 cm
+# The base in two layers, measured on base_link.STL's cross sections (11-09): a wide chassis up to
+# 0.25 m -- a square of +-0.2442 m with rounded corners, 0.296 m from the centre at 45 deg, not the
+# square's 0.345 -- and above it a slim column behind the centre up to 1.05 m.  Until 11-09 the
+# footprint was the whole bounding box, a 0.49 m square column 0.03-1.05 m tall: at 0.6 m it took
+# 0.49 m where the robot has 0.13 m, and turned 45 deg its corners stood 5 cm further out.
+BASE_HALF = 0.2442        # m: half size of the chassis' square (base_link.STL's bounding box: +-0.2442 m)
+LOW_CORNER = 0.115        # m: radius of the chassis' rounded corners (0.296 m from the centre at 45 deg)
+LOW_TOP = 0.27            # m: top of the chassis (the mesh's 0.25 m and its taper, 2 cm up)
+LOW_Z = (0.15,)           # m: heights the chassis is sampled at (the old column's lower sample)
+COLUMN_XY = (-0.115, -0.063, -0.010, 0.063)   # m: the column above the chassis, base frame x0 y0 x1 y1
+COLUMN_TOP = 1.05         # m: the column's top (boxes starting below it are in its way)
+COLUMN_Z = (0.6,)         # m: heights the column is sampled at (the old column's upper sample)
+FOOTPRINT_MARGIN = 0.046  # m the base keeps from the boxes and moving parts: the one margin (it was 1.6 cm
                           # inside BASE_HALF plus 3 cm on top, both inherited from 3ccd5e99; the sum is kept,
                           # unmeasured: docs/COLLISION_PLAN.md §2)
-FOOTPRINT_GRID = 6        # points per side the column's square is sampled at
-COLUMN_Z = (0.15, 0.6)    # m: heights the column is sampled at (inherited, 3ccd5e99, unmeasured)
+LOW_SIDE_N = 8            # points per side of the chassis' inner square (the corners' centres) -- its
+                          # outline and centre are tested within LOW_CORNER + margin, ~1 mm short at most
+COLUMN_GRID = 4           # points per side the column's rectangle is sampled at
 CIRCLE_RES = 0.025  # m: grid of circles_clear against the static boxes (half the base planner's lattice step)
+
+
+def _base_points():
+    """The base's test points in its own frame: the chassis' (the outline and centre of the square
+    its rounded corners are drawn around, at LOW_Z: a point within LOW_CORNER + margin of a box
+    is the chassis within margin of it) and the column's (its rectangle on a grid, at COLUMN_Z:
+    within margin of a box as the old column's)."""
+    h = BASE_HALF - LOW_CORNER
+    t = np.linspace(-h, h, LOW_SIDE_N)
+    ring = np.unique(np.round(np.concatenate([np.c_[t, np.full_like(t, -h)], np.c_[t, np.full_like(t, h)],
+                                              np.c_[np.full_like(t, -h), t], np.c_[np.full_like(t, h), t],
+                                              [[0.0, 0.0]]]), 9), axis=0)
+    low = np.array([[u, v, z] for u, v in ring for z in LOW_Z])
+    x0, y0, x1, y1 = COLUMN_XY
+    col = np.array([[u, v, z] for u in np.linspace(x0, x1, COLUMN_GRID) for v in np.linspace(y0, y1, COLUMN_GRID)
+                    for z in COLUMN_Z])
+    return low, col
+
+
+LOW_PTS, COLUMN_PTS = _base_points()
+REACH_R = (BASE_HALF - LOW_CORNER) * math.sqrt(2) + LOW_CORNER   # m: the base's farthest point from its centre
+
+
+def _place(pts, x, y, c, s):
+    """Base-frame points (N, 3) at base poses: x, y, c = cos yaw, s = sin yaw, each (M, 1) -> (M, N, 3)."""
+    return np.stack([x + c * pts[:, 0] - s * pts[:, 1], y + s * pts[:, 0] + c * pts[:, 1],
+                     np.broadcast_to(pts[:, 2], (len(x), len(pts)))], -1)
 
 
 def _aabb_dist(pts, lo, hi):
@@ -100,7 +138,7 @@ class WorldModel:
         return self._near
 
     def circles_clear(self, xy, r=BASE_HALF):
-        """(N,) bool: a vertical cylinder of radius r (the bare column's inscribed one, without
+        """(N,) bool: a vertical cylinder of radius r (the bare chassis' inscribed one, without
         FOOTPRINT_MARGIN) at each xy is clear
         of the boxes up to the column's height and of the moving parts: a relaxation of
         footprints_clear at every heading.  The static boxes come from a grid computed once
@@ -110,7 +148,7 @@ class WorldModel:
         if len(self.base_only):
             ok &= self._circles_clear_boxes(xy, self.base_only, r)
         if self.ann.articulated:
-            for z in COLUMN_Z:
+            for z in LOW_Z:             # the chassis is the base's part around its centre
                 ok[ok] &= self.moving_part_dist(np.c_[xy[ok], np.full(int(ok.sum()), z)]) > r
         return ok
 
@@ -154,40 +192,42 @@ class WorldModel:
     def footprints_clear(self, poses, margin=FOOTPRINT_MARGIN):
         """footprint_clear for many base poses ((N, 3): x, y, yaw rad) at once: (N,) bool."""
         poses = np.atleast_2d(np.asarray(poses, float))
-        g = np.linspace(-BASE_HALF, BASE_HALF, FOOTPRINT_GRID)
-        u, v, z = (a.ravel() for a in np.meshgrid(g, g, COLUMN_Z, indexing="ij"))
-        c, s = np.cos(poses[:, 2])[:, None], np.sin(poses[:, 2])[:, None]
-        P = np.stack([poses[:, :1] + c * u - s * v, poses[:, 1:2] + s * u + c * v,
-                      np.broadcast_to(z, (len(poses), len(z)))], -1)            # (N, 72, 3)
         lo, hi = poses[:, :2].min(0), poses[:, :2].max(0)
         B = self.B[self.B[:, 2] > -0.5]                    # not the floor
         if len(self.base_only):
             B = np.vstack([B, self.base_only])
-        r = BASE_HALF * math.sqrt(2) + margin           # the column's half diagonal: boxes beyond cannot touch
+        r = REACH_R + margin                               # boxes beyond cannot touch
         B = B[(B[:, 3] > lo[0] - r) & (B[:, 0] < hi[0] + r) & (B[:, 4] > lo[1] - r) & (B[:, 1] < hi[1] + r)]
-        ok = np.ones(len(poses), bool)
-        for k in range(0, len(B), 64):
-            b = B[k:k + 64]
-            inside = np.all((P[:, :, None, :] > b[None, None, :, :3] - margin) &
-                            (P[:, :, None, :] < b[None, None, :, 3:] + margin), axis=-1)
-            ok &= ~inside.any(axis=(1, 2))
-        if self.ann.articulated:
-            ok &= (self.moving_part_dist(P.reshape(-1, 3)) > margin).reshape(len(poses), -1).all(axis=1)
-        return ok
+        return self._clear(poses, B, margin)
 
     def footprint_clear(self, x, y, yaw, margin=FOOTPRINT_MARGIN):
-        """Base column (2 BASE_HALF square, COLUMN_TOP tall, sampled at COLUMN_Z) vs static boxes and parts,
+        """The base (the chassis and the column above it, _base_points) vs static boxes and parts,
         FOOTPRINT_MARGIN apart."""
-        c, s = np.cos(yaw), np.sin(yaw)
-        g = np.linspace(-BASE_HALF, BASE_HALF, FOOTPRINT_GRID)
-        pts = np.array([[x + c * u - s * v, y + s * u + c * v, z]
-                        for u in g for v in g for z in COLUMN_Z])
         B = self.near_boxes((x, y))
         B = B[B[:, 2] > -0.5]                    # not the floor
         if len(self.base_only):
             B = np.vstack([B, self.base_only])
-        P = pts[:, None, :]
-        d = np.linalg.norm(np.maximum(np.maximum(B[None, :, :3] - margin - P, P - B[None, :, 3:] - margin), 0.0), axis=2)
-        if len(B) and np.any(d == 0.0):
-            return False
-        return bool(np.all(self.moving_part_dist(pts) > margin))
+        return bool(self._clear(np.array([[x, y, yaw]], float), B, margin)[0])
+
+    def _clear(self, poses, B, margin):
+        """(N,) bool: the base at each pose clear of the boxes B and the moving parts.  The chassis'
+        points within LOW_CORNER + margin of a box (horizontally; within margin of its heights) touch
+        it, the column's within margin of it."""
+        x, y = poses[:, :1], poses[:, 1:2]
+        c, s = np.cos(poses[:, 2])[:, None], np.sin(poses[:, 2])[:, None]
+        L, C = _place(LOW_PTS, x, y, c, s), _place(COLUMN_PTS, x, y, c, s)
+        ok = np.ones(len(poses), bool)
+        reach = LOW_CORNER + margin
+        for k in range(0, len(B), 64):
+            b = B[k:k + 64]
+            dx = np.maximum(np.maximum(b[None, None, :, 0] - L[..., :1], L[..., :1] - b[None, None, :, 3]), 0)
+            dy = np.maximum(np.maximum(b[None, None, :, 1] - L[..., 1:2], L[..., 1:2] - b[None, None, :, 4]), 0)
+            zin = (L[..., 2:3] > b[None, None, :, 2] - margin) & (L[..., 2:3] < b[None, None, :, 5] + margin)
+            ok &= ~((np.hypot(dx, dy) <= reach) & zin).any(axis=(1, 2))
+            inside = np.all((C[:, :, None, :] > b[None, None, :, :3] - margin) &
+                            (C[:, :, None, :] < b[None, None, :, 3:] + margin), axis=-1)
+            ok &= ~inside.any(axis=(1, 2))
+        if self.ann.articulated:
+            ok &= (self.moving_part_dist(L.reshape(-1, 3)) > reach).reshape(len(poses), -1).all(axis=1)
+            ok &= (self.moving_part_dist(C.reshape(-1, 3)) > margin).reshape(len(poses), -1).all(axis=1)
+        return ok

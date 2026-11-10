@@ -3,6 +3,8 @@
 from types import SimpleNamespace
 
 import numpy as np
+
+from zeno_skills.motion_state import State
 import pytest
 
 from zeno_skills import skills
@@ -88,7 +90,9 @@ def test_local_base_motion_checks_sweep_and_measured_pose():
     rig = SimpleNamespace(held=None, q=lambda: np.zeros(9), q_cmd=np.zeros(9), left_q_cmd=np.zeros(7),
                           kin=SimpleNamespace(rest=np.zeros(9), motion=motion), sync_world=lambda: None,
                           world=SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
-                          base_pose=lambda: tuple(pose), drive_base=drive)
+                          base_pose=lambda: tuple(pose), drive_base=drive, log=lambda *a, **k: None,
+                          # motion_state.Actuator: the straight base move runs as a drive segment (run.execute)
+                          snapshot=lambda: State(base=tuple(pose), q_right=np.zeros(9), q_left=np.zeros(7)))
     assert BaseRotateInPlacePolicy(rig).execute(15) == 15
     assert len(checked) >= 4 and np.isclose(checked[-1][2], np.radians(15))
     checked.clear()

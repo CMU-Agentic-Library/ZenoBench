@@ -46,9 +46,9 @@ R 类不列。
 
 | 位置 | 内容 | 类 | 处理 |
 |---|---|---|---|
-| policies/plan_helpers.py `_carry_bottom_z` | 搬运高度抬到目的地台面上已有物体之上（最多 12 cm），用来避免持物扫倒东西 | W | 先给底盘规划器加"换搬运高度"再删（计划第 7 节）；删掉时 T13 bowl_on_cabinet 开往餐桌搜到上限 |
-| skills.py `_carry_pose` | 夹在边上的书搬运时 `min_bottom_z` +6 cm（书下垂） | S | 下垂进持物碰撞模型；随 6.2 书的放置 |
-| skills.py `_carry_pose` | `carry_in` 走 `FREE_ELSE_STRAIGHT`：规划不出来就不查碰撞的直线（11-07 全量 5 次）；一个搬运目标都没有 IK 就留在原处带着开（`carry_pose_kept`，11-07 全量 11 次） | F | pick 里 11-08 已删（去搬运姿态进了 pick 的计划，`skill_plans.plan_pick`）；navigate 出发前、place / drop / hover 等选停车点前那一处还在，等这些技能迁到新分层 |
+| skill_jobs/carry.py `_carry_bottom_z`（11-08 从 policies/plan_helpers.py 挪来） | 搬运高度抬到目的地台面上已有物体之上（最多 12 cm），用来避免持物扫倒东西 | W | 先给底盘规划器加"换搬运高度"再删（计划第 7 节）；删掉时 T13 bowl_on_cabinet 开往餐桌搜到上限 |
+| skills.py `_carry_floor`（原 `_carry_pose`） | 夹在边上的书搬运时 `min_bottom_z` +6 cm（书下垂） | S | 下垂进持物碰撞模型；随 6.2 书的放置 |
+| skills.py `_carry_pose` | `carry_in` 走 `FREE_ELSE_STRAIGHT`：规划不出来就不查碰撞的直线（11-07 全量 5 次）；一个搬运目标都没有 IK 就留在原处带着开（`carry_pose_kept`，11-07 全量 11 次） | F | 已删：pick 里 11-08（去搬运姿态进了 `skill_plans.plan_pick`）；navigate / place / drop / stow_load 那一处 11-08 随 MOTION_ARCHITECTURE 9.3 第 1 步（`plan_navigate` 第 1 段按判据复核，做不出来就失败；`min_bottom_z` 够不着时原样带着走，不算退路：整机底盘规划照查） |
 
 ### 3.2 place（skills.py `place`、`place_on`）
 
@@ -217,7 +217,7 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | skills.py `clear_microwave_door_sweep` 等 | 给门让路的写死位姿 `(5.1, 1.6, 150)` |
 | skills.py `place_flat` | 书架：中段加分、短边 +0.4（6.2 删） |
 | skills.py `free_spots` | 微波炉 −0.004、柜台内缩 4 cm、`"breakfast_fridge"` 的 margin |
-| skills.py `_carry_pose` | 夹在边上的书搬运时 +6 cm（同 3.1） |
+| skills.py `_carry_floor`（原 `_carry_pose`） | 夹在边上的书搬运时 +6 cm（同 3.1） |
 | skills.py `place` | 深容器在沿口上方松手（用松手高度避开两壁） |
 | embedded.py `PickFromCavityPolicy` | 微波炉取物整套"把放入倒过来"的编排；只适用于开口朝 −y |
 
@@ -234,7 +234,7 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | 内容 | 位置 |
 |---|---|
 | `coll_kw = {"ignore_fingers": True}` 在技能入口整体设置，不恢复 | skills.py（place、place_flat、push、open/close、微波炉）；hand.py；extra.py；tooluse.py；orientation.py；sticky.py；embedded.py；contact.py；appliance_generic.py；rig.py |
-| `coll_kw = {}` 清空，会冲掉正在生效的 `hand_touches_part` | skills.py `_carry_pose`；posture.py |
+| `coll_kw = {}` 清空，会冲掉正在生效的 `hand_touches_part` | posture.py（skills.py `_carry_pose` 那一处 11-08 随它删了：搬运段的手指改由 `Spec` 经 `Motion.query` 设置） |
 | 选 park 时临时改 `coll_kw` | skills.py；planner.py；base_motion.py；mobile.py |
 | 临时改腰的上限避障 | skills.py（open/close、stir 等） |
 | 只为检查临时 `kin.set_base` | skills.py |

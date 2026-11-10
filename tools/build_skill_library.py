@@ -206,6 +206,19 @@ def nested_skills(rec, by_verb):
     return nested
 
 
+# The motion layers' skill catalog (docs/MOTION_ARCHITECTURE.md 2.3, layer 5): per verb that runs on
+# motion_skills.run_skill, its shape (the row of 2.3's table), its skill_plans builder (the job builds
+# with it: Skill.build), whether it chooses a park, the arm posture at the park / on the way (run_skill
+# gives them to the park search; a skill without a park states what its own plan does), and its Python
+# job (module:function).  Emitted into
+# skill_library/catalog.json as "motion_skills" (with the SkillNode of the same verb); loaded and checked
+# by zeno_skills.motion_skills.load.
+MOTION_SKILLS = [
+    {"name": "navigate", "shape": "drive", "template": "plan_navigate", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.navigate:navigate_job"},
+    {"name": "pick", "shape": "pick_place", "template": "plan_pick", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.pick:pick_job"},
+    {"name": "place", "shape": "pick_place", "template": "plan_place", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.place:place_job"},
+]
+
 COMPOSITE_NOTES = [
     "One call runs the whole chain of the selected path below; each nested step is a full Skill Contract "
     "(preconditions, policy, postconditions on GT state). It counts as a single Contract call.",
@@ -380,10 +393,16 @@ def build():
         "predicates": {n: {"args": [list(a) for a in p.args], "kind": p.kind, "meaning": p.doc,
                            "gt_sources": GT_SOURCES[n]} for n, p in sorted(REGISTRY.items())},
         "skills": skills_js})
+    by_verb = {r["verb"]: r["skill_id"] for r in records}
+    for m in MOTION_SKILLS:
+        if m["name"] not in by_verb:
+            errors.append(f"motion skill {m['name']}: no SkillNode with that verb")
     files[Path("skill_library/catalog.json")] = _json({
         "schema_version": 2, "kind": "skill_catalog",
         "skills": [{"skill_id": r["skill_id"], "verb": r["verb"], "noun": r["noun"], "contract_id": r["contract_id"],
-                    "definition": f"skills/{r['skill_id']}/skill.json"} for r in records]})
+                    "definition": f"skills/{r['skill_id']}/skill.json"} for r in records],
+        "motion_skills": {"schema_version": 1, "kind": "motion_skill_catalog",
+                          "skills": [{**m, "skill_id": by_verb.get(m["name"])} for m in MOTION_SKILLS]}})
     rel_rows = []
     for r in records:
         for rel in r["relations"]:

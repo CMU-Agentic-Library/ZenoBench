@@ -489,6 +489,11 @@ def apply_layout(cfg, spec, rng):
     current = {i: list(c["box"]) for i, c in enumerate(spec["clusters"])}
     order = list(range(len(spec["clusters"])))
     rng.shuffle(order)
+    # the largest first: on a top every cluster wants the strip along a free edge, and a small one placed
+    # first can leave no room in it for a long one (T14: the red book before the mug, notebook and pencil)
+    area = lambda i: (spec["clusters"][i]["box"][2] - spec["clusters"][i]["box"][0]) * \
+        (spec["clusters"][i]["box"][3] - spec["clusters"][i]["box"][1])  # noqa: E731
+    order.sort(key=lambda i: -area(i))
     for i in order:
         c = spec["clusters"][i]
         others = list(spec["static"].get(c["support"], [])) + \

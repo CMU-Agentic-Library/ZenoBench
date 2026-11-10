@@ -17,6 +17,7 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
+from ..skill_jobs.carry import carry_posture
 from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact
 from ..evaluator import quat_R
 from ..planner import find_park, find_park_set
@@ -35,7 +36,7 @@ def stow_load(rig, min_bottom_z=None):
     ``min_bottom_z`` keeps the load above a rim (a pour must not drop the cup
     from above the pot back to the low carry height)."""
     if rig.held is not None:
-        skills._carry_pose(rig, min_bottom_z=min_bottom_z)
+        carry_posture(rig, min_bottom_z=min_bottom_z, label="stow_load")
         skills.check_held(rig, "stow_load")
 
 

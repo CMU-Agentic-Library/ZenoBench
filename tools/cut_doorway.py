@@ -88,7 +88,6 @@ def main():
     from isaaclab.app import AppLauncher
     AppLauncher({"headless": True, "no_splash": True, "fast_shutdown": True})
     from pxr import Gf, Usd, UsdGeom, Vt
-    import trimesh
 
     stage = Usd.Stage.Open(str(SCENE))
     cache = UsdGeom.XformCache()
@@ -141,7 +140,21 @@ def main():
     if changed:
         stage.GetRootLayer().Save()
 
-    # wall segments for the planner: z = 0.5 section of every collision shell
+    segs = wall_segments(stage)
+    static = json.loads(STATIC.read_text())
+    print("WALLS", len(static["walls"]), "->", len(segs))
+    static["walls"] = segs
+    static["doorways"] = {k: v["box"] for k, v in DOORS.items()}
+    STATIC.write_text(json.dumps(static))
+    sys.stdout.flush()
+
+
+def wall_segments(stage):
+    """Wall segments for the planner: the z = 0.5 section of every room shell's collider,
+    [[x1, y1, x2, y2], ...] (pieces shorter than 2 cm dropped)."""
+    from pxr import Usd, UsdGeom
+    import trimesh
+    cache = UsdGeom.XformCache()
     segs = []
     for c in stage.GetPrimAtPath(BASE + "collisions").GetChildren():
         if "exterior" not in c.GetName():
@@ -163,12 +176,7 @@ def main():
                 for a, b in zip(q[:-1], q[1:]):
                     if np.linalg.norm(b - a) > 0.02:
                         segs.append([round(float(v), 3) for v in (*a, *b)])
-    static = json.loads(STATIC.read_text())
-    print("WALLS", len(static["walls"]), "->", len(segs))
-    static["walls"] = segs
-    static["doorways"] = {k: v["box"] for k, v in DOORS.items()}
-    STATIC.write_text(json.dumps(static))
-    sys.stdout.flush()
+    return segs
 
 
 if __name__ == "__main__":
