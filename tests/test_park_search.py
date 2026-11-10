@@ -60,7 +60,7 @@ def _state():
 
 def _problem(build, near=None, prefer=()):
     goal = np.array([1.0, 0.0, 0.8])
-    return PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),), build=build,
+    return PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),), build=build, relay="pick_reach",
                       arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9), near=near, prefer=prefer)
 
 
@@ -83,12 +83,19 @@ def test_the_ranking_ik_takes_the_relay_pose_into_each_parks_base_frame_without_
 def test_plans_are_built_in_rank_order_and_the_first_made_wins(monkeypatch):
     log, tried = [], []
 
-    def build(state, k, q_rank):
+    def build(state, k, prior):
         tried.append(state.base)
         return Failure("no straight", "pick_grasp") if len(tried) < 3 else Plan(())
     found, diag = _find(log, _problem(build), _state())
     assert found is not None and diag["built"] == 3 and diag["build_failed"] == {"pick_grasp: no straight": 2}
     assert found.pose == tried[-1] and log[-1][0] == "park_search"
+
+
+def test_the_ranking_solution_is_the_builds_prior_for_the_relay_decision(monkeypatch):
+    priors, rank = [], np.full(9, 0.25)
+    monkeypatch.setattr(PS, "rank_ik", lambda kin, pool, problem, q0: [rank] * len(pool))
+    found, _ = _find([], _problem(lambda s, k, prior: priors.append(prior) or Plan(())), _state())
+    assert found is not None and list(priors[0]) == ["pick_reach"] and priors[0]["pick_reach"] is rank
 
 
 def test_the_build_budget_ends_the_search(monkeypatch):
@@ -106,7 +113,7 @@ def test_the_cheapest_yaw_puts_the_goal_on_the_right_arms_side():
     # yaw = face + off puts the goal at bearing -off: the cost prefers off = +FACE_LEFT (goal on the
     # right, -y, where the right arm is; 89% of the 11-08 grasps were there)
     goal = np.array([2.0, 0.0, 0.8])
-    prob = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),), build=None)
+    prob = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),), build=None, relay="pick_reach")
     cost, x, y, yaw, k = PS.candidates(prob)[0]
     face = np.degrees(np.arctan2(goal[1] - y, goal[0] - x))
     bearing = (face - yaw + 180) % 360 - 180

@@ -10,15 +10,14 @@ from ..evaluator import quat_R
 from ..motion_state import Failure
 from ..park_search import Problem
 from ..rig import FREE_SPACE_KW
-from ..rig import HINT_REACH
-from ..rig import HINT_TURN
+from ..primitives import near_pose
 from ..rig import LEAVE_GAP
 from ..rig import SkillFailure
 from ..primitives import query
 from ..run import observe
-from ..skill_plans import FREE_HAND
+from ..skill_plans import FREE_HAND, PLACE_RELAY
 from ..sticky import rest_R
-from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, _turn, check_held, pick_approach)
+from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
 from .carry import _carry_bottom_z, carry_posture
 
 
@@ -76,12 +75,12 @@ def place_job(rig, args, state, skill=None):
 
     # every set-down pose is one goal of the park search (park_search.find_park), and a park is one
     # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
-    def build(st, k, q_rank):
+    def build(st, k, prior):
         p_k, R_k = leg_sets[k][0][0], leg_sets[k][0][1]
-        return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, q_seed=q_rank,
+        return plan_place(kin, st, p_k, R_k, open_w, R_k[:, 2], pick_approach(), rests, prior=prior,
                           step=APPROACH_STEP, obj=name)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
-                      near=search_near, label=f"place {name}")
+                      PLACE_RELAY, near=search_near, label=f"place {name}")
     ctx = {}
 
     def no_park(diag):
@@ -134,23 +133,25 @@ def _plan_place():
 def _place_ready(rig, name, s, p, R, open_w, plan, plan_place=None):
     """The place's plan to run (run.run) to set ``name`` down at (p, R), the pose re-measured after
     the drive, its builder for the rest, its hooks: a plan made for a set-down pose off it by more
-    than HINT_REACH / HINT_TURN (the load turned in the pinch on the way) is made again from here
-    first.  Between the segments the place's own steps: the reach checked, the release logged and
-    the load no longer held."""
+    than HINT_REACH / HINT_TURN (primitives.near_pose; the load turned in the pinch on the way) is made again from here
+    first, its decisions the prior (decide_ik: the planned q_p the first seed of the new one).
+    Between the segments the place's own steps: the reach checked, the release logged and the load
+    no longer held."""
     kin = rig.kin
     plan_place = plan_place or _plan_place()
     u_out, out_len, rests = R[:, 2], pick_approach(), (kin.rest, kin.drive)
     planned = None if plan is None else next((sg for sg in plan.segments if sg.name == "place_down"), None)
-    if planned is None or np.linalg.norm(planned.target[1] - p) > HINT_REACH or \
-            _turn(planned.target[2], R) > HINT_TURN:
+    if planned is None or not near_pose(planned.target[1], planned.target[2], p, R):
         rig.log("place_plan_again", obj=name, why="no plan" if planned is None else
                 f"the set-down pose moved {np.linalg.norm(planned.target[1] - p):.4f} m")
-        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, step=APPROACH_STEP, obj=name)
+        plan = plan_place(kin, observe(rig), p, R, open_w, u_out, out_len, rests, prior=plan, step=APPROACH_STEP,
+                          obj=name)
         if isinstance(plan, Failure):
             raise SkillFailure(f"place {name}: {plan.segment}: {plan.why}")
 
-    def rebuild(state, frm):
-        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, step=APPROACH_STEP, obj=name)
+    def rebuild(state, frm, prior):
+        return plan_place(kin, state, p, R, open_w, u_out, out_len, rests, start=frm, prior=prior,
+                          step=APPROACH_STEP, obj=name)
 
     def before_pull_out(rig):
         # let go, it may have settled against a finger: allowed on the pull-out, recorded -- a query

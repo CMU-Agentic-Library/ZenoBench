@@ -8,13 +8,13 @@ import numpy as np
 from ..motion_state import Failure, clearing
 from ..park_search import Problem
 from ..rig import Dropped
-from ..rig import HINT_REACH
-from ..rig import HINT_TURN
+from ..primitives import near_pose, turn
 from ..rig import SkillFailure
 from ..run import observe
 from ..sticky import SHUT
 from ..sticky import note_grasp
-from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REACH_TOL, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _turn, _watching, check_held, edge_held)
+from ..skill_plans import PICK_RELAY
+from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REACH_TOL, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
@@ -37,12 +37,12 @@ def _pick_problem(rig, name, cands, near, prefer=(), build_with=None):
         goals.append(((start, np.asarray(g["p"], float), np.asarray(g["p"], float) + [0, 0, PICK_LEAVE_CHECK]),
                       (start, np.asarray(g["R"], float)), PICK_CAND_COST * i))
 
-    def build(s, k, q_rank):
+    def build(s, k, prior):
         g = cands[k]
-        return build_with(kin, s, _grasp_of(name, g), *_grasp_approach(g), carry_goals, q_seed=q_rank,
+        return build_with(kin, s, _grasp_of(name, g), *_grasp_approach(g), carry_goals, prior=prior,
                           step=APPROACH_STEP)
 
-    problem = Problem(tuple(goals), build, near=near, prefer=tuple(prefer), label=f"pick {name}")
+    problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), label=f"pick {name}")
     return problem, carry_goals
 
 
@@ -99,26 +99,23 @@ def _plan_pick():
 
 def _pick_ready(rig, name, g, plan, carry_goals, out, plan_pick=None):
     """The pick's plan to run from the park, its builder for the rest, its hooks (run.run).  A grasp
-    re-read off the one planned for (HINT_REACH / HINT_TURN) has the plan made again from here
-    first.  Between the segments the pick's own steps: the object watched on the way in, the reach
-    checked, the pinch judged and the load registered as held (``out["tcp0"]``: the TCP where the
-    hand closed), the carry checked."""
+    re-read off the one planned for (primitives.near_pose) has the plan made again from here
+    first, its decisions kept as they still hold (the prior: decide_ik).  Between the segments the
+    pick's own steps: the object watched on the way in, the reach checked, the pinch judged and the
+    load registered as held (``out["tcp0"]``: the TCP where the hand closed), the carry checked."""
     kin = rig.kin
     plan_pick = plan_pick or _plan_pick()
     grasp = _grasp_of(name, g)
     u, L = _grasp_approach(g)
     planned = next((sg for sg in plan.segments if sg.name == "pick_grasp"), None) if plan is not None else None
-    if planned is None or np.linalg.norm(planned.target[1] - grasp["p"]) > HINT_REACH or \
-            _turn(planned.target[2], grasp["R"]) > HINT_TURN:
+    if planned is None or not near_pose(planned.target[1], planned.target[2], grasp["p"], grasp["R"]):
         rig.log("pick_plan_again", obj=name, why="no plan" if planned is None else "the grasp moved")
-        plan = plan_pick(kin, observe(rig), grasp, u, L, carry_goals, step=APPROACH_STEP)
+        plan = plan_pick(kin, observe(rig), grasp, u, L, carry_goals, prior=plan, step=APPROACH_STEP)
         if isinstance(plan, Failure):
             raise SkillFailure(f"pick {name}: {plan.segment}: {plan.why}")
-    reach = next((sg for sg in plan.segments if sg.name == "pick_reach" and sg.qs), None)
-    seed = None if reach is None else reach.q_end      # the plan's solution of the reach-in's start
 
-    def rebuild(state, frm):
-        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, q_seed=seed, step=APPROACH_STEP)
+    def rebuild(state, frm, prior):
+        return plan_pick(kin, state, grasp, u, L, carry_goals, start=frm, prior=prior, step=APPROACH_STEP)
 
     def after_grasp(rig):
         err = float(np.linalg.norm(kin.tcp(rig.q())[0] - grasp["p"]))
@@ -168,7 +165,7 @@ def _pick_ready(rig, name, g, plan, carry_goals, out, plan_pick=None):
             measured = kin.motion.held_in_tcp(kin, rig.q_cmd, name)
             rig.log("held_offset", obj=name, kind=g["kind"],
                     offset_m=round(float(np.linalg.norm(measured[:3, 3] - planned[:3, 3])), 4),
-                    turn_deg=round(math.degrees(_turn(planned[:3, :3], measured[:3, :3])), 2))
+                    turn_deg=round(math.degrees(turn(planned[:3, :3], measured[:3, :3])), 2))
         rig.caption = f"PICK {name}: lift"
 
     watch = lambda: _watching(rig, name)

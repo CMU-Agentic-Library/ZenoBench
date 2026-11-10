@@ -491,10 +491,6 @@ def _at_park(rig, x, y, yaw):
     return math.hypot(x - bx, y - by) <= AT_PARK_M and abs((yaw - byaw + 180) % 360 - 180) <= AT_PARK_DEG
 
 
-def _turn(Ra, Rb):
-    return math.acos(np.clip((np.trace(np.asarray(Ra).T @ np.asarray(Rb)) - 1) / 2, -1.0, 1.0))
-
-
 def _grasp_of(name, g):
     return {"name": name, "p": np.asarray(g["p"], float), "R": np.asarray(g["R"], float),
             "pre_open": float(g["pre_open"]), "kind": "edge" if g["kind"] == "thickness_pinch" else "pinch"}

@@ -1,6 +1,7 @@
 """The motion primitives (docs/MOTION_ARCHITECTURE.md section 5): each makes one segment of a plan
 from a State and a Spec, the same way for the park search and for the execution.
 
+    decide_ik        a contact pose's joint solution: the prior as it is, else solved near it
     free_leg         free-space motion to a joint goal, a pose or a goal set of poses
     straight         the collision-checked TCP straight from a given joint solution
     contact_extent   how far along u the robot (and its load) keeps touching the world
@@ -27,6 +28,8 @@ ON_LINE = 0.005           # m: a TCP this close to a straight (and on it before 
 ON_LINE_TURN = 0.01       # rad: ...and turned this little from the straight's rotation
 JOINT_GOAL_TOL = 0.01     # rad: a planned leg ending this close (every joint) to its joint goal ends at it
 DENSE = 0.01              # rad: joint waypoints of a joint-space leg about this far apart (Rig._dense)
+HINT_REACH = 0.001        # m: a decided solution whose TCP is this close to its pose still decides it (decide_ik)
+HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
 
 
 # ------------------------------------------------------------------------- goals of free_leg
@@ -148,6 +151,19 @@ def free_path(kin, state, spec, qs):
         return not spec.touch or kin.path_free_only(list(qs), spec.touch)
 
 
+def turn(Ra, Rb):
+    """rad between two rotations."""
+    c = (np.trace(np.asarray(Ra, float).T @ np.asarray(Rb, float)) - 1.0) / 2.0
+    return float(np.arccos(np.clip(c, -1.0, 1.0)))
+
+
+def near_pose(p_a, R_a, p_b, R_b):
+    """Two TCP poses the same one: within HINT_REACH and HINT_TURN (a decided solution still decides
+    its pose: decide_ik, Rig._goal; a target still the one planned for: _pick_ready, _place_ready)."""
+    return float(np.linalg.norm(np.asarray(p_a, float) - np.asarray(p_b, float))) <= HINT_REACH and \
+        turn(R_a, R_b) <= HINT_TURN
+
+
 def _why_straight(kin, q0, p, R, step):
     """Why the straight q0 -> (p, R) failed: it collides, or there is no IK along it."""
     scene, kin.scene = kin.scene, None
@@ -158,19 +174,54 @@ def _why_straight(kin, q0, p, R, step):
     return "it collides" if ok else "no IK along it"
 
 
+def _first(first, n):
+    """A set's goal decided before -- (index, the size of its set): seg.info["chosen"], ["goals"] --
+    as an index into a set of n goals: only while the set is as big as the one it was chosen from
+    (a set made from the state changes its layout with it: skills._carry_goals has 2 or 3 heights
+    per spot), else None, chosen again."""
+    if first is None:
+        return None
+    i, size = int(first[0]), int(first[1])
+    return i if size == n and 0 <= i < n else None
+
+
 # ------------------------------------------------------------------------- primitives
-def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
+def decide_ik(kin, state, spec, p, R, prior, seeds=()):
+    """The joint solution of a contact pose (p, R) -- the decision that binds the segments around it
+    (docs 5.7, 8.1): ``prior`` itself while its TCP is within HINT_REACH / HINT_TURN of (p, R) and it
+    is free by ``spec`` in ``state`` (a rebuild stays on the branch the plan was made on, and out of
+    the planner's noise: a re-solve 0.6 mrad off a solution, its waist 1 mrad inside the limit,
+    planned 1 time in 4 where the solution itself planned 4 in 4 -- T04, Rig._goal); else solved in
+    the collision model, ``prior`` the first seed, ``seeds`` after it -- Motion.ik's global choice,
+    not a local re-solve on the prior's branch (Rig._goal's): nearness to the prior, the joint-limit
+    margin and IK_MANIP_W's manipulability, so it may land up to ~0.3 rad off the prior (T20, docs
+    9.3 step 2.2).  (q, "prior" | "solved"), or None: no collision-free solution (the caller says
+    which pose in its Failure)."""
+    p, R = np.asarray(p, float), np.asarray(R, float)
+    prior = None if prior is None else np.asarray(prior, float)
+    with query(kin, state, spec):
+        if prior is not None and near_pose(*kin.tcp(prior), p, R) and kin.free(prior):
+            return prior.copy(), "prior"
+        q, ok = kin.ik_global(p, R, seeds=([] if prior is None else [prior]) + [np.asarray(s, float) for s in seeds])
+    return (np.asarray(q, float), "solved") if ok else None
+
+
+def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
     """Free-space motion of ``kin``'s arm from q_from (default the state's) to ``goal``.
     Joint: the straight joint move when it is free (and keeps a held load level with
     spec.hold_tilt), else a trajectory; a tilt-held trajectory ends at the goal's pose, so it must
     end at the goal itself or a free, level joint move must join it there.  Pose: the straight TCP
     line, else to q_hint (its solution) as a Joint is, else (no q_hint) the planner to the pose.
     PoseSet: the cheapest reachable goal (batched IK), then as a Pose with its solution.  JointSet:
-    the first goal free where it stands, then as a Joint."""
+    the first goal free where it stands, then as a Joint.  ``first``: a set's goal decided before,
+    (info["chosen"], info["goals"]) of a plan's segment -- that one while its set is the same size
+    (_first) and it is reachable (PoseSet) / free (JointSet), else chosen again."""
     q0 = np.asarray(state.q(kin.side) if q_from is None else q_from, float)
     with query(kin, state, spec):
         if isinstance(goal, JointSet):
-            i = next((i for i, g in enumerate(goal.goals) if kin.free(np.asarray(g, float))), None)
+            f = _first(first, len(goal.goals))
+            order = sorted(range(len(goal.goals)), key=lambda j: j != f)
+            i = next((i for i in order if kin.free(np.asarray(goal.goals[i], float))), None)
             if i is None:
                 return Failure(f"every goal of {len(goal.goals)} collides", name)
             seg = free_leg(kin, state, spec, Joint(np.asarray(goal.goals[i], float)), name, step, q0)
@@ -186,6 +237,9 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None):
             score = np.array([np.inf if q is None else float(np.max(np.abs(q - ref) * w)) + c
                               for q, c in zip(sols, cost)])
             i = int(np.argmin(score))
+            f = _first(first, len(sols))
+            if f is not None and sols[f] is not None:
+                i = f
             if not np.isfinite(score[i]):
                 return Failure(f"no goal of {len(goal.goals)} reachable", name)
             p, R = goal.goals[i]

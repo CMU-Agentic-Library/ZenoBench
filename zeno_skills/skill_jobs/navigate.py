@@ -54,5 +54,6 @@ def navigate_job(rig, args, state, skill=None):
                 check_left_held(r, "left_carry")
         hooks = {"carry_in": {"after": lambda r: check_held(r, "carry_in", open_hand=False)},
                  label: {"before": before_drive, "after": after_drive}}
-        return plan, (lambda st, frm: build(st, frm)), hooks
+        # run's rebuild(state, segment name, prior): navigate decides nothing to keep (its goal is given)
+        return plan, (lambda st, frm, prior=None: build(st, frm)), hooks
     return Job(ready=ready)

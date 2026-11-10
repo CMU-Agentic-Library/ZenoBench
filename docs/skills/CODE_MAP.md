@@ -163,12 +163,12 @@ run_skill
 ```
 skill_jobs/pick.py  pick_job
   候选抓取（annotation）；门后的（_behind_door：腔体里、inside_ 支撑面上）朝开口排序，prefer = _front_of（门自由边前）
-  _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, near, prefer)
+  _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, PICK_RELAY, near, prefer)
      build = skill.build（plan_pick）(state_at_park, 候选, _carry_goal_set)：pick_open（State 手张开）→ pick_reach（free_leg）→ pick_grasp
              （straight）→ pick_close（holding）→ pick_lift（contact_extent off_support）→ carry_in
              （free_leg PoseSet，持物碰撞球放大 HELD_POSE_MARGIN）
-  ready：按 idx 重算同一个候选，note_grasp；_pick_ready：抓取位姿偏 HINT_REACH 以上就 plan_pick(observe(rig)) 重做，
-         rebuild = plan_pick(start=段名)
+  ready：按 idx 重算同一个候选，note_grasp；_pick_ready：抓取位姿偏 HINT_REACH 以上就 plan_pick(observe(rig), prior=找到的计划) 重做，
+         rebuild = plan_pick(start=段名, prior=run 手上的计划)
      hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后到位检查（被挡 → leave + SkillFailure）；
             pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
   done：_pick_judged（拿住了没有）
@@ -186,12 +186,12 @@ skill_jobs/place.py  place_job
   carry_posture(min_bottom_z)：搬运判据满足就不动，不满足就规划到搬运目标集合，做不出来失败；
                                min_bottom_z 是"能抬就抬"（skill_jobs/carry.py）
   目标集合：空位 × 持法（吊着 / 摆正） × 手腕转角 → Problem
-     build = skill.build（plan_place）(state_at_park, 放下位姿, q_seed, obj)：place_reach（set_down_length → free_leg，持物先关节规划）
+     build = skill.build（plan_place）(state_at_park, 放下位姿, prior, obj)：place_reach（q_p 由 decide_ik 定 → set_down_length → free_leg，持物先关节规划）
              → place_down（straight）→ place_release（released，手张开，手指可碰 obj）→ place_pull_out（straight，Spec.touch obj）
              → tuck（free_leg JointSet{收起, 下垂}）
   travel = {min_bottom_z, raise_load: False}：开过去时 navigate 按同一套判据复核，不再试抬高
-  ready：按指令 TCP 重新测量手持位姿（和搜索一样）；_place_ready：放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig)) 重做，
-         rebuild = plan_place(start=段名)
+  ready：按指令 TCP 重新测量手持位姿（和搜索一样）；_place_ready：放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig), prior=找到的计划) 重做，
+         rebuild = plan_place(start=段名, prior=run 手上的计划)
      hooks：place_down 后到位检查、check_held；place_release 后 rig.held = None；
             place_pull_out 前手指在物体里就记 place_pull_out_touching
   done：_place_result（在支撑面上 / 托盘里、离目标点多远）

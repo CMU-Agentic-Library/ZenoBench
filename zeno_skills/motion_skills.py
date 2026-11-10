@@ -51,7 +51,8 @@ class Job:
     found:    (Found) -> None, after the search (logs, captions)
     travel:   navigate's arguments for the drive to the park (min_bottom_z)
     ready:    (Found | None) -> (plan, build, hooks): the plan to run, its builder for the rest
-              (build(state, segment name) -> Plan | Failure, or None), the hooks
+              (build(state, segment name, prior) -> Plan | Failure, run.run's rebuild -- prior the
+              plan as it stands, its decisions; or None), the hooks
     failed:   (exception from run) -> the exception to raise instead, or None (raise it as it is)
     done:     () -> the skill's result"""
     problem: object = None
@@ -122,9 +123,10 @@ def run_skill(rig, skill, args):
             run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
         elif not _same_pose(rig.base_pose(), found.pose):
             # close enough not to drive, but the plan is the one for found.pose: the same build where
-            # the base stands (the joint waypoints of another base put the hand up to ~3 cm off)
+            # the base stands (the joint waypoints of another base put the hand up to ~3 cm off), the
+            # found plan's decisions its prior (decide_ik: off its pose here, the first seed of a solve)
             here = tuple(rig.base_pose())
-            plan = problem.build(observe(rig), found.k, found.q_rank)
+            plan = problem.build(observe(rig), found.k, found.plan)
             rig.log("park_here", target=problem.label, park=[round(v, 3) for v in found.pose],
                     here=[round(v, 3) for v in here], built=not isinstance(plan, Failure))
             if isinstance(plan, Failure):

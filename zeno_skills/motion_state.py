@@ -124,9 +124,22 @@ class Failure:
 
 @dataclass(frozen=True)
 class Plan:
+    """``decisions``: what the builder decided that binds its segments together (docs 4.3, 8.1),
+    {name: value} -- a contact pose's joint solution as the plan reaches it (pick_reach: the reach
+    leg's end; place_reach: the set-down's end), the chosen goal of a goal set as (index, set size)
+    (carry_in, tuck).  A rebuild gets them back as its prior (decisions_of)."""
     segments: tuple
     goal: int = 0                    # which goal of the skill's goal set it serves
     info: Mapping = field(default_factory=dict)   # a builder's time per stage (stage_s)
+    decisions: Mapping = field(default_factory=dict)
+
+
+def decisions_of(prior):
+    """A builder's prior as {decision: value}: a Plan's decisions (a rebuild), a mapping as it is
+    (the park search's ranking solution), None: none."""
+    if prior is None:
+        return {}
+    return dict(prior.decisions if isinstance(prior, Plan) else prior)
 
 
 # --------------------------------------------------------------------- new states from a state

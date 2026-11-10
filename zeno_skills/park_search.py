@@ -45,8 +45,14 @@ class Problem:
     """What a skill asks of a park search.
     goals:  per goal of the goal set, (TCP points the arm must reach (prefilter), the relay pose
             (p, R) the ranking IK solves, cost in m).
-    build:  build(state_at_park, k, q_rank) -> Plan | Failure, the skill's plan builder; q_rank
-            the ranking's kinematic solution of goal k's relay pose (a seed, never a check).
+    build:  build(state_at_park, k, prior) -> Plan | Failure, the skill's plan builder; prior
+            {relay: the ranking's kinematic solution of goal k's relay pose} here (decide_ik's
+            prior: kept where it is free, else a seed -- never a check), a Plan where run_skill
+            builds again at the base as it stands (park_here): a builder reads it through
+            motion_state.decisions_of.
+    relay:  the decision of the builder the relay pose stands for (skill_plans.PICK_RELAY,
+            PLACE_RELAY) -- required: the ranking always solves a relay pose, and a builder reads its
+            solution by this name only.
     arrive: arrive(x, y, yaw) -> the arm posture at that park (what the drive arrives in, or the
             posture now where the base will not move).
     near:   (x, y) or (x, y, yaw): parks cost NEAR_COST per m away from it; with a yaw it is the
@@ -56,6 +62,7 @@ class Problem:
     arrive / travel come from the skill's catalog entry (motion_skills.run_skill sets them)."""
     goals: tuple
     build: Callable
+    relay: str
     arrive: Callable | None = None
     travel: np.ndarray | None = None
     near: tuple | None = None
@@ -65,12 +72,12 @@ class Problem:
 
 @dataclass
 class Found:
+    """The park, the goal k, the plan made there (its decisions: the build's prior from then on)."""
     x: float
     y: float
     yaw: float
     k: int
     plan: object
-    q_rank: np.ndarray | None = None
     diag: dict = field(default_factory=dict)
 
     @property
@@ -222,7 +229,7 @@ def find_park(kin, world, problem, state, log, base=None):
         (cost, x, y, yaw, k), q_rank = ranked[i]
         diag["built"] += 1
         s = with_arm(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), kin.side)
-        plan = problem.build(s, k, q_rank)
+        plan = problem.build(s, k, {problem.relay: q_rank})
         for st_, sec in getattr(plan, "info", {}).get("stage_s", {}).items():     # where the building time goes
             diag["stage_s"][st_] = round(diag["stage_s"].get(st_, 0.0) + sec, 2)
         if isinstance(plan, Failure):
@@ -232,7 +239,7 @@ def find_park(kin, world, problem, state, log, base=None):
         if not is_here(ranked[i][0]) and base is not None and not base.drivable(travel, (x, y, yaw)):
             diag["no_path"] += 1
             continue
-        found = Found(x, y, yaw, k, plan, q_rank)
+        found = Found(x, y, yaw, k, plan)
         break
     diag["seconds"] = round(time.time() - t0, 2)
     diag["build_seconds"] = round(time.time() - t_build, 2)

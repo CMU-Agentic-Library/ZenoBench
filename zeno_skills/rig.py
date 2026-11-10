@@ -16,13 +16,11 @@ from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY,
 from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below the layers; re-exported here)
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
-from .primitives import LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length
+from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
 RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
-HINT_REACH = 0.001        # m: a q_hint whose TCP is this close to a planned leg's goal is its joint goal as it is
-HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
 # A follow ends when the arm has arrived or has stopped, not at a joint tolerance: 0.01 rad of one
 # joint is 8 mm at the hand 0.8 m out, and the reach checks after it (skills.PICK_REACH_TOL, 5 mm)
 # then took a hand still closing in for a blocked one (T06 s10 6.8 mm, T10 s11 7.9 mm, the mug of
@@ -829,9 +827,7 @@ class Rig:
             q, ok = self.kin.ik_global(p, R, seeds=[self.q_cmd])
             return q if ok else None
         q_hint = np.asarray(q_hint, float)
-        ph, Rh = self.kin.tcp(q_hint)
-        turn = math.acos(np.clip((np.trace(np.asarray(Rh).T @ np.asarray(R)) - 1) / 2, -1.0, 1.0))
-        if np.linalg.norm(ph - np.asarray(p, float)) <= HINT_REACH and turn <= HINT_TURN and self.kin.free(q_hint):
+        if near_pose(*self.kin.tcp(q_hint), p, R) and self.kin.free(q_hint):    # decide_ik's step 1
             return q_hint
         q, ok = self.kin.ik(p, R, q_hint)
         return q if ok and self.kin.free(q) else None

@@ -165,3 +165,17 @@ def test_a_higher_ride_asked_is_taken_when_reachable_else_the_load_rides_as_it_i
     k.ik = [None]                                            # out of reach: no failure, no motion
     plan = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
     assert [s.kind for s in plan.segments] == ["drive", "anchor"] and plan.info["carry"].startswith("kept: below")
+
+
+def test_navigates_rebuild_takes_the_prior_run_hands_it():
+    # run.run calls rebuild(state, segment name, prior) (docs 8): navigate's must take it too
+    from zeno_skills.skill_jobs.navigate import navigate_job
+    built = []
+
+    def plan_nav(kin, left_kin, st, pose, base, carry=None, arrive=None, label=None, start="arm"):
+        built.append(start)
+        return Plan(())
+    rig = SimpleNamespace(held=None, left_held=None, kin=None, left_kin=None, log=lambda *a, **k: None)
+    job = navigate_job(rig, {"pose": (1.0, 2.0, 90.0)}, _state(), SimpleNamespace(build=plan_nav))
+    plan, rebuild, hooks = job.ready(None)
+    assert isinstance(rebuild(_state(), "tuck", plan), Plan) and built == ["arm", "arm"]

@@ -14,8 +14,8 @@ import numpy as np
 
 from ..clearance import FREE, LEAVE_CONTACT
 from ..motion_state import Failure, Plan, Segment, Spec, with_width
-from ..primitives import (ON_LINE, ON_LINE_TURN, Pose, contact_extent, contact_segment, free_leg, in_world, near_world,
-                          off_support, query)
+from ..primitives import (ON_LINE, ON_LINE_TURN, Pose, contact_extent, contact_segment, decide_ik, free_leg, in_world,
+                          near_world, off_support, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
@@ -34,26 +34,30 @@ def _on_line(kin, q, s, R, u, L):
     p_q, R_q = kin.tcp(np.asarray(q, float))
     d = p_q - s
     along = float(d @ u)
-    turn = float(np.arccos(np.clip((np.trace(np.asarray(R, float).T @ R_q) - 1.0) / 2.0, -1.0, 1.0)))
     return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE and \
-        turn < ON_LINE_TURN
+        turn(R, R_q) < ON_LINE_TURN
 
 
-def _reach(kin, state, spec, p, R, u, L, q_from, seed, name, step):
+def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=None):
     """The free leg to the start of the straight of length L along u into (p, R): none when the
-    TCP is on it already; else to its start, a pose whose solution is solved here in the collision
-    model of ``state`` / ``spec`` (Kinematics.ik_global; ``seed`` -- the park search's ranking IK,
-    the straight's start up from the set-down pose -- only the first of its seeds, never the goal
-    as it is: those are kinematic, and a solution in collision made the leg fail where another
-    would do).  No collision-free solution: Failure."""
+    TCP is on it already; else to its start, a pose whose solution decide_ik decides in the collision
+    model of ``state`` / ``spec`` -- ``prior`` (the plan's own decision on a rebuild, the park
+    search's ranking IK, the straight's start up from the set-down pose) as it is while it still
+    reaches the start free, else the first seed of a solve (a kinematic solution in collision made
+    the leg fail where another would do).  That solution is the leg's joint goal only where the TCP
+    straight to the start fails (free_leg, Pose): a straight ends on its own solution, the one the
+    rest of the plan is built from -- the leg's q_end, what a plan records as its decision, not the
+    solution decided here.  Segment -- info["decided"] {``decision`` (default ``name``): how
+    decide_ik decided, "prior" | "solved"} -- or Failure."""
     s = p - L * u
     if _on_line(kin, q_from, s, R, u, L):
         return Segment(name, spec, q_from, (), info={"how": "on the straight"})
-    with query(kin, state, spec):
-        q_s, ok = kin.ik_global(s, R, seeds=([np.asarray(seed, float)] if seed is not None else []) + [q_from])
-    if not ok:
+    d = decide_ik(kin, state, spec, s, R, prior, seeds=(q_from,))
+    if d is None:
         return Failure("no collision-free IK at the straight's start", name)
-    return free_leg(kin, state, spec, Pose(s, R, np.asarray(q_s, float)), name, step=step, q_from=q_from)
+    q_s, how = d
+    seg = free_leg(kin, state, spec, Pose(s, R, q_s), name, step=step, q_from=q_from)
+    return seg if isinstance(seg, Failure) else _move(seg, decided={decision or name: how})
 
 
 def _move(seg, **info):

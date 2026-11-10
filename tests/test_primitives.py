@@ -200,3 +200,68 @@ def test_exit_length_is_the_one_measure_rig_uses():
 @pytest.mark.parametrize("touching", [P.near_world, P.in_world, P.off_support])
 def test_touching_predicates_take_kin_and_the_start(touching):
     assert callable(touching(FakeKin(), np.zeros(9)))
+
+
+# ------------------------------------------------------------------- decisions (docs 5.7, 8.1)
+class IKKin(FakeKin):
+    """FakeKin with a collision-aware IK (kinematic with no scene): its first seed with the TCP moved
+    to p; none into the wall.  (test_skill_plans' FakeKin.)"""
+
+    def ik_global(self, p, R, seeds=None):
+        self.calls.append(("ik_global", len(seeds or [])))
+        q = np.asarray((seeds or [np.zeros(9)])[0], float).copy()
+        q[:3] = p
+        return q, not (self.scene is not None and self.wall(np.asarray(p, float)))
+
+
+class TurnKin(IKKin):
+    """IKKin with the TCP turned about z by q[3]."""
+
+    def tcp(self, q):
+        q = np.asarray(q, float)
+        c, s = np.cos(q[3]), np.sin(q[3])
+        return q[:3].copy(), np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
+
+
+def test_a_decided_solution_still_reaching_its_pose_free_is_kept_as_it_is():
+    kin = IKKin()
+    prior = np.r_[0.5, 0.0, 0.2, np.full(6, 0.3)]
+    q, how = P.decide_ik(kin, _state(), Spec(), prior[:3], np.eye(3), prior)
+    assert how == "prior" and np.array_equal(q, prior) and not kin.calls
+
+
+def test_a_decided_solution_off_its_pose_seeds_the_solve_and_none_free_fails():
+    kin = IKKin()
+    prior = np.r_[0.5, 0.0, 0.2, np.full(6, 0.3)]
+    off = prior[:3] + [0.0, 0.0, 2 * P.HINT_REACH]               # the base stopped off its park
+    q, how = P.decide_ik(kin, _state(), Spec(), off, np.eye(3), prior, seeds=(np.zeros(9),))
+    assert how == "solved" and kin.calls == [("ik_global", 2)]   # the prior first, then the given seeds
+    assert np.allclose(q[:3], off) and np.allclose(q[3:], 0.3)   # solved from the prior (the fake's IK keeps its seed)
+    kin = IKKin(wall=lambda p: p[2] < 0.25)                       # the pose itself in the world now
+    assert P.decide_ik(kin, _state(), Spec(), prior[:3], np.eye(3), prior) is None
+
+
+def test_a_decided_solution_turned_off_its_pose_is_solved_again():
+    prior = np.r_[0.5, 0.0, 0.2, 0.5 * P.HINT_TURN, np.zeros(5)]
+    assert P.decide_ik(TurnKin(), _state(), Spec(), prior[:3], np.eye(3), prior)[1] == "prior"
+    prior[3] = 2 * P.HINT_TURN                                    # at its point, turned 0.02 rad off
+    assert P.decide_ik(TurnKin(), _state(), Spec(), prior[:3], np.eye(3), prior)[1] == "solved"
+    assert not P.near_pose(prior[:3], np.eye(3), prior[:3] + [0.0, 0.0, 2 * P.HINT_REACH], np.eye(3))
+
+
+def test_a_goal_set_keeps_the_goal_decided_before_while_it_can():
+    a, b = np.r_[0.3, 0.0, 0.4, np.zeros(6)], np.r_[0.6, 0.0, 0.4, np.zeros(6)]
+    kin = FakeKin(ik=[a, b])
+    st = _state(np.r_[0.3, 0.0, 0.39, np.zeros(6)])
+    goals = P.PoseSet(((a[:3], np.eye(3)), (b[:3], np.eye(3))))
+    assert P.free_leg(kin, st, Spec(), goals, "carry_in").info["chosen"] == 0           # the cheaper one
+    assert P.free_leg(kin, st, Spec(), goals, "carry_in", first=(1, 2)).info["chosen"] == 1  # the one decided
+    # decided in a set of another size (a set made from the state laid out otherwise): chosen again
+    assert P.free_leg(kin, st, Spec(), goals, "carry_in", first=(1, 3)).info["chosen"] == 0
+    kin = FakeKin(ik=[a, None])                                   # the decided one has no IK now: chosen again
+    assert P.free_leg(kin, st, Spec(), goals, "carry_in", first=(1, 2)).info["chosen"] == 0
+    kin = FakeKin()
+    rest = P.JointSet((np.zeros(9), np.full(9, 0.1)))
+    assert P.free_leg(kin, st, Spec(), rest, "tuck", first=(1, 2)).info["chosen"] == 1
+    kin = FakeKin(wall=lambda p: p[0] > 0.05)                    # the decided one collides now: chosen again
+    assert P.free_leg(kin, st, Spec(), rest, "tuck", first=(1, 2)).info["chosen"] == 0

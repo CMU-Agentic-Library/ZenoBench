@@ -7,6 +7,7 @@ in ``observe``, the writes in ``execute``."""
 from __future__ import annotations
 
 from contextlib import ExitStack
+from dataclasses import replace
 
 import numpy as np
 
@@ -103,6 +104,12 @@ def _hz():
     return PHYSICS_HZ
 
 
+def _how_decided(seg):
+    """For the segment log: how the decisions a segment was built on were made, info["decided"]
+    {decision: "prior" kept | "solved" again} (decide_ik; the builder names them), if any."""
+    return {"decided": dict(seg.info["decided"])} if seg.info.get("decided") else {}
+
+
 def run_clear(act, clear, exc):
     """A skill's failure exit (docs 8.6), when ``exc`` asks for one (motion_state.clearing): the
     plan ``clear(state, exc.clear)`` makes from the State now (skill_plans.plan_clear: the hand
@@ -123,8 +130,9 @@ def run_clear(act, clear, exc):
 def run(act, plan, rebuild, hooks=None, clear=None):
     """Run ``plan`` (motion_state.Plan): before each segment the State is read (observe) and the
     segment checked (holds); one that does not hold has the rest of the plan built again from here
-    by ``rebuild(state, segment name) -> Plan | Failure`` -- the skill's builder, the one the park
-    search used -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).
+    by ``rebuild(state, segment name, prior) -> Plan | Failure`` -- the skill's builder, the one the
+    park search used; ``prior`` the plan as it stands, its decisions kept where they still hold
+    (decide_ik) -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).
     ``act``: the motion_state.Actuator (the rig).  ``rebuild`` None: a segment that does not hold
     fails the skill (a plan nobody can build again, docs 8.8).
     ``hooks``: {segment name: {"around": context factory, "before": fn(act), "after": fn(act)}},
@@ -141,6 +149,7 @@ def run(act, plan, rebuild, hooks=None, clear=None):
 
 def _run(act, plan, rebuild, hooks):
     segs, done, i = list(plan.segments), [], 0
+    decisions = dict(plan.decisions)
     while i < len(segs):
         seg = segs[i]
         state = observe(act)
@@ -148,16 +157,21 @@ def _run(act, plan, rebuild, hooks):
         if why is not None:
             if rebuild is None:
                 raise SkillFailure(f"{seg.name}: {why}")
-            new = rebuild(state, seg.name)
-            act.log("segment", target=seg.name, reused=False, why=why,
-                    rebuilt=None if isinstance(new, Failure) else [s.name for s in new.segments])
+            # the plan as it stands: a copy, the decisions as of now (run's own dict goes on changing)
+            name = seg.name
+            new = rebuild(state, name, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
             if isinstance(new, Failure):
-                raise SkillFailure(f"{seg.name}: {why}; built again from here: {new.why}")
+                act.log("segment", target=name, reused=False, why=why, rebuilt=None)
+                raise SkillFailure(f"{name}: {why}; built again from here: {new.why}")
             segs = segs[:i] + list(new.segments)
+            decisions.update(new.decisions)
             seg = segs[i]
+            # the rebuilt segment run now has no event of its own: how it was decided goes here
+            act.log("segment", target=name, reused=False, why=why, rebuilt=[s.name for s in new.segments],
+                    **_how_decided(seg))
         else:
             act.log("segment", target=seg.name, reused=True, kind=seg.kind, waypoints=len(seg.qs),
-                    how=seg.info.get("how"))
+                    how=seg.info.get("how"), **_how_decided(seg))
         h = hooks.get(seg.name, {})
         if "before" in h:
             h["before"](act)

@@ -40,7 +40,7 @@ def test_the_catalog_postures_are_the_park_searchs(monkeypatch):
 
     def job(rig_, args, state, skill):
         assert skill.build is skill_plans.plan_pick
-        return Job(problem=Problem(goals=(), build=lambda *a: plan), ready=lambda f: (plan, None, {}))
+        return Job(problem=Problem(goals=(), build=lambda *a: plan, relay="pick_reach"), ready=lambda f: (plan, None, {}))
 
     def find_park(kin, world, problem, state, log, base=None):
         seen["travel"], seen["arrive_far"] = problem.travel, problem.arrive(5.0, 5.0, 0.0)
@@ -63,19 +63,21 @@ def test_a_park_too_close_to_drive_to_has_its_plan_made_again_where_the_base_sta
     rig = _rig(base=(0.005, 0.0, 0.5))                                 # 5 mm, half a degree off the park
     old = Plan((Segment("old", Spec(), rig.q_cmd, kind="anchor"),))
     new = Plan((Segment("new", Spec(), rig.q_cmd, kind="anchor"),))
-    built, ran = [], []
+    built, ran, priors = [], [], []
 
     def job(rig_, args, state, skill):
-        def build(s, k, q_rank):
+        def build(s, k, prior):
             built.append(tuple(s.base))
+            priors.append(prior)
             return new
-        return Job(problem=Problem(goals=(), build=build), ready=lambda f: (f.plan, None, {}))
+        return Job(problem=Problem(goals=(), build=build, relay="pick_reach"), ready=lambda f: (f.plan, None, {}))
     monkeypatch.setattr(MS, "find_park", lambda *a, **k: (Found(0.0, 0.0, 0.0, 0, old), {}))
     monkeypatch.setattr(MS, "observe", _state)
     monkeypatch.setattr(MS, "run", lambda rig_, plan, build, hooks, clear=None: ran.append(plan))
     monkeypatch.setattr("zeno_skills.skill_jobs.base.RigBase", lambda rig: None)
     MS.run_skill(rig, _skill(job), {})
     assert built == [(0.005, 0.0, 0.5)] and ran == [new]
+    assert priors == [old]                                             # the found plan's decisions: the prior
 
 
 def test_a_pick_behind_a_door_is_seeded_in_front_of_its_free_edge_from_the_annotation():
