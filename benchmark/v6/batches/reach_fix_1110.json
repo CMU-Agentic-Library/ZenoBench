@@ -1,0 +1,74 @@
+[
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "variant": "copy_the_setting__plate_bowl_mug_left",
+  "route": "v6_copy_the_setting__plate_bowl_mug_left",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "variant": "enough_for_dinner__two_short",
+  "route": "v6_enough_for_dinner__two_short",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "cup_elsewhere",
+  "route": "v6_cup_elsewhere",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 11,
+  "variant": "cups_for_two__none_one_inside",
+  "route": "v6_cups_for_two__none_one_inside",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "pot_in_use__in_use",
+  "route": "v6_pot_in_use__in_use",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "lid_on_spoon_away",
+  "route": "hard_uncover_search_spoon",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "variant": "lid_on_spoon_away__alt_dining_table_2",
+  "route": "v6_lid_on_spoon_away__alt_dining_table_2",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 10,
+  "variant": "bear_to_bed",
+  "route": "v6_bear_to_bed",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "variant": "crowded_use_another__loose",
+  "route": "v6_crowded_use_another__loose",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ }
+]

@@ -12680,8 +12680,8 @@
       "wooden_block_b": {
        "support": "kitchen_island/top",
        "xy": [
-        7.45,
-        1.8
+        7.44,
+        1.835
        ],
        "yaw_deg": 0.0
       },
@@ -12798,8 +12798,8 @@
         "box": [
          6.754,
          1.5669,
-         7.47,
-         1.82
+         7.46,
+         1.855
         ],
         "dx": [
          -0.2,
@@ -12807,7 +12807,7 @@
         ],
         "dy": [
          -0.04,
-         0.15
+         0.12
         ],
         "pick": [
          "wooden_block_b"
@@ -41225,8 +41225,8 @@
       "breakfast_spoon": {
        "support": "kitchen_island/top",
        "xy": [
-        7.4635,
-        1.6967
+        7.46,
+        1.675
        ],
        "yaw_deg": 130.74
       }
@@ -41360,7 +41360,7 @@
         "support": "kitchen_island/top",
         "box": [
          7.125,
-         1.606,
+         1.5929,
          7.814,
          1.975
         ],
@@ -59121,6 +59121,14 @@
         -0.479
        ],
        "yaw_deg": 61.42
+      },
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.324,
+        8.429
+       ],
+       "yaw_deg": 0.0
       }
      },
      "conditions": [
@@ -59289,6 +59297,29 @@
        },
        {
         "names": [
+         "plate_counter_a"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.448,
+         8.3049,
+         -0.2,
+         8.5531
+        ],
+        "dx": [
+         -0.06,
+         0.44
+        ],
+        "dy": [
+         -1.32,
+         0.87
+        ],
+        "pick": [
+         "plate_counter_a"
+        ]
+       },
+       {
+        "names": [
          "cup"
         ],
         "support": "tv_stand_2/top",
@@ -59331,7 +59362,28 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
        "bookcase_2/top": [
         [
@@ -59356,6 +59408,32 @@
          -0.619,
          0.705,
          1.295,
+         0.2
+        ]
+       ],
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
          0.2
         ]
        ],
@@ -66641,6 +66719,14 @@
         0.36
        ],
        "yaw_deg": 0.0
+      },
+      "bowl_side_table": {
+       "support": "dining_table_1/top",
+       "xy": [
+        -8.381,
+        7.449
+       ],
+       "yaw_deg": 0.0
       }
      },
      "remove": [
@@ -66692,9 +66778,83 @@
       "derived_from": "at_island"
      },
      "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
+      "clusters": [
+       {
+        "names": [
+         "bowl_side_table"
+        ],
+        "support": "dining_table_1/top",
+        "box": [
+         -8.4701,
+         7.3611,
+         -8.2919,
+         7.5369
+        ],
+        "dx": [
+         -0.06,
+         0.79
+        ],
+        "dy": [
+         -0.48,
+         1.3
+        ],
+        "pick": [
+         "bowl_side_table"
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_1/top": [
+        [
+         -7.8993,
+         8.1799,
+         -7.7606,
+         8.3197
+        ],
+        [
+         -8.3347,
+         8.0461,
+         -8.1681,
+         8.1947
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_1/top": [
+        [
+         0,
+         1,
+         -7.488,
+         7.018,
+         8.605,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.541,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.541,
+         -7.488,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.541,
+         -7.588,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -83453,9 +83613,41 @@
       "factor": "the seed's layout only",
       "derived_from": "bare"
      },
-     "move": {},
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.384,
+        8.209
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "cup_counter_b"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4378,
+         8.1542,
+         -0.3302,
+         8.2638
+        ],
+        "dx": [
+         -0.07,
+         0.57
+        ],
+        "dy": [
+         -1.17,
+         1.16
+        ],
+        "pick": [
+         "cup_counter_b"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -83480,8 +83672,55 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -84176,7 +84415,16 @@
       "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
       "derived_from": "bare"
      },
-     "move": {},
+     "move": {
+      "mug_shelf": {
+       "support": "large_shelf_6/top",
+       "xy": [
+        5.09,
+        8.545
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "layout": {
       "clusters": [
        {
@@ -84200,6 +84448,29 @@
         ],
         "pick": [
          "guest_juice"
+        ]
+       },
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "large_shelf_6/top",
+        "box": [
+         5.0437,
+         8.4817,
+         5.1363,
+         8.6083
+        ],
+        "dx": [
+         -0.08,
+         0.14
+        ],
+        "dy": [
+         -0.94,
+         0.69
+        ],
+        "pick": [
+         "mug_shelf"
         ]
        }
       ],
@@ -84228,6 +84499,24 @@
          1.515,
          6.54,
          8.26,
+         0.2
+        ]
+       ],
+       "large_shelf_6/top": [
+        [
+         0,
+         -1,
+         4.95,
+         7.525,
+         9.169,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         7.525,
+         4.95,
+         5.144,
          0.2
         ]
        ]
@@ -87174,7 +87463,7 @@
       "family": "bear_to_bed",
       "case": null,
       "challenge": "his teddy bear on the TV stand; it is bedtime",
-      "rationale": "at bedtime the bear goes to his bed, not into the toy basket",
+      "rationale": "at bedtime the bear goes to his bed or his bookcase, not into the toy basket",
       "control": "car_in_living_room",
       "contrast": null,
       "factor": "the seed's layout only",
@@ -87714,17 +88003,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "mattress_1/top"
+        "destination": "bookcase_3/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "living_bear",
-        "receptacle": "mattress_1/top",
+        "receptacle": "bookcase_3/top",
         "hint_xy": [
-         0.0,
-         -4.0
+         2.1,
+         -4.78
         ]
        }
       }

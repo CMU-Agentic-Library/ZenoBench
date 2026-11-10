@@ -3295,7 +3295,7 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=mattress_1/top)` → 6. `place(object=living_bear, receptacle=mattress_1/top, hint_xy=[0.0, -4.0])`
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=living_bear, receptacle=bookcase_3/top, hint_xy=[2.1, -4.78])`
 
 ### two_bedrooms（Task）
 
