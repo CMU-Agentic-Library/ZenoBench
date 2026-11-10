@@ -170,10 +170,11 @@ HINT_STEP_M = 0.02       # grid of the places a hint may move to
 HINT_CLEAR_M = 0.02      # a moved hint keeps this from the support's edge and from what stands there
 
 
-def _relations_ok(n, b, goal, where, before=None):
-    """The goal relations about ``n`` that can be judged now hold with ``n`` at box ``b`` (others where they stand)."""
+def _relations_ok(n, b, goal, where, before=None, sup=None):
+    """The goal relations about ``n`` that can be judged now hold with ``n`` at box ``b`` on ``sup`` (others where
+    they stand; only what is on that support yet counts: a mug still on the bookcase is not set down yet)."""
     def box(k):
-        return where[k][1] if k in where else None
+        return where[k][1] if k in where and (sup is None or where[k][0] == sup) else None
 
     def gap(p, q):
         return math.hypot(max(0.0, max(p[0], q[0]) - min(p[2], q[2])), max(0.0, max(p[1], q[1]) - min(p[3], q[3])))
@@ -323,7 +324,7 @@ def hints_in_reach(task):
                 continue
             goal = v.get("goal") or task.get("goal") or {}
             hb = _box(asset, {"xy": h})
-            p = _nearest_free(base, sup, asset, h, others, lambda b: _relations_ok(n, b, goal, where, hb))
+            p = _nearest_free(base, sup, asset, h, others, lambda b: _relations_ok(n, b, goal, where, hb, sup))
             if p:
                 a["hint_xy"] = p
                 out.append((rname, i, h, p))

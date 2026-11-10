@@ -724,14 +724,14 @@ def T05(t):
     from itertools import combinations
     per_cases = {}
     for n, xs in ((2, [-1.0, -0.45]), (3, [-1.15, -0.72, -0.29])):
-        nbs = {f"hw_notebook_{i + 1}": {"asset": "notebook", "support": DESK, "xy": [x, -5.92], "yaw_deg": 0.0}
+        nbs = {f"hw_notebook_{i + 1}": {"asset": "notebook", "support": DESK, "xy": [x, -6.22], "yaw_deg": 0.0}   # front strip
                for i, x in enumerate(xs)}
         per_cases[f"notebooks_{n}"] = dict(
             move=copy.deepcopy(W4), add={**copy.deepcopy(W4_add), **nbs}, watch=[*W_ALL, *nbs],
             goal={"any": [[*[["on", w, DESK] for w in sub], *[["near_start", w, 0.03] for w in W_ALL if w not in sub]]
                           for sub in combinations(W_ALL, n)],
                   "all": [*[["near_any", nb, W_ALL, 0.10] for nb in nbs], ["hand_empty", "right"]]},
-            route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -5.92])])
+            route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -6.22])])
 
     # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
     # pen first, so the trip to the desk also starts the mug's
@@ -1525,9 +1525,11 @@ def T13(t):
     # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
     # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
     # the room.  No cup in the house: the mug takes the cup's place.
-    B_SP, A_SP = [2.93, 7.30], [3.70, 6.55]
-    RIGHT = {"bowl": (0.0, 0.19), "cup": (0.17, 0.0)}
-    LEFT = {"plate": (0.0, 0.19), "bowl": (0.0, 0.19), "mug": (0.17, 0.36)}
+    B_SP, A_SP = [2.89, 7.30], [3.70, 6.55]     # the copy's spoon 10 cm from the west edge
+    # (forward, left) of the spoon; nothing forward of it: the diner sits at the table's edge and what is
+    # set there stays within 20 cm of it, in the robot's reach (the cup 17 cm forward lay 33 cm in)
+    RIGHT = {"bowl": (0.0, 0.19), "cup": (0.0, -0.15)}
+    LEFT = {"plate": (0.0, 0.19), "bowl": (0.0, 0.19), "mug": (0.0, 0.38)}
     copy_cases = {}
     for c, pattern, kinds, use in (("bowl_cup", RIGHT, {"bowl": "breakfast_bowl", "cup": "breakfast_cup"},
                                     {"bowl": BOWL, "cup": CUP}),
@@ -1558,9 +1560,10 @@ def T13(t):
                              watch=[*news, *refs, "example_spoon", SPOON], route=route)
     # finish_the_table: some places are set (adults: bowl and mug; the kid: bowl and a plastic cup, a toy beside it);
     # the empty places (a spoon each) are set by the rule of whoever sits there: a toy beside the spoon means the kid
-    ADULT, KID = {"bowl": (0.0, 0.19), "drink": (0.17, 0.0)}, {"bowl": (0.0, 0.19), "drink": (0.17, 0.0), "toy": (0.0, -0.16)}
-    seats = {"e_north": ([3.70, 7.55], E), "e_mid": ([3.70, 6.70], E), "w_north": ([2.93, 7.55], W),
-             "w_mid": ([2.93, 6.70], W), "w_south": ([2.93, 5.85], W)}
+    # the drink right of the spoon, level with it (within 20 cm of the edge), the kid's toy further right
+    ADULT, KID = {"bowl": (0.0, 0.19), "drink": (0.0, -0.15)}, {"bowl": (0.0, 0.19), "drink": (0.0, -0.15), "toy": (0.0, -0.30)}
+    seats = {"e_north": ([3.70, 7.55], E), "e_mid": ([3.70, 6.70], E), "w_north": ([2.89, 7.55], W),
+             "w_mid": ([2.89, 6.70], W), "w_south": ([2.89, 5.85], W)}   # the west spoons 10 cm from the edge
 
     def set_place(name, kind, toy_asset="rubber_duck"):
         sp, fc = seats[name]
@@ -1684,7 +1687,8 @@ def T14(t):
     # the bedroom bookcase, the paperbacks on the living-room shelf
     KIDS, ADULT = "bookcase_2/top", "large_shelf_2/shelf_2"
     SHELF_LEVELS = {KIDS: KIDS_CASE, ADULT: [f"large_shelf_2/shelf_{k}" for k in range(4)]}   # any level of that shelf
-    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.45), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.45),
+    # the kids' row 12 cm from the bookcase's front (-0.45 put the third blue book 24 cm in, out of reach)
+    shelves = {"blue_shelved_1": book("book_blue", KIDS, 0.85, -0.50), "blue_shelved_2": book("book_blue", KIDS, 1.10, -0.50),
                "paperback_shelved_1": book("paperback_book", ADULT, -1.86, -1.60, 90.0),
                "paperback_shelved_2": book("paperback_book", ADULT, -1.86, -1.30, 90.0)}
     whose_cases = {}
@@ -1698,7 +1702,7 @@ def T14(t):
             goal={"all": [["on_any", n, SHELF_LEVELS[sup]] for n, (_, sup) in items.items()]
                   + [["near_start", n, 0.03] for n in shelves] + [["hand_empty", "right"]]},
             route=[look(DESK)] + [st for n, (_, sup) in items.items()
-                                  for st in shelve(n, sup, [1.0, -0.45] if sup == KIDS else [-1.86, -0.95])])
+                                  for st in shelve(n, sup, [1.0, -0.50] if sup == KIDS else [-1.86, -0.95])])
     # next_in_series: the red book back, and the other book of its set (the same red cover, among other books) to
     # the desk for tomorrow
     others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
