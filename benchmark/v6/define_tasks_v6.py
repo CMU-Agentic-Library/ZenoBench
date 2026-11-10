@@ -2834,7 +2834,7 @@ def build() -> dict:
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
                    "benchmark/v6/tracks.py.",
            "eval_seeds": SEEDS, "condition_registry": reg, "tasks": tasks}
-    from benchmark.v6.layout import layout_spec
+    from benchmark.v6.layout import hints_in_reach, layout_spec, poses_in_reach
     from benchmark.v6.tracks import apply_tracks, strip_injected
     strip_injected(out)
     for t in out["tasks"]:                       # the start is drawn anywhere in the room: go there, then look
@@ -2848,6 +2848,11 @@ def build() -> dict:
                 v["move"] = {**v.get("move", {}), **exact_base_poses(t, v)}
                 v["move"], _ = seed_vary(t, v)   # task objects still at their base pose join the overlay
                 v.pop("vary", None)
+        poses_in_reach(t)                        # what the route picks from a top starts within reach of an edge
+        hints_in_reach(t)                        # where the route sets things down on a top: within reach too
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
                 c = info.get("control")
                 ctl = t["v6_variants"][c]["layouts"][0] if c in t["v6_variants"] else None
                 v["layout"] = layout_spec(t, lid, reg, ctl)

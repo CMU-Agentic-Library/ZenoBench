@@ -6,8 +6,8 @@
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 61,
-   "goal_not_met": 93,
+   "passes": 60,
+   "goal_not_met": 94,
    "not_observed": 58,
    "resource_missing": 37,
    "argument_mismatch": 6
@@ -40,7 +40,6 @@
    "T18 enough_for_dinner",
    "T19 lookalike_bin",
    "T19 m_can_in_dining_room",
-   "T21 the_kids_side",
    "T21 which_table",
    "T22 not_shopping",
    "T23 belongs_on_floor",
@@ -3982,13 +3981,11 @@
    "steps": 4,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "passes",
+   "control_route": "goal_not_met",
    "other_layouts": {
     "the_kids_side__kid_north": "goal_not_met"
    },
-   "other_variants_passing": [
-    "which_table__east"
-   ]
+   "other_variants_passing": []
   },
   {
    "task": "T22_put_away_shopping",

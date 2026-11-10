@@ -23,9 +23,11 @@ An episode is **task + variant + seed**.
 * **Seed** (10-19, ten per variant) = the layout of that design:
   - where the objects stand and where the robot starts, drawn by the seed generator (`layout.py`, the variant's
     `layout` block): every cluster of task objects is moved to a random free place on its own support (stacks
-    and crowded groups move together, an overhang stays; on a table or counter top every object ends within 35 cm of
-    an edge the base can stand at (`layout.reach_edges`: not a side against a wall or furniture), elsewhere never
-    deeper from the reachable edge than designed,
+    and crowded groups move together, an overhang stays; on a table or counter top every object the route picks ends within 20 cm
+    of an edge the base can stand at, or with its near side within 8 cm of it (`layout.reach_edges`: not a side
+    against a wall or furniture; the rest of its group comes along), elsewhere never deeper from the reachable edge
+    than designed; at define time a picked object's own pose and each route `place` hint_xy on a top are moved, as
+    little as they need and keeping the goal's relations, into that strip (`poses_in_reach`, `hints_in_reach`),
     clear of route and event places; objects in closed furniture or on an appliance stay). What the variant
     places differently from its control is its design - together with what stands within 15 cm of it, it moves
     as one group, or stays when any part has to (a full table, a boxed-in spoon, the bowl in the pin's path),
