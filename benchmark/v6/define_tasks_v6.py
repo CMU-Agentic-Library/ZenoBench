@@ -1245,7 +1245,7 @@ def T10(t):
     # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
     # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
     TRAY, LEFT, MUG, FRIDGE = "takeout_tray", "leftovers", "used_mug", "breakfast_fridge"
-    on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.58, 6.45), LEFT: P(DINING, 3.58, 6.85),
+    on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.66, 6.45), LEFT: P(DINING, 3.66, 6.85),   # in reach
                 MUG: P(DINING, 3.62, 7.55)}
     asset = {TRAY: "foil_takeout_tray", LEFT: "glass_food_container", MUG: "breakfast_mug"}
     fate = {CAN: [["inside", CAN, TRASH]], TRAY: [["inside", TRAY, TRASH]],
@@ -1702,7 +1702,7 @@ def T14(t):
     others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
     series_cases = {}
-    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.00, -0.30), None)),
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.12, -0.45), None)),   # the green book's spot: in reach
                                  ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
                                  ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
         add = {**others, "red_book_2": book("book_red", sup, *xy)}
@@ -2782,6 +2782,24 @@ def exact_base_poses(t, v):
     return out
 
 
+def navigate_first(steps: list) -> list:
+    """The routes' opening looks with a navigate to their target before each: the v3 routes looked from the
+    scene's start beside the island, while v6 starts anywhere in the start room (up to 12 m away, behind
+    furniture or walls).  A navigate the route already makes to the place just looked at is not repeated."""
+    k = 0
+    while k < len(steps) and steps[k]["skill"] == "look":
+        k += 1
+    if not k:
+        return steps
+    out = []
+    for s in steps[:k]:
+        out += [{"skill": "navigate", "args": {"destination": s["args"]["target"]}}, s]
+    rest = steps[k:]
+    if rest and rest[0]["skill"] == "navigate" and rest[0]["args"].get("destination") == out[-1]["args"]["target"]:
+        rest = rest[1:]
+    return out + rest
+
+
 def build() -> dict:
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
@@ -2797,6 +2815,9 @@ def build() -> dict:
     from benchmark.v6.layout import layout_spec
     from benchmark.v6.tracks import apply_tracks, strip_injected
     strip_injected(out)
+    for t in out["tasks"]:                       # the start is drawn anywhere in the room: go there, then look
+        for r in t["routes"].values():
+            r["steps"] = navigate_first(r["steps"])
     for t in out["tasks"]:                       # the seed draws the layout (benchmark/v6/layout.py)
         for info in t["v6_variants"].values():
             for lid in info["layouts"]:

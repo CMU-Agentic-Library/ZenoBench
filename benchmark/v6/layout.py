@@ -8,7 +8,8 @@ made of); the seed draws the rest of the layout:
   cluster is within ``EDGE_LOCK_M`` of the support edge does not move (an overhang stays), the cluster never goes
   deeper from the edge it is reached from than it was (or ``DEPTH_FREE_M``), it keeps out of the places the
   oracle route or an event puts objects on, and objects on those places, in closed furniture or on an appliance
-  do not move;
+  do not move.  On a top (``/top``) with an edge the base can stand at (``reach_edges``) the cluster goes anywhere
+  on the top where each of its objects lies within ``REACH_DEPTH_M`` of such an edge (``reachable``);
 * **start**: a random free, reachable cell of the variant's start room (``start_cells.json``) and a random yaw;
   when the variant hides an item (a search condition) the item is not in the start view, and the route's first
   ``look`` target is not behind a wall.
@@ -28,6 +29,8 @@ from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from zeno_skills.predicates import VIEW_RANGE_M  # noqa: E402  the look skill's range (5 m), not a copy
 CELLS = ROOT / "benchmark/v6/start_cells.json"
 
 CLUSTER_GAP_M = 0.03     # objects closer than this on one support move together
@@ -36,12 +39,18 @@ DEPTH_FREE_M = 0.15      # a cluster may always lie this deep from the edge it i
 CLEAR_M = 0.01           # clearance between a moved cluster and anything else on the support
 CELL_M = 0.2             # start-cell grid
 VIEW_HALF_DEG = 45.0     # half the start view (head camera, head straight)
-VIEW_RANGE_M = 6.0
 FLOOR_CLEAR_M = 0.45     # no start this close to an object on the floor (bottom below FLOOR_Z_M), as v5 checks
 FLOOR_Z_M = 0.15
 DESIGN_NEAR_M = 0.15     # an object this close to a design object is the other side of its relation
 EVENT_NEAR_M = 0.3       # objects this close to where an event puts something stay (the event is about them)
 TRIES = 40
+REACH_DEPTH_M = 0.35     # a cluster on a top lies within this of an edge the base can stand at (its far side)...
+REACH_NEAR_M = 0.08      # ...or, when it is deeper than that itself, its near side this close to that edge
+REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
+REACH_TRIES = 200
+EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
+STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); a farther
+                                         # stand takes that much off the reach depth
 SEARCH_TYPES = ("search_target", "search_tool")
 
 
@@ -97,6 +106,64 @@ def _asset_of(base, name, add):
     if name in add:
         return add[name]["asset"]
     return {o["name"]: o for o in _ann(base)["objects"]}[name]["asset"]
+
+
+# ----------------------------------------------------------------- reach edges (define time)
+@lru_cache(maxsize=None)
+def _world(base):
+    from zeno_skills.annotations import SceneAnnotations
+    from zeno_skills.collision import WorldModel
+    return WorldModel(SceneAnnotations(ROOT / base / "annotation.json"))
+
+
+@lru_cache(maxsize=None)
+def reach_edges(base, sup):
+    """Where the base can stand at a top: [[k, s, E, l0, l1, depth], ...], each a stretch of the edge at
+    coordinate E on axis k (s = +1: the max edge, -1: the min edge) from l0 to l1 along the other axis, with the
+    base column clear (facing the top) at the nearest standoff that is; depth = how deep from that edge it
+    reaches (REACH_DEPTH_M less the extra standoff).  A side against a wall or other furniture has none."""
+    world = _world(base)
+    a = _sups(base)[sup]["aabb_xy"]
+    out = []
+    for k in (0, 1):
+        j = 1 - k
+        for sgn in (1, -1):
+            E = a[k + 2] if sgn > 0 else a[k]
+            n = max(1, int(round((a[j + 2] - a[j]) / EDGE_STEP_M)))
+            run = None
+            for i in range(n + 1):
+                t = a[j] + (a[j + 2] - a[j]) * i / n
+                depth = None
+                for off in STANDOFFS_M:
+                    p = [0.0, 0.0]
+                    p[k], p[j] = E + sgn * off, t
+                    yaw = math.atan2(-sgn if k else 0.0, -sgn if not k else 0.0)
+                    if world.footprint_clear(p[0], p[1], yaw):
+                        depth = round(REACH_DEPTH_M - (off - STANDOFFS_M[0]), 3)
+                        break
+                if run and depth == run[5]:
+                    run[4] = round(t, 3)
+                    continue
+                if run:
+                    out.append(run)
+                run = [k, sgn, round(E, 4), round(t, 3), round(t, 3), depth] if depth is not None else None
+            if run:
+                out.append(run)
+    return out
+
+
+def reachable(b, edges):
+    """Box b ([x0, y0, x1, y1]) within reach of one of the ``edges`` (reach_edges)."""
+    for k, sgn, E, l0, l1, depth in edges:
+        j = 1 - k
+        c = (b[j] + b[j + 2]) / 2
+        if not l0 - REACH_LATERAL_M <= c <= l1 + REACH_LATERAL_M:
+            continue
+        far = E - b[k] if sgn > 0 else b[k + 2] - E
+        near = E - b[k + 2] if sgn > 0 else b[k] - E
+        if far <= depth or (far - near > depth and near <= REACH_NEAR_M):
+            return True
+    return False
 
 
 # ----------------------------------------------------------------- start cells (define time)
@@ -267,12 +334,15 @@ def layout_spec(task, vid, registry, control=None):
             rng = {}
             dist = {"x0": B[0] - A[0], "x1": A[2] - B[2], "y0": B[1] - A[1], "y1": A[3] - B[3]}
             near = min(dist, key=dist.get)                   # the edge the cluster is reached from
+            top = sup.endswith("/top") and bool(reach_edges(base, sup))   # anywhere within reach of a free edge
             for ax, lo_k, hi_k in (("dx", "x0", "x1"), ("dy", "y0", "y1")):
                 if min(dist[lo_k], dist[hi_k]) < EDGE_LOCK_M:
                     continue
                 lo, hi = -dist[lo_k] + CLEAR_M, dist[hi_k] - CLEAR_M
                 depth = max(dist[near], DEPTH_FREE_M)
-                if near == lo_k:
+                if top:
+                    pass
+                elif near == lo_k:
                     hi = min(hi, depth - dist[lo_k])
                 elif near == hi_k:
                     lo = max(lo, dist[hi_k] - depth)
@@ -307,7 +377,9 @@ def layout_spec(task, vid, registry, control=None):
                 if nxt:
                     hide.append(nxt["args"]["object"])
     look = [steps[0]["args"]["target"]] if steps and steps[0]["skill"] == "look" else []
-    return {"clusters": clusters, "static": static,
+    reach = {c["support"]: reach_edges(base, c["support"]) for c in clusters
+             if c["support"].endswith("/top") and reach_edges(base, c["support"])}
+    return {"clusters": clusters, "static": static, "reach": reach,
             "start": {"room": room_of(base, s0[:2]), "hide": sorted(set(hide)), "look": look}}
 
 
@@ -387,13 +459,32 @@ def apply_layout(cfg, spec, rng):
         others = list(spec["static"].get(c["support"], [])) + \
             [current[k] for k, o in enumerate(spec["clusters"]) if k != i and o["support"] == c["support"]]
         dx = dy = 0.0
-        for _ in range(TRIES):
+        edges = (spec.get("reach") or {}).get(c["support"])
+
+        members = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                   for n in c["names"] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+
+        def fits(tx, ty, each=True):
+            sh = lambda r: [r[0] + tx, r[1] + ty, r[2] + tx, r[3] + ty]  # noqa: E731
+            b = sh(c["box"])
+            if any(_overlap(b, o, CLEAR_M) for o in others):
+                return False
+            # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
+            return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))
+        for _ in range(REACH_TRIES if edges is not None else TRIES):
             tx = _grid(rng, c["dx"]) if "dx" in c else 0.0
             ty = _grid(rng, c["dy"]) if "dy" in c else 0.0
-            b = [c["box"][0] + tx, c["box"][1] + ty, c["box"][2] + tx, c["box"][3] + ty]
-            if not any(_overlap(b, o, CLEAR_M) for o in others):
+            if fits(tx, ty):
                 dx, dy = tx, ty
                 break
+        else:
+            if edges is not None:                      # a crowded top: every free place in reach, one at random
+                axis = lambda k: [round(c[k][0] + i * 0.02, 2) for i in range(int((c[k][1] - c[k][0]) / 0.02) + 1)] \
+                    if k in c else [0.0]  # noqa: E731
+                grid = [(tx, ty) for tx in axis("dx") for ty in axis("dy")]
+                ok = [g for g in grid if fits(*g)] or [g for g in grid if fits(*g, each=False)]
+                if ok:
+                    dx, dy = rng.choice(ok)
         current[i] = [c["box"][0] + dx, c["box"][1] + dy, c["box"][2] + dx, c["box"][3] + dy]
         for n in c["names"]:
             where = cfg["move"] if n in cfg["move"] else cfg["add"]
