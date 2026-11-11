@@ -82,7 +82,7 @@ pick（微波炉里除外）和 place（书的 `place_flat` 除外）不再走�
 - `move_to` 的规划：直线（`cart_path`）→ `plan_to`（持物时保持倾角的位姿约束，否则以直线接近收尾）→ 规划到关节目标。关节目标这一档必须保留：不持物时位姿约束的规划几乎总是失败。
 - 关节目标（`_goal`）：有 `q_hint`（停车点搜索验证过的解）时，它的 TCP 离目标 1 mm、0.01 rad 以内且无碰撞就用它本身（`HINT_REACH`、`HINT_TURN`）；否则沿它的分支重解；再不行就没有关节目标，不换 IK 分支。没有 `q_hint` 时取当前姿态附近的 IK 解。
 - 不查碰撞的直线（`_straight_move`）：直线没有 IK 时关节插值到 IK 解；朝 `q_hint` 摆动超过 1 rad 的仍然规划。
-- 手里的物体进碰撞模型（`Motion.scope`）：每次查碰撞的运动把它的包围盒球挂到该臂的 held link 上。起点时还贴着东西、又不是离开接触的运动，这一段不带它。
+- 手里的物体进碰撞模型（`Motion.scope`）：每次查碰撞的运动把它拟合的碰撞球（`Motion.held_spheres`，`MOTION_ARCHITECTURE.md` 4.4）挂到该臂的 held link 上。起点时还贴着东西、又不是离开接触的运动，这一段不带它。
 - 持物约束（K 类）：手里有东西时一律平滑跟随，手臂关节限速 0.5 rad/s（沿口捏着的容器 0.25）；规划器里保持倾角，直线关节插值用 `tips_over` 检查；`q_hint` 保持 IK 分支连续。
 - 锁定关节（`motion._Locks`）：底盘、另一只手臂、头、手指在规划器里是锁定关节，查询前原地改写固定变换（cuRobo 自己的更新要重新解析 URDF）。头和手指按仿真里的实际值（`live_locks`，两根手指取张得更开的那根）；mimic 关节（右手指跟随左手指轴）一起改写。停车点搜索查抓取时，手指张到候选的宽度（`Motion.hand_open`）。接触监视器和底盘整机检查用另一个整机模型（`_monitor_model`），头和两根手指各按实际值（`_mon_set`）。
 
@@ -149,7 +149,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 静态计数清零只是必要条件（`while` 换点、用返回值换策略、按几何拼的避障点数不出来），所以还有这几样：
 
 - **运动记录。** 每段运动在入口（`Clearance.motion`）记一行，写进 `result.json` 的 `contacts.segments`：技能、段名、哪只手臂、碰撞规则（free / planned / fallback / leave_contact / into_contact / lifting / legacy / unchecked / base_drive；`follow` 前没声明运动的记 raw）、手里有没有东西、这段之前的碰撞查询放宽了什么（`exempt` 目标豁免、`fingers` / `hand` 不查这只手）。`tools/motion_signature.py RUN --save <快照>` 存一份，之后 `--compare <快照>` 列出新出现、消失的行：每一行要么是这一步想要的，要么是漏改的。fallback 次数受规划随机性影响，只显示，不算差异。还没存过快照：6.2 的验证批次跑完后存第一份。只记这只手自己的放宽，"另一只手的手指一律不查"是常开的，不记（步骤 5 删）。
-- **真实接触**（`physx_contacts.py`）：监视器打开时（所有 profile 默认打开），每个 tick 读 PhysX 接触报告（机器人躯干以上的连杆挂 `PhysxContactReportAPI`；Isaac Lab 默认关掉接触处理，`make_rig` 里打开，不改仿真，耗时多 2–3%）。当前运动的 `Allow` 不允许的新接触记一条 `physx_contact`，写进 `contacts` 的 `physx_unexpected`、`physx_by_leg`、`physx_records`；手里拿着的东西不算。pick 的接近（`pick_grasp`）逐 tick 盯住目标物体（`Clearance.watch`），记 `approach_watch` 和 `contacts.approach`，推动 1 mm 或转 1° 以上算动了（`approach_moved`）。监视器原来的检查（`unexpected`、`disturbed`）用的是规划器的碰撞球、每 30 tick 一次、阈值 2 cm / 20°：**以真实接触为准**（碰撞球比指垫大最多 4.2 mm，合爪时监视器会误报）。
+- **真实接触**（`physx_contacts.py`）：监视器打开时（所有 profile 默认打开），每个 tick 读 PhysX 接触报告（机器人躯干以上的连杆挂 `PhysxContactReportAPI`；Isaac Lab 默认关掉接触处理，`make_rig` 里打开，不改仿真，耗时多 2–3%）。当前运动的 `Allow` 不允许的新接触记一条 `physx_contact`，写进 `contacts` 的 `physx_unexpected`、`physx_by_leg`、`physx_records`；手碰手里拿着的东西不算，手里拿着的东西碰外界算（物体的刚体也挂了接触报告，连杆记成 `held:<物体>`，由 `Allow.held_on` 判断）。pick 的接近（`pick_grasp`）逐 tick 盯住目标物体（`Clearance.watch`），记 `approach_watch` 和 `contacts.approach`，推动 1 mm 或转 1° 以上算动了（`approach_moved`）。监视器原来的检查（`unexpected`、`disturbed`）用的是规划器的碰撞球、每 30 tick 一次、阈值 2 cm / 20°：**以真实接触为准**（碰撞球比指垫大最多 4.2 mm，合爪时监视器会误报）。
 - **覆盖率。** `ZB_COVERAGE=1` 跑针对性 episode，`tools/skill_coverage.py RUN --file zeno_skills/skills.py` 列出这批 episode 一次都没进去的函数：没跑到的路径，回归通过也说明不了它对，要么补 episode，要么在完成标准里写明没验证。
 - **Stop 钩子**（`.claude/settings.json` → `tools/stop_check.py`）：Claude 每轮结束前，`zeno_skills/`、`tools/`、`tests/` 有改动时检查改过的 Python 能编译、审计计数没超基线，不过就不让结束；没改动直接放行。单元测试要在容器里跑半分多钟，不放进钩子。
 - **失败一览。** 全量跑完，把每个失败 episode 录像的最后一帧拼成一张图，格子上写第一个意外失败的调用和报错，按"新失败 / 一直失败"标颜色（`FAILURES_last_frame.png`）。

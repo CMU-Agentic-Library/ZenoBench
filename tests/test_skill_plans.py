@@ -500,8 +500,8 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
         return Plan(())
 
     def plan_place_(kin, state, goal, pre_open, out_len, rest_goals, start="place_reach", prior=None, step=0.003,
-                    obj=None):
-        calls.append(("place", goal, start, prior))
+                    obj=None, on=None):
+        calls.append(("place", goal, start, prior, on))
         return Plan(())
     found = Plan((Segment("pick_grasp", Spec(), np.zeros(9)),))
     plan, rebuild, hooks = PJ._pick_ready(_job_rig(), "cup", {"kind": "top_pinch", "pre_open": 0.03}, GRASP, found,
@@ -510,10 +510,13 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
     rebuild(_state(np.zeros(9)), "pick_reach", plan)
     assert calls[-1][1] is GRASP and calls[-1][2:] == ("pick_reach", plan)
     goal = _at([0.5, 0.0, 0.10])
-    plan, rebuild, hooks = LJ._place_ready(_job_rig(), "cup", {}, goal, 0.03, found, plan_place_)
+    plan, rebuild, hooks = LJ._place_ready(_job_rig(), "cup", {"name": "kitchen_cabinet_6/top"}, goal, 0.03, found,
+                                           plan_place_)
     assert plan is found and len(calls) == 1
     rebuild(_state(np.zeros(9)), "tuck", plan)
-    assert calls[-1][1] is goal and calls[-1][2:] == ("tuck", plan)
+    # the release lets the load touch what it is set down on (release_spec)
+    assert calls[-1][1] is goal and calls[-1][2:] == ("tuck", plan, "kitchen_cabinet_6")
+    assert LJ._set_down_on({"name": "rim:handled_cooking_pot"}) == "handled_cooking_pot"
 
 
 def test_a_reach_in_is_judged_stopped_short_against_where_it_sent_the_hand():

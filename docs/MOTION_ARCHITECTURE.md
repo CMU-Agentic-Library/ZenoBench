@@ -289,7 +289,7 @@ class Spec:
 
 `Motion.query` 把 `State` + `Spec` 翻译成一次 cuRobo 查询：
 - 锁定底盘、另一只手臂、头和手指宽度；
-- 把手里的东西挂到夹爪上（`pad` 放大），握着的部件对那只手不算障碍物；
+- 把手里的东西挂到夹爪上（`pad` 放大），握着的部件对那只手不算障碍物。手里的东西是一组半径不等的球（`Motion.held_spheres` → `held_spheres.fit`）：贴着它的碰撞体拟合（容器取凸包，开口填实：装在里面的东西跟着手走），任何地方多出物体不超过 `OUT` 4 mm（小于 `LEAVE_GAP`，放下段终点不判碰），表面任一点离球不超过 `GAP` 6 mm（超过球数预算时按 ×1.25 放宽，日志写明）。预算 `HELD_SPHERES` 右手 140、左手 60：held link 不参与自碰撞，不增加自碰撞的球对（cuRobo 快速内核上限 16384 对，机器人本身用 16271 对），但 cuRobo 的自碰撞内核每个球至少一个线程、球对缓冲只够 512 个线程，整个模型超过 512 个球就越界读（CUDA illegal memory access，11-11 试 160 / 160 时崩过）；机器人本身 305 个球，剩 207 个，迁过来的 pick / place 都用右手。球按几何缓存在磁盘上（`ZENO_CACHE`，大物体第一次拟合要十几秒）；增加的开销是和世界的查询；
 - 把 `objects` 和 `parts` 同步到碰撞世界；
 - 按 `Spec` 开关手指碰撞球、目标豁免、`touch`。
 
@@ -640,7 +640,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 1. 计划做不出来（原语返回原因），包括锚点处重做不出来；
 2. 仿真结果不对：被挡住停在半路、没夹住、物体没跟上来、闭环执行器停下（卡住、滑脱、超时）。
 
-意外接触只当指标。搬运中掉了，抛 `Dropped` 给上层。
+意外接触只当指标（PhysX 真实接触 `physx_contact`，含手里的东西碰外界，记成 `held:<物体>`；规划器碰撞球的 `unexpected_contact`）。搬运中掉了，抛 `Dropped` 给上层。
 
 ### 8.7 旧入口
 
@@ -659,7 +659,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 ### 9.1 已实现
 
 - 数据：`State`、`Hand`、`Held`、`Spec`（`allow`、`fingers`、`exempt`、`hold_tilt`、`touch`）、`Segment`（`move` / `action` / `drive` / `anchor`）、`Plan`（含 `decisions`）、`Failure`、`Aim` / `aim_pose`，以及推进 `State` 的小函数；协议 `Actuator`、`BaseModel`（2.5）。实测握法按实测关节角量（8.2）。
-- 查询层：`Motion.query`（包一层）、`path_free_only`。
+- 查询层：`Motion.query`（包一层）、`path_free_only`；手里物体的碰撞球按碰撞体拟合（`held_spheres`，4.4）。
 - 原语：`free_leg`（`Joint`、`Pose`、`PoseSet`、`JointSet`）、`straight`、`contact_extent`、`contact_segment`，三个"还在碰"判据，`exit_length`；`drive`、`drive_straight`（5.4）；`decide_ik`（5.7）；`holds`（8.4）。
 - 计划：`plan_pick`、`plan_place`、`set_down_length`、`plan_navigate`、`travel_chain`、`Carry`、`plan_door`（开门，11-10）、`plan_clear`（手握部件时松开）；目标从 `State` 推出（第 6 节）；锚点 `pick_arrive` / `pick_held` / `place_arrive` / `place_landed`；`prior` 是 `Plan` 时还成立的运动段原样复用（`_kept`，收臂除外）；`HELD_POSE_MARGIN` 5 mm，`PICK_TOL` 1 mm，`PLACE_TOL` 5 mm。
 - 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`posture`，`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载，`template` / `park` / `arrive` / `travel` 都起作用，2.3）；navigate、pick、place、open 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`、`door`，加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
@@ -696,6 +696,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
    5. 余量：place 计划带 `HOLD_DRIFT`；
    6. **已做（11-09）**：hooks 不动机器人，失败出口是 `run` 执行的计划（`clearing` + `plan_clear`，8.6）；
    7. 9.2 第一张表里剩下的：收臂预算、搬运慢、书进 `plan_place`（删 `place_flat`）。
+   8. **手里物体的碰撞球（11-11，分支 `held-spheres`）**：原来的 `box_spheres` 是包围盒里等大的内切球，离物体表面中位 6–19 mm、最多 15–28 mm（锅盖底边、mug 侧边整片没盖住），圆物体的盒子四角又多出约 4 cm。T17 掀锅盖放到灶台时锅盖边压上锅沿、手臂被卡 14 cm，T04 拿着 mug 开车擦倒柜面上的杯子，规划和复核都看不见，接触监视也不看手里的东西。改成按碰撞体拟合的变半径球（4.4），`HELD_SPHERES` 32 / 32 → 右手 140 / 左手 60；PhysX 接触监视加上手里的东西碰外界。离线核过（预算 140）：锅盖 127 个球、mug 39、杯子 41、书 101、带把手的锅 130（放宽到 7.5 mm），多出都 ≤ 4.0 mm，其余表面离球 ≤ 6.3 mm；自碰撞对数不变（16271），球总数 505 ≤ 512。接触监视的 PhysX 实体按接触点所在的标注家具命名（`Motion.entity_of_contact`，和球模型的命名一致：之前同一张桌子一边叫 `desk_1`、一边叫 `SupportRepairs/desk_1__top`，放行对不上）；松手时物体碰它被放到的东西放行（`release_spec(on=)`，`place_job` 由支撑面得出）。针对性对照（v6 sticky/gt，旧 = `9f6dc08`，各一个仿真，`/data/zenobench/held_spheres_1111`）：T04 two_guests 新成功、旧失败（mug 擦倒杯子：所有版本里第一次没倒），T17 hide_both 新成功（旧侧显存不够崩了），T02 crowded 两边成功（挤着的方块照样拿得起来），T14 shelve_the_book 两边成功（新侧第一次两个仿真同时跑显存不够崩了，单独重跑成功）。停车点搜索总耗时 334 → 345 s（+3%）。新的手持物接触里剩下的是真实接触：T14 搬书时擦到铅笔，以及还没迁移的旧 `place_flat`（`flat_lower`）。
 3. **感知类**：look、search、explore_furniture / explore_room、inspect、measure、identify、count。navigate + 头部动作，只依赖第 1 步。
 4. **取放家族**：drop、stack、lift、hover、cover、present；collect 在任务层串。在 `plan_pick` / `plan_place` 上换目标集合。
 5. **姿态类**：`Spec.joints` + 拆 `q_body`（`JointSet` 第 1 步已加）（`joints` 按关节名写，不按 `q_right` 的下标）。bend / straighten、升降躯干、wave、nod；删改 `kin.lo / hi` 和 `_lock_shared_posture` 的地方。

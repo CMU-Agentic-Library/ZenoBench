@@ -82,7 +82,8 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
         prepare(stage)
     P.base_joints(stage)                # after prepare: it may move the robot's start
     from . import physx_contacts
-    physx_contacts.enable(stage, P.ASSET)   # the robot's real contacts (the contact monitor's ground truth)
+    # the robot's and the held objects' real contacts (the contact monitor's ground truth)
+    physx_contacts.enable(stage, P.ASSET, [o["body"] for o in ann.objects.values() if o.get("body")])
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / P.PHYSICS_HZ, device="cpu",
                                                               physics_prim_path="/World/PhysicsScene"))
     cams = {}

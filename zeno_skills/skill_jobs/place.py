@@ -68,6 +68,7 @@ def place_job(rig, args, state, skill=None):
                 cost.append(PLACE_SPOT_COST * rank + PLACE_YAW_COST * abs(deg) / 45.0 +
                             (PLACE_TILTED_COST if levelled is None and len(relations) > 1 else 0.0))
     open_w = float(rig.held.get("pre_open", 0.04))
+    on = _set_down_on(s)
     rests = (kin.rest, kin.drive)
     # what plan_place takes: the pose of the object's box frame each set-down pose puts it at,
     # through the hold the State has now (the plan derives the TCP back from the hold it is built
@@ -80,7 +81,7 @@ def place_job(rig, args, state, skill=None):
     # where the whole place can be planned (skill_plans.plan_place) -- that plan is run
     def build(st, k, prior):
         return plan_place(kin, st, targets[k], open_w, pick_approach(), rests, prior=prior, step=APPROACH_STEP,
-                          obj=name)
+                          obj=name, on=on)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
                       PLACE_RELAY, near=search_near, label=f"place {name}")
     ctx = {}
@@ -117,6 +118,12 @@ def place_job(rig, args, state, skill=None):
                ready=ready, done=done)
 
 
+def _set_down_on(s):
+    """The entity a set-down on support ``s`` lets the load touch as it is let go (release_spec): the
+    furniture or object the support belongs to ("kitchen_cabinet_6/top", "rim:handled_cooking_pot")."""
+    return str(s["name"]).split(":", 1)[-1].split("/", 1)[0]
+
+
 def _plan_place():
     from ..skill_plans import plan_place
     return plan_place
@@ -130,10 +137,11 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
     kin = rig.kin
     plan_place = plan_place or _plan_place()
     out_len, rests = pick_approach(), (kin.rest, kin.drive)
+    on = _set_down_on(s)
 
     def rebuild(state, frm, prior):
         return plan_place(kin, state, goal, open_w, out_len, rests, start=frm, prior=prior, step=APPROACH_STEP,
-                          obj=name)
+                          obj=name, on=on)
 
     def before_pull_out(rig):
         # let go, it may have settled against a finger: allowed on the pull-out, recorded -- a query

@@ -77,7 +77,14 @@ GRAPH_SEEDS = 2           # graph-search seeds that seed the optimiser around ob
 PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
-HELD_SPHERES = 32         # spheres pre-allocated per arm for the held object (scope)
+# spheres pre-allocated on each hand's held link for what it holds (held_spheres.fit's budget).  The held
+# link is in no self-collision pair, so they add no pair (cuRobo's fast kernel holds 16384, the robot
+# uses 16271); but cuRobo's self-collision kernel runs at least one thread per sphere of the whole
+# model and its pair buffer holds 512 threads' worth: past 512 spheres it reads out of bounds (CUDA
+# illegal memory access, 11-11).  The robot has 305, so 207 are left: the right hand, which every
+# migrated pick / place uses, gets the most (tests/test_held_collision.py checks the sum)
+HELD_SPHERES = {"right": 140, "left": 60}
+ROBOT_SPHERES_MAX = 512
 COARSE_STEP = 0.02        # m: a finer Cartesian line that fails is solved again at this step, then densified
 BASE_CHUNK = 2048         # base poses per batched whole-body query (base_depths)
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
@@ -127,9 +134,33 @@ def load(rig, side):
     return h if h is not None else getattr(rig, "lifting", {}).get(side)
 
 
+def _cached_fit(pieces, n_max, label):
+    """held_spheres.fit of ``pieces`` within ``n_max`` spheres, through a cache on disk keyed by the
+    pieces and the fit's parameters (ZENO_CACHE/held_spheres; no cache when it cannot be written)."""
+    import hashlib
+    from . import held_spheres as HS
+    h = hashlib.sha1(repr((HS.OUT, HS.GAP, HS.GAP_MAX, HS.SAMPLE, HS.CANDIDATES, n_max, HS.VERSION)).encode())
+    for V, F in pieces:
+        h.update(np.round(np.asarray(V, float), 6).tobytes())
+        h.update(np.asarray(F, np.int64).tobytes())
+    root = Path(os.environ.get("ZENO_CACHE", "/data/zenobench/cache"))
+    path = root / "held_spheres" / f"{h.hexdigest()}.npy"
+    if path.is_file():
+        return np.load(path)
+    sph, gap = HS.fit(pieces, n_max=n_max)
+    if gap > HS.GAP:
+        print(f"held_spheres {label}: {len(sph)} spheres at gap {gap:.4f} m (wider than {HS.GAP})", flush=True)
+    if root.is_dir() and os.access(root, os.W_OK):
+        path.parent.mkdir(exist_ok=True)
+        tmp = path.with_suffix(f".{os.getpid()}.npy")
+        np.save(tmp, sph)
+        os.replace(tmp, path)                 # whole or nothing: two sims may fit the same object
+    return sph
+
+
 def add_held_links(k):
     """Robot config (the ``kinematics`` dict) + one empty sphere link per arm at its TCP for
-    the held object: HELD_SPHERES spheres switched off until attached, never in self collision."""
+    the held object: HELD_SPHERES[side] spheres switched off until attached, never in self collision."""
     k["extra_links"] = dict(k["extra_links"])
     links = list(k["collision_link_names"])
     for s in ("right", "left"):
@@ -137,28 +168,11 @@ def add_held_links(k):
         k["extra_links"][held_link(s)] = {**tcp, "link_name": held_link(s), "joint_name": f"{held_link(s)}_joint"}
     held = [held_link(s) for s in ("right", "left")]
     k["collision_link_names"] = links + held
-    k["extra_collision_spheres"] = {h: HELD_SPHERES for h in held}
+    k["extra_collision_spheres"] = {held_link(s): HELD_SPHERES[s] for s in ("right", "left")}
     k["self_collision_ignore"] = {**k.get("self_collision_ignore", {}),
                                   **{h: [l for l in links + held if l != h] for h in held}}
     k["self_collision_buffer"] = {**k.get("self_collision_buffer", {}), **{h: 0.0 for h in held}}
     return k
-
-
-def box_spheres(lo, hi, n_max=HELD_SPHERES):
-    """(n, 4) equal spheres (x, y, z, r) on a grid filling the box [lo, hi]: cells as close to
-    cubes as n_max allows, each sphere inscribed in its cell (inside the box)."""
-    lo, hi = np.asarray(lo, float), np.asarray(hi, float)
-    d = np.maximum(hi - lo, 1e-3)
-    r = d.min() / 2
-    while True:
-        n = np.maximum(1, np.ceil(d / (2 * r) - 1e-9)).astype(int)
-        if n.prod() <= n_max:
-            break
-        r *= 1.1
-    cell = d / n
-    idx = np.stack(np.meshgrid(*[np.arange(k) for k in n], indexing="ij"), -1).reshape(-1, 3)
-    ctr = lo + (idx + 0.5) * cell
-    return np.c_[ctr, np.full(len(ctr), cell.min() / 2)]
 
 
 class _Locks:
@@ -542,6 +556,7 @@ class Motion:
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
         self._held_sph = {}              # side -> spheres of the held object on its held link (scope), or None
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
+        self._held_sph_of = {}           # object name -> its held spheres in that frame (held_spheres)
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
         self.exempt = []                 # objects the last query left out as targets (_targets_allow)
@@ -727,7 +742,7 @@ class Motion:
         return np.linalg.inv(T_tcp) @ G.world_pose(frame, self.body_pose.get)
 
     def _attach_held(self, arm, kin, q, h):
-        """Spheres of the held object ``h`` (box_spheres of its box, in the TCP frame at q) on
+        """Spheres of the held object ``h`` (held_spheres, in the TCP frame at q) on
         the arm's held link; None (or a bimanual hold): the link emptied.  Returns the name."""
         name = None if h is None or h.get("kind") == "bimanual" else h.get("name")
         if name is None or not self.by_owner.get(f"object:{name}"):
@@ -737,13 +752,12 @@ class Motion:
         return name
 
     def _attach_rel(self, arm, name, M, pad=0.0):
-        """Spheres of ``name``'s box on the arm's held link, the box frame at M in the TCP frame
-        (held_in_tcp), their radii ``pad`` larger; None: the link emptied."""
+        """Spheres of ``name`` (held_spheres) on the arm's held link, its box frame at M in the TCP
+        frame (held_in_tcp), their radii ``pad`` larger; None: the link emptied."""
         sph = None
         if name is not None:
-            _, lo, hi = self._box_of(name)
-            b = box_spheres(lo, hi)
-            sph = np.full((HELD_SPHERES, 4), [0.0, 0.0, 0.0, -100.0])
+            b = self.held_spheres(name, arm.side)
+            sph = np.full((HELD_SPHERES[arm.side], 4), [0.0, 0.0, 0.0, -100.0])
             sph[:len(b), :3] = b[:, :3] @ M[:3, :3].T + M[:3, 3]
             sph[:len(b), 3] = b[:, 3] + pad
         if sph is not None or self._held_sph.get(arm.side) is not None:
@@ -932,6 +946,32 @@ class Motion:
             else:
                 kc.attach_object(sphere_tensor=t.as_tensor(sph, device=kc.link_spheres.device,
                                                            dtype=kc.link_spheres.dtype), link_name=link)
+
+    def held_spheres(self, name, side="right"):
+        """(n, 4) spheres of ``name`` in its box frame (_box_of) for the planner's model of it in
+        ``side``'s hand, at most HELD_SPHERES[side] (held_spheres.fit: sticking out of it by at most
+        OUT, its surface within GAP of them -- wider when the budget is short):
+        fitted to its colliders -- a container's convex hull, its opening filled (what stands in it
+        rides along: Motion.held); any other object the union of its convex colliders.  Cached here
+        and on disk by the geometry (ZENO_CACHE, default /data/zenobench/cache: a fit takes up to
+        ~7 s for a pot)."""
+        key = (name, HELD_SPHERES[side])
+        if key not in self._held_sph_of:
+            from . import held_spheres as HS
+            frame, _, _ = self._box_of(name)
+            inv = np.linalg.inv(G.world_pose(frame, self.body_pose.get))
+            pieces = []
+            for c in self.by_owner[f"object:{name}"]:
+                M = inv @ G.world_pose(c, self.body_pose.get)
+                if c.kind == "cuboid":
+                    pieces.append(HS.cuboid(c.dims, M))
+                else:
+                    pieces.append((np.asarray(c.vertices, float) @ M[:3, :3].T + M[:3, 3], np.asarray(c.faces, int)))
+            if self.ann.asset_of(self.ann.objects[name]).get("container"):
+                pieces = [HS.hull(np.vstack([V for V, _ in pieces]))]
+            self._held_sph_of[key] = _cached_fit(pieces, HELD_SPHERES[side],
+                                                 f"{name} ({self.ann.objects[name].get('asset')})")
+        return self._held_sph_of[key]
 
     def _box_of(self, name):
         """The object's box (every collider) in the frame of its first collider, cached."""
@@ -1392,7 +1432,7 @@ class Motion:
     def body_spheres(self, rig, postures):
         """(P, S, 4) spheres of the robot above its base in the frame of its current base, one set per
         posture (q_right: torso, waist, 7 right-arm joints; q_left: 7 left-arm joints): every link of
-        both arms, torso and head at that posture, and what each hand holds as box_spheres riding
+        both arms, torso and head at that posture, and what each hand holds as its held_spheres riding
         rigidly on its TCP (where it sits in the hand now).  The base column has no spheres (its
         collider is off): its footprint is checked on the annotated boxes (WorldModel)."""
         import torch
@@ -1421,8 +1461,8 @@ class Motion:
                 continue
             if h.get("kind") == "bimanual" and side == "left":
                 continue
-            frame, lo, hi = self._box_of(h["name"])
-            b = box_spheres(lo, hi)
+            frame, _, _ = self._box_of(h["name"])
+            b = self.held_spheres(h["name"], side)
             T_obj = G.world_pose(frame, self.body_pose.get)
             pts = (inv_base[:3, :3] @ (b[:, :3] @ T_obj[:3, :3].T + T_obj[:3, 3]).T).T + inv_base[:3, 3]
             # the TCP in the base frame, wherever kin's base sits (find_park moves it around)
@@ -1645,6 +1685,21 @@ class Motion:
             cache[path] = name or next((p for p in reversed(parts) if p in known), "/".join(parts[-2:]))
         return cache[path]
 
+    def entity_of_contact(self, path, at=None):
+        """The entity of a PhysX contact with the collider at prim ``path`` at point ``at``: as the
+        sphere check names a contact (_nearest_entity) -- a static collider by the annotated
+        furniture the point is in (a support slab, a carcass mesh name no furniture), anything
+        else by its path (entity_of_path)."""
+        by_name = self.__dict__.get("_col_by_name")
+        if by_name is None:
+            by_name = self._col_by_name = {c_.name: c_ for c_ in self.cols.items}
+        c = by_name.get(path)
+        if at is not None and (c is None or c.owner == "static"):
+            name = self._furniture_at(np.asarray(at, float), 0.0)
+            if name is not None:
+                return name
+        return self.entity_of_path(path)
+
     def _nearest_entity(self, p, r, poses, cols):
         """Entity of the collider in ``cols`` closest to sphere (p, r): distance to its box in its own frame."""
         c = self._nearest_collider(p, r, poses, cols)
@@ -1689,7 +1744,7 @@ class Motion:
         """[(link, entity, depth m)] of robot links inside the world at the real joint state and
         base pose: objects and parts at their simulator poses, nothing either hand holds (nor
         what it carries), obstacles within CULL.  What a hand holds counts as part of the robot:
-        its box (box_spheres) at its simulator pose, reported as link ``held:<name>``.  The
+        its held_spheres at its simulator pose, reported as link ``held:<name>``.  The
         planner's world (obstacle poses, enabled colliders, cull centre) is exactly as before
         when this returns."""
         import torch
@@ -1724,9 +1779,9 @@ class Motion:
             live = lambda b: poses[b] if b in poses else self.body_pose.get(b)
             extra = []
             for n in carried:
-                frame, lo, hi = self._box_of(n)
+                frame, _, _ = self._box_of(n)
                 T = G.world_pose(frame, live)
-                bs = box_spheres(lo, hi)
+                bs = self.held_spheres(n)
                 extra.append(np.c_[bs[:, :3] @ T[:3, :3].T + T[:3, 3], bs[:, 3]])
                 links = links + [f"held:{n}"] * len(bs)
             sph = torch.cat([sph, torch.as_tensor(np.vstack(extra), device=sph.device,

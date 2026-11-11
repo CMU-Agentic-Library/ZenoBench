@@ -48,7 +48,7 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
 
 
 def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arrive", prior=None,
-               step=0.003, obj=None):
+               step=0.003, obj=None, on=None):
     """The set-down of what the hand holds with its box frame at the world pose ``goal`` (4x4) from
     ``state``: the set-down pose (p, R) the TCP that puts it there through the hold the State has
     (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The anchor where
@@ -66,24 +66,28 @@ def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arr
     place_reach, the set-down pose's solution q_p (where a plan's set-down ends).  The tuck is no
     decision: chosen again whenever it is built.  ``obj``: the object set down (default: what the
     state's hand holds) -- given, a plan built again after the release (the hand holds nothing
-    then) lets the fingers touch it as the first one did.  From ``start`` on.  Plan (its
+    then) lets the fingers touch it as the first one did.  ``on``: what it is set down on (the
+    release lets it touch that: release_spec).  From ``start`` on.  Plan (its
     decisions) or Failure, info["stage_s"] the time per stage."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj)
+        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj, on)
 
 
-def release_spec(side, obj):
+def release_spec(side, obj, on=None):
     """The release and the pull-out: the open fingers may touch the object they let go (it may
     settle against one: a rim-held cup pivots onto the finger inside it, T13) -- a contact the
-    monitor records, not a failure (11-08) -- the rest of the arm may not."""
+    monitor records, not a failure (11-08) -- the rest of the arm may not; and the object, still
+    the hand's while it opens, may touch ``on`` (the furniture or object it is set down on: it
+    falls the last LEAVE_GAP onto it)."""
     if obj is None:
         return FREE_HAND
-    return Spec(allow=Allow(hand=side, links="fingers", touch=(obj,),
-                            reason="release / pull-out: the open fingers may touch the object they let go"),
+    return Spec(allow=Allow(hand=side, links="fingers", touch=(obj,), held_on=(on,) if on else (),
+                            reason="release / pull-out: the open fingers may touch the object they let go, "
+                                   "it what it is set down on"),
                 fingers=True, exempt=False, touch=(obj,))
 
 
-def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None):
+def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None, on=None):
     i0 = PLACE_STAGES.index(start)
     prior = decisions_of(prior_plan)
     q = state.q(kin.side)
@@ -132,7 +136,8 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
                 # end, not q_p where the leg above went straight from elsewhere (_reach)
                 decided["place_reach"] = seg.q_end
         elif stage == "place_release":
-            seg = Segment(stage, release_spec(kin.side, obj), q, kind="action", action=("grip", float(pre_open), 70, True))
+            seg = Segment(stage, release_spec(kin.side, obj, on), q, kind="action",
+                          action=("grip", float(pre_open), 70, True))
             if held is not None:
                 T = held_frame(kin, q, held)
                 T[2, 3] -= LEAVE_GAP                 # let go, it falls the gap onto the support
