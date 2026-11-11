@@ -60,8 +60,47 @@ SCORING: dict[tuple[str, str], dict] = {
 }
 
 
-def scoring_for(task_id: str, design: str) -> dict | None:
-    return next((s for (tid, d), s in SCORING.items() if task_id.startswith(tid) and d == design), None)
+def _no_room_fallback(task: dict) -> dict:
+    """T01 no_room_fallback: the tiers depend on whether the layout has a suitable slot (on the table: the
+    layout's goal) or not (full_*: a bookcase is the layout's goal)."""
+    lays = task["v6_variants"]["no_room_fallback"]["layouts"]
+    goals = {lid: task["variants"][lid]["goal"] for lid in lays}
+    table = next(g for g in goals.values() if not g.get("any"))
+    on_table = next(a for a in table["all"] if a[0] == "on")
+    clear = next(a for a in table["all"] if a[0] == "clear_of")
+    shelves = next(g["any"] for g in goals.values() if g.get("any"))
+    kept = lambda g: [a for a in g["all"] if a[0] in ("near_start", "upright", "hand_empty")]   # nothing moved
+    second, worst = {}, {}
+    for lid, g in goals.items():
+        if g.get("any"):                         # no suitable slot: the bookcase is best
+            second[lid] = {"all": kept(g) + [on_table, clear]}
+            worst[lid] = {"all": kept(g) + [on_table]}
+        else:                                    # a slot beside a seat: the bookcase is giving up too early
+            second[lid] = {"all": kept(g) + [on_table, clear]}
+            worst[lid] = {"all": kept(g), "any": [[on_table]] + shelves}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "a slot beside a seat: there, clear of the dishes, nothing moved; no such slot (full_*): a bookcase, "
+                "the fallback the instruction names (any bookcase, any shelf)"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "on the set table, clear of the dishes, nothing moved, beside no seat (with no suitable slot: "
+                "the instruction's fallback skipped, the meal not disturbed)"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "squeezed against the dishes or the cereal, nothing moved or tipped; or, with a suitable slot "
+                "free, put away in a bookcase (gave up too early)"}],
+        "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held"}
+
+
+# designs whose tiers are built from their layouts' goals
+BUILT = {("T01", "no_room_fallback"): _no_room_fallback}
+
+
+def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
+    s = next((s for (tid, d), s in SCORING.items() if task_id.startswith(tid) and d == design), None)
+    if s is None and task is not None:
+        f = next((f for (tid, d), f in BUILT.items() if task_id.startswith(tid) and d == design), None)
+        s = f(task) if f else None
+    return s
 
 
 def attach_scoring(out: dict) -> int:
@@ -70,7 +109,7 @@ def attach_scoring(out: dict) -> int:
     n = 0
     for t in out["tasks"]:
         for design, info in t["v6_variants"].items():
-            s = scoring_for(t["task_id"], design)
+            s = scoring_for(t["task_id"], design, t)
             if s is None:
                 continue
             n += 1

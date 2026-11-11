@@ -4,25 +4,32 @@ from pathlib import Path
 
 import pytest
 
-from benchmark.v6.scoring import SCORING, check_spec, score
+from benchmark.v6.scoring import BUILT, SCORING, check_spec, score, scoring_for
 
 TASKS = json.loads((Path(__file__).resolve().parents[1] / "tasks.json").read_text())
 
 
-@pytest.mark.parametrize("key", sorted(SCORING), ids=lambda k: f"{k[0]}-{k[1]}")
+KEYS = sorted(set(SCORING) | set(BUILT))
+
+
+def _spec(key):
+    t = next(t for t in TASKS["tasks"] if t["task_id"].startswith(key[0]))
+    return t, scoring_for(t["task_id"], key[1], t)
+
+
+@pytest.mark.parametrize("key", KEYS, ids=lambda k: f"{k[0]}-{k[1]}")
 def test_spec(key):
-    assert check_spec(SCORING[key]) == []
+    assert check_spec(_spec(key)[1]) == []
 
 
-@pytest.mark.parametrize("key", sorted(SCORING), ids=lambda k: f"{k[0]}-{k[1]}")
+@pytest.mark.parametrize("key", KEYS, ids=lambda k: f"{k[0]}-{k[1]}")
 def test_in_tasks_json(key):
-    tid, design = key
-    t = next(t for t in TASKS["tasks"] if t["task_id"].startswith(tid))
-    info = t["v6_variants"][design]
-    assert info.get("scoring") == SCORING[key]
+    t, spec = _spec(key)
+    info = t["v6_variants"][key[1]]
+    assert info.get("scoring") == spec
     for lid in info["layouts"]:
-        assert t["variants"][lid]["scoring"] == SCORING[key]
-        for tier in SCORING[key]["tiers"]:
+        assert t["variants"][lid]["scoring"] == spec
+        for tier in spec["tiers"]:
             g = tier["goal"]
             if g and "by_layout" in g:
                 assert lid in g["by_layout"]
