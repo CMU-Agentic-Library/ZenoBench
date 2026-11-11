@@ -12,12 +12,12 @@ import time
 
 import numpy as np
 
-from ..clearance import LEAVE_CONTACT, Allow, closing
+from ..clearance import Allow, closing
 from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding,
-                            released, with_part, with_width)
+                            released, with_arm, with_part, with_width)
 from ..tolerances import DOOR_TOL
 from ..primitives import JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
-from ._common import FREE_HAND, T_of, _aimed, _contact, _kept, _reach, anchor
+from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor
 
 DOOR_STAGES = ("door_arrive", "door_open_hand", "door_reach", "door_grasp", "door_close_hand", "door_held",
                "door_ride", "door_moved", "door_release", "door_leave", "tuck", "door_settle")
@@ -27,7 +27,6 @@ DOOR_RELAY = "door_reach"     # the decision the park search's ranking IK solves
 # (the part moved, the base stopped off its park) -- the hook is a fine motion onto the bar, as a
 # pick's grasp.  Value and source: tolerances.py
 DOOR_SETTLE_TICKS = 60        # physics ticks the part settles after the hand left it (skills._move_articulated's)
-LEAVE_STEP = 0.004            # m: the straight back off the handle, measured at this step (contact_extent)
 
 
 def touch_part(side, part, why):
@@ -53,7 +52,9 @@ def plan_door(kin, state, grip, rest_goals, base=None, start="door_arrive", prio
                          (Script carry "base", PartAt), checked by ``base`` (motion_state.BaseModel)
         door_moved       anchor: where the part went
         door_release     open to pre_open, let go
-        door_leave       back along the reach-in, out of the contact (contact_extent, near_world)
+        door_leave       the reach-in backwards: the straight L back along u from where the ride left
+                         the hand (the bar out from behind the fingers -- the opened hook clears it by
+                         more than a contact gap, so a measured contact reads 0 m there)
         tuck             the first free of ``rest_goals`` (JointSet; never kept)
         door_settle      the part settles
 
@@ -112,7 +113,8 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
                             step=float(grip["ride_step"]), carry="base")
             spec = Spec(allow=Allow(hand=side, links="fingers", touch=(part,),
                                     reason="riding the part: the fingers on its handle"))
-            seg = scripted(kin, s, spec, script, stage, base=base, track=grip["track"],
+            # from the arm as the plan has it (q: on the handle), not as the State it moves on had it
+            seg = scripted(kin, with_arm(s, q, side), spec, script, stage, base=base, track=grip["track"],
                            clear={"open_width": pre_open, "leave": True})
             if not isinstance(seg, Failure):
                 s = at_base(with_part(s, part, script.s1), ride_base(script, s.base, script.s1))
@@ -124,9 +126,12 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
             s = with_width(s, side, pre_open)
         elif stage == "door_leave":
             with query(kin, s, FREE_HAND):                  # the TCP at the base the ride left it
-                R_now = kin.tcp(q)[1]
-            seg = kept or _contact(kin, s, Spec(allow=LEAVE_CONTACT), -(R_now @ u_tcp), "near_world", stage,
-                                   LEAVE_STEP, q, steps_per_wp=4, smooth=True)
+                p_now, R_now = kin.tcp(q)
+            spec = touch_part(side, part, "backing off the handle: the fingers may touch the part")
+            seg = kept or straight(kin, s, spec, p_now - float(grip["L"]) * (R_now @ u_tcp), R_now, stage,
+                                   step=step, q_from=q)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
         elif stage == "tuck":   # the first free of the fold, hanging: chosen again whenever it is built
             seg = free_leg(kin, s, FREE_HAND, JointSet(tuple(np.asarray(g, float) for g in rest_goals)), stage,
                            q_from=q)

@@ -67,6 +67,11 @@ def test_a_door_is_opened_with_one_grasp_and_the_base_riding_it():
     assert [a[0][DOOR] for a in base.asked] == pytest.approx(list(np.linspace(0.0, 0.62, 5)))   # <= 0.2 apart
     assert ((DOOR, "fingers"),) in kin.only                   # held: the arm, not its fingers, vs the door
     assert seg["door_release"].action == ("grip", 0.04, 70, False) and np.allclose(seg["tuck"].q_end, FOLD)
+    # the ride, the leave and the tuck from the arm on the handle, not from the posture the State started in
+    assert np.allclose(ride.q_from, seg["door_grasp"].q_end)
+    leave = seg["door_leave"]
+    assert np.allclose(leave.q_from, ride.q_end) and leave.qs and leave.info["length"] == pytest.approx(0.12)
+    assert np.allclose(seg["tuck"].q_from, leave.q_end)
 
 
 def test_the_door_sweeping_into_the_robot_fails_the_plan_at_the_ride():
