@@ -7,7 +7,8 @@ Each reviewed design (``v6_variants`` key) gets a ``scoring`` entry, copied onto
 - ``tiers``: best first; each ``{"name", "score", "goal", "why"}``.  ``goal`` is a goal in the usual form
   (``{"all": [...], "any": [...]}``), or None for the layout's own goal.  The episode scores the first tier
   whose goal holds on the final state; none holds -> ``not_ok`` (score 0).
-  A ``goal`` may also be ``{"by_layout": {lid: goal}}`` when the right spot depends on the layout.
+  A ``goal`` may also be ``{"by_layout": {lid: goal}}`` when the right spot depends on the layout, or
+  ``{"drop": [kind, ...]}``: the layout's goal without its atoms of those kinds (a looser tier).
 - ``not_ok``: what does not count at all (documentation; scored 0 because no tier holds).
 
 D = 0 means there is no substitution: the single tier is the layout's goal.
@@ -30,6 +31,19 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T01", "overhang_ready"): only(
         "the book on either dining table, the hand empty",
         "the book anywhere else (coffee table, island, counter, floor) or still held"),
+    # T01 table_seats: breakfast set for three along the east edge of dining_table_2; free slots: one too
+    # narrow between two seats, one wide at the far end away from every seat, one wide beside a seat; the
+    # west half empty.  Exposing a flat book first is a required step, not a fork
+    ("T01", "table_seats"): {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"},
+        {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
+         "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the "
+                "west half): out of the way, the guest has to reach for it"},
+        {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "clear_of"]},
+         "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"}],
+        "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; "
+                  "anywhere else or still held"},
 }
 
 
@@ -59,6 +73,10 @@ def tier_goal(tier: dict, task: dict, layout: str | None):
         return task["goal"]
     if "by_layout" in g:
         return g["by_layout"][layout]
+    if "drop" in g:
+        base = task["goal"]
+        return {k: [a for a in base.get(k, []) if not (isinstance(a, list) and a and a[0] in g["drop"])]
+                for k in ("all", "any") if k in base}
     return g
 
 

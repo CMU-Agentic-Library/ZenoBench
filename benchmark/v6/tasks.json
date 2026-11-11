@@ -760,6 +760,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "table_seats__seats_b": {
@@ -1076,6 +1109,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "table_seats__seats_c": {
@@ -1392,6 +1458,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "table_seats__seats_a_flat": {
@@ -1709,6 +1808,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "table_seats__seats_b_flat": {
@@ -2026,6 +2158,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "table_seats__seats_c_flat": {
@@ -2343,6 +2508,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "which_table__near_a": {
@@ -11706,6 +11904,39 @@
       "17": "table_seats__seats_b",
       "18": "table_seats__seats_b_flat",
       "19": "table_seats__seats_c"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the wide slot beside a seat: easy to read while eating, 5 cm clear of the dishes, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "on the set table, clear of the dishes, nothing moved, but beside no seat (the far end or the west half): out of the way, the guest has to reach for it"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "clear_of"
+         ]
+        },
+        "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"
+       }
+      ],
+      "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held"
      }
     },
     "which_table": {

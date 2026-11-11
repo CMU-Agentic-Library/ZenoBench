@@ -35,3 +35,9 @@ def test_first_tier_that_holds():
     assert score(s, task, None, lambda g: g["all"] == ["b"]) == {"tier": "worst", "score": 0.3, "D": 1}
     assert score(s, task, None, lambda g: False)["tier"] == "not_ok"
     assert score(None, task, None, lambda g: True) is None
+
+
+def test_drop_tier():
+    from benchmark.v6.scoring import tier_goal
+    task = {"goal": {"all": [["on", "b", "t"], ["near_any", "b", ["p"], 0.15], ["clear_of", "b", ["p"], 0.05]]}}
+    assert tier_goal({"goal": {"drop": ["near_any", "clear_of"]}}, task, None) == {"all": [["on", "b", "t"]]}
