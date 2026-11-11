@@ -8,19 +8,17 @@ import numpy as np
 
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
-from ..primitives import (LEAVE_GAP, TARGET_TOL, TARGET_TURN, JointSet, contact_extent, decide_ik, free_leg,
-                          off_support, query, straight)
-from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, held_frame
+from ..primitives import JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
+from ..tolerances import LEAVE_GAP, PLACE_TOL
+from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
 PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_pull_out", "tuck",
                 "place_settle")
 PLACE_ANCHORS = ("place_arrive", "place_landed")   # the base and the hold as they are; where it landed (docs 8.2)
 PLACE_RELAY = "place_reach"   # the decision the park search's ranking IK solves for (park_search.Problem.relay)
-# (m, rad) the set-down's start and end may come further off their pose than when built (the hold
-# moved in the hand, the base stopped off its park) and still hold: the tolerance the set-down is
-# judged by (TARGET_TOL, skills.PICK_REACH_TOL) -- less sets the load down a few mm off, no problem
-# (a pick is stricter: pick.PICK_TOL)
-PLACE_TOL = (TARGET_TOL, TARGET_TURN)
+# PLACE_TOL (m, rad): the set-down's start and end may come further off their pose than when built
+# (the hold moved in the hand, the base stopped off its park) and still hold -- less sets the load down
+# a few mm off (a pick is stricter: PICK_TOL).  Value and source: tolerances.py
 SETTLE_TICKS = 90           # physics ticks the object let go settles before the place is judged (inherited, unmeasured)
 
 
@@ -106,7 +104,7 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "tuck" else None
         if stage in PLACE_ANCHORS:
-            seg = Segment(stage, Spec(), q, kind="anchor")
+            seg = anchor(stage, q, s, (obj,) if obj else (), kin.side)
         elif stage == "place_reach" and kept:
             seg = kept
         elif stage == "place_reach":

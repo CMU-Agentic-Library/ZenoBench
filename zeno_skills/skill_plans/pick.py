@@ -9,23 +9,19 @@ import numpy as np
 
 from ..clearance import LEAVE_CONTACT, closing
 from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
-from ..primitives import HINT_REACH, HINT_TURN, free_leg, query, straight
-from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach
+from ..primitives import free_leg, query, straight
+from ..tolerances import HELD_POSE_MARGIN, PICK_TOL  # noqa: F401  (skill_plans re-exports)
+from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach, anchor
 
 PICK_STAGES = ("pick_arrive", "pick_open", "pick_reach", "pick_grasp", "pick_close", "pick_held", "pick_lift", "carry_in")
 PICK_ANCHORS = ("pick_arrive", "pick_held")   # the base and the object as they are; the hold measured (docs 8.2)
 PICK_RELAY = "pick_reach"     # the decision the park search's ranking IK solves for (park_search.Problem.relay)
-# (m, rad) the reach and the reach-in's end may come further off the grasp than when built (the object
-# moved, the base stopped off its park) and still hold: the reach-in, the close and the lift are a chain
-# of fine motions on that pose, so a pick is built again from the State past a decided solution's own
-# tolerance (decide_ik's HINT_REACH / HINT_TURN); a set-down allows more (place.PLACE_TOL)
-PICK_TOL = (HINT_REACH, HINT_TURN)
-# m the load's spheres grow by on a pick's carry planned before the close (the hold assumed from where
-# the load stood; the hand moves it a little closing): T01 overhang_ready 11-08, a carry planned with
-# no room collided by 0 mm once the book sat in the hand.  The carry only (the lift measures the
-# contact with the hold as assumed).  First value, to be set from the logged held_offset (planned vs
-# measured hold) of the targeted runs.
-HELD_POSE_MARGIN = 0.005
+# PICK_TOL (m, rad): the reach and the reach-in's end may come further off the grasp than when built
+# (the object moved, the base stopped off its park) and still hold -- the reach-in, the close and the
+# lift are a chain of fine motions on that pose, so a decided solution's own tolerance (decide_ik's);
+# a set-down allows more (PLACE_TOL).  HELD_POSE_MARGIN (m): the load's spheres grow by it on a pick's
+# carry planned before the close (the hold assumed from where the load stood) -- the carry only (the
+# lift measures the contact with the hold as assumed).  Values and sources: tolerances.py
 
 
 def plan_pick(kin, state, grasp, carry_goals, start="pick_arrive", prior=None, step=0.003):
@@ -71,7 +67,7 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "carry_in" else None
         if stage in PICK_ANCHORS:
-            seg = Segment(stage, Spec(), q, kind="anchor")
+            seg = anchor(stage, q, s, (name,), kin.side)
         elif stage == "pick_open":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", float(grasp["pre_open"]), 40, False))
             s = with_width(s, kin.side, grasp["pre_open"])

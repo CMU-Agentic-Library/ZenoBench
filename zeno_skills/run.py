@@ -13,8 +13,8 @@ from functools import partial
 
 import numpy as np
 
-from .motion_state import Failure, SkillFailure, clearing
-from .primitives import holds, ride_base
+from .motion_state import Failure, SkillFailure, clearing, state_offset, with_arm
+from .primitives import aim_excess, holds, ride_base
 
 
 def observe(act):
@@ -92,6 +92,29 @@ def _how_decided(seg):
     return {"decided": dict(seg.info["decided"])} if seg.info.get("decided") else {}
 
 
+def _aim_off(kin, state, seg):
+    """For the segment log of a contact pose's segment that holds (docs 9.3 step 2.1): [mm, deg] its
+    end stands further off its target than when built -- what PICK_TOL / PLACE_TOL judge -- and mm the
+    target itself moved since (primitives.aim_excess)."""
+    if seg.info.get("aim") is None:
+        return {}
+    ex = aim_excess(kin, state, seg)
+    return {} if ex is None else {"aim_off": [round(1000.0 * ex[0], 2), round(float(np.degrees(ex[1])), 3),
+                                              round(1000.0 * ex[2], 2)]}
+
+
+def _why_rebuilt(act, state, old):
+    """{name: why} for the motions an anchor's check built again (the anchor log): holds' reason for
+    the old segment from its own start in the State now, or "its start moved" when it would still
+    hold there (an earlier segment of the rest came out otherwise)."""
+    out = {}
+    for name, seg in old.items():
+        kin = act.arm_kin(seg.info.get("side", "right"))
+        why = holds(kin, with_arm(state, seg.q_from, kin.side), seg)
+        out[name] = "its start moved" if why is None else why[:160]
+    return out
+
+
 def _same_motion(a, b):
     """Two motion segments with the same waypoints (for the anchor log)."""
     return b is not None and len(a.qs) == len(b.qs) and np.allclose(a.q_from, b.q_from) and \
@@ -162,24 +185,33 @@ def _run(act, plan, rebuild, hooks):
                     **_how_decided(seg))
         else:
             act.log("segment", target=seg.name, reused=True, kind=seg.kind, waypoints=len(seg.qs),
-                    how=seg.info.get("how"), **_how_decided(seg))
-        if seg.kind == "anchor" and rebuild is not None and i + 1 < len(segs):
-            # where an error comes in (docs 8.2): the rest checked whole from the State now -- the
-            # builder keeps every motion that still holds as it is and builds the others again
-            nxt, t0 = segs[i + 1].name, time.time()
-            new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
-            if isinstance(new, Failure):
-                act.log("anchor", target=seg.name, kept=None, rebuilt=None, why=new.why,
-                        seconds=round(time.time() - t0, 3))
-                raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
-            old = {sg.name: sg for sg in segs[i + 1:]}
-            kept = [sg.name for sg in new.segments if sg.kind == "move" and old.get(sg.name) is sg]
-            # made again but otherwise: a motion made again the same (the tuck, never kept) is no rebuild
-            rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept
-                       and not _same_motion(sg, old.get(sg.name))]
-            segs = segs[:i + 1] + list(new.segments)
-            decisions.update(new.decisions)
-            act.log("anchor", target=seg.name, kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))
+                    how=seg.info.get("how"), **_how_decided(seg),
+                    **_aim_off(act.arm_kin(seg.info.get("side", "right")), state, seg))
+        if seg.kind == "anchor":
+            # where an error comes in (docs 8.2): how the State read back stands off the one the plan
+            # assumed here (9.3 step 2.1: the log the error bounds are set from)
+            ev = {"target": seg.name}
+            if seg.info.get("assumed") is not None:
+                ev["off"] = state_offset(seg.info["assumed"], state, seg.info.get("watch", ()))
+            if rebuild is not None and i + 1 < len(segs):
+                # the rest checked whole from the State now -- the builder keeps every motion that
+                # still holds as it is and builds the others again
+                nxt, t0 = segs[i + 1].name, time.time()
+                new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
+                if isinstance(new, Failure):
+                    act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, seconds=round(time.time() - t0, 3))
+                    raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
+                old = {sg.name: sg for sg in segs[i + 1:]}
+                kept = [sg.name for sg in new.segments if sg.kind == "move" and old.get(sg.name) is sg]
+                # made again but otherwise: a motion made again the same (the tuck, never kept) is no rebuild
+                rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept
+                           and not _same_motion(sg, old.get(sg.name))]
+                ev.update(kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))
+                if rebuilt:
+                    ev["why_rebuilt"] = _why_rebuilt(act, state, {n: old[n] for n in rebuilt if n in old})
+                segs = segs[:i + 1] + list(new.segments)
+                decisions.update(new.decisions)
+            act.log("anchor", **ev)
         h = hooks.get(seg.name, {})
         if "before" in h:
             h["before"](act)

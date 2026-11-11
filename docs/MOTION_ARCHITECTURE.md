@@ -279,7 +279,7 @@ class Spec:
 ### 4.3 `Segment` 和 `Plan`
 
 - `Segment`：名字（`pick_grasp`、`carry_in`…）、`Spec`、起点关节角 `q_from`、路点 `qs`、种类 `kind`、这段的目标 `target`（位姿或关节角，复核用）、动作 `action`、原语量出或选出的东西 `info`（长度、做法、方向 u、判据名）。
-- `kind`：`move`（手臂路点）、`drive`（底盘路径，手臂不动）、`scripted`（任务段：轨迹函数 `Script` 加执行器名，见 5.5）、`action`（不动手臂：`grip`、`wait`、`drive_part`、`toggle`）、`anchor`（锚点：误差进来的时刻，读回状态、复核剩下的计划，见 8.2；〔待加，9.3 第 2.1 步：`info` 记这一刻计划假设的值，日志里记实测偏差〕）。
+- `kind`：`move`（手臂路点）、`drive`（底盘路径，手臂不动）、`scripted`（任务段：轨迹函数 `Script` 加执行器名，见 5.5）、`action`（不动手臂：`grip`、`wait`、`drive_part`、`toggle`）、`anchor`（锚点：误差进来的时刻，读回状态、复核剩下的计划，见 8.2；`skill_plans._common.anchor` 做，`info["assumed"]` 是计划在这一刻假设的 `State`，`info["watch"]` 是技能瞄准的物体 / 部件，`run` 在这里读回 `State` 后把偏差记进 `anchor` 事件，9.3 第 2.1 步）。
 - 接触位姿所在的段（`pick_reach`、`pick_grasp`、`place_reach`、`place_down`）的 `info` 另记 `aim`（`motion_state.Aim`：目标怎么从 `State` 推出）、`aimed`（建这段时推出的位姿）、`end`（建这段时终点的 TCP）、`tol`（终点比建时多偏多少还算成立：`PICK_TOL` / `PLACE_TOL`），由 `skill_plans._common._aimed` 填，`holds` 复核（8.4）。
 - `Plan`：段的元组、服务的目标组 `goal`（现在没人填，目标组在 `Found.k`）、决定 `decisions`、构造耗时 `info["stage_s"]`（`plan_pick`、`plan_place` 都填，失败时在 `Failure.info` 里）。
 - `Plan.decisions`：{名字: 值}，`build` 做的、把几段绑在一起的决定（8.1），名字就是段名：接触位姿的关节角，记的是计划实际走到的解（`pick_reach` 是伸入段起点的解 = `pick_reach` 段的终点，`place_reach` 是放下位姿的解 = `place_down` 段的终点）——不是 `decide_ik` 给 `free_leg` 的解：TCP 直线走得通时腿停在直线自己的解上，后面的段从那里做（约一半的伸入段起点和放下段起点是这样）；搬运目标的选择（`carry_in`），记 (序号, 集合大小)；收臂姿态不算决定：它是最后一段，不绑别的段，每次构造按 `JointSet` 的顺序（收起优先）重新选，也不作为段复用。重做时作为 `prior` 传回 `build`（`motion_state.decisions_of` 把 `Plan` 或 {名字: 值} 统一成字典）；目标集合的选择经 `free_leg(first=)` 复用：集合大小一样（从 `State` 做出来的集合会随状态变样：`skills._carry_goals` 每个点 2 层或 3 层高度，同一个序号就是另一个目标）、那个目标还够得着（`PoseSet`）/ 还不碰（`JointSet`）就用它，否则重新选。
@@ -295,7 +295,7 @@ class Spec:
 
 退出时全部复原。现在是包一层：内部调旧的上下文管理器（`_planning`、`_fingers_checked`、`_carrying` 等）。全部技能迁完后改成直接实现。`touch` 的"其余部位照查"由 `Motion.path_free_only` / `Kinematics.path_free_only` 另查一遍，`primitives.free_path` 把两次查询合起来。
 
-### 4.5 阈值常数：一处出处（`tolerances.py`，待加）
+### 4.5 阈值常数：一处出处（`tolerances.py`）
 
 现在散在十来个文件加一份文档：
 
@@ -311,9 +311,11 @@ class Spec:
 | `park_search.py` | `RADII`、`YAW_OFFSETS`、`REACH_XY`、`MAX_PER_GOAL`、`BUILD_S`、`BUILD_MAX`…… |
 | `base_planner.py`、`collision.py` | `DEPTH_TOL`、`FOOTPRINT_MARGIN`（inherited, unmeasured）…… |
 | `COLLISION_PLAN.md` 第 8 节 | 力的几何替身（`PRESS_DEPTH`、`WIPE_PRESS`、`TOUCH_DEPTH`……） |
-| 还没有 | `BASE_TOL`、`HOLD_DRIFT`、任务段的余量（8.2）；`TARGET_TOL` 5 mm、`PICK_TOL` 1 mm 都没有实测（8.4） |
+| 还没有 | 任务段的余量（8.2）；`TARGET_TOL` 5 mm、`PICK_TOL` 1 mm 都没有实测（8.4） |
 
-目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
+**已做第一批（11-11，9.3 第 2.1 步）**：`zeno_skills/tolerances.py` 收了锚点误差上限、复核判据和原语的接触几何——`LEAVE_GAP`、`LEAVE_MARGIN`、`LEAVE_MAX`、`ON_LINE`、`ON_LINE_TURN`、`JOINT_GOAL_TOL`、`HINT_REACH`、`HINT_TURN`、`BASE_TOL`（还没有代码用）、`HELD_POSE_MARGIN`、`HOLD_DRIFT`（`None`，待测）、`PLAN_AT_START`、`EXTENT_TOL`、`TARGET_TOL`、`TARGET_TURN`、`PICK_TOL`、`PLACE_TOL`、`DOOR_TOL`。每个是 `_t(名字, 值, 单位, src)`，登记在 `TOLS`；`primitives`、`skill_plans` 从这里导入，原来的名字照旧能用（`primitives.TARGET_TOL` 等）。上表其余的（旧代码的、执行参数、搜索预算和代价）随迁移它们的那一步再搬。
+
+原来的目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
 
 ```python
 # 误差上限（8.2 的锚点表）
@@ -612,7 +614,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 接触位姿所在的段（带 `info["aim"]`）：在现在的底盘下这段终点的 TCP（`query` 里的 `kin.tcp(seg.q_end)`）离从现在的 `State` 推出的目标（`aim_pose`），比建这段时（`info["end"]` 离 `info["aimed"]`）多偏不超过这段的 `info["tol"]`，不成立记 `its end is ... further off its target than built (the target moved ...)`；目标物体不在 `State` 里（不在手里）也不成立。一个判据管三种误差：物体被碰动、物体在手里转了或滑了、底盘停偏。比的是"多偏了多少"而不是"离目标多远"：伸入段的终点本来就不在接触位姿上（在直线起点），IK 解、规划器的终点自己也有残差（cuRobo `POS_TOL` 4 mm / `ROT_TOL` 0.04 rad），那是建这段时已经接受的。容差按技能：
   - pick `PICK_TOL` = `HINT_REACH` / `HINT_TURN`（1 mm / 0.01 rad）：伸入、合爪、抬起是一串叠在抓取位姿上的精细动作，偏了就按实测状态重做（重做时 `decide_ik` 也是这个判据，超过它就重新求解）；
   - place `PLACE_TOL` = `TARGET_TOL` / `TARGET_TURN`（5 mm / 0.01 rad）：放下段执行后按 `PICK_REACH_TOL`（同一个 5 mm）判有没有被挡住，偏得比这少只是放偏几毫米，不重做（重做只能从放下段本身做，放下段只有 1–2 cm 长，偏几毫米的新直线就明显不竖直了）。
-  两个都没有实测数据（2.1 跳过）；仿真里底盘停下的偏差在日志精度 1 mm 以内、朝向 0.02° 以内；
+  两个都还没有实测数据（2.1 步的记录已加：`segment` 事件的 `aim_off`，等全量跑完用 `tools/anchor_stats.py` 第 2 节定）；仿真里底盘停下的偏差在日志精度 1 mm 以内、朝向 0.02° 以内；
 - 路点在现在的世界里不碰：按这段的 `Spec`，含 `touch`，零余量；
 - 离开段：用 `contact_extent` 从当前姿态重量，长度和计划差超过 `EXTENT_TOL`（`LEAVE_MARGIN` 的一半：终点仍至少留半个余量离开接触，多走的不查碰撞部分也不超过它）就不成立；
 - 任务段：`carry="base"` 的底盘离构造时不超过 `TARGET_TOL` / `TARGET_TURN`；耦合的部件在能起步的范围里（`part_start`，同 5.5）；按实测的物体 / 部件重查机器人——`carry="base"` 用同一个函数从构造时的底盘重算，`carry="arm"` 查存下的 `qs`，每段的部件在它的 `s` 处（底盘本体搜索时对静态世界查过，`holds` 没有 `BaseModel`，不重查）；
@@ -687,7 +689,12 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 1. **框架（第 ⑤ 层，已完成 11-08）**：`Skill`、`run_skill`、`drive`（包 `_base_plan` 和 `straight_base_move`）、`plan_navigate`；pick / place 改走 `run_skill`；`skill_plans.py` 拆成包（9.4），`Actuator` 协议（2.5），`SKILLS` 进 catalog（2.3），`plan_navigate` 第 1 段按约束复核持物姿态（删 `_carry_pose` 和它的 `FREE_ELSE_STRAIGHT`），`_drivable` 和 `plan_navigate` 用同一组行驶姿态（`travel_chain`）。navigate 一项就覆盖 1099 步。和计划的出入：`find_park` 多一个参数 `base`；协议方法叫 `arm_kin`；技能接口是过渡形式 `Job`；`min_bottom_z` 是"能抬就抬"不是约束（第 6 节）。
 2. **pick / place 收尾**，每项单独提交：
-   1. 〔没做，跳过了〕先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志（锚点的 `info`，4.3），跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL` / `PICK_TOL`；同一次提交里建 `tolerances.py`（4.5），把散落的阈值搬进去、补上来源标记；
+   1. 先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志（锚点的 `info`，4.3），跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL` / `PICK_TOL`；同一次提交里建 `tolerances.py`（4.5），把散落的阈值搬进去、补上来源标记。
+      **记录已加（11-11，未提交，等下一次全量出数）**：
+      - 锚点段带 `info["assumed"]`（计划在这一刻假设的 `State`）和 `info["watch"]`（pick：目标物体；place：放下的物体；开门：部件）。`run` 每个锚点都记一条 `anchor` 事件（以前只在复核时记），`off` = `motion_state.state_offset(假设, 读回)`：`base` [mm, °]（停车偏差）、`arm`（指令关节角和计划差多少）、`hold_<side>` {mm, °, 握法类别, 计划时的 `pad`}（`pick_held`：合爪前假设的握法对实测；`place_arrive` / `arrive`：开车这一路握法变了多少 = 漂移）、`watch`（瞄准的物体 [mm, °] / 部件关节值差；`place_landed` 是落点对预测）、`moved`（其它物体离假设超过 5 mm 的，最多 5 个：被碰动）。复核时 `why_rebuilt` 记每个重做的段为什么不成立（`holds` 的原因，或"起点变了"）。
+      - 接触位姿所在的段（带 `aim`）执行前的 `segment` 事件加 `aim_off` = [比建时多偏 mm, °, 目标自己挪了 mm]（`primitives.aim_excess`，和 `holds` 同一个算法）：`PICK_TOL` / `PLACE_TOL` 切的就是这个量。
+      - `tools/anchor_stats.py RUN_DIR`（只用标准库）汇总：各锚点的偏差分布和超过几个候选阈值的个数、`aim_off` 分布、`held_offset` 按握法、锚点复核 kept / rebuilt / 失败和原因、段的重做、`decide_ik` 的 prior / solved、停车点搜索各阶段耗时和 `filter_s`、构造失败原因——第 10 节几个"先看数据"的问题（锚点处重做做不出来有多少、pick 到达锚点是不是几乎每次重做、搬运段和 place 搜索构造前的耗时）也从这里读。
+      - `tolerances.py`（4.5）第一批建好。
    2. **已做（11-09，376b692）**：`decide_ik`（5.7）、`Plan.decisions`（4.3）、`build` 的 `prior`。和计划的出入：`Problem.relay` 告诉 `find_park` 排序 IK 解属于哪个决定；搬运目标的选择也复用（(序号, 集合大小)）；`Plan.decisions` 记计划实际走到的解。针对性对照新 4/8、旧 3/8（T20 bottle_on_cabinet 改好：放下段起点的解原样用，不再被 `Motion.ik` 的可操作度项换掉）；
    3. **已做（11-10，c21cb48）**：目标从 `State` 推出（`Aim`，第 6 节），删 `_pick_ready` / `_place_ready` 开头的整份重做和 place 开车后的重新测量，`plan_place` 去掉 `u_out`。sticky/gt 下 5 集事件日志和旧代码逐条相同；
    4. **已做（11-10，83a4209、43eaa13，审计修正未提交）**：`holds` 挪进 `primitives`；锚点段，`run` 在锚点复核剩下的整份（`anchor` 事件记 `kept` / `rebuilt` / `seconds`）；`build` 原样复用 `prior` 里还成立的运动段（`_kept`）。针对性对照 5 集成败同旧代码，31 个锚点没有一次重做，每次 0.04–0.35 s。
@@ -737,7 +744,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 | 搜索第 3 步的批量 IK（不查碰撞，排序 + 当 `prior`）要不要 | 先留；量排序准不准，不准就去掉。去掉后 `decide_ik` 只是少一个种子，手臂质量从做好的计划里算 |
 | 构造预算 | 按时间（`BUILD_S` 20 s）；收臂失败太慢的问题先解决，再看要不要调 |
 | 持物去搬运姿态太慢 | 调小保持倾角规划的尝试次数，或让搬运目标优先选关节直走不倾斜超标的 |
-| `BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 的值 | 9.3 第 2.1 步先记录实测偏差再定；现在 `PICK_TOL` 取 `HINT_REACH` 1 mm、`PLACE_TOL` 取 `PICK_REACH_TOL` 5 mm（8.4） |
+| `BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 的值 | 9.3 第 2.1 步先记录实测偏差再定（记录已加，下一次全量跑完看 `tools/anchor_stats.py`）；现在 `PICK_TOL` 取 `HINT_REACH` 1 mm、`PLACE_TOL` 取 `PICK_REACH_TOL` 5 mm（8.4） |
 | 底盘误差用重做还是余量 | 重做（8.2）。要是 pick 的到达锚点（`PICK_TOL` 1 mm）几乎每次都重做，而且重做常碰上慢的搬运段规划，再考虑放宽或给 `free_leg` 加余量 |
 | 锚点处重做做不出来，要不要换停车点再找一次 | 倾向任务层最多再找一次：约束不变，不算 fallback；要先看 9.3 第 2.1 步的记录里这种情况有多少 |
 | 任务段的余量（`Spec.margin`） | 底盘带门的停止线不用实测（5.5，`RIDE_SLIP_LEADS`）；余量等门迁移后看意外接触，有手臂蹭门板再按 `ride_end` 的落后量定 |

@@ -14,14 +14,14 @@ travel_chain is the one source of the postures the base drives in: the park sear
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Callable
 
 import numpy as np
 
 from ..motion_state import Failure, Plan, Segment, Spec, at_base, with_arm
 from ..primitives import JointSet, Joint, drive, free_leg, query
-from ._common import FREE_HAND, FREE_LOAD, _move
+from ._common import FREE_HAND, FREE_LOAD, _move, anchor
 
 NAV_STAGES = ("arm", "left_fold", "drive", "arrive")
 SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more are one (no swing, no chain
@@ -114,7 +114,7 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
             if isinstance(seg, Failure):
                 return seg
         else:                                               # arrive
-            seg = Segment("arrive", Spec(), np.asarray(s.q_right, float), kind="anchor",
+            seg = replace(anchor("arrive", s.q_right, s),
                           target=("base", None if goal is None else tuple(map(float, goal))))
         if seg is None:
             continue

@@ -15,16 +15,17 @@ import numpy as np
 from ..clearance import LEAVE_CONTACT, Allow, closing
 from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding,
                             released, with_part, with_width)
-from ..primitives import HINT_REACH, HINT_TURN, JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
-from ._common import FREE_HAND, T_of, _aimed, _contact, _kept, _reach
+from ..tolerances import DOOR_TOL
+from ..primitives import JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
+from ._common import FREE_HAND, T_of, _aimed, _contact, _kept, _reach, anchor
 
 DOOR_STAGES = ("door_arrive", "door_open_hand", "door_reach", "door_grasp", "door_close_hand", "door_held",
                "door_ride", "door_moved", "door_release", "door_leave", "tuck", "door_settle")
 DOOR_ANCHORS = ("door_arrive", "door_held", "door_moved")   # the base and the part; the hold; where the part went
 DOOR_RELAY = "door_reach"     # the decision the park search's ranking IK solves for (park_search.Problem.relay)
-# (m, rad) the reach and the reach-in's end may come further off the handle than when built (the part
-# moved, the base stopped off its park): the hook is a fine motion onto the bar, as a pick's grasp
-DOOR_TOL = (HINT_REACH, HINT_TURN)
+# DOOR_TOL (m, rad): the reach and the reach-in's end may come further off the handle than when built
+# (the part moved, the base stopped off its park) -- the hook is a fine motion onto the bar, as a
+# pick's grasp.  Value and source: tolerances.py
 DOOR_SETTLE_TICKS = 60        # physics ticks the part settles after the hand left it (skills._move_articulated's)
 LEAVE_STEP = 0.004            # m: the straight back off the handle, measured at this step (contact_extent)
 
@@ -81,7 +82,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
         t0 = time.time()
         kept = _kept(kin, s, q, prior_plan, stage) if stage != "tuck" else None
         if stage in DOOR_ANCHORS:
-            seg = Segment(stage, Spec(), q, kind="anchor")
+            seg = anchor(stage, q, s, (part,), side)
         elif stage == "door_open_hand":
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", pre_open, 30, False))
             s = with_width(s, side, pre_open)

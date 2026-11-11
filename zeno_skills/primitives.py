@@ -26,15 +26,12 @@ import numpy as np
 from .kinematics import tips_over
 from .motion_state import Failure, Segment, Spec, aim_pose, at_base, touches, with_part
 
-LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its load) still touches it
-LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
-LEAVE_MAX = 0.06          # m: ...and no further
-ON_LINE = 0.005           # m: a TCP this close to a straight (and on it before its end) is on it
-ON_LINE_TURN = 0.01       # rad: ...and turned this little from the straight's rotation
-JOINT_GOAL_TOL = 0.01     # rad: a planned leg ending this close (every joint) to its joint goal ends at it
+# the contact geometry and the checks' thresholds: one source with their units and where their values
+# come from (tolerances.py, docs 4.5); here as the primitives' own names
+from .tolerances import (EXTENT_TOL, HINT_REACH, HINT_TURN, JOINT_GOAL_TOL, LEAVE_GAP, LEAVE_MARGIN,  # noqa: F401
+                         LEAVE_MAX, ON_LINE, ON_LINE_TURN, PLAN_AT_START, TARGET_TOL, TARGET_TURN)
+
 DENSE = 0.01              # rad: joint waypoints of a joint-space leg about this far apart (Rig._dense)
-HINT_REACH = 0.001        # m: a decided solution whose TCP is this close to its pose still decides it (decide_ik)
-HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
 
 
 # ------------------------------------------------------------------------- goals of free_leg
@@ -588,18 +585,24 @@ def drive_straight(base, state, target, name, spec=None, **drive_kw):
 
 
 # ------------------------------------------------------------------------- checking a segment (docs 8.4)
-PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
-                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
-EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this of the planned one is
-                          # that one -- its end still clears with half the margin, and it runs at most
-                          # this much further unchecked.  (One step, 2 mm, was the measure's own
-                          # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
-TARGET_TOL = 0.005        # m: the tolerance a contact pose's execution is judged by (skills.PICK_REACH_TOL:
-                          # a hand stopped this far short of its pose is blocked) -- a set-down whose end
-                          # is off its target by less does what it was built for (skill_plans.PLACE_TOL).
-                          # No measured error behind it (9.3 step 2.1 skipped)
-TARGET_TURN = HINT_TURN   # rad: ...turned this far
+# PLAN_AT_START, EXTENT_TOL, TARGET_TOL, TARGET_TURN: tolerances.py (imported above)
 TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}   # contact criteria by name
+
+
+def aim_excess(kin, state, seg):
+    """A contact pose's segment (info["aim"]) in ``state``: (off m, rot rad) its end at the state's base
+    stands further off the pose the state gives now than it did when built (holds judges these by
+    info["tol"]), and (m, rad) the pose itself moved since -- None when the target is not in the state."""
+    aim = seg.info["aim"]
+    now = aim_pose(state, aim)
+    if now is None:
+        return None
+    (p0, R0), (p_b, R_b) = seg.info["aimed"], seg.info["end"]
+    with query(kin, state, seg.spec):                # kin.tcp at the state's base
+        p_e, R_e = kin.tcp(seg.q_end)
+    off = float(np.linalg.norm((p_e - now[0]) - (np.asarray(p_b, float) - p0)))
+    rot = turn(R_e @ now[1].T, np.asarray(R_b, float) @ R0.T)
+    return off, rot, float(np.linalg.norm(now[0] - p0)), turn(R0, now[1])
 
 
 def holds(kin, state, seg):
@@ -624,20 +627,15 @@ def holds(kin, state, seg):
     q = state.q(kin.side)
     if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
         return "the arm is not where the segment starts"
-    aim = seg.info.get("aim")
-    if aim is not None:
-        now = aim_pose(state, aim)
-        if now is None:
-            return f"its target {aim.obj} is not in the state"
-        (p0, R0), (p_b, R_b), (tol, tol_turn) = seg.info["aimed"], seg.info["end"], seg.info["tol"]
-        with query(kin, state, seg.spec):                # kin.tcp at the state's base
-            p_e, R_e = kin.tcp(seg.q_end)
-        off = float(np.linalg.norm((p_e - now[0]) - (np.asarray(p_b, float) - p0)))
-        rot = turn(R_e @ now[1].T, np.asarray(R_b, float) @ R0.T)
+    if seg.info.get("aim") is not None:
+        ex = aim_excess(kin, state, seg)
+        if ex is None:
+            return f"its target {seg.info['aim'].obj} is not in the state"
+        off, rot, moved, moved_turn = ex
+        tol, tol_turn = seg.info["tol"]
         if off > tol or rot > tol_turn:
             return (f"its end is {off:.4f} m, {np.degrees(rot):.2f} deg further off its target than built "
-                    f"(the target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
-                    f"{np.degrees(turn(R0, now[1])):.2f} deg)")
+                    f"(the target moved {moved:.4f} m, turned {np.degrees(moved_turn):.2f} deg)")
     if seg.kind == "drive":
         return None
     if seg.kind == "scripted":

@@ -445,6 +445,9 @@ def test_run_builds_a_pick_again_where_the_object_now_stands(monkeypatch):
     assert [sg.name for sg in done] == list(PICK_STAGES)              # the rest of the pick, built from there
     arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "pick_arrive")
     assert arrive["kept"] == [] and arrive["rebuilt"] == ["pick_reach", "pick_grasp", "pick_lift", "carry_in"]
+    # the error logged (9.3 step 2.1): the cup 20 mm off where the plan assumed it; why each was rebuilt
+    assert arrive["off"]["watch"]["cup"] == [20.0, 0.0] and arrive["off"]["base"] == [0.0, 0.0]
+    assert "further off its target" in arrive["why_rebuilt"]["pick_reach"]
 
 
 def test_an_anchor_keeps_the_rest_as_it_is_while_it_holds(monkeypatch):
@@ -462,11 +465,18 @@ def test_an_anchor_keeps_the_rest_as_it_is_while_it_holds(monkeypatch):
     arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "pick_arrive")
     assert arrive["rebuilt"] == [] and arrive["kept"] == [m.name for m in moves]
     assert not any(e == "segment" and kw.get("reused") is False for e, kw in rig.events)
-    # no rebuild (a plan from elsewhere, docs 8.8): an anchor checks nothing ahead
+    assert "why_rebuilt" not in arrive and arrive["off"]["watch"] == {"cup": [0.0, 0.0]}
+    # the arm a plan assumes at an anchor is where its segments leave it (not where the plan began)
+    held = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "pick_held")
+    assert held["off"]["arm"] == 0.0
+    # the contact pose's segments log how much further off their target they stand than built: nothing
+    reach = next(kw for e, kw in rig.events if e == "segment" and kw["target"] == "pick_grasp")
+    assert reach["aim_off"] == [0.0, 0.0, 0.0]
+    # no rebuild (a plan from elsewhere, docs 8.8): an anchor checks nothing ahead, only logs the error
     rig2 = FakeRig(kin, q0)
     rig2.grip = lambda *a, **k: None
     RUN.run(rig2, plan, None)
-    assert not any(e == "anchor" for e, _ in rig2.events)
+    assert all("kept" not in kw and "off" in kw for e, kw in rig2.events if e == "anchor")
 
 
 def test_a_place_anchor_logs_no_rebuild_for_a_tuck_made_again_the_same(monkeypatch):

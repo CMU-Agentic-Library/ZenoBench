@@ -73,6 +73,16 @@ def _kept(kin, state, q, prior, name):
     return seg if holds(kin, with_arm(state, q, kin.side), seg) is None else None
 
 
+def anchor(name, q, state, watch=(), side="right"):
+    """An anchor (docs 8.2): where an error comes in, nothing moves.  info["assumed"] the State the
+    plan assumes there -- ``state`` with ``side``'s arm at q (a plan carries its arm in q, not in the
+    State it moves on) -- info["watch"] the objects / parts it aims at: run logs how the State read
+    back stands off it (motion_state.state_offset, 9.3 step 2.1)."""
+    q = np.asarray(q, float)
+    return Segment(name, Spec(), q, kind="anchor",
+                   info={"assumed": with_arm(state, q, side), "watch": tuple(watch), "side": side})
+
+
 def _move(seg, **info):
     """seg with how it is executed added to its info (steps per waypoint, smooth)."""
     return Segment(seg.name, seg.spec, seg.q_from, seg.qs, seg.kind, seg.target, seg.action, {**seg.info, **info})

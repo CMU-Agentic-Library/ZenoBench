@@ -91,6 +91,29 @@ def test_a_state_is_never_changed_in_place():
     assert s2.held() is None and "cup" in s2.objects
 
 
+def test_the_offset_of_a_state_read_back_from_the_one_assumed():
+    # 9.3 step 2.1: the base stopped 3 mm / 0.5 deg off, the load slid 2 mm in the hand, a cup was
+    # knocked 1 cm, a book 1 mm (under MOVED_MM: not listed), the door 0.1 rad further than assumed
+    from zeno_skills.motion_state import state_offset, with_object, with_part
+
+    def at(x, y=0.0):
+        T = np.eye(4)
+        T[:3, 3] = [x, y, 0.0]
+        return T
+    a = with_part(with_object(with_object(holding(at_base(_state(), (1.0, 2.0, 90.0)), "right",
+                                                   Held("box", at(0.0), pad=0.005)), "cup", at(1.0)), "book", at(2.0)),
+                  "door", 0.5)
+    n = with_part(with_object(with_object(holding(at_base(a, (1.003, 2.0, 90.5)), "right", Held("box", at(0.002))),
+                                          "cup", at(1.01)), "book", at(2.001)), "door", 0.6)
+    off = state_offset(a, n, watch=("door", "box"))
+    assert off["base"] == [3.0, 0.5] and off["arm"] == 0.0
+    assert off["hold_right"] == {"obj": "box", "kind": "pinch", "mm": 2.0, "deg": 0.0, "pad_mm": 5.0}
+    assert off["watch"] == {"door": 0.1}                    # box is held: the hold says it
+    assert off["moved"] == {"cup": [10.0, 0.0]} and "hold_left" not in off
+    # the hand let go in the meantime
+    assert state_offset(a, released(n, "right", "box", at(0.0)))["hold_right"] == {"assumed": "box", "now": None}
+
+
 def test_holding_is_what_the_hand_holds():
     s = holding(_state(), "right", Held("cup", np.eye(4), "pinch"))
     assert s.held("right").name == "cup" and s.held("left") is None

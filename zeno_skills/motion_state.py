@@ -236,6 +236,66 @@ def with_part(s: State, name, value) -> State:
     return replace(s, parts={**s.parts, name: float(value)})
 
 
+MOVED_MM = 5.0      # mm: an object other than the watched ones this far off where a plan assumed it is listed
+MOVED_MAX = 5       # ...the farthest this many
+
+
+def _frame_off(Ta, Tb):
+    """(mm, deg) between two 4x4 frames: the origins apart, the rotation between them."""
+    Ta, Tb = np.asarray(Ta, float), np.asarray(Tb, float)
+    c = (np.trace(Ta[:3, :3].T @ Tb[:3, :3]) - 1.0) / 2.0
+    return round(1000.0 * float(np.linalg.norm(Tb[:3, 3] - Ta[:3, 3])), 2), \
+        round(float(np.degrees(np.arccos(np.clip(c, -1.0, 1.0)))), 3)
+
+
+def state_offset(assumed: State, now: State, watch=()) -> dict:
+    """How the State read back at an anchor (``now``) stands off the State the plan assumed there
+    (``assumed``): the error that came in since the plan was built (docs/MOTION_ARCHITECTURE.md 8.2,
+    9.3 step 2.1), JSON-ready, for the log only -- nothing is judged here.
+      base       [mm, deg] the base off where the plan put it (the park: how it stopped)
+      arm        rad, the commanded arm joints off the plan's (PLAN_AT_START judges them)
+      hold_<side> {obj, kind, mm, deg, pad_mm} the hold (Held.T_tcp_obj, TCP frame) off the assumed one:
+                 at the close the planned hold against the measured, after a drive the slip; or
+                 {assumed, now} when the hand holds another object or none
+      watch      {name: [mm, deg]} the objects the skill aims at (an articulated part: its joint value
+                 off, rad or m; None: not in ``now``); one held in either State is the hold's
+      moved      {name: [mm, deg]} the others off by more than MOVED_MM (knocked), the MOVED_MAX farthest"""
+    b0, b1 = assumed.base, now.base
+    out = {"base": [round(1000.0 * float(np.hypot(b1[0] - b0[0], b1[1] - b0[1])), 2),
+                    round(abs((float(b1[2]) - float(b0[2]) + 180.0) % 360.0 - 180.0), 3)],
+           "arm": round(float(max(np.max(np.abs(np.asarray(now.q_right, float) - np.asarray(assumed.q_right, float))),
+                                  np.max(np.abs(np.asarray(now.q_left, float) - np.asarray(assumed.q_left, float))))),
+                        4)}
+    held = set()
+    for side in SIDES:
+        h0, h1 = assumed.held(side), now.held(side)
+        held |= {h.name for h in (h0, h1) if h is not None}
+        if h0 is None and h1 is None:
+            continue
+        if h0 is None or h1 is None or h0.name != h1.name:
+            out[f"hold_{side}"] = {"assumed": h0 and h0.name, "now": h1 and h1.name}
+            continue
+        mm, deg = _frame_off(h0.T_tcp_obj, h1.T_tcp_obj)
+        out[f"hold_{side}"] = {"obj": h0.name, "kind": h0.kind, "mm": mm, "deg": deg, "pad_mm": round(1000.0 * h0.pad, 1)}
+    seen = {}
+    for name in watch:
+        if name in held:
+            continue
+        if name in assumed.parts:
+            v = now.parts.get(name)
+            seen[name] = None if v is None else round(float(v) - float(assumed.parts[name]), 4)
+        elif name in assumed.objects:
+            seen[name] = list(_frame_off(assumed.objects[name], now.objects[name])) if name in now.objects else None
+    if seen:
+        out["watch"] = seen
+    moved = sorted(((name, _frame_off(T, now.objects[name])) for name, T in assumed.objects.items()
+                    if name in now.objects and name not in held and name not in watch), key=lambda x: -x[1][0])
+    moved = {n: list(d) for n, d in moved[:MOVED_MAX] if d[0] > MOVED_MM}
+    if moved:
+        out["moved"] = moved
+    return out
+
+
 def touch_entries(touch):
     """Spec.touch as ((name, links), ...): a bare name is the fingers'."""
     out = []

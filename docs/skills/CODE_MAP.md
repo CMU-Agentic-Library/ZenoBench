@@ -35,8 +35,9 @@ skills.py         技能本体：pick / place / navigate / 开关门 / push / �
   │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
   │                       scripted（任务段：Script + 耦合 hinge / slider / still，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
   │   run.py            ④ observe / execute / run：逐段复核、锚点复核剩下的整份、不成立就用 build 重做剩下的、执行；
-  │                       只经过 Actuator（Rig 实现）碰仿真
-  │   motion_state.py   State / Spec / Segment / Plan / Failure（纯数据）；协议 Actuator、BaseModel
+  │                       只经过 Actuator（Rig 实现）碰仿真；锚点记实测偏差（anchor 事件 off），接触位姿段记 aim_off
+  │   motion_state.py   State / Spec / Segment / Plan / Failure（纯数据）；协议 Actuator、BaseModel；state_offset
+  │   tolerances.py     误差上限、复核判据、接触几何的阈值，各带单位和来源（TOLS）；primitives / skill_plans 从这里导入
   ▼                        ▼
 rig.py            Rig：机器人运动的执行入口 follow / grip / clear（监视），实现 Actuator（snapshot / arm_kin /
   │                    declare / contact_allow）；旧的 move_to / move_to_any / leave / joint_path / tuck /
