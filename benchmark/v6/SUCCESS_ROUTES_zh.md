@@ -461,17 +461,6 @@
         - `wooden_block_b` 叠在 `toy_block` 上
         - `wooden_block_a` 叠在 `wooden_block_b` 上
         - `toy_block` 在 `kitchen_island/top` 上
-- **次好（0.6）**：
-
-  - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 2 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `wooden_block_a` 在 `kitchen_island/top` 上
 - **最不好（0.3）**：
 
   - 手里空着
@@ -500,7 +489,7 @@
       - `wooden_block_b` 叠在 `kitchen_sponge` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `kitchen_sponge` 在 `kitchen_island/top` 上
-- **不行（0）**：no stack, or the tower not on the island
+- **不行（0）**：two levels only (the third toy not found); no stack; the tower not on the island
 
 
 **参考调用顺序**：
@@ -557,59 +546,36 @@
       - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
       - `floor_block` 离台面边缘至少 5 cm
       - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-- **次好（0.6）**：
-
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 4 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 5 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 6 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
 - **最不好（0.3）**：
 
   - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 2 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 3 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 4 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 5 组：
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 6 组：
       - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：a thing on the table moved; the tower not on a dining table; nothing stacked
+    - 第 4 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 5 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 6 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+- **不行（0）**：two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked
 
 
 **参考调用顺序**：
@@ -642,37 +608,20 @@
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
       - `wooden_block_b` 离台面边缘至少 5 cm
       - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-- **次好（0.6）**：
-
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `rubber_duck` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 2 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `rubber_duck` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
 - **最不好（0.3）**：
 
   - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 2 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 3 组：
-      - `rubber_duck` 叠在 `wooden_block_a` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 4 组：
       - `rubber_duck` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `rubber_duck` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：a thing on the table moved; the tower not on a dining table; nothing stacked
+- **不行（0）**：two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked
 
 
 **参考调用顺序**：
@@ -686,32 +635,78 @@
 
 **指令**：把三块积木在岛台上叠成一座塔。有一块我收进客厅靠墙的矮柜里了，找完把柜门关好。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 手里空着
-- `kitchen_cabinet_4` 关着
-- `kitchen_cabinet_6` 关着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 在 `kitchen_island/top` 上
-  - 第 2 组：
-    - `floor_block` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 在 `kitchen_island/top` 上
-  - 第 3 组：
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 在 `kitchen_island/top` 上
-  - 第 4 组：
-    - `wooden_block_b` 叠在 `floor_block` 上
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 在 `kitchen_island/top` 上
+- **好（1.0）**：
+
+  - 手里空着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 在 `kitchen_island/top` 上
+    - 第 4 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 在 `kitchen_island/top` 上
+- **次好（0.6）**：
+
+  - 手里空着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 在 `kitchen_island/top` 上
+    - 第 4 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 在 `kitchen_island/top` 上
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 在 `kitchen_island/top` 上
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 在 `kitchen_island/top` 上
+    - 第 4 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 在 `kitchen_island/top` 上
+- **不行（0）**：two blocks only (the third not found); no stack; a block dropped
+
 
 **参考调用顺序**：
 

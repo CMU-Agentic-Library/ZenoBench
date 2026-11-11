@@ -14,7 +14,8 @@ Each reviewed design (``v6_variants`` key) gets a ``scoring`` entry, copied onto
 D = 0 means there is no substitution: the single tier is the layout's goal.
 
 Success (11-11, user): every tier counts as task success (episode.Episode.check); only the score differs.
-``not_ok`` is failure.
+``not_ok`` is failure.  A task left incomplete (fewer pieces than asked, e.g. two levels of a three-level
+tower) is never a tier: it is ``not_ok``.
 
 Decisions are reviewed one design at a time with the user; benchmark/v6/SCORING_zh.md records them.
 """
@@ -156,53 +157,51 @@ def _tower_orders(items, top_only=()) -> list:
 
 def _third_toy_elsewhere(task: dict) -> dict:
     """T02 third_toy_elsewhere: two blocks on the island, a block-sized sponge beside them (no toy), the third
-    toy in another room."""
+    toy in another room.  Two levels only is the task not done (user 11-11)."""
     lays = task["v6_variants"]["third_toy_elsewhere"]["layouts"]
     a, b = "wooden_block_a", "wooden_block_b"
-    two = {lid: {"all": [["near_start", "kitchen_sponge", 0.03], ["hand_empty", "right"]],
-                 "any": [[["on_top_of", a, b], ["on", b, "kitchen_island/top"]],
-                         [["on_top_of", b, a], ["on", a, "kitchen_island/top"]]]} for lid in lays}
     sponge = {lid: {"all": [["hand_empty", "right"]], "any": _tower_orders((a, b, "kitchen_sponge"))}
               for lid in lays}
     return {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
          "why": "three toys on the island, the third one fetched from the other room"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": two},
-         "why": "the two blocks stacked on the island, the sponge untouched: two levels only, nothing misused"},
         {"name": "worst", "score": 0.3, "goal": {"by_layout": sponge},
          "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"}],
-        "not_ok": "no stack, or the tower not on the island"}
+        "not_ok": "two levels only (the third toy not found); no stack; the tower not on the island"}
 
 
-def _tower_for_kid(design: str, top_only=()):
+def _tower_for_kid(design: str):
     def build(task: dict) -> dict:
         """T02 tower_for_kid(_duck): three pieces spread over the house, the tower on a dining table, clear of
-        the edge and of the table's things, which stay put."""
-        lays = task["v6_variants"][design]["layouts"]
-        a, b = "wooden_block_a", "wooden_block_b"
-        pieces = (a, b, *top_only) if top_only else (a, b, "floor_block")
-        tables = ["dining_table_2/top", "dining_table_1/top"]
-        two = {}
-        for lid in lays:
-            kept = [x for x in task["variants"][lid]["goal"]["all"] if x[0] in ("near_start", "hand_empty")]
-            two[lid] = {"all": kept, "any": [[["on_top_of", x, y], ["on_any", y, tables]]
-                                             for x in pieces for y in pieces if x != y and y not in top_only]}
+        the edge and of the table's things, which stay put.  Two pieces only is the task not done."""
         return {"D": 1, "tiers": [
             {"name": "best", "score": 1.0, "goal": None,
              "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, "
                     "nothing moved"},
-            {"name": "second", "score": 0.6, "goal": {"drop": ["away_from_edge", "clear_of"]},
+            {"name": "worst", "score": 0.3, "goal": {"drop": ["away_from_edge", "clear_of"]},
              "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or "
-                    "the cereal: easy to knock over"},
-            {"name": "worst", "score": 0.3, "goal": {"by_layout": two},
-             "why": "two pieces stacked on a dining table (the third not found), nothing moved"}],
-            "not_ok": "a thing on the table moved; the tower not on a dining table; nothing stacked"}
+                    "the cereal: easy to knock over"}],
+            "not_ok": "two pieces only (the third not found); a thing on the table moved; the tower not on a dining "
+                      "table; nothing stacked"}
     return build
+
+
+# T02 block_put_away: two blocks on the island (A 5 mm over the edge, no base), the third in one of two closed
+# low cabinets; the instruction asks to close the doors after the search
+BLOCK_PUT_AWAY = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "three blocks in one tower on the island, the base 5 cm from the edge, both cabinet doors closed"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["away_from_edge"]},
+     "why": "the tower done and the doors closed, but on the edge (block A used as the base where it lay)"},
+    {"name": "worst", "score": 0.3, "goal": {"drop": ["away_from_edge", "is_closed"]},
+     "why": "the tower done, but a cabinet door left open (the instruction asks to close them)"}],
+    "not_ok": "two blocks only (the third not found); no stack; a block dropped"}
+SCORING[("T02", "block_put_away")] = BLOCK_PUT_AWAY
 
 
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
-         ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck", top_only=("rubber_duck",)),
+         ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
