@@ -723,16 +723,20 @@
 
 **情况**：只有电视柜上的宽储物箱能用 → 两样都放进去
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `rolling_pin` 在 `wide_storage_bin` 里
-    - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - 第 2 组：
-    - `rolling_pin` 在 `mug` 里
-    - `breakfast_spoon` 在 `mug` 里
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `rolling_pin` 在 `wide_storage_bin` 里
+      - `breakfast_spoon` 在 `wide_storage_bin` 里
+    - 第 2 组：
+      - `rolling_pin` 在 `mug` 里
+      - `breakfast_spoon` 在 `mug` 里
+- **不行（0）**：one left out, put in a cabinet or drawer instead, still held or dropped
+
 
 **参考调用顺序**：
 
@@ -742,13 +746,34 @@
 
 **情况**：岛台上餐具旁边有个小储物箱（22 × 17 cm），里面已经放了两块积木：勺子还放得下，22 cm 的擀面杖平放、斜放都放不进；宽储物箱在卧室矮书架上 → 看剩下的空间判断放不下，两样要放同一个容器，所以都拿去卧室的宽箱；小箱里的积木不动。小箱在岛台上时开局就在眼前，还没见到别的容器就得先排除它
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `rolling_pin` 在 `wide_storage_bin` 里
-- `breakfast_spoon` 在 `wide_storage_bin` 里
-- 手里空着
-- `small_bin_block_1` 在 `small_storage_bin` 里
-- `small_bin_block_2` 在 `small_storage_bin` 里
+- **好（1.0）**：
+
+  - `rolling_pin` 在 `wide_storage_bin` 里
+  - `breakfast_spoon` 在 `wide_storage_bin` 里
+  - 手里空着
+  - `small_bin_block_1` 在 `small_storage_bin` 里
+  - `small_bin_block_2` 在 `small_storage_bin` 里
+- **次好（0.6）**：
+
+  - `rolling_pin` 在 `small_storage_bin` 里
+  - `breakfast_spoon` 在 `small_storage_bin` 里
+  - `small_bin_block_1` 在 `small_storage_bin` 里
+  - `small_bin_block_2` 在 `small_storage_bin` 里
+  - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `rolling_pin` 在 `wide_storage_bin` 里
+      - `breakfast_spoon` 在 `wide_storage_bin` 里
+    - 第 2 组：
+      - `rolling_pin` 在 `small_storage_bin` 里
+      - `breakfast_spoon` 在 `small_storage_bin` 里
+- **不行（0）**：the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held
+
 
 **参考调用顺序**：
 

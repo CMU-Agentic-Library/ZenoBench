@@ -38281,6 +38281,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the rolling pin and the spoon both in the wide bin"
+       }
+      ],
+      "not_ok": "one left out, put in a cabinet or drawer instead, still held or dropped"
      }
     },
     "small_bin_or_bedroom_bin__on_island": {
@@ -38547,6 +38559,90 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_1",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_2",
+           "small_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "wide_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "wide_storage_bin"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "small_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "small_storage_bin"
+           ]
+          ]
+         ]
+        },
+        "why": "both in one bin, but the small bin's blocks taken out or moved"
+       }
+      ],
+      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held"
      }
     },
     "small_bin_or_bedroom_bin__beside_wide_bin": {
@@ -38828,6 +38924,90 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_1",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_2",
+           "small_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "wide_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "wide_storage_bin"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "small_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "small_storage_bin"
+           ]
+          ]
+         ]
+        },
+        "why": "both in one bin, but the small bin's blocks taken out or moved"
+       }
+      ],
+      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held"
      }
     },
     "which_bin_by_contents__toys_near": {
@@ -41768,6 +41948,18 @@
       "17": "large_only",
       "18": "large_only",
       "19": "large_only"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the rolling pin and the spoon both in the wide bin"
+       }
+      ],
+      "not_ok": "one left out, put in a cabinet or drawer instead, still held or dropped"
      }
     },
     "small_bin_or_bedroom_bin": {
@@ -41789,6 +41981,90 @@
       "17": "small_bin_or_bedroom_bin__beside_wide_bin",
       "18": "small_bin_or_bedroom_bin__beside_wide_bin",
       "19": "small_bin_or_bedroom_bin__beside_wide_bin"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_1",
+           "small_storage_bin"
+          ],
+          [
+           "inside",
+           "small_bin_block_2",
+           "small_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "wide_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "wide_storage_bin"
+           ]
+          ],
+          [
+           [
+            "inside",
+            "rolling_pin",
+            "small_storage_bin"
+           ],
+           [
+            "inside",
+            "breakfast_spoon",
+            "small_storage_bin"
+           ]
+          ]
+         ]
+        },
+        "why": "both in one bin, but the small bin's blocks taken out or moved"
+       }
+      ],
+      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held"
      }
     },
     "which_bin_by_contents": {

@@ -68,6 +68,9 @@ SCORING: dict[tuple[str, str], dict] = {
         "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
     # T02 clear (control): two free blocks on the island; either on the other is the same
     ("T02", "clear"): only("one block on the other, the hand empty", "no stack, or a block dropped"),
+    # T03 large_only (control): the wide bin on the TV stand is the only open container
+    ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
+                                "one left out, put in a cabinet or drawer instead, still held or dropped"),
 }
 
 
@@ -197,6 +200,26 @@ BLOCK_PUT_AWAY = {"D": 1, "tiers": [
      "why": "the tower done, but a cabinet door left open (the instruction asks to close them)"}],
     "not_ok": "two blocks only (the third not found); no stack; a block dropped"}
 SCORING[("T02", "block_put_away")] = BLOCK_PUT_AWAY
+
+# T03 small_bin_or_bedroom_bin: a small bin (two toy blocks in it) that holds the spoon but not the 22 cm rolling
+# pin, near or beside the wide bin in the bedroom.  ``inside`` is lenient (the centre within the rim, at most 3 cm
+# above it): a pin slanted into the small bin can count, one lying across its rim with its centre too high
+# cannot; the mug never counts (user 11-11)
+_P, _S, _W, _SB = "rolling_pin", "breakfast_spoon", "wide_storage_bin", "small_storage_bin"
+_BLOCKS_IN = [["inside", "small_bin_block_1", _SB], ["inside", "small_bin_block_2", _SB]]
+SCORING[("T03", "small_bin_or_bedroom_bin")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["inside", _P, _SB], ["inside", _S, _SB], *_BLOCKS_IN, ["hand_empty", "right"]]},
+     "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a "
+            "fashion"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["hand_empty", "right"]],
+              "any": [[["inside", _P, _W], ["inside", _S, _W]], [["inside", _P, _SB], ["inside", _S, _SB]]]},
+     "why": "both in one bin, but the small bin's blocks taken out or moved"}],
+    "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put "
+              "into the wide one; still held"}
 
 
 # designs whose tiers are built from their layouts' goals
