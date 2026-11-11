@@ -91,8 +91,34 @@ def _no_room_fallback(task: dict) -> dict:
         "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held"}
 
 
+def _reader_seat(task: dict) -> dict:
+    """T01 reader_seat: a wide slot beside every seat; the book goes beside the seat with the mug."""
+    lays = task["v6_variants"]["reader_seat"]["layouts"]
+    second, worst = {}, {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]["all"]
+        kept = [a for a in g if a[0] in ("near_start", "upright", "hand_empty")]
+        on = next(a for a in g if a[0] == "on")
+        clear = next(a for a in g if a[0] == "clear_of")
+        near = next(a for a in g if a[0] == "near_any")
+        far = next(a for a in g if a[0] == "not near_any")
+        plates = sorted({x for x in near[2] + far[2] if not x.startswith("mug")})   # one plate or bowl per seat
+        second[lid] = {"all": kept + [on, clear, ["not near_any", on[1], plates, near[3]]]}
+        worst[lid] = {"all": kept + [on]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "beside the seat with the mug, clear of the dishes, nothing moved"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "on the table, clear of the dishes, nothing moved, beside no seat: the reader not found, but a "
+                "neutral spot anyone can reach"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "on the table, nothing moved or tipped, but beside another guest (the wrong reader) or against "
+                "the dishes"}],
+        "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held"}
+
+
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T01", "no_room_fallback"): _no_room_fallback}
+BUILT = {("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
