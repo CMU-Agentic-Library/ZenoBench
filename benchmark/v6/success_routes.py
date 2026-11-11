@@ -12,6 +12,8 @@ import re
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+import sys
+sys.path.insert(0, str(HERE.parents[1]))         # benchmark.v6.scoring when run as a script
 CAT = {"control": "对照", "action": "Action", "task": "Task", "action_task": "Action + Task"}
 
 
@@ -138,14 +140,15 @@ def main():
             instr = v0.get("instruction_zh") or v0.get("instruction")
             if instr and instr != (t.get("instruction_zh") or t["instruction"]) and instr != t["instruction"]:
                 lines += [f"**指令**：{instr}", ""]
-            goals = {}                                # goal -> the layouts that have it
-            for lid in info["layouts"]:
-                goals.setdefault(json.dumps(t["variants"][lid].get("goal") or t["goal"]), []).append(lid)
-            lines += ["**成功条件**：", ""]
-            for g, lids in sorted(goals.items()):
-                if len(goals) > 1:
-                    lines.append("- 摆法 " + "、".join(f"`{x.split('__', 1)[-1]}`" for x in lids) + "：")
-                lines += goal_lines(json.loads(g), 1 if len(goals) > 1 else 0)
+            sc = info.get("scoring")
+            if sc:                                    # graded: every tier is success, the score differs
+                lines += [f"**成功条件**（D = {sc['D']}；以下各档都算成功，分数不同）：", ""]
+                for tier in sc["tiers"]:
+                    lines += [f"- **{TIER_ZH[tier['name']]}（{tier['score']}）**：", ""]
+                    lines += tier_lines(t, info, tier, 1)
+                lines += [f"- **不行（0）**：{sc['not_ok']}", ""]
+            else:
+                lines += layout_goal_lines(t, info, None, 0)
             lines += ["", "**参考调用顺序**：", ""]
             for lid in info["layouts"]:
                 steps = t["routes"][t["oracle"][lid]]["steps"]
@@ -155,6 +158,29 @@ def main():
             lines.append("")
     (HERE / "SUCCESS_ROUTES_zh.md").write_text("\n".join(lines) + "\n")
     print(f"wrote SUCCESS_ROUTES_zh.md: {sum(len(t['v6_variants']) for t in doc['tasks'])} variants")
+
+
+TIER_ZH = {"best": "好", "second": "次好", "worst": "最不好"}
+
+
+def layout_goal_lines(t, info, tier, depth):
+    """The goal per layout (layouts sharing one goal listed together); ``tier`` None is the layout's own goal."""
+    from benchmark.v6.scoring import tier_goal
+    goals = {}                                    # goal -> the layouts that have it
+    for lid in info["layouts"]:
+        task = {"goal": t["variants"][lid].get("goal") or t["goal"]}
+        g = task["goal"] if tier is None else tier_goal(tier, task, lid)
+        goals.setdefault(json.dumps(g), []).append(lid)
+    lines = [] if tier is not None else ["**成功条件**：", ""]
+    for g, lids in sorted(goals.items()):
+        if len(goals) > 1:
+            lines.append("  " * depth + "- 摆法 " + "、".join(f"`{x.split('__', 1)[-1]}`" for x in lids) + "：")
+        lines += goal_lines(json.loads(g), depth + (1 if len(goals) > 1 else 0))
+    return lines
+
+
+def tier_lines(t, info, tier, depth):
+    return layout_goal_lines(t, info, tier, depth)
 
 
 if __name__ == "__main__":

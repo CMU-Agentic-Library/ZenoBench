@@ -17,10 +17,14 @@
 
 **情况**：书已经探出岛台边缘约 6 cm → 直接抓起送到餐桌
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- 手里空着
+- **好（1.0）**：
+
+  - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+  - 手里空着
+- **不行（0）**：the book anywhere else (coffee table, island, counter, floor) or still held
+
 
 **参考调用顺序**：
 
@@ -32,14 +36,31 @@
 
 **指令**：早餐摆好了，把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐。其他东西别动。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `paperback_book` 在 `dining_table_2/top` 上
-- `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-- `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-- `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-- `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-- 手里空着
+- **好（1.0）**：
+
+  - `paperback_book` 在 `dining_table_2/top` 上
+  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `paperback_book` 在 `dining_table_2/top` 上
+  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `paperback_book` 在 `dining_table_2/top` 上
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
+- **不行（0）**：on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held
+
 
 **参考调用顺序**：
 
@@ -56,22 +77,52 @@
 
 **指令**：客人正在吃早饭，把岛台上的书放到他们桌上，方便边吃边看，别影响用餐。其他东西别动。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
-  - `paperback_book` 在 `dining_table_1/top` 上
-  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
-  - 手里空着
-- 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
-  - `paperback_book` 在 `dining_table_2/top` 上
-  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
+- **好（1.0）**：
+
+  - 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
+    - `paperback_book` 在 `dining_table_1/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
+    - 手里空着
+  - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
+    - `paperback_book` 在 `dining_table_1/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
+    - 手里空着
+  - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+- **最不好（0.3）**：
+
+  - 摆法 `far_a`、`far_b`、`far_a_flat`、`far_b_flat`：
+    - `paperback_book` 在 `dining_table_1/top` 上
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
+    - 手里空着
+  - 摆法 `near_a`、`near_b`、`near_a_flat`、`near_b_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+- **不行（0）**：the toy table (the wrong table); a dish moved or tipped; anywhere else or still held
+
 
 **参考调用顺序**：
 
@@ -90,44 +141,93 @@
 
 **指令**：把岛台上的书在餐桌上放好，方便客人边吃边看，别影响用餐；实在没合适的位置，就先收进书柜。其他东西别动。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
+- **好（1.0）**：
+
+  - 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+  - 摆法 `full_a`、`full_a_flat`：
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `paperback_book` 在 `bookcase_1/top` 上
+      - 第 2 组：
+        - `paperback_book` 在 `bookcase_1/shelf_1` 上
+      - 第 3 组：
+        - `paperback_book` 在 `bookcase_1/shelf_0` 上
+      - 第 4 组：
+        - `paperback_book` 在 `bookcase_2/top` 上
+      - 第 5 组：
+        - `paperback_book` 在 `bookcase_2/shelf_1` 上
+      - 第 6 组：
+        - `paperback_book` 在 `bookcase_2/shelf_0` 上
+      - 第 7 组：
+        - `paperback_book` 在 `bookcase_3/top` 上
+      - 第 8 组：
+        - `paperback_book` 在 `bookcase_3/shelf_1` 上
+      - 第 9 组：
+        - `paperback_book` 在 `bookcase_3/shelf_0` 上
+      - 第 10 组：
+        - `paperback_book` 在 `bookcase_4/top` 上
+      - 第 11 组：
+        - `paperback_book` 在 `bookcase_4/shelf_1` 上
+      - 第 12 组：
+        - `paperback_book` 在 `bookcase_4/shelf_0` 上
+- **次好（0.6）**：
+
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
-- 摆法 `full_a`、`full_a_flat`：
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `paperback_book` 在 `bookcase_1/top` 上
-    - 第 2 组：
-      - `paperback_book` 在 `bookcase_1/shelf_1` 上
-    - 第 3 组：
-      - `paperback_book` 在 `bookcase_1/shelf_0` 上
-    - 第 4 组：
-      - `paperback_book` 在 `bookcase_2/top` 上
-    - 第 5 组：
-      - `paperback_book` 在 `bookcase_2/shelf_1` 上
-    - 第 6 组：
-      - `paperback_book` 在 `bookcase_2/shelf_0` 上
-    - 第 7 组：
-      - `paperback_book` 在 `bookcase_3/top` 上
-    - 第 8 组：
-      - `paperback_book` 在 `bookcase_3/shelf_1` 上
-    - 第 9 组：
-      - `paperback_book` 在 `bookcase_3/shelf_0` 上
-    - 第 10 组：
-      - `paperback_book` 在 `bookcase_4/top` 上
-    - 第 11 组：
-      - `paperback_book` 在 `bookcase_4/shelf_1` 上
-    - 第 12 组：
-      - `paperback_book` 在 `bookcase_4/shelf_0` 上
+- **最不好（0.3）**：
+
+  - 摆法 `full_a`、`full_a_flat`：
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+    - `paperback_book` 在 `dining_table_2/top` 上
+  - 摆法 `seats_b`、`seats_c`、`seats_b_flat`、`seats_c_flat`：
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `paperback_book` 在 `dining_table_2/top` 上
+      - 第 2 组：
+        - `paperback_book` 在 `bookcase_1/top` 上
+      - 第 3 组：
+        - `paperback_book` 在 `bookcase_1/shelf_1` 上
+      - 第 4 组：
+        - `paperback_book` 在 `bookcase_1/shelf_0` 上
+      - 第 5 组：
+        - `paperback_book` 在 `bookcase_2/top` 上
+      - 第 6 组：
+        - `paperback_book` 在 `bookcase_2/shelf_1` 上
+      - 第 7 组：
+        - `paperback_book` 在 `bookcase_2/shelf_0` 上
+      - 第 8 组：
+        - `paperback_book` 在 `bookcase_3/top` 上
+      - 第 9 组：
+        - `paperback_book` 在 `bookcase_3/shelf_1` 上
+      - 第 10 组：
+        - `paperback_book` 在 `bookcase_3/shelf_0` 上
+      - 第 11 组：
+        - `paperback_book` 在 `bookcase_4/top` 上
+      - 第 12 组：
+        - `paperback_book` 在 `bookcase_4/shelf_1` 上
+      - 第 13 组：
+        - `paperback_book` 在 `bookcase_4/shelf_0` 上
+- **不行（0）**：a dish or the cereal moved or tipped to make room; anywhere else or still held
+
 
 **参考调用顺序**：
 
@@ -144,32 +244,50 @@
 
 **指令**：用马克杯喝咖啡的客人想边吃早饭边看岛台上那本书，帮他在餐桌上放好，别影响用餐。其他东西别动。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `mug_2`、`mug_2_flat`：
-  - `paperback_book` 在 `dining_table_2/top` 上
-  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`mug_dining_cabinet`
-  - `paperback_book` 离这些都超过 15 cm：`plate_counter_a`、`plate_counter_b`
+- **好（1.0）**：
+
+  - 摆法 `mug_2`、`mug_2_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`mug_dining_cabinet`
+    - `paperback_book` 离这些都超过 15 cm：`plate_counter_a`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+  - 摆法 `mug_1`、`mug_1_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
+    - `paperback_book` 离这些都超过 15 cm：`bowl_side_table`、`plate_counter_b`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+  - 摆法 `mug_3`、`mug_3_flat`：
+    - `paperback_book` 在 `dining_table_2/top` 上
+    - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
+    - `paperback_book` 离这些都超过 15 cm：`plate_counter_b`、`bowl_side_table`
+    - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+    - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+    - 手里空着
+- **次好（0.6）**：
+
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- 摆法 `mug_1`、`mug_1_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
   - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
-  - `paperback_book` 离这些都超过 15 cm：`bowl_side_table`、`plate_counter_b`
+  - `paperback_book` 离这些都超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+- **最不好（0.3）**：
+
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- 摆法 `mug_3`、`mug_3_flat`：
   - `paperback_book` 在 `dining_table_2/top` 上
-  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - `paperback_book` 离其中至少一个不超过 15 cm：`plate_counter_a`、`mug_dining_cabinet`
-  - `paperback_book` 离这些都超过 15 cm：`plate_counter_b`、`bowl_side_table`
-  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
-  - 手里空着
+- **不行（0）**：a dish moved or tipped; anywhere else (the other dining table too) or still held
+
 
 **参考调用顺序**：
 
@@ -186,11 +304,19 @@
 
 **指令**：客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- `book_island`、`book_other` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
+- **好（1.0）**：
+
+  - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+  - `book_island`、`book_other` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+  - 手里空着
+- **不行（0）**：the guest's book not on a dining table (the wrong book, or none); still held
+
 
 **参考调用顺序**：
 
@@ -207,14 +333,18 @@
 
 **情况**：两块积木相距 30 cm → 拿 B 叠到 A 上
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-  - 第 2 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+    - 第 2 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+- **不行（0）**：no stack, or a block dropped
+
 
 **参考调用顺序**：
 
@@ -226,18 +356,38 @@
 
 **指令**：把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `tight_tv`、`tight_dining`：
-  - `wooden_block_b`、`oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
-  - `oatmeal` 立着
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_a` 上
-- 摆法 `loose`：
+- **好（1.0）**：
+
+  - 摆法 `tight_tv`、`tight_dining`：
+    - `wooden_block_b`、`oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
+    - `oatmeal` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+  - 摆法 `loose`：
+    - `oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
+    - `oatmeal` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - 第 2 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 3 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - 第 4 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+      - 第 5 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+      - 第 6 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+- **最不好（0.3）**：
+
   - `oatmeal`、`rolling_pin` 没被挪动（离开局位置不超过 2 cm）
   - `oatmeal` 立着
   - 手里空着
@@ -254,6 +404,8 @@
       - `floor_block` 叠在 `wooden_block_a` 上
     - 第 6 组：
       - `floor_block` 叠在 `wooden_block_b` 上
+- **不行（0）**：the bowl or the rolling pin moved, the bowl tipped; no stack
+
 
 **参考调用顺序**：
 
@@ -267,46 +419,89 @@
 
 **指令**：用孩子的玩具在岛台上搭一座三层的小塔。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `duck`：
+- **好（1.0）**：
+
+  - 摆法 `duck`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `rubber_duck` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `rubber_duck` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+  - 摆法 `toy_block`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 4 组：
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+- **次好（0.6）**：
+
+  - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `rubber_duck` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 在 `kitchen_island/top` 上
-    - 第 2 组：
       - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `rubber_duck` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在 `kitchen_island/top` 上
-- 摆法 `toy_block`：
+    - 第 2 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `wooden_block_a` 在 `kitchen_island/top` 上
+- **最不好（0.3）**：
+
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `toy_block` 叠在 `wooden_block_b` 上
+      - `kitchen_sponge` 叠在 `wooden_block_b` 上
       - `wooden_block_a` 在 `kitchen_island/top` 上
     - 第 2 组：
-      - `toy_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 叠在 `toy_block` 上
+      - `kitchen_sponge` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 叠在 `kitchen_sponge` 上
       - `wooden_block_a` 在 `kitchen_island/top` 上
     - 第 3 组：
       - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `toy_block` 叠在 `wooden_block_a` 上
+      - `kitchen_sponge` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在 `kitchen_island/top` 上
     - 第 4 组：
-      - `toy_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `toy_block` 上
+      - `kitchen_sponge` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `kitchen_sponge` 上
       - `wooden_block_b` 在 `kitchen_island/top` 上
     - 第 5 组：
-      - `wooden_block_a` 叠在 `toy_block` 上
+      - `wooden_block_a` 叠在 `kitchen_sponge` 上
       - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `toy_block` 在 `kitchen_island/top` 上
+      - `kitchen_sponge` 在 `kitchen_island/top` 上
     - 第 6 组：
-      - `wooden_block_b` 叠在 `toy_block` 上
+      - `wooden_block_b` 叠在 `kitchen_sponge` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `toy_block` 在 `kitchen_island/top` 上
+      - `kitchen_sponge` 在 `kitchen_island/top` 上
+- **不行（0）**：no stack, or the tower not on the island
+
 
 **参考调用顺序**：
 
@@ -319,47 +514,103 @@
 
 **指令**：孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `floor_block` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_a` 离台面边缘至少 5 cm
-    - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 2 组：
-    - `floor_block` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 叠在 `floor_block` 上
-    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_a` 离台面边缘至少 5 cm
-    - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 3 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 4 组：
-    - `floor_block` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 5 组：
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 6 组：
-    - `wooden_block_b` 叠在 `floor_block` 上
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+- **好（1.0）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_a` 离台面边缘至少 5 cm
+      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_a` 离台面边缘至少 5 cm
+      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 4 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 5 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 6 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+- **次好（0.6）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 3 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 4 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 5 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 6 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+- **最不好（0.3）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `wooden_block_a` 叠在 `floor_block` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 3 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 4 组：
+      - `wooden_block_b` 叠在 `floor_block` 上
+      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 5 组：
+      - `floor_block` 叠在 `wooden_block_a` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 6 组：
+      - `floor_block` 叠在 `wooden_block_b` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+- **不行（0）**：a thing on the table moved; the tower not on a dining table; nothing stacked
+
 
 **参考调用顺序**：
 
@@ -372,23 +623,57 @@
 
 **指令**：孩子想在餐桌上看一座三层的塔，用他的玩具在餐桌上搭一座。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `rubber_duck` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_a` 离台面边缘至少 5 cm
-    - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-  - 第 2 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `rubber_duck` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+- **好（1.0）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `rubber_duck` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_a` 离台面边缘至少 5 cm
+      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+    - 第 2 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `rubber_duck` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+- **次好（0.6）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `rubber_duck` 叠在 `wooden_block_b` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `rubber_duck` 叠在 `wooden_block_a` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+- **最不好（0.3）**：
+
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 叠在 `wooden_block_b` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 2 组：
+      - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 3 组：
+      - `rubber_duck` 叠在 `wooden_block_a` 上
+      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+    - 第 4 组：
+      - `rubber_duck` 叠在 `wooden_block_b` 上
+      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+- **不行（0）**：a thing on the table moved; the tower not on a dining table; nothing stacked
+
 
 **参考调用顺序**：
 

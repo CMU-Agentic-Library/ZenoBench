@@ -201,7 +201,9 @@ def _tower_for_kid(design: str, top_only=()):
 
 
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"), ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
+BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
+         ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck", top_only=("rubber_duck",)),
+         ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:

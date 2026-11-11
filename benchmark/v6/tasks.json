@@ -35550,6 +35550,218 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "away_from_edge",
+          "clear_of"
+         ]
+        },
+        "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or the cereal: easy to knock over"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tower_for_kid_duck__counter": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          },
+          "tower_for_kid_duck__study": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "two pieces stacked on a dining table (the third not found), nothing moved"
+       }
+      ],
+      "not_ok": "a thing on the table moved; the tower not on a dining table; nothing stacked"
      }
     },
     "tower_for_kid_duck__study": {
@@ -35982,6 +36194,218 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "away_from_edge",
+          "clear_of"
+         ]
+        },
+        "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or the cereal: easy to knock over"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tower_for_kid_duck__counter": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          },
+          "tower_for_kid_duck__study": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "two pieces stacked on a dining table (the third not found), nothing moved"
+       }
+      ],
+      "not_ok": "a thing on the table moved; the tower not on a dining table; nothing stacked"
      }
     },
     "block_put_away__in_4": {
@@ -38805,6 +39229,218 @@
       "17": "tower_for_kid_duck__counter",
       "18": "tower_for_kid_duck__counter",
       "19": "tower_for_kid_duck__study"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, nothing moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "away_from_edge",
+          "clear_of"
+         ]
+        },
+        "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or the cereal: easy to knock over"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tower_for_kid_duck__counter": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          },
+          "tower_for_kid_duck__study": {
+           "all": [
+            [
+             "near_start",
+             "wide_storage_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_a",
+             0.03
+            ],
+            [
+             "near_start",
+             "clutter_cereal_b",
+             0.03
+            ],
+            [
+             "near_start",
+             "spoon_target_table",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_a"
+             ],
+             [
+              "on_any",
+              "wooden_block_a",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "rubber_duck",
+              "wooden_block_b"
+             ],
+             [
+              "on_any",
+              "wooden_block_b",
+              [
+               "dining_table_2/top",
+               "dining_table_1/top"
+              ]
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "two pieces stacked on a dining table (the third not found), nothing moved"
+       }
+      ],
+      "not_ok": "a thing on the table moved; the tower not on a dining table; nothing stacked"
      }
     },
     "block_put_away": {
