@@ -11371,17 +11371,13 @@
      "extra_postconditions": [],
      "chain": [
       "policy_003()",
-      "policy_046($articulated)",
-      "policy_050($articulated)",
-      "policy_047($articulated)"
+      "policy_022($articulated)"
      ],
      "policies": [
       "policy_003",
-      "policy_046",
-      "policy_047",
-      "policy_050"
+      "policy_022"
      ],
-     "note": ""
+     "note": "One grasp: the handle pulled and the base riding the drawer, then let go."
     },
     {
      "path_id": "hinged_door",
@@ -11407,17 +11403,13 @@
      "extra_postconditions": [],
      "chain": [
       "policy_003()",
-      "policy_046($articulated)",
-      "policy_049($articulated)",
-      "policy_047($articulated)"
+      "policy_022($articulated)"
      ],
      "policies": [
       "policy_003",
-      "policy_046",
-      "policy_047",
-      "policy_049"
+      "policy_022"
      ],
-     "note": ""
+     "note": "One grasp: the side hook on the handle and the base riding the door, then let go."
     }
    ],
    "relations": {

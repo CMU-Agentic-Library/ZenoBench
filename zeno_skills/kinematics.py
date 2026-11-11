@@ -319,7 +319,8 @@ class ArmKin:
         return self._motion().path_free(self, qs, self._other_q(), self.coll_kw)
 
     def path_free_only(self, qs, names):
-        """The arm without its fingers clear of the objects ``names`` along ``qs`` (Motion.path_free_only)."""
+        """The arm without its touching links clear of what they may touch (``names``: Spec.touch
+        entries, objects or parts) along ``qs`` (Motion.path_free_only)."""
         if self.scene is None:
             return True
         return self._motion().path_free_only(self, qs, names, self._other_q(), self.coll_kw)

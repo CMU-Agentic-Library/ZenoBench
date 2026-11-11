@@ -9,11 +9,12 @@ from __future__ import annotations
 import time
 from contextlib import ExitStack
 from dataclasses import replace
+from functools import partial
 
 import numpy as np
 
-from .motion_state import Failure, SkillFailure
-from .primitives import holds
+from .motion_state import Failure, SkillFailure, clearing
+from .primitives import holds, ride_base
 
 
 def observe(act):
@@ -24,8 +25,10 @@ def observe(act):
 def execute(act, seg):
     """Run one segment through the Actuator, each declared to the contact monitor under its Allow
     first: an action (the gripper); a drive (the base along its paths, the arms switched where the
-    planner put it); the waypoints of an arm (a contact Allow with what the hand and its load touch
-    now), at its speed.  An anchor moves nothing and declares nothing."""
+    planner put it); a task segment by its executor (docs 5.5: "follow" the arm's IK continuation
+    open loop; "ride" the base at the script's function of the commanded s, closed on the measured
+    part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
+    touch now), at its speed.  An anchor moves nothing and declares nothing."""
     if seg.kind == "anchor":
         return
     if seg.kind == "action":
@@ -51,6 +54,24 @@ def execute(act, seg):
                 _, name, qr, ql = st
                 act.swing(qr, ql, f"{seg.name}_{name}")
         return
+    if seg.kind == "scripted":
+        side = seg.info.get("side", "right")
+        act.declare(seg.name, seg.spec.allow, side=side)
+        if seg.info["executor"] == "follow":
+            act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
+            return
+        if seg.info["executor"] == "ride":
+            script, tr = seg.info["script"], seg.info["track"]
+            base_at = partial(ride_base, script, seg.info["base0"])
+            out = act.ride(script.coupling.part, base_at, script.s0, script.s1, seg.name, lead=tr["lead"],
+                           rate=tr["rate"], done=tr["done"])
+            if not out.get("done"):
+                exc = SkillFailure(f"{seg.name}: {out.get('why', 'the ride stopped')}")
+                if seg.info.get("clear"):           # the exit the segment asks for (a handle let go, docs 8.6)
+                    clearing(exc, **seg.info["clear"])
+                raise exc
+            return
+        raise ValueError(f"unknown executor {seg.info['executor']}")
     if not seg.qs:
         return
     side = seg.info.get("side", "right")

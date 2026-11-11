@@ -50,7 +50,7 @@ def _reach(name):
     return seen - {name}
 
 
-RIG_FREE = ["zeno_skills.motion_state", "zeno_skills.primitives", "zeno_skills.skill_plans",
+RIG_FREE = ["zeno_skills.motion_state", "zeno_skills.primitives", "zeno_skills.skill_plans", "zeno_skills.skill_plans.door",
             "zeno_skills.skill_plans._common", "zeno_skills.skill_plans.pick", "zeno_skills.skill_plans.place",
             "zeno_skills.skill_plans.navigate", "zeno_skills.park_search"]
 
@@ -67,7 +67,7 @@ def test_the_execution_reads_and_writes_the_simulator_only_through_the_actuator(
     calls = {n.func.value.id + "." + n.func.attr for n in ast.walk(ast.parse(src))
              if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
              and n.func.value.id == "act"}
-    actuator = {"act." + m for m in ("follow", "grip", "wait", "drive_base", "swing", "declare", "contact_allow",
+    actuator = {"act." + m for m in ("follow", "ride", "grip", "wait", "drive_base", "swing", "declare", "contact_allow",
                                      "snapshot", "arm_kin", "log")}
     assert calls and calls <= actuator, calls - actuator
     assert "rig." not in src

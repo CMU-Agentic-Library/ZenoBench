@@ -37,7 +37,7 @@ find_park                                        run（锚点，或某段不成�
       ├─ free_leg / straight / drive                    └─ 同样的原语；prior 里还成立的段原样返回
       ├─ decide_ik（5.7）
       ├─ contact_extent / contact_segment
-      └─ scripted〔待加〕
+      └─ scripted（5.5）
 ```
 
 签名：搜索调 `build(s, k, prior)`，`prior = {problem.relay: 排序 IK 解}`（只有决定，没有段可复用）；执行时 `rebuild(state, 段名, prior)`，`prior` 是 `run` 手上当前的计划（段和 `decisions`），由 job 包住同一个 `plan_pick` / `plan_place` / `plan_navigate`（catalog 的 `template`，2.3）。
@@ -132,7 +132,7 @@ Skill(
 
 省的是采样密度，不是判据：这一段的几何是单参数族（部件开度 / 推的位移），连续、无突变，按角度或弧长步长取点查即可，不必每个执行路点都查。第 6 节微波炉那条"在 `State` 里取几个部件值查整机"已经是这个写法。
 
-"整段不查"只在几何完全由两端决定、中间是单调插值时成立：抽屉直线接近这种（纯平移，手臂锁住时中间不冒出新碰撞），铰链圆弧不是（门板扫出一片扇形）。另外整段不查的话，`_ride` 偏出 `TRACK_TOL` 就停下的规则也失去依据——它成立的前提正是计划里的构型被证明过安全。
+"整段不查"只在几何完全由两端决定、中间是单调插值时成立：抽屉直线接近这种（纯平移，手臂锁住时中间不冒出新碰撞），铰链圆弧不是（门板扫出一片扇形）。另外整段不查的话，闭环执行器"照计划的函数跟、不改几何"的规则也失去依据——它成立的前提正是计划里的构型被证明过安全。
 
 ### 2.5 依赖方向：`Actuator` 和 rig-free（第 1 节第 10 条）
 
@@ -150,7 +150,7 @@ Skill(
 
 "不碰 rig" 是 import 层面的：真实的碰撞后端 `kin.motion`（`Motion`）手里有 `rig`，`Motion.query` 读 `rig.held` 来撤掉同步时挂上的持物、换成 `State` 里的。结果只由 `State` 决定，但后端不是 rig-free 的；①②③ 能脱离 Isaac 跑靠的是 FakeKin 这类后端。
 
-底盘的整机模型（球模型、`base_planner`）现在靠 `Rig` 读手里物体的位置，做不到 rig-free。做法和 `kin` 一样：协议 `motion_state.BaseModel`（`plan` / `straight` / `depths` / `reachable` / `drivable`），由 `skill_jobs/base.py` 的 `RigBase` 在 rig 上实现，作为参数传给 ① 的 `drive` / `drive_straight` 和 ③ 的 `find_park`。它从"机器人现在的样子"规划（`state` 是现在的状态，或者现在的状态换了手臂姿态），换机器人时要重写的是它和 `Actuator`。
+底盘的整机模型（球模型、`base_planner`）现在靠 `Rig` 读手里物体的位置，做不到 rig-free。做法和 `kin` 一样：协议 `motion_state.BaseModel`（`plan` / `straight` / `depths` / `reachable` / `drivable` / `clear`），由 `skill_jobs/base.py` 的 `RigBase` 在 rig 上实现，作为参数传给 ① 的 `drive` / `drive_straight` 和 ③ 的 `find_park`。它从"机器人现在的样子"规划（`state` 是现在的状态，或者现在的状态换了手臂姿态），换机器人时要重写的是它和 `Actuator`。
 
 `Actuator` 是 ④ 唯一能碰的仿真接口：
 
@@ -158,6 +158,7 @@ Skill(
 Actuator:
   # 写：execute 用
   follow(qs, steps_per_wp, smooth, side)   # 手臂路点，持物时限速；side="left" 是左臂
+  ride(part, base_at, s_from, s_to, label, lead, rate, done)   # 底盘带部件的任务段的闭环：底盘在 base_at(指令值)，指令跟着实测部件值（5.5）
   grip(width, steps, gradual)
   drive_base(path, **kw)               # 底盘沿路点（allow、速度）
   swing(q_right, q_left, label)        # 两臂同时关节直线到行驶姿态（底盘规划器定的换姿态）
@@ -269,16 +270,16 @@ class Spec:
     margin: float = 0.0          # m 计划时要求的余量：不在 touch / exempt 里的部位离世界至少这么远（待加）
 ```
 
-- `touch` 的每一项写成（名字，部位），部位是 `fingers` / `hand` / `load`：手指碰刚放下的物体，手碰门板，持物碰锅或台面。`Allow` 的允许接触由 `touch` 推出，不另写一份。现在的实现只有手指一种，名字是物体。
+- `touch` 的每一项写成（名字，部位），部位是 `fingers` / `hand` / `load`：手指碰刚放下的物体，手碰门板，持物碰锅或台面。`Allow` 的允许接触由 `touch` 推出，不另写一份。现在实现了 `fingers` 和 `hand`（`motion_state.touch_entries`：只写名字 = 手指），名字是物体或部件（`Motion.touch_owner`：先找物体，再找部件）；手握着的部件（`Held(kind="part")`）不用写进 `touch`，`motion_state.touches` 把它按 `PART_HOLD`（手指）加进去，`Motion.query` 和 `primitives.free_path` 用同一份。`load` 和"`Allow` 由 `touch` 推出"还没做。
 - `hold_tilt` 保持的是起点倾角。倾角要变（勺子倾进锅、翻书），就在任务段里变，或者在 `hold_tilt=False` 的过渡段里变（持物照样查碰撞）。
 - `joints` 取代改 `kin.lo / kin.hi` 和 `_lock_shared_posture`：只动腰、锁腰、左手持物时压腰都用它表达。
-- `margin` 只在计划时用（`Kinematics.near(q, margin)` 判碰）；复核用实测状态、零余量（第 8.2 节）。现在唯一的余量是持物的 `Held.pad`；`margin` 留给任务段的 `TRACK_TOL`。
+- `margin` 只在计划时用（`Kinematics.near(q, margin)` 判碰）；复核用实测状态、零余量（第 8.2 节）。现在唯一的余量是持物的 `Held.pad`；`margin` 留给任务段：底盘带门时门比底盘慢最多约一个 `lead`，手和门的相对位置跟着变，意外接触报告里出现手臂蹭门板再按 `ride_end` 的落后量定。
 - 执行参数（速度、`smooth`、`steps_per_wp`）放在 `Segment.info`，不进 `Spec`。
 
 ### 4.3 `Segment` 和 `Plan`
 
 - `Segment`：名字（`pick_grasp`、`carry_in`…）、`Spec`、起点关节角 `q_from`、路点 `qs`、种类 `kind`、这段的目标 `target`（位姿或关节角，复核用）、动作 `action`、原语量出或选出的东西 `info`（长度、做法、方向 u、判据名）。
-- `kind`：`move`（手臂路点）、`drive`（底盘路径，手臂不动）、`scripted`（任务段：路点加执行器名，见 5.5）、`action`（不动手臂：`grip`、`wait`、`drive_part`、`toggle`）、`anchor`（锚点：误差进来的时刻，读回状态、复核剩下的计划，见 8.2；〔待加，9.3 第 2.1 步：`info` 记这一刻计划假设的值，日志里记实测偏差〕）。
+- `kind`：`move`（手臂路点）、`drive`（底盘路径，手臂不动）、`scripted`（任务段：轨迹函数 `Script` 加执行器名，见 5.5）、`action`（不动手臂：`grip`、`wait`、`drive_part`、`toggle`）、`anchor`（锚点：误差进来的时刻，读回状态、复核剩下的计划，见 8.2；〔待加，9.3 第 2.1 步：`info` 记这一刻计划假设的值，日志里记实测偏差〕）。
 - 接触位姿所在的段（`pick_reach`、`pick_grasp`、`place_reach`、`place_down`）的 `info` 另记 `aim`（`motion_state.Aim`：目标怎么从 `State` 推出）、`aimed`（建这段时推出的位姿）、`end`（建这段时终点的 TCP）、`tol`（终点比建时多偏多少还算成立：`PICK_TOL` / `PLACE_TOL`），由 `skill_plans._common._aimed` 填，`holds` 复核（8.4）。
 - `Plan`：段的元组、服务的目标组 `goal`（现在没人填，目标组在 `Found.k`）、决定 `decisions`、构造耗时 `info["stage_s"]`（`plan_pick`、`plan_place` 都填，失败时在 `Failure.info` 里）。
 - `Plan.decisions`：{名字: 值}，`build` 做的、把几段绑在一起的决定（8.1），名字就是段名：接触位姿的关节角，记的是计划实际走到的解（`pick_reach` 是伸入段起点的解 = `pick_reach` 段的终点，`place_reach` 是放下位姿的解 = `place_down` 段的终点）——不是 `decide_ik` 给 `free_leg` 的解：TCP 直线走得通时腿停在直线自己的解上，后面的段从那里做（约一半的伸入段起点和放下段起点是这样）；搬运目标的选择（`carry_in`），记 (序号, 集合大小)；收臂姿态不算决定：它是最后一段，不绑别的段，每次构造按 `JointSet` 的顺序（收起优先）重新选，也不作为段复用。重做时作为 `prior` 传回 `build`（`motion_state.decisions_of` 把 `Plan` 或 {名字: 值} 统一成字典）；目标集合的选择经 `free_leg(first=)` 复用：集合大小一样（从 `State` 做出来的集合会随状态变样：`skills._carry_goals` 每个点 2 层或 3 层高度，同一个序号就是另一个目标）、那个目标还够得着（`PoseSet`）/ 还不碰（`JointSet`）就用它，否则重新选。
@@ -310,7 +311,7 @@ class Spec:
 | `park_search.py` | `RADII`、`YAW_OFFSETS`、`REACH_XY`、`MAX_PER_GOAL`、`BUILD_S`、`BUILD_MAX`…… |
 | `base_planner.py`、`collision.py` | `DEPTH_TOL`、`FOOTPRINT_MARGIN`（inherited, unmeasured）…… |
 | `COLLISION_PLAN.md` 第 8 节 | 力的几何替身（`PRESS_DEPTH`、`WIPE_PRESS`、`TOUCH_DEPTH`……） |
-| 还没有 | `BASE_TOL`、`HOLD_DRIFT`、`TRACK_TOL`（8.2）；`TARGET_TOL` 5 mm、`PICK_TOL` 1 mm 都没有实测（8.4） |
+| 还没有 | `BASE_TOL`、`HOLD_DRIFT`、任务段的余量（8.2）；`TARGET_TOL` 5 mm、`PICK_TOL` 1 mm 都没有实测（8.4） |
 
 目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
 
@@ -384,16 +385,35 @@ run.observe(act)    -> (State, Observation | None)
 - **规划的**：从 `State.base` 到目标底盘位姿。包现在的 `_base_plan`（`base_planner`）：整机碰撞，手里的东西也算，手臂从 `State` 里的姿态出发；路上折叠放不下的地方换成下垂，在哪换由底盘规划器定（`travel_postures` / `posture_sets`），换姿态是一次查过碰撞的关节直线（`Rig.swing`）。一段 `drive` 就是规划器给出的这一串（开车，换姿态，开车……），执行照旧交给 `drive_base` / `swing`。用于 navigate。
 - **直线**：沿给定方向退开到离障碍物 d。方向由任务给（离开障碍物外框上最近的点），整机沿直线查碰撞，挡住就 Failure，不动。包现在的 `straight_base_move`。用于 retreat，属于进出接触段（第 3 节）。
 
-做完推进 `State.base`。路径是轨迹（8.1）：搜索时只证明开得到，执行时由 navigate 的计划用同一个函数、同一组行驶姿态重新规划。技能自己的计划不含 `drive`，从停车点开始，第一段是到达锚点；任务过程中要动底盘的（开门时底盘跟着门、推一段），是 `scripted` 段里带底盘路点。
+做完推进 `State.base`。路径是轨迹（8.1）：搜索时只证明开得到，执行时由 navigate 的计划用同一个函数、同一组行驶姿态重新规划。技能自己的计划不含 `drive`，从停车点开始，第一段是到达锚点；任务过程中要动底盘的（开门时底盘跟着门、推一段），是 `scripted` 段的 `carry="base"`：底盘位姿是任务量的函数（`ride_base`，5.5），不是 `drive`。
 
-### 5.5 `scripted`：任务段（待加）
+### 5.5 `scripted`：任务段（框架已加，9.3 第 6 步；还没有技能用）
 
-任务段由技能的轨迹函数生成：`traj(kin, state, params) -> 路点`。路点可以是手臂关节角，也可以带底盘位姿。函数还可以给出每个路点处物体 / 部件的预测值，比如门开到多少度、被推的物体到了哪。
+任务段的出处是技能的轨迹函数 `traj`（2.3、9.4：和它的 `build` 同一个文件）。它给出的是**函数和区间**（3.1），不是一串路点：`traj(state, params) -> Script`。
 
-- **构造（搜索和执行同一个）**：按预测值挪物体和部件，整段查碰撞（`touch` 放开允许的接触）。有一个点不通就返回 Failure：全有或全无，不跳点。
+```python
+Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives.py
+```
+
+- `s0` → `s1`：任务量的区间（铰链角、抽屉位移、画圈相位……），第 3.1 节的三条由这个形状保证：段里只有 `s` 的函数，没有可以手挑的关节角。
+- `coupling`（耦合）：`s` 变的时候什么跟着动、工作点写在哪个坐标系里。和"还在碰"的判据一样是具名的（`primitives.COUPLINGS`），每个有三个方法：`value(state)`（`State` 里现在的 `s`，不动东西的耦合给 None）、`moved(state, s)`（`s` 处的 `State`）、`frame(state, s)`（坐标系在 `s` 处的世界位姿）。现在有：
+  - `hinge(部件, pose)` / `slider(部件, pose)`：手握把手，部件关节值就是 `s`（`PartAt`）。`pose(v)` 是部件框在关节值 v 的世界位姿（标注的 `part_pose`），由技能的 job 传下来，②③ 层不碰标注和 rig；
+  - `still(物体)`：什么都不动，坐标系是 `State` 里的那个物体（搅拌的锅、擦的桌子）。
+  - `pushed` / `rolled` / `pivot`（推、滚、翻）随第 7 步加。
+- `tcp(s)`：TCP 在这个坐标系里的位姿。None = 刚性：保持 `s0` 时手和坐标系的相对位姿（握着把手）。有工具坐标系以后换成工作点（`T_tcp_tool`，第 6 节接触类）。
+- `carry`：机器人怎么跟。
+  - `"base"`：手臂不动，底盘和坐标系刚性地一起动（底盘带门）：`ride_base(script, base0, s) = F(s) · F(s0)⁻¹ · base0`，`F` 是 `coupling.frame`。只用于 `PartAt` 且 `tcp` 为 None；
+  - `"arm"`：底盘不动，手臂跟着 TCP 走：从起点的关节角起，相邻两个采样之间用运动学直线（`cart_path`，不查碰撞）接着解 IK，分支连续（"关节侧沿 `s` 连续跟"，3.1）。
+- `step`：计划查碰撞的 `s` 步长（按角度或位移，2.4）。执行按自己的控制步长对同一个函数求值。
+
+`scripted(kin, state, spec, script, name, base=None, track=None)` 产出 `kind="scripted"` 的段：
+
+- **起点**（`part_start`）：底盘带门的，部件的实测值在 `[s0 − lead, s1]` 里（指令值从实测值起步、不出 `[s0, s1]`，比 `s0` 再往回一个 `lead` 底盘就一开始跟不上）；手臂跟的，离 `s0` 不超过 `TARGET_TOL`（手和部件从 `s0` 起刚性）；给了 `tcp` 的，手臂的 TCP 离 `F(s0) · tcp(s0)` 不超过 `ON_LINE` / `ON_LINE_TURN`。不满足返回 Failure。
+- **查碰撞（搜索和执行同一个函数）**：在 `script.samples()` 的每个 `s` 上，按 `coupling.moved` 把部件 / 物体挪到位，按 `Spec` 查（`touch` 和手握的部件只对指定部位放开，其余部位另查）。`carry="base"`：底盘在 `ride_base` 处，`BaseModel.clear` 查底盘本体（对静态世界和这一刻的部件），`free_at` 查整机；`carry="arm"`：查两个采样之间那段 IK 延续的手臂运动（部件在后一个采样处）。有一处不通就返回 Failure：全有或全无，不跳点。门扫过的扇形对家具（2.4 表第三行）还没查。
+- **段里存什么**：`info["script"]`（函数本身）、`base0`（构造时的底盘）、`rel`（`s0` 时 TCP 在坐标系里的位姿）、`executor`、`track`；`carry="arm"` 时 `qs` 是 IK 延续出的手臂轨迹（和 `straight` 的路点一样是轨迹，8.1），`s_at` 是每个路点对应的 `s`；`carry="base"` 时 `qs` 为空（手臂不动）。
 - **执行器**：
-  - `follow`：照路点开环走，用于画圈、擦条带、转腕；
-  - 技能自己的闭环执行器：开门时底盘跟着实测开度走（现在的 `_ride`）。闭环执行器只能偏离计划路点 `TRACK_TOL` 以内，超出就停下、技能失败。它只调节怎么跟，不改几何。
+  - `follow`（`carry="arm"`）：照 `qs` 开环走，用于画圈、擦条带、转腕，以及手臂走门的圆弧；
+  - `ride`（`carry="base"`，`Actuator.ride` / `Rig.ride`）：闭环，底盘跟着实测开度走。每个物理步对**同一个函数** `ride_base` 在指令值 `cmd` 处求值，不在计划的采样点之间插值，也不出 `[s0, s1]`；`cmd` 以不超过 `rate` 的速度追"实测值 + `lead`"。部件到 `done` 算完成；卡住（`RIDE_STALL`）、超时、或者突然落到 `cmd` 后面 `RIDE_SLIP_LEADS`（2）个 `lead` 以上（把手滑脱、门弹回）就停下，`run.execute` 抛 `SkillFailure`。正常跟着走时，落后量按构造不超过 `lead` + `rate` / `PHYSICS_HZ`（指令往两个方向都追实测值），所以这条线不用实测来定，只用来认出"滑脱"；没开到位由卡住判据和技能的结果检查接住。闭环只调节怎么跟，不改几何。`ride` / `ride_end` 事件记落后量和底盘离指令的距离（任务段余量的数据，8.2）；`lead` / `rate` / `done`（`TRACK_KW`）由技能的 `build` 给。旧的 `skills._ride` 没改，门的技能迁移时删。
 - 任务段后面跟一个锚点（8.2），用实测的部件值 / 物体位姿推进 `State`。
 
 ### 5.6 动作
@@ -471,19 +491,28 @@ navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选�
 
 **retreat**：一段直线 `drive`（5.4），挡住就失败。
 
-**开关门**（待做）：
+**开门**（`skill_plans/door.py` 的 `plan_door`，job 在 `skill_jobs/door.py`，到达姿态是收起；11-10，未跑仿真；物理步骤见 `skills/open.md`）：
 
-| # | 段 | 原语 |
-|---|---|---|
-| 1 | 到把手前 | `free_leg`；抓法变体（钩 / 翻转 / 正面）是目标集合 |
-| 2 | 伸到把手 | `straight`，`touch=((部件, fingers),)` |
-| 3 | 握上 | `grip` → `holding(部件, kind="part")` |
-| 4 | 开 / 关 | `scripted`：铰链圆弧或抽屉直线，预测部件值；执行器是底盘跟着部件走（`_ride`） |
-| 5 | 松开 | `grip` → `released` |
-| 6 | 离开 | `contact_extent(near_world)` + `contact_segment` |
-| 7 | 收臂 | `free_leg` |
+| # | 段 | 原语 | Spec | State 推进 |
+|---|---|---|---|---|
+| 1 | 到达（`door_arrive`） | 锚点：底盘、部件值 | — | 实测 |
+| 2 | 张手 | 动作 | — | `with_width(pre_open)` |
+| 3 | 到把手前（`door_reach`） | `free_leg`，起点的解由 `decide_ik` 定（`_reach`）；容差 `DOOR_TOL`（1 mm / 0.01 rad） | `FREE_HAND` | — |
+| 4 | 伸到把手 | `straight`；容差 `DOOR_TOL` | 手指可碰部件（`touch_part`） | — |
+| 5 | 握上 | 动作 `grip` | `closing(部件)` | `holding(Held(部件, kind="part"))` |
+| 6 | 握上（`door_held`） | 锚点：握法 | — | 实测 |
+| 7 | 开（`door_ride`） | `scripted(Script(hinge / slider(部件, part_pose), 现在的值, 目标 + 0.02, carry="base"))`，执行器 `ride`；停下时的失败出口写在段里（`clear`：张开、退出接触） | 手指可碰部件 | `with_part(目标 + 0.02)`、底盘到 `ride_base` |
+| 8 | 开完（`door_moved`） | 锚点：部件值 | — | 实测 |
+| 9 | 松开 | 动作 `grip` | 手指可碰部件 | `released` |
+| 10 | 离开 | `contact_extent(near_world)` + `contact_segment`，沿接近方向反着退 | `LEAVE_CONTACT` | — |
+| 11 | 收臂 | `free_leg(JointSet{收起, 下垂})`，不复用 | `FREE_HAND` | — |
+| 12 | 停稳 | 动作 `wait` 60 帧 | — | — |
 
-推门关：`free_leg` 到推的起点，再接 `scripted` 推（`touch=((部件, hand),)`）。整个过程只握一次。
+抓法变体（侧钩不倾斜 / 10° / 20°、两端、正面捏）是 `Problem.goals`。停车点只按通用排序（第 7 节）：旧代码按力矩比挑停车点（`planner.find_park(score=torque_ratio)`），第 7 节不要 `score` 这类开关，迁移时去掉了；要是仿真里出现停车点选得腕关节拉不动门，改成 `build` 里的约束（握把手的解上力矩比超过关节上限就不要这个停车点，底盘带门时整段受力方向不变，算一次就够）。中继位姿是把手前那一点（`DOOR_RELAY` = `door_reach`）。整个过程只握一次。
+
+还没做：手臂走圆弧（`carry="arm"`）作为目标集合里的另一种做法（第 10 节）；左手拿着东西时开门（等 `Spec.joints`，第 5 步）；微波炉（第 8 步）。
+
+**关门**（待做，还是旧代码）：握把手关是上表把 `s1` 换成关着的值；推门关是 `free_leg` 到推的起点，再接 `scripted` 推（耦合 `pushed_part`，第 7 步加；`touch=((部件, hand),)`）。两种进同一个目标集合，不是先试推、推不了再握。
 
 **接触类技能**（press、touch、stir、wipe、push、roll、flip、expose、sweep，待做）都是同一个形状：到达（锚点）→ 过渡段 → 进入段（`straight`，深度常数）→ 任务段（`scripted`）→ 锚点 → 撤出段（`straight` 或离开段）→ 收臂。工具的工作点（勺尖、海绵底面）是标注里的具名坐标系 `tool_frame`（和 `grasps` 一样写在 `annotations/assets.json` 的资产条目里），由一个函数统一解析成 `T_tcp_tool = Held.T_tcp_obj · T_obj_tool`（4.1），轨迹函数只拿这个矩阵。不要让 10 个接触技能各自从标注换算一遍：那是未来重复代码的主要来源，也是最容易和标注失配的地方。新加一个工具 = 加一条标注，不是加一段代码。跨多个停车点的任务（推每段 25 cm、sweep 逐个物体）每段做一次 `find_park`，段与段之间看实测结果决定下一段。这是任务层的闭环，不是运动的退路。
 
@@ -559,7 +588,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 | 握上（合爪后） | 实际握法和假设的不同 | `HELD_POSE_MARGIN` 5 mm | 余量：合爪前规划的搬运段，持物带 `pad`；锚点用实测握法、零余量复核抬起和搬运段 |
 | 到达（持物开车之后） | 持物在手里滑动 | `HOLD_DRIFT`（待测） | 余量〔待加，2.5 步〕：开车前做的 place 计划，持物带 `pad = HOLD_DRIFT`；锚点用实测握法复核，放下位姿从实测握法推出，多偏 `PLACE_TOL` 以上才重做 |
 | 落下（松手后） | 物体落在哪 | 计划假设下落 `LEAVE_GAP` | 抽出段用 `touch` 放开手指；落点预测不了的（drop）用不预测的锚点（8.5） |
-| 任务段之后 | 部件 / 被推物体偏离预测 | `TRACK_TOL` | 余量：任务段 `Spec.margin = TRACK_TOL`；锚点用实测值复核 |
+| 任务段之后 | 部件 / 被推物体偏离预测 | 底盘带门：门比底盘慢最多约一个 `lead` | 余量〔待加，看意外接触再定〕：任务段的 `Spec.margin`；锚点用实测值复核 |
 
 规则：**计划按假设加余量，复核按实测、零余量**。这样复核不会比计划严：误差在余量以内，复核一定通过，原样执行；超出余量才重做。
 
@@ -586,7 +615,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
   两个都没有实测数据（2.1 跳过）；仿真里底盘停下的偏差在日志精度 1 mm 以内、朝向 0.02° 以内；
 - 路点在现在的世界里不碰：按这段的 `Spec`，含 `touch`，零余量；
 - 离开段：用 `contact_extent` 从当前姿态重量，长度和计划差超过 `EXTENT_TOL`（`LEAVE_MARGIN` 的一半：终点仍至少留半个余量离开接触，多走的不查碰撞部分也不超过它）就不成立；
-- 任务段〔待加，第 6 步〕：用实测的部件值 / 物体位姿重查；
+- 任务段：`carry="base"` 的底盘离构造时不超过 `TARGET_TOL` / `TARGET_TURN`；耦合的部件在能起步的范围里（`part_start`，同 5.5）；按实测的物体 / 部件重查机器人——`carry="base"` 用同一个函数从构造时的底盘重算，`carry="arm"` 查存下的 `qs`，每段的部件在它的 `s` 处（底盘本体搜索时对静态世界查过，`holds` 没有 `BaseModel`，不重查）；
 - 动作段总是成立；锚点不复核自己，它触发复核剩下的。
 
 执行完以后，hook 判"被挡住"（`after_grasp`、`after_down`）比的是实测 TCP 和这段送去的指令 TCP（`q_cmd`），差过 `PICK_REACH_TOL` 就是停在半路；目标对不对已经在这段之前由 `holds` 查过，不在这里再混进来。
@@ -597,7 +626,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 ### 8.6 执行和失败
 
-`execute` 按种类分：`move` 交给 `follow`，持物时限速；`drive` 交给底盘；`scripted` 交给它的执行器〔待加〕；`action` 做对应动作；`anchor` 不动。除锚点（不动，不声明）以外每段都向接触监视声明 `seg.spec.allow`（松手声明"手指可碰放下的物体"）。这些都是 `Actuator` 的方法（2.5）：`execute` 和 `observe` 是 ④ 仅有的两处仿真副作用，而且只通过这个协议，不直接碰 `Rig`。
+`execute` 按种类分：`move` 交给 `follow`，持物时限速；`drive` 交给底盘；`scripted` 交给它的执行器（`follow` 照走 `qs`；`ride` 把 `ride_base` 这个函数交给 `Actuator.ride`，没走到 `done` 就失败）；`action` 做对应动作；`anchor` 不动。除锚点（不动，不声明）以外每段都向接触监视声明 `seg.spec.allow`（松手声明"手指可碰放下的物体"）。这些都是 `Actuator` 的方法（2.5）：`execute` 和 `observe` 是 ④ 仅有的两处仿真副作用，而且只通过这个协议，不直接碰 `Rig`。
 
 技能自己的判断挂在 hooks 上：伸入时盯物体、合爪后判断和登记持物、搬运后 `check_held`。hooks 只读状态、做判断、登记、写日志，**不动机器人，不改碰撞模型**。判失败以后要退出接触（没夹住、半路被挡），由技能给一个失败出口的 `build_clear(state)`（张手 + `contact_extent(near_world)` + `contact_segment`），`run` 执行它再抛 `SkillFailure`。做法：hook 判失败时抛的异常用 `motion_state.clearing(exc, open_width, leave, ticks)` 标明要什么退出（张手到多宽、要不要竖直退出接触），`run`（以及 `run_skill` 判结果失败时）用 `skill_plans.plan_clear` 从现在的 `State` 做出这份计划、原样执行，再把原来的异常抛出去；手里还有东西时不张手（`plan_clear` 返回 None）。退出本身失败就往上抛，原来的失败在异常链里。各处要的退出：
 - `after_grasp` 被挡住 → 只退出接触；
@@ -609,7 +638,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 失败只有两类：
 1. 计划做不出来（原语返回原因），包括锚点处重做不出来；
-2. 仿真结果不对：被挡住停在半路、没夹住、物体没跟上来、闭环执行器偏出 `TRACK_TOL`。
+2. 仿真结果不对：被挡住停在半路、没夹住、物体没跟上来、闭环执行器停下（卡住、滑脱、超时）。
 
 意外接触只当指标。搬运中掉了，抛 `Dropped` 给上层。
 
@@ -632,8 +661,8 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 数据：`State`、`Hand`、`Held`、`Spec`（`allow`、`fingers`、`exempt`、`hold_tilt`、`touch`）、`Segment`（`move` / `action` / `drive` / `anchor`）、`Plan`（含 `decisions`）、`Failure`、`Aim` / `aim_pose`，以及推进 `State` 的小函数；协议 `Actuator`、`BaseModel`（2.5）。实测握法按实测关节角量（8.2）。
 - 查询层：`Motion.query`（包一层）、`path_free_only`。
 - 原语：`free_leg`（`Joint`、`Pose`、`PoseSet`、`JointSet`）、`straight`、`contact_extent`、`contact_segment`，三个"还在碰"判据，`exit_length`；`drive`、`drive_straight`（5.4）；`decide_ik`（5.7）；`holds`（8.4）。
-- 计划：`plan_pick`、`plan_place`、`set_down_length`、`plan_navigate`、`travel_chain`、`Carry`、`plan_clear`；目标从 `State` 推出（第 6 节）；锚点 `pick_arrive` / `pick_held` / `place_arrive` / `place_landed`；`prior` 是 `Plan` 时还成立的运动段原样复用（`_kept`，收臂除外）；`HELD_POSE_MARGIN` 5 mm，`PICK_TOL` 1 mm，`PLACE_TOL` 5 mm。
-- 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`posture`，`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载，`template` / `park` / `arrive` / `travel` 都起作用，2.3）；navigate、pick、place 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`，加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
+- 计划：`plan_pick`、`plan_place`、`set_down_length`、`plan_navigate`、`travel_chain`、`Carry`、`plan_door`（开门，11-10）、`plan_clear`（手握部件时松开）；目标从 `State` 推出（第 6 节）；锚点 `pick_arrive` / `pick_held` / `place_arrive` / `place_landed`；`prior` 是 `Plan` 时还成立的运动段原样复用（`_kept`，收臂除外）；`HELD_POSE_MARGIN` 5 mm，`PICK_TOL` 1 mm，`PLACE_TOL` 5 mm。
+- 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`posture`，`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载，`template` / `park` / `arrive` / `travel` 都起作用，2.3）；navigate、pick、place、open 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`、`door`，加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
 - 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`，pick / place 在用；门后物体（柜子 / 冰箱 `inside_` 支撑面上）的种子停车点由标注推出（`_front_of`）。微波炉腔体里取物不走这里：合约路由到 `PickFromCavity`（policy_048，旧实现，第 8 步）。
 - 执行：`run.observe`、`execute`、`run(act, plan, rebuild, hooks, clear)`（每段 `holds`、锚点复核剩下的整份，`rebuild=None` 合法，8.8；失败出口 `run_clear`，8.6）。
 - 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`、`test_motion_skills.py`（FakeKin，不起仿真）。
@@ -671,6 +700,8 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 4. **取放家族**：drop、stack、lift、hover、cover、present；collect 在任务层串。在 `plan_pick` / `plan_place` 上换目标集合。
 5. **姿态类**：`Spec.joints` + 拆 `q_body`（`JointSet` 第 1 步已加）（`joints` 按关节名写，不按 `q_right` 的下标）。bend / straighten、升降躯干、wave、nod；删改 `kin.lo / hi` 和 `_lock_shared_posture` 的地方。
 6. **部件类 + retreat**：`scripted` + `Held(kind="part")` + `touch` 扩到部件和部位。开关门，`_ride` 变成闭环执行器，删 `hand_touches_part`；retreat 用直线 `drive`。
+   **框架已做（11-10，未跑仿真）**：`Script` + 耦合（`hinge` / `slider` / `still`）、`scripted` 段（`carry` 底盘 / 手臂）和 `run.execute` 的两种执行器、`Actuator.ride`（`Rig.ride`）、`BaseModel.clear`（`RigBase.clear`）、`Held(kind="part")`（`Rig.snapshot` 从 `_handle_grasp` 读出，`Motion.query` 不挂盒子、只放开手指对这个部件）、`Spec.touch` 写部件和 `hand`；FakeKin 单测 `tests/test_scripted.py`。
+   **开门已迁（11-10，未跑仿真）**：`plan_door` + `open_job`（第 6 节），`skills.open_articulated` 转到 `run_skill`（左手拿着东西、微波炉还走旧代码）；合约 `hinged_door` / `drawer` 路径改成和冰箱一样的 policy_003 + policy_022，只握一次，policy_046 / 047 / 049 / 050 退役；`Aim` 可以写在部件坐标系里（`frame`）；`plan_clear` 能松开把手；旧代码按力矩比挑停车点，去掉了（第 6 节开门）。单测 `tests/test_door_plan.py`。关门还是旧代码。还没做：关门（推门要 `pushed_part`）、手臂走圆弧、门扫过的扇形对家具、`Spec.margin`、`Allow` 由 `touch` 推出；删 `skills._ride` / `_ride_check` / `_move_articulated` 要等关门也迁完。
 7. **接触类**：按 v6 用量排，依次是 stir、wipe、roll / flip、expose、press / touch、push、sweep、pour。先加 `tool_frame` 标注和它的解析（第 6 节接触类技能），再迁第一个技能，否则 9 个技能各写一遍换算。删 `LEGACY` 直线和"到不了的点跳过"。
 8. **微波炉和电器动作**：`drive_part`、`toggle`、电机开门前让开的检查。删 `withdraw_microwave_cavity` 记的 `microwave_retrieval_q`（pick 已经不读；`policies/embedded.py` 的 `PickFromCavity` 还在用）。
 9. **左臂和两臂**：两手搬的物体进碰撞模型（闭链约束另议）；`q_body` 已在第 5 步拆好。
@@ -708,7 +739,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 | `BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 的值 | 9.3 第 2.1 步先记录实测偏差再定；现在 `PICK_TOL` 取 `HINT_REACH` 1 mm、`PLACE_TOL` 取 `PICK_REACH_TOL` 5 mm（8.4） |
 | 底盘误差用重做还是余量 | 重做（8.2）。要是 pick 的到达锚点（`PICK_TOL` 1 mm）几乎每次都重做，而且重做常碰上慢的搬运段规划，再考虑放宽或给 `free_leg` 加余量 |
 | 锚点处重做做不出来，要不要换停车点再找一次 | 倾向任务层最多再找一次：约束不变，不算 fallback；要先看 9.3 第 2.1 步的记录里这种情况有多少 |
-| 闭环执行器的 `TRACK_TOL` | 做开门时按 `_ride` 实测偏差定 |
+| 任务段的余量（`Spec.margin`） | 底盘带门的停止线不用实测（5.5，`RIDE_SLIP_LEADS`）；余量等门迁移后看意外接触，有手臂蹭门板再按 `ride_end` 的落后量定 |
 | 开门：手臂走圆弧还是底盘带门 | 两种都作为目标集合里的做法，由搜索挑 |
 | 力的几何替身够不够 | 先够；不够再加力反馈 |
 | 两手搬的闭链 | 9.3 第 9 步再定 |

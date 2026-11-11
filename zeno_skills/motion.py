@@ -23,7 +23,8 @@ Collision semantics:
     grid of spheres filling its box on the arm's ``<side>_held_object`` link: the planner keeps
     it clear of the world (never of the robot itself).  Not while it still touches something;
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
-    finger, gripper and wrist-camera spheres (hand on a handle);
+    finger, gripper and wrist-camera spheres (hand on a handle; the old skills set it against
+    the whole world -- Motion.query takes a Spec.touch / a held part instead, against that only);
   * obstacles farther than CULL m from the base are switched off (speed);
   * base_link has no spheres (its PhysX collider is disabled too).
 
@@ -45,6 +46,7 @@ from scipy.spatial.transform import Rotation
 
 from . import scene_geometry as G
 from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt, tips_over
+from .motion_state import touch_entries, touches
 
 ROOT = Path(__file__).resolve().parents[1]
 ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
@@ -859,7 +861,9 @@ class Motion:
             kw["ignore_fingers"] = not spec.fingers
             kw["exempt_targets"] = bool(spec.exempt)
             kin.coll_kw = kw
-            self.finger_touch = {f"object:{n}" for n in getattr(spec, "touch", ())}
+            # what the hand may touch (Spec.touch and a part it holds): no obstacle in these queries;
+            # path_free_only checks the rest of the arm against them apart
+            self.finger_touch = {self.touch_owner(n) for n, _ in touches(state, spec, side)}
             # objects and parts the state has elsewhere than the synced world
             for name, T in state.objects.items():
                 owner = f"object:{name}"
@@ -888,7 +892,7 @@ class Motion:
                 was = saved["held"].get(s_, set())
                 sim = load(self.rig, s_) if getattr(self, "rig", None) is not None else None
                 sim_owners = self._held_owners(sim["name"]) if sim and sim.get("name") in self.ann.objects else set()
-                if h is None:
+                if h is None or h.kind == "part":       # a handle held: nothing rides on the hand (touches)
                     self.held[s_] = was - sim_owners
                     self._attach_rel(self.arms[s_], None, None)
                 else:
@@ -1162,29 +1166,46 @@ class Motion:
         with self._query(kin, other_q, coll_kw) as arm:
             return self._segments_free(arm, [np.asarray(q, float) for q in qs])
 
+    def touch_owner(self, name):
+        """The collider owner of a Spec.touch name: the object, else the articulated part of that name."""
+        if self.by_owner.get(f"object:{name}") or name in self.ann.objects:
+            return f"object:{name}"
+        if any(a["name"] == name for a in self.ann.articulated):
+            return f"part:{name}"
+        raise KeyError(f"touch {name}: neither an object nor an articulated part")
+
     @_timed("check_s")
     def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
-        """The arm without its fingers clear of the objects ``names`` alone all along ``qs`` (Spec.touch:
-        the fingers may touch them, the rest of the arm may not)."""
+        """The arm without the touching links clear of what they may touch alone, all along ``qs``
+        (Spec.touch: the fingers -- or the whole hand, (name, "hand") -- may touch it, the rest of
+        the arm may not).  ``names``: object / part names (the fingers'), or (name, links) pairs."""
         STATS["check"] += 1
-        owners = {f"object:{n}" for n in names}
+        by_links = {}
+        for n, links in touch_entries(names):
+            by_links.setdefault(links, set()).add(self.touch_owner(n))
         touch, self.finger_touch = getattr(self, "finger_touch", set()), set()
         try:
-            with self._query(kin, other_q, {**(coll_kw or {}), "ignore_fingers": True}) as arm:
-                on = [c for c in self.cols.items if self.enabled[c.name]]
-                try:
-                    for c in on:
-                        self._set_enabled(c, False)
-                    for c in self.cols.items:
-                        if c.owner in owners:
-                            self._set_enabled(c, True)
-                    return self._segments_free(arm, [np.asarray(q, float) for q in qs])
-                finally:
-                    for c in self.cols.items:
-                        if c.owner in owners:
+            for links, owners in sorted(by_links.items()):
+                kw = {**(coll_kw or {}), "ignore_fingers": True}
+                if links == "hand":
+                    kw["hand_touches_part"] = True          # _query: the hand links off (HAND_LINKS)
+                with self._query(kin, other_q, kw) as arm:
+                    on = [c for c in self.cols.items if self.enabled[c.name]]
+                    try:
+                        for c in on:
                             self._set_enabled(c, False)
-                    for c in on:
-                        self._set_enabled(c, True)
+                        for c in self.cols.items:
+                            if c.owner in owners:
+                                self._set_enabled(c, True)
+                        if not self._segments_free(arm, [np.asarray(q, float) for q in qs]):
+                            return False
+                    finally:
+                        for c in self.cols.items:
+                            if c.owner in owners:
+                                self._set_enabled(c, False)
+                        for c in on:
+                            self._set_enabled(c, True)
+            return True
         finally:
             self.finger_touch = touch
             self.cull_at = None

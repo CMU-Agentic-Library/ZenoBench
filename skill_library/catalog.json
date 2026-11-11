@@ -526,6 +526,16 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.place:place_job",
     "skill_id": "skill_018"
+   },
+   {
+    "name": "open",
+    "shape": "part",
+    "template": "plan_door",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.door:open_job",
+    "skill_id": "skill_040"
    }
   ]
  }

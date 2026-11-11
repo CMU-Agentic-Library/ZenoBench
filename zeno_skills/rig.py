@@ -43,6 +43,13 @@ DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in the right hand
 DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch, or a load in the left hand alone: it pivots
 HELD_CHECK_EVERY = PHYSICS_HZ // 2      # ticks between check_held calls along a drive (inherited, unmeasured)
 DRIVE_RAMP = 0.8                     # s: acceleration ramp of a drive that asks for none
+RIDE_TICKS = 6000                    # physics ticks a ride (Rig.ride) runs at most (skills._ride's)
+RIDE_LOG_EVERY = 60                  # ticks between ride events (and stall checks)
+RIDE_STALL = 0.003                   # rad / m: a part that moved less between two checks...
+RIDE_STALL_CHECKS = 4                # ...this many checks in a row has stalled (skills._ride's)
+RIDE_SLIP_LEADS = 2.0                # a part this many leads behind a ride's command dropped back: it slipped.
+                                     # Not measured: a part that follows lags at most lead + rate / PHYSICS_HZ by
+                                     # construction (the command chases the reading, both ways)
 
 
 class Rig:
@@ -754,6 +761,7 @@ class Rig:
         self.sync_world()
         motion = self.kin.motion
         hands = {}
+        handle = getattr(self, "_handle_grasp", None)
         for side, kin, q, held, fingers in (
                 ("right", self.kin, self.q, self.held, self.fingers),
                 ("left", self.left_kin, self.left_q, self.left_held, self.left_fingers)):
@@ -764,6 +772,15 @@ class Rig:
                 T = motion.held_in_tcp(kin, q(), name) if motion is not None and motion.by_owner.get(f"object:{name}") \
                     else np.eye(4)
                 h = Held(name, T, held.get("kind", "pinch"))
+            elif side == "right" and handle is not None:
+                # a handle in the right hand (policies GraspArticulatedHandle): the part frame in the
+                # TCP frame at the measured joints
+                a = self.ann.art(handle["name"])
+                p, R = kin.tcp(q())
+                T_tcp = np.eye(4)
+                T_tcp[:3, :3], T_tcp[:3, 3] = R, p
+                h = Held(handle["name"], np.linalg.inv(T_tcp) @ self.ann.part_pose(a, self.joint(handle["name"])),
+                         "part")
             hands[side] = Hand(width=width, held=h)
         return State(base=tuple(self.base_pose()), q_right=np.asarray(self.q_cmd, float).copy(),
                      q_left=np.asarray(self.left_q_cmd, float).copy(), head=dict(self.head_q()), hands=hands,
@@ -772,6 +789,57 @@ class Rig:
 
     def arm_kin(self, side="right"):
         return self.kin if side == "right" else self.left_kin
+
+    def ride(self, part, base_at, s_from, s_to, label, lead, rate, done):
+        """The closed loop of a task segment that carries the base (motion_state.Actuator.ride, docs
+        5.5): each tick the base at ``base_at(cmd)`` -- the script's own function (primitives.ride_base),
+        evaluated at the control rate, never off it -- for the commanded part value ``cmd``, which
+        advances at most ``rate`` per second toward the measured value + ``lead`` and stays within
+        [s_from, s_to].  The arms hold their commands; the grasped handle is all that moves the part.
+        Stops with done when the part reaches ``done``; without when it drops back RIDE_SLIP_LEADS leads
+        behind ``cmd`` (the handle slipped), stalls (RIDE_STALL over RIDE_STALL_CHECKS checks) or runs
+        RIDE_TICKS.  Logs
+        ``ride`` every RIDE_LOG_EVERY ticks and ``ride_end``: the lag and the base's distance from its
+        command at most (the data a task segment's margin would be set by, docs 8.2)."""
+        slip = RIDE_SLIP_LEADS * lead
+        sign = 1.0 if s_to > s_from else -1.0
+        self.clear.executing()
+        lo, hi = min(s_from, s_to), max(s_from, s_to)
+        cmd = float(np.clip(self.joint(part), lo, hi))
+        last, stall, lag_max, base_err = cmd, 0, 0.0, 0.0
+        out = {"done": False, "why": f"{part} did not reach {done:.3f} in {RIDE_TICKS} ticks"}
+        for it in range(RIDE_TICKS):
+            s = self.joint(part)
+            if sign * (done - s) <= 0:
+                out = {"done": True}
+                break
+            lag = sign * (cmd - s)
+            lag_max = max(lag_max, lag)
+            if lag > slip:
+                out = {"done": False, "why": f"{part} dropped back {lag:.3f} behind the command (slipped)"}
+                break
+            target = float(np.clip(s + sign * lead, lo, hi))
+            cmd += float(np.clip(target - cmd, -rate / PHYSICS_HZ, rate / PHYSICS_HZ))
+            b = base_at(cmd)
+            self.set_base(*b)
+            self.step(1)
+            x, y, _ = self.base_pose()
+            base_err = max(base_err, math.hypot(x - b[0], y - b[1]))
+            if it % RIDE_LOG_EVERY == 0:
+                self.log("ride", target=label, s=round(s, 4), cmd=round(cmd, 4), lag=round(lag, 4),
+                         fingers=[round(v, 4) for v in self.fingers()])
+                if it and abs(s - last) < RIDE_STALL:
+                    stall += 1
+                    if stall >= RIDE_STALL_CHECKS:
+                        out = {"done": False, "why": f"{part} stalled at {s:.3f}"}
+                        break
+                else:
+                    stall = 0
+                last = s
+        out.update(s=self.joint(part), lag_max=round(lag_max, 4), base_err_max=round(base_err, 4), ticks=it + 1)
+        self.log("ride_end", target=label, part=part, **{k: (round(v, 4) if isinstance(v, float) else v)
+                                                          for k, v in out.items()})
+        return out
 
     def wait(self, ticks):
         """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""

@@ -41,6 +41,20 @@ class RigBase:
         return list(motion.base_depths(rig, np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses]),
                                        motion.body_spheres(rig, [posture]))[0])
 
+    def clear(self, state, poses):
+        """The base (chassis and column, collision.WorldModel.footprints_clear) clear of the static
+        world and of the parts where ``state`` has them, at each (x, y, yaw_deg) of ``poses``."""
+        world = self.rig.world
+        saved = {k: world.joint_q[k] for k in state.parts if k in world.joint_q}
+        try:
+            for k in saved:
+                world.set_joint(k, state.parts[k])
+            return [bool(v) for v in world.footprints_clear(
+                np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses], float))]
+        finally:
+            for k, v in saved.items():
+                world.set_joint(k, v)
+
     def reachable(self, state, poses):
         return _reachable(self.rig.world, state.base, poses)
 

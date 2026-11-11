@@ -10,7 +10,7 @@ backend takes a State and a Spec as one query (Motion.query)."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
-from typing import Mapping, Protocol
+from typing import Callable, Mapping, Protocol
 
 import numpy as np
 
@@ -40,17 +40,23 @@ def clearing(exc, open_width=None, leave=True, ticks=60):
 class Held:
     """An object in a hand: its box frame (Motion._box_of) in the TCP frame (Motion.held_in_tcp).
     ``pad``: m its collision spheres are grown by -- a hold a plan assumes (taken from where the
-    object stood before the hand closed) rather than one measured in the hand."""
+    object stood before the hand closed) rather than one measured in the hand.
+    ``kind`` "part": the hand holds the handle of the articulated part ``name`` (docs 4.1):
+    ``T_tcp_obj`` is the part frame (annotations part_pose) in the TCP frame; nothing rides on the
+    hand, the part stays where State.parts puts it, and the hand's PART_HOLD links may touch it
+    (touches) -- the rest of the robot may not."""
     name: str
     T_tcp_obj: np.ndarray
-    kind: str = "pinch"              # pinch / edge / corner / bimanual
+    kind: str = "pinch"              # pinch / edge / corner / bimanual / part
     pad: float = 0.0
 
 
 @dataclass(frozen=True, eq=False)
 class Aim:
     """A contact pose as a State gives it (docs/MOTION_ARCHITECTURE.md section 6): the TCP at ``T``
-    in the box frame of ``obj`` standing in the world (``held`` False: a grasp), or the TCP that
+    in the box frame of ``obj`` standing in the world (``held`` False: a grasp) -- with ``frame``,
+    ``obj`` is an articulated part and ``frame(v)`` its frame's world pose at joint value v
+    (State.parts: a handle where the part stands now) -- or the TCP that
     puts the box frame of ``obj``, held in ``side``'s hand, at the world pose ``T`` (``held`` True: a
     set-down, through the hold Held.T_tcp_obj).  A plan derives its contact pose from the State it
     is built from this way and records the Aim with the pose it got (Segment.info["aim"],
@@ -59,6 +65,7 @@ class Aim:
     T: np.ndarray
     held: bool = False
     side: str = "right"
+    frame: Callable | None = None
 
 
 @dataclass(frozen=True)
@@ -88,13 +95,21 @@ class State:
         return None if h is None else h.held
 
 
+TOUCH_LINKS = ("fingers", "hand")   # what of a hand a Spec.touch entry lets touch (clearance.Allow.links)
+PART_HOLD = "fingers"                # the links of a hand holding a part's handle that may touch the part
+
+
 @dataclass(frozen=True)
 class Spec:
     """The collision rules of one segment.  ``fingers``: the hand's fingers in the collision model.
     ``exempt``: what the TCP target touches may be touched (the backend exempts by the target's
     position; never with a load in the hand).  ``hold_tilt``: a load in the hand keeps its tilt.
-    ``touch``: objects the fingers may touch -- no obstacle to them, still one to the rest of the
-    arm (primitives.free_path checks that apart); ``allow`` then lists them for the monitor."""
+    ``touch``: what the hand may touch -- each entry an object or articulated part name (the
+    fingers may touch it) or (name, links), links one of TOUCH_LINKS ("hand": the fingers, the
+    gripper and its camera: a door pushed with the hand).  No obstacle to those links, still one
+    to the rest of the arm (primitives.free_path checks that apart); ``allow`` then lists them for
+    the monitor.  A part the hand holds (Held kind "part") is touched the same way without being
+    listed (touches)."""
     allow: Allow = FREE
     fingers: bool = True
     exempt: bool = False
@@ -107,7 +122,12 @@ class Segment:
     """One step of a plan.  kind "move": joint waypoints ``qs`` after ``q_from`` (of the arm
     ``info["side"]``, default right); "action": no arm motion, ``action`` says what (("grip", width),
     ...); "drive": the base, ``info["steps"]`` (BaseModel.plan's), ``qs`` the right arm's postures after
-    each swing on the way; "anchor": where an error comes in (docs 8.2), nothing moves.  ``target``: what the segment is for --
+    each swing on the way; "scripted": a task segment (primitives.scripted, docs 5.5) -- ``info["script"]``
+    its trajectory (primitives.Script: a function of the task quantity s over an interval, and what
+    moves with s), ``qs`` the arm's IK continuation along it (none when the base carries it),
+    ``info["executor"]`` what runs it ("follow": the arm's qs open loop;
+    "ride": the base along the script's function closed on the measured part, Actuator.ride); "anchor": where an
+    error comes in (docs 8.2), nothing moves.  ``target``: what the segment is for --
     a pose (p, R), a joint goal q, or None -- checked again before it runs.  ``info``: what the
     primitive measured or chose (a straight's length, how a free leg was made)."""
     name: str
@@ -165,7 +185,11 @@ def aim_pose(state, aim):
             return None
         T = np.asarray(aim.T, float) @ np.linalg.inv(np.asarray(h.T_tcp_obj, float))
     else:
-        T_obj = state.objects.get(aim.obj)
+        if aim.frame is not None:
+            v = state.parts.get(aim.obj)
+            T_obj = None if v is None else aim.frame(float(v))
+        else:
+            T_obj = state.objects.get(aim.obj)
         if T_obj is None:
             return None
         T = np.asarray(T_obj, float) @ np.asarray(aim.T, float)
@@ -195,15 +219,43 @@ def holding(s: State, side, held: Held) -> State:
     return replace(s, hands={**s.hands, side: replace(h, held=held)})
 
 
-def released(s: State, side, name, T_frame) -> State:
-    """``side``'s hand let go of ``name``, which now stands with its box frame at T_frame."""
+def released(s: State, side, name, T_frame=None) -> State:
+    """``side``'s hand let go of ``name``, which now stands with its box frame at T_frame (None: a
+    part's handle let go -- the part stays where State.parts has it)."""
     h = s.hands.get(side, Hand(width=0.0))
-    return replace(s, hands={**s.hands, side: replace(h, held=None)},
-                   objects={**s.objects, name: np.asarray(T_frame, float).copy()})
+    objects = s.objects if T_frame is None else {**s.objects, name: np.asarray(T_frame, float).copy()}
+    return replace(s, hands={**s.hands, side: replace(h, held=None)}, objects=objects)
 
 
 def with_object(s: State, name, T_frame) -> State:
     return replace(s, objects={**s.objects, name: np.asarray(T_frame, float).copy()})
+
+
+def with_part(s: State, name, value) -> State:
+    """The articulated part ``name`` at joint value ``value`` (rad or m)."""
+    return replace(s, parts={**s.parts, name: float(value)})
+
+
+def touch_entries(touch):
+    """Spec.touch as ((name, links), ...): a bare name is the fingers'."""
+    out = []
+    for t in touch:
+        name, links = (t, "fingers") if isinstance(t, str) else (str(t[0]), str(t[1]))
+        if links not in TOUCH_LINKS:
+            raise ValueError(f"touch {name}: links {links!r} is not one of {TOUCH_LINKS}")
+        out.append((name, links))
+    return tuple(out)
+
+
+def touches(state, spec, side="right"):
+    """What ``side``'s hand may touch in a query of ``state`` by ``spec``, as ((name, links), ...):
+    spec.touch, and the part the hand holds (Held kind "part", PART_HOLD) -- one list for the
+    backend (Motion.query) and the separate check of the rest of the arm (primitives.free_path)."""
+    out = list(touch_entries(spec.touch))
+    h = state.held(side) if state is not None else None
+    if h is not None and h.kind == "part" and (h.name, PART_HOLD) not in out:
+        out.append((h.name, PART_HOLD))
+    return tuple(out)
 
 
 # --------------------------------------------------------------------- the simulator, as layer 4 sees it
@@ -214,6 +266,13 @@ class Actuator(Protocol):
 
     Writes:
       follow(qs, steps_per_wp, smooth, side)   arm waypoints (slower with a load in the hand); side "left": the left arm
+      ride(part, base_at, s_from, s_to, label, lead, rate, done)
+                                               the closed loop of a task segment that carries the base
+                                               (primitives.scripted): the base at base_at(s) -- the script's
+                                               function, s the part's joint value -- for a commanded s kept
+                                               ``lead`` ahead of the measured one, within [s_from, s_to]; stops
+                                               when the part reaches ``done``, drops back behind the command
+                                               (it slipped) or stalls.  -> {"done": bool, "s", "why", ...}
       grip(width, steps, gradual)              the gripper
       wait(ticks)                              the world settles that many physics ticks, nothing moves
       drive_base(path, allow=...)              the base along waypoints [(x, y, yaw_deg)]
@@ -226,6 +285,7 @@ class Actuator(Protocol):
       log(label, **kw)"""
 
     def follow(self, qs, steps_per_wp=3, smooth=False, side="right"): ...
+    def ride(self, part, base_at, s_from, s_to, label, lead, rate, done): ...
     def grip(self, width, steps=100, gradual=False): ...
     def wait(self, ticks): ...
     def drive_base(self, path, **kw): ...
@@ -252,10 +312,14 @@ class BaseModel(Protocol):
                                                       short way round), the arms as they are
       depths(state, poses) -> [m]                     penetration in the travel posture at each base pose
       reachable(state, poses) -> [bool]               the base column can drive there (a distance field)
-      drivable(state, goal) -> bool                   plan in the travel chain (skill_plans.travel_chain)"""
+      drivable(state, goal) -> bool                   plan in the travel chain (skill_plans.travel_chain)
+      clear(state, poses) -> [bool]                   the base itself (chassis and column) clear of the static
+                                                      world and of the parts where ``state`` has them, at each pose
+                                                      (a task segment that moves the base: primitives.scripted)"""
 
     def plan(self, state, goal, chain, label, quiet=False): ...
     def straight(self, state, target, label): ...
     def depths(self, state, poses): ...
     def reachable(self, state, poses): ...
     def drivable(self, state, goal): ...
+    def clear(self, state, poses): ...

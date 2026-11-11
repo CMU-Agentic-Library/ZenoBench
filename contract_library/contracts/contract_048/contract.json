@@ -293,21 +293,7 @@
       "kwargs": {}
      },
      {
-      "policy": "policy_046",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_050",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_047",
+      "policy": "policy_022",
       "args": [
        "$articulated"
       ],
@@ -323,7 +309,7 @@
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "One grasp: the handle pulled and the base riding the drawer, then let go."
    },
    {
     "path_id": "hinged_door",
@@ -342,21 +328,7 @@
       "kwargs": {}
      },
      {
-      "policy": "policy_046",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_049",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_047",
+      "policy": "policy_022",
       "args": [
        "$articulated"
       ],
@@ -372,7 +344,7 @@
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "One grasp: the side hook on the handle and the base riding the door, then let go."
    }
   ]
  },

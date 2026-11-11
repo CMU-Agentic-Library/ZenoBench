@@ -27,13 +27,13 @@ skills.py         技能本体：pick / place / navigate / 开关门 / push / �
   │   pick / place / navigate（MOTION_ARCHITECTURE 的五层）：
   │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
-  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place；
+  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
-  │   skill_plans/      ② plan_pick / plan_place / plan_navigate（build）：原语串成整份计划，State 在段间推进
+  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door（build）：原语串成整份计划，State 在段间推进
   │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
-  │                       decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
+  │                       scripted（任务段：Script + 耦合 hinge / slider / still，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
   │   run.py            ④ observe / execute / run：逐段复核、锚点复核剩下的整份、不成立就用 build 重做剩下的、执行；
   │                       只经过 Actuator（Rig 实现）碰仿真
   │   motion_state.py   State / Spec / Segment / Plan / Failure（纯数据）；协议 Actuator、BaseModel
@@ -198,6 +198,20 @@ skill_jobs/place.py  place_job
      hooks：place_down 后实测 TCP 对指令 TCP 的到位检查、check_held；place_release 后 rig.held = None；
             place_pull_out 前手指在物体里就记 place_pull_out_touching
   done：_place_result（在支撑面上 / 托盘里、离目标点多远）
+```
+
+### open（`skills.open_articulated → run_skill(SKILLS["open"])`，左手拿着东西 / 微波炉还走 `_move_with_retry`）
+
+```
+skill_jobs/door.py  open_job
+  goals：每种握法一个（_ways：侧钩 0 / 10 / 20°、两端、正面捏），握法在部件坐标系（door_grips）
+  plan_door(kin, state, grip, rests, base=RigBase)（skill_plans/door.py）
+     door_arrive 锚点 → 张手 → door_reach（_reach）→ door_grasp（straight，touch 部件）→ 合爪（Held part）
+     → door_held 锚点 → door_ride（scripted，Script(hinge/slider)，carry="base"）→ door_moved 锚点
+     → 松开 → door_leave（contact_extent near_world）→ tuck → door_settle
+  run.run：door_ride 由 execute 交给 Rig.ride(part, ride_base, …)
+     hooks：door_grasp 前 caption；合爪后判握住（不住 → clearing 张开退出），登记 rig._handle_grasp；松开后清登记
+  done：开度（铰链 0.10 rad、抽屉 60%）
 ```
 
 ### navigate（`skills.navigate → run_skill(SKILLS["navigate"])`）

@@ -106,6 +106,12 @@ SYNONYM_GROUPS = [
 
 # Registered policies that no SkillNode path may use, with the measured reason.
 RETIRED_POLICIES = {
+    "policy_046": "Grasp a door / drawer handle as a step of its own: open's hinged-door and drawer paths are one "
+                  "grasp in policy_022 (skill_plans.plan_door, 2026-11-10); the separate grasp was followed by a "
+                  "second one in policy_049 / policy_050.",
+    "policy_047": "Release a handle held by policy_046: plan_door lets go of its own grasp (see policy_046).",
+    "policy_049": "Open a hinged door after policy_046's grasp: grasped the handle again (see policy_046).",
+    "policy_050": "Open a drawer after policy_046's grasp: grasped the handle again (see policy_046).",
     "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach "
                   "was removed (every manipulation skill chooses its own base park).",
     "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "

@@ -770,8 +770,22 @@ def _move_with_retry_impl(rig, name, goal, verb):
 
 
 def open_articulated(rig, name, goal=None):
+    """Open ``name`` to ``goal`` (default its open value) by its handle: the motion-layer skill "open"
+    (skill_jobs.door, skill_plans.plan_door: one grasp, the base riding the part).  Still the old
+    _move_with_retry while the left hand holds a load (its waist limit waits for Spec.joints, docs 9.3
+    step 5) and for a microwave (its park beside the hinge sweep: step 8).  A part at its goal already
+    is left as it is."""
     a = rig.ann.art(name)
-    return _move_with_retry(rig, name, a["open_q"] if goal is None else goal, "open")
+    goal = a["open_q"] if goal is None else goal
+    if getattr(rig, "left_held", None) is not None or a["category"] == "microwave":
+        return _move_with_retry(rig, name, goal, "open")
+    from .skill_jobs.door import DONE_PRIS, DONE_REV
+    q = rig.joint(name)
+    if abs(q - goal) <= (DONE_REV if a["type"] == "revolute" else DONE_PRIS):
+        rig.log("open_result", name=name, before=q, after=q, goal=goal, path="already open")
+        return q
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["open"], {"name": name, "goal": goal})
 
 
 def close_articulated(rig, name):
