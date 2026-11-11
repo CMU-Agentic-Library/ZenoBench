@@ -57,6 +57,14 @@ SCORING: dict[tuple[str, str], dict] = {
         {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "clear_of"]},
          "why": "the guests' table, squeezed against the dishes, nothing moved or tipped"}],
         "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held"},
+    # T01 which_book: three books (the island's, the guest's in the room the instruction names, one in the
+    # other room); the guest's book is the point.  No middle tier: the wrong book is not the task done
+    ("T01", "which_book"): {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "only the guest's book on a dining table, the other two untouched"},
+        {"name": "worst", "score": 0.3, "goal": {"drop": ["near_start"]},
+         "why": "the guest's book on a dining table, but another book brought along or moved too"}],
+        "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
 }
 
 

@@ -25050,6 +25050,28 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the guest's book on a dining table, the other two untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_start"
+         ]
+        },
+        "why": "the guest's book on a dining table, but another book brought along or moved too"
+       }
+      ],
+      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
      }
     },
     "which_book__bedroom": {
@@ -25319,6 +25341,28 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the guest's book on a dining table, the other two untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_start"
+         ]
+        },
+        "why": "the guest's book on a dining table, but another book brought along or moved too"
+       }
+      ],
+      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
      }
     }
    },
@@ -30084,6 +30128,28 @@
       "17": "which_book__bedroom",
       "18": "which_book__living",
       "19": "which_book__living"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the guest's book on a dining table, the other two untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_start"
+         ]
+        },
+        "why": "the guest's book on a dining table, but another book brought along or moved too"
+       }
+      ],
+      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
      }
     }
    },
