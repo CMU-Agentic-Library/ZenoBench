@@ -30471,6 +30471,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "one block on the other, the hand empty"
+       }
+      ],
+      "not_ok": "no stack, or a block dropped"
      }
     },
     "crowded_use_another__tight_tv": {
@@ -30731,6 +30743,225 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "crowded_use_another__tight_tv": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__tight_dining": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__loose": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl and the pin unmoved, the bowl upright"
+       }
+      ],
+      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"
      }
     },
     "crowded_use_another__tight_dining": {
@@ -31025,6 +31256,225 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "crowded_use_another__tight_tv": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__tight_dining": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__loose": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl and the pin unmoved, the bowl upright"
+       }
+      ],
+      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"
      }
     },
     "crowded_use_another__loose": {
@@ -31303,6 +31753,225 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "crowded_use_another__tight_tv": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__tight_dining": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__loose": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl and the pin unmoved, the bowl upright"
+       }
+      ],
+      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"
      }
     },
     "third_toy_elsewhere__duck": {
@@ -35960,6 +36629,18 @@
       "17": "clear",
       "18": "clear",
       "19": "clear"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "one block on the other, the hand empty"
+       }
+      ],
+      "not_ok": "no stack, or a block dropped"
      }
     },
     "crowded_use_another": {
@@ -35982,6 +36663,225 @@
       "17": "crowded_use_another__tight_tv",
       "18": "crowded_use_another__tight_dining",
       "19": "crowded_use_another__tight_dining"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "crowded_use_another__tight_tv": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__tight_dining": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          },
+          "crowded_use_another__loose": {
+           "all": [
+            [
+             "near_start",
+             "oatmeal",
+             0.02
+            ],
+            [
+             "near_start",
+             "rolling_pin",
+             0.02
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "floor_block"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_a"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "floor_block",
+              "wooden_block_b"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl and the pin unmoved, the bowl upright"
+       }
+      ],
+      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"
      }
     },
     "third_toy_elsewhere": {

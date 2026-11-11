@@ -65,6 +65,8 @@ SCORING: dict[tuple[str, str], dict] = {
         {"name": "worst", "score": 0.3, "goal": {"drop": ["near_start"]},
          "why": "the guest's book on a dining table, but another book brought along or moved too"}],
         "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
+    # T02 clear (control): two free blocks on the island; either on the other is the same
+    ("T02", "clear"): only("one block on the other, the hand empty", "no stack, or a block dropped"),
 }
 
 
@@ -125,8 +127,28 @@ def _reader_seat(task: dict) -> dict:
         "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held"}
 
 
+def _crowded_use_another(task: dict) -> dict:
+    """T02 crowded_use_another: block B wedged against the full oatmeal bowl (tight_*) -> the block in another
+    room; loose: any two.  Pulling B out anyway, the bowl untouched, is the worst tier."""
+    lays = task["v6_variants"]["crowded_use_another"]["layouts"]
+    blocks = ("wooden_block_a", "wooden_block_b", "floor_block")
+    any_pair = [[["on_top_of", x, y]] for x in blocks for y in blocks if x != y]
+    worst = {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]
+        worst[lid] = {"all": [a for a in g["all"] if a[1] != "wooden_block_b"], "any": any_pair}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the "
+                "rolling pin untouched; loose: any two blocks, the bowl and the pin untouched"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl "
+                "and the pin unmoved, the bowl upright"}],
+        "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"}
+
+
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
+BUILT = {("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
