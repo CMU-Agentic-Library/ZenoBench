@@ -435,7 +435,9 @@ def episode_facts(r, task, ctx=None):
          "physical_success": physical, "task_success": success, "substitution": sub,
          "conditions": conds, "decisions": sorted(decisions), "feasible": tv in (ctx.get("feasible") or set()),
          "alt_feasible": tv in (ctx.get("alt_feasible") or set()),
-         "log_version": r.get("eval_log_version", 1)}
+         "log_version": r.get("eval_log_version", 1),
+         # graded outcome (benchmark/v6/scoring.py): tier and score, zero when the episode did not succeed
+         "score": dict(r["score"], score=r["score"]["score"] if success else 0.0) if r.get("score") else None}
     # ---- facts kept apart (spec 3)
     cls = Counter(e["class"] for e in events)
     f["failures"] = dict(cls)

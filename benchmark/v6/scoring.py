@@ -13,6 +13,9 @@ Each reviewed design (``v6_variants`` key) gets a ``scoring`` entry, copied onto
 
 D = 0 means there is no substitution: the single tier is the layout's goal.
 
+Success (11-11, user): every tier counts as task success (episode.Episode.check); only the score differs.
+``not_ok`` is failure.
+
 Decisions are reviewed one design at a time with the user; benchmark/v6/SCORING_zh.md records them.
 """
 from __future__ import annotations
