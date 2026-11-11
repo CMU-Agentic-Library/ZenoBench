@@ -22,6 +22,8 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+from .tolerances import CARRY_TILT, REST_TOL, STOWED_TOL  # noqa: F401  (motion, skill_runtime, policies import them from here)
+
 ROOT = Path(__file__).resolve().parents[1]
 URDF = ROOT / "robot_sources/zeno_malo_description-master/zeno_malo_edu.isaac.urdf"
 FRAME = "right_gripper_link"
@@ -94,9 +96,6 @@ def _finger_spheres():
 
 _FINGER_BOX = None
 _FINGER_SPH = None
-REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
-STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
-CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
 
 
 def gripper_rot(approach, close_dir):

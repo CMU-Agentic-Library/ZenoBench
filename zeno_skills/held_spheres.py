@@ -19,9 +19,8 @@ import heapq
 
 import numpy as np
 
-OUT = 0.004       # m: the spheres stick out of the object by at most this (< LEAVE_GAP 5 mm: a set-down's end stays free)
-GAP = 0.006       # m: no point of the object's surface is further than this from the spheres (first try)
-GAP_MAX = 0.02    # m: ...widened (x1.25 a step) up to this when the spheres would be more than the budget
+from .tolerances import HELD_SPHERE_GAP as GAP, HELD_SPHERE_GAP_MAX as GAP_MAX, HELD_SPHERE_OUT as OUT
+
 SAMPLE = 0.003    # m: spacing of the surface samples (a point between samples is within SAMPLE / sqrt(3) of one)
 VERSION = 3       # bump when the fit changes (the cache of motion._cached_fit is keyed by it)
 CANDIDATES = 12000 # inside centres tried (the big spheres), on a grid spaced to give about this many (at

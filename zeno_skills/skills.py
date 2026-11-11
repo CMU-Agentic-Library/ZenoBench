@@ -33,28 +33,20 @@ from .motion_state import Failure, at_base, clearing, with_arm, with_width
 from .rig import (FINGERS_KW, FREE_SPACE_KW, HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, ON_LINE, Dropped,
                   SkillFailure)
 from .park_search import Problem
-from .primitives import TARGET_TOL
 from .run import observe, run
 from .skill_plans import plan_pick, plan_place
-from .skill_plans.navigate import SAME_POSTURE       # one source (skill_plans: below the rig)
-from .sticky import SHUT, note_grasp, rest_R, welded
+from .sticky import note_grasp, rest_R, welded
+from .tolerances import (DOOR_CLOSED_TOL, DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HELD_LOST_GAP, HELD_SHIFT_GAP,
+                         HELD_SHIFT_MAX, HELD_SLIP, PICK_LIFT_FRAC, PICK_RISE_MIN, RIDE_DONE_PRIS, RIDE_DONE_REV,
+                         SAME_POSTURE, SHUT)
 
 TCP_BACKOFF = 0.12
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
-PLACE_LEVEL_MIN = 5.0        # deg: a held object tilted more than this is levelled for the place
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
 PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
-# the open hand reached the grasp pose within this, else it was stopped short (blocked) and does
-# not close: reach errors 0.1-0.4 mm in benchmark/runs/pick612_verify, 34.6 mm where a finger
-# rode on a mug's wall (T13 no_cup, fingers_cover_1105)
-PICK_REACH_TOL = TARGET_TOL   # m: a hand this far off where it was sent is blocked (a set-down's tolerance too: PLACE_TOL)
 APPROACH_STEP = 0.003         # m between the waypoints of a reach-in / set-down straight (the search's plan and its execution)
-# each finger closed at least this far from the opening it was given, and stopped short of shut:
-# it met the object (a finger left at the opening touched nothing -- [0.0102, 0.04] on T13's mug,
-# welded and carried as held)
-GRIP_CLOSED_BY = 0.003
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
 # m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
 # vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
@@ -149,12 +141,12 @@ def check_held(rig, label, open_hand=True):
     slip = abs(float(np.linalg.norm(tcp - body)) - float(np.linalg.norm(h["tcp_minus_body"])))
     f = rig.fingers()
     gap = float(f.sum())          # an off-centre rim pinch drives one finger to ~0 while holding
-    if 0.05 < slip < 0.08 and gap > 0.008:
+    if HELD_SLIP < slip < HELD_SHIFT_MAX and gap > HELD_SHIFT_GAP:
         # shifted in the pinch but still between the pads: re-anchor
         rig.log("held_shift", obj=h["name"], during=label, slip_m=round(slip, 3), fingers=f.round(4).tolist())
         h["tcp_minus_body"] = tcp - body
         return
-    if slip > 0.05 or gap < 0.004:
+    if slip > HELD_SLIP or gap < HELD_LOST_GAP:
         rig.log("dropped", obj=h["name"], during=label, slip_m=round(slip, 3), fingers=f.round(4).tolist(),
                 at=[round(float(v), 3) for v in body])
         rig.held = None
@@ -214,7 +206,7 @@ def check_left_held(rig, label):
     body, _ = rig.obj_pose(h["name"])
     slip = abs(float(np.linalg.norm(tcp-body))-float(np.linalg.norm(h["tcp_minus_body"])))
     fingers = rig.left_fingers()
-    if slip > 0.05 or float(fingers.sum()) < 0.004:
+    if slip > HELD_SLIP or float(fingers.sum()) < HELD_LOST_GAP:
         rig.log("left_dropped", obj=h["name"], during=label, slip_m=round(slip, 3),
                 fingers=fingers.round(4).tolist())
         rig.left_held = None
@@ -690,8 +682,8 @@ def _move_articulated(rig, name, goal, verb):
         rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "handle" else 3, label=f"{verb}_{lab}", q_hint=qh)
     rig.kin.coll_kw = {"hand_touches_part": True}
     f = rig.grip(0.0, PHYSICS_HZ)
-    # closed on the bar: both fingers stopped by it (thin arched pulls: ~5 mm)
-    if not (f.min() > min(0.004, 0.3 * t) and max(0.6 * t, t - 0.007) < f.sum() < t + 0.03):
+    from .skill_jobs.door import handle_closed_on
+    if not handle_closed_on(f, t):
         raise SkillFailure(f"{verb} {name}: handle not grasped, fingers {f.round(4).tolist()}")
     rig.caption = f"{verb.upper()} {a['category']}: base follows the joint motion"
     if grasp == "front":                  # held by friction only: pull gently
@@ -721,11 +713,11 @@ def _move_articulated(rig, name, goal, verb):
     q = rig.joint(name)
     rig.log(f"{verb}_result", name=name, before=q0, after=q, goal=goal)
     if a["type"] == "revolute":
-        tol = 0.10
+        tol = DOOR_OPEN_TOL
     elif goal == a["closed_q"]:
-        tol = 0.04           # same as the evaluator's "closed"
-    else:                    # a released drawer slides back a little: 60 % open is open
-        tol = 0.4 * abs(a["open_q"] - a["closed_q"])
+        tol = DOOR_CLOSED_TOL
+    else:                    # a released drawer slides back a little
+        tol = DRAWER_OPEN_FRAC * abs(a["open_q"] - a["closed_q"])
     ok = abs(q - goal) < tol
     if not ok:
         raise SkillFailure(f"{verb} {name}: joint {q0:.3f} -> {q:.3f}, goal {goal:.3f}")
@@ -779,9 +771,8 @@ def open_articulated(rig, name, goal=None):
     goal = a["open_q"] if goal is None else goal
     if getattr(rig, "left_held", None) is not None or a["category"] == "microwave":
         return _move_with_retry(rig, name, goal, "open")
-    from .skill_jobs.door import DONE_PRIS, DONE_REV
     q = rig.joint(name)
-    if abs(q - goal) <= (DONE_REV if a["type"] == "revolute" else DONE_PRIS):
+    if abs(q - goal) <= (RIDE_DONE_REV if a["type"] == "revolute" else RIDE_DONE_PRIS):
         rig.log("open_result", name=name, before=q, after=q, goal=goal, path="already open")
         return q
     from .motion_skills import SKILLS, run_skill
@@ -1169,7 +1160,7 @@ def _pick_judged(rig, name, g, tcp0, pos):
     # or the object up with the hand (a carry pose kept where the arm stood checks the contact
     # exit's few cm).  A weld alone is not held: it carries what slid out of the pads (fingers
     # [0, 0], T13 no_cup mug, T09 spoon), and `holding` judges the fingers
-    held = bool(f.min() > 0.003) and (welded(rig, "right", name) or rise < 0.01 or lift > 0.5 * rise)
+    held = bool(f.min() > SHUT) and (welded(rig, "right", name) or rise < PICK_RISE_MIN or lift > PICK_LIFT_FRAC * rise)
     rig.log("pick_result", obj=name, kind=g["kind"], lift_m=round(lift, 4), hand_rise_m=round(rise, 4),
             fingers=f.round(4).tolist(), held=held)
     rig.focus_z = None

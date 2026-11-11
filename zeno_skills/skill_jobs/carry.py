@@ -10,6 +10,7 @@ from ..rig import SkillFailure
 from ..run import observe
 from ..run import run
 from ..skills import (CARRY_Z, _carry_floor, _carry_goal_set, check_held)
+from ..tolerances import CARRY_LOW_TOL, CARRY_SUPPORT_Z
 from .base import RigBase
 
 
@@ -17,9 +18,6 @@ CARRY_FRONT_X = (0.25, 0.55)  # m: base-frame TCP x of a carry posture (CARRY_SP
 
 
 CARRY_FRONT_Y = (-0.40, 0.00) # m: ...and y (CARRY_SPOTS' -0.30 - -0.10, 0.10 either way)
-
-
-CARRY_LOW_TOL = 0.01          # m a load's bottom may sit below its carry floor (the old 1 cm "at a carry spot")
 
 
 CARRY_LOW_COST = 1.0          # m-equivalent cost of a carry goal below the height a destination asks for
@@ -95,7 +93,7 @@ def _carry_bottom_z(rig, place):
         z = float(rec["z"])
     elif kind in ("furniture", "appliance", "articulated"):
         zs = [s["z"] for s in rig.ann.supports if (s.get("furniture") == place or s["name"].startswith(place + "/"))
-              and 0.3 <= s["z"] <= 1.0]
+              and CARRY_SUPPORT_Z[0] <= s["z"] <= CARRY_SUPPORT_Z[1]]
         z = max(zs) if zs else None
     elif kind == "object":
         st = rig.state()
@@ -106,7 +104,7 @@ def _carry_bottom_z(rig, place):
         else:
             sup = rig.geo.support_under(place, st)
             z = float(sup["z"]) if sup is not None else None
-    if z is None or z < 0.3 or z > 1.0:
+    if z is None or z < CARRY_SUPPORT_Z[0] or z > CARRY_SUPPORT_Z[1]:
         return None                 # floor-level or out-of-reach heights keep the default carry
     if kind == "support" and rec.get("category") != "cabinet_inside" and "/inside" not in rec["name"]:
         # over the loose objects already standing there: the base drives in

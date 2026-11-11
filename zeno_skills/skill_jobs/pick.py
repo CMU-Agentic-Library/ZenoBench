@@ -11,10 +11,10 @@ from ..rig import Dropped
 from ..primitives import turn
 from ..rig import SkillFailure
 from ..run import observe
-from ..sticky import SHUT
 from ..sticky import note_grasp
 from ..skill_plans import PICK_RELAY
-from ..skills import (APPROACH_STEP, GRIP_CLOSED_BY, PICK_LEAVE_CHECK, PICK_REACH_TOL, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
+from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, SHUT, TARGET_TOL
+from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
 
 
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
@@ -117,7 +117,7 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None):
             # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
             rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
                     hits=kin.motion.contacts_by_owner(kin, rig.q_cmd, kin._other_q()))
-        if err > PICK_REACH_TOL:
+        if err > TARGET_TOL:
             # stopped short of the grasp pose: something is in the way, closing here pinches elsewhere
             rig.log("pick_result", obj=name, kind=g["kind"], tcp_err_m=round(err, 4), held=False, why="blocked")
             rig.focus_z = None
@@ -225,8 +225,8 @@ def pick_job(rig, args, state, skill=None):
     def found_park(found):
         g = goal_cands[found.k]
         rig.log("pick_park", obj=name, kind=g["kind"], park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)],
-                floor=bool(floor_z < 0.05))
-        rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
+                floor=bool(floor_z < FLOOR_Z))
+        rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < FLOOR_Z else "")
 
     def ready(found):
         # after the drive: the candidate's grasp on the object where it stands now (the drive may

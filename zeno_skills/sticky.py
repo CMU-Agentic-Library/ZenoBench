@@ -46,11 +46,10 @@ import numpy as np
 
 from .evaluator import quat_R
 from .physics import ASSET
+from .tolerances import SHUT, SNAP_NEAR  # noqa: F401  (skills, skill_jobs.pick import SHUT from here)
 
 JOINTS = "/World/StickyHands"
 LINKS = {"right": ASSET + "/right_gripper_link", "left": ASSET + "/left_gripper_link"}
-NEAR = 0.30            # the hand this close to the object: snap it where the hand is
-SHUT = 0.003           # fingers closer than this hold nothing between the pads
 
 
 def _wxyz(R):
@@ -290,7 +289,7 @@ class StickyHands:
         rig = self.rig
         tcp, _ = rig.kin.tcp(rig.q())
         pos, quat = rig.obj_pose(name)
-        if float(np.linalg.norm(tcp - pos)) < NEAR:
+        if float(np.linalg.norm(tcp - pos)) < SNAP_NEAR:
             return "at_object"
         R_g = quat_R(quat) @ grasp["rel_R"].T                   # the grasp on the object where it is now
         p_g = pos - R_g @ grasp["rel_p"]

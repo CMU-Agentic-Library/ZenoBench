@@ -9,13 +9,13 @@ from ..annotations import rz
 from ..evaluator import quat_R
 from ..park_search import Problem
 from ..rig import FREE_SPACE_KW
-from ..rig import LEAVE_GAP
 from ..rig import SkillFailure
 from ..primitives import query
 from ..run import observe
 from ..skill_plans import FREE_HAND, PLACE_RELAY, T_of
 from ..sticky import rest_R
-from ..skills import (APPROACH_STEP, PICK_REACH_TOL, PLACE_LEVEL_MIN, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
+from ..skills import (APPROACH_STEP, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
+from ..tolerances import LEAVE_GAP, PLACE_LEVEL_MIN, PLACE_XY_TOL, PLACE_XY_TOL_CORNER, TARGET_TOL
 from .carry import _carry_bottom_z, carry_posture
 
 
@@ -155,7 +155,7 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
         # the hand against where the set-down sent it (its end, the command now): whether the hold
         # still gives that pose was checked before the set-down ran (primitives.holds, PLACE_TOL)
         err = float(np.linalg.norm(kin.tcp(rig.q())[0] - kin.tcp(rig.q_cmd)[0]))
-        if err > PICK_REACH_TOL:
+        if err > TARGET_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")
         check_held(rig, "place_down", open_hand=False)
@@ -199,7 +199,7 @@ def _place_result(rig, name, s, spot, kind, tray):
                 np.linalg.norm(np.asarray(st["objects"][o]["pos"][:2]) - b[:2]) < 0.30}
         rig.log("place_not_on_support", obj=name, bottom=[round(float(v), 3) for v in b],
                 quat=[round(float(v), 3) for v in st["objects"][name]["quat"]], near=near)
-    tol = 0.12 if kind == "corner" else 0.10   # a corner-held object pivots flat on release
+    tol = PLACE_XY_TOL_CORNER if kind == "corner" else PLACE_XY_TOL   # a corner-held object pivots flat on release
     if not (on and err < tol):
         raise SkillFailure(f"place {name}: xy err {err:.3f} m, on support {on} ({why})")
     return True

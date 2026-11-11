@@ -17,17 +17,16 @@ from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
+from .tolerances import RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
 RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
 # A follow ends when the arm has arrived or has stopped, not at a joint tolerance: 0.01 rad of one
-# joint is 8 mm at the hand 0.8 m out, and the reach checks after it (skills.PICK_REACH_TOL, 5 mm)
+# joint is 8 mm at the hand 0.8 m out, and the reach checks after it (TARGET_TOL, 5 mm)
 # then took a hand still closing in for a blocked one (T06 s10 6.8 mm, T10 s11 7.9 mm, the mug of
 # T14 shelf_taken s11 6 mm at its set-down, 11-06/11-07).
-SETTLE_TCP = 0.001        # m: arrived -- a fifth of PICK_REACH_TOL; settled reaches err 0.1-0.4 mm (pick612_verify)
-SETTLE_STILL = 0.002      # m/s: stopped -- the TCP moving slower than this over SETTLE_WINDOW (blocked, or
-                          # held off by the drives' steady error); a hand closing a 5 mm error moves 10+ mm/s
+# SETTLE_TCP (arrived) and SETTLE_STILL (stopped): tolerances.py
 SETTLE_WINDOW = 10        # physics ticks the stop is measured over (one turning point of a wobble is not a stop)
 FREE_SPACE_KW = {"exempt_targets": False}   # coll_kw of free space: the fingers checked, no target exempted
 FINGERS_KW = {}           # coll_kw of a park search's approach target: the fingers checked, the object at it exempted
@@ -45,11 +44,8 @@ HELD_CHECK_EVERY = PHYSICS_HZ // 2      # ticks between check_held calls along a
 DRIVE_RAMP = 0.8                     # s: acceleration ramp of a drive that asks for none
 RIDE_TICKS = 6000                    # physics ticks a ride (Rig.ride) runs at most (skills._ride's)
 RIDE_LOG_EVERY = 60                  # ticks between ride events (and stall checks)
-RIDE_STALL = 0.003                   # rad / m: a part that moved less between two checks...
-RIDE_STALL_CHECKS = 4                # ...this many checks in a row has stalled (skills._ride's)
-RIDE_SLIP_LEADS = 2.0                # a part this many leads behind a ride's command dropped back: it slipped.
-                                     # Not measured: a part that follows lags at most lead + rate / PHYSICS_HZ by
-                                     # construction (the command chases the reading, both ways)
+RIDE_STALL_CHECKS = 4                # checks in a row a part moved less than RIDE_STALL: stalled (skills._ride's;
+                                     # RIDE_STALL, RIDE_SLIP_LEADS: tolerances.py)
 
 
 class Rig:

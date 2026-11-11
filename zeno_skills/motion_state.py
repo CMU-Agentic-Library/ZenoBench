@@ -15,6 +15,7 @@ from typing import Callable, Mapping, Protocol
 import numpy as np
 
 from .clearance import FREE, Allow
+from .tolerances import MOVED_MM
 
 SIDES = ("right", "left")
 
@@ -236,8 +237,7 @@ def with_part(s: State, name, value) -> State:
     return replace(s, parts={**s.parts, name: float(value)})
 
 
-MOVED_MM = 5.0      # mm: an object other than the watched ones this far off where a plan assumed it is listed
-MOVED_MAX = 5       # ...the farthest this many
+MOVED_MAX = 5       # the farthest this many of the others off by more than MOVED_MM are listed
 
 
 def _frame_off(Ta, Tb):

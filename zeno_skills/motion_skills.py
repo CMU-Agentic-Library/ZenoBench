@@ -33,6 +33,7 @@ from typing import Callable
 from .motion_state import Failure
 from .park_search import find_park
 from .run import observe, run
+from .tolerances import SAME_PARK
 
 CATALOG = Path(__file__).resolve().parents[1] / "skill_library" / "catalog.json"
 SHAPES = ("drive", "perceive", "pick_place", "part", "posture", "contact", "bimanual")     # 2.3's table
@@ -92,7 +93,7 @@ def posture(rig, name):
 
 
 def _same_pose(a, b):
-    return math.hypot(a[0] - b[0], a[1] - b[1]) < 1e-4 and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < 1e-2
+    return math.hypot(a[0] - b[0], a[1] - b[1]) < SAME_PARK[0] and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < SAME_PARK[1]
 
 
 def run_skill(rig, skill, args):

@@ -14,6 +14,7 @@ import numpy as np
 
 from ..clearance import FREE, LEAVE_CONTACT
 from ..motion_state import Failure, Plan, Segment, Spec, released, with_arm, with_width
+from ..tolerances import NUMERIC_M
 from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg,
                           holds, turn)
 
@@ -33,7 +34,7 @@ def _on_line(kin, q, s, R, u, L):
     p_q, R_q = kin.tcp(np.asarray(q, float))
     d = p_q - s
     along = float(d @ u)
-    return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE and \
+    return L >= ON_LINE and -NUMERIC_M <= along <= L + NUMERIC_M and np.linalg.norm(d - along * u) < ON_LINE and \
         turn(R, R_q) < ON_LINE_TURN
 
 
@@ -125,7 +126,7 @@ def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, na
     if h is not None:                     # a handle: let go first (open_width), then out of the contact
         s = released(s, kin.side, h.name)
     hand = state.hands.get(kin.side)
-    if open_width is not None and (hand is None or hand.width < open_width - 1e-3):
+    if open_width is not None and (hand is None or hand.width < open_width - NUMERIC_M):
         segs.append(Segment(f"{name}_open", Spec(allow=FREE), q, kind="action",
                             action=("grip", float(open_width), int(ticks), False)))
         s = with_width(s, kin.side, open_width)

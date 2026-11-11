@@ -17,6 +17,7 @@ import numpy as np
 
 from .kinematics import manipulability
 from .motion_state import Failure, at_base, with_arm
+from .tolerances import DEPTH_TOL
 
 RADII = np.arange(0.45, 1.0, 0.05)    # m: rings of base positions around a goal's centre (as planner.find_park)
 ANGLE_STEP = 15                        # deg between positions on a ring
@@ -201,7 +202,7 @@ def find_park(kin, world, problem, state, log, base=None):
     moving = [c for c in pool if not is_here(c)]
     if base is not None and moving:
         d = base.depths(travel, [c[1:4] for c in moving])
-        blocked = {c[1:4] for c, dc in zip(moving, d) if dc > 1e-4}
+        blocked = {c[1:4] for c, dc in zip(moving, d) if dc > DEPTH_TOL}
         diag["travel_pose"] = len(blocked)
         pool = [c for c in pool if is_here(c) or c[1:4] not in blocked]
         moving = [c for c in pool if not is_here(c)]

@@ -38,23 +38,18 @@ from dataclasses import dataclass, replace
 
 import numpy as np
 
+from .tolerances import APPROACH_MOVED_M, APPROACH_TURN, CARRIED_M, MIN_DEPTH, MOVED_M, MOVED_TILT
+
 FINGER_LINKS = ("gripper_left_finger_link", "gripper_right_finger_link")
 HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 MONITOR_EVERY = 30          # ticks (4 per simulated second)
-MIN_DEPTH = 0.003           # m: shallower penetration is the sphere model's noise
 STILL = 1e-3                # rad / m: a robot that moved less since the last check is not checked again
 MAX_RECORDS = 200           # contact onsets / fallbacks kept per episode (the counts keep counting)
 # Disturbed objects: a movable object is pushed away at once, so a robot sphere never sinks into
 # it by MIN_DEPTH (a spoon carried along the island knocked a bottle over unseen); the monitor
-# watches the near objects' poses instead
-MOVED_M = 0.02              # m an object nobody holds may drift between checks...
-MOVED_TILT = 20.0           # ...or deg its up axis may tip (turning about it is not counted)
+# watches the near objects' poses instead (MOVED_M / MOVED_TILT / CARRIED_M; watch(): APPROACH_MOVED_M
+# / APPROACH_TURN -- all in tolerances.py)
 SETTLE_TICKS = 240          # an object just let go, or just knocked, settles (falls into a bin, rolls) this long
-CARRIED_M = 0.02            # m: an object that moved like a held one since the last check rides in / on it
-# watch(): an object the motion must not touch counts as moved past either (a fingertip knocking a
-# mug on its rim: 4 mm, 2.8 deg, T04 no_cup 2026-11-05; untouched, the mug stood within 0.01 mm)
-APPROACH_MOVED_M = 0.001
-APPROACH_TURN = 1.0         # deg, any axis
 
 
 @dataclass(frozen=True)

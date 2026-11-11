@@ -11,15 +11,22 @@ from ..park_search import Problem
 from ..rig import SkillFailure
 from ..skill_plans import DOOR_RELAY
 from ..skills import TCP_BACKOFF
+from ..tolerances import (DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HAND_OPENED_FRAC, HANDLE_FINGER_MIN, HANDLE_GAP, RIDE_DONE_PRIS,
+                          RIDE_DONE_REV, RIDE_OVERSHOOT)
 
 VARIANT_COST = 0.05      # m of park cost per rank of a way to hold the handle (untilted side hook first)
-OVERSHOOT = 0.02         # rad / m past the goal the ride's script runs (the ride commands up to it: skills._ride's)
-DONE_REV = 0.02          # rad short of the goal a hinge counts as there (skills._ride's)
-DONE_PRIS = 0.006        # m ...a slide
 RIDE_STEP_HINGE = 0.10   # rad between the ride's checked samples (skills._ride_check took 8 over the range; not measured)
 RIDE_STEP_SLIDE = 0.03   # m ...on a slide
 SIDE_TRACK = (0.03, 0.25)    # (lead, rate) of a side hook: the bar loaded through a finger (skills._ride's)
 FRONT_TRACK = (0.01, 0.12)   # ...of a front pinch, held by friction only: gently
+
+
+def handle_closed_on(f, t):
+    """The hand closed on a bar ``t`` thick, fingers ``f``: both fingers stopped by it (thin arched
+    pulls: ~5 mm).  open_job's after_close and the old open path (skills) alike."""
+    lo, frac = HANDLE_FINGER_MIN
+    sq_frac, sq_m, slack = HANDLE_GAP
+    return bool(f.min() > min(lo, frac * t) and max(sq_frac * t, t - sq_m) < f.sum() < t + slack)
 
 
 def _ways(a):
@@ -49,7 +56,7 @@ def _width(a, grasp):
 def door_grips(rig, a, goal):
     """plan_door's grip per way to hold ``a``'s handle (_ways), the part where it stands now: the grasp
     in the part frame (annotations handle_pose at the joint value now), the reach-in along the
-    approach, TCP_BACKOFF long; the ride to ``goal`` (OVERSHOOT past it, done DONE_REV / DONE_PRIS short).
+    approach, TCP_BACKOFF long; the ride to ``goal`` (RIDE_OVERSHOOT past it, done RIDE_DONE_REV / RIDE_DONE_PRIS short).
     [(grip, (grasp, flip, tilt), thickness)]."""
     ann = rig.ann
     q0 = rig.joint(a["name"])
@@ -65,9 +72,9 @@ def door_grips(rig, a, goal):
         T[:3, :3], T[:3, 3] = R, p
         grip = {"part": a["name"], "kind": "hinge" if revolute else "slider", "pose": pose,
                 "T_part_tcp": np.linalg.inv(pose(q0)) @ T, "u": R.T @ np.asarray(appr, float), "L": TCP_BACKOFF,
-                "pre_open": pre_open, "s1": goal + sign * OVERSHOOT,
+                "pre_open": pre_open, "s1": goal + sign * RIDE_OVERSHOOT,
                 "ride_step": RIDE_STEP_HINGE if revolute else RIDE_STEP_SLIDE,
-                "track": {"lead": lead, "rate": rate, "done": goal - sign * (DONE_REV if revolute else DONE_PRIS)}}
+                "track": {"lead": lead, "rate": rate, "done": goal - sign * (RIDE_DONE_REV if revolute else RIDE_DONE_PRIS)}}
         out.append((grip, (grasp, flip, tilt), t))
     return out
 
@@ -129,8 +136,7 @@ def open_job(rig, args, state, skill=None):
 
         def after_close(rig):
             f = np.asarray(rig.fingers(), float)[:2]
-            # closed on the bar: both fingers stopped by it (thin arched pulls: ~5 mm)
-            if not (f.min() > min(0.004, 0.3 * t) and max(0.6 * t, t - 0.007) < f.sum() < t + 0.03):
+            if not handle_closed_on(f, t):
                 raise clearing(SkillFailure(f"open {name}: handle not grasped, fingers {f.round(4).tolist()}"),
                                grip["pre_open"])
             rig._handle_grasp = {"name": name, "pre_open": grip["pre_open"], "q": rig.joint(name),
@@ -150,7 +156,7 @@ def open_job(rig, args, state, skill=None):
 
     def failed(exc):
         # the failure exit (plan_clear) opened the hand: the handle is no longer held
-        if getattr(rig, "_handle_grasp", None) is not None and float(np.min(rig.fingers()[:2])) > 0.5 * ctx["grip"]["pre_open"]:
+        if getattr(rig, "_handle_grasp", None) is not None and float(np.min(rig.fingers()[:2])) > HAND_OPENED_FRAC * ctx["grip"]["pre_open"]:
             rig._handle_grasp = None
         return None
 
@@ -158,9 +164,9 @@ def open_job(rig, args, state, skill=None):
         q = rig.joint(name)
         rig.log("open_result", name=name, before=ctx["q0"], after=q, goal=goal)
         if a["type"] == "revolute":
-            tol = 0.10
-        else:                    # a released drawer slides back a little: 60 % open is open
-            tol = 0.4 * abs(a["open_q"] - a["closed_q"])
+            tol = DOOR_OPEN_TOL
+        else:                    # a released drawer slides back a little
+            tol = DRAWER_OPEN_FRAC * abs(a["open_q"] - a["closed_q"])
         if abs(q - goal) >= tol:
             raise SkillFailure(f"open {name}: joint {ctx['q0']:.3f} -> {q:.3f}, goal {goal:.3f}")
         return q

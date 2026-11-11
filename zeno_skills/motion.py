@@ -47,6 +47,7 @@ from scipy.spatial.transform import Rotation
 from . import scene_geometry as G
 from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt, tips_over
 from .motion_state import touch_entries, touches
+from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
 
 ROOT = Path(__file__).resolve().parents[1]
 ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
@@ -56,8 +57,6 @@ MONITOR_NEAR = 1.6         # contact monitor: objects and parts this close (xy, 
 RECULL = 0.4               # re-cull when the query base moved this far
 HAND_AT_HELD = 0.05       # a hand this close (TCP to box) to what the other hand holds: not an obstacle to it
 TARGET_PAD = 0.03          # an object whose box + this contains the TCP target is not an obstacle
-POS_TOL, ROT_TOL = 0.004, 0.04
-ACTIVATION = 0.005         # collision margin (m)
 FINGER_LINKS = ("gripper_left_finger_link", "gripper_right_finger_link")
 HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 

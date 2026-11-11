@@ -21,11 +21,10 @@ import numpy as np
 
 from ..motion_state import Failure, Plan, Segment, Spec, at_base, with_arm
 from ..primitives import JointSet, Joint, drive, free_leg, query
+from ..tolerances import PLAN_AT_START, SAME_POSTURE
 from ._common import FREE_HAND, FREE_LOAD, _move, anchor
 
 NAV_STAGES = ("arm", "left_fold", "drive", "arrive")
-SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more are one (no swing, no chain
-                             # step: skills._base_steps too); inherited from the posture chain (ea47359), unmeasured
 
 
 @dataclass(frozen=True)
@@ -80,7 +79,7 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
         if stage == "arm":
             q = s.q("right")
             if s.held("right") is None:
-                if np.max(np.abs(q - np.asarray(kin.rest, float))) > 1e-3:
+                if np.max(np.abs(q - np.asarray(kin.rest, float))) > PLAN_AT_START:
                     seg = free_leg(kin, s, FREE_HAND, JointSet((kin.rest, kin.drive)), "tuck")
                     if isinstance(seg, Failure):
                         skipped["tuck"], seg = seg.why, None

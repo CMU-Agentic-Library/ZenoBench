@@ -18,6 +18,8 @@ from contextlib import contextmanager
 
 import numpy as np
 
+from .tolerances import FOOTPRINT_MARGIN
+
 # The base in two layers, measured on base_link.STL's cross sections (11-09): a wide chassis up to
 # 0.25 m -- a square of +-0.2442 m with rounded corners, 0.296 m from the centre at 45 deg, not the
 # square's 0.345 -- and above it a slim column behind the centre up to 1.05 m.  Until 11-09 the
@@ -36,9 +38,6 @@ COLUMN_TOP = 1.05         # m: the column's top (boxes starting below it are in 
 # FOOTPRINT_MARGIN is a margin in xy only.
 LOW_SPAN = (LOW_BOTTOM, LOW_TOP)
 COLUMN_SPAN = (LOW_TOP, COLUMN_TOP)
-FOOTPRINT_MARGIN = 0.046  # m the base keeps from the boxes and moving parts in xy: the one margin (it was 1.6 cm
-                          # inside BASE_HALF plus 3 cm on top, both inherited from 3ccd5e99; the sum is kept,
-                          # unmeasured: docs/COLLISION_PLAN.md §2)
 LOW_SIDE_N = 8            # points per side of the chassis' inner square (the corners' centres) -- its
                           # outline and centre are tested within LOW_CORNER + margin, ~1 mm short at most
 COLUMN_GRID = 4           # points per side the column's rectangle is sampled at

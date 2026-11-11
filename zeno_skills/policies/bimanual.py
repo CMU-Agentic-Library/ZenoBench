@@ -13,6 +13,7 @@ from .embedded import SlideToEdgePolicy
 from .. import skills
 from ..clearance import FREE, FREE_ELSE_STRAIGHT
 from ..kinematics import gripper_rot
+from ..tolerances import HELD_LOST_GAP, HELD_SLIP
 from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure, Dropped
 
@@ -63,7 +64,7 @@ def check_bimanual_hold(rig, name, label):
     ):
         tcp, _ = kin.tcp(q)
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(held["tcp_minus_body"]))
-        if slip > 0.05 or float(fingers.sum()) < 0.004:
+        if slip > HELD_SLIP or float(fingers.sum()) < HELD_LOST_GAP:
             rig.log("bimanual_slip", side=side, obj=name, slip_m=round(float(slip), 4),
                     fingers=fingers.tolist())
             raise SkillFailure(f"{label}: {side} grasp slipped from {name}")
@@ -675,6 +676,6 @@ class OpenDoorWhileLeftHoldsPolicy(AtomicPolicy):
         body, _ = rig.obj_pose(object_name)
         tcp, _ = rig.left_kin.tcp(rig.left_q())
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(left["tcp_minus_body"]))
-        if slip > 0.05 or float(rig.left_fingers().sum()) < 0.004:
+        if slip > HELD_SLIP or float(rig.left_fingers().sum()) < HELD_LOST_GAP:
             raise SkillFailure("open door while left holds: left grasp slipped")
         return q

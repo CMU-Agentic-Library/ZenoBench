@@ -315,6 +315,16 @@ class Spec:
 
 **已做第一批（11-11，9.3 第 2.1 步）**：`zeno_skills/tolerances.py` 收了锚点误差上限、复核判据和原语的接触几何——`LEAVE_GAP`、`LEAVE_MARGIN`、`LEAVE_MAX`、`ON_LINE`、`ON_LINE_TURN`、`JOINT_GOAL_TOL`、`HINT_REACH`、`HINT_TURN`、`BASE_TOL`（还没有代码用）、`HELD_POSE_MARGIN`、`HOLD_DRIFT`（`None`，待测）、`PLAN_AT_START`、`EXTENT_TOL`、`TARGET_TOL`、`TARGET_TURN`、`PICK_TOL`、`PLACE_TOL`、`DOOR_TOL`。每个是 `_t(名字, 值, 单位, src)`，登记在 `TOLS`；`primitives`、`skill_plans` 从这里导入，原来的名字照旧能用（`primitives.TARGET_TOL` 等）。上表其余的（旧代码的、执行参数、搜索预算和代价）随迁移它们的那一步再搬。
 
+**已做第二批（11-11，值都没变）**：新架构代码在用、还散在别处的判据和余量也收进来，各带来源，写了两遍的同一个量合成一个名字：
+- 复核和判同：`SAME_POSTURE`（原 `skill_plans/navigate.py`）、`SAME_PARK`（`motion_skills._same_pose` 写死的 1e-4 m / 1e-2°）、`NUMERIC_M`（`skill_plans/_common.py` 两处写死的 1e-3 m）、`MOVED_MM`（`motion_state`）、`REST_TOL` / `STOWED_TOL`（`kinematics`）；`plan_navigate` 判手臂已在休息姿态的写死 1e-3 rad 并进 `PLAN_AT_START`。
+- 规划器的碰撞模型（4.4）：`POS_TOL` / `ROT_TOL` / `ACTIVATION`（`motion.py`，cuRobo 的阈值）、`DEPTH_TOL`（`base_planner`；`park_search` 里写死的同值 1e-4 并进来）、`FOOTPRINT_MARGIN`（`collision`）、`HELD_SPHERE_OUT` / `HELD_SPHERE_GAP` / `HELD_SPHERE_GAP_MAX`（`held_spheres` 的 `OUT` / `GAP` / `GAP_MAX`，原名照旧可用，缓存键不变）、`CARRY_TILT`、`CARRY_LOW_TOL`、`CARRY_SUPPORT_Z`（`skill_jobs/carry.py` 写了两遍的 0.3–1.0 m）、`FLOOR_Z`（`skill_jobs/pick.py` 写了两遍的 0.05 m）。
+- 接触监视：`MIN_DEPTH`、`MOVED_M`、`MOVED_TILT`、`CARRIED_M`、`APPROACH_MOVED_M`、`APPROACH_TURN`（`clearance`）、`SNAP_NEAR`（原 `sticky.NEAR`）。
+- 技能 hook 的成败判据：`SHUT`（`sticky`；`_pick_judged` 写死的同值 0.003 并进来）、`GRIP_CLOSED_BY`、`PICK_RISE_MIN` / `PICK_LIFT_FRAC`（`_pick_judged`）、`HELD_SLIP` / `HELD_SHIFT_MAX` / `HELD_SHIFT_GAP` / `HELD_LOST_GAP`（`check_held`、`check_left_held`、`policies/bimanual.py` 两处同一条"掉了"的规则）、`PLACE_LEVEL_MIN`、`PLACE_XY_TOL` / `PLACE_XY_TOL_CORNER`（place 的 `done`，10 / 12 cm：任务的容差，不是运动的 `PLACE_TOL`）、`HANDLE_FINGER_MIN` / `HANDLE_GAP`（握上把手：`skill_jobs.door.handle_closed_on`，`open_job` 和旧开关门路径共用）、`HAND_OPENED_FRAC`、`DOOR_OPEN_TOL` / `DRAWER_OPEN_FRAC` / `DOOR_CLOSED_TOL`（开门结果，新旧两处）、`RIDE_DONE_REV` / `RIDE_DONE_PRIS` / `RIDE_OVERSHOOT`（原 `skill_jobs/door.py` 的 `DONE_REV` / `DONE_PRIS` / `OVERSHOOT`）。
+- 执行的到了 / 停了：`SETTLE_TCP`、`SETTLE_STILL`、`RIDE_STALL`、`RIDE_SLIP_LEADS`（`rig`）。
+- `skills.PICK_REACH_TOL` 删掉（它就是 `TARGET_TOL`），`skill_jobs` 直接用 `TARGET_TOL`。
+
+原模块里的名字照旧导入着（`clearance.MIN_DEPTH`、`base_planner.DEPTH_TOL`、`kinematics.REST_TOL` 等），改名的只有上面括号里写明的几个。仍不在这里的：执行参数、搜索预算和代价、`predicates.py` 的任务判定（评测层），以及旧代码（`skills`、`policies`）自己的阈值——随迁移再搬。
+
 原来的目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
 
 ```python
@@ -613,14 +623,14 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 手臂在这段的起点（`PLAN_AT_START`）；
 - 接触位姿所在的段（带 `info["aim"]`）：在现在的底盘下这段终点的 TCP（`query` 里的 `kin.tcp(seg.q_end)`）离从现在的 `State` 推出的目标（`aim_pose`），比建这段时（`info["end"]` 离 `info["aimed"]`）多偏不超过这段的 `info["tol"]`，不成立记 `its end is ... further off its target than built (the target moved ...)`；目标物体不在 `State` 里（不在手里）也不成立。一个判据管三种误差：物体被碰动、物体在手里转了或滑了、底盘停偏。比的是"多偏了多少"而不是"离目标多远"：伸入段的终点本来就不在接触位姿上（在直线起点），IK 解、规划器的终点自己也有残差（cuRobo `POS_TOL` 4 mm / `ROT_TOL` 0.04 rad），那是建这段时已经接受的。容差按技能：
   - pick `PICK_TOL` = `HINT_REACH` / `HINT_TURN`（1 mm / 0.01 rad）：伸入、合爪、抬起是一串叠在抓取位姿上的精细动作，偏了就按实测状态重做（重做时 `decide_ik` 也是这个判据，超过它就重新求解）；
-  - place `PLACE_TOL` = `TARGET_TOL` / `TARGET_TURN`（5 mm / 0.01 rad）：放下段执行后按 `PICK_REACH_TOL`（同一个 5 mm）判有没有被挡住，偏得比这少只是放偏几毫米，不重做（重做只能从放下段本身做，放下段只有 1–2 cm 长，偏几毫米的新直线就明显不竖直了）。
+  - place `PLACE_TOL` = `TARGET_TOL` / `TARGET_TURN`（5 mm / 0.01 rad）：放下段执行后按 `TARGET_TOL`（同一个 5 mm）判有没有被挡住，偏得比这少只是放偏几毫米，不重做（重做只能从放下段本身做，放下段只有 1–2 cm 长，偏几毫米的新直线就明显不竖直了）。
   两个都还没有实测数据（2.1 步的记录已加：`segment` 事件的 `aim_off`，等全量跑完用 `tools/anchor_stats.py` 第 2 节定）；仿真里底盘停下的偏差在日志精度 1 mm 以内、朝向 0.02° 以内；
 - 路点在现在的世界里不碰：按这段的 `Spec`，含 `touch`，零余量；
 - 离开段：用 `contact_extent` 从当前姿态重量，长度和计划差超过 `EXTENT_TOL`（`LEAVE_MARGIN` 的一半：终点仍至少留半个余量离开接触，多走的不查碰撞部分也不超过它）就不成立；
 - 任务段：`carry="base"` 的底盘离构造时不超过 `TARGET_TOL` / `TARGET_TURN`；耦合的部件在能起步的范围里（`part_start`，同 5.5）；按实测的物体 / 部件重查机器人——`carry="base"` 用同一个函数从构造时的底盘重算，`carry="arm"` 查存下的 `qs`，每段的部件在它的 `s` 处（底盘本体搜索时对静态世界查过，`holds` 没有 `BaseModel`，不重查）；
 - 动作段总是成立；锚点不复核自己，它触发复核剩下的。
 
-执行完以后，hook 判"被挡住"（`after_grasp`、`after_down`）比的是实测 TCP 和这段送去的指令 TCP（`q_cmd`），差过 `PICK_REACH_TOL` 就是停在半路；目标对不对已经在这段之前由 `holds` 查过，不在这里再混进来。
+执行完以后，hook 判"被挡住"（`after_grasp`、`after_down`）比的是实测 TCP 和这段送去的指令 TCP（`q_cmd`），差过 `TARGET_TOL` 就是停在半路；目标对不对已经在这段之前由 `holds` 查过，不在这里再混进来。
 
 ### 8.5 不预测的锚点
 
