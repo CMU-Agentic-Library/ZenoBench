@@ -47,6 +47,16 @@ SCORING: dict[tuple[str, str], dict] = {
          "why": "squeezed into the narrow slot against the dishes, though nothing moved or tipped"}],
         "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; "
                   "anywhere else or still held"},
+    # T01 which_table: breakfast is set on one of the two dining tables (seed), the other holds toys; finding
+    # the guests' table is the point.  On their table the tiers are table_seats'; the toy table does not count
+    ("T01", "which_table"): {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "the guests' table, the wide slot beside a seat, clear of the dishes, nothing moved"},
+        {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
+         "why": "the guests' table, clear of the dishes, nothing moved, beside no seat"},
+        {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "clear_of"]},
+         "why": "the guests' table, squeezed against the dishes, nothing moved or tipped"}],
+        "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held"},
 }
 
 
