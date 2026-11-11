@@ -2997,6 +2997,8 @@ def build() -> dict:
         close_hands_free(t)                      # a door closes once the hand is free
         look_before_floor_pick(t)                # a floor object in view when it is picked
     apply_tracks(out)
+    from benchmark.v6.scoring import attach_scoring
+    attach_scoring(out)                          # graded outcomes of the designs reviewed so far (D, tiers)
     # approach left the library (benchmark/retired_skills.py): its steps in the routes v6 inherits from v5
     # and in its own designs become the navigate they still need, or go when a navigate there precedes them
     return drop_retired_steps(out)

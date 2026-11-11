@@ -421,8 +421,12 @@ class Episode:
         ok, goal = evaluate_goal(self.rig, self.task["goal"], self.start)
         drops = floor_drops(self.rig, self.task, self.start)
         fail_on_drop = self.profile["evaluation"]["drops_fail"]
+        from benchmark.v6.scoring import score       # graded outcomes of a reviewed design (D, tiers)
+        graded = score(self.task.get("scoring"), self.task, self.cfg.get("variant"),
+                       lambda g: bool(evaluate_goal(self.rig, g, self.start)[0]))
         return {"success": bool(ok and not (drops and fail_on_drop)), "goal_ok": bool(ok), "goal": goal,
-                "dropped": drops, "final_state": state_summary(self.rig, self.task), "sim_ticks": int(self.rig.tick)}
+                "dropped": drops, "final_state": state_summary(self.rig, self.task), "sim_ticks": int(self.rig.tick),
+                "score": graded}
 
     def close(self):
         """Finish the streamed video, if any (call once, also after a crash)."""

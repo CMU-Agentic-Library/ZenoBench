@@ -432,6 +432,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the book on either dining table, the hand empty"
+       }
+      ],
+      "not_ok": "the book anywhere else (coffee table, island, counter, floor) or still held"
      }
     },
     "table_seats__seats_a": {
@@ -11657,6 +11669,18 @@
       "17": "overhang_ready",
       "18": "overhang_ready",
       "19": "overhang_ready"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the book on either dining table, the hand empty"
+       }
+      ],
+      "not_ok": "the book anywhere else (coffee table, island, counter, floor) or still held"
      }
     },
     "table_seats": {
