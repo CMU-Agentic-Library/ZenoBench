@@ -23,7 +23,7 @@
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
   - 手里空着
-- **不行（0）**：the book anywhere else (coffee table, island, counter, floor) or still held
+- **不行（0）**：书放在别处（茶几、岛台、台面、地上），或还拿在手里
 
 
 **参考调用顺序**：
@@ -59,7 +59,7 @@
   - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
-- **不行（0）**：on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held
+- **不行（0）**：放到另一张没摆早餐的餐桌；为腾地方挪了或碰倒了餐具；放在别处或还拿在手里
 
 
 **参考调用顺序**：
@@ -121,7 +121,7 @@
     - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
     - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
     - 手里空着
-- **不行（0）**：the toy table (the wrong table); a dish moved or tipped; anywhere else or still held
+- **不行（0）**：放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里
 
 
 **参考调用顺序**：
@@ -226,7 +226,7 @@
         - `paperback_book` 在 `bookcase_4/shelf_1` 上
       - 第 13 组：
         - `paperback_book` 在 `bookcase_4/shelf_0` 上
-- **不行（0）**：a dish or the cereal moved or tipped to make room; anywhere else or still held
+- **不行（0）**：挪了或碰倒餐具、麦片腾地方；放在别处或还拿在手里
 
 
 **参考调用顺序**：
@@ -286,7 +286,7 @@
   - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
   - 手里空着
   - `paperback_book` 在 `dining_table_2/top` 上
-- **不行（0）**：a dish moved or tipped; anywhere else (the other dining table too) or still held
+- **不行（0）**：挪了或碰倒餐具；放在别处（包括另一张餐桌）或还拿在手里
 
 
 **参考调用顺序**：
@@ -315,7 +315,7 @@
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
   - 手里空着
-- **不行（0）**：the guest's book not on a dining table (the wrong book, or none); still held
+- **不行（0）**：客人那本没到餐桌（拿错或没拿）；还拿在手里
 
 
 **参考调用顺序**：
@@ -343,7 +343,7 @@
       - `wooden_block_b` 叠在 `wooden_block_a` 上
     - 第 2 组：
       - `wooden_block_a` 叠在 `wooden_block_b` 上
-- **不行（0）**：no stack, or a block dropped
+- **不行（0）**：没叠上，或积木掉了
 
 
 **参考调用顺序**：
@@ -404,7 +404,7 @@
       - `floor_block` 叠在 `wooden_block_a` 上
     - 第 6 组：
       - `floor_block` 叠在 `wooden_block_b` 上
-- **不行（0）**：the bowl or the rolling pin moved, the bowl tipped; no stack
+- **不行（0）**：碗或擀面杖动了、碗倒了；没叠上
 
 
 **参考调用顺序**：
@@ -489,7 +489,7 @@
       - `wooden_block_b` 叠在 `kitchen_sponge` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `kitchen_sponge` 在 `kitchen_island/top` 上
-- **不行（0）**：two levels only (the third toy not found); no stack; the tower not on the island
+- **不行（0）**：只叠了两层（没找到第三件）；没叠上；塔不在岛台上
 
 
 **参考调用顺序**：
@@ -575,7 +575,7 @@
       - `wooden_block_b` 叠在 `floor_block` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked
+- **不行（0）**：只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上
 
 
 **参考调用顺序**：
@@ -621,7 +621,7 @@
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `rubber_duck` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked
+- **不行（0）**：只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上
 
 
 **参考调用顺序**：
@@ -705,7 +705,7 @@
       - `wooden_block_b` 叠在 `floor_block` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `floor_block` 在 `kitchen_island/top` 上
-- **不行（0）**：two blocks only (the third not found); no stack; a block dropped
+- **不行（0）**：只叠了两块（没找到第三块）；没叠上；积木掉了
 
 
 **参考调用顺序**：
@@ -735,7 +735,7 @@
     - 第 2 组：
       - `rolling_pin` 在 `mug` 里
       - `breakfast_spoon` 在 `mug` 里
-- **不行（0）**：one left out, put in a cabinet or drawer instead, still held or dropped
+- **不行（0）**：只收了一样；放进柜子、抽屉；还拿着或掉了
 
 
 **参考调用顺序**：
@@ -772,7 +772,7 @@
     - 第 2 组：
       - `rolling_pin` 在 `small_storage_bin` 里
       - `breakfast_spoon` 在 `small_storage_bin` 里
-- **不行（0）**：the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held
+- **不行（0）**：两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里
 
 
 **参考调用顺序**：

@@ -146,7 +146,9 @@ def main():
                 for tier in sc["tiers"]:
                     lines += [f"- **{TIER_ZH[tier['name']]}（{tier['score']}）**：", ""]
                     lines += tier_lines(t, info, tier, 1)
-                lines += [f"- **不行（0）**：{sc['not_ok']}", ""]
+                from benchmark.v6.scoring import NOT_OK_ZH
+                zh = next((z for (k, d), z in NOT_OK_ZH.items() if t["task_id"].startswith(k) and d == vid), None)
+                lines += [f"- **不行（0）**：{zh or sc['not_ok']}", ""]
             else:
                 lines += layout_goal_lines(t, info, None, 0)
             lines += ["", "**参考调用顺序**：", ""]

@@ -48,3 +48,9 @@ def test_drop_tier():
     from benchmark.v6.scoring import tier_goal
     task = {"goal": {"all": [["on", "b", "t"], ["near_any", "b", ["p"], 0.15], ["clear_of", "b", ["p"], 0.05]]}}
     assert tier_goal({"goal": {"drop": ["near_any", "clear_of"]}}, task, None) == {"all": [["on", "b", "t"]]}
+
+
+@pytest.mark.parametrize("key", KEYS, ids=lambda k: f"{k[0]}-{k[1]}")
+def test_not_ok_in_chinese(key):
+    from benchmark.v6.scoring import NOT_OK_ZH
+    assert key in NOT_OK_ZH

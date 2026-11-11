@@ -301,3 +301,22 @@ def check_spec(s: dict) -> list[str]:
     if not s.get("not_ok"):
         bad.append("say what does not count (not_ok)")
     return bad
+
+
+# the not_ok line in Chinese, for SUCCESS_ROUTES_zh.md (success_routes.py)
+NOT_OK_ZH = {
+    ("T01", "overhang_ready"): "书放在别处（茶几、岛台、台面、地上），或还拿在手里",
+    ("T01", "table_seats"): "放到另一张没摆早餐的餐桌；为腾地方挪了或碰倒了餐具；放在别处或还拿在手里",
+    ("T01", "which_table"): "放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里",
+    ("T01", "no_room_fallback"): "挪了或碰倒餐具、麦片腾地方；放在别处或还拿在手里",
+    ("T01", "reader_seat"): "挪了或碰倒餐具；放在别处（包括另一张餐桌）或还拿在手里",
+    ("T01", "which_book"): "客人那本没到餐桌（拿错或没拿）；还拿在手里",
+    ("T02", "clear"): "没叠上，或积木掉了",
+    ("T02", "crowded_use_another"): "碗或擀面杖动了、碗倒了；没叠上",
+    ("T02", "third_toy_elsewhere"): "只叠了两层（没找到第三件）；没叠上；塔不在岛台上",
+    ("T02", "tower_for_kid"): "只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上",
+    ("T02", "tower_for_kid_duck"): "只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上",
+    ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
+    ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
+    ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
+}
