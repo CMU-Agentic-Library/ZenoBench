@@ -74,6 +74,12 @@ GRAPH_SEEDS = 2           # graph-search seeds that seed the optimiser around ob
 # peaked at 13.2 GB of a 24 GB card in a full episode, 6 / 2 at 10.3 GB (obstacle count does not
 # matter, an empty world costs 182 MB either way).
 PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
+# cuRobo's first trajopt pass runs at a fixed dt that defaults to maximum_trajectory_dt; it is kept at
+# cuRobo's 0.15 so every plan whose time-optimal dt fits under 0.15 comes out as before.  The cap is
+# the largest dt a plan may be retimed to: 31 knots, ~27 of motion -> 0.15 allowed ~4 s, less than the
+# torso alone needs for a 0.45 m lift at 0.117 m/s (every tuck after a low handle: DT_EXCEPTION).
+TRAJOPT_DT = 0.15
+MAX_TRAJ_DT = 0.3
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
 # spheres pre-allocated on each hand's held link for what it holds (held_spheres.fit's budget).  The held
@@ -271,6 +277,7 @@ class _Arm:
         self.mg = MotionGen(MotionGenConfig.load_from_robot_config(
             cfg, None, ta, world_coll_checker=checker, use_cuda_graph=True, num_ik_seeds=32,
             num_trajopt_seeds=TRAJOPT_SEEDS, num_graph_seeds=GRAPH_SEEDS, interpolation_dt=0.02,
+            trajopt_dt=TRAJOPT_DT, js_trajopt_dt=TRAJOPT_DT, maximum_trajectory_dt=MAX_TRAJ_DT,
             collision_activation_distance=ACTIVATION, position_threshold=POS_TOL, rotation_threshold=ROT_TOL,
             self_collision_check=True, self_collision_opt=True))
         self.ik_free = IKSolver(IKSolverConfig.load_from_robot_config(
