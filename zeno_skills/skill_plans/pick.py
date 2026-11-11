@@ -9,12 +9,17 @@ import numpy as np
 
 from ..clearance import LEAVE_CONTACT, closing
 from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
-from ..primitives import free_leg, query, straight
+from ..primitives import HINT_REACH, HINT_TURN, free_leg, query, straight
 from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach
 
 PICK_STAGES = ("pick_arrive", "pick_open", "pick_reach", "pick_grasp", "pick_close", "pick_held", "pick_lift", "carry_in")
 PICK_ANCHORS = ("pick_arrive", "pick_held")   # the base and the object as they are; the hold measured (docs 8.2)
 PICK_RELAY = "pick_reach"     # the decision the park search's ranking IK solves for (park_search.Problem.relay)
+# (m, rad) the reach and the reach-in's end may come further off the grasp than when built (the object
+# moved, the base stopped off its park) and still hold: the reach-in, the close and the lift are a chain
+# of fine motions on that pose, so a pick is built again from the State past a decided solution's own
+# tolerance (decide_ik's HINT_REACH / HINT_TURN); a set-down allows more (place.PLACE_TOL)
+PICK_TOL = (HINT_REACH, HINT_TURN)
 # m the load's spheres grow by on a pick's carry planned before the close (the hold assumed from where
 # the load stood; the hand moves it a little closing): T01 overhang_ready 11-08, a carry planned with
 # no room collided by 0 mm once the book sat in the hand.  The carry only (the lift measures the
@@ -32,8 +37,8 @@ def plan_pick(kin, state, grasp, carry_goals, start="pick_arrive", prior=None, s
     decide_ik), the reach-in straight, close, the anchor where the hand holds it (the hold
     measured), the lift off the support (contact_extent,
     off_support), the free leg to the carry pose (``carry_goals(state, q) -> (PoseSet, {step,
-    steps_per_wp, smooth})``, the load's tilt held).  The reach and the reach-in carry the Aim and
-    the pose they were built for (info["aim"], ["aimed"]: run.holds checks it again).  From
+    steps_per_wp, smooth})``, the load's tilt held).  The reach and the reach-in carry the Aim, the
+    pose they were built for and PICK_TOL (primitives.holds checks them again).  From
     ``start`` on (the stages before it done).  ``prior``: a Plan (run's rebuild) has each of its
     motions that still holds from here kept as it is (_kept, docs 8.3), and its decisions tried
     first for the rest; else the decisions to keep (decisions_of: the park search's ranking
@@ -73,12 +78,13 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
         elif stage == "pick_reach":
             seg = kept or _reach(kin, s, FREE_HAND, p, R, u, L, q, prior.get(stage), stage, step)
             if not isinstance(seg, Failure):
-                seg = kept or _aimed(kin, seg, aim, aimed, steps_per_wp=4, smooth=True)
+                seg = kept or _aimed(kin, seg, aim, aimed, PICK_TOL, steps_per_wp=4, smooth=True)
                 if seg.qs:                                  # the reach-in's start as the plan reaches it
                     decided[stage] = seg.q_end
         elif stage == "pick_grasp":
             seg = kept or straight(kin, s, FREE_HAND, p, R, stage, step=step, q_from=q)
-            seg = seg if isinstance(seg, Failure) or kept else _aimed(kin, seg, aim, aimed, steps_per_wp=4, smooth=True)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _aimed(kin, seg, aim, aimed, PICK_TOL, steps_per_wp=4, smooth=True)
         elif stage == "pick_close":
             seg = Segment(stage, Spec(allow=closing(name)), q, kind="action", action=("grip", 0.0, None, True))
             if name in s.objects:

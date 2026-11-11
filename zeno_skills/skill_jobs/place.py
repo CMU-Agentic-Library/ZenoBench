@@ -7,7 +7,6 @@ import numpy as np
 
 from ..annotations import rz
 from ..evaluator import quat_R
-from ..motion_state import Aim, aim_pose
 from ..park_search import Problem
 from ..rig import FREE_SPACE_KW
 from ..rig import LEAVE_GAP
@@ -24,8 +23,8 @@ def place_job(rig, args, state, skill=None):
     """motion_skills.Job of the set-down: the carry posture settled for the support's rim first
     (carry_posture), every spot x hold x wrist turn one goal of the park search (the whole place
     planned there, skill_plans.plan_place, the goal the object's pose); after the drive the plan run
-    with the place's hooks (run.holds builds it again when the hold no longer gives its set-down
-    pose); then the result judged."""
+    with the place's hooks (run builds it again when the hold no longer gives its set-down pose:
+    primitives.holds); then the result judged."""
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
     kin = rig.kin
@@ -39,15 +38,13 @@ def place_job(rig, args, state, skill=None):
     # how the hand holds it: as it hangs, and levelled (tilted more than PLACE_LEVEL_MIN; preferred,
     # 2026-11-03: either is allowed).  Per relation: TCP minus the object's origin (world frame),
     # the TCP rotation, how far the origin stands above the object's lowest point.  The TCP is the
-    # commanded one (q_cmd), here and in the State's hold (Rig.snapshot): the arm sags under the load (q - q_cmd,
-    # up to 0.013 rad in the 11-08 run), and a hold taken from the commanded TCP is what a
-    # commanded set-down pose reproduces -- the measured TCP on one side only read that sag as a
-    # shifted hold (32 of 148 places planned again from scratch, 11-08)
+    # measured one (rig.q()), as in the State's hold (Rig.snapshot): the two must agree, or the arm's
+    # sag under the load (q - q_cmd up to 0.013 rad, 11-08) reads as a shifted hold
     st = rig.state()
     p_obj, q_obj = rig.obj_pose(name)
     p_obj = np.asarray(p_obj, float)
     R_obj = quat_R(q_obj)
-    tcp, R_tcp = kin.tcp(rig.q_cmd)
+    tcp, R_tcp = kin.tcp(rig.q())
     relations = [(tcp - p_obj, R_tcp, None, float(p_obj[2] - _lowest_z(rig, name, st)))]
     over = math.degrees(math.acos(max(-1.0, min(1.0, float(R_obj[2, 2])))))
     if rig.held["kind"] != "corner" and over > PLACE_LEVEL_MIN:
@@ -107,7 +104,7 @@ def place_job(rig, args, state, skill=None):
         # arrived with the load above the target surface (Job.travel: the carry posture's
         # min_bottom_z).  Without a weld the object may have turned in the pinch on the way (bowls
         # held at the rim, spoons): the plan's set-down checks its pose against the hold the State
-        # has now (run.holds) and is built again from there when it is off
+        # has now (primitives.holds) and is built again from there when it is off
         ctx["spot"] = goals[found.k][0]
         ctx["kind"] = rig.held["kind"]
         return _place_ready(rig, name, s, targets[found.k], open_w, found.plan, plan_place)
@@ -128,12 +125,11 @@ def _plan_place():
 def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
     """The place's plan to run (run.run) to set ``name`` down with its box frame at ``goal`` (the
     park search's plan: a set-down pose the hold no longer gives has run build it again,
-    run.holds), its builder for the rest, its hooks.  Between the segments the place's own steps:
+    primitives.holds), its builder for the rest, its hooks.  Between the segments the place's own steps:
     the reach checked, the release logged and the load no longer held."""
     kin = rig.kin
     plan_place = plan_place or _plan_place()
     out_len, rests = pick_approach(), (kin.rest, kin.drive)
-    aim = Aim(name, np.asarray(goal, float), held=True, side=kin.side)
 
     def rebuild(state, frm, prior):
         return plan_place(kin, state, goal, open_w, out_len, rests, start=frm, prior=prior, step=APPROACH_STEP,
@@ -148,9 +144,9 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
                 rig.log("place_pull_out_touching", obj=name, why=kin.explain(st.q(kin.side)))
 
     def after_down(rig):
-        # against the set-down pose the hold gives now (the one the set-down was built for)
-        now = aim_pose(observe(rig), aim)
-        err = 0.0 if now is None else float(np.linalg.norm(kin.tcp(rig.q())[0] - now[0]))
+        # the hand against where the set-down sent it (its end, the command now): whether the hold
+        # still gives that pose was checked before the set-down ran (primitives.holds, PLACE_TOL)
+        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - kin.tcp(rig.q_cmd)[0]))
         if err > PICK_REACH_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")

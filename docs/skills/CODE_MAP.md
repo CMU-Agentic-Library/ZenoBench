@@ -32,8 +32,9 @@ skills.py         技能本体：pick / place / navigate / 开关门 / push / �
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
   │   skill_plans/      ② plan_pick / plan_place / plan_navigate（build）：原语串成整份计划，State 在段间推进
-  │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight
-  │   run.py            ④ observe / holds / execute / run：逐段复核、不成立就用 build 重做剩下的、执行；
+  │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
+  │                       decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
+  │   run.py            ④ observe / execute / run：逐段复核、锚点复核剩下的整份、不成立就用 build 重做剩下的、执行；
   │                       只经过 Actuator（Rig 实现）碰仿真
   │   motion_state.py   State / Spec / Segment / Plan / Failure（纯数据）；协议 Actuator、BaseModel
   ▼                        ▼
@@ -164,15 +165,16 @@ run_skill
 skill_jobs/pick.py  pick_job
   候选抓取（annotation）；门后的（_behind_door：腔体里、inside_ 支撑面上）朝开口排序，prefer = _front_of（门自由边前）
   _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, PICK_RELAY, near, prefer)
-     build = skill.build（plan_pick）(state_at_park, 候选, _carry_goal_set)：pick_open（State 手张开）→ pick_reach（free_leg）→ pick_grasp
-             （straight）→ pick_close（holding）→ pick_lift（contact_extent off_support）→ carry_in
-             （free_leg PoseSet，持物碰撞球放大 HELD_POSE_MARGIN）
-  ready：按 idx 重算同一个候选，note_grasp；_pick_ready：抓取位姿偏 HINT_REACH 以上就 plan_pick(observe(rig), prior=找到的计划) 重做，
-         rebuild = plan_pick(start=段名, prior=run 手上的计划)
-     hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后到位检查（被挡 → leave + SkillFailure）；
+     build = skill.build（plan_pick）(state_at_park, 候选(物体框里), _carry_goal_set)：pick_arrive（锚点）→ pick_open（State 手张开）
+             → pick_reach（free_leg）→ pick_grasp（straight）→ pick_close（holding）→ pick_held（锚点）
+             → pick_lift（contact_extent off_support）→ carry_in（free_leg PoseSet，持物碰撞球放大 HELD_POSE_MARGIN）
+             接触位姿段的容差 PICK_TOL（1 mm）
+  ready：记 pick_target、note_grasp（抓取 = 物体现在的位姿 × T_obj_tcp）；_pick_ready 交出找到的计划，
+         rebuild = plan_pick(start=段名, prior=run 手上的计划：还成立的段原样复用)
+     hooks：pick_reach / pick_grasp 盯物体（_watching）；pick_grasp 后实测 TCP 对指令 TCP 的到位检查（被挡 → 失败出口竖直离开）；
             pick_close 后判断夹没夹住、登记 rig.held、记 held_offset；carry_in 后 check_held
   done：_pick_judged（拿住了没有）
-  （微波炉腔体里取物不走这条：合约路由到 PickFromCavity，policy_048，旧实现；旧的逐个候选 + move_relay + 写死退出点 11-08 审计删了，ff59b76 里还在）
+  （微波炉腔体里取物不走这条：合约路由到 PickFromCavity，policy_048，旧实现）
 ```
 
 ### place（`skills.place`，台面 / 浅容器 / 深容器 / 层板）
@@ -186,13 +188,14 @@ skill_jobs/place.py  place_job
   carry_posture(min_bottom_z)：搬运判据满足就不动，不满足就规划到搬运目标集合，做不出来失败；
                                min_bottom_z 是"能抬就抬"（skill_jobs/carry.py）
   目标集合：空位 × 持法（吊着 / 摆正） × 手腕转角 → Problem
-     build = skill.build（plan_place）(state_at_park, 放下位姿, prior, obj)：place_reach（q_p 由 decide_ik 定 → set_down_length → free_leg，持物先关节规划）
-             → place_down（straight）→ place_release（released，手张开，手指可碰 obj）→ place_pull_out（straight，Spec.touch obj）
-             → tuck（free_leg JointSet{收起, 下垂}）
+     build = skill.build（plan_place）(state_at_park, 物体的放置位姿, prior, obj)：place_arrive（锚点）
+             → place_reach（q_p 由 decide_ik 定 → set_down_length → free_leg，持物先关节规划）→ place_down（straight）
+             → place_release（released，手张开，手指可碰 obj）→ place_landed（锚点）→ place_pull_out（straight，Spec.touch obj）
+             → tuck（free_leg JointSet{收起, 下垂}，每次重选、不复用）→ place_settle（wait）
+             接触位姿段的容差 PLACE_TOL（5 mm）；TCP 放下位姿 = 物体位姿 × State 握法⁻¹（握法按实测关节角量）
   travel = {min_bottom_z, raise_load: False}：开过去时 navigate 按同一套判据复核，不再试抬高
-  ready：按指令 TCP 重新测量手持位姿（和搜索一样）；_place_ready：放下位姿偏 HINT_REACH 以上就 plan_place(observe(rig), prior=找到的计划) 重做，
-         rebuild = plan_place(start=段名, prior=run 手上的计划)
-     hooks：place_down 后到位检查、check_held；place_release 后 rig.held = None；
+  ready：_place_ready 交出找到的计划，rebuild = plan_place(start=段名, prior=run 手上的计划：还成立的段原样复用)
+     hooks：place_down 后实测 TCP 对指令 TCP 的到位检查、check_held；place_release 后 rig.held = None；
             place_pull_out 前手指在物体里就记 place_pull_out_touching
   done：_place_result（在支撑面上 / 托盘里、离目标点多远）
 ```

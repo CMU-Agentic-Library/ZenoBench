@@ -54,7 +54,7 @@ class Aim:
     puts the box frame of ``obj``, held in ``side``'s hand, at the world pose ``T`` (``held`` True: a
     set-down, through the hold Held.T_tcp_obj).  A plan derives its contact pose from the State it
     is built from this way and records the Aim with the pose it got (Segment.info["aim"],
-    ["aimed"]); run.holds checks that the State now still gives that pose (aim_pose)."""
+    ["aimed"]); primitives.holds checks it again against the State now (aim_pose)."""
     obj: str
     T: np.ndarray
     held: bool = False
@@ -141,7 +141,7 @@ class Plan:
     """``decisions``: what the builder decided that binds its segments together (docs 4.3, 8.1),
     {name: value} -- a contact pose's joint solution as the plan reaches it (pick_reach: the reach
     leg's end; place_reach: the set-down's end), the chosen goal of a goal set as (index, set size)
-    (carry_in, tuck).  A rebuild gets them back as its prior (decisions_of)."""
+    (carry_in).  A rebuild gets them back as its prior (decisions_of)."""
     segments: tuple
     goal: int = 0                    # which goal of the skill's goal set it serves
     info: Mapping = field(default_factory=dict)   # a builder's time per stage (stage_s)

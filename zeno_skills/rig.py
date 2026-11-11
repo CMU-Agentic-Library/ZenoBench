@@ -744,21 +744,24 @@ class Rig:
     def snapshot(self):
         """The State now (motion_state.State): the base, the commanded arm postures, the head, each
         hand's finger opening (the wider finger, as Motion.live_locks) and what it holds (its box
-        frame in the TCP frame, Motion.held_in_tcp), the objects' box frames and the parts' joint
-        values, all as synced into the collision model (sync_world)."""
+        frame in the TCP frame, Motion.held_in_tcp, both as they really stand: the hand at the arm's
+        measured joints, not its command -- a load sags the arm and a contact pushes it off its
+        command, and a hold read against the commanded TCP would take that for the load moving in the
+        hand; welded or not, the measured hold is the one the hand has), the objects' box frames and
+        the parts' joint values, all as synced into the collision model (sync_world)."""
         from .kinematics import FINGER_OPEN
         from .motion_state import Hand, Held, State
         self.sync_world()
         motion = self.kin.motion
         hands = {}
         for side, kin, q, held, fingers in (
-                ("right", self.kin, self.q_cmd, self.held, self.fingers),
-                ("left", self.left_kin, np.r_[self.q_cmd[:2], self.left_q_cmd], self.left_held, self.left_fingers)):
+                ("right", self.kin, self.q, self.held, self.fingers),
+                ("left", self.left_kin, self.left_q, self.left_held, self.left_fingers)):
             width = float(np.clip(np.asarray(fingers(), float)[:2].max(), 0.0, FINGER_OPEN))
             h = None
             if held is not None:
                 name = held["name"]
-                T = motion.held_in_tcp(kin, q, name) if motion is not None and motion.by_owner.get(f"object:{name}") \
+                T = motion.held_in_tcp(kin, q(), name) if motion is not None and motion.by_owner.get(f"object:{name}") \
                     else np.eye(4)
                 h = Held(name, T, held.get("kind", "pinch"))
             hands[side] = Hand(width=width, held=h)

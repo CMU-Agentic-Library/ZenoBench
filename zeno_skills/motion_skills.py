@@ -19,9 +19,7 @@ What the catalog says is what runs: ``template`` is the builder the job gets (sk
 search (navigate) states the postures its own plan takes (travel_chain) and nothing reads them.
 
 Job is the form of 9.3 step 1: the skill's own steps between the layers -- the logs after the
-drive, the result judged -- sit in its callbacks.  The re-measure after the drive left with 9.3
-step 2.3 (build reads the targets from the State, run.holds checks them again), the hooks that
-move the robot with 2.6 (build_clear)."""
+drive, the hooks, the result judged -- sit in its callbacks (docs 2.3)."""
 
 from __future__ import annotations
 

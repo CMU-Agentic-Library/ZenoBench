@@ -153,7 +153,21 @@ def test_a_place_records_its_decisions_and_a_rebuild_keeps_them():
     assert _named(again, "place_reach").info["decided"]["place_reach"] == "prior"
     assert not any(c[0] == "ik_global" for c in kin.calls)
     kept = plan_place(kin, st, _at(q_p[:3]), 0.03, 0.07, rests, prior=plan)
-    assert all(_named(kept, n) is _named(plan, n) for n in ("place_reach", "place_down", "place_pull_out", "tuck"))
+    assert all(_named(kept, n) is _named(plan, n) for n in ("place_reach", "place_down", "place_pull_out"))
+    assert _named(kept, "tuck") is not _named(plan, "tuck")              # made again, never kept
+
+
+def test_a_rebuild_tucks_to_the_fold_once_it_is_free_whatever_the_plan_chose():
+    # the search found the fold blocked and tucked hanging; at the landed anchor the fold is free:
+    # the tuck is chosen again, the fold first (docs 1.8), not kept from the plan
+    fold, hang, q = _q(0.2, -0.2, 0.30), _q(0.1, -0.3, 0.20), _q(0.5, 0.0, 0.17)
+    blocked = _place_kin(wall=lambda p: np.allclose(p, fold[:3]))
+    plan = plan_place(blocked, _state(q), _at(q[:3]), 0.03, 0.07, (fold, hang), start="place_pull_out", obj="cup")
+    assert _named(plan, "tuck").info["chosen"] == 1
+    again = plan_place(_place_kin(), _state(q), _at(q[:3]), 0.03, 0.07, (fold, hang), start="place_pull_out",
+                       obj="cup", prior=plan)
+    assert _named(again, "tuck").info["chosen"] == 0
+    assert _named(again, "place_pull_out") is _named(plan, "place_pull_out")
 
 
 def test_a_decision_no_longer_reaching_its_pose_seeds_the_new_solve():
@@ -345,6 +359,9 @@ def test_a_segment_whose_target_the_state_no_longer_gives_does_not_hold():
     down = _named(plan_place(_place_kin(), st, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)), "place_reach")
     turned = _state(q0, held=Held("cup", _at([0.0, 0.0, 0.0], quat_R([0.9999, 0.0, 0.0, 0.0141]))))
     assert P.holds(_place_kin(), st, down) is None and "turned 1.6" in P.holds(_place_kin(), turned, down)
+    # ...shifted in the pinch: within PLACE_TOL (5 mm) it still sets the load down, past it not
+    assert P.holds(_place_kin(), _state(q0, held=Held("cup", _at([0.003, 0.0, 0.0]))), down) is None
+    assert "target moved 0.0060 m" in P.holds(_place_kin(), _state(q0, held=Held("cup", _at([0.006, 0.0, 0.0]))), down)
 
 
 class BaseKin(FakeKin):
@@ -378,6 +395,10 @@ class BaseKin(FakeKin):
 
 
 def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_hold():
+    # a pick's segments by PICK_TOL (1 mm), a set-down's by PLACE_TOL (5 mm): the base stopped off its
+    # park counts as the object moving does
+    from zeno_skills.skill_plans import PICK_TOL, PLACE_TOL
+    assert PICK_TOL[0] < PLACE_TOL[0]
     kin = BaseKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)])
     q0 = _q(0.3, 0.0, 0.40)
     st = _state(q0, objects={"cup": np.eye(4)})
@@ -387,9 +408,15 @@ def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_
     from dataclasses import replace
     for seg in (reach, grasp):
         at = replace(st, q_right=np.asarray(seg.q_from, float))                       # the arm where it starts
-        assert P.holds(kin, replace(at, base=(0.003, 0.0, 0.0)), seg) is None       # 3 mm: within TARGET_TOL
-        why = P.holds(kin, replace(at, base=(0.0, 0.006, 0.0)), seg)                 # 6 mm off
-        assert why is not None and "end moved 0.0060 m" in why
+        assert P.holds(kin, replace(at, base=(0.0005, 0.0, 0.0)), seg) is None      # within PICK_TOL
+        why = P.holds(kin, replace(at, base=(0.0, 0.002, 0.0)), seg)                 # 2 mm off
+        assert why is not None and "0.0020 m, 0.00 deg further off its target" in why
+    q_p = _q(0.5, 0.0, 0.10)
+    sd = _state(q0, held=Held("cup", np.eye(4)))
+    down = _named(plan_place(BaseKin(near_z=0.115), sd, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)), "place_down")
+    at = replace(sd, q_right=np.asarray(down.q_from, float))
+    assert P.holds(BaseKin(near_z=0.115), replace(at, base=(0.003, 0.0, 0.0)), down) is None
+    assert "0.0060 m" in P.holds(BaseKin(near_z=0.115), replace(at, base=(0.0, 0.006, 0.0)), down)
     # the end's own offset from the pose (an IK solution's, a planner's) is what it was: not judged
     off = Segment("pick_grasp", Spec(), grasp.q_from, (grasp.q_end + np.r_[0.004, np.zeros(8)],),
                   info={**grasp.info, "end": (GRASP_P + [0.004, 0.0, 0.0], np.eye(3))})
@@ -442,6 +469,22 @@ def test_an_anchor_keeps_the_rest_as_it_is_while_it_holds(monkeypatch):
     assert not any(e == "anchor" for e, _ in rig2.events)
 
 
+def test_a_place_anchor_logs_no_rebuild_for_a_tuck_made_again_the_same(monkeypatch):
+    # the tuck is never kept, but made again the same it is no rebuild in the anchor event
+    q_p = _q(0.5, 0.0, 0.10)
+    kin = _place_kin()
+    q0 = _q(0.3, 0.0, 0.40)
+    plan = plan_place(kin, _state(q0, held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),),
+                      obj="cup")
+    rig = FakeRig(kin, q0)
+    rig.grip = rig.wait = lambda *a, **k: None
+    monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd, held=Held("cup", np.eye(4))))
+    RUN.run(rig, plan, lambda state, frm, prior: plan_place(kin, state, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),),
+                                                           start=frm, prior=prior, obj="cup"))
+    arrive = next(kw for e, kw in rig.events if e == "anchor" and kw["target"] == "place_arrive")
+    assert arrive["kept"] == ["place_reach", "place_down", "place_pull_out"] and arrive["rebuilt"] == []
+
+
 def _job_rig():
     kin = FakeKin()
     kin.rest, kin.drive = np.zeros(9), np.full(9, 0.1)
@@ -471,6 +514,22 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
     assert plan is found and len(calls) == 1
     rebuild(_state(np.zeros(9)), "tuck", plan)
     assert calls[-1][1] is goal and calls[-1][2:] == ("tuck", plan)
+
+
+def test_a_reach_in_is_judged_stopped_short_against_where_it_sent_the_hand():
+    # after the reach-in: the measured TCP against the commanded one (the segment's end), whatever
+    # the object did -- whether its grasp still stood was checked before the reach-in ran
+    from zeno_skills.motion_state import SkillFailure
+    from zeno_skills.skill_jobs import pick as PJ
+    rig = _job_rig()
+    rig.q_cmd = _q(0.3, 0.0, 0.40)
+    _, _, hooks = PJ._pick_ready(rig, "cup", {"kind": "top_pinch", "pre_open": 0.03}, GRASP, Plan(()), None, {},
+                                 lambda *a, **k: Plan(()))
+    rig.q = lambda: _q(0.3, 0.0, 0.403)                              # 3 mm off: reached
+    hooks["pick_grasp"]["after"](rig)
+    rig.q = lambda: _q(0.3, 0.0, 0.41)                               # 1 cm off: blocked
+    with pytest.raises(SkillFailure, match="stopped 0.010 m short"):
+        hooks["pick_grasp"]["after"](rig)
 
 
 # ------------------------------------------------------------------- the State the same at every build

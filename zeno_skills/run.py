@@ -10,6 +10,8 @@ import time
 from contextlib import ExitStack
 from dataclasses import replace
 
+import numpy as np
+
 from .motion_state import Failure, SkillFailure
 from .primitives import holds
 
@@ -67,6 +69,12 @@ def _how_decided(seg):
     """For the segment log: how the decisions a segment was built on were made, info["decided"]
     {decision: "prior" kept | "solved" again} (decide_ik; the builder names them), if any."""
     return {"decided": dict(seg.info["decided"])} if seg.info.get("decided") else {}
+
+
+def _same_motion(a, b):
+    """Two motion segments with the same waypoints (for the anchor log)."""
+    return b is not None and len(a.qs) == len(b.qs) and np.allclose(a.q_from, b.q_from) and \
+        all(np.allclose(x, y) for x, y in zip(a.qs, b.qs))
 
 
 def run_clear(act, clear, exc):
@@ -143,9 +151,11 @@ def _run(act, plan, rebuild, hooks):
                 act.log("anchor", target=seg.name, kept=None, rebuilt=None, why=new.why,
                         seconds=round(time.time() - t0, 3))
                 raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
-            old = segs[i + 1:]
-            kept = [sg.name for sg in new.segments if sg.kind == "move" and any(sg is o for o in old)]
-            rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept]
+            old = {sg.name: sg for sg in segs[i + 1:]}
+            kept = [sg.name for sg in new.segments if sg.kind == "move" and old.get(sg.name) is sg]
+            # made again but otherwise: a motion made again the same (the tuck, never kept) is no rebuild
+            rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept
+                       and not _same_motion(sg, old.get(sg.name))]
             segs = segs[:i + 1] + list(new.segments)
             decisions.update(new.decisions)
             act.log("anchor", target=seg.name, kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))

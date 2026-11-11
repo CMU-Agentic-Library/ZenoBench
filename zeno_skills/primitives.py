@@ -1,7 +1,7 @@
 """The motion primitives (docs/MOTION_ARCHITECTURE.md section 5): each makes one segment of a plan
 from a State and a Spec, the same way for the park search and for the execution.
 
-    decide_ik        a contact pose's joint solution: the prior as it is, else solved near it
+    decide_ik        a contact pose's joint solution: the prior as it is, else solved again
     free_leg         free-space motion to a joint goal, a pose or a goal set of poses
     straight         the collision-checked TCP straight from a given joint solution
     contact_extent   how far along u the robot (and its load) keeps touching the world
@@ -161,7 +161,7 @@ def turn(Ra, Rb):
 
 def near_pose(p_a, R_a, p_b, R_b):
     """Two TCP poses the same one: within HINT_REACH and HINT_TURN (a decided solution still decides
-    its pose: decide_ik, Rig._goal; a target still the one planned for: run.holds)."""
+    its pose: decide_ik, Rig._goal)."""
     return float(np.linalg.norm(np.asarray(p_a, float) - np.asarray(p_b, float))) <= HINT_REACH and \
         turn(R_a, R_b) <= HINT_TURN
 
@@ -373,27 +373,26 @@ EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this o
                           # that one -- its end still clears with half the margin, and it runs at most
                           # this much further unchecked.  (One step, 2 mm, was the measure's own
                           # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
-TARGET_TOL = 0.005        # m: a segment built for a contact pose whose end, at the base as it stands, has
-                          # moved this far against that pose since it was built does not hold -- the
-                          # tolerance its execution is judged by (skills.PICK_REACH_TOL: a hand stopped
-                          # this far short of its pose is blocked), so a plan off by more before it runs
-                          # would end that way.  No measured error behind it (9.3 step 2.1 skipped)
+TARGET_TOL = 0.005        # m: the tolerance a contact pose's execution is judged by (skills.PICK_REACH_TOL:
+                          # a hand stopped this far short of its pose is blocked) -- a set-down whose end
+                          # is off its target by less does what it was built for (skill_plans.PLACE_TOL).
+                          # No measured error behind it (9.3 step 2.1 skipped)
 TARGET_TURN = HINT_TURN   # rad: ...turned this far
 TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}   # contact criteria by name
 
 
 def holds(kin, state, seg):
     """Why ``seg`` no longer holds in ``state``, or None: the arm not at its start (PLAN_AT_START);
-    a segment built for a contact pose (info["aim"]) the state no longer gives -- off the pose it
-    was built for by more than near_pose's HINT_REACH / HINT_TURN (the object moved, the load turned
-    in the hand) -- or whose end, at the state's base, has moved against that pose by more than
-    TARGET_TOL / TARGET_TURN since it was built (info["end"]: the base stopped off the one it was
-    built at; the end's own offset from the pose, an IK solution's or a planner's, is what it was);
-    a motion whose path is not free now (its Spec, the world as the state has it); a contact whose
-    extent measured again from here (contact_extent) ends elsewhere.  Actions and anchors always
-    hold; a drive holds while the arm is where it starts (its path is the base planner's, made from
-    this state when navigate was planned).  The same check for the execution (run, before every
-    segment) and for a builder keeping its prior's segments (docs 8.3)."""
+    a segment built for a contact pose (info["aim"]) whose end, at the state's base, stands off the
+    pose the state gives now by more than it did when built -- more than its info["tol"] (m, rad):
+    the object moved, the load turned in the hand, the base stopped off its park all count alike
+    (the end's own offset from the pose, an IK solution's or a planner's, is what it was) -- or
+    whose target is not in the state; a motion whose path is not free now (its Spec, the world as
+    the state has it); a contact whose extent measured again from here (contact_extent) ends
+    elsewhere.  Actions and anchors always hold; a drive holds while the arm is where it starts
+    (its path is the base planner's, made from this state when navigate was planned).  The same
+    check for the execution (run, before every segment) and for a builder keeping its prior's
+    segments (docs 8.3)."""
     if seg.kind in ("action", "anchor"):
         return None
     q = state.q(kin.side)
@@ -404,18 +403,15 @@ def holds(kin, state, seg):
         now = aim_pose(state, aim)
         if now is None:
             return f"its target {aim.obj} is not in the state"
-        p0, R0 = seg.info["aimed"]
-        if not near_pose(p0, R0, *now):
-            return (f"its target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
-                    f"{np.degrees(turn(R0, now[1])):.2f} deg")
-        end = seg.info.get("end")
-        if end is not None:
-            with query(kin, state, seg.spec):            # kin.tcp at the state's base
-                p_e, R_e = kin.tcp(seg.q_end)
-            off = float(np.linalg.norm((p_e - now[0]) - (np.asarray(end[0], float) - p0)))
-            rot = turn(R_e @ now[1].T, np.asarray(end[1], float) @ R0.T)
-            if off > TARGET_TOL or rot > TARGET_TURN:
-                return f"its end moved {off:.4f} m, turned {np.degrees(rot):.2f} deg off its target"
+        (p0, R0), (p_b, R_b), (tol, tol_turn) = seg.info["aimed"], seg.info["end"], seg.info["tol"]
+        with query(kin, state, seg.spec):                # kin.tcp at the state's base
+            p_e, R_e = kin.tcp(seg.q_end)
+        off = float(np.linalg.norm((p_e - now[0]) - (np.asarray(p_b, float) - p0)))
+        rot = turn(R_e @ now[1].T, np.asarray(R_b, float) @ R0.T)
+        if off > tol or rot > tol_turn:
+            return (f"its end is {off:.4f} m, {np.degrees(rot):.2f} deg further off its target than built "
+                    f"(the target moved {np.linalg.norm(now[0] - p0):.4f} m, turned "
+                    f"{np.degrees(turn(R0, now[1])):.2f} deg)")
     if seg.kind == "drive":
         return None
     if seg.spec.allow.from_contact:

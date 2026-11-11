@@ -63,7 +63,8 @@ def _kept(kin, state, q, prior, name):
     """``prior``'s motion ``name`` (a Plan's: run's rebuild) as it is, when it still holds from q in
     ``state`` (primitives.holds: the check run makes before a segment, docs 8.3) -- else None, built
     again.  Moves only: an action or an anchor holds wherever the arm is, so one made for another
-    start would carry that start on; they are made again, at no cost."""
+    start would carry that start on; they are made again, at no cost.  (Not for a motion whose goal
+    is chosen again at every build: the place's tuck.)"""
     if not isinstance(prior, Plan):
         return None
     seg = next((sg for sg in prior.segments if sg.name == name), None)
@@ -77,12 +78,14 @@ def _move(seg, **info):
     return Segment(seg.name, seg.spec, seg.q_from, seg.qs, seg.kind, seg.target, seg.action, {**seg.info, **info})
 
 
-def _aimed(kin, seg, aim, aimed, **info):
+def _aimed(kin, seg, aim, aimed, tol, **info):
     """seg built for the contact pose ``aimed`` that ``aim`` (motion_state.Aim) derives from the
-    State: both recorded, and where its end stands (kin.tcp at the built State's base) -- what
-    primitives.holds checks again (the target the same, the end still as far from it)."""
+    State: both recorded, where its end stands (kin.tcp at the built State's base) and ``tol`` (m,
+    rad), how much further off the target the end may come before the segment no longer does what
+    it was built for -- what primitives.holds checks again."""
     p, R = kin.tcp(seg.q_end)
-    return _move(seg, aim=aim, aimed=aimed, end=(np.asarray(p, float).copy(), np.asarray(R, float).copy()), **info)
+    return _move(seg, aim=aim, aimed=aimed, end=(np.asarray(p, float).copy(), np.asarray(R, float).copy()),
+                 tol=tuple(map(float, tol)), **info)
 
 
 def _contact(kin, state, spec, u, touching, name, step, q_from, **info):
