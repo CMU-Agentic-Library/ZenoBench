@@ -147,8 +147,35 @@ def _crowded_use_another(task: dict) -> dict:
         "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"}
 
 
+def _tower_orders(items, top_only=()) -> list:
+    """Every three-level tower of ``items`` on the island (an item in ``top_only`` has no flat top)."""
+    from itertools import permutations
+    return [[["on_top_of", m, b], ["on_top_of", t, m], ["on", b, "kitchen_island/top"]]
+            for b, m, t in permutations(items) if b not in top_only and m not in top_only]
+
+
+def _third_toy_elsewhere(task: dict) -> dict:
+    """T02 third_toy_elsewhere: two blocks on the island, a block-sized sponge beside them (no toy), the third
+    toy in another room."""
+    lays = task["v6_variants"]["third_toy_elsewhere"]["layouts"]
+    a, b = "wooden_block_a", "wooden_block_b"
+    two = {lid: {"all": [["near_start", "kitchen_sponge", 0.03], ["hand_empty", "right"]],
+                 "any": [[["on_top_of", a, b], ["on", b, "kitchen_island/top"]],
+                         [["on_top_of", b, a], ["on", a, "kitchen_island/top"]]]} for lid in lays}
+    sponge = {lid: {"all": [["hand_empty", "right"]], "any": _tower_orders((a, b, "kitchen_sponge"))}
+              for lid in lays}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "three toys on the island, the third one fetched from the other room"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": two},
+         "why": "the two blocks stacked on the island, the sponge untouched: two levels only, nothing misused"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": sponge},
+         "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"}],
+        "not_ok": "no stack, or the tower not on the island"}
+
+
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
+BUILT = {("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:

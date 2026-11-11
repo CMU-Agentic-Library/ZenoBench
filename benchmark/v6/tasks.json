@@ -32316,6 +32316,338 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "three toys on the island, the third one fetched from the other room"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the two blocks stacked on the island, the sponge untouched: two levels only, nothing misused"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"
+       }
+      ],
+      "not_ok": "no stack, or the tower not on the island"
      }
     },
     "third_toy_elsewhere__toy_block": {
@@ -32720,6 +33052,338 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "three toys on the island, the third one fetched from the other room"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the two blocks stacked on the island, the sponge untouched: two levels only, nothing misused"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"
+       }
+      ],
+      "not_ok": "no stack, or the tower not on the island"
      }
     },
     "tower_for_kid__counter": {
@@ -36903,6 +37567,338 @@
       "17": "third_toy_elsewhere__toy_block",
       "18": "third_toy_elsewhere__toy_block",
       "19": "third_toy_elsewhere__duck"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "three toys on the island, the third one fetched from the other room"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "near_start",
+             "kitchen_sponge",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the two blocks stacked on the island, the sponge untouched: two levels only, nothing misused"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "third_toy_elsewhere__duck": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          },
+          "third_toy_elsewhere__toy_block": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_a",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "kitchen_sponge",
+              "wooden_block_b"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on",
+              "wooden_block_b",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "wooden_block_a"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "on_top_of",
+              "wooden_block_b",
+              "kitchen_sponge"
+             ],
+             [
+              "on_top_of",
+              "wooden_block_a",
+              "wooden_block_b"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"
+       }
+      ],
+      "not_ok": "no stack, or the tower not on the island"
      }
     },
     "tower_for_kid": {
