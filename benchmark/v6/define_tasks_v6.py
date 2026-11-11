@@ -730,7 +730,7 @@ def T05(t):
             move=copy.deepcopy(W4), add={**copy.deepcopy(W4_add), **nbs}, watch=[*W_ALL, *nbs],
             goal={"any": [[*[["on", w, DESK] for w in sub], *[["near_start", w, 0.03] for w in W_ALL if w not in sub]]
                           for sub in combinations(W_ALL, n)],
-                  "all": [*[["near_any", nb, W_ALL, 0.10] for nb in nbs], ["hand_empty", "right"]]},
+                  "all": [*[["near_any", nb, W_ALL, 0.15] for nb in nbs], ["hand_empty", "right"]]},   # 15 cm from its edge
             route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -6.22])])
 
     # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
@@ -837,7 +837,8 @@ def T06(t):
         out = [look(ISL)]
         for x, region in where:
             out += ([S("search", object=x, region=region)] if region else []) + [nav(x), pick(x), nav(CAB),
-                                                                                place(x, CAB, row_xy[x])]
+                                                                                place(x, CAB, row_xy[x]),
+                                                                                S("square", object=x)]   # edges along the cabinet's
         return out
     row_cases = {"island_floor": dict(route=row_route([(A, None), (B, None), (F, "living_room_0_0")])),
                  "spread": dict(move={B: P("dining_table_2/top", 3.7, 6.3), F: P("kitchen_counter_2/top", -0.1, 7.3)},
@@ -1398,7 +1399,7 @@ def T12(t):
                EMPTY_: {"asset": "small_storage_bin", "support": es, "xy": list(exy), "yaw_deg": 0.0}}
         add.update(full_of_blocks(fs, *fxy))
         goal = {"all": [["fully_inside", f"stored_block_{i}", FULL_] for i in range(1, N_STORED + 1)]
-                + [["fully_inside", CAR, EMPTY_], ["fully_inside", DUCK, EMPTY_],
+                + [["inside", CAR, EMPTY_], ["inside", DUCK, EMPTY_],   # the duck (8.4 cm) on the car tops a 9 cm bin
                    ["upright", FULL_], ["upright", EMPTY_], ["hand_empty", "right"]]}
         find_empty = [] if fs == es else [S("search", object=EMPTY_, region=REG_OF[es])]
         route = [nav(fs), look(fs), S("measure", object=FULL_), *find_empty, S("measure", object=EMPTY_),
@@ -1422,8 +1423,13 @@ def T12(t):
             if st["skill"] == "search":
                 st["args"]["region"] = region
                 st.pop("role", None)
+        goal = copy.deepcopy(tev["goal"])           # the car and the duck count once inside, as in the bins above
+        for grp in goal.get("any", []):
+            for a in grp:
+                if a[0] == "fully_inside" and a[1] in (CAR, DUCK):
+                    a[0] = "inside"
         cap_cases[case] = dict(move={DUCK: copy.deepcopy(duck)}, add=copy.deepcopy(tev["add"]),
-                               remove=list(tev.get("remove", [])), goal=copy.deepcopy(tev["goal"]), route=steps)
+                               remove=list(tev.get("remove", [])), goal=goal, route=steps)
 
     def put_away(x):
         return [nav(x), pick(x), nav(BASKET), place(x, BASKET)]
@@ -2828,6 +2834,15 @@ def explore_for_floor(task: dict) -> None:
 
 # GT sequence fixes (2026-11-09 review): steps that find the object before the first navigate to it, and a navigate
 # before a look at a place in another room.  Only these variants (every layout); the rest of each route is unchanged.
+# base-scene objects a variant's own poses land on, moved aside (every layout of the variant)
+SCENE_FIX = {
+    # the lid (25 cm across) on the 60 x 32 cm cabinet top lay over the spoon's handle in every seed: the spoon to
+    # the east end, 13 cm clear of the lid
+    ("T17", "h_task_lid_elsewhere"): {"spoon_kitchen_cabinet": {"support": "kitchen_cabinet_6/top",
+                                                                "xy": [3.68, 0.36], "yaw_deg": 0.0}},
+}
+
+
 GT_PREFIX = {
     ("T21", "tissue_on_tv_stand"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
     ("T21", "which_table"): [("navigate", "tv_stand_2/top"), ("look", "tv_stand_2/top")],
@@ -2841,6 +2856,64 @@ GT_PREFIX = {
 }
 GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
 _GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}
+
+
+def look_before_floor_pick(task: dict) -> list:
+    """An object on the floor is found by explore_room, but the benchmark's gate wants it in view when it is picked
+    (T26 two_bedrooms: the car seen while exploring was out of view after the drive to it, NOT_IN_VIEW): between
+    navigate(x) and pick(x) of a floor object, look(x).  Returns [(route, object)]."""
+    from benchmark.v6.oracle_check import World
+    out, done = [], set()
+    for lid, rname in task["oracle"].items():
+        if rname in done or rname not in task["routes"] or lid not in task["variants"]:
+            continue
+        done.add(rname)
+        w = World(task, lid)
+        steps, new = task["routes"][rname]["steps"], []
+        for i, st in enumerate(steps):
+            prev = new[-1] if new else None
+            if st["skill"] == "pick" and prev and prev["skill"] == "navigate" \
+                    and prev["args"].get("destination") == st["args"]["object"]:
+                sup = w.support_of(st["args"]["object"])
+                if not sup or sup.startswith("floor"):
+                    new.append({"skill": "look", "args": {"target": st["args"]["object"]}})
+                    out.append((rname, st["args"]["object"]))
+            if st.get("expect") != "fail":
+                w.step(i, st)
+            new.append(st)
+        task["routes"][rname]["steps"] = new
+    return out
+
+
+def close_hands_free(task: dict) -> list:
+    """A door or the fridge closes only with the right hand empty (skill close: handle_push / dispatch; only the
+    microwave closes with a load).  A route that takes something out and closes the door while holding it closes
+    after it has set the thing down: navigate back to the door, close.  Returns [(route, articulated)]."""
+    from benchmark.v6.oracle_check import World
+    out, done = [], set()
+    for lid, rname in task["oracle"].items():
+        if rname in done or rname not in task["routes"] or lid not in task["variants"]:
+            continue
+        done.add(rname)
+        w = World(task, lid)
+        new, pending = [], []
+        for i, st in enumerate(task["routes"][rname]["steps"]):
+            if st["skill"] == "close" and w.hand and w.art_category(st["args"]["articulated"]) != "microwave":
+                pending.append(st["args"]["articulated"])
+                continue                                # the door stays open until the hand is free
+            if st.get("expect") != "fail":
+                w.step(i, st)
+            new.append(st)
+            if pending and not w.hand:
+                for art in pending:
+                    new += [{"skill": "navigate", "args": {"destination": art}},
+                            {"skill": "close", "args": {"articulated": art}}]
+                    out.append((rname, art))
+                pending = []
+        new += [x for art in pending for x in ({"skill": "navigate", "args": {"destination": art}},
+                                               {"skill": "close", "args": {"articulated": art}})]
+        task["routes"][rname]["steps"] = new
+    return out
 
 
 def gt_sequence_fixes(task: dict) -> list:
@@ -2897,7 +2970,9 @@ def build() -> dict:
         for info in t["v6_variants"].values():
             for lid in info["layouts"]:
                 v = t["variants"][lid]
-                v["move"] = {**v.get("move", {}), **exact_base_poses(t, v)}
+                v["move"] = {**v.get("move", {}), **exact_base_poses(t, v),
+                             **copy.deepcopy(next((fx for (tid, vid), fx in SCENE_FIX.items()
+                                                   if t["task_id"].startswith(tid) and lid.split("__")[0] == vid), {}))}
                 v["move"], _ = seed_vary(t, v)   # task objects still at their base pose join the overlay
                 v.pop("vary", None)
         poses_in_reach(t)                        # what the route picks from a top starts within reach of an edge
@@ -2919,6 +2994,8 @@ def build() -> dict:
                     observe_first(t, lid)
     for t in out["tasks"]:                       # GT: find the object first, go before looking at another room
         gt_sequence_fixes(t)                     # (after the layouts: the seed's draws stay as they were)
+        close_hands_free(t)                      # a door closes once the hand is free
+        look_before_floor_pick(t)                # a floor object in view when it is picked
     apply_tracks(out)
     # approach left the library (benchmark/retired_skills.py): its steps in the routes v6 inherits from v5
     # and in its own designs become the navigate they still need, or go when a navigate there precedes them

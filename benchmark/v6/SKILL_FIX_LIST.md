@@ -221,6 +221,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | tray_book_3 | T22/tray_elsewhere |
 | place | tray_book_4 | T22/tray_elsewhere |
 | place | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
+| square | floor_block | T06/display_row |
+| square | wooden_block_b | T06/display_row |
 | stack | bowl | T13/copy_the_setting |
 | stack | desk_book_blue | T14/stack_them_stably |
 | stack | desk_paperback_book | T14/stack_them_stably |

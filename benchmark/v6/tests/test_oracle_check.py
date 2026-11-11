@@ -75,7 +75,11 @@ def test_cup_on_the_desk_beside_the_bed_passes():
 
 
 DEPENDENT = [("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
-             ("T28", "where_his_cup_is"), ("T30", "bowls_in_cabinet")]
+             pytest.param("T28", "where_his_cup_is", marks=pytest.mark.xfail(
+                 strict=True, reason="11-10: once the cabinet closes with the hand free (navigate back, close), the "
+                                     "in_cabinet route also solves on_counter (open, look, take the cup from the counter): "
+                                     "it failed there only for closing away from the cabinet. Design open (user).")),
+             ("T30", "bowls_in_cabinet")]
 
 
 @pytest.mark.parametrize("tid,vid", DEPENDENT)

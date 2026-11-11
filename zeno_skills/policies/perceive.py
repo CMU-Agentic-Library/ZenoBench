@@ -39,6 +39,8 @@ SWEEP_PITCH = 0.3               # rad: ...at this pitch (positive looks down)...
 SWEEP_STEPS = 50                # ...each reached in this many ticks
 VIEW_TRIES = 3                  # navigates a furniture exploration may try per view it wants
 SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a long support (one look at the
+SEARCH_LONG_M = 1.2            # m: a support this long is searched from more than one stand pose
+SEARCH_RESTAND_M = 0.5         # m: a stand-off pose this close to where the base stands is not driven to
                                 # centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
 
 
@@ -329,17 +331,62 @@ class SearchObjectPolicy(AtomicPolicy):
                 continue
             for s in sorted(furniture[f], key=lambda s: -s["z"]):
                 for p in _search_aims(s, rig.base_pose()[:2]):
-                    yaw, pitch = look_angles(rig, p)
-                    drive_head(rig, yaw, pitch, steps=60)
-                    record_view(rig)
-                    c = rig.geo.centre(name, rig.state())
-                    if project_to_head_camera(rig, c, exclude=name)[0]:
-                        found = rig.geo.support_under(name, rig.state())
-                        found_on = found["name"] if found else None
-                        memory(rig)["observed"][name] = rig.tick
-                        rig.log("search_result", obj=name, found_on=found_on, visited=visited)
-                        return {"found_on": found_on, "visited": visited}
+                    if self._aim_and_check(name, p):
+                        return self._found(name, visited)
+                # a long support seen from one stand pose: its far parts lie past the head's turn or at a grazing
+                # angle (11-10, T25 cup_elsewhere: a cup 23 cm from the end of a 2.5 m counter not seen).  Walk
+                # along it: for each aim point the reachable stand-off pose nearest to it, and look again
+                for p in self._walk_along(s):
+                    if self._aim_and_check(name, p):
+                        return self._found(name, visited)
         raise SkillFailure(f"search {name}: not seen at {visited}")
+
+    def _aim_and_check(self, name, p):
+        rig = self.rig
+        yaw, pitch = look_angles(rig, p)
+        drive_head(rig, yaw, pitch, steps=60)
+        record_view(rig)
+        c = rig.geo.centre(name, rig.state())
+        return bool(project_to_head_camera(rig, c, exclude=name)[0])
+
+    def _found(self, name, visited):
+        rig = self.rig
+        found = rig.geo.support_under(name, rig.state())
+        found_on = found["name"] if found else None
+        memory(rig)["observed"][name] = rig.tick
+        rig.log("search_result", obj=name, found_on=found_on, visited=visited)
+        return {"found_on": found_on, "visited": visited}
+
+    def _walk_along(self, s):
+        """Aim points of a long support (SEARCH_LONG_M or more) farther than SEARCH_RESTAND_M from where the base
+        stands, each after a drive to the reachable stand-off pose of the support nearest that point (yielded one
+        by one, so the search stops at the first sighting).  Nothing for a short support."""
+        from .base_motion import standoff_poses
+        rig = self.rig
+        x0, y0, x1, y1 = s["aabb_xy"]
+        if max(x1 - x0, y1 - y0) < SEARCH_LONG_M:
+            return
+        try:
+            poses = standoff_poses(rig, s["name"])
+        except (KeyError, SkillFailure):
+            return
+        ok = skills.base_reachable(rig, poses) if poses else []
+        reach = [q for q, o in zip(poses, ok) if o]
+        if not reach:
+            return
+        bx, by = rig.base_pose()[:2]
+        for p in sorted(_search_aims(s, (bx, by)), key=lambda p: -math.hypot(p[0] - bx, p[1] - by)):
+            here = rig.base_pose()[:2]
+            q = min(reach, key=lambda q: math.hypot(q[0] - p[0], q[1] - p[1]))
+            if math.hypot(q[0] - here[0], q[1] - here[1]) < SEARCH_RESTAND_M:
+                continue
+            try:
+                skills.navigate(rig, q, label=f"search_walk_{s['name']}")
+            except SkillFailure as exc:
+                rig.log("search_walk_skip", support=s["name"], reason=str(exc))
+                continue
+            rig.log("search_walk", support=s["name"], pose=[round(v, 3) for v in q])
+            yield p
 
 
 class PointAtPolicy(AtomicPolicy):

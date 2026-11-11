@@ -8290,7 +8290,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8301,7 +8301,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "hand_empty",
@@ -8449,7 +8449,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8460,7 +8460,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8471,7 +8471,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "hand_empty",
@@ -13755,12 +13755,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -13958,12 +13958,12 @@
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small"
     ],
@@ -14161,12 +14161,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -14364,12 +14364,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -14429,48 +14429,48 @@
    "any": [
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
@@ -14559,48 +14559,48 @@
    "any": [
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
@@ -16661,6 +16661,7 @@
     "oatmeal",
     "pot_lid",
     "rolling_pin",
+    "spoon_kitchen_cabinet",
     "wooden_block_b"
    ],
    "added": [],
