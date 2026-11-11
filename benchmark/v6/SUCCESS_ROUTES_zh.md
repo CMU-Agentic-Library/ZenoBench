@@ -327,37 +327,37 @@
   - 第 1 组：
     - `wooden_block_b` 叠在 `wooden_block_a` 上
     - `floor_block` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 在 `dining_table_2/top` 上
+    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_a` 离台面边缘至少 5 cm
     - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 2 组：
     - `floor_block` 叠在 `wooden_block_a` 上
     - `wooden_block_b` 叠在 `floor_block` 上
-    - `wooden_block_a` 在 `dining_table_2/top` 上
+    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_a` 离台面边缘至少 5 cm
     - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 3 组：
     - `wooden_block_a` 叠在 `wooden_block_b` 上
     - `floor_block` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 在 `dining_table_2/top` 上
+    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_b` 离台面边缘至少 5 cm
     - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 4 组：
     - `floor_block` 叠在 `wooden_block_b` 上
     - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 在 `dining_table_2/top` 上
+    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_b` 离台面边缘至少 5 cm
     - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 5 组：
     - `wooden_block_a` 叠在 `floor_block` 上
     - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `floor_block` 在 `dining_table_2/top` 上
+    - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `floor_block` 离台面边缘至少 5 cm
     - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 6 组：
     - `wooden_block_b` 叠在 `floor_block` 上
     - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 在 `dining_table_2/top` 上
+    - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `floor_block` 离台面边缘至少 5 cm
     - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
 
@@ -380,13 +380,13 @@
   - 第 1 组：
     - `wooden_block_b` 叠在 `wooden_block_a` 上
     - `rubber_duck` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 在 `dining_table_2/top` 上
+    - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_a` 离台面边缘至少 5 cm
     - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
   - 第 2 组：
     - `wooden_block_a` 叠在 `wooden_block_b` 上
     - `rubber_duck` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 在 `dining_table_2/top` 上
+    - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
     - `wooden_block_b` 离台面边缘至少 5 cm
     - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
 

@@ -174,8 +174,34 @@ def _third_toy_elsewhere(task: dict) -> dict:
         "not_ok": "no stack, or the tower not on the island"}
 
 
+def _tower_for_kid(design: str, top_only=()):
+    def build(task: dict) -> dict:
+        """T02 tower_for_kid(_duck): three pieces spread over the house, the tower on a dining table, clear of
+        the edge and of the table's things, which stay put."""
+        lays = task["v6_variants"][design]["layouts"]
+        a, b = "wooden_block_a", "wooden_block_b"
+        pieces = (a, b, *top_only) if top_only else (a, b, "floor_block")
+        tables = ["dining_table_2/top", "dining_table_1/top"]
+        two = {}
+        for lid in lays:
+            kept = [x for x in task["variants"][lid]["goal"]["all"] if x[0] in ("near_start", "hand_empty")]
+            two[lid] = {"all": kept, "any": [[["on_top_of", x, y], ["on_any", y, tables]]
+                                             for x in pieces for y in pieces if x != y and y not in top_only]}
+        return {"D": 1, "tiers": [
+            {"name": "best", "score": 1.0, "goal": None,
+             "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, "
+                    "nothing moved"},
+            {"name": "second", "score": 0.6, "goal": {"drop": ["away_from_edge", "clear_of"]},
+             "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or "
+                    "the cereal: easy to knock over"},
+            {"name": "worst", "score": 0.3, "goal": {"by_layout": two},
+             "why": "two pieces stacked on a dining table (the third not found), nothing moved"}],
+            "not_ok": "a thing on the table moved; the tower not on a dining table; nothing stacked"}
+    return build
+
+
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
+BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"), ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -209,9 +235,11 @@ def tier_goal(tier: dict, task: dict, layout: str | None):
     if "by_layout" in g:
         return g["by_layout"][layout]
     if "drop" in g:
-        base = task["goal"]
-        return {k: [a for a in base.get(k, []) if not (isinstance(a, list) and a and a[0] in g["drop"])]
-                for k in ("all", "any") if k in base}
+        base, kinds = task["goal"], g["drop"]
+        out = {"all": [a for a in base.get("all", []) if a[0] not in kinds]}
+        if base.get("any"):
+            out["any"] = [[a for a in grp if a[0] not in kinds] for grp in base["any"]]
+        return out
     return g
 
 

@@ -4753,9 +4753,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4786,9 +4789,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4819,9 +4825,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4852,9 +4861,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4885,9 +4897,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4918,9 +4933,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5018,9 +5036,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5051,9 +5072,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5084,9 +5108,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5117,9 +5144,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5150,9 +5180,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5183,9 +5216,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5287,9 +5323,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5320,9 +5359,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5424,9 +5466,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5457,9 +5502,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",

@@ -394,13 +394,15 @@ def T02(t):
                 "all": [["hand_empty", "right"]]}
     # tower_for_kid: the three blocks are spread over the house; the tower goes on the dining table, whose bin,
     # cereal boxes and spoon stay where they are, the base 5 cm from the edge and clear of them
+    # (11-11, user: either dining table will do, as in T01)
     table_ware = ["wide_storage_bin", "clutter_cereal_a", "clutter_cereal_b", "spoon_target_table"]
-    table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", top, m], ["on", b, DINING],
+    either_table = [DINING, FAR_DINING]
+    table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", top, m], ["on_any", b, either_table],
                             ["away_from_edge", b, 0.05], ["clear_of", b, table_ware, 0.05]]
                            for b in (A, B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
                    "all": [*[["near_start", n, 0.03] for n in table_ware], ["hand_empty", "right"]]}
     # tower_for_kid_duck: no third block; the rubber duck tops the two blocks
-    duck_table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", "rubber_duck", m], ["on", b, DINING],
+    duck_table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", "rubber_duck", m], ["on_any", b, either_table],
                                  ["away_from_edge", b, 0.05], ["clear_of", b, table_ware, 0.05]]
                                 for b, m in ((A, B), (B, A))],
                         "all": copy.deepcopy(table_tower["all"])}
