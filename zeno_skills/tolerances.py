@@ -82,6 +82,9 @@ PLACE_TOL = _t("PLACE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = TARGE
                "only sets the load down a few mm off; unmeasured -- anchor_stats 2 (place_reach / place_down)")
 DOOR_TOL = _t("DOOR_TOL", (HINT_REACH, HINT_TURN), "m, rad", "chosen as PICK_TOL (the hook onto a bar is a "
               "fine motion); no sim run yet")
+DOOR_LEAVE = _t("DOOR_LEAVE", 0.17, "m", "chosen from one measurement (11-11, T05 / T20 cabinet_4): let go, the "
+                "hinge swings on after the hand (-1.381 -> -1.406 rad); 12 cm back left a finger 1 mm in the door, "
+                "14 cm was free (the old path's leave, skills._move_articulated); 3 cm more for other doors")
 SAME_POSTURE = _t("SAME_POSTURE", 0.02, "rad", "inherited from the posture chain (ea47359), unmeasured: "
                   "postures no joint of which differs by more are one (no swing, no chain step: plan_navigate, "
                   "skills._base_steps)")

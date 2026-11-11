@@ -15,7 +15,7 @@ import numpy as np
 from ..clearance import Allow, closing
 from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding,
                             released, with_arm, with_part, with_width)
-from ..tolerances import DOOR_TOL
+from ..tolerances import DOOR_LEAVE, DOOR_TOL
 from ..primitives import JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
 from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor
 
@@ -52,9 +52,10 @@ def plan_door(kin, state, grip, rest_goals, base=None, start="door_arrive", prio
                          (Script carry "base", PartAt), checked by ``base`` (motion_state.BaseModel)
         door_moved       anchor: where the part went
         door_release     open to pre_open, let go
-        door_leave       the reach-in backwards: the straight L back along u from where the ride left
-                         the hand (the bar out from behind the fingers -- the opened hook clears it by
-                         more than a contact gap, so a measured contact reads 0 m there)
+        door_leave       the reach-in backwards: the straight DOOR_LEAVE back along u from where the ride
+                         left the hand (the bar out from behind the fingers -- the opened hook clears it by
+                         more than a contact gap, so a measured contact reads 0 m there -- and the hand clear
+                         of the door, which swings on after it is let go)
         tuck             the first free of ``rest_goals`` (JointSet; never kept)
         door_settle      the part settles
 
@@ -128,7 +129,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
             with query(kin, s, FREE_HAND):                  # the TCP at the base the ride left it
                 p_now, R_now = kin.tcp(q)
             spec = touch_part(side, part, "backing off the handle: the fingers may touch the part")
-            seg = kept or straight(kin, s, spec, p_now - float(grip["L"]) * (R_now @ u_tcp), R_now, stage,
+            seg = kept or straight(kin, s, spec, p_now - DOOR_LEAVE * (R_now @ u_tcp), R_now, stage,
                                    step=step, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=4, smooth=True)

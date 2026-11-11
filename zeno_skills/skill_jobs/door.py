@@ -10,11 +10,11 @@ from ..motion_state import clearing
 from ..park_search import Problem
 from ..rig import SkillFailure
 from ..skill_plans import DOOR_RELAY
-from ..skills import TCP_BACKOFF
 from ..tolerances import (DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HAND_OPENED_FRAC, HANDLE_FINGER_MIN, HANDLE_GAP, RIDE_DONE_PRIS,
                           RIDE_DONE_REV, RIDE_OVERSHOOT)
 
 VARIANT_COST = 0.05      # m of park cost per rank of a way to hold the handle (untilted side hook first)
+DOOR_REACH_IN = 0.12     # m: the reach-in onto the handle starts this far back (the old path's pre-grasp, not measured)
 RIDE_STEP_HINGE = 0.10   # rad between the ride's checked samples (skills._ride_check took 8 over the range; not measured)
 RIDE_STEP_SLIDE = 0.03   # m ...on a slide
 SIDE_TRACK = (0.03, 0.25)    # (lead, rate) of a side hook: the bar loaded through a finger (skills._ride's)
@@ -56,7 +56,7 @@ def _width(a, grasp):
 def door_grips(rig, a, goal):
     """plan_door's grip per way to hold ``a``'s handle (_ways), the part where it stands now: the grasp
     in the part frame (annotations handle_pose at the joint value now), the reach-in along the
-    approach, TCP_BACKOFF long; the ride to ``goal`` (RIDE_OVERSHOOT past it, done RIDE_DONE_REV / RIDE_DONE_PRIS short).
+    approach, DOOR_REACH_IN long; the ride to ``goal`` (RIDE_OVERSHOOT past it, done RIDE_DONE_REV / RIDE_DONE_PRIS short).
     [(grip, (grasp, flip, tilt), thickness)]."""
     ann = rig.ann
     q0 = rig.joint(a["name"])
@@ -71,7 +71,7 @@ def door_grips(rig, a, goal):
         T = np.eye(4)
         T[:3, :3], T[:3, 3] = R, p
         grip = {"part": a["name"], "kind": "hinge" if revolute else "slider", "pose": pose,
-                "T_part_tcp": np.linalg.inv(pose(q0)) @ T, "u": R.T @ np.asarray(appr, float), "L": TCP_BACKOFF,
+                "T_part_tcp": np.linalg.inv(pose(q0)) @ T, "u": R.T @ np.asarray(appr, float), "L": DOOR_REACH_IN,
                 "pre_open": pre_open, "s1": goal + sign * RIDE_OVERSHOOT,
                 "ride_step": RIDE_STEP_HINGE if revolute else RIDE_STEP_SLIDE,
                 "track": {"lead": lead, "rate": rate, "done": goal - sign * (RIDE_DONE_REV if revolute else RIDE_DONE_PRIS)}}

@@ -9,6 +9,7 @@ from tests.test_scripted import DOOR, DoorKin, FakeBase, door_pose
 from zeno_skills import primitives as P
 from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, State, holding, with_part
 from zeno_skills.skill_plans import DOOR_RELAY, DOOR_STAGES, plan_clear, plan_door
+from zeno_skills.tolerances import DOOR_LEAVE
 
 
 class PlanKin(DoorKin):
@@ -70,7 +71,7 @@ def test_a_door_is_opened_with_one_grasp_and_the_base_riding_it():
     # the ride, the leave and the tuck from the arm on the handle, not from the posture the State started in
     assert np.allclose(ride.q_from, seg["door_grasp"].q_end)
     leave = seg["door_leave"]
-    assert np.allclose(leave.q_from, ride.q_end) and leave.qs and leave.info["length"] == pytest.approx(0.12)
+    assert np.allclose(leave.q_from, ride.q_end) and leave.qs and leave.info["length"] == pytest.approx(DOOR_LEAVE)
     assert np.allclose(seg["tuck"].q_from, leave.q_end)
 
 

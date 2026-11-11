@@ -40,7 +40,7 @@ from .tolerances import (DOOR_CLOSED_TOL, DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HELD_
                          HELD_SHIFT_MAX, HELD_SLIP, PICK_LIFT_FRAC, PICK_RISE_MIN, RIDE_DONE_PRIS, RIDE_DONE_REV,
                          SAME_POSTURE, SHUT)
 
-TCP_BACKOFF = 0.12
+TCP_BACKOFF = 0.12   # the old handle paths' pre-grasp (_handle_targets); the door framework has DOOR_REACH_IN
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
