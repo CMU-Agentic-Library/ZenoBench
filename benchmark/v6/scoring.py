@@ -476,6 +476,22 @@ def _seen_from_bed(task: dict) -> dict:
          "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"}],
         "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"}
 
+# T07 microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
+# stove (in part or whole) is the second tier, as is the microwave door left open; both, the worst.  The stove left
+# on is not ok (user 11-11).  heated_by: episode.heat_log
+_HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["hand_empty", "right"]]
+_NO_STOVE = ["not heated_by", "oatmeal", "kitchen_stove", 0.5]
+SCORING[("T07", "microwave_works")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, ["is_closed", "kitchen_microwave"], _NO_STOVE]},
+     "why": "warmed to 40 C in the microwave only, the stove off, the microwave door closed"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": _HOT, "any": [[["is_closed", "kitchen_microwave"]], [_NO_STOVE]]},
+     "why": "warmed on the stove (in part or whole) though the microwave works, the stove off; or in the microwave "
+            "with its door left open"},
+    {"name": "worst", "score": 0.3, "goal": {"all": _HOT},
+     "why": "warmed partly on the stove and the microwave door left open"}],
+    "not_ok": "below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -596,5 +612,6 @@ NOT_OK_ZH = {
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
     ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了",
     ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了",
+    ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

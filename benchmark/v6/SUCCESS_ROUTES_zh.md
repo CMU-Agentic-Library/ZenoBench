@@ -1941,12 +1941,32 @@
 
 **情况**：微波炉正常 → 放进去加热
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `oatmeal` 温度至少 40 °C
-- `kitchen_stove` 已经停止加热
-- `kitchen_microwave` 关着
-- 手里空着
+- **好（1.0）**：
+
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `kitchen_microwave` 关着
+  - `["not heated_by", "oatmeal", "kitchen_stove", 0.5]`
+- **次好（0.6）**：
+
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `kitchen_microwave` 关着
+    - 第 2 组：
+      - `["not heated_by", "oatmeal", "kitchen_stove", 0.5]`
+- **最不好（0.3）**：
+
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：没热到 40 度；灶台没关火；碗打翻；还拿着或掉了
+
 
 **参考调用顺序**：
 

@@ -62260,6 +62260,104 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "is_closed",
+           "kitchen_microwave"
+          ],
+          [
+           "not heated_by",
+           "oatmeal",
+           "kitchen_stove",
+           0.5
+          ]
+         ]
+        },
+        "why": "warmed to 40 C in the microwave only, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "is_closed",
+            "kitchen_microwave"
+           ]
+          ],
+          [
+           [
+            "not heated_by",
+            "oatmeal",
+            "kitchen_stove",
+            0.5
+           ]
+          ]
+         ]
+        },
+        "why": "warmed on the stove (in part or whole) though the microwave works, the stove off; or in the microwave with its door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "warmed partly on the stove and the microwave door left open"
+       }
+      ],
+      "not_ok": "below 40 C; the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "microwave_broken": {
@@ -65574,6 +65672,104 @@
       "17": "microwave_works",
       "18": "microwave_works",
       "19": "microwave_works"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "is_closed",
+           "kitchen_microwave"
+          ],
+          [
+           "not heated_by",
+           "oatmeal",
+           "kitchen_stove",
+           0.5
+          ]
+         ]
+        },
+        "why": "warmed to 40 C in the microwave only, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "is_closed",
+            "kitchen_microwave"
+           ]
+          ],
+          [
+           [
+            "not heated_by",
+            "oatmeal",
+            "kitchen_stove",
+            0.5
+           ]
+          ]
+         ]
+        },
+        "why": "warmed on the stove (in part or whole) though the microwave works, the stove off; or in the microwave with its door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "warmed partly on the stove and the microwave door left open"
+       }
+      ],
+      "not_ok": "below 40 C; the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "microwave_broken": {

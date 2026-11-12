@@ -287,3 +287,11 @@ def _same_arrangement(rig, ctx, objects, examples, anchor, example_anchor, facin
         a, b = local(o, anchor, facing), local(e, example_anchor, example_facing)
         worst = max(worst, math.hypot(a[0] - b[0], a[1] - b[1]))
     return worst <= float(tol_m), f"largest offset error {worst:.3f} m"
+
+
+@goal_predicate("heated_by", ["object", "appliance", "min_c"],
+                "The appliance raised the food's temperature by at least min_c over the episode "
+                "(episode.heat_log; the stove when the food sat on a lit burner, else the microwave).")
+def _heated_by(rig, ctx, object, appliance, min_c=0.5):
+    got = float(rig.memory.get("heated_by", {}).get(object, {}).get(appliance, 0.0))
+    return got >= float(min_c), f"{got:.1f} C from {appliance}"

@@ -199,6 +199,8 @@ class Episode:
         if cfg.get("thermal_sources") is not None:
             base_task = dict(base_task, thermal_sources=cfg["thermal_sources"])
         rig.configure_thermal(base_task)
+        from episode.heat_log import track
+        track(rig)                                        # which appliance heated what (scoring, T07)
         rig.step(30)
         if cfg.get("start"):
             x0, y0, yaw0 = rig.base_pose()
