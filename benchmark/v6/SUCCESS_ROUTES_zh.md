@@ -1782,28 +1782,72 @@
 
 **指令**：把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `front_free`、`front_free_block_away`：
-  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_a` 离台面边缘至少 2 cm
-  - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-  - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-  - 手里空着
-- 摆法 `front_taken`、`front_taken_block_away`：
+- **好（1.0）**：
+
+  - 摆法 `front_free`、`front_free_block_away`：
+    - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+    - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+    - `wooden_block_a` 离台面边缘至少 2 cm
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
+    - 手里空着
+  - 摆法 `front_taken`、`front_taken_block_away`：
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+- **次好（0.6）**：
+
+  - 摆法 `front_free`、`front_free_block_away`：
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+  - 摆法 `front_taken`、`front_taken_block_away`：
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+- **最不好（0.3）**：
+
   - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
   - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `wooden_block_a` 在 `tv_stand_2/top` 上
-      - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-      - `wooden_block_a` 离台面边缘至少 2 cm
+      - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
     - 第 2 组：
+      - `wooden_block_a` 在 `tv_stand_2/top` 上
+    - 第 3 组：
       - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
-      - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-      - `wooden_block_a` 离台面边缘至少 2 cm
+- **不行（0）**：挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了
+
 
 **参考调用顺序**：
 

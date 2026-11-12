@@ -425,12 +425,38 @@ SCORING[("T06", "display_row")] = {"D": 1, "tiers": [
     "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or "
               "dropped"}
 
+
+def _display_spot_or_tv(task: dict) -> dict:
+    """T06 display_spot_or_tv: the boxes and the bottle on the low cabinet, along the back (front_free*: the cabinet
+    front is the spot) or in the front row (front_taken*: the TV stand or the other low cabinet).  front_free with the
+    block elsewhere in view is the second tier (no second tier for front_taken: its best is already the fallback);
+    the block on one of the three but hidden or at the edge, the worst (user 11-11)."""
+    lays = task["v6_variants"]["display_spot_or_tv"]["layouts"]
+    A, sups = "wooden_block_a", ("kitchen_cabinet_6/top", "tv_stand_2/top", "kitchen_cabinet_4/top")
+    second, worst = {}, {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]
+        stay = [a for a in g["all"] if a[0] in ("near_start", "upright", "hand_empty")]
+        shown = lambda sup: [["on", A, sup], ["front_visible", A], ["away_from_edge", A, 0.02]]  # noqa: E731
+        second[lid] = g if g.get("any") else {"all": stay, "any": [shown(sups[1]), shown(sups[2])]}
+        worst[lid] = {"all": stay, "any": [[["on", A, sup]] for sup in sups]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "front free: on the cabinet front in view; front taken: on the TV stand or the other low cabinet in "
+                "view; 2 cm from the edge, the boxes and the bottle untouched"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "front free: on the TV stand or the other low cabinet in view, the preferred cabinet front unused"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "on one of the three, the boxes untouched, but hidden from the room (behind the boxes) or at the edge"}],
+        "not_ok": "a box or the bottle moved or tipped; elsewhere (dining table, coffee table); still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
          ("T03", "no_bin_substitute"): _no_bin_substitute,
-         ("T05", "homework_ready"): _homework_ready}
+         ("T05", "homework_ready"): _homework_ready,
+         ("T06", "display_spot_or_tv"): _display_spot_or_tv}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -541,5 +567,6 @@ NOT_OK_ZH = {
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
+    ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
