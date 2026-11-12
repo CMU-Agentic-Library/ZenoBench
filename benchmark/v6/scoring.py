@@ -731,6 +731,9 @@ def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | N
     if s is None and task is not None:
         f = next((f for (tid, d), f in BUILT.items() if task_id.startswith(tid) and d == design), None)
         s = f(task) if f else None
+    if s is None and task is not None:                 # T10-T30: decided from the precedents (scoring_rest.py)
+        from benchmark.v6.scoring_rest import scoring_for as rest
+        s = rest(task_id, design, task)
     return s
 
 
@@ -856,3 +859,12 @@ NOT_OK_ZH = {
     ("T09", "pot_in_dining_room"): "用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
+
+
+def _rest_not_ok_zh():
+    from benchmark.v6.scoring_rest import REST
+    for key, spec in REST.items():
+        NOT_OK_ZH.setdefault(key, spec["zh"]["no"])
+
+
+_rest_not_ok_zh()
