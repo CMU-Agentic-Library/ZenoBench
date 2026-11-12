@@ -63240,6 +63240,434 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance__in_glass_box": {
@@ -63430,6 +63858,434 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance__in_pot": {
@@ -63601,6 +64457,434 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance__in_steel_box": {
@@ -63791,6 +65075,434 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance__in_foil_tray": {
@@ -63981,6 +65693,434 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "two_portions__dining": {
@@ -65967,6 +68107,434 @@
       "17": "vessel_decides_appliance__in_glass_box",
       "18": "vessel_decides_appliance__in_steel_box",
       "19": "vessel_decides_appliance__in_pot"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "is_closed",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "oatmeal_bowl",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "glass_food_container",
+             "kitchen_stove",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "soup_pot",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "steel_lunch_box",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not exposed_in",
+             "foil_takeout_tray",
+             "kitchen_microwave",
+             1.0
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right appliance from the start, warmed, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "vessel_decides_appliance__in_ceramic_bowl": {
+           "all": [
+            [
+             "temperature_at_least",
+             "oatmeal_bowl",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_glass_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "glass_food_container",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_pot": {
+           "all": [
+            [
+             "temperature_at_least",
+             "soup_pot",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_steel_box": {
+           "all": [
+            [
+             "temperature_at_least",
+             "steel_lunch_box",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "vessel_decides_appliance__in_foil_tray": {
+           "all": [
+            [
+             "temperature_at_least",
+             "foil_takeout_tray",
+             40
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "not heating",
+             "kitchen_microwave"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit burner: may crack), then the right one"
+       }
+      ],
+      "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped"
      }
     },
     "two_portions": {

@@ -295,3 +295,11 @@ def _same_arrangement(rig, ctx, objects, examples, anchor, example_anchor, facin
 def _heated_by(rig, ctx, object, appliance, min_c=0.5):
     got = float(rig.memory.get("heated_by", {}).get(object, {}).get(appliance, 0.0))
     return got >= float(min_c), f"{got:.1f} C from {appliance}"
+
+
+@goal_predicate("exposed_in", ["object", "appliance", "min_s"],
+                "The object spent at least min_s seconds in the running appliance (on a lit burner; in the shut, "
+                "running microwave), whether it warmed or not (episode.heat_log).")
+def _exposed_in(rig, ctx, object, appliance, min_s=1.0):
+    got = float(rig.memory.get("exposed_in", {}).get(object, {}).get(appliance, 0.0))
+    return got >= float(min_s), f"{got:.1f} s in {appliance}"

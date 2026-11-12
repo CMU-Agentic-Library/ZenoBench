@@ -513,6 +513,34 @@ SCORING[("T07", "microwave_holds_pot")] = {"D": 1, "tiers": [
      "why": "warmed either way, but the microwave door left open"}],
     "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"}
 
+
+def _vessel_decides_appliance(task: dict) -> dict:
+    """T07 vessel_decides_appliance: the container (seed) decides the appliance; the wrong one does not warm it.
+    Trying the wrong one first (metal in the running microwave, ceramic or glass on a lit burner), then the right
+    one, is the worst tier; the microwave door left open the second (user 11-11).  exposed_in: episode.heat_log."""
+    lays = task["v6_variants"]["vessel_decides_appliance"]["layouts"]
+    best, second, worst = {}, {}, {}
+    for lid in lays:
+        v = task["variants"][lid]
+        g = v["goal"]["all"]
+        food = next(a[1] for a in g if a[0] == "temperature_at_least")
+        rates = (v.get("thermal_override") or {}).get(food, {})
+        wrong = "kitchen_microwave" if not rates.get("heating_rate_c_per_s") else "kitchen_stove"
+        clean = ["not exposed_in", food, wrong, 1.0]
+        best[lid] = {"all": [*g, clean]}
+        second[lid] = {"all": [a for a in g if a[0] != "is_closed"] + [clean]}
+        worst[lid] = {"all": [a for a in g if a[0] != "is_closed"]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": {"by_layout": best},
+         "why": "the right appliance from the start, warmed to 40 C, both off, the microwave door closed"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "the right appliance from the start, warmed, but the microwave door left open"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "the wrong appliance tried first (metal in the running microwave: sparks; ceramic or glass on a lit "
+                "burner: may crack), then the right one"}],
+        "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the "
+                  "container tipped; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -520,7 +548,8 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T03", "no_bin_substitute"): _no_bin_substitute,
          ("T05", "homework_ready"): _homework_ready,
          ("T06", "display_spot_or_tv"): _display_spot_or_tv,
-         ("T06", "seen_from_bed"): _seen_from_bed}
+         ("T06", "seen_from_bed"): _seen_from_bed,
+         ("T07", "vessel_decides_appliance"): _vessel_decides_appliance}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -638,5 +667,6 @@ NOT_OK_ZH = {
     ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
+    ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

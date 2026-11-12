@@ -21,8 +21,11 @@ class FakeThermal:
 def test_heat_log(monkeypatch):
     on_burner = {"v": False}
     monkeypatch.setattr(thermal, "on_burner_vessel", lambda rig, food, app: "bowl" if on_burner["v"] else None)
-    rig = SimpleNamespace(thermal=FakeThermal(), memory={},
-                          ann=SimpleNamespace(appliances=[{"name": "kitchen_stove"}]))
+    rig = SimpleNamespace(thermal=FakeThermal(), memory={}, _bodies={"oatmeal": 0},
+                          ann=SimpleNamespace(appliances=[{"name": "kitchen_stove"}],
+                                              articulated=[{"name": "kitchen_microwave", "closed_q": 0.0,
+                                                            "cavity_aabb": [0, 0, 0, 1, 1, 1]}]),
+                          joint=lambda name: 0.0, obj_pose=lambda name: ([0.5, 0.5, 0.5], None))
     track(rig)
     track(rig)                                    # idempotent
     rig.thermal.on["kitchen_microwave"] = True
@@ -35,3 +38,6 @@ def test_heat_log(monkeypatch):
     assert pred(rig, {}, "oatmeal", "kitchen_stove", 0.5)[0]
     assert not pred(rig, {}, "oatmeal", "kitchen_stove", 5.0)[0]
     assert not pred(SimpleNamespace(memory={}), {}, "oatmeal", "kitchen_stove")[0]
+    assert rig.memory["exposed_in"]["oatmeal"] == {"kitchen_microwave": 5.0, "kitchen_stove": 1.0}
+    ex = GOAL_PREDICATES["exposed_in"].evaluate
+    assert ex(rig, {}, "oatmeal", "kitchen_microwave", 1.0)[0] and not ex(rig, {}, "oatmeal", "kitchen_stove", 2.0)[0]
