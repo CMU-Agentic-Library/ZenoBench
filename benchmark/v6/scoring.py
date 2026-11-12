@@ -639,7 +639,7 @@ def _which_surface(task: dict) -> dict:
         "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"}
 
 
-def _soup_steps(design: str, not_ok: str):
+def _soup_steps(design: str, not_ok: str, slips=("stirred", "covered")):
     """T09: the soup's side steps (stir, cover) are tiers: one missed is the second tier, both the worst; the
     tomatoes in the pot at 60 C and the stove off are the task (user 11-11)."""
     def build(task: dict) -> dict:
@@ -647,18 +647,21 @@ def _soup_steps(design: str, not_ok: str):
         second, worst = {}, {}
         for lid in lays:
             g = task["variants"][lid].get("goal") or task["goal"]      # a layout without its own: the task's
-            steps = [a for a in g["all"] if a[0] in ("stirred", "covered")]
-            base = [a for a in g["all"] if a[0] not in ("stirred", "covered")]
+            steps = [a for a in g["all"] if a[0] in slips]
+            base = [a for a in g["all"] if a[0] not in slips]
             groups = g.get("any") or [[]]
             worst[lid] = {"all": base, **({"any": g["any"]} if g.get("any") else {})}
-            second[lid] = {"all": base, "any": [grp + [st] for grp in groups for st in steps]}
+            # every slip but one done (one missed)
+            second[lid] = {"all": base, "any": [grp + [x for x in steps if x is not st] for grp in groups
+                                                for st in steps]}
         return {"D": 1, "tiers": [
             {"name": "best", "score": 1.0, "goal": None,
              "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"},
             {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-             "why": "the soup made and the stove off, but not stirred or not covered"},
+             "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the "
+                    "fridge left open)"},
             {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-             "why": "the soup made and the stove off, but neither stirred nor covered"}],
+             "why": "the soup made and the stove off, but two side steps or more missed"}],
             "not_ok": not_ok}
     return build
 
@@ -706,6 +709,10 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
          # second tier too
          ("T09", "pot_in_use"): _pot_in_use,
+         # three tomatoes, the third in the closed fridge or on the island; the fridge door is a side step too
+         ("T09", "tomato_in_fridge"): _soup_steps("tomato_in_fridge", "two tomatoes only (the third not found); "
+                                                  "below 60 C; the stove left on; a tomato out of the pot; still held "
+                                                  "or dropped", slips=("stirred", "covered", "is_closed")),
          ("T09", "lid_on_spoon_away"): _soup_steps("lid_on_spoon_away", "one tomato only; below 60 C; the stove "
                                                    "left on; a tomato out of the pot; still held or dropped")}
 
@@ -835,5 +842,6 @@ NOT_OK_ZH = {
     ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
+    ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

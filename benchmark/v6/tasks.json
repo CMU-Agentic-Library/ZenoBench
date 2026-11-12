@@ -73890,22 +73890,22 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
           }
          }
         },
-        "why": "the soup made and the stove off, but not stirred or not covered"
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
        },
        {
         "name": "worst",
@@ -73946,7 +73946,7 @@
           }
          }
         },
-        "why": "the soup made and the stove off, but neither stirred nor covered"
+        "why": "the soup made and the stove off, but two side steps or more missed"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
@@ -74216,15 +74216,15 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
@@ -74263,22 +74263,22 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
           }
          }
         },
-        "why": "the soup made and the stove off, but not stirred or not covered"
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
        },
        {
         "name": "worst",
@@ -74351,7 +74351,7 @@
           }
          }
         },
-        "why": "the soup made and the stove off, but neither stirred nor covered"
+        "why": "the soup made and the stove off, but two side steps or more missed"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
@@ -74655,15 +74655,15 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
@@ -74702,22 +74702,22 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
           }
          }
         },
-        "why": "the soup made and the stove off, but not stirred or not covered"
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
        },
        {
         "name": "worst",
@@ -74790,7 +74790,7 @@
           }
          }
         },
-        "why": "the soup made and the stove off, but neither stirred nor covered"
+        "why": "the soup made and the stove off, but two side steps or more missed"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
@@ -76450,6 +76450,272 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but two side steps or more missed"
+       }
+      ],
+      "not_ok": "two tomatoes only (the third not found); below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
      }
     },
     "tomato_in_fridge__on_island": {
@@ -76669,6 +76935,272 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but two side steps or more missed"
+       }
+      ],
+      "not_ok": "two tomatoes only (the third not found); below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
      }
     },
     "x6_gd_tomato_elsewhere__dining": {
@@ -78971,22 +79503,22 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
           }
          }
         },
-        "why": "the soup made and the stove off, but not stirred or not covered"
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
        },
        {
         "name": "worst",
@@ -79027,7 +79559,7 @@
           }
          }
         },
-        "why": "the soup made and the stove off, but neither stirred nor covered"
+        "why": "the soup made and the stove off, but two side steps or more missed"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
@@ -79101,15 +79633,15 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
@@ -79148,22 +79680,22 @@
            "any": [
             [
              [
-              "stirred",
-              "handled_cooking_pot"
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
              ]
             ],
             [
              [
-              "covered",
-              "handled_cooking_pot",
-              "pot_lid"
+              "stirred",
+              "handled_cooking_pot"
              ]
             ]
            ]
           }
          }
         },
-        "why": "the soup made and the stove off, but not stirred or not covered"
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
        },
        {
         "name": "worst",
@@ -79236,7 +79768,7 @@
           }
          }
         },
-        "why": "the soup made and the stove off, but neither stirred nor covered"
+        "why": "the soup made and the stove off, but two side steps or more missed"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
@@ -79668,6 +80200,272 @@
       "17": "tomato_in_fridge__on_island",
       "18": "tomato_in_fridge__on_island",
       "19": "tomato_in_fridge__in_fridge"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ],
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but one side step missed (not stirred, not covered, or the fridge left open)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "tomato_in_fridge__in_fridge": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          },
+          "tomato_in_fridge__on_island": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "fridge_tomato",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "fridge_tomato",
+             60
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but two side steps or more missed"
+       }
+      ],
+      "not_ok": "two tomatoes only (the third not found); below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
      }
     },
     "x6_gd_tomato_elsewhere": {

@@ -2433,9 +2433,9 @@
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `handled_cooking_pot` 搅拌过
-    - 第 2 组：
       - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
 - **最不好（0.3）**：
 
   - `cherry_tomato_1` 在 `handled_cooking_pot` 里
@@ -2477,9 +2477,9 @@
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `handled_cooking_pot` 搅拌过
-    - 第 2 组：
       - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
 - **最不好（0.3）**：
 
   - `cherry_tomato_1` 在 `handled_cooking_pot` 里
@@ -2575,19 +2575,53 @@
 
 **指令**：午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-- `fridge_tomato` 在 `handled_cooking_pot` 里
-- `fridge_tomato` 温度至少 60 °C
-- `breakfast_fridge` 关着
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+  - `breakfast_fridge` 关着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+      - `breakfast_fridge` 关着
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+      - `breakfast_fridge` 关着
+    - 第 3 组：
+      - `handled_cooking_pot` 搅拌过
+      - `handled_cooking_pot` 盖着 `pot_lid`
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+- **不行（0）**：只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+
 
 **参考调用顺序**：
 
