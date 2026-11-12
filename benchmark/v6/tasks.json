@@ -62511,6 +62511,28 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed on the stove and switched off, but the microwave door left open after trying it"
+       }
+      ],
+      "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "broken_oatmeal_away": {
@@ -62622,6 +62644,28 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed on the stove and switched off, but the microwave door left open after trying it"
+       }
+      ],
+      "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "microwave_holds_pot": {
@@ -62962,6 +63006,28 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed on the stove and switched off, but the microwave door left open after trying it"
+       }
+      ],
+      "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance__in_ceramic_bowl": {
@@ -65792,7 +65858,29 @@
       "18": "broken_oatmeal_away",
       "19": "broken_oatmeal_away__alt_dining_table_2"
      },
-     "factor": "where the oatmeal is (seed: by the microwave, or elsewhere and to be found first)"
+     "factor": "where the oatmeal is (seed: by the microwave, or elsewhere and to be found first)",
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed on the stove and switched off, but the microwave door left open after trying it"
+       }
+      ],
+      "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or dropped"
+     }
     },
     "microwave_holds_pot": {
      "origin": "v5",
