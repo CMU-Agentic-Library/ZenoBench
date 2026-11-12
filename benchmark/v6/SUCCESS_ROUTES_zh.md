@@ -1706,18 +1706,22 @@
 
 **情况**：矮柜顶是空的 → 放上去
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - 第 2 组：
-    - `wooden_block_a` 在 `tv_stand_2/top` 上
-  - 第 3 组：
-    - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-  - 第 4 组：
-    - `wooden_block_b` 在 `tv_stand_2/top` 上
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+    - 第 2 组：
+      - `wooden_block_a` 在 `tv_stand_2/top` 上
+    - 第 3 组：
+      - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+    - 第 4 组：
+      - `wooden_block_b` 在 `tv_stand_2/top` 上
+- **不行（0）**：放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了
+
 
 **参考调用顺序**：
 

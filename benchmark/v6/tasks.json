@@ -54568,6 +54568,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a block (or both) on the low wall cabinet or the TV stand, the hand empty"
+       }
+      ],
+      "not_ok": "elsewhere (coffee table, dining table, left on the island); still held or dropped"
      }
     },
     "display_row__island_floor": {
@@ -58069,6 +58081,18 @@
       "17": "free",
       "18": "free",
       "19": "free"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a block (or both) on the low wall cabinet or the TV stand, the hand empty"
+       }
+      ],
+      "not_ok": "elsewhere (coffee table, dining table, left on the island); still held or dropped"
      }
     },
     "display_row": {

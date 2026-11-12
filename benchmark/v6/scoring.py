@@ -97,6 +97,9 @@ SCORING: dict[tuple[str, str], dict] = {
                               "do not cost)",
                               "one or more missed (stopped before every place was checked); elsewhere; still held "
                               "or dropped"),
+    # T06 free (control): two blocks on the island, both display spots empty; one block (or both) on either does it
+    ("T06", "free"): only("a block (or both) on the low wall cabinet or the TV stand, the hand empty",
+                          "elsewhere (coffee table, dining table, left on the island); still held or dropped"),
 }
 
 
@@ -524,5 +527,6 @@ NOT_OK_ZH = {
     ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
     ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
+    ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
