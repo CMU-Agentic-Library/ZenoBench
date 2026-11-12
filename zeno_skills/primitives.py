@@ -185,10 +185,17 @@ def ik_why(kin, state, spec, p, R, seeds=()):
     """Why (p, R) has no collision-free IK in ``state`` by ``spec``, for a failure's why: out of the arm's
     reach (no kinematic solution either, the locked joints locked), or what the robot penetrates at the
     kinematic solution (_who)."""
+    p, R = np.asarray(p, float), np.asarray(R, float)
     with query(kin, state, spec):
+        # a seed already at the pose (the ranking's solution, the prior): what it hits
+        for sd in seeds:
+            sd = np.asarray(sd, float)
+            ps, Rs = kin.tcp(sd)
+            if float(np.linalg.norm(ps - p)) <= ON_LINE and turn(Rs, R) <= ON_LINE_TURN:
+                return f"its solution collides{_who(kin, sd) or ' (self or limits)'}"
         scene, kin.scene = kin.scene, None
         try:
-            q, ok = kin.ik_global(np.asarray(p, float), np.asarray(R, float), seeds=[np.asarray(s, float) for s in seeds])
+            q, ok = kin.ik_global(p, R, seeds=[np.asarray(s, float) for s in seeds])
         finally:
             kin.scene = scene
         if not ok:

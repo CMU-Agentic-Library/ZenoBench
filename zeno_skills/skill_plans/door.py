@@ -217,7 +217,8 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
             d = decide_ik(kin, s, free_torso, p + float(push["pre"]) * n_world, R,
                           prior.get(stage, prior.get(DOOR_RELAY)), seeds=(q,))
             if d is None:
-                why = ik_why(kin, s, free_torso, p + float(push["pre"]) * n_world, R, (q,))
+                seeds = tuple(x for x in (prior.get(stage, prior.get(DOOR_RELAY)), q) if x is not None)
+                why = ik_why(kin, s, free_torso, p + float(push["pre"]) * n_world, R, seeds)
                 return Failure(f"no collision-free IK at the stand-off with the torso free ({why})", stage,
                                {"stage_s": times})
             decided[stage] = d[0]

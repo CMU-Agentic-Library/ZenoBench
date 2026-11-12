@@ -877,7 +877,7 @@ class Motion:
                  "other": getattr(scene, other_attr, None) if scene is not None else None,
                  "width": dict(self.hand_width), "head": getattr(self, "head_override", None),
                  "held": {s_: set(v) for s_, v in self.held.items()},
-                 "sph": dict(self._held_sph)}
+                 "sph": dict(self._held_sph), "hand_off": dict(getattr(self, "other_hand_off", {}))}
         moved = {}
         cross = False
         pin = kept_joints(kin, locked_body(state, spec, side), state.body) if hasattr(kin, "lo") else nullcontext()
@@ -904,6 +904,9 @@ class Motion:
             if oh is not None and oh.kind not in ("part", "bimanual") and self.by_owner.get(f"object:{oh.name}"):
                 T_obj = self._tcp_of(other, state) @ np.asarray(oh.T_tcp_obj, float)
                 if not spec.arms_still:
+                    # an obstacle where that hand has it; that hand (holding it, not moving) off in these queries:
+                    # what it touches is its own load, its place in the world the base model's whole-body check
+                    self.other_hand_off = {**getattr(self, "other_hand_off", {}), side: True}
                     frame, _, _ = self._box_of(oh.name)
                     T0 = np.asarray(objects.get(oh.name, G.world_pose(frame, self.body_pose.get)), float)
                     D = T_obj @ np.linalg.inv(T0)
@@ -967,6 +970,7 @@ class Motion:
             self.hand_width = saved["width"]
             self.head_override = saved["head"]
             self.held = saved["held"]
+            self.other_hand_off = saved["hand_off"]
             if moved:
                 self.body_pose.update(moved)
                 self._put_poses(moved)
@@ -1139,6 +1143,10 @@ class Motion:
         # and whatever of it already touches the world (a hand holding a handle) stay out
         links = {f"{kin.side}_{l}" for l in own} | {f"{other}_{l}" for l in FINGER_LINKS} | \
             self.other_touching.get(kin.side, set())
+        if getattr(self, "other_hand_off", {}).get(kin.side):
+            # the other hand holds a load standing as an obstacle here (Motion.query): its hand is at it --
+            # a rim pinch's gripper body sits millimetres from the rim -- and stays where it is
+            links |= {f"{other}_{l}" for l in HAND_LINKS}
         arm = self.arms[kin.side]
         arm.prepare(kin, other_q, links, self.live_locks())
         if collision:
