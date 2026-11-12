@@ -279,6 +279,24 @@ def _no_bin_substitute(task: dict) -> dict:
                 "basket, with the fruit in it or taken out"}],
         "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"}
 
+# T04 clear_the_drinks_spot: the oatmeal bowl and the pot lid fill the drinks spot; tidy them to the kitchen and set
+# out a cup.  Off the cabinet but outside the kitchen is the worst tier (user 11-11).  For now the fridge and the
+# kitchen cabinets' insides are not kitchen spots in the goal (they fall to the worst tier)
+_SPOT = "kitchen_cabinet_6/top"
+_CUP_ON_SPOT = [[["on", x, _SPOT], ["upright", x]]
+                for x in ("cup_counter_b", "mug", "mug_dining_cabinet", "mug_shelf", "mug_counter")]
+SCORING[("T04", "clear_the_drinks_spot")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the bowl and the lid back in the kitchen (island, stove or a counter), the bowl upright, a cup upright "
+            "on the drinks spot"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["not on", "oatmeal", _SPOT], ["not on", "pot_lid", _SPOT], ["upright", "oatmeal"],
+                      ["hand_empty", "right"]], "any": _CUP_ON_SPOT},
+     "why": "the spot cleared and a cup set out, but the bowl or the lid left outside the kitchen (the dining "
+            "table, the coffee table, another cabinet)"}],
+    "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the "
+              "bowl tipped; no cup set out, or lying; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -381,5 +399,6 @@ NOT_OK_ZH = {
     ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
+    ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

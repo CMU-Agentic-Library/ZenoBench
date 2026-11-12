@@ -44027,6 +44027,102 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the bowl and the lid back in the kitchen (island, stove or a counter), the bowl upright, a cup upright on the drinks spot"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "not on",
+           "oatmeal",
+           "kitchen_cabinet_6/top"
+          ],
+          [
+           "not on",
+           "pot_lid",
+           "kitchen_cabinet_6/top"
+          ],
+          [
+           "upright",
+           "oatmeal"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "cup_counter_b",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "cup_counter_b"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "the spot cleared and a cup set out, but the bowl or the lid left outside the kitchen (the dining table, the coffee table, another cabinet)"
+       }
+      ],
+      "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the bowl tipped; no cup set out, or lying; still held or dropped"
      }
     },
     "two_guests__dining": {
@@ -46075,6 +46171,102 @@
       "17": "clear_the_drinks_spot",
       "18": "clear_the_drinks_spot",
       "19": "clear_the_drinks_spot"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the bowl and the lid back in the kitchen (island, stove or a counter), the bowl upright, a cup upright on the drinks spot"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "not on",
+           "oatmeal",
+           "kitchen_cabinet_6/top"
+          ],
+          [
+           "not on",
+           "pot_lid",
+           "kitchen_cabinet_6/top"
+          ],
+          [
+           "upright",
+           "oatmeal"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "cup_counter_b",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "cup_counter_b"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "the spot cleared and a cup set out, but the bowl or the lid left outside the kitchen (the dining table, the coffee table, another cabinet)"
+       }
+      ],
+      "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the bowl tipped; no cup set out, or lying; still held or dropped"
      }
     },
     "two_guests": {

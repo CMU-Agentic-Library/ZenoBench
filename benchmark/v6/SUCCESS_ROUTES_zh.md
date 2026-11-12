@@ -988,28 +988,54 @@
 
 **指令**：早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-- `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-- `oatmeal` 立着
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-  - 第 2 组：
-    - `mug` 在 `kitchen_cabinet_6/top` 上
-    - `mug` 立着
-  - 第 3 组：
-    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-    - `mug_dining_cabinet` 立着
-  - 第 4 组：
-    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-    - `mug_shelf` 立着
-  - 第 5 组：
-    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-    - `mug_counter` 立着
+- **好（1.0）**：
+
+  - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `oatmeal` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+    - 第 2 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 3 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 4 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 5 组：
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **最不好（0.3）**：
+
+  - `["not on", "oatmeal", "kitchen_cabinet_6/top"]`
+  - `["not on", "pot_lid", "kitchen_cabinet_6/top"]`
+  - `oatmeal` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+    - 第 2 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 3 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 4 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 5 组：
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了
+
 
 **参考调用顺序**：
 
