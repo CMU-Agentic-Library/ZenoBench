@@ -218,6 +218,7 @@ MOTION_SKILLS = [
     {"name": "pick", "shape": "pick_place", "template": "plan_pick", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.pick:pick_job"},
     {"name": "place", "shape": "pick_place", "template": "plan_place", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.place:place_job"},
     {"name": "open", "shape": "part", "template": "plan_door", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:open_job"},
+    {"name": "close", "shape": "part", "template": "plan_push", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:close_job"},
 ]
 
 COMPOSITE_NOTES = [

@@ -16,8 +16,8 @@ from typing import Callable
 
 import numpy as np
 
-from .kinematics import manipulability
-from .motion_state import Failure, at_base, with_posture
+from .kinematics import kept_joints, manipulability
+from .motion_state import N_BODY, Failure, Spec, at_base, body_locked, locked_body, with_posture
 from .tolerances import DEPTH_TOL
 
 RADII = np.arange(0.45, 1.0, 0.05)    # m: rings of base positions around a goal's centre (as planner.find_park)
@@ -75,6 +75,10 @@ class Problem:
     travel: the posture the base drives in (the whole-body test at the parks, once for every goal):
             a Posture, or a planning chain of ``hand``.
     hand:   the hand of a goal that names none.
+    body_free: the body joints a goal's build may still move while the other hand holds something (the
+            rule keeps the body, motion_state.body_locked; a push lifts the torso on a leg of its own:
+            skill_plans.plan_push) -- the ranking IK keeps the others where the state has them, as the
+            build will (a ranking that bows the waist ranks parks no build can use).
     arrive / travel come from the skill's catalog entry (motion_skills.run_skill sets them)."""
     goals: tuple
     build: Callable
@@ -85,6 +89,7 @@ class Problem:
     prefer: tuple = ()
     label: str = "park"
     hand: str = "right"
+    body_free: tuple = ()
 
     def side(self, k):
         """The hand of goal k."""
@@ -245,8 +250,14 @@ def find_park(kin, world, problem, state, log, base=None):
         if side not in kins:
             raise ValueError(f"{problem.label}: a goal of the {side} hand, no {side} kinematics")
         idx = [i for i, c in enumerate(pool) if problem.side(c[4]) == side]
-        for i, q in zip(idx, rank_ik(kins[side], [pool[i] for i in idx], problem, travel.q(side))):
-            sols[i] = q
+        k = kins[side]
+        # the body joints the build keeps, kept here too (the rule, but for problem.body_free)
+        keep = locked_body(state, Spec(joints=problem.body_free) if body_locked(state, Spec(), side) else Spec(), side)
+        seed = travel.q(side)
+        seed[:N_BODY][keep] = np.asarray(state.body, float)[keep]
+        with kept_joints(k, keep, state.body):
+            for i, q in zip(idx, rank_ik(k, [pool[i] for i in idx], problem, seed)):
+                sols[i] = q
     timed("rank_ik")
     diag["ik"] = sum(q is None for q in sols)
     ranked = [(c, q) for c, q in zip(pool, sols) if q is not None]
@@ -268,6 +279,8 @@ def find_park(kin, world, problem, state, log, base=None):
         if isinstance(plan, Failure):
             key = f"{plan.segment}: {plan.why.split(' (')[0]}"
             diag["build_failed"][key] = diag["build_failed"].get(key, 0) + 1
+            if len(diag.setdefault("build_examples", {})) < 8:          # one full why per kind, for the log
+                diag["build_examples"].setdefault(key, plan.why[:400])
             continue
         if not is_here(ranked[i][0]) and base is not None and not base.drivable(travel, (x, y, yaw)):
             diag["no_path"] += 1

@@ -8645,10 +8645,10 @@
      "scope": "path powered_microwave"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=left)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "left"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing.",
@@ -8657,7 +8657,22 @@
       "gripper_state"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "path left_holds_load"
+     "scope": "path refrigerator_loaded"
+    },
+    {
+     "predicate": "hand_empty(hand=left)",
+     "name": "hand_empty",
+     "args": {
+      "hand": "left"
+     },
+     "negated": false,
+     "meaning": "The given gripper holds nothing.",
+     "kind": "fluent",
+     "gt_sources": [
+      "gripper_state"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path loaded"
     },
     {
      "predicate": "hand_empty(hand=right)",
@@ -8772,26 +8787,57 @@
       "note": ""
      },
      {
-      "path_id": "left_holds_load",
+      "path_id": "refrigerator_loaded",
       "when": [
        {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "truthy",
-        "value": true
+        "noun": "articulated",
+        "field": "category",
+        "op": "equals",
+        "value": "refrigerator"
        },
        {
-        "noun": "articulated",
-        "field": "type",
-        "op": "equals",
-        "value": "revolute"
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
        }
       ],
       "steps": [
        {
-        "policy": "policy_060",
+        "policy": "policy_022",
         "args": [
-         "@robot.left_object",
+         "$articulated"
+        ],
+        "kwargs": {
+         "goal": "@articulated.wide_open_q"
+        }
+       }
+      ],
+      "requires": [
+       {
+        "pred": "hand_empty",
+        "args": {
+         "hand": "left"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
+     },
+     {
+      "path_id": "loaded",
+      "when": [
+       {
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_022",
+        "args": [
          "$articulated"
         ],
         "kwargs": {}
@@ -8801,12 +8847,12 @@
        {
         "pred": "hand_empty",
         "args": {
-         "hand": "right"
+         "hand": "left"
         }
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
      },
      {
       "path_id": "refrigerator",
@@ -9041,6 +9087,21 @@
      "scope": "all paths"
     },
     {
+     "predicate": "hand_empty(hand=left)",
+     "name": "hand_empty",
+     "args": {
+      "hand": "left"
+     },
+     "negated": false,
+     "meaning": "The given gripper holds nothing.",
+     "kind": "fluent",
+     "gt_sources": [
+      "gripper_state"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path loaded"
+    },
+    {
      "predicate": "hand_empty(hand=right)",
      "name": "hand_empty",
      "args": {
@@ -9169,6 +9230,42 @@
       "note": ""
      },
      {
+      "path_id": "loaded",
+      "when": [
+       {
+        "noun": "articulated",
+        "field": "has_handle",
+        "op": "truthy",
+        "value": true
+       },
+       {
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_023",
+        "args": [
+         "$articulated"
+        ],
+        "kwargs": {}
+       }
+      ],
+      "requires": [
+       {
+        "pred": "hand_empty",
+        "args": {
+         "hand": "left"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "The right hand holds a load: the left hand pushes the door shut (the body kept still)."
+     },
+     {
       "path_id": "handle_push",
       "when": [
        {
@@ -9201,7 +9298,7 @@
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "Every empty hand x {push the outer face, ride the handle (right)} in one park search."
      },
      {
       "path_id": "dispatch",
@@ -15065,6 +15162,7 @@
   "policy_047": "Release a handle held by policy_046: plan_door lets go of its own grasp (see policy_046).",
   "policy_049": "Open a hinged door after policy_046's grasp: grasped the handle again (see policy_046).",
   "policy_050": "Open a drawer after policy_046's grasp: grasped the handle again (see policy_046).",
+  "policy_060": "Open a door with the right hand while the left holds a load: open's own paths do it (the empty hand opens, the body kept still under the other hand's load: motion_state.body_locked, 2026-11-12).",
   "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
   "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
   "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive speed capped by what the hands hold in Rig.drive_base (2026-11-04).",

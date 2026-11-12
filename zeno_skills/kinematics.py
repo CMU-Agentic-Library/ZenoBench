@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import math
 import xml.etree.ElementTree as ET
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -59,6 +60,26 @@ PAD_HALF_WIDTH = 0.014
 PAD_THICKNESS = 0.012
 PAD_TIP = 0.12985 + 0.010 - TCP_DEPTH
 FINGER_JOINT_DEPTH = 0.12985   # finger joints below the gripper link (the finger link's origin)
+
+
+@contextmanager
+def kept_joints(kin, keep, values):
+    """Inside: ``kin``'s first len(keep) joints where ``keep`` is set pinned at ``values`` (lo = hi; the
+    collision backend gives a pinned joint a +-PIN band), every limit put back after -- the one place a
+    kept joint (motion_state.locked_body: the body while the other hand holds something) reaches the
+    kinematics, for the queries of a State (Motion.query) and the park search's ranking IK alike."""
+    keep = np.asarray(keep, bool)
+    if not keep.any():
+        yield
+        return
+    lo, hi = np.array(kin.lo, float).copy(), np.array(kin.hi, float).copy()
+    v = np.asarray(values, float)
+    try:
+        kin.lo[:len(keep)][keep] = v[keep]
+        kin.hi[:len(keep)][keep] = v[keep]
+        yield
+    finally:
+        kin.lo[:], kin.hi[:] = lo, hi
 
 
 def finger_model_box():

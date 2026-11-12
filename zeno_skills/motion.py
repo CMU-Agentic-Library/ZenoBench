@@ -38,15 +38,15 @@ import math
 import os
 import sys
 import xml.etree.ElementTree as ET
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from pathlib import Path
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
 from . import scene_geometry as G
-from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt, tips_over
-from .motion_state import N_BODY, body_locked, other_side, touch_entries, touches
+from .kinematics import CARRY_TILT, kept_joints, manipulability, max_tilt, tilt, tips_over
+from .motion_state import locked_body, other_side, touch_entries, touches
 from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -877,18 +877,16 @@ class Motion:
                  "other": getattr(scene, other_attr, None) if scene is not None else None,
                  "width": dict(self.hand_width), "head": getattr(self, "head_override", None),
                  "held": {s_: set(v) for s_, v in self.held.items()},
-                 "sph": dict(self._held_sph),
-                 "lim": (np.array(kin.lo, float).copy(), np.array(kin.hi, float).copy())
-                 if hasattr(kin, "lo") else None}
+                 "sph": dict(self._held_sph)}
         moved = {}
         cross = False
+        pin = kept_joints(kin, locked_body(state, spec, side), state.body) if hasattr(kin, "lo") else nullcontext()
+        pin.__enter__()
         try:
             x, y, yaw = state.base
             kin.set_base((x, y, 0.0), math.radians(yaw))
             if scene is not None:
                 setattr(scene, other_attr, state.q(other))
-            if saved["lim"] is not None and body_locked(state, spec, side):
-                kin.lo[:N_BODY] = kin.hi[:N_BODY] = np.asarray(state.body, float)
             self.hand_width = {s_: h.width for s_, h in state.hands.items()}
             self.head_override = dict(state.head) if state.head else None
             kw = {k: v for k, v in (kin.coll_kw or {}).items() if k not in ("ignore_fingers", "exempt_targets")}
@@ -962,8 +960,7 @@ class Motion:
         finally:
             kin.base_p, kin.base_R = saved["base"]
             kin.coll_kw = saved["kw"]
-            if saved["lim"] is not None:
-                kin.lo[:], kin.hi[:] = saved["lim"]
+            pin.__exit__(None, None, None)
             self.finger_touch = saved["touch"]
             if scene is not None:
                 setattr(scene, other_attr, saved["other"])

@@ -110,3 +110,24 @@ def test_each_goal_is_ranked_and_built_with_its_hands_kinematics():
     assert len(right.asked[0][2]) + len(left.asked[0][2]) == diag["pool"]
     assert found is not None and problem.side(found.k) in ("right", "left")
     assert built and all(np.allclose(q[2:], 0.25) for _, q in built)   # built at the park in the arrive posture
+
+
+def test_the_ranking_ik_keeps_the_body_joints_the_build_keeps():
+    seen = []
+
+    class Rank(LeftParkKin):
+        def ik_set(self, goals, q0, weights=None):
+            seen.append((self.lo[:2].copy(), self.hi[:2].copy(), np.asarray(q0, float)[:2].copy()))
+            return super().ik_set(goals, q0, weights)
+    goal = np.array([1.0, 0.0, 0.8])
+    st = _state(right=Held("can", np.eye(4)))                         # the right hand holds: the body is kept
+    problem = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0, "left"),), build=lambda s, k, p: Plan(()),
+                         relay="door_reach", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9), hand="left",
+                         body_free=("torso_lift_joint",))
+    kin = Rank()
+    PS.find_park({"left": kin}, SimpleNamespace(footprint_clear=lambda *a: True), problem, st, lambda *a, **k: None,
+                 base=Base())
+    lo, hi, seed = seen[0]
+    assert lo[1] == hi[1] == st.body[1] and seed[1] == st.body[1]     # the waist pinned where the state has it
+    assert lo[0] < hi[0]                                              # the torso free (body_free)
+    assert np.allclose(kin.lo, -3.0) and np.allclose(kin.hi, 3.0)     # put back

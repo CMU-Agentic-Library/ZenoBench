@@ -7,6 +7,7 @@ Paired SkillNode: `skill_041` (`close-articulated`).
 ## Precheck
 
 - [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
+- [path loaded] `hand_empty(hand=left)` — GT: gripper_state
 - [path handle_push] `hand_empty(hand=right)` — GT: gripper_state
 - [path dispatch] `hand_empty(hand=right)` — GT: gripper_state
 
@@ -18,6 +19,7 @@ Paired SkillNode: `skill_041` (`close-articulated`).
 
 - `powered_loaded` when articulated.powered and robot.right_held: `policy_030($articulated)` -> `policy_031($articulated, target=close)`
 - `powered` when articulated.powered: `policy_025($articulated)`
+- `loaded` when articulated.has_handle and robot.right_held: `policy_023($articulated)`
 - `handle_push` when articulated.has_handle: `policy_003()` -> `policy_023($articulated)`
 - `dispatch` when always: `policy_063($articulated)`
 

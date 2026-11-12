@@ -536,6 +536,16 @@
     "travel": "fold",
     "job": "zeno_skills.skill_jobs.door:open_job",
     "skill_id": "skill_040"
+   },
+   {
+    "name": "close",
+    "shape": "part",
+    "template": "plan_push",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.door:close_job",
+    "skill_id": "skill_041"
    }
   ]
  }

@@ -112,6 +112,8 @@ RETIRED_POLICIES = {
     "policy_047": "Release a handle held by policy_046: plan_door lets go of its own grasp (see policy_046).",
     "policy_049": "Open a hinged door after policy_046's grasp: grasped the handle again (see policy_046).",
     "policy_050": "Open a drawer after policy_046's grasp: grasped the handle again (see policy_046).",
+    "policy_060": "Open a door with the right hand while the left holds a load: open's own paths do it (the empty "
+                  "hand opens, the body kept still under the other hand's load: motion_state.body_locked, 2026-11-12).",
     "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach "
                   "was removed (every manipulation skill chooses its own base park).",
     "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "

@@ -167,15 +167,21 @@ class Spec:
     arms_still: bool = False
 
 
-def body_locked(state, spec, side):
-    """Whether ``side``'s queries under ``spec`` keep the body (torso, waist) where ``state`` has it
-    (docs/MOTION_ARCHITECTURE.md 4.1, 4.2): Spec.joints names what may move (only whether the body
-    joints are in it is read so far); None, the rule -- locked while the other hand holds something,
-    which would ride the body along (a waist bowed 39 degrees to a cabinet door knocked the load in
-    the other hand out: skills._move_with_retry)."""
+def locked_body(state, spec, side):
+    """Per body joint (BODY_JOINTS): whether ``side``'s queries under ``spec`` keep it where ``state`` has it
+    (docs/MOTION_ARCHITECTURE.md 4.1, 4.2): Spec.joints names what may move (only the body joints in it
+    are read so far: a body joint not named is locked); None, the rule -- both locked while the other hand
+    holds something, which would ride the body along (a waist bowed 39 degrees to a cabinet door knocked
+    the load in the other hand out: skills._move_with_retry)."""
     if spec is not None and spec.joints is not None:
-        return not any(j in spec.joints for j in BODY_JOINTS)
-    return state is not None and state.held(other_side(side)) is not None
+        return np.array([j not in spec.joints for j in BODY_JOINTS])
+    held = state is not None and state.held(other_side(side)) is not None
+    return np.array([held] * N_BODY)
+
+
+def body_locked(state, spec, side):
+    """Whether any body joint is kept (locked_body)."""
+    return bool(locked_body(state, spec, side).any())
 
 
 @dataclass(frozen=True)

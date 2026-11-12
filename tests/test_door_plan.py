@@ -115,3 +115,58 @@ def test_a_ride_that_stops_short_asks_for_letting_go_and_backing_out():
     with pytest.raises(SkillFailure) as e:
         RUN.execute(RideAct(done=False), ride)
     assert e.value.clear == {"open_width": 0.04, "leave": True, "ticks": 60}
+
+
+# ------------------------------------------------------------------ closing by a push (docs 6, close; 9.3 step 6b)
+PUSH_AT = np.array([0.6, -0.3, 1.03])         # the push point at the closed door (part frame = world at 0)
+
+
+def _push(s1=0.0):
+    T = np.eye(4)
+    T[:3, 3] = PUSH_AT
+    return {"part": DOOR, "pose": door_pose, "T_part_tcp": T, "n_part": np.array([-1.0, 0.0, 0.0]), "pre": 0.10,
+            "s1": s1, "ride_step": 0.2, "track": {"lead": 0.03, "rate": 0.25, "done": s1 + 0.02}}
+
+
+def test_a_door_is_pushed_shut_with_closed_fingers_no_grasp_and_the_base_riding_it():
+    from zeno_skills.skill_plans import PUSH_RELAY, PUSH_STAGES, plan_push
+    kin, base = PlanKin(), FakeBase()
+    st = _state(door=0.62)
+    T0 = door_pose(0.62)
+    pre = _q((T0 @ np.r_[PUSH_AT, 1.0])[:3] + T0[:3, :3] @ np.array([-0.1, 0.0, 0.0]))
+    plan = plan_push(kin, st, _push(), RESTS, base=base, prior={DOOR_RELAY: pre})
+    assert isinstance(plan, Plan), plan
+    assert [s.name for s in plan.segments] == [n for n in PUSH_STAGES if n != "push_body"]   # the other hand empty
+    seg = {s.name: s for s in plan.segments}
+    assert seg["push_close_hand"].action[:2] == ("grip", 0.0)
+    assert not [s for s in plan.segments if s.kind == "action" and s.action[0] == "grip" and s.action[1] > 0]
+    assert np.allclose(seg["push_reach"].q_end, pre) and np.allclose(plan.decisions[PUSH_RELAY], pre)
+    assert np.allclose(seg["push_in"].q_end[:3], (T0 @ np.r_[PUSH_AT, 1.0])[:3])
+    ride = seg["push_ride"]
+    assert ride.kind == "scripted" and ride.info["executor"] == "ride" and ride.target == ("s", 0.0)
+    assert (DOOR,) in [tuple(n for n, _ in t) for t in kin.only]          # the fingertips may touch the panel
+    leave = seg["push_leave"]
+    assert np.allclose(leave.q_from, ride.q_end) and leave.info["length"] == pytest.approx(DOOR_LEAVE)
+    # backed off along the closed panel's outward normal (-x at 0)
+    assert leave.q_end[0] < leave.q_from[0] and np.allclose(leave.q_end[1:3], leave.q_from[1:3])
+    assert all(s.info.get("side") == "right" for s in plan.segments)
+
+
+def test_the_left_hand_pushes_while_the_right_holds_its_load_still():
+    from zeno_skills.skill_plans import PUSH_STAGES, plan_push
+
+    class LeftPlanKin(PlanKin):
+        side = "left"
+    st = holding(_state(door=0.62), "right", Held("can", np.eye(4)))
+    st = State(base=st.base, body=np.array([0.05, 0.1]), arms={"right": np.full(7, 0.3), "left": _q([0.3, 0.3, 0.7])[2:]},
+               hands={**st.hands, "left": Hand(width=0.04)}, parts=st.parts)
+    rests = (np.r_[0.0, 0.0, np.full(7, 0.5)], np.r_[0.0, 0.0, np.full(7, -0.5)])
+    plan = plan_push(LeftPlanKin(), st, _push(), rests, base=FakeBase())
+    assert isinstance(plan, Plan), plan
+    assert [s.name for s in plan.segments] == list(PUSH_STAGES)
+    assert all(s.info.get("side") == "left" for s in plan.segments)
+    body = next(s for s in plan.segments if s.name == "push_body")     # the torso first, on a leg of its own
+    assert body.spec.joints == ("torso_lift_joint",) and body.spec.arms_still and body.info["smooth"]
+    assert np.allclose(body.q_end[1:], body.q_from[1:]) and not np.isclose(body.q_end[0], body.q_from[0])
+    tuck = next(s for s in plan.segments if s.name == "tuck")
+    assert np.allclose(tuck.q_end[2:], 0.5) and np.allclose(tuck.q_end[:2], tuck.q_from[:2])   # the body kept

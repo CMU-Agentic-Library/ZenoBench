@@ -27,7 +27,7 @@ skills.py         技能本体：pick / place / navigate / 开关门 / push / �
   │   pick / place / navigate（MOTION_ARCHITECTURE 的五层）：
   │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
-  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open）；
+  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open、close）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
@@ -84,7 +84,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | 行（a588fd0） | 块 | 主要函数 |
 |---|---|---|
 | 64–480 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`fold_where_possible`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
-| 482–862 | 开关门（铰链 / 抽屉）| `_move_articulated`（137 行）、`_ride`、`_ride_check`、`open_articulated`、`close_articulated`、`_push_close` |
+| 482–862 | 开关门（铰链 / 抽屉）| `_move_articulated`、`_ride`、`_ride_check`（微波炉还在用）、`open_articulated`、`close_articulated`（都转到 `run_skill`） |
 | 865–1035 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_grasp_targets`、`_pads_clear_of` |
 | 1040–1400 | pick 和 push | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`contact_obstacles`、`push`、`edge_held` |
 | 1417–1600 | 微波炉腔体放取 | `insert_microwave_cavity`、`release_…`、`withdraw_…`、`place_microwave` |
@@ -201,7 +201,7 @@ skill_jobs/place.py  place_job
   done：_place_result（在支撑面上 / 托盘里、离目标点多远）
 ```
 
-### open（`skills.open_articulated → run_skill(SKILLS["open"])`，左手拿着东西 / 微波炉还走 `_move_with_retry`）
+### open / close（`skills.open_articulated` / `close_articulated` → `run_skill`，微波炉还走 `_move_with_retry`；close 见 `close.md`）
 
 ```
 skill_jobs/door.py  open_job
@@ -239,7 +239,7 @@ _move_with_retry → _move_with_retry_impl → _move_articulated
   find_park(_handle_targets, 随门转动)  →  _goto_park
   move_to 握把手（默认 FREE）→ grip → _ride（底盘跟着门走的闭环）
   move_to(LEAVE_CONTACT) → move_to(FREE_ELSE_STRAIGHT)
-close_articulated：铰链门改为推外表面 → _push_close（contact 段是 LEGACY）
+close_articulated：run_skill(SKILLS["close"])，见 close.md（旧的 _push_close 已删）
 ```
 
 ---
@@ -253,7 +253,6 @@ close_articulated：铰链门改为推外表面 → _push_close（contact 段是
 | 函数 | LEGACY 的段 | 计划里归哪 |
 |---|---|---|
 | `push` | 接触、推、退，3 段 | 6.5 接触动作 |
-| `_push_close` | 推门的接触段 | 6.5 |
 | `place_flat` | 4 段（放书的边沿路径）| 6.2 后半 |
 | `insert_microwave_cavity` | 插入那一段 | 6.4 |
 | `approach_microwave_button` / `press_…` / `retract_…` | 按按钮 | 6.5 |

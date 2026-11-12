@@ -763,13 +763,13 @@ def _move_with_retry_impl(rig, name, goal, verb):
 
 def open_articulated(rig, name, goal=None):
     """Open ``name`` to ``goal`` (default its open value) by its handle: the motion-layer skill "open"
-    (skill_jobs.door, skill_plans.plan_door: one grasp, the base riding the part).  Still the old
-    _move_with_retry while the left hand holds a load (its waist limit waits for Spec.joints, docs 9.3
-    step 5) and for a microwave (its park beside the hinge sweep: step 8).  A part at its goal already
-    is left as it is."""
+    (skill_jobs.door, skill_plans.plan_door: one grasp, the base riding the part), with the empty hand
+    (the right where both are; the body kept while the other holds something, docs 9.3 step 6b).  Still
+    the old _move_with_retry for a microwave (its park beside the hinge sweep: step 8).  A part at its
+    goal already is left as it is."""
     a = rig.ann.art(name)
     goal = a["open_q"] if goal is None else goal
-    if getattr(rig, "left_held", None) is not None or a["category"] == "microwave":
+    if a["category"] == "microwave":
         return _move_with_retry(rig, name, goal, "open")
     q = rig.joint(name)
     if abs(q - goal) <= (RIDE_DONE_REV if a["type"] == "revolute" else RIDE_DONE_PRIS):
@@ -780,108 +780,20 @@ def open_articulated(rig, name, goal=None):
 
 
 def close_articulated(rig, name):
-    """A hinged door is pushed shut on its outer face (no grasp to lose); the handle
-    route closes drawers, and doors where no base pose reaches the push."""
-    a = rig.ann.art(name)
-    if a["type"] == "revolute" and a.get("handle") is not None and abs(rig.joint(name) - a["closed_q"]) > 0.10:
-        try:
-            return _push_close(rig, name)
-        except _NoPushPark as e:
-            rig.log("close_push_unreachable", name=name, reason=str(e))
-    return _move_with_retry(rig, name, a["closed_q"], "close")
-
-
-class _NoPushPark(SkillFailure):
-    """Push-close found no base pose (nothing moved yet)."""
-
-
-PUSH_ABOVE = 0.13          # push point this far above the handle centre (clear of the bar)
-PUSH_OUT = 0.0             # ... and this far past the handle toward the door's free edge
-PUSH_SPREAD = "axis"       # closed fingers spread along the hinge axis ("axis") or across the panel ("across")
-PUSH_PRE = 0.10            # pre-contact stand-off from the panel face
-PUSH_MIN_R = 0.55          # nearest park to the push point (m)
-
-
-def _push_targets(rig, a, q):
-    """(contact, R, normal): the TCP just touching the door panel's outer face (the
-    handle side) beside the handle, above the bar; the closed fingers point into the
-    panel, spread along the hinge axis."""
-    T = rig.ann.part_pose(a, q)
-    Ti = np.linalg.inv(rig.ann.part_pose(a, a["closed_q"]))
-    hc = (Ti @ np.r_[np.asarray(a["handle"]["center"], float), 1.0])[:3]      # part frame
-    boxes = a.get("part_boxes") or [a["part_box"]]
-    lo, hi = (np.asarray(v, float) for v in boxes[0])                      # the panel
-    thin = int(np.argmin(hi - lo))
-    side = 1.0 if hc[thin] > (lo[thin] + hi[thin]) / 2 else -1.0
-    axis = np.asarray(a["axis"], float)
-    up = int(np.argmax(np.abs(np.linalg.inv(np.asarray(a["part_frame"], float))[:3, :3] @ axis)))
-    c = hc.copy()
-    c[thin] = hi[thin] if side > 0 else lo[thin]
-    c[up] = float(np.clip(hc[up] + PUSH_ABOVE, lo[up] + 0.04, hi[up] - 0.04))
-    width = 3 - thin - up                                                  # across the panel, hinge -> free edge
-    free = 1.0 if abs(hi[width]) > abs(lo[width]) else -1.0
-    c[width] = float(np.clip(hc[width] + free * PUSH_OUT, lo[width] + 0.02, hi[width] - 0.02))
-    n = np.zeros(3)
-    n[thin] = side
-    contact = (T @ np.r_[c, 1.0])[:3]
-    normal = T[:3, :3] @ n
-    R = gripper_rot(-normal, axis if PUSH_SPREAD == "axis" else np.cross(axis, normal))
-    return contact + normal * 0.012, R, normal
-
-
-def _push_close(rig, name):
+    """Close ``name``: the motion-layer skill "close" (skill_jobs.door.close_job: every empty hand x {push
+    the door's outer face shut (skill_plans.plan_push), ride its handle shut (plan_door, the right
+    hand)} in one park search, docs 9.3 step 6b).  A microwave, or a part with no handle, still the old
+    _move_with_retry (step 8).  A part closed already is left as it is."""
     a = rig.ann.art(name)
     goal = a["closed_q"]
-    q0 = rig.joint(name)
-    rig.sync_world()
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    contact, R, normal = _push_targets(rig, a, q0)
-    legs = [(contact + normal * PUSH_PRE + np.array([0, 0, 0.04]), R), (contact + normal * PUSH_PRE, R), (contact, R)]
-    push = -normal * 20.0
-
-    def score(x, y, yaw, qs):
-        rig.kin.set_base((x, y, 0.0), math.radians(yaw))
-        return torque_ratio(rig.kin, qs[-1], push)
-    # pushing straight into the panel needs the arm out in front: closer than PUSH_MIN_R the
-    # body is in the way (the default radii spend the whole try budget there)
-    park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), q_start=rig.q_cmd, travel_q=_travel_q(rig),
-                     ride=_ride_check(rig, a, q0, goal), check=_approach_clear(rig), score=score, n_best=5,
-                     radii=np.arange(PUSH_MIN_R, 1.0, 0.05))
-    if park is None:
-        raise _NoPushPark(f"close {name}: no base pose pushes the door shut")
-    rig.log("close_push_park", park=[round(v, 3) for v in park[:3]], contact=np.round(contact, 3).tolist())
-    rig.caption = f"CLOSE {a['category']}: push the door shut"
-    _goto_park(rig, park)
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    if abs(rig.joint(name) - q0) > 0.01:      # the base brushed the door: aim at where it is now
-        q0 = rig.joint(name)
-        contact, R, normal = _push_targets(rig, a, q0)
-        legs = [(contact + normal * PUSH_PRE + np.array([0, 0, 0.04]), R), (contact + normal * PUSH_PRE, R),
-                (contact, R)]
-        park = (*park[:3], (None, None, None))
-    rig.grip(0.0, 60)                          # closed fingers: one blunt tip
-    for (tp, tR), lab, st, qh in zip(legs, ("pre_high", "pre", "contact"), (0.02, 0.01, 0.004), park[3]):
-        rig.kin.coll_kw = {"hand_touches_part": True} if lab == "contact" else APPROACH_KW
-        rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "contact" else 3, label=f"close_push_{lab}",
-                    q_hint=qh, allow=LEGACY if lab == "contact" else FREE)
-    rig.kin.coll_kw = {"hand_touches_part": True}
-    _ride(rig, a, goal)
-    rig.step(30)
+    if a["category"] == "microwave" or a.get("handle") is None:
+        return _move_with_retry(rig, name, goal, "close")
     q = rig.joint(name)
-    p_now, R_now = rig.kin.tcp(rig.q())
-    n_now = (rig.ann.motion(a, q) @ np.linalg.inv(rig.ann.motion(a, q0)))[:3, :3] @ normal
-    for back in (0.12, 0.06):
-        try:
-            rig.move_to(p_now + n_now * back, R_now, step=0.006, label="close_push_back", allow=LEAVE_CONTACT)
-            break
-        except SkillFailure as e:
-            rig.log("retreat_short", back=back, reason=str(e))
-    rig.step(60)
-    q = rig.joint(name)
-    rig.log("close_result", name=name, before=q0, after=q, goal=goal, path="push")
-    if abs(q - goal) >= 0.10:
-        raise SkillFailure(f"close {name}: pushed the door from {q0:.3f} to {q:.3f}, goal {goal:.3f}")
-    return q
+    if abs(q - goal) <= (RIDE_DONE_REV if a["type"] == "revolute" else RIDE_DONE_PRIS):
+        rig.log("close_result", name=name, before=q, after=q, goal=goal, path="already closed")
+        return q
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["close"], {"name": name})
 
 
 # ---------------------------------------------------------------- geometry

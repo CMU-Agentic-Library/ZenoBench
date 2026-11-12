@@ -51,6 +51,17 @@ JOINT_GOAL_TOL = _t("JOINT_GOAL_TOL", 0.01, "rad", "chosen: a planned leg this c
 HINT_REACH = _t("HINT_REACH", 0.001, "m", "chosen: a decided solution whose TCP is this close to its pose "
                 "still decides it (decide_ik); unmeasured")
 HINT_TURN = _t("HINT_TURN", 0.01, "rad", "chosen: ...turned this little; unmeasured")
+# a door pushed shut (skill_jobs.door.close_job, skill_plans.plan_push; docs 6, close)
+PUSH_ABOVE = _t("PUSH_ABOVE", 0.13, "m", "inherited (skills' old _push_targets): the push point this far above the "
+                "handle centre, clear of the bar -- or as far below it (skill_jobs.door.PUSH_HEIGHTS: under a "
+                "counter's lip the gripper and its camera hit the lip above, 11-12 T02 / T05 / T19)")
+PUSH_PRE = _t("PUSH_PRE", 0.10, "m", "inherited (skills' old push): the push comes in from this far off the panel")
+PUSH_TIP_GAP = _t("PUSH_TIP_GAP", 0.012, "m", "inherited (skills' old _push_targets): the closed fingertips' TCP "
+                  "this far off the panel face where the push-in ends")
+PUSH_TRACK = _t("PUSH_TRACK", (0.03, 0.25), "rad, rad/s", "inherited (skills._ride's lead and rate): the ride "
+                "of a push keeps the hand at most a lead ahead into the panel")
+BODY_SAME = _t("BODY_SAME", 0.01, "m", "chosen, unmeasured: a torso this close to the height a push's push_body "
+               "would take it to stays (no leg)")
 
 # --------------------------------------------------------------- error bounds of the anchors (8.2)
 BASE_TOL = _t("BASE_TOL", 0.007, "m", "estimated: the base stopping off its park, COLLISION_PLAN 8, not "

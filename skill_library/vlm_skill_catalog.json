@@ -11190,7 +11190,7 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=right); left_holds_load (robot.left_held and articulated.type == 'revolute'): hand_empty(hand=right); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
+    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: powered_microwave (articulated.powered): hand_empty(hand=right); refrigerator_loaded (articulated.category == 'refrigerator' and robot.right_held): hand_empty(hand=left); loaded (robot.right_held): hand_empty(hand=left); refrigerator (articulated.category == 'refrigerator'): hand_empty(hand=right); drawer (articulated.type == 'prismatic'): hand_empty(hand=right); hinged_door (articulated.type == 'revolute'): hand_empty(hand=right)."
    },
    "preconditions": [
     {
@@ -11285,17 +11285,17 @@
      "note": ""
     },
     {
-     "path_id": "left_holds_load",
+     "path_id": "refrigerator_loaded",
      "when": [
-      "robot.left_held",
-      "articulated.type == 'revolute'"
+      "articulated.category == 'refrigerator'",
+      "robot.right_held"
      ],
      "extra_preconditions": [
       {
-       "predicate": "hand_empty(hand=right)",
+       "predicate": "hand_empty(hand=left)",
        "name": "hand_empty",
        "args": {
-        "hand": "right"
+        "hand": "left"
        },
        "negated": false,
        "meaning": "The given gripper holds nothing.",
@@ -11308,12 +11308,42 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_060(@robot.left_object, $articulated)"
+      "policy_022($articulated, goal=@articulated.wide_open_q)"
      ],
      "policies": [
-      "policy_060"
+      "policy_022"
      ],
-     "note": ""
+     "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
+    },
+    {
+     "path_id": "loaded",
+     "when": [
+      "robot.right_held"
+     ],
+     "extra_preconditions": [
+      {
+       "predicate": "hand_empty(hand=left)",
+       "name": "hand_empty",
+       "args": {
+        "hand": "left"
+       },
+       "negated": false,
+       "meaning": "The given gripper holds nothing.",
+       "kind": "fluent",
+       "gt_sources": [
+        "gripper_state"
+       ],
+       "checked": "before execution on live GT state; the Contract does not move if false"
+      }
+     ],
+     "extra_postconditions": [],
+     "chain": [
+      "policy_022($articulated)"
+     ],
+     "policies": [
+      "policy_022"
+     ],
+     "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
     },
     {
      "path_id": "refrigerator",
@@ -11593,7 +11623,7 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: handle_push (articulated.has_handle): hand_empty(hand=right); dispatch (always (default path)): hand_empty(hand=right)."
+    "summary": "Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: loaded (articulated.has_handle and robot.right_held): hand_empty(hand=left); handle_push (articulated.has_handle): hand_empty(hand=right); dispatch (always (default path)): hand_empty(hand=right)."
    },
    "preconditions": [
     {
@@ -11691,6 +11721,37 @@
      "note": ""
     },
     {
+     "path_id": "loaded",
+     "when": [
+      "articulated.has_handle",
+      "robot.right_held"
+     ],
+     "extra_preconditions": [
+      {
+       "predicate": "hand_empty(hand=left)",
+       "name": "hand_empty",
+       "args": {
+        "hand": "left"
+       },
+       "negated": false,
+       "meaning": "The given gripper holds nothing.",
+       "kind": "fluent",
+       "gt_sources": [
+        "gripper_state"
+       ],
+       "checked": "before execution on live GT state; the Contract does not move if false"
+      }
+     ],
+     "extra_postconditions": [],
+     "chain": [
+      "policy_023($articulated)"
+     ],
+     "policies": [
+      "policy_023"
+     ],
+     "note": "The right hand holds a load: the left hand pushes the door shut (the body kept still)."
+    },
+    {
      "path_id": "handle_push",
      "when": [
       "articulated.has_handle"
@@ -11720,7 +11781,7 @@
       "policy_003",
       "policy_023"
      ],
-     "note": ""
+     "note": "Every empty hand x {push the outer face, ride the handle (right)} in one park search."
     },
     {
      "path_id": "dispatch",

@@ -16,7 +16,7 @@ from ..clearance import FREE, LEAVE_CONTACT
 from ..motion_state import Failure, Plan, Segment, Spec, released, with_arm, with_width
 from ..tolerances import NUMERIC_M
 from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg, sided,
-                          holds, turn)
+                          holds, ik_why, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
@@ -54,7 +54,7 @@ def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=Non
         return Segment(name, spec, q_from, (), info={"how": "on the straight"})
     d = decide_ik(kin, state, spec, s, R, prior, seeds=(q_from,))
     if d is None:
-        return Failure("no collision-free IK at the straight's start", name)
+        return Failure(f"no collision-free IK at the straight's start ({ik_why(kin, state, spec, s, R, (q_from,))})", name)
     q_s, how = d
     seg = free_leg(kin, state, spec, Pose(s, R, q_s), name, step=step, q_from=q_from)
     return seg if isinstance(seg, Failure) else _move(seg, decided={decision or name: how})

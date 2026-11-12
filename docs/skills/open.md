@@ -2,7 +2,7 @@
 
 用把手拉开一扇铰链门（柜门、冰箱门）或一个抽屉：**只握一次**，握住以后手臂不动，底盘跟着门（抽屉）走，开到位松手、退开、收臂。
 
-还走旧代码（`skills._move_with_retry`）的：左手拿着东西时（改成用空着的手开，`../MOTION_ARCHITECTURE.md` 9.3 第 6b 步，和关门一起）、微波炉（第 8 步）。close 全部还是旧代码，迁移的设计见 `../MOTION_ARCHITECTURE.md` 第 6 节关门（9.3 第 6b 步，先做第 6a 步的左右对称）。
+用空着的手开：只有一只手空时用那只手，两只手都空时用右手；另一只手拿着东西时躯干和腰不动（`../MOTION_ARCHITECTURE.md` 4.1、9.3 第 6b 步）。还走旧代码（`skills._move_with_retry`）的只有微波炉（第 8 步）。关门见 `close.md`。
 
 入口：`skills.open_articulated` → `motion_skills.run_skill(SKILLS["open"])` → `skill_jobs/door.py` 的 `open_job` + `skill_plans/door.py` 的 `plan_door`。合约路径 `refrigerator`、`drawer`、`hinged_door` 都是 tuck（policy_003）+ policy_022；以前 `hinged_door` / `drawer` 先用 policy_046 抓一次、policy_049 / 050 里再抓一次，这四个策略（046、047、049、050）已退役（`skill_library/check.py` 的 `RETIRED_POLICIES`）。
 

@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **114 条按名词选择的 policy 路径**，覆盖 **102/115 个底层 policy**（13 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **116 条按名词选择的 policy 路径**，覆盖 **101/115 个底层 policy**（14 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -124,8 +124,8 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_037` | **wipe** surface | `wipe(surface, tool)` | sponge_strip | `wiped`, `holding` |
 | `skill_038` | **stir** container | `stir(container, tool)` | circle_below_rim | `stirred`, `holding` |
 | `skill_039` | **pour** contents | `pour(source, target)` | tilt_over_rim | `poured_into`, `holding` |
-| `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, left_holds_load, refrigerator, drawer, hinged_door | `is_open` |
-| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, handle_push, dispatch | `is_closed` |
+| `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, refrigerator_loaded, loaded, refrigerator, drawer, hinged_door | `is_open` |
+| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, loaded, handle_push, dispatch | `is_closed` |
 | `skill_042` | **press** button | `press(button)` | microwave_start_staged, microwave_door_key, generic_key | `button_pressed`, `hand_empty` + `heating` |
 | `skill_043` | **heat** food | `heat(food, appliance, temp_c)` | microwave, stove_pot | `temperature_at_least`, `heating` |
 | `skill_044` | **chill** food | `chill(food, appliance, temp_c)` | fridge_wait | `temperature_at_most` |

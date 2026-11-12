@@ -24,7 +24,7 @@ from typing import Callable
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import N_BODY, Failure, Segment, Spec, aim_pose, at_base, body_locked, touches, with_part
+from .motion_state import N_BODY, Failure, Segment, Spec, aim_pose, at_base, locked_body, touches, with_part
 
 # the contact geometry and the checks' thresholds: one source with their units and where their values
 # come from (tolerances.py, docs 4.5); here as the primitives' own names
@@ -131,9 +131,9 @@ def query(kin, state, spec):
 def _keep_body(state, spec, side, q0, q1):
     """A joint goal q1 with the body kept at q0's where it may not move (body_locked: the other hand
     holds something, docs 4.1) -- a fold names the arm, not where the torso goes."""
-    q1 = np.asarray(q1, float)
-    if body_locked(state, spec, side):
-        q1 = np.r_[np.asarray(q0, float)[:N_BODY], q1[N_BODY:]]
+    q1 = np.asarray(q1, float).copy()
+    keep = locked_body(state, spec, side)
+    q1[:N_BODY][keep] = np.asarray(q0, float)[:N_BODY][keep]
     return q1
 
 
@@ -181,6 +181,21 @@ def free_at(kin, state, spec, q):
         return not t or kin.path_free_only([q, q], t)
 
 
+def ik_why(kin, state, spec, p, R, seeds=()):
+    """Why (p, R) has no collision-free IK in ``state`` by ``spec``, for a failure's why: out of the arm's
+    reach (no kinematic solution either, the locked joints locked), or what the robot penetrates at the
+    kinematic solution (_who)."""
+    with query(kin, state, spec):
+        scene, kin.scene = kin.scene, None
+        try:
+            q, ok = kin.ik_global(np.asarray(p, float), np.asarray(R, float), seeds=[np.asarray(s, float) for s in seeds])
+        finally:
+            kin.scene = scene
+        if not ok:
+            return "out of reach"
+        return f"collides{_who(kin, np.asarray(q, float)) or ' (self or limits)'}"
+
+
 def turn(Ra, Rb):
     """rad between two rotations."""
     c = (np.trace(np.asarray(Ra, float).T @ np.asarray(Rb, float)) - 1.0) / 2.0
@@ -195,13 +210,33 @@ def near_pose(p_a, R_a, p_b, R_b):
 
 
 def _why_straight(kin, q0, p, R, step):
-    """Why the straight q0 -> (p, R) failed: it collides, or there is no IK along it."""
+    """Why the straight q0 -> (p, R) failed: it collides (where along it, into what), or there is no IK
+    along it."""
     scene, kin.scene = kin.scene, None
     try:
-        ok = kin.cart_path(q0, p, R, step=step)[1]
+        line, ok = kin.cart_path(q0, p, R, step=step)
     finally:
         kin.scene = scene
-    return "it collides" if ok else "no IK along it"
+    if not ok:
+        return "no IK along it"
+    at = next((i for i, q in enumerate([np.asarray(q0, float)] + list(line)) if not kin.free(q)), None)
+    if at is None:
+        return "it collides (between waypoints)"
+    q = ([np.asarray(q0, float)] + list(line))[at]
+    return f"it collides at {at}/{len(line)}{_who(kin, q)}"
+
+
+def _who(kin, q):
+    """': owner: link mm, ...' -- what the robot at q penetrates, by obstacle (Motion.contacts_by_owner), for
+    a failure's why; '' without a collision backend."""
+    f = getattr(getattr(kin, "motion", None), "contacts_by_owner", None)
+    if f is None:
+        return ""
+    hits = f(kin, q, kin._other_q() if hasattr(kin, "_other_q") else None, reach=1.5)
+    if not hits:
+        return ""
+    return ": " + "; ".join(f"{o} " + ", ".join(f"{l} {1000 * d:.0f} mm" for l, d in list(v.items())[:2])
+                            for o, v in list(hits.items())[:3])
 
 
 def _first(first, n):
@@ -228,7 +263,12 @@ def decide_ik(kin, state, spec, p, R, prior, seeds=()):
     9.3 step 2.2).  (q, "prior" | "solved"), or None: no collision-free solution (the caller says
     which pose in its Failure)."""
     p, R = np.asarray(p, float), np.asarray(R, float)
-    prior = None if prior is None else np.asarray(prior, float)
+    prior = None if prior is None else np.asarray(prior, float).copy()
+    keep = locked_body(state, spec, kin.side)
+    if prior is not None and keep.any():
+        # a body joint kept where the state has it (docs 4.1): the prior with it there (then only a seed if
+        # its TCP moved off the pose)
+        prior[:N_BODY][keep] = np.asarray(state.body, float)[keep]
     with query(kin, state, spec):
         if prior is not None and near_pose(*kin.tcp(prior), p, R) and kin.free(prior):
             return prior.copy(), "prior"
@@ -534,7 +574,7 @@ def _explain(kin, state, spec, q):
     if explain is None:
         return ""
     with query(kin, state, spec):
-        return f": {explain(q)}" if not kin.free(q) else ""
+        return f": {explain(q)}{_who(kin, q)}" if not kin.free(q) else ""
 
 
 def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.005, clear=None):

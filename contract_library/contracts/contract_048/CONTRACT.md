@@ -8,7 +8,8 @@ Paired SkillNode: `skill_040` (`open-articulated`).
 
 - [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
 - [path powered_microwave] `hand_empty(hand=right)` — GT: gripper_state
-- [path left_holds_load] `hand_empty(hand=right)` — GT: gripper_state
+- [path refrigerator_loaded] `hand_empty(hand=left)` — GT: gripper_state
+- [path loaded] `hand_empty(hand=left)` — GT: gripper_state
 - [path refrigerator] `hand_empty(hand=right)` — GT: gripper_state
 - [path drawer] `hand_empty(hand=right)` — GT: gripper_state
 - [path hinged_door] `hand_empty(hand=right)` — GT: gripper_state
@@ -20,7 +21,8 @@ Paired SkillNode: `skill_040` (`open-articulated`).
 ## Policy paths
 
 - `powered_microwave` when articulated.powered: `policy_024($articulated)`
-- `left_holds_load` when robot.left_held and articulated.type == 'revolute': `policy_060(@robot.left_object, $articulated)`
+- `refrigerator_loaded` when articulated.category == 'refrigerator' and robot.right_held: `policy_022($articulated, goal=@articulated.wide_open_q)`
+- `loaded` when robot.right_held: `policy_022($articulated)`
 - `refrigerator` when articulated.category == 'refrigerator': `policy_003()` -> `policy_022($articulated, goal=@articulated.wide_open_q)`
 - `drawer` when articulated.type == 'prismatic': `policy_003()` -> `policy_022($articulated)`
 - `hinged_door` when articulated.type == 'revolute': `policy_003()` -> `policy_022($articulated)`
