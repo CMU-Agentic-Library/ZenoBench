@@ -541,6 +541,22 @@ def _vessel_decides_appliance(task: dict) -> dict:
         "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the "
                   "container tipped; still held or dropped"}
 
+# T07 two_portions: the oatmeal bowl (microwave only) and the soup pot (stove only) both at 40 C at the end; how they
+# got there (together or one after the other) is not scored.  Door open second; a wrong appliance tried first worst
+_TWO_CLEAN = [["not exposed_in", "oatmeal_bowl", "kitchen_stove", 1.0],
+              ["not exposed_in", "soup_pot", "kitchen_microwave", 1.0]]
+_TWO_DONE = [["temperature_at_least", "oatmeal_bowl", 40], ["temperature_at_least", "soup_pot", 40],
+             ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"], ["hand_empty", "right"]]
+SCORING[("T07", "two_portions")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": {"all": [*_TWO_DONE, ["is_closed", "kitchen_microwave"], *_TWO_CLEAN]},
+     "why": "both at 40 C at the end, each in its own appliance from the start, both off, the door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": [*_TWO_DONE, *_TWO_CLEAN]},
+     "why": "both warm, but the microwave door left open"},
+    {"name": "worst", "score": 0.3, "goal": {"all": _TWO_DONE},
+     "why": "the bowl on a lit burner or the pot in the running microwave first, then the right appliance"}],
+    "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still "
+              "held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -668,5 +684,6 @@ NOT_OK_ZH = {
     ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
+    ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

@@ -2145,14 +2145,36 @@
 
 **指令**：早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `oatmeal_bowl` 温度至少 40 °C
-- `soup_pot` 温度至少 40 °C
-- `kitchen_stove` 已经停止加热
-- `kitchen_microwave` 已经停止加热
-- `kitchen_microwave` 关着
-- 手里空着
+- **好（1.0）**：
+
+  - `oatmeal_bowl` 温度至少 40 °C
+  - `soup_pot` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 已经停止加热
+  - 手里空着
+  - `kitchen_microwave` 关着
+  - `["not exposed_in", "oatmeal_bowl", "kitchen_stove", 1.0]`
+  - `["not exposed_in", "soup_pot", "kitchen_microwave", 1.0]`
+- **次好（0.6）**：
+
+  - `oatmeal_bowl` 温度至少 40 °C
+  - `soup_pot` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 已经停止加热
+  - 手里空着
+  - `["not exposed_in", "oatmeal_bowl", "kitchen_stove", 1.0]`
+  - `["not exposed_in", "soup_pot", "kitchen_microwave", 1.0]`
+- **最不好（0.3）**：
+
+  - `oatmeal_bowl` 温度至少 40 °C
+  - `soup_pot` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 已经停止加热
+  - 手里空着
+- **不行（0）**：结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了
+
 
 **参考调用顺序**：
 

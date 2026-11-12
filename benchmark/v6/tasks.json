@@ -66419,6 +66419,133 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "is_closed",
+           "kitchen_microwave"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both at 40 C at the end, each in its own appliance from the start, both off, the door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both warm, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the bowl on a lit burner or the pot in the running microwave first, then the right appliance"
+       }
+      ],
+      "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still held or dropped"
      }
     },
     "two_portions__counter": {
@@ -66709,6 +66836,133 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "is_closed",
+           "kitchen_microwave"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both at 40 C at the end, each in its own appliance from the start, both off, the door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both warm, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the bowl on a lit burner or the pot in the running microwave first, then the right appliance"
+       }
+      ],
+      "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still held or dropped"
      }
     }
    },
@@ -68556,6 +68810,133 @@
       "17": "two_portions__counter",
       "18": "two_portions__counter",
       "19": "two_portions__dining"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "is_closed",
+           "kitchen_microwave"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both at 40 C at the end, each in its own appliance from the start, both off, the door closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ],
+          [
+           "not exposed_in",
+           "oatmeal_bowl",
+           "kitchen_stove",
+           1.0
+          ],
+          [
+           "not exposed_in",
+           "soup_pot",
+           "kitchen_microwave",
+           1.0
+          ]
+         ]
+        },
+        "why": "both warm, but the microwave door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "temperature_at_least",
+           "oatmeal_bowl",
+           40
+          ],
+          [
+           "temperature_at_least",
+           "soup_pot",
+           40
+          ],
+          [
+           "not heating",
+           "kitchen_stove"
+          ],
+          [
+           "not heating",
+           "kitchen_microwave"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the bowl on a lit burner or the pot in the running microwave first, then the right appliance"
+       }
+      ],
+      "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still held or dropped"
      }
     }
    },
