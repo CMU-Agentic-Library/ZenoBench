@@ -662,6 +662,34 @@ def _soup_steps(design: str, not_ok: str):
             "not_ok": not_ok}
     return build
 
+
+def _pot_in_use(task: dict) -> dict:
+    """T09 pot_in_use: the empty cooking pot and yesterday's full soup pot, one of them on the stove (seed).  Moving
+    the full pot (standing) or one side step missed is the second tier; both side steps missed, or the tomatoes
+    cooked in yesterday's soup, the worst (user 11-11)."""
+    lays = task["v6_variants"]["pot_in_use"]["layouts"]
+    second, worst = {}, {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]["all"]
+        steps = [a for a in g if a[0] in ("stirred", "covered")]
+        core = [a for a in g if a[0] not in ("stirred", "covered", "near_start")]      # tomatoes, 60 C, off, standing
+        # both steps with the full pot moved, or one step with it untouched (two slips at once fall to the worst)
+        second[lid] = {"all": core, "any": [steps] + [[st, ["near_start", "soup_pot", 0.03]] for st in steps]}
+        tomatoes = [a[1] for a in g if a[0] == "temperature_at_least"]
+        old = [*[["inside", x, "soup_pot"] for x in tomatoes], *[a for a in g if a[0] == "temperature_at_least"],
+               ["not heating", "kitchen_stove"], ["upright", "soup_pot"], ["hand_empty", "right"]]
+        worst[lid] = {"all": [["not heating", "kitchen_stove"], ["hand_empty", "right"], ["upright", "soup_pot"]],
+                      "any": [core, old]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "the soup in the empty pot, every step done, the full pot untouched"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "the soup in the empty pot, but the full pot moved off its burner (still standing), or not stirred or "
+                "not covered"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"}],
+        "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -677,6 +705,7 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
                                                     "the pot; still held or dropped"),
          # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
          # second tier too
+         ("T09", "pot_in_use"): _pot_in_use,
          ("T09", "lid_on_spoon_away"): _soup_steps("lid_on_spoon_away", "one tomato only; below 60 C; the stove "
                                                    "left on; a tomato out of the pot; still held or dropped")}
 
@@ -805,5 +834,6 @@ NOT_OK_ZH = {
     ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",
     ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

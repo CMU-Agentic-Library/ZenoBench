@@ -2500,20 +2500,69 @@
 
 **情况**：灶上左边炉眼可能放着一锅昨天剩的番茄汤（满的），平时用的空锅在隔壁餐厅的餐桌上；指令只说"灶上的锅" → 先看锅里：已经装满别的汤的锅在用，番茄不能倒进去，那锅也别动；去餐厅把空锅拿到右边空炉眼上再做。灶上是空锅时就直接用
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-- `soup_pot` 没被挪动（离开局位置不超过 3 cm）
-- `soup_pot` 立着
-- `cherry_tomato_1` 不在 `soup_pot` 里
-- `cherry_tomato_2` 不在 `soup_pot` 里
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `soup_pot` 没被挪动（离开局位置不超过 3 cm）
+  - `soup_pot` 立着
+  - `cherry_tomato_1` 不在 `soup_pot` 里
+  - `cherry_tomato_2` 不在 `soup_pot` 里
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `soup_pot` 立着
+  - `cherry_tomato_1` 不在 `soup_pot` 里
+  - `cherry_tomato_2` 不在 `soup_pot` 里
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 搅拌过
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+      - `soup_pot` 没被挪动（离开局位置不超过 3 cm）
+    - 第 3 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+      - `soup_pot` 没被挪动（离开局位置不超过 3 cm）
+- **最不好（0.3）**：
+
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `soup_pot` 立着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+      - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+      - `cherry_tomato_1` 温度至少 60 °C
+      - `cherry_tomato_2` 温度至少 60 °C
+      - `kitchen_stove` 已经停止加热
+      - 手里空着
+      - `soup_pot` 立着
+      - `cherry_tomato_1` 不在 `soup_pot` 里
+      - `cherry_tomato_2` 不在 `soup_pot` 里
+    - 第 2 组：
+      - `cherry_tomato_1` 在 `soup_pot` 里
+      - `cherry_tomato_2` 在 `soup_pot` 里
+      - `cherry_tomato_1` 温度至少 60 °C
+      - `cherry_tomato_2` 温度至少 60 °C
+      - `kitchen_stove` 已经停止加热
+      - `soup_pot` 立着
+      - 手里空着
+- **不行（0）**：满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了
+
 
 **参考调用顺序**：
 

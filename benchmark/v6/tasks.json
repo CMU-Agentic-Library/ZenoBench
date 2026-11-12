@@ -75092,6 +75092,392 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the soup in the empty pot, every step done, the full pot untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot, but the full pot moved off its burner (still standing), or not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"
+       }
+      ],
+      "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"
      }
     },
     "pot_in_use__free": {
@@ -75422,6 +75808,392 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the soup in the empty pot, every step done, the full pot untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot, but the full pot moved off its burner (still standing), or not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"
+       }
+      ],
+      "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"
      }
     },
     "tomato_in_fridge__in_fridge": {
@@ -78489,6 +79261,392 @@
       "17": "pot_in_use__free",
       "18": "pot_in_use__in_use",
       "19": "pot_in_use__in_use"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the soup in the empty pot, every step done, the full pot untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_1",
+             "soup_pot"
+            ],
+            [
+             "not inside",
+             "cherry_tomato_2",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ],
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "soup_pot",
+              0.03
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot, but the full pot moved off its burner (still standing), or not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "pot_in_use__in_use": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          },
+          "pot_in_use__free": {
+           "all": [
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "upright",
+             "soup_pot"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "handled_cooking_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "handled_cooking_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "not inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "cherry_tomato_1",
+              "soup_pot"
+             ],
+             [
+              "inside",
+              "cherry_tomato_2",
+              "soup_pot"
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_1",
+              60
+             ],
+             [
+              "temperature_at_least",
+              "cherry_tomato_2",
+              60
+             ],
+             [
+              "not heating",
+              "kitchen_stove"
+             ],
+             [
+              "upright",
+              "soup_pot"
+             ],
+             [
+              "hand_empty",
+              "right"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"
+       }
+      ],
+      "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"
      }
     },
     "tomato_in_fridge": {
