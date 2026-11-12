@@ -184,6 +184,10 @@ def body_locked(state, spec, side):
     return bool(locked_body(state, spec, side).any())
 
 
+KEPT_KINDS = ("move", "scripted")   # the segments a rebuild keeps as they are while they hold (skill_plans._kept,
+                                    # run's anchor log): the motions; an action or an anchor is made again
+
+
 @dataclass(frozen=True)
 class Segment:
     """One step of a plan.  kind "move": joint waypoints ``qs`` after ``q_from`` (of the arm

@@ -22,18 +22,20 @@ policies/*.py     PolicySuite → XxxPolicy.execute     115 个原子策略（ca
   │        │
   │        └───────────────┐  约一半的策略直接调 rig，不经过 skills（见第 5 节）
   ▼                        │
-skills.py         技能本体：pick / place / navigate / 开关门 / push / 微波炉…
+skills.py         技能本体：pick / place / navigate / 开关门 / 微波炉…
   │                        │  决定"中继位姿是什么、停车点在哪、接触段往哪个方向走"
   │   pick / place / navigate（MOTION_ARCHITECTURE 的五层）：
   │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
-  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open、close）；
+  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open、close）/
+  │                       slide（push：slide_job，和任务层一段段推的 push_object）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
-  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door（build）：原语串成整份计划，State 在段间推进
+  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door / plan_push / plan_slide（build）：
+  │                       原语串成整份计划，State 在段间推进
   │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
-  │                       scripted（任务段：Script + 耦合 hinge / slider / still，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
+  │                       scripted（任务段：Script + 耦合 hinge / slider / still / pushed，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
   │   run.py            ④ observe / execute / run：逐段复核、锚点复核剩下的整份、不成立就用 build 重做剩下的、执行；
   │                       只经过 Actuator（Rig 实现）碰仿真；锚点记实测偏差（anchor 事件 off），接触位姿段记 aim_off
   │   motion_state.py   State / Spec / Segment / Plan / Failure（纯数据）；协议 Actuator、BaseModel；state_offset
@@ -52,7 +54,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 | 模块 | 谁调它 | 做什么 |
 |---|---|---|
-| `park_search.py` | `motion_skills.run_skill`（pick、place） | **新的停车点搜索** `find_park(kin, world, Problem, state, log, base)`：能做出技能整份计划的停车点，连计划一起返回；不碰 rig，整机底盘的查询问传进来的 `base`（`MOTION_ARCHITECTURE.md` 第 7 节）|
+| `park_search.py` | `motion_skills.run_skill`（pick、place、open、close、push） | **新的停车点搜索** `find_park(kin, world, Problem, state, log, base)`：能做出技能整份计划的停车点，连计划一起返回；不碰 rig，整机底盘的查询问传进来的 `base`（`MOTION_ARCHITECTURE.md` 第 7 节）|
 | `planner.py` | skills、policies | **旧的停车点搜索** `find_park` / `find_park_set`（微波炉取物和其他技能还在用）：在哪个底盘位姿，手臂能无碰撞地走完给定的一串目标位姿。另有 `joint_reachable`、`_whole_body`、`_drivable`（只剩旧搜索用；行驶姿态取 `skill_plans.travel_chain`；没有整机模型时不查，由开车决定）。旧的网格路径 `plan_path` 11-10 删了 |
 | `base_planner.py` | `skills._base_plan`（经 `skill_jobs.base.RigBase`） | **底盘路径规划**：在 (x, y, yaw) 网格上做 A*，同时考虑手臂姿态链（收臂 → 下垂 → 收臂）|
 | `clearance.py` | rig、skills、policies | `Allow`：一段运动允许碰什么（第 3 节）；`rig.clear`：接触监视器、fallback 计数 |
@@ -86,7 +88,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | 64–480 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`fold_where_possible`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
 | 482–862 | 开关门（铰链 / 抽屉）| `_move_articulated`、`_ride`、`_ride_check`（微波炉还在用）、`open_articulated`、`close_articulated`（都转到 `run_skill`） |
 | 865–1035 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_grasp_targets`、`_pads_clear_of` |
-| 1040–1400 | pick 和 push | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`contact_obstacles`、`push`、`edge_held` |
+| 1040–1400 | pick | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`contact_obstacles`、`edge_held`（`push` 11-12 删了：`skill_jobs/slide.py` 的 `push_object`） |
 | 1417–1600 | 微波炉腔体放取 | `insert_microwave_cavity`、`release_…`、`withdraw_…`、`place_microwave` |
 | 1609–2190 | place | `place`（分派：托盘 / 台面转 `_set_down` → `run_skill`，job 在 `skill_jobs/place.py`）、`park_over`、`free_spots`、`place_on`、`place_flat`（183 行）|
 | 2191–2420 | 微波炉按钮和电动门 | `approach_microwave_button`、`press_…`、`open_microwave_door`、`_set_microwave_hinge` |
@@ -248,11 +250,10 @@ close_articulated：run_skill(SKILLS["close"])，见 close.md（旧的 _push_clo
 
 判断依据：代码里显式写了 `allow=LEGACY` 的运动（不查碰撞的写死路径），以及策略层自己拼的路径点。下面按文件列出。
 
-### `skills.py`（13 处 LEGACY）
+### `skills.py`（8 处 LEGACY，11-12 删了 `push` 以后）
 
 | 函数 | LEGACY 的段 | 计划里归哪 |
 |---|---|---|
-| `push` | 接触、推、退，3 段 | 6.5 接触动作 |
 | `place_flat` | 4 段（放书的边沿路径）| 6.2 后半 |
 | `insert_microwave_cavity` | 插入那一段 | 6.4 |
 | `approach_microwave_button` / `press_…` / `retract_…` | 按按钮 | 6.5 |

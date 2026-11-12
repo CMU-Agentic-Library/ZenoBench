@@ -243,6 +243,7 @@ class SweepTogetherPolicy(AtomicPolicy):
     """Push each listed object toward the group centroid (farthest first)."""
 
     def execute(self, names, *, radius_m=0.12, rounds=2):
+        from ..skill_jobs.slide import push_object
         rig = self.rig
         if rig.held is not None:
             raise SkillFailure("sweep: the right hand holds an object")
@@ -262,7 +263,7 @@ class SweepTogetherPolicy(AtomicPolicy):
                 s = rig.geo.support_under(n, rig.state())
                 if s is None:
                     raise SkillFailure(f"sweep: {n} is not on a support")
-                skills.push(rig, n, s, d / dist, dist - radius_m * 0.4, label="SWEEP")
+                push_object(rig, n, s, [(d / dist, dist - radius_m * 0.4, None)], label="SWEEP")
         st = rig.state()
         pts = np.array([rig.geo.bottom(n, st)[:2] for n in names])
         worst = float(np.max(np.linalg.norm(pts - pts.mean(axis=0), axis=1)))

@@ -24,7 +24,8 @@ from typing import Callable
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import N_BODY, Failure, Segment, Spec, aim_pose, at_base, locked_body, touches, with_part
+from .motion_state import (N_BODY, Failure, Segment, Spec, aim_pose, at_base, locked_body, touches, with_object,
+                           with_part)
 
 # the contact geometry and the checks' thresholds: one source with their units and where their values
 # come from (tolerances.py, docs 4.5); here as the primitives' own names
@@ -459,6 +460,52 @@ class Still:
         return np.asarray(state.objects[self.obj], float)
 
 
+@dataclass(frozen=True, eq=False)
+class Pushed:
+    """The object ``obj`` pushed across its support by a hand rigid in the frame: s m of the hand's travel
+    along the horizontal unit ``n`` from ``T0`` (the object's box frame where the State had it when the plan
+    was built).  The object runs ``lag`` m behind the hand -- it moves from s = lag on, sliding without
+    turning (the fingers start that far off it: the push's gap and the planner's finger box beyond the
+    real fingers; a drag's: the pads' skid on its top) -- the plan's prediction; the anchor after the task
+    segment reads where it went.  The frame is the hand's (T0 moved s along n), so a TCP rigid in it (tcp
+    None) is the hand pushing; ``moved`` puts the object where it is at s."""
+    obj: str
+    T0: np.ndarray
+    n: np.ndarray
+    lag: float = 0.0
+    kind: str = "pushed"
+
+    @property
+    def part(self):                       # what it moves, by the name part_start reports
+        return self.obj
+
+    def travel(self, s):
+        """m the object has gone along n when the hand is at s."""
+        return max(0.0, float(s) - float(self.lag))
+
+    def value(self, state):
+        """m the object has gone along n from T0 (not s: the hand runs ``lag`` ahead once it touches) --
+        0 where a push starts (part_start)."""
+        T = state.objects.get(self.obj)
+        if T is None:
+            return None
+        return float((np.asarray(T, float)[:3, 3] - np.asarray(self.T0, float)[:3, 3]) @ np.asarray(self.n, float))
+
+    def moved(self, state, s):
+        T = np.asarray(self.T0, float).copy()
+        T[:3, 3] += self.travel(s) * np.asarray(self.n, float)
+        return with_object(state, self.obj, T)
+
+    def frame(self, state, s):
+        T = np.asarray(self.T0, float).copy()
+        T[:3, 3] += float(s) * np.asarray(self.n, float)
+        return T
+
+
+def pushed(obj, T0, n, lag=0.0):
+    return Pushed(obj, np.asarray(T0, float), np.asarray(n, float), float(lag))
+
+
 def hinge(part, pose):
     return PartAt("hinge", part, pose)
 
@@ -471,14 +518,14 @@ def still(obj):
     return Still(obj)
 
 
-COUPLINGS = {"hinge": hinge, "slider": slider, "still": still}   # couplings by name
+COUPLINGS = {"hinge": hinge, "slider": slider, "still": still, "pushed": pushed}   # couplings by name
 
 
 @dataclass(frozen=True, eq=False)
 class Script:
     """A task segment's trajectory (docs 3.1): a function and its interval, never a list of points.
     The task quantity s (a hinge angle, a drawer's travel, a phase -- never a robot quantity) runs
-    from ``s0`` to ``s1``; ``coupling`` (PartAt / Still) moves what moves with it and gives the frame;
+    from ``s0`` to ``s1``; ``coupling`` (PartAt / Still / Pushed) moves what moves with it and gives the frame;
     ``tcp(s)``: the TCP's pose (4x4) in that frame, None: rigid in it as it stands at s0 (a hand on a
     handle).  ``carry``: how the robot follows -- "base": the arm stays, the base moves rigidly with
     the frame (riding a door; tcp None); "arm": the base stays, the arm follows the TCP, IK continued
@@ -536,16 +583,19 @@ def ride_base(script, base0, s, state=None):
     return float(B[0, 3]), float(B[1, 3]), float(np.degrees(np.arctan2(B[1, 0], B[0, 0])))
 
 
-def _script_path(kin, state, spec, script, info, base=None, arm_step=0.005):
+def _script_path(kin, state, spec, script, info, base=None, arm_step=0.005, reach=False):
     """Make (carry "arm") or check (carry "base") the task segment ``script`` from ``state``: each s
     of script.samples() in the world the coupling gives -- carry "base": the base at ride_base,
     clear by ``base`` (motion_state.BaseModel) where given, the robot free there (free_at); carry
     "arm": the TCP at s by the kinematic straight from the arm at the s before (IK continued), that
-    motion free with the coupling at s.  (qs, s at each q) or why it fails (a str)."""
+    motion free with the coupling at s.  ``reach`` (carry "arm"): where the IK runs out the segment
+    ends at the sample before (as far as the arm gets along the task) instead of failing; a collision
+    still fails it.  (qs, s at each q, the s it ends at) or why it fails (a str)."""
     q, qs, s_at = np.asarray(state.q(kin.side), float), [], []
     if script.carry == "base":           # both arms ride rigidly with the base (docs 4.4)
         spec = replace(spec, arms_still=True)
-    for i, s in enumerate(script.samples()):
+    samples = script.samples()
+    for i, s in enumerate(samples):
         st = script.coupling.moved(state, s)
         where = f"s={s:.3f}"
         if script.carry == "base":
@@ -567,13 +617,15 @@ def _script_path(kin, state, spec, script, info, base=None, arm_step=0.005):
             finally:
                 kin.scene = scene
         if not ok:
+            if reach and i > 1:          # the arm gets as far as the sample before: the segment ends there
+                return qs, s_at, float(samples[i - 1])
             return f"no IK along the task at {where}"
         if line and not free_path(kin, st, spec, [q] + list(line)):
             return f"the robot collides by {where}"
         qs += [np.asarray(x, float) for x in line]
         s_at += [float(s)] * len(line)
         q = qs[-1] if qs else q
-    return qs, s_at
+    return qs, s_at, float(script.s1)
 
 
 def _explain(kin, state, spec, q):
@@ -584,7 +636,7 @@ def _explain(kin, state, spec, q):
         return f": {explain(q)}{_who(kin, q)}" if not kin.free(q) else ""
 
 
-def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.005, clear=None):
+def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.005, clear=None, reach=False):
     """A task segment (docs 3, 5.5) from the arm and the base as ``state`` has them: ``script``
     (Script) checked whole at its samples -- what the coupling moves where s puts it, what the hand
     may touch by spec.touch and its held part, the base by ``base`` (motion_state.BaseModel) where
@@ -595,10 +647,14 @@ def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.0
     closed on the measured part), ``track`` its TRACK_KW; carry "arm": "follow", the arm's IK
     continuation (``qs``, made at ``arm_step`` m) open loop.  ``clear``: the failure exit a ride that
     stops short asks for (motion_state.clearing's open_width / leave: a hand on a handle lets go and
-    backs out, docs 8.6).  info: script, base0, rel (the TCP in the frame at s0), s_at (s of each of
-    qs), executor, track, clear."""
+    backs out, docs 8.6).  ``reach`` (carry "arm"): the segment runs as far along [s0, s1] as the arm
+    has IK -- its script then ends there (info["script"].s1, the target) -- every sample up to it
+    checked as ever; a collision fails it.  info: script, base0, rel (the TCP in the frame at s0),
+    s_at (s of each of qs), executor, track, clear."""
     if script.carry not in ("base", "arm"):
         raise ValueError(f"{name}: carry is 'base' or 'arm', not {script.carry!r}")
+    if reach and script.carry != "arm":
+        raise ValueError(f"{name}: a ride runs its whole script (reach is the arm's)")
     track = dict(track or {})
     if script.carry == "base":
         missing = [k for k in TRACK_KW if k not in track]
@@ -618,10 +674,13 @@ def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.0
         if np.linalg.norm(start[:3, 3] - T0[:3, 3]) > ON_LINE or turn(start[:3, :3], T0[:3, :3]) > ON_LINE_TURN:
             return Failure("the arm is not at the task's start", name)
     info = {"script": script, "base0": tuple(map(float, state.base)), "rel": rel, "side": kin.side}
-    out = _script_path(kin, state, spec, script, info, base, arm_step)
+    out = _script_path(kin, state, spec, script, info, base, arm_step, reach)
     if isinstance(out, str):
         return Failure(f"the task segment: {out}", name)
-    qs, s_at = out
+    qs, s_at, s_end = out
+    if s_end != script.s1:                  # as far as the arm reaches: the script it runs ends there
+        script = replace(script, s1=s_end)
+        info["script"] = script
     return Segment(name, spec, q0, tuple(qs), kind="scripted", target=("s", float(script.s1)),
                    info={**info, "s_at": tuple(s_at), "executor": "ride" if script.carry == "base" else "follow",
                          "track": track, "clear": dict(clear) if clear else None})

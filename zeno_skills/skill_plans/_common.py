@@ -12,14 +12,23 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..clearance import FREE, LEAVE_CONTACT
-from ..motion_state import Failure, Plan, Segment, Spec, released, with_arm, with_width
+from ..clearance import FREE, LEAVE_CONTACT, Allow
+from ..motion_state import KEPT_KINDS, Failure, Plan, Segment, Spec, released, with_arm, with_width
 from ..tolerances import NUMERIC_M
 from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg, sided,
                           holds, ik_why, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
+
+
+def may_touch(side, what, why, links="fingers"):
+    """The Spec of a motion whose fingers (``links`` "hand": the whole hand -- a door pushed) may touch
+    ``what``: an articulated part (the reach-in onto its handle, the release, a door pushed) or an
+    object (pushed or dragged across its support).  The monitor is told the same (Allow); the rest
+    of the arm is checked against it."""
+    return Spec(allow=Allow(hand=side, links=links, touch=(what,), reason=why), fingers=True, exempt=False,
+                touch=((what, links),))
 
 
 def T_of(R, p):
@@ -63,13 +72,18 @@ def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=Non
 def _kept(kin, state, q, prior, name):
     """``prior``'s motion ``name`` (a Plan's: run's rebuild) as it is, when it still holds from q in
     ``state`` (primitives.holds: the check run makes before a segment, docs 8.3) -- else None, built
-    again.  Moves only: an action or an anchor holds wherever the arm is, so one made for another
-    start would carry that start on; they are made again, at no cost.  (Not for a motion whose goal
-    is chosen again at every build: the place's tuck.)"""
+    again.  Motions only (KEPT_KINDS: moves and task segments; holds checks a task segment whole): an
+    action or an anchor holds wherever the arm is, so one made for another start would carry that
+    start on; they are made again, at no cost.  So is a ride (a task segment the base carries): its
+    base path is relative to the part value it starts at (ride_base), and the part may stand anywhere
+    within its lead where it holds -- kept, it would carry the old start on.  (Not for a motion whose
+    goal is chosen again at every build: the tuck.)"""
     if not isinstance(prior, Plan):
         return None
     seg = next((sg for sg in prior.segments if sg.name == name), None)
-    if seg is None or seg.kind != "move":
+    if seg is None or seg.kind not in KEPT_KINDS:
+        return None
+    if seg.kind == "scripted" and seg.info["script"].carry == "base":
         return None
     return seg if holds(kin, with_arm(state, q, kin.side), seg) is None else None
 

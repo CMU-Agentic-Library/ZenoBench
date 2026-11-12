@@ -5,6 +5,7 @@ import math
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 
 from zeno_skills import park_search as PS
 from zeno_skills import skills
@@ -96,6 +97,53 @@ def test_the_ranking_solution_is_the_builds_prior_for_the_relay_decision(monkeyp
     monkeypatch.setattr(PS, "rank_ik", lambda kin, pool, problem, q0: [rank] * len(pool))
     found, _ = _find([], _problem(lambda s, k, prior: priors.append(prior) or Plan(())), _state())
     assert found is not None and list(priors[0]) == ["pick_reach"] and priors[0]["pick_reach"] is rank
+
+
+def test_every_candidate_of_a_lower_tier_is_built_before_any_of_a_higher_one():
+    goal = np.array([1.0, 0.0, 0.8])
+    ks = []
+    # goal 1 (tier 0) costs more than goal 0 (tier 1): the tier, not the cost, decides
+    problem = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0), ((goal,), (goal, np.eye(3)), 0.5)),
+                         build=lambda s, k, prior: ks.append(k) or Failure("no", "x"),
+                         relay="pick_reach", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9), tiers=(1, 0))
+    _find([], problem, _state())
+    assert ks and ks == sorted(ks, reverse=True) and ks[0] == 1        # goal 1's candidates first, then goal 0's
+
+
+def test_where_no_park_reaches_the_relay_the_one_getting_farthest_along_it_is_built_first(monkeypatch):
+    start, end = np.array([1.0, 0.0, 0.8]), np.array([1.4, 0.0, 0.8])
+
+    def rank(kin, cands, problem, q0, poses=None):
+        if poses is None:                                   # nowhere reaches the end
+            return [None] * len(cands)
+        # parks on +y get 30 cm along the straight, the others 10 cm
+        return [np.r_[p, np.zeros(6)] if p[0] - start[0] <= (0.3 if c[2] > 0 else 0.1) + 1e-9 else None
+                for c, (p, _) in zip(cands, poses)]
+    monkeypatch.setattr(PS, "rank_ik", rank)
+    built = []
+    problem = PS.Problem(goals=(((start, end), (end, np.eye(3)), 0.0),),
+                         build=lambda s, k, prior: built.append(prior["slide_end"]) or Plan(()),
+                         relay="slide_end", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9),
+                         relay_from=(start,), reach_step=0.02)
+    found, diag = _find([], problem, _state())
+    assert found is not None and found.y > 0                    # a park that gets 30 cm along, whatever its score
+    assert 0.3 - 0.02 <= built[0][0] - start[0] <= 0.3          # the build's prior: the farthest point solved
+    assert diag["reach"]["least_left"] == pytest.approx(0.1, abs=0.02)
+
+
+def test_a_relay_some_park_reaches_is_ranked_as_ever(monkeypatch):
+    start, end = np.array([1.0, 0.0, 0.8]), np.array([1.4, 0.0, 0.8])
+    asked = []
+
+    def rank(kin, cands, problem, q0, poses=None):
+        asked.append(poses is None)
+        return [np.r_[end, np.zeros(6)] if c[2] > 0 else None for c in cands]
+    monkeypatch.setattr(PS, "rank_ik", rank)
+    problem = PS.Problem(goals=(((start, end), (end, np.eye(3)), 0.0),), build=lambda s, k, prior: Plan(()),
+                         relay="slide_end", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9),
+                         relay_from=(start,), reach_step=0.02)
+    found, diag = _find([], problem, _state())
+    assert found is not None and found.y > 0 and asked == [True] and "reach" not in diag   # no measuring
 
 
 def test_the_build_budget_ends_the_search(monkeypatch):

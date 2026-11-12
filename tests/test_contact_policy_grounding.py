@@ -17,11 +17,12 @@ def test_contact_policy_resolves_support_and_checks_live_occupancy(monkeypatch, 
         geo=SimpleNamespace(support_under=lambda name, state: support),
         state=lambda: {},
     )
-    monkeypatch.setattr('zeno_skills.policies.manipulation.skills.push',
-                        lambda *args, **kwargs: calls.append((args, kwargs)))
+    monkeypatch.setattr('zeno_skills.skill_jobs.slide.push_object',
+                        lambda *args, **kwargs: calls.append((args, kwargs)) or (args[3][0][0], 0.1))
     policy_type(rig).execute('cube', 'table', [1.0, 0.0], 0.10)
     assert calls[0][0][2] is support
-    assert np.allclose(calls[0][0][3], [1.0, 0.0])
+    assert np.allclose(calls[0][0][3][0][0], [1.0, 0.0])
+    assert calls[0][1]['modes'] == (('push',) if policy_type is PushFromBehindPolicy else ('drag',))
     rig.geo.support_under = lambda name, state: {'name': 'shelf'}
     with pytest.raises(SkillFailure, match='not on table'):
         policy_type(rig).execute('cube', 'table', [1.0, 0.0], 0.10)

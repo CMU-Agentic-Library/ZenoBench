@@ -13,7 +13,7 @@ from functools import partial
 
 import numpy as np
 
-from .motion_state import Failure, SkillFailure, clearing, state_offset, with_arm
+from .motion_state import KEPT_KINDS, Failure, SkillFailure, clearing, state_offset, with_arm
 from .primitives import aim_excess, holds, ride_base
 
 
@@ -117,9 +117,13 @@ def _why_rebuilt(act, state, old):
 
 
 def _same_motion(a, b):
-    """Two motion segments with the same waypoints (for the anchor log)."""
-    return b is not None and len(a.qs) == len(b.qs) and np.allclose(a.q_from, b.q_from) and \
-        all(np.allclose(x, y) for x, y in zip(a.qs, b.qs))
+    """Two motion segments with the same waypoints -- task segments also over the same interval of their
+    task quantity (a ride has no waypoints) -- for the anchor log."""
+    if b is None or len(a.qs) != len(b.qs) or not np.allclose(a.q_from, b.q_from) or \
+            not all(np.allclose(x, y) for x, y in zip(a.qs, b.qs)):
+        return False
+    sa, sb = a.info.get("script"), b.info.get("script")
+    return (sa is None) == (sb is None) and (sa is None or np.allclose((sa.s0, sa.s1), (sb.s0, sb.s1)))
 
 
 def run_clear(act, clear, exc):
@@ -203,9 +207,9 @@ def _run(act, plan, rebuild, hooks):
                     act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, seconds=round(time.time() - t0, 3))
                     raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
                 old = {sg.name: sg for sg in segs[i + 1:]}
-                kept = [sg.name for sg in new.segments if sg.kind == "move" and old.get(sg.name) is sg]
+                kept = [sg.name for sg in new.segments if sg.kind in KEPT_KINDS and old.get(sg.name) is sg]
                 # made again but otherwise: a motion made again the same (the tuck, never kept) is no rebuild
-                rebuilt = [sg.name for sg in new.segments if sg.kind == "move" and sg.name not in kept
+                rebuilt = [sg.name for sg in new.segments if sg.kind in KEPT_KINDS and sg.name not in kept
                            and not _same_motion(sg, old.get(sg.name))]
                 ev.update(kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))
                 if rebuilt:

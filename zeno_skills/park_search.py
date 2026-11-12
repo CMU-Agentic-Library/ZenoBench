@@ -34,6 +34,9 @@ FACE_COST = 0.002                      # m of cost per deg off that.  (Before 11
                                        # had 89% of the grasps on the right, median -15 deg: the ranking IK
                                        # overrode it.  Changes the candidates' order: a full run to confirm.)
 NEAR_COST = 0.15                       # m of cost per m away from ``near``
+VARIANT_COST = 0.05                    # m of goal cost per rank among the ways of one target (a door's
+                                       # grasps, a push's closed-finger turns): a weak preference, the
+                                       # score's manipulability outweighs it (PARK_DIST_W; tiers: a strict one)
 MAX_PER_GOAL = 120                     # cheapest candidates per goal past the reach and footprint tests
 LIMIT_CLEAR = 0.15                     # rad: arm joints closer than this to a limit cost (planner.LIMIT_CLEAR)
 PARK_DIST_W = 0.5                      # weight of the candidate's own cost in the ranking (planner.PARK_DIST_W)
@@ -63,9 +66,10 @@ class Problem:
             prior: kept where it is free, else a seed -- never a check), a Plan where run_skill
             builds again at the base as it stands (park_here): a builder reads it through
             motion_state.decisions_of.
-    relay:  the decision of the builder the relay pose stands for (skill_plans.PICK_RELAY,
-            PLACE_RELAY) -- required: the ranking always solves a relay pose, and a builder reads its
-            solution by this name only.
+    relay:  the name the ranking's solution reaches the builder by -- required: the ranking always
+            solves a relay pose.  Mostly the decision that pose stands for (skill_plans.PICK_RELAY,
+            PLACE_RELAY, DOOR_RELAY: the builder's prior for it); else a seed of one, the pose the
+            ranking had better judge by (SLIDE_RELAY: the push's end seeds slide_reach's IK).
     arrive: arrive(x, y, yaw) -> the posture at that park (what the drive arrives in, or the
             posture now where the base will not move): a motion_state.Posture -- the arms it names, its
             body unless another hand holds something (with_posture) -- or a planning chain of the goal's hand.
@@ -75,6 +79,12 @@ class Problem:
     travel: the posture the base drives in (the whole-body test at the parks, once for every goal):
             a Posture, or a planning chain of ``hand``.
     hand:   the hand of a goal that names none.
+    tiers:  per goal, its tier (Problem.tier): lower tiers are built first, whatever the score.
+    relay_from: per goal, None or the TCP point its relay pose is reached from along a straight (the
+            relay's R held): a goal that may be done in part -- a push as far as the arm gets.  Where no
+            candidate reaches any goal's relay, the ranking measures how far along that straight each one's
+            arm gets (reach_ik, to ``reach_step`` m) and ranks by what it leaves undone (Problem.start_of).
+    reach_step: m, the resolution of that measure (a push: the plan's own sample step).
     body_free: the body joints a goal's build may still move while the other hand holds something (the
             rule keeps the body, motion_state.body_locked; a push lifts the torso on a leg of its own:
             skill_plans.plan_push) -- the ranking IK keeps the others where the state has them, as the
@@ -90,6 +100,20 @@ class Problem:
     label: str = "park"
     hand: str = "right"
     body_free: tuple = ()
+    tiers: tuple = ()
+    relay_from: tuple = ()
+    reach_step: float = 0.0
+
+    def tier(self, k):
+        """Goal k's tier: every candidate of a lower tier is built before any of a higher one, whatever their
+        score (``tiers`` per goal; none: all 0).  A strict preference among the ways of a goal set, where a
+        cost per rank is only a weak one (the score's manipulability outweighs it): a push before a drag
+        (skill_jobs.slide)."""
+        return self.tiers[k] if 0 <= k < len(self.tiers) else 0
+
+    def start_of(self, k):
+        """Where goal k's relay straight starts (relay_from), or None: its relay or nothing."""
+        return self.relay_from[k] if 0 <= k < len(self.relay_from) else None
 
     def side(self, k):
         """The hand of goal k."""
@@ -149,13 +173,14 @@ def reachable(cands, problem):
     return out
 
 
-def rank_ik(kin, cands, problem, q0):
-    """Per candidate: a kinematic IK solution of its goal's relay pose (None: none), all candidates
-    in one batched call -- the poses taken into each candidate's base frame, kin's base at the
-    origin and no world (the collision world moves with the base; collisions are the build's)."""
+def rank_ik(kin, cands, problem, q0, poses=None):
+    """Per candidate: a kinematic IK solution of its goal's relay pose (``poses``: of that pose of its
+    own instead; None: none), all candidates in one batched call -- the poses taken into each
+    candidate's base frame, kin's base at the origin and no world (the collision world moves with the
+    base; collisions are the build's)."""
     P, Rs = [], []
-    for _, x, y, yaw, k in cands:
-        p, R = problem.goals[k][1]
+    for i, (_, x, y, yaw, k) in enumerate(cands):
+        p, R = problem.goals[k][1] if poses is None else poses[i]
         c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
         Rz = np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
         P.append(Rz.T @ (np.asarray(p, float) - np.array([x, y, 0.0])))
@@ -170,6 +195,40 @@ def rank_ik(kin, cands, problem, q0):
     finally:
         kin.base_p, kin.base_R = base
         kin.scene = scene
+
+
+def reach_ik(kin, cands, problem, q0):
+    """Per candidate of a goal whose relay may be done in part (Problem.relay_from): (a kinematic IK
+    solution of the farthest point along its relay's straight the arm gets to, the m of the straight
+    it leaves undone) -- (None, length) where it does not get to the start.  Bisected to
+    problem.reach_step (the arm taken to get as far as its farthest solved point), one batched rank_ik
+    per round."""
+    if problem.reach_step <= 0:
+        raise ValueError(f"{problem.label}: relay_from needs a reach_step")
+    lines = []
+    for c in cands:
+        p1, R = problem.goals[c[4]][1]
+        lines.append((np.asarray(problem.start_of(c[4]), float), np.asarray(p1, float), np.asarray(R, float)))
+    length = [float(np.linalg.norm(b - a)) for a, b, _ in lines]
+
+    def at(i, f):
+        a, b, R = lines[i]
+        return a + f * (b - a), R
+    out = [(q, length[i]) for i, q in enumerate(rank_ik(kin, cands, problem, q0, [at(i, 0.0) for i in range(len(cands))]))]
+    lo, hi = [0.0] * len(cands), [1.0] * len(cands)
+    live = [i for i, (q, _) in enumerate(out) if q is not None]
+    while True:
+        live = [i for i in live if (hi[i] - lo[i]) * length[i] > problem.reach_step]
+        if not live:
+            break
+        mid = {i: 0.5 * (lo[i] + hi[i]) for i in live}
+        for i, q in zip(live, rank_ik(kin, [cands[i] for i in live], problem, q0, [at(i, mid[i]) for i in live])):
+            if q is None:
+                hi[i] = mid[i]
+            else:
+                lo[i] = mid[i]
+                out[i] = (q, (1.0 - mid[i]) * length[i])
+    return out
 
 
 def score(kin, cands, sols):
@@ -245,24 +304,42 @@ def find_park(kin, world, problem, state, log, base=None):
         pool = [c for c in pool if is_here(c) or c[1:4] not in unreachable]
     timed("drive")
     # ranking: a kinematic IK of each relay pose, then joint margin, manipulability and cost
-    sols = [None] * len(pool)
-    for side in sorted({problem.side(c[4]) for c in pool}):      # one batched IK per hand
-        if side not in kins:
-            raise ValueError(f"{problem.label}: a goal of the {side} hand, no {side} kinematics")
-        idx = [i for i, c in enumerate(pool) if problem.side(c[4]) == side]
-        k = kins[side]
-        # the body joints the build keeps, kept here too (the rule, but for problem.body_free)
-        keep = locked_body(state, Spec(joints=problem.body_free) if body_locked(state, Spec(), side) else Spec(), side)
-        seed = travel.q(side)
-        seed[:N_BODY][keep] = np.asarray(state.body, float)[keep]
-        with kept_joints(k, keep, state.body):
-            for i, q in zip(idx, rank_ik(k, [pool[i] for i in idx], problem, seed)):
-                sols[i] = q
+    sols, left = [None] * len(pool), [0.0] * len(pool)
+
+    def by_hand(solve, keep_goal=lambda k: True):
+        """solve(kin, candidates, seed) per hand, one batched call each, under the build's body rule."""
+        for side in sorted({problem.side(c[4]) for c in pool}):
+            if side not in kins:
+                raise ValueError(f"{problem.label}: a goal of the {side} hand, no {side} kinematics")
+            idx = [i for i, c in enumerate(pool) if problem.side(c[4]) == side and keep_goal(c[4])]
+            k = kins[side]
+            # the body joints the build keeps, kept here too (the rule, but for problem.body_free)
+            keep = locked_body(state, Spec(joints=problem.body_free) if body_locked(state, Spec(), side) else Spec(), side)
+            seed = travel.q(side)
+            seed[:N_BODY][keep] = np.asarray(state.body, float)[keep]
+            with kept_joints(k, keep, state.body):
+                yield idx, solve(k, [pool[i] for i in idx], seed)
+
+    for idx, got in by_hand(lambda k, cs, seed: rank_ik(k, cs, problem, seed)):
+        for i, q in zip(idx, got):
+            sols[i] = q
+    if problem.relay_from and all(q is None for q in sols):
+        # no park reaches any relay: how far along its straight each one's arm gets (Problem.relay_from)
+        for idx, got in by_hand(lambda k, cs, seed: reach_ik(k, cs, problem, seed),
+                                lambda k: problem.start_of(k) is not None):
+            for i, (q, undone) in zip(idx, got):
+                sols[i], left[i] = q, undone
+        reached = [u for q, u in zip(sols, left) if q is not None]
+        diag["reach"] = {"measured": len(reached), "least_left": round(min(reached), 3) if reached else None}
     timed("rank_ik")
     diag["ik"] = sum(q is None for q in sols)
-    ranked = [(c, q) for c, q in zip(pool, sols) if q is not None]
-    scores = score([kins[problem.side(c[4])] for c, _ in ranked], [c for c, _ in ranked], [q for _, q in ranked])
-    order = sorted(range(len(ranked)), key=lambda i: (not is_here(ranked[i][0]), scores[i]))
+    ranked = [(c, q, u) for c, q, u in zip(pool, sols, left) if q is not None]
+    scores = score([kins[problem.side(c[4])] for c, _, _ in ranked], [c for c, _, _ in ranked],
+                   [q for _, q, _ in ranked])
+    # a goal's tier first (Problem.tier: a strict preference -- a push before a drag), then what it leaves
+    # undone (a push the arm gets only part of: the farthest first; 0 for every other), then here, then the score
+    order = sorted(range(len(ranked)), key=lambda i: (problem.tier(ranked[i][0][4]), ranked[i][2],
+                                                      not is_here(ranked[i][0]), scores[i]))
     timed("score")
     diag["pool"] = len(pool)
     # the skill's plan, in that order
@@ -270,7 +347,7 @@ def find_park(kin, world, problem, state, log, base=None):
     for i in order:
         if diag["built"] >= BUILD_MAX or time.time() - t_build > BUILD_S:
             break
-        (cost, x, y, yaw, k), q_rank = ranked[i]
+        (cost, x, y, yaw, k), q_rank, _ = ranked[i]
         diag["built"] += 1
         s = with_posture(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), problem.side(k))
         plan = problem.build(s, k, {problem.relay: q_rank})

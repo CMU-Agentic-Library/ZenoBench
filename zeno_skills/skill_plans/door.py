@@ -19,7 +19,7 @@ from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, a
 from ..tolerances import BODY_SAME, DOOR_LEAVE, DOOR_TOL
 from ..primitives import (sided, Joint, JointSet, PartAt, Script, decide_ik, free_leg, ik_why, query, ride_base, scripted,
                           straight)
-from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor
+from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor, may_touch
 
 DOOR_STAGES = ("door_arrive", "door_open_hand", "door_reach", "door_grasp", "door_close_hand", "door_held",
                "door_ride", "door_moved", "door_release", "door_leave", "tuck", "door_settle")
@@ -35,14 +35,6 @@ PUSH_STAGES = ("push_arrive", "push_close_hand", "push_body", "push_reach", "pus
 TORSO = ("torso_lift_joint",)  # the body joint push_body may move: a lift keeps the other hand's load level
 PUSH_ANCHORS = ("push_arrive", "push_moved")
 PUSH_RELAY = "push_reach"     # the push's decision; the park search's ranking solution may come as DOOR_RELAY
-
-
-def touch_part(side, part, why, links="fingers"):
-    """The Spec of a motion whose fingers (``links`` "hand": the whole hand -- a door pushed) may touch the
-    articulated ``part`` (the reach-in onto its handle, the release, a push): the monitor told the same
-    (Allow), the rest of the arm checked against it."""
-    return Spec(allow=Allow(hand=side, links=links, touch=(part,), reason=why), fingers=True, exempt=False,
-                touch=((part, links),))
 
 
 def plan_door(kin, state, grip, rest_goals, base=None, start="door_arrive", prior=None, step=0.003):
@@ -104,7 +96,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
                 if seg.qs:                                  # the reach-in's start as the plan reaches it
                     decided[stage] = seg.q_end
         elif stage == "door_grasp":
-            spec = touch_part(side, part, "the reach-in onto the handle: the fingers may touch the part")
+            spec = may_touch(side, part, "the reach-in onto the handle: the fingers may touch the part")
             seg = kept or straight(kin, s, spec, p, R, stage, step=step, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _aimed(kin, seg, aim, aimed, DOOR_TOL, steps_per_wp=4)
@@ -129,7 +121,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
             if not isinstance(seg, Failure):
                 s = at_base(with_part(s, part, script.s1), ride_base(script, s.base, script.s1))
         elif stage == "door_release":
-            seg = Segment(stage, touch_part(side, part, "letting go of the handle: the fingers may touch the part"),
+            seg = Segment(stage, may_touch(side, part, "letting go of the handle: the fingers may touch the part"),
                           q, kind="action", action=("grip", pre_open, 70, False))
             if s.held(side) is not None:
                 s = released(s, side, part)
@@ -137,7 +129,7 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
         elif stage == "door_leave":
             with query(kin, s, FREE_HAND):                  # the TCP at the base the ride left it
                 p_now, R_now = kin.tcp(q)
-            spec = touch_part(side, part, "backing off the handle: the fingers may touch the part")
+            spec = may_touch(side, part, "backing off the handle: the fingers may touch the part")
             seg = kept or straight(kin, s, spec, p_now - DOOR_LEAVE * (R_now @ u_tcp), R_now, stage,
                                    step=step, q_from=q)
             if not (isinstance(seg, Failure) or kept):
@@ -240,7 +232,7 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
                 if seg.qs:
                     decided[stage] = seg.q_end
         elif stage == "push_in":
-            spec = touch_part(side, part, "the closed fingertips onto the door panel", "hand")
+            spec = may_touch(side, part, "the closed fingertips onto the door panel", "hand")
             seg = kept or straight(kin, s, spec, p, R, stage, step=step, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _aimed(kin, seg, aim, aimed, DOOR_TOL, steps_per_wp=4)
@@ -250,7 +242,7 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
                 return Failure(f"{part} is not in the State", stage)
             script = Script(PartAt("hinge", part, push["pose"]), float(v), float(push["s1"]),
                             step=float(push["ride_step"]), carry="base")
-            spec = touch_part(side, part, "pushing the door shut: the hand on its panel", "hand")
+            spec = may_touch(side, part, "pushing the door shut: the hand on its panel", "hand")
             seg = scripted(kin, with_arm(s, q, side), spec, script, stage, base=base, track=push["track"],
                            clear={"open_width": None, "leave": True})
             if not isinstance(seg, Failure):
@@ -263,7 +255,7 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
             v = s.parts.get(part)
             if v is not None:
                 n_world = np.asarray(push["pose"](float(v)), float)[:3, :3] @ np.asarray(push["n_part"], float)
-            spec = touch_part(side, part, "backing off the door panel: the hand may touch the part", "hand")
+            spec = may_touch(side, part, "backing off the door panel: the hand may touch the part", "hand")
             seg = kept or straight(kin, s, spec, p_now + DOOR_LEAVE * n_world, R_now, stage, step=step, q_from=q)
             if not (isinstance(seg, Failure) or kept):
                 seg = _move(seg, steps_per_wp=4, smooth=True)

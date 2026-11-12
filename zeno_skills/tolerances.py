@@ -81,6 +81,22 @@ PLAN_AT_START = _t("PLAN_AT_START", 1e-3, "rad", "exact: the commanded arm again
 EXTENT_TOL = _t("EXTENT_TOL", LEAVE_MARGIN / 2, "m", "reasoned: a contact exit measured again within this "
                 "still clears with half the margin (one 2 mm step was the measure's own resolution: 7 of 13 "
                 "rebuilds of the 11-08 run)")
+# an object pushed or dragged across its support (skill_jobs.slide, skill_plans.plan_slide; docs 6, contact).  Its
+# entry follows a pick's (skills.pick_approach, LEAVE_MARGIN), its exit is measured (contact_extent), its leg is as
+# long as the arm reaches: none of those is a constant of its own
+SLIDE_PAD_GAP = _t("SLIDE_PAD_GAP", 0.005, "m", "inherited (skills' old push: \"pad bottom ~5 mm above the "
+                   "surface\"): the closed fingers' lowest corner this far above the support all along a push -- "
+                   "a top pinch's 2 mm (PAD_FLOOR_GAP) made the rest of a push built again at the same pose collide "
+                   "between waypoints (T05 notebook, 11-12)")
+SLIDE_GAP = _t("SLIDE_GAP", 0.005, "m", "chosen, unmeasured: the planner's closed fingers this far off the back face "
+               "where the push-in ends -- with the finger box's excess over the real pads along n (2.7 / 4.2 mm by "
+               "the gripper's turn) the hand's lag before the object moves (primitives.Pushed): 7.7 / 9.2 mm; "
+               "slide_1112 (11-12) measured 10.7 mm on average (18 pushes, 9-14 mm), the rest unexplained")
+DRAG_RIM = _t("DRAG_RIM", 0.03, "m", "inherited (skills' old push): a drag presses this far inside the leading rim")
+DRAG_PRESS = _t("DRAG_PRESS", 0.006, "m", "inherited (skills' old push: top - 4 mm + 10 mm): a drag's TCP this far "
+                "above the top, the fingertips pressed into it (higher only brushes it)")
+DRAG_SKID = _t("DRAG_SKID", 0.025, "m", "inherited (skills' old push): a drag's lag -- the hand runs this much "
+               "further than the object, the fingertips skid on the top (primitives.Pushed)")
 TARGET_TOL = _t("TARGET_TOL", 0.005, "m", "chosen: a hand stopped this far short of where it was sent is "
                 "blocked (pick's after_grasp, place's after_down; until 11-11 also named skills.PICK_REACH_TOL): reach "
                 "errors 0.1-0.4 mm in pick612_verify, 34.6 mm where a finger rode on a mug's wall (T13 no_cup "
@@ -93,6 +109,10 @@ PLACE_TOL = _t("PLACE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = TARGE
                "only sets the load down a few mm off; unmeasured -- anchor_stats 2 (place_reach / place_down)")
 DOOR_TOL = _t("DOOR_TOL", (HINT_REACH, HINT_TURN), "m, rad", "chosen as PICK_TOL (the hook onto a bar is a "
               "fine motion); no sim run yet")
+SLIDE_TOL = _t("SLIDE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = PLACE_TOL: an object pushed across its "
+               "support is a coarse contact -- the push point less off only moves it a few mm otherwise; slide_1112 "
+               "(11-12, 12 pushes): the reach, descent and push-in ended at most 0.02 mm further off than built and "
+               "the object never moved before the push, so no rebuild came near it -- the bound itself untested")
 DOOR_LEAVE = _t("DOOR_LEAVE", 0.17, "m", "chosen from one measurement (11-11, T05 / T20 cabinet_4): let go, the "
                 "hinge swings on after the hand (-1.381 -> -1.406 rad); 12 cm back left a finger 1 mm in the door, "
                 "14 cm was free (the old path's leave, skills._move_articulated); 3 cm more for other doors")
@@ -189,6 +209,11 @@ RIDE_DONE_REV = _t("RIDE_DONE_REV", 0.02, "rad", "inherited (skills._ride's): a 
 RIDE_DONE_PRIS = _t("RIDE_DONE_PRIS", 0.006, "m", "inherited: ...a slide")
 RIDE_OVERSHOOT = _t("RIDE_OVERSHOOT", 0.02, "rad / m", "inherited (skills._ride's): the ride's script runs this "
                     "far past the goal (the ride commands up to it)")
+PUSH_DONE_TOL = _t("PUSH_DONE_TOL", 0.01, "m", "inherited (skills' old push): an object pushed to within this of "
+                   "the distance asked is there -- no further leg (skill_jobs.slide.push_object)")
+PUSH_MOVED_MIN = _t("PUSH_MOVED_MIN", (0.01, 0.3), "m, 1", "inherited (skills' old push): a leg that moved the "
+                    "object less than min(0.01, 0.3 of the leg) did not move it (a short top-up leg is mostly "
+                    "approach: judged against its own length)")
 
 # --------------------------------------------------------------- the execution's arrived / stalled (rig)
 SETTLE_TCP = _t("SETTLE_TCP", 0.001, "m", "measured: a follow has arrived with the TCP this close to where q_cmd "

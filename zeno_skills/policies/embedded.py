@@ -74,6 +74,7 @@ class SlideToEdgePolicy(AtomicPolicy):
     """Move a flat item into a measured graspable overhang without grasping it."""
 
     def execute(self, name):
+        from ..skill_jobs.slide import push_object
         rig = self.rig
         if rig.held is not None:
             raise SkillFailure("slide to edge: right hand must be empty")
@@ -104,32 +105,28 @@ class SlideToEdgePolicy(AtomicPolicy):
                    max(fp[3], fp[3] + dy), support["z"] + 0.005, support["z"] + size[2]]
             if need > 0.012 and skills._overlaps_objects(rig, box, {name}, st, margin=0.01):
                 continue
-            choices.append((need, direction, target_overhang))
+            choices.append((need, direction))
         if not choices:
             raise SkillFailure(f"slide to edge: no graspable free edge of {support['name']}")
-        choices.sort(key=lambda item: item[0])
-        last = None
-        for need, direction, target_overhang in choices[:3]:
-            try:
-                if need > 0.012:
-                    skills.push(rig, name, support, direction, need + 0.005,
-                                label="SLIDE_TO_EDGE", enough=need)
-                st = rig.state()
-                b = rig.geo.bottom(name, st)
-                half = skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), direction)
-                overhang = float(direction @ b[:2]) + half - skills._edge_coord(support, direction)
-                if overhang < skills.EDGE_MIN_OVERHANG - 0.01:
-                    raise SkillFailure(f"slide to edge: only {overhang:.3f} m overhang")
-                if overhang > half - skills.COM_MARGIN + 0.015:
-                    raise SkillFailure("slide to edge: centre of mass may leave the support")
-                rig.log("slide_to_edge_result", obj=name, support=support["name"],
-                        overhang_m=round(overhang, 4), direction=direction.tolist())
-                return {"support": support["name"], "direction": direction.tolist(),
-                        "overhang_m": overhang}
-            except SkillFailure as exc:
-                last = exc
-                rig.log("slide_to_edge_retry", obj=name, reason=str(exc))
-        raise last
+        need, direction = min(choices, key=lambda item: item[0])
+        if need > 0.012:
+            # every free edge one goal of one push search, its cost how far it goes (docs/MOTION_ARCHITECTURE.md
+            # 7: every way of the task a goal -- no search per edge, no other edge after a failure)
+            direction, _ = push_object(rig, name, support, [(n, k + 0.005, k) for k, n in choices],
+                                       label="SLIDE_TO_EDGE")
+        # (else it already hangs over the nearest edge far enough: no push)
+        st = rig.state()
+        b = rig.geo.bottom(name, st)
+        half = skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), direction)
+        overhang = float(direction @ b[:2]) + half - skills._edge_coord(support, direction)
+        if overhang < skills.EDGE_MIN_OVERHANG - 0.01:
+            raise SkillFailure(f"slide to edge: only {overhang:.3f} m overhang")
+        if overhang > half - skills.COM_MARGIN + 0.015:
+            raise SkillFailure("slide to edge: centre of mass may leave the support")
+        rig.log("slide_to_edge_result", obj=name, support=support["name"],
+                overhang_m=round(overhang, 4), direction=direction.tolist())
+        return {"support": support["name"], "direction": direction.tolist(),
+                "overhang_m": overhang}
 
 
 class GraspArticulatedHandlePolicy(AtomicPolicy):

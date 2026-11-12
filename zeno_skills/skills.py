@@ -6,7 +6,6 @@ number comes from annotations/<scene>.json + annotations/assets.json.
     pick(rig, name)          pinch grasp (top / rim), or push-then-edge-pinch for
                              flat objects wider than the gripper; floor objects
                              with the torso lowered
-    push(rig, name, n, d)    slide an object along the support (fingers closed)
     place(rig, name, "in:<container>")        drop into a container
     place_on(rig, name, support, hint_xy)     free spot on a support surface
                              (edge-held flat objects go back over a free edge)
@@ -44,7 +43,6 @@ TCP_BACKOFF = 0.12   # the old handle paths' pre-grasp (_handle_targets); the do
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
-PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
 APPROACH_STEP = 0.003         # m between the waypoints of a reach-in / set-down straight (the search's plan and its execution)
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
@@ -966,18 +964,18 @@ def _surface_under(rig, name, st):
     return low if top is None else max(low, top)
 
 
-def _pads_clear_of(g, floor_z):
+def _pads_clear_of(g, floor_z, gap=PAD_FLOOR_GAP):
     """A top pinch's TCP raised, where needed, so the lowest corner of its open fingers as the
     planner has them (finger_model_box: the spheres' box, which holds the pad box; opened to
     g["pre_open"] per finger, in the pinch's orientation: a tilted one dips a corner) stays
-    PAD_FLOOR_GAP above the surface at floor_z (_surface_under)."""
+    ``gap`` (PAD_FLOOR_GAP) above the surface at floor_z (_surface_under; a push: SLIDE_PAD_GAP)."""
     w = float(g["pre_open"])
     half_w, y_in, y_out, tip = finger_model_box()
     corners = np.array([[sx * half_w, sy * (w + t), -tip]
                         for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
     low = float((corners @ np.asarray(g["R"], float).T)[:, 2].min())
     p = np.asarray(g["p"], float).copy()
-    p[2] = max(p[2], floor_z + PAD_FLOOR_GAP - low)
+    p[2] = max(p[2], floor_z + gap - low)
     return p
 
 
@@ -1081,87 +1079,6 @@ def _pick_judged(rig, name, g, tcp0, pos):
         raise clearing(SkillFailure(f"pick {name}: not held (lift {lift:.3f} m, hand {rise:.3f} m)"), 0.04,
                        leave=False)
     return True
-
-
-def push(rig, name, s, n, distance, label="PUSH", enough=None, *, mode=None):
-    """Slide ``name`` by ``distance`` along the horizontal unit vector n on
-    support s: fingers closed and pointing down, pads just above the surface,
-    starting behind the object; when nothing reaches behind it (back of a
-    counter against a wall) drag it instead, pads pressed on its top.  Legs of
-    at most PUSH_SEG; the base re-parks between legs.  Returns the distance
-    actually moved (measured).  Stops early once ``enough`` has been moved:
-    every extra leg re-parks the base next to an object that may overhang."""
-    if mode not in (None, "push", "drag"):
-        raise ValueError(f"unknown contact mode: {mode}")
-    geo = rig.geo
-    size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-    b0 = geo.bottom(name, rig.state())
-    moved = 0.0
-    lat = _perp(n)
-    # Closed fingers push equally well whichever way they would close; the arm
-    # can reach some of these wrist yaws and not others from a given side.
-    R_options = [gripper_rot([0, 0, -1.0], [d[0], d[1], 0.0]) for d in (lat, -lat, n, -n)]
-    z = s["z"] + 0.03                   # pad bottom ~5 mm above the surface
-    while moved < distance - 0.01 and (enough is None or moved < enough):
-        st = rig.state()
-        b = geo.bottom(name, st)
-        h = _half_along(size, _yaw(st["objects"][name]["quat"]), n)
-        d = min(PUSH_SEG, distance - moved)
-        start = b[:2] - n * (h + 0.035)
-        def _push_legs(R):
-            return [(np.r_[start, z + 0.10], R), (np.r_[start, z], R), (np.r_[start + n * (d + 0.025), z], R),
-                    (np.r_[start + n * (d + 0.025), z + 0.10], R)]
-        # Drag with the closed fingertips pressing into the top near the leading
-        # rim. The TCP is about 2 cm above the pad tip; a higher target only
-        # brushes the object and produces no measurable drag.
-        # used when nothing can reach behind the object (back of a counter)
-        top = b[2] + size[2] - 0.004 + 0.010
-        grab = b[:2] + n * max(0.0, h - 0.03)
-        drag_travel = d + 0.025  # fingertip skid: compensate with measured-motion loop
-        def _drag_legs(R):
-            return [(np.r_[grab, top + 0.08], R), (np.r_[grab, top], R),
-                    (np.r_[grab + n * drag_travel, top], R),
-                    (np.r_[grab + n * drag_travel, top + 0.08], R)]
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park, selected_mode, legs = None, None, None
-        candidates = [(m, f(R)) for m, f in (("push", _push_legs), ("drag", _drag_legs)) for R in R_options]
-        # the neighbours are obstacles for the hand and the fingers: find_park checks every leg's
-        # straight path, so the contact legs below (run without collision checks) miss them too
-        with contact_obstacles(rig, name, label):
-            for candidate_mode, cand_legs in candidates:
-                if mode is not None and candidate_mode != mode:
-                    continue
-                park = find_park(rig.kin, rig.world, cand_legs, near=rig.base_pose(), max_tries=60,
-                                 q_start=rig.q_cmd, travel_q=_travel_q(rig))
-                if park is not None:
-                    selected_mode, legs = candidate_mode, cand_legs
-                    break
-            if park is None:
-                raise ContactUnreachable(f"push {name}: no base pose reaches {mode or 'a push or a drag'} "
-                                         f"clear of its neighbours")
-            rig.log("push_park", obj=name, mode=selected_mode, dir=n.round(3).tolist(), d=round(d, 3),
-                    park=[round(v, 3) for v in park[:3]])
-            rig.caption = f"{label} {name}: " + ("go behind it" if selected_mode == "push" else "press on it to drag")
-            rig.focus_z = s["z"]
-            _goto_park(rig, park)
-            rig.kin.coll_kw = {"ignore_fingers": True}
-            rig.grip(0.0, 30)
-            rig.move_to(*legs[0], step=0.02, label="push_above", q_hint=park[3][0])
-        rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{selected_mode}_down", allow=LEGACY)
-        rig.caption = f"{label} {name}: " + ("slide along the surface" if selected_mode == "push" else "drag it along")
-        rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="push_slide", allow=LEGACY)
-        rig.move_to(*legs[3], step=0.01, label="push_up", allow=LEGACY)
-        b2 = geo.bottom(name, rig.state())
-        step_moved = float(n @ (b2[:2] - b[:2]))
-        moved = float(n @ (b2[:2] - b0[:2]))
-        rig.log("push_result", obj=name, moved=round(step_moved, 3), total=round(moved, 3))
-        # a short top-up leg is mostly approach: judge it against its own length
-        if step_moved < min(0.01, 0.3 * d):
-            raise SkillFailure(f"push {name}: object did not move")
-    rig.focus_z = None
-    rig.grip(0.04, 40)            # leave the hand open for whatever comes next
-    return moved
 
 
 def _lowest_z(rig, name, st):
