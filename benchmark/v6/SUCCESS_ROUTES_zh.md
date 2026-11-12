@@ -2240,24 +2240,74 @@
 
 **指令**：用海绵把厨房岛台擦一下。岛台上孩子的玩具收进客厅里孩子的玩具箱，厨房的东西留在岛台上。擦完把海绵留在岛台上。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `duck`：
-  - `kitchen_island/top` 擦过
-  - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
-  - `wooden_block_a` 在 `toy_box` 里
-  - `rubber_duck` 在 `toy_box` 里
-  - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
-  - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
-- 摆法 `blocks`：
-  - `kitchen_island/top` 擦过
-  - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
-  - `wooden_block_a` 在 `toy_box` 里
-  - `wooden_block_b` 在 `toy_box` 里
-  - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
-  - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- **好（1.0）**：
+
+  - 摆法 `duck`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 在 `kitchen_island/top` 上
+    - 手里空着
+    - `wooden_block_a` 在 `toy_box` 里
+    - `rubber_duck` 在 `toy_box` 里
+    - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+  - 摆法 `blocks`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 在 `kitchen_island/top` 上
+    - 手里空着
+    - `wooden_block_a` 在 `toy_box` 里
+    - `wooden_block_b` 在 `toy_box` 里
+    - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- **次好（0.6）**：
+
+  - 摆法 `duck`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+    - `wooden_block_a` 在 `toy_box` 里
+    - `rubber_duck` 在 `toy_box` 里
+    - `rolling_pin` 在 `kitchen_island/top` 上
+    - `soda_can` 在 `kitchen_island/top` 上
+    - `mug` 在 `kitchen_island/top` 上
+    - `oatmeal` 在 `kitchen_island/top` 上
+    - `paperback_book` 在 `kitchen_island/top` 上
+    - `breakfast_spoon` 在 `kitchen_island/top` 上
+    - `juice_bottle` 在 `kitchen_island/top` 上
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+  - 摆法 `blocks`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+    - `wooden_block_a` 在 `toy_box` 里
+    - `wooden_block_b` 在 `toy_box` 里
+    - `rolling_pin` 在 `kitchen_island/top` 上
+    - `soda_can` 在 `kitchen_island/top` 上
+    - `mug` 在 `kitchen_island/top` 上
+    - `oatmeal` 在 `kitchen_island/top` 上
+    - `paperback_book` 在 `kitchen_island/top` 上
+    - `breakfast_spoon` 在 `kitchen_island/top` 上
+    - `juice_bottle` 在 `kitchen_island/top` 上
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- **最不好（0.3）**：
+
+  - 摆法 `duck`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+    - `["not on", "wooden_block_a", "kitchen_island/top"]`
+    - `["not on", "rubber_duck", "kitchen_island/top"]`
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+  - 摆法 `blocks`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+    - `["not on", "wooden_block_a", "kitchen_island/top"]`
+    - `["not on", "wooden_block_b", "kitchen_island/top"]`
+    - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- **不行（0）**：还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上
+
 
 **参考调用顺序**：
 

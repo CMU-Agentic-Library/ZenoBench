@@ -69829,6 +69829,274 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the toys in the toy box, the kitchen things where they were and standing, the island wiped, the sponge on it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "wooden_block_b",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "all done, but the sponge left elsewhere, or kitchen things shifted on the island (still on it, standing)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "wooden_block_b",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "rubber_duck",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the toys off the island but not in the box, or a kitchen thing put in the box or taken off the island too (sorted wrong)"
+       }
+      ],
+      "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; the sponge still held or dropped on the floor"
      }
     },
     "wipe_and_sort__duck": {
@@ -70169,6 +70437,274 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the toys in the toy box, the kitchen things where they were and standing, the island wiped, the sponge on it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "wooden_block_b",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "all done, but the sponge left elsewhere, or kitchen things shifted on the island (still on it, standing)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "wooden_block_b",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "rubber_duck",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the toys off the island but not in the box, or a kitchen thing put in the box or taken off the island too (sorted wrong)"
+       }
+      ],
+      "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; the sponge still held or dropped on the floor"
      }
     },
     "return_sponge_home__dining": {
@@ -72135,6 +72671,274 @@
       "17": "wipe_and_sort__duck",
       "18": "wipe_and_sort__duck",
       "19": "wipe_and_sort__blocks"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the toys in the toy box, the kitchen things where they were and standing, the island wiped, the sponge on it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "wooden_block_b",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "wooden_block_a",
+             "toy_box"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "toy_box"
+            ],
+            [
+             "on",
+             "rolling_pin",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "soda_can",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "mug",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "oatmeal",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "paperback_book",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "breakfast_spoon",
+             "kitchen_island/top"
+            ],
+            [
+             "on",
+             "juice_bottle",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "all done, but the sponge left elsewhere, or kitchen things shifted on the island (still on it, standing)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "wipe_and_sort__blocks": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "wooden_block_b",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          },
+          "wipe_and_sort__duck": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on",
+             "wooden_block_a",
+             "kitchen_island/top"
+            ],
+            [
+             "not on",
+             "rubber_duck",
+             "kitchen_island/top"
+            ],
+            [
+             "upright",
+             "soda_can"
+            ],
+            [
+             "upright",
+             "mug"
+            ],
+            [
+             "upright",
+             "juice_bottle"
+            ],
+            [
+             "upright",
+             "oatmeal"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the toys off the island but not in the box, or a kitchen thing put in the box or taken off the island too (sorted wrong)"
+       }
+      ],
+      "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; the sponge still held or dropped on the floor"
      }
     },
     "return_sponge_home": {
