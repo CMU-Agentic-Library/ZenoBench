@@ -646,7 +646,7 @@ def _soup_steps(design: str, not_ok: str):
         lays = task["v6_variants"][design]["layouts"]
         second, worst = {}, {}
         for lid in lays:
-            g = task["variants"][lid]["goal"]
+            g = task["variants"][lid].get("goal") or task["goal"]      # a layout without its own: the task's
             steps = [a for a in g["all"] if a[0] in ("stirred", "covered")]
             base = [a for a in g["all"] if a[0] not in ("stirred", "covered")]
             groups = g.get("any") or [[]]
