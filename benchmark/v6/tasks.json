@@ -54862,6 +54862,40 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "squared"
+         ]
+        },
+        "why": "all three at the front and apart, but one or more askew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "squared",
+          "front_visible",
+          "clear_of"
+         ]
+        },
+        "why": "all three on the cabinet, but touching or at the back"
+       }
+      ],
+      "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or dropped"
      }
     },
     "display_row__spread": {
@@ -55293,6 +55327,40 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "squared"
+         ]
+        },
+        "why": "all three at the front and apart, but one or more askew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "squared",
+          "front_visible",
+          "clear_of"
+         ]
+        },
+        "why": "all three on the cabinet, but touching or at the back"
+       }
+      ],
+      "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or dropped"
      }
     },
     "display_spot_or_tv__front_taken": {
@@ -58114,6 +58182,40 @@
       "17": "display_row__island_floor",
       "18": "display_row__island_floor",
       "19": "display_row__island_floor"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "squared"
+         ]
+        },
+        "why": "all three at the front and apart, but one or more askew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "squared",
+          "front_visible",
+          "clear_of"
+         ]
+        },
+        "why": "all three on the cabinet, but touching or at the back"
+       }
+      ],
+      "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or dropped"
      }
     },
     "display_spot_or_tv": {

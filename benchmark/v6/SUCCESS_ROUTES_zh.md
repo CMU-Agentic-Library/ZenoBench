@@ -1733,21 +1733,43 @@
 
 **指令**：把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-- `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-- `floor_block` 在 `kitchen_cabinet_6/top` 上
-- `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
-- `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
-- `floor_block` 摆正（和台面边平行，偏差不超过 5°）
-- `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-- `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
-- `floor_block` 从房间里看得见（前面没有更高的东西挡着）
-- `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
-- `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
-- `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
-- 手里空着
+- **好（1.0）**：
+
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+  - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+  - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+  - 手里空着
+- **次好（0.6）**：
+
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
+  - 手里空着
+- **不行（0）**：只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 

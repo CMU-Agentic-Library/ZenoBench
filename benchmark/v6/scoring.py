@@ -413,6 +413,18 @@ SCORING[("T05", "x6_gd_pen_or_pencil_cabinets")] = {"D": 1, "tiers": [
      "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"}],
     "not_ok": "no pen or pencil on the desk; still held or dropped"}
 
+# T06 display_row: three blocks in a row on the low cabinet, squared, at the front, apart.  Not squared is the
+# second tier; touching or at the back (squared or not) the worst (user 11-11)
+SCORING[("T06", "display_row")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["squared"]},
+     "why": "all three at the front and apart, but one or more askew"},
+    {"name": "worst", "score": 0.3, "goal": {"drop": ["squared", "front_visible", "clear_of"]},
+     "why": "all three on the cabinet, but touching or at the back"}],
+    "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or "
+              "dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -528,5 +540,6 @@ NOT_OK_ZH = {
     ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
+    ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
