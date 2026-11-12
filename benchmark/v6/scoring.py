@@ -638,6 +638,30 @@ def _which_surface(task: dict) -> dict:
          "why": "both wiped (the clean one too, against \"leave it\")"}],
         "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"}
 
+
+def _soup_steps(design: str, not_ok: str):
+    """T09: the soup's side steps (stir, cover) are tiers: one missed is the second tier, both the worst; the
+    tomatoes in the pot at 60 C and the stove off are the task (user 11-11)."""
+    def build(task: dict) -> dict:
+        lays = task["v6_variants"][design]["layouts"]
+        second, worst = {}, {}
+        for lid in lays:
+            g = task["variants"][lid]["goal"]
+            steps = [a for a in g["all"] if a[0] in ("stirred", "covered")]
+            base = [a for a in g["all"] if a[0] not in ("stirred", "covered")]
+            groups = g.get("any") or [[]]
+            worst[lid] = {"all": base, **({"any": g["any"]} if g.get("any") else {})}
+            second[lid] = {"all": base, "any": [grp + [st] for grp in groups for st in steps]}
+        return {"D": 1, "tiers": [
+            {"name": "best", "score": 1.0, "goal": None,
+             "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"},
+            {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+             "why": "the soup made and the stove off, but not stirred or not covered"},
+            {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+             "why": "the soup made and the stove off, but neither stirred nor covered"}],
+            "not_ok": not_ok}
+    return build
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -648,7 +672,9 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T06", "seen_from_bed"): _seen_from_bed,
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,
          ("T08", "wipe_and_sort"): _wipe_and_sort,
-         ("T08", "which_surface"): _which_surface}
+         ("T08", "which_surface"): _which_surface,
+         ("T09", "lid_off"): _soup_steps("lid_off", "one tomato only; below 60 C; the stove left on; a tomato out of "
+                                                    "the pot; still held or dropped")}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -773,5 +799,6 @@ NOT_OK_ZH = {
     ("T08", "wipe_and_sort"): "还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上",
     ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",
+    ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
