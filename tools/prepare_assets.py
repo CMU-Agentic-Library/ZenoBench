@@ -60,6 +60,13 @@ SPECS = {
 }
 # rest these with the thinnest axis vertical and the longest along x
 SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the side
+# solids v6 puts inside its kitchen cabinets: a top pinch's wrist does not fit under the shelf above
+# (T02's block: the forearm 5 cm into cabinet_4's top panel at every reach-in start), so they are
+# pinched from the side as well (side_pinches)
+SIDE_PINCH_EXTRA = {"wooden_block", "soda_can", "snack_carton"}
+# rad a side pinch's approach dips below level, the first that fits (side_pinches): level, else
+# enough to lift the palm off the surface for a 4 cm block (the TCP 43 mm up level, 26 mm dipped 15 degrees)
+SIDE_PINCH_TILTS = (0.0, 0.3)
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 # lay-flat assets whose generated mesh is too thick: resting height (m); the
 # footprint keeps the uniform scale from SPECS
@@ -201,6 +208,48 @@ def palm_floor(v, bottom_z, tcp_xy, close_yaws, gap):
     return need
 
 
+def side_pinches(ext, top, round_width=None, offset_xy=(0.0, 0.0)):
+    """Side pinch entries (annotations.side_pinch_rot) of a solid ``top`` m tall: round (``round_width``
+    across, every 30 degrees) or a box of extents ``ext`` (from the faces whose other two are at most
+    PINCH_MAX apart).  The first of SIDE_PINCH_TILTS that fits, from the planner's hand (its palm
+    and camera spheres, palm_spheres; its fingers, finger_model_box): the TCP height -- half way up
+    the object's upper part as before, raised until the palm stays LEAVE_GAP and the pads
+    PAD_FLOOR_GAP above the surface the object stands on; a tilt does not fit when that leaves less
+    than half a pad on the object -- and how deep inside the near face the TCP may go with the palm
+    LEAVE_GAP outside it (the spheres that reach down below the object's top: the camera rides
+    above a block)."""
+    from zeno_skills.annotations import side_pinch_rot
+    from zeno_skills.kinematics import PAD_HALF_WIDTH, finger_model_box
+    from zeno_skills.rig import LEAVE_GAP
+    from zeno_skills.skills import PAD_FLOOR_GAP
+    S = palm_spheres()
+    half_w, y_in, y_out, tip = finger_model_box()
+    if round_width is not None:
+        faces = [(list(range(0, 360, 30)), round(float(round_width), 4), True)]
+    else:
+        faces = [(azs, round(float(w), 4), False) for azs, w in (([0, 180], ext[1]), ([90, 270], ext[0]))
+                 if w <= PINCH_MAX]
+    out = []
+    for azs, w, rnd in faces:
+        pre_open = float(min(0.04, w / 2 + 0.012))
+        corners = np.array([[sx * half_w, sy * (pre_open + t), -tip]
+                            for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+        for t in SIDE_PINCH_TILTS:
+            R = side_pinch_rot([1.0, 0.0, 0.0], t)          # the hand on +x of the TCP
+            palm = S[:, :3] @ R.T
+            floor = max(float((S[:, 3] - palm[:, 2]).max()) + LEAVE_GAP,
+                        float(-(corners @ R.T)[:, 2].min()) + PAD_FLOOR_GAP)
+            h = max(float(min(max(0.55 * top, 0.04), top - 0.03)), floor)
+            if h > top - 0.5 * PAD_HALF_WIDTH:
+                continue
+            low = palm[:, 2] - S[:, 3] + h < top
+            out.append({"type": "side_pinch", "width": w, "offset_xy": [float(v) for v in offset_xy],
+                        "pre_open": pre_open, "azimuths_deg": azs, "round": rnd, "tilt": t, "height": round(h, 4),
+                        "depth": round(float((palm[low, 0] - S[low, 3]).min()) - LEAVE_GAP, 4)})
+            break
+    return out
+
+
 def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     """Grasp primitives in the object frame (origin = bbox centre of the
     bottom face, z up).  Consumed by zeno_skills.annotations.grasp_poses."""
@@ -278,9 +327,11 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
         # lying on its side it gets the top pinch across it).
         if out[-1].get("round") and top > SIDE_PINCH_MIN_H:
             tp = out.pop()
-            out.append({"type": "side_pinch", "width": tp["width"], "offset_xy": tp["offset_xy"],
-                        "height": float(min(max(0.55 * top, 0.04), top - 0.03)),
-                        "pre_open": tp["pre_open"], "azimuths_deg": list(range(0, 360, 30))})
+            out += side_pinches(ext, top, tp["width"], tp["offset_xy"])
+        elif name in SIDE_PINCH_EXTRA:
+            tp = out[-1]
+            out += side_pinches(ext, top, tp["width"], tp["offset_xy"]) if tp.get("round") else \
+                side_pinches(ext, float(ext[2]))
     # crown pinch: when no full-height slab fits, pinch only the top CROWN
     # metres (what the 5 cm pads span when the TCP sits 2.2 cm below the top):
     # the head of a plush toy, a knob, a lid handle.  Below the crown the

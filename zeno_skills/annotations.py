@@ -6,9 +6,11 @@ annotations/assets.json  (per asset type, object frame; tools/prepare_assets.py)
       rim_pinch        round container: pinch the wall at the rim (azimuth, tilt)
       rim_pinch_rect   rectangular container rim
       top_pinch        vertical approach, fingers across the narrowest width
-      side_pinch       tall round object: horizontal approach toward its axis at ``height``,
-                       fingers across the diameter, from every 30 degrees; lying on its side,
-                       the top pinch across it instead
+      side_pinch       from the side (side_pinch_rot): a tall round object (every 30 degrees,
+                       fingers across the diameter) or a box (from two opposite faces, fingers
+                       across the other two), its approach ``tilt`` rad below level, its TCP
+                       ``height`` above the bottom and at most ``depth`` inside the near face;
+                       lying on its side, the top pinch across it instead
       thickness_pinch  flat & wider than the gripper: horizontal approach from outside one of its
                        four sides, the pads above and below it across its thickness, ``depth``
                        inside the side.  Below it is its support: only a side that overhangs the
@@ -42,6 +44,17 @@ def axis_rot(axis, a):
     from scipy.spatial.transform import Rotation
     axis = np.asarray(axis, float)
     return Rotation.from_rotvec(axis / np.linalg.norm(axis) * a).as_matrix()
+
+
+def side_pinch_rot(d, tilt):
+    """The TCP frame of a side pinch from horizontal ``d`` (the hand comes in along -d), its approach
+    dipped ``tilt`` rad below level, the fingers closing horizontally across d.  The closing sign
+    puts the palm and the wrist camera above the TCP, not below: the hand clears the surface the
+    object stands on with the TCP 43 mm up, against 73 mm the other way (tools/prepare_assets.py
+    side_pinches)."""
+    d = np.asarray(d, float)
+    appr = -math.cos(tilt) * d - math.sin(tilt) * np.array([0.0, 0.0, 1.0])
+    return gripper_rot(appr, -np.cross([0.0, 0.0, 1.0], d))
 
 
 class SceneAnnotations:
@@ -134,6 +147,8 @@ class SceneAnnotations:
         lying = body_quat_wxyz is not None and _tilted(body_quat_wxyz)
         for g in a["grasps"]:
             if g["type"] == "side_pinch" and lying:
+                if any(h["type"] == "top_pinch" for h in a["grasps"]):
+                    continue                 # its top pinch gives the pinches across it
                 # a tall bottle on its side: pinched across it from above, like a lying top pinch
                 if kinds and "side_pinch" not in kinds and "top_pinch" not in kinds:
                     continue
@@ -172,11 +187,16 @@ class SceneAnnotations:
                 out += self._lying_pinches(g, a, body_pos, body_quat_wxyz)
                 continue
             elif g["type"] == "side_pinch":
-                p = bottom + rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0] + np.array([0, 0, g["height"]])
-                for az in g.get("azimuths_deg", range(0, 360, 30)):
-                    d = np.array([math.cos(math.radians(az) + yaw), math.sin(math.radians(az) + yaw), 0.0])
-                    out.append({"kind": "side_pinch", "p": p, "R": gripper_rot(-d, np.cross([0.0, 0.0, 1.0], d)),
-                                "pre_open": g["pre_open"], "azimuth": az})
+                axis = bottom + rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0]
+                for az in g["azimuths_deg"]:
+                    a_ = math.radians(az)
+                    d = np.array([math.cos(a_ + yaw), math.sin(a_ + yaw), 0.0])
+                    # the near face's distance from the axis: the radius, or the box's half extent along d
+                    half = 0.5 * float(g["width"]) if g.get("round") else \
+                        0.5 * (abs(math.cos(a_)) * float(a["size"][0]) + abs(math.sin(a_)) * float(a["size"][1]))
+                    p = axis + d * max(0.0, half - g["depth"]) + np.array([0.0, 0.0, g["height"]])
+                    out.append({"kind": "side_pinch", "p": p, "R": side_pinch_rot(d, g["tilt"]),
+                                "pre_open": g["pre_open"], "azimuth": az, "tilt": g["tilt"]})
                 continue
             elif g["type"] == "top_pinch":
                 off = rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0]

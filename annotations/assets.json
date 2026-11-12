@@ -1147,6 +1147,33 @@
     "height": 0.09271613948021451,
     "pre_open": 0.04,
     "round": true
+   },
+   {
+    "type": "side_pinch",
+    "width": 0.0656,
+    "offset_xy": [
+     0.0,
+     -0.0
+    ],
+    "pre_open": 0.04,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "round": true,
+    "tilt": 0.0,
+    "height": 0.066,
+    "depth": 0.024
    }
   ],
   "usd": "usd/assets/soda_can.usd",
@@ -1184,6 +1211,23 @@
     ],
     "height": 0.14440200975014866,
     "pre_open": 0.04
+   },
+   {
+    "type": "side_pinch",
+    "width": 0.06,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "pre_open": 0.04,
+    "azimuths_deg": [
+     90,
+     270
+    ],
+    "round": false,
+    "tilt": 0.0,
+    "height": 0.0935,
+    "depth": 0.024
    }
   ],
   "usd": "usd/assets/snack_carton.usd",
@@ -1349,7 +1393,6 @@
      0.0,
      0.0
     ],
-    "height": 0.099,
     "pre_open": 0.04,
     "azimuths_deg": [
      0,
@@ -1364,7 +1407,11 @@
      270,
      300,
      330
-    ]
+    ],
+    "round": true,
+    "tilt": 0.0,
+    "height": 0.099,
+    "depth": 0.024
    }
   ],
   "usd": "usd/assets/juice_bottle.usd",
@@ -1954,13 +2001,47 @@
    {
     "type": "top_pinch",
     "close_yaw": 1.5707963267948966,
-    "width": 0.03999734411837344,
+    "width": 0.03999734411837345,
     "offset_xy": [
      0.0,
      0.0
     ],
     "height": 0.01999996751745241,
-    "pre_open": 0.03199867205918672
+    "pre_open": 0.031998672059186724
+   },
+   {
+    "type": "side_pinch",
+    "width": 0.04,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "pre_open": 0.032,
+    "azimuths_deg": [
+     0,
+     180
+    ],
+    "round": false,
+    "tilt": 0.3,
+    "height": 0.0266,
+    "depth": 0.0212
+   },
+   {
+    "type": "side_pinch",
+    "width": 0.04,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "pre_open": 0.032,
+    "azimuths_deg": [
+     90,
+     270
+    ],
+    "round": false,
+    "tilt": 0.3,
+    "height": 0.0266,
+    "depth": 0.0212
    }
   ],
   "usd": "usd/assets/wooden_block.usd",
