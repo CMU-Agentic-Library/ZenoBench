@@ -617,6 +617,27 @@ SCORING[("T08", "return_sponge_home")] = {"D": 1, "tiers": [
      "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"}],
     "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"}
 
+# T08 which_surface: breakfast at the island or the dining table (seed); wipe only the used one, the sponge left on
+# the island.  The sponge elsewhere is the second tier; both wiped the worst (user 11-11)
+def _which_surface(task: dict) -> dict:
+    lays = task["v6_variants"]["which_surface"]["layouts"]
+    second, worst = {}, {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]["all"]
+        used = next(a for a in g if a[0] == "wiped")
+        clean = next(a for a in g if a[0] == "not wiped")
+        tail = [["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]
+        second[lid] = {"all": [used, clean, *tail]}
+        worst[lid] = {"all": [used, *tail]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "only the used surface wiped, the sponge on the island"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "only the used surface wiped, the sponge left elsewhere"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "both wiped (the clean one too, against \"leave it\")"}],
+        "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -626,7 +647,8 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T06", "display_spot_or_tv"): _display_spot_or_tv,
          ("T06", "seen_from_bed"): _seen_from_bed,
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,
-         ("T08", "wipe_and_sort"): _wipe_and_sort}
+         ("T08", "wipe_and_sort"): _wipe_and_sort,
+         ("T08", "which_surface"): _which_surface}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -750,5 +772,6 @@ NOT_OK_ZH = {
     ("T08", "far_sponge_tv"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "wipe_and_sort"): "还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上",
     ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
+    ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

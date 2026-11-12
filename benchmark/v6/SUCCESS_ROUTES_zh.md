@@ -2357,18 +2357,44 @@
 
 **指令**：早饭是在岛台或者餐桌上吃的。用海绵把吃过饭的那个擦一下；另一个是干净的，别擦。擦完把海绵留在岛台上。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `dining`：
-  - `dining_table_2/top` 擦过
-  - `kitchen_island/top` 没擦过
-  - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
-- 摆法 `island`：
-  - `kitchen_island/top` 擦过
-  - `dining_table_2/top` 没擦过
-  - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
+- **好（1.0）**：
+
+  - 摆法 `dining`：
+    - `dining_table_2/top` 擦过
+    - `kitchen_island/top` 没擦过
+    - `kitchen_sponge` 在 `kitchen_island/top` 上
+    - 手里空着
+  - 摆法 `island`：
+    - `kitchen_island/top` 擦过
+    - `dining_table_2/top` 没擦过
+    - `kitchen_sponge` 在 `kitchen_island/top` 上
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `dining`：
+    - `dining_table_2/top` 擦过
+    - `kitchen_island/top` 没擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+  - 摆法 `island`：
+    - `kitchen_island/top` 擦过
+    - `dining_table_2/top` 没擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+- **最不好（0.3）**：
+
+  - 摆法 `dining`：
+    - `dining_table_2/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+  - 摆法 `island`：
+    - `kitchen_island/top` 擦过
+    - `kitchen_sponge` 不在地上
+    - 手里空着
+- **不行（0）**：只擦了干净的那张；都没擦；海绵还拿着或掉在地上
+
 
 **参考调用顺序**：
 

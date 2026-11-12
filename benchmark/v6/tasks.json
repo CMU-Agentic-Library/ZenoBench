@@ -71753,6 +71753,108 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the used surface wiped, the sponge on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "only the used surface wiped, the sponge left elsewhere"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both wiped (the clean one too, against \"leave it\")"
+       }
+      ],
+      "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"
      }
     },
     "which_surface__dining": {
@@ -72015,6 +72117,108 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the used surface wiped, the sponge on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "only the used surface wiped, the sponge left elsewhere"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both wiped (the clean one too, against \"leave it\")"
+       }
+      ],
+      "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"
      }
     }
    },
@@ -73266,6 +73470,108 @@
       "17": "which_surface__dining",
       "18": "which_surface__island",
       "19": "which_surface__dining"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "only the used surface wiped, the sponge on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "only the used surface wiped, the sponge left elsewhere"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "which_surface__island": {
+           "all": [
+            [
+             "wiped",
+             "kitchen_island/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_surface__dining": {
+           "all": [
+            [
+             "wiped",
+             "dining_table_2/top"
+            ],
+            [
+             "not on_floor",
+             "kitchen_sponge"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both wiped (the clean one too, against \"leave it\")"
+       }
+      ],
+      "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"
      }
     }
    },
