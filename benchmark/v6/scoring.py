@@ -565,6 +565,11 @@ SCORING[("T08", "sponge_on_island")] = {"D": 1, "tiers": [
      "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
      "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"}],
     "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"}
+# T08 far_sponge_tv: the sponge on the TV stand or the dining table, found first; tiers as the control (back where it
+# was found is elsewhere too: the instruction says the island)
+SCORING[("T08", "far_sponge_tv")] = {**SCORING[("T08", "sponge_on_island")],
+                                     "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still "
+                                               "held or dropped on the floor"}
 
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
@@ -695,5 +700,6 @@ NOT_OK_ZH = {
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
     ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",
+    ("T08", "far_sponge_tv"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

@@ -69292,6 +69292,39 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge back on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "far_sponge_tv__alt_dining_table_2": {
@@ -69435,6 +69468,39 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge back on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "wipe_and_sort__blocks": {
@@ -72015,7 +72081,40 @@
       "18": "far_sponge_tv__alt_dining_table_2",
       "19": "far_sponge_tv__alt_dining_table_2"
      },
-     "factor": "where the resource is to be found (seed extension)"
+     "factor": "where the resource is to be found (seed extension)",
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge back on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
+     }
     },
     "wipe_and_sort": {
      "origin": "v6",

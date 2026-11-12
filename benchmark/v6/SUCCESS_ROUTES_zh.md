@@ -2214,11 +2214,20 @@
 
 **情况**：从餐厅出发，海绵不在岛台 → 先找海绵
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `kitchen_island/top` 上
-- 手里空着
+- **好（1.0）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
+- **次好（0.6）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 不在地上
+  - 手里空着
+- **不行（0）**：没找到海绵；没擦或没擦完；海绵还拿着或掉在地上
+
 
 **参考调用顺序**：
 
