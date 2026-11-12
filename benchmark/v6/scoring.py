@@ -87,6 +87,10 @@ SCORING: dict[tuple[str, str], dict] = {
     # T05 e1_pencil_asked (control): the pen removed, the pencil on the bedroom bookcase
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
+    # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
+    ("T05", "no_pen_pencil_away"): only("the pencil on the study desk, the hand empty",
+                                        "the pencil not found; left elsewhere; something else brought instead; "
+                                        "still held or dropped"),
 }
 
 
@@ -428,5 +432,6 @@ NOT_OK_ZH = {
     ("T04", "two_guests"): "只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T04", "x6_gd_cup_in_cabinets"): "没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
+    ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
