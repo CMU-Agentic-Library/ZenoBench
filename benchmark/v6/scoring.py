@@ -71,6 +71,11 @@ SCORING: dict[tuple[str, str], dict] = {
     # T03 large_only (control): the wide bin on the TV stand is the only open container
     ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
                                 "one left out, put in a cabinet or drawer instead, still held or dropped"),
+    # T03 utensils_apart: the spoon out of view in another room, the wide bin in the bedroom the only open
+    # container; carrying the bin over first is fine (the goal only asks for the contents)
+    ("T03", "utensils_apart"): only("the rolling pin and the spoon both in the wide bin, the hand empty",
+                                    "one left out (the spoon not found); in a cabinet, drawer or on a table; "
+                                    "still held or dropped"),
 }
 
 
@@ -365,5 +370,6 @@ NOT_OK_ZH = {
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
+    ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

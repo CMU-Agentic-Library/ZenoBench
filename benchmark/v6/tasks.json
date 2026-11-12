@@ -41311,6 +41311,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+       }
+      ],
+      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped"
      }
     },
     "utensils_apart__counter": {
@@ -41558,6 +41570,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+       }
+      ],
+      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped"
      }
     }
    },
@@ -42980,6 +43004,18 @@
       "17": "utensils_apart__counter",
       "18": "utensils_apart__dining",
       "19": "utensils_apart__dining"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+       }
+      ],
+      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped"
      }
     }
    },
