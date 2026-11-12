@@ -674,7 +674,11 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T08", "wipe_and_sort"): _wipe_and_sort,
          ("T08", "which_surface"): _which_surface,
          ("T09", "lid_off"): _soup_steps("lid_off", "one tomato only; below 60 C; the stove left on; a tomato out of "
-                                                    "the pot; still held or dropped")}
+                                                    "the pot; still held or dropped"),
+         # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
+         # second tier too
+         ("T09", "lid_on_spoon_away"): _soup_steps("lid_on_spoon_away", "one tomato only; below 60 C; the stove "
+                                                   "left on; a tomato out of the pot; still held or dropped")}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -800,5 +804,6 @@ NOT_OK_ZH = {
     ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",
     ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

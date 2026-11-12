@@ -74167,6 +74167,194 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but neither stirred nor covered"
+       }
+      ],
+      "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
      }
     },
     "lid_on_spoon_away__alt_dining_table_2": {
@@ -74418,6 +74606,194 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but neither stirred nor covered"
+       }
+      ],
+      "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
      }
     },
     "pot_in_use__in_use": {
@@ -77904,7 +78280,195 @@
       "18": "lid_on_spoon_away",
       "19": "lid_on_spoon_away"
      },
-     "factor": "where the resource is to be found (seed extension)"
+     "factor": "where the resource is to be found (seed extension)",
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the tomatoes in the pot at 60 C, stirred, the lid on, the stove off"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "stirred",
+              "handled_cooking_pot"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but not stirred or not covered"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "lid_on_spoon_away": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_on_spoon_away__alt_dining_table_2": {
+           "all": [
+            [
+             "inside",
+             "cherry_tomato_1",
+             "handled_cooking_pot"
+            ],
+            [
+             "inside",
+             "cherry_tomato_2",
+             "handled_cooking_pot"
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_1",
+             60
+            ],
+            [
+             "temperature_at_least",
+             "cherry_tomato_2",
+             60
+            ],
+            [
+             "not heating",
+             "kitchen_stove"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the soup made and the stove off, but neither stirred nor covered"
+       }
+      ],
+      "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped"
+     }
     },
     "pot_in_use": {
      "origin": "v6",
