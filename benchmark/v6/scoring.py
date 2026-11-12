@@ -326,6 +326,18 @@ SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
      "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
     "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
 
+# T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
+# Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
+SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only "
+            "the pencil was"},
+    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"]]},
+     "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", "desk_1/top"], ["hand_empty", "right"]]},
+     "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
+    "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -433,5 +445,6 @@ NOT_OK_ZH = {
     ("T04", "x6_gd_cup_in_cabinets"): "没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
+    ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

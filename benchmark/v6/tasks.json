@@ -47521,6 +47521,54 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
      }
     },
     "check_desk_first__pencil_on_desk": {
@@ -47700,6 +47748,54 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
      }
     },
     "all_pens__two": {
@@ -52449,6 +52545,54 @@
       "17": "check_desk_first__pencil_on_desk",
       "18": "check_desk_first__pencil_on_desk",
       "19": "check_desk_first__pencil_on_desk"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
      }
     },
     "all_pens": {
