@@ -80,6 +80,10 @@ SCORING: dict[tuple[str, str], dict] = {
     # tests the mug as the stand-in), so either one, or both, is the task done
     ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
                                    "lying or upside down; on another cabinet, counter or table; still held or dropped"),
+    # T04 no_cup: no glass cup; the mug (island, TV stand or dining table) or any other mug in the house
+    ("T04", "no_cup"): only("any mug upright on the drinks corner, the hand empty (the detour is SPL's business)",
+                            "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; "
+                            "still held or dropped"),
 }
 
 
@@ -376,5 +380,6 @@ NOT_OK_ZH = {
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
     ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
+    ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

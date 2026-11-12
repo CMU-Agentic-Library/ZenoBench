@@ -952,25 +952,29 @@
 
 **情况**：家里没有杯子 → 用马克杯代替；马克杯不在眼前时先去找
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-  - 第 2 组：
-    - `mug` 在 `kitchen_cabinet_6/top` 上
-    - `mug` 立着
-  - 第 3 组：
-    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-    - `mug_dining_cabinet` 立着
-  - 第 4 组：
-    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-    - `mug_shelf` 立着
-  - 第 5 组：
-    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-    - `mug_counter` 立着
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+    - 第 2 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 3 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 4 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 5 组：
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了
+
 
 **参考调用顺序**：
 

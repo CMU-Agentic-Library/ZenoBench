@@ -43436,6 +43436,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "any mug upright on the drinks corner, the hand empty (the detour is SPL's business)"
+       }
+      ],
+      "not_ok": "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; still held or dropped"
      }
     },
     "no_cup_mug_away": {
@@ -43541,6 +43553,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "any mug upright on the drinks corner, the hand empty (the detour is SPL's business)"
+       }
+      ],
+      "not_ok": "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; still held or dropped"
      }
     },
     "no_cup_mug_away__alt_dining_table_2": {
@@ -43684,6 +43708,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "any mug upright on the drinks corner, the hand empty (the detour is SPL's business)"
+       }
+      ],
+      "not_ok": "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; still held or dropped"
      }
     },
     "clear_the_drinks_spot": {
@@ -46007,7 +46043,19 @@
       "18": "no_cup_mug_away__alt_dining_table_2",
       "19": "no_cup"
      },
-     "factor": "where the mug is (seed: on the island in view, on the TV stand or on the dining table, out of view)"
+     "factor": "where the mug is (seed: on the island in view, on the TV stand or on the dining table, out of view)",
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "any mug upright on the drinks corner, the hand empty (the detour is SPL's business)"
+       }
+      ],
+      "not_ok": "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; still held or dropped"
+     }
     },
     "clear_the_drinks_spot": {
      "origin": "v6",
