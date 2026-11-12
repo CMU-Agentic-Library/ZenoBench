@@ -45401,6 +45401,87 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
      }
     },
     "x6_gd_cup_in_cabinets__cup_in_6": {
@@ -45593,6 +45674,87 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
      }
     }
    },
@@ -46711,6 +46873,87 @@
       "17": "x6_gd_cup_in_cabinets__cup_in_6",
       "18": "x6_gd_cup_in_cabinets__cup_in_4",
       "19": "x6_gd_cup_in_cabinets__cup_in_6"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
      }
     }
    },

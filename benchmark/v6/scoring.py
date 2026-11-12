@@ -307,6 +307,18 @@ SCORING[("T04", "two_guests")] = {"D": 1, "tiers": [
     "not_ok": "one cup only (the second not found); a non-cup (the juice bottle) for the second; lying or upside "
               "down; elsewhere; still held or dropped"}
 
+# T04 x6_gd_cup_in_cabinets: a cup without a handle asked for, the glass cup in one of two closed low cabinets, the
+# mug in plain view.  A door left open is the second tier, the mug (a handle) the worst (user 11-11)
+SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the glass cup upright on the drinks spot, both cabinet doors closed"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+     "why": "the glass cup upright on the spot, but a cabinet door left open"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["hand_empty", "right"]], "any": [g for g in _CUP_ON_SPOT if g[0][1] != "cup_counter_b"]},
+     "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
+    "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -411,5 +423,6 @@ NOT_OK_ZH = {
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
     ("T04", "two_guests"): "只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了",
+    ("T04", "x6_gd_cup_in_cabinets"): "没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

@@ -1181,13 +1181,38 @@
 
 **指令**：有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-- `cup_counter_b` 立着
-- 手里空着
-- `kitchen_cabinet_6` 关着
-- `kitchen_cabinet_4` 关着
+- **好（1.0）**：
+
+  - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+  - `cup_counter_b` 立着
+  - 手里空着
+  - `kitchen_cabinet_6` 关着
+  - `kitchen_cabinet_4` 关着
+- **次好（0.6）**：
+
+  - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+  - `cup_counter_b` 立着
+  - 手里空着
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 2 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 3 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 4 组：
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 
