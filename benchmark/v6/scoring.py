@@ -557,6 +557,15 @@ SCORING[("T07", "two_portions")] = {"D": 1, "tiers": [
     "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still "
               "held or dropped"}
 
+# T08 sponge_on_island (control): the sponge on the island.  The sponge not put back on the island (but not on the
+# floor) is a small slip, the second tier (user 11-11)
+SCORING[("T08", "sponge_on_island")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None, "why": "the island wiped, the sponge back on the island"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
+     "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"}],
+    "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -685,5 +694,6 @@ NOT_OK_ZH = {
     ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
+    ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

@@ -69154,6 +69154,39 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge back on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+       }
+      ],
+      "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "far_sponge_tv": {
@@ -71928,6 +71961,39 @@
       "17": "sponge_on_island",
       "18": "sponge_on_island",
       "19": "sponge_on_island"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge back on the island"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+       }
+      ],
+      "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "far_sponge_tv": {
