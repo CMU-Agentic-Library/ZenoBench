@@ -62862,6 +62862,28 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C, in the microwave after taking the pot out or on the stove with the pot left in; the stove off, the microwave door closed, the pot not on the floor"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed either way, but the microwave door left open"
+       }
+      ],
+      "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "broken_oatmeal_away__alt_dining_table_2": {
@@ -65899,6 +65921,28 @@
       "17": "microwave_holds_pot",
       "18": "microwave_holds_pot",
       "19": "microwave_holds_pot"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "warmed to 40 C, in the microwave after taking the pot out or on the stove with the pot left in; the stove off, the microwave door closed, the pot not on the floor"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "warmed either way, but the microwave door left open"
+       }
+      ],
+      "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"
      }
     },
     "vessel_decides_appliance": {

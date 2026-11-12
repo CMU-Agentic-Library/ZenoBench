@@ -2002,13 +2002,23 @@
 
 **情况**：微波炉里放着带盖的汤锅，放不下碗（指令和任务本身一样，没提汤锅） → 改用灶台，微波炉门关好
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `oatmeal` 温度至少 40 °C
-- `kitchen_stove` 已经停止加热
-- `kitchen_microwave` 关着
-- `handled_cooking_pot` 不在地上
-- 手里空着
+- **好（1.0）**：
+
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 关着
+  - `handled_cooking_pot` 不在地上
+  - 手里空着
+- **次好（0.6）**：
+
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `handled_cooking_pot` 不在地上
+  - 手里空着
+- **不行（0）**：汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了
+
 
 **参考调用顺序**：
 

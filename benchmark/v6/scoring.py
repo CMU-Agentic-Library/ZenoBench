@@ -502,6 +502,17 @@ SCORING[("T07", "microwave_broken")] = {"D": 1, "tiers": [
     "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or "
               "dropped"}
 
+# T07 microwave_holds_pot: the soup pot fills the microwave, both burners free.  Taking the pot out and using the
+# microwave, or leaving it and using the stove, are both best; the microwave door left open the second tier; the
+# pot on the floor not ok (user 11-11)
+SCORING[("T07", "microwave_holds_pot")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "warmed to 40 C, in the microwave after taking the pot out or on the stove with the pot left in; the "
+            "stove off, the microwave door closed, the pot not on the floor"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+     "why": "warmed either way, but the microwave door left open"}],
+    "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -626,5 +637,6 @@ NOT_OK_ZH = {
     ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了",
     ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
+    ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
