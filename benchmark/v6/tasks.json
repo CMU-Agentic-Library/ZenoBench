@@ -59518,6 +59518,250 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "on the bedside bookcase in view of the pillow, the boxes untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "in view of the pillow, but the boxes moved to make room (still standing), or on another bedroom surface the kid sees, the boxes untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_3",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "upright",
+             "bedside_box_3"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"
+       }
+      ],
+      "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"
      }
     },
     "seen_from_bed__boxes_corner": {
@@ -59800,6 +60044,250 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "on the bedside bookcase in view of the pillow, the boxes untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "in view of the pillow, but the boxes moved to make room (still standing), or on another bedroom surface the kid sees, the boxes untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_3",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "upright",
+             "bedside_box_3"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"
+       }
+      ],
+      "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"
      }
     }
    },
@@ -61310,6 +61798,250 @@
       "17": "seen_from_bed__boxes_middle",
       "18": "seen_from_bed__boxes_middle",
       "19": "seen_from_bed__boxes_corner"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "on the bedside bookcase in view of the pillow, the boxes untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ],
+            [
+             [
+              "visible_from",
+              "wooden_block_a",
+              [
+               0.0,
+               -4.6,
+               1.2
+              ],
+              0.5
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "in view of the pillow, but the boxes moved to make room (still standing), or on another bedroom surface the kid sees, the boxes untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_3",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "upright",
+             "bedside_box_3"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "seen_from_bed__boxes_corner": {
+           "all": [
+            [
+             "on",
+             "wooden_block_a",
+             "bookcase_3/top"
+            ],
+            [
+             "near_start",
+             "bedside_box_1",
+             0.05
+            ],
+            [
+             "near_start",
+             "bedside_box_2",
+             0.05
+            ],
+            [
+             "upright",
+             "bedside_box_1"
+            ],
+            [
+             "upright",
+             "bedside_box_2"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"
+       }
+      ],
+      "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"
      }
     }
    },

@@ -1862,20 +1862,69 @@
 
 **指令**：孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `boxes_middle`：
-  - `wooden_block_a` 在 `bookcase_3/top` 上
-  - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-  - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-  - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
-  - 手里空着
-- 摆法 `boxes_corner`：
-  - `wooden_block_a` 在 `bookcase_3/top` 上
-  - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-  - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-  - `bedside_box_1`、`bedside_box_2` 立着
-  - 手里空着
+- **好（1.0）**：
+
+  - 摆法 `boxes_middle`：
+    - `wooden_block_a` 在 `bookcase_3/top` 上
+    - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
+    - 手里空着
+  - 摆法 `boxes_corner`：
+    - `wooden_block_a` 在 `bookcase_3/top` 上
+    - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+    - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+    - `bedside_box_1`、`bedside_box_2` 立着
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `boxes_middle`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 2 组：
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+  - 摆法 `boxes_corner`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+      - 第 2 组：
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+- **最不好（0.3）**：
+
+  - 摆法 `boxes_middle`：
+    - `wooden_block_a` 在 `bookcase_3/top` 上
+    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
+    - 手里空着
+  - 摆法 `boxes_corner`：
+    - `wooden_block_a` 在 `bookcase_3/top` 上
+    - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+    - `bedside_box_1`、`bedside_box_2` 立着
+    - 手里空着
+- **不行（0）**：放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了
+
 
 **参考调用顺序**：
 
