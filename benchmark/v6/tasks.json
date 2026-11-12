@@ -48006,6 +48006,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)"
+       }
+      ],
+      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped"
      }
     },
     "all_pens__three": {
@@ -48285,6 +48297,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)"
+       }
+      ],
+      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped"
      }
     },
     "all_pens__four": {
@@ -48658,6 +48682,18 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)"
+       }
+      ],
+      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped"
      }
     },
     "homework_ready__single": {
@@ -52615,6 +52651,18 @@
       "17": "all_pens__two",
       "18": "all_pens__four",
       "19": "all_pens__four"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)"
+       }
+      ],
+      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped"
      }
     },
     "homework_ready": {

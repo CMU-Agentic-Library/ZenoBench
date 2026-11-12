@@ -1306,23 +1306,27 @@
 
 **指令**：孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 摆法 `two`：
-  - `pencil` 在 `desk_1/top` 上
-  - `pen` 在 `desk_1/top` 上
-  - 手里空着
-- 摆法 `three`：
-  - `pencil` 在 `desk_1/top` 上
-  - `pen` 在 `desk_1/top` 上
-  - `pencil_2` 在 `desk_1/top` 上
-  - 手里空着
-- 摆法 `four`：
-  - `pencil` 在 `desk_1/top` 上
-  - `pen` 在 `desk_1/top` 上
-  - `pencil_2` 在 `desk_1/top` 上
-  - `pen_2` 在 `desk_1/top` 上
-  - 手里空着
+- **好（1.0）**：
+
+  - 摆法 `two`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - 手里空着
+  - 摆法 `three`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - `pencil_2` 在 `desk_1/top` 上
+    - 手里空着
+  - 摆法 `four`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - `pencil_2` 在 `desk_1/top` 上
+    - `pen_2` 在 `desk_1/top` 上
+    - 手里空着
+- **不行（0）**：漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 

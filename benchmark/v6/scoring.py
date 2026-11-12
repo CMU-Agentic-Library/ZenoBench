@@ -91,6 +91,12 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T05", "no_pen_pencil_away"): only("the pencil on the study desk, the hand empty",
                                         "the pencil not found; left elsewhere; something else brought instead; "
                                         "still held or dropped"),
+    # T05 all_pens: 2-4 pens and pencils over the house, the count unstated; missing one is the task not done.
+    # Something else brought along does not cost
+    ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
+                              "do not cost)",
+                              "one or more missed (stopped before every place was checked); elsewhere; still held "
+                              "or dropped"),
 }
 
 
@@ -446,5 +452,6 @@ NOT_OK_ZH = {
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
+    ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
