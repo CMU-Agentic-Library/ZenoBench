@@ -264,13 +264,18 @@ R[("T12", "find_all_toys")] = tiers(
             good="找齐全部玩具进篮子，海绵没动", second="玩具齐了，但挪了海绵（没放进篮子）",
             worst="玩具齐了，海绵也当玩具放进了篮子", no="有玩具没找到；篮子倒了；还拿着或掉了"))
 R[("T12", "castle_stays")] = tiers(
-    second=lambda g, lid: drop_atoms(g, lambda a: a[0] == "near_start" or (a[0] == "inside" and "loose" in a[1])),
+    # the castle standing at the end (its blocks one on another) is what counts for the second tier: nudged, taken
+    # apart and built again (user 11-12), or the loose blocks left beside it
+    second=lambda g, lid: drop_atoms(g, lambda a: a[0] in ("near_start", "never_picked")
+                                     or (a[0] == "inside" and "loose" in a[1])),
     why=("the car, the duck and the loose blocks in the basket, the castle untouched",
-         "the castle left standing (never picked), but the loose blocks left beside it or the castle nudged", ""),
-    not_ok="the castle taken apart or knocked down; the car or the duck left out; still held or dropped",
+         "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it",
+         ""),
+    not_ok="the castle left taken apart or knocked down; the car or the duck left out; still held or dropped",
     zh=dict(sit="客厅地上孩子搭的积木城堡（2-3 层）旁有散积木，还有小车和鸭子；城堡别拆",
-            good="小车、鸭子和散积木进篮子，城堡没动", second="城堡还立着（没被拿起），但散积木留在旁边或城堡被碰动",
-            no="城堡拆了或碰倒了；小车或鸭子没收；还拿着或掉了"))
+            good="小车、鸭子和散积木进篮子，城堡没动",
+            second="最后城堡还立着，但被拆了又搭回去、被碰动，或散积木留在旁边",
+            no="城堡拆了没搭回或碰倒了；小车或鸭子没收；还拿着或掉了"))
 
 # ================================================================================================ T13 breakfast setup
 R[("T13", "dishes_on_tv_stand")] = d0("bowl, cup (or a mug) and spoon together on the dining table, upright",
@@ -650,15 +655,25 @@ def _cups_worst(g, lid):
                     ["count_on_at_least", pool, "tv_stand_2/top", 2], HAND]}
 
 
+def _cups_second(g, lid):
+    plain = lambda a: a[0] == "count_on_at_least" and not any(x.startswith("mug") for x in a[1])   # noqa: E731
+    slips = [lambda a: a[0] == "is_closed", lambda a: a[0] == "near_start", plain]
+    hit = lambda a: any(f(a) for f in slips)                                                      # noqa: E731
+    base = [a for a in g["all"] if not hit(a)]
+    return {"all": base, "any": [[a for a in g["all"] if hit(a) and not f(a)] for f in slips]}
+
+
 R[("T25", "cups_for_two")] = tiers(
-    second=lambda g, lid: one_of(g, ("is_closed",), ("near_start",)), worst=_cups_worst,
+    second=_cups_second, worst=_cups_worst,
     why=("two plain cups by the guests in all (the ones there kept), none extra, the cabinet closed",
-         "right cups, but the cabinet left open or the cups already there moved",
-         "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"),
+         "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the "
+         "cups already there moved",
+         "more than two, or two slips at once"),
     not_ok="fewer than two cups; no juice; the juice lying; still held or dropped",
     zh=dict(sit="两位客人；客人那已有 0-2 个杯子，矮柜里 1-2 个；其他只有餐厅的马克杯；尽量用普通杯子、不重复拿",
-            good="一共两个普通杯子（已有的不动、不多拿），柜门关好", second="杯子对了，但柜门没关或挪了已有的杯子",
-            worst="够两个，但柜里有普通杯子却用了马克杯，或拿多了", no="不到两个杯子；没饮料；躺着；还拿着或掉了"))
+            good="一共两个普通杯子（已有的不动、不多拿），柜门关好",
+            second="一共两个，但柜里有普通杯子却用了马克杯，或柜门没关，或挪了已有的杯子",
+            worst="拿多了，或同时有两个疏忽", no="不到两个杯子；没饮料；躺着；还拿着或掉了"))
 R[("T25", "little_guest")] = tiers(
     second=lambda g, lid: drop(g, "near_start"),
     worst=lambda g, lid: {"all": [["on", "guest_juice", "tv_stand_2/top"], ["upright", "guest_juice"],

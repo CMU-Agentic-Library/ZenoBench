@@ -105940,14 +105940,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -105980,13 +105972,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106014,14 +105999,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106043,10 +106020,10 @@
           }
          }
         },
-        "why": "the castle left standing (never picked), but the loose blocks left beside it or the castle nudged"
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
        }
       ],
-      "not_ok": "the castle taken apart or knocked down; the car or the duck left out; still held or dropped"
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
      }
     },
     "castle_stays__short_one_loose": {
@@ -106255,14 +106232,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106295,13 +106264,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106329,14 +106291,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106358,10 +106312,10 @@
           }
          }
         },
-        "why": "the castle left standing (never picked), but the loose blocks left beside it or the castle nudged"
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
        }
       ],
-      "not_ok": "the castle taken apart or knocked down; the car or the duck left out; still held or dropped"
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
      }
     },
     "castle_stays__tall_none_loose": {
@@ -106576,14 +106530,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106616,13 +106562,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106650,14 +106589,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -106679,10 +106610,10 @@
           }
          }
         },
-        "why": "the castle left standing (never picked), but the loose blocks left beside it or the castle nudged"
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
        }
       ],
-      "not_ok": "the castle taken apart or knocked down; the car or the duck left out; still held or dropped"
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
      }
     }
    },
@@ -110072,14 +110003,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -110112,13 +110035,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -110146,14 +110062,6 @@
              "storage_basket"
             ],
             [
-             "never_picked",
-             [
-              "castle_block_1",
-              "castle_block_2",
-              "castle_block_3"
-             ]
-            ],
-            [
              "on_top_of",
              "castle_block_2",
              "castle_block_1"
@@ -110175,10 +110083,10 @@
           }
          }
         },
-        "why": "the castle left standing (never picked), but the loose blocks left beside it or the castle nudged"
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
        }
       ],
-      "not_ok": "the castle taken apart or knocked down; the car or the duck left out; still held or dropped"
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
      }
     }
    },
@@ -152794,15 +152702,6 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -152810,12 +152709,41 @@
            "any": [
             [
              [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
               "near_start",
               "tv_cup_1",
               0.03
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -152857,20 +152785,35 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             1
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -152915,21 +152858,37 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1",
-              "stock_cup_2"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -152976,22 +152935,22 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "tv_cup_2",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
              [
               "near_start",
               "tv_cup_1",
@@ -153004,6 +152963,32 @@
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "tv_cup_2",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -153013,7 +152998,7 @@
           }
          }
         },
-        "why": "right cups, but the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
        },
        {
         "name": "worst",
@@ -153138,7 +153123,7 @@
           }
          }
         },
-        "why": "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"
+        "why": "more than two, or two slips at once"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"
@@ -153410,15 +153395,6 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -153426,12 +153402,41 @@
            "any": [
             [
              [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
               "near_start",
               "tv_cup_1",
               0.03
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -153473,20 +153478,35 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             1
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -153531,21 +153551,37 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1",
-              "stock_cup_2"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -153592,22 +153628,22 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "tv_cup_2",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
              [
               "near_start",
               "tv_cup_1",
@@ -153620,6 +153656,32 @@
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "tv_cup_2",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -153629,7 +153691,7 @@
           }
          }
         },
-        "why": "right cups, but the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
        },
        {
         "name": "worst",
@@ -153754,7 +153816,7 @@
           }
          }
         },
-        "why": "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"
+        "why": "more than two, or two slips at once"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"
@@ -153986,15 +154048,6 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -154002,12 +154055,41 @@
            "any": [
             [
              [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
               "near_start",
               "tv_cup_1",
               0.03
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -154049,20 +154131,35 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             1
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -154107,21 +154204,37 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1",
-              "stock_cup_2"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -154168,22 +154281,22 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "tv_cup_2",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
              [
               "near_start",
               "tv_cup_1",
@@ -154196,6 +154309,32 @@
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "tv_cup_2",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -154205,7 +154344,7 @@
           }
          }
         },
-        "why": "right cups, but the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
        },
        {
         "name": "worst",
@@ -154330,7 +154469,7 @@
           }
          }
         },
-        "why": "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"
+        "why": "more than two, or two slips at once"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"
@@ -154641,15 +154780,6 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -154657,12 +154787,41 @@
            "any": [
             [
              [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
               "near_start",
               "tv_cup_1",
               0.03
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -154704,20 +154863,35 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             1
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -154762,21 +154936,37 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1",
-              "stock_cup_2"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -154823,22 +155013,22 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "tv_cup_2",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
              [
               "near_start",
               "tv_cup_1",
@@ -154851,6 +155041,32 @@
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "tv_cup_2",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -154860,7 +155076,7 @@
           }
          }
         },
-        "why": "right cups, but the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
        },
        {
         "name": "worst",
@@ -154985,7 +155201,7 @@
           }
          }
         },
-        "why": "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"
+        "why": "more than two, or two slips at once"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"
@@ -156888,15 +157104,6 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -156904,12 +157111,41 @@
            "any": [
             [
              [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
               "near_start",
               "tv_cup_1",
               0.03
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -156951,20 +157187,35 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             1
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -157009,21 +157260,37 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "stock_cup_1",
-              "stock_cup_2"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
-            [],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ]
+            ],
+            [
+             [
+              "count_on_at_least",
+              [
+               "stock_cup_1",
+               "stock_cup_2"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
             [
              [
               "is_closed",
@@ -157070,22 +157337,22 @@
              2
             ],
             [
-             "count_on_at_least",
-             [
-              "tv_cup_1",
-              "tv_cup_2",
-              "stock_cup_1"
-             ],
-             "tv_stand_2/top",
-             2
-            ],
-            [
              "hand_empty",
              "right"
             ]
            ],
            "any": [
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
              [
               "near_start",
               "tv_cup_1",
@@ -157098,6 +157365,32 @@
              ]
             ],
             [
+             [
+              "count_on_at_least",
+              [
+               "tv_cup_1",
+               "tv_cup_2",
+               "stock_cup_1"
+              ],
+              "tv_stand_2/top",
+              2
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "near_start",
+              "tv_cup_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "tv_cup_2",
+              0.03
+             ],
              [
               "is_closed",
               "kitchen_cabinet_4"
@@ -157107,7 +157400,7 @@
           }
          }
         },
-        "why": "right cups, but the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
        },
        {
         "name": "worst",
@@ -157232,7 +157525,7 @@
           }
          }
         },
-        "why": "two or more drinkware, but mugs though plain cups were in the cabinet, or more than two"
+        "why": "more than two, or two slips at once"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"

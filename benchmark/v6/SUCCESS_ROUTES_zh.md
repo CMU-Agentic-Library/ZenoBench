@@ -3633,7 +3633,6 @@
   - 摆法 `tall_two_loose`、`tall_none_loose`：
     - `toy_car` 在 `storage_basket` 里
     - `rubber_duck` 在 `storage_basket` 里
-    - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`、`castle_block_3`（拆了再搭回去不算）
     - `castle_block_2` 叠在 `castle_block_1` 上
     - `castle_block_3` 叠在 `castle_block_2` 上
     - `storage_basket` 立着
@@ -3641,11 +3640,10 @@
   - 摆法 `short_one_loose`：
     - `toy_car` 在 `storage_basket` 里
     - `rubber_duck` 在 `storage_basket` 里
-    - 过程要求：整局都没拿起过 `castle_block_1`、`castle_block_2`（拆了再搭回去不算）
     - `castle_block_2` 叠在 `castle_block_1` 上
     - `storage_basket` 立着
     - 手里空着
-- **不行（0）**：城堡拆了或碰倒了；小车或鸭子没收；还拿着或掉了
+- **不行（0）**：城堡拆了没搭回或碰倒了；小车或鸭子没收；还拿着或掉了
 
 
 **参考调用顺序**：
@@ -5851,47 +5849,62 @@
     - `guest_juice` 立着
     - 这 4 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 4 件中最多 2 件在 `tv_stand_2/top` 上：`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`stock_cup_1`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`stock_cup_1`
       - 第 2 组：
+        - 这 1 件中至少 1 件还在 `tv_stand_2/top` 上：`stock_cup_1`
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
         - `kitchen_cabinet_4` 关着
   - 摆法 `none_two_inside`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 5 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 5 件中最多 2 件在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`
       - 第 2 组：
+        - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`stock_cup_1`、`stock_cup_2`
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
         - `kitchen_cabinet_4` 关着
   - 摆法 `one_there`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 5 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 5 件中最多 2 件在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`
         - `tv_cup_1` 没被挪动（离开局位置不超过 3 cm）
       - 第 2 组：
+        - 这 2 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`stock_cup_1`
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `tv_cup_1` 没被挪动（离开局位置不超过 3 cm）
         - `kitchen_cabinet_4` 关着
   - 摆法 `two_there`：
     - `guest_juice` 在 `tv_stand_2/top` 上
     - `guest_juice` 立着
     - 这 6 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
     - 这 6 件中最多 2 件在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-    - 这 3 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - 这 3 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`
         - `tv_cup_1` 没被挪动（离开局位置不超过 3 cm）
         - `tv_cup_2` 没被挪动（离开局位置不超过 3 cm）
       - 第 2 组：
+        - 这 3 件中至少 2 件还在 `tv_stand_2/top` 上：`tv_cup_1`、`tv_cup_2`、`stock_cup_1`
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `tv_cup_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_cup_2` 没被挪动（离开局位置不超过 3 cm）
         - `kitchen_cabinet_4` 关着
 - **最不好（0.3）**：
 
