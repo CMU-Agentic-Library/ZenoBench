@@ -50708,6 +50708,39 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "near_start"
+         ]
+        },
+        "why": "too many brought (one more, or all four), against \"no more\""
+       }
+      ],
+      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"
      }
     },
     "pens_per_notebook__notebooks_3": {
@@ -51079,6 +51112,39 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "near_start"
+         ]
+        },
+        "why": "too many brought (one more, or all four), against \"no more\""
+       }
+      ],
+      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"
      }
     },
     "errand_combined__pen_bedroom": {
@@ -53650,6 +53716,39 @@
       "17": "pens_per_notebook__notebooks_3",
       "18": "pens_per_notebook__notebooks_2",
       "19": "pens_per_notebook__notebooks_2"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "near_any"
+         ]
+        },
+        "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "drop": [
+          "near_any",
+          "near_start"
+         ]
+        },
+        "why": "too many brought (one more, or all four), against \"no more\""
+       }
+      ],
+      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"
      }
     },
     "errand_combined": {

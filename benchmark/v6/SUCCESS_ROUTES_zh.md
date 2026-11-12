@@ -1454,69 +1454,173 @@
 
 **指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `notebooks_2`：
-  - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-  - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pen` 在 `desk_1/top` 上
-      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 2 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pen_2` 在 `desk_1/top` 上
-      - `pen` 没被挪动（离开局位置不超过 3 cm）
-      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 3 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pen` 没被挪动（离开局位置不超过 3 cm）
-      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 4 组：
-      - `pen` 在 `desk_1/top` 上
-      - `pen_2` 在 `desk_1/top` 上
-      - `pencil` 没被挪动（离开局位置不超过 3 cm）
-      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 5 组：
-      - `pen` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pencil` 没被挪动（离开局位置不超过 3 cm）
-      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 6 组：
-      - `pen_2` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pencil` 没被挪动（离开局位置不超过 3 cm）
-      - `pen` 没被挪动（离开局位置不超过 3 cm）
-- 摆法 `notebooks_3`：
-  - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-  - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-  - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pen` 在 `desk_1/top` 上
-      - `pen_2` 在 `desk_1/top` 上
-      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 2 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pen` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-    - 第 3 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `pen_2` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pen` 没被挪动（离开局位置不超过 3 cm）
-    - 第 4 组：
-      - `pen` 在 `desk_1/top` 上
-      - `pen_2` 在 `desk_1/top` 上
-      - `pencil_2` 在 `desk_1/top` 上
-      - `pencil` 没被挪动（离开局位置不超过 3 cm）
+- **好（1.0）**：
+
+  - 摆法 `notebooks_2`：
+    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 5 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `notebooks_3`：
+    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+- **次好（0.6）**：
+
+  - 摆法 `notebooks_2`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 5 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `notebooks_3`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+- **最不好（0.3）**：
+
+  - 摆法 `notebooks_3`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+  - 摆法 `notebooks_2`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 5 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+- **不行（0）**：拿少了（比作业本少）；笔放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 

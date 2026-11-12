@@ -367,6 +367,17 @@ def _homework_ready(task: dict) -> dict:
         "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
                   "elsewhere; still held or dropped"}
 
+# T05 pens_per_notebook: exactly one pen or pencil beside each of the 2-3 notebooks, the rest left where they are.
+# The right count not beside the notebooks is the second tier; too many (beside or not) the worst (user 11-11)
+SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
+     "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"},
+    {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "near_start"]},
+     "why": "too many brought (one more, or all four), against \"no more\""}],
+    "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -478,5 +489,6 @@ NOT_OK_ZH = {
     ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
     ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
+    ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
