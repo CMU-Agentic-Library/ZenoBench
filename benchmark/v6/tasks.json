@@ -39331,6 +39331,84 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the kitchen bin, the toys and the spoons left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_1",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_2",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_counter",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_side_table",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+       }
+      ],
+      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped"
      }
     },
     "which_bin_by_contents__tools_near": {
@@ -39652,6 +39730,84 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the kitchen bin, the toys and the spoons left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_1",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_2",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_counter",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_side_table",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+       }
+      ],
+      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped"
      }
     },
     "no_bin_substitute__basket": {
@@ -42086,6 +42242,84 @@
       "17": "which_bin_by_contents__tools_near",
       "18": "which_bin_by_contents__toys_near",
       "19": "which_bin_by_contents__toys_near"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the kitchen bin, the toys and the spoons left where they were"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "inside",
+           "rolling_pin",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "breakfast_spoon",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_1",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "toy_bin_block_2",
+           "toy_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_counter",
+           "wide_storage_bin"
+          ],
+          [
+           "inside",
+           "spoon_side_table",
+           "wide_storage_bin"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+       }
+      ],
+      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped"
      }
     },
     "no_bin_substitute": {

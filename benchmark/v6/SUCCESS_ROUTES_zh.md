@@ -786,15 +786,33 @@
 
 **指令**：烘焙结束了，把擀面杖和勺子一起收进放厨房用具的那个箱子里。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `rolling_pin` 在 `wide_storage_bin` 里
-- `breakfast_spoon` 在 `wide_storage_bin` 里
-- `toy_bin_block_1` 在 `toy_storage_bin` 里
-- `toy_bin_block_2` 在 `toy_storage_bin` 里
-- `spoon_counter` 在 `wide_storage_bin` 里
-- `spoon_side_table` 在 `wide_storage_bin` 里
-- 手里空着
+- **好（1.0）**：
+
+  - `rolling_pin` 在 `wide_storage_bin` 里
+  - `breakfast_spoon` 在 `wide_storage_bin` 里
+  - `toy_bin_block_1` 在 `toy_storage_bin` 里
+  - `toy_bin_block_2` 在 `toy_storage_bin` 里
+  - `spoon_counter` 在 `wide_storage_bin` 里
+  - `spoon_side_table` 在 `wide_storage_bin` 里
+  - 手里空着
+- **次好（0.6）**：
+
+  - `rolling_pin` 在 `wide_storage_bin` 里
+  - `breakfast_spoon` 在 `wide_storage_bin` 里
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `rolling_pin` 在 `toy_storage_bin` 里
+  - `breakfast_spoon` 在 `toy_storage_bin` 里
+  - `toy_bin_block_1` 在 `toy_storage_bin` 里
+  - `toy_bin_block_2` 在 `toy_storage_bin` 里
+  - `spoon_counter` 在 `wide_storage_bin` 里
+  - `spoon_side_table` 在 `wide_storage_bin` 里
+  - 手里空着
+- **不行（0）**：放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了
+
 
 **参考调用顺序**：
 

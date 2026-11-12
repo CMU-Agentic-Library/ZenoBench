@@ -222,6 +222,24 @@ SCORING[("T03", "small_bin_or_bedroom_bin")] = {"D": 1, "tiers": [
               "into the wide one; still held"}
 
 
+# T03 which_bin_by_contents: two wide bins of one make, the toy bin (toy_storage_bin, two blocks) and the kitchen
+# bin (wide_storage_bin, two spoons).  The wrong bin with nothing disturbed is the worst tier (user 11-11);
+# carrying the kitchen bin over and filling it there is the best tier (the goal only asks for the contents)
+_TOY = "toy_storage_bin"
+_WHICH_KEPT = [["inside", "toy_bin_block_1", _TOY], ["inside", "toy_bin_block_2", _TOY],
+               ["inside", "spoon_counter", _W], ["inside", "spoon_side_table", _W]]
+SCORING[("T03", "which_bin_by_contents")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "both in the kitchen bin, the toys and the spoons left where they were"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["inside", _P, _W], ["inside", _S, _W], ["hand_empty", "right"]]},
+     "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["inside", _P, _TOY], ["inside", _S, _TOY], *_WHICH_KEPT, ["hand_empty", "right"]]},
+     "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"}],
+    "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or "
+              "dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -319,4 +337,5 @@ NOT_OK_ZH = {
     ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
+    ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
