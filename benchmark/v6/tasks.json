@@ -51880,6 +51880,79 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "not on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_6"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_4"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"
+       }
+      ],
+      "not_ok": "no pen or pencil on the desk; still held or dropped"
      }
     },
     "x6_gd_pen_or_pencil_cabinets__pen_in_6": {
@@ -51965,6 +52038,79 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "not on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_6"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_4"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"
+       }
+      ],
+      "not_ok": "no pen or pencil on the desk; still held or dropped"
      }
     }
    },
@@ -54037,6 +54183,79 @@
       "17": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "18": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
       "19": "x6_gd_pen_or_pencil_cabinets__pen_in_4"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "not on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_6"
+          ],
+          [
+           "is_closed",
+           "kitchen_cabinet_4"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"
+       }
+      ],
+      "not_ok": "no pen or pencil on the desk; still held or dropped"
      }
     }
    },

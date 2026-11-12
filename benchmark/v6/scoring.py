@@ -397,6 +397,19 @@ SCORING[("T05", "errand_combined")] = {"D": 1, "tiers": [
     "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or "
               "dropped"}
 
+# T05 x6_gd_pen_or_pencil_cabinets: a pen asked for, a pencil in one closed low cabinet and the pen in the other.  A
+# door left open or the pencil brought along is the second tier; the pencil for the pen the worst (user 11-11)
+_CLOSED = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+SCORING[("T05", "x6_gd_pen_or_pencil_cabinets")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0,
+     "goal": {"all": [["on", "pen", _DESK], ["not on", "pencil", _DESK], *_CLOSED, ["hand_empty", "right"]]},
+     "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", _DESK], ["hand_empty", "right"]]},
+     "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", _DESK], ["hand_empty", "right"]]},
+     "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"}],
+    "not_ok": "no pen or pencil on the desk; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -510,5 +523,6 @@ NOT_OK_ZH = {
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
     ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
     ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
+    ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
