@@ -47332,6 +47332,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pencil on the study desk, the hand empty"
+       }
+      ],
+      "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped"
      }
     },
     "check_desk_first__pen_on_desk": {
@@ -52361,6 +52373,18 @@
       "17": "e1_pencil_asked",
       "18": "e1_pencil_asked",
       "19": "e1_pencil_asked"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pencil on the study desk, the hand empty"
+       }
+      ],
+      "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped"
      }
     },
     "no_pen_pencil_away": {
