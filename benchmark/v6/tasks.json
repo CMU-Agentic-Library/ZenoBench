@@ -48963,6 +48963,242 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil with the red book in place of a notebook"
+       }
+      ],
+      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped"
      }
     },
     "homework_ready__several": {
@@ -49363,6 +49599,242 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil with the red book in place of a notebook"
+       }
+      ],
+      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped"
      }
     },
     "homework_ready__pencil_only": {
@@ -49659,6 +50131,242 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil with the red book in place of a notebook"
+       }
+      ],
+      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped"
      }
     },
     "pens_per_notebook__notebooks_2": {
@@ -52685,6 +53393,242 @@
       "17": "homework_ready__single",
       "18": "homework_ready__single",
       "19": "homework_ready__pencil_only"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "homework_ready__pencil_only": {
+           "all": [
+            [
+             "on",
+             "book_red",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a pen or pencil with the red book in place of a notebook"
+       }
+      ],
+      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped"
      }
     },
     "pens_per_notebook": {

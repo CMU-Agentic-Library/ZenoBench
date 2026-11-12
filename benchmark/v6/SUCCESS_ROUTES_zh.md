@@ -1340,44 +1340,107 @@
 
 **指令**：孩子马上要在书房书桌写作业了。把写作业要用的东西准备到书桌上。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `several`：
-  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `pen` 在 `desk_1/top` 上
-      - `notebook_1` 在 `desk_1/top` 上
-    - 第 2 组：
-      - `pen` 在 `desk_1/top` 上
-      - `notebook_2` 在 `desk_1/top` 上
-    - 第 3 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `notebook_1` 在 `desk_1/top` 上
-    - 第 4 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `notebook_2` 在 `desk_1/top` 上
-    - 第 5 组：
-      - `pen_2` 在 `desk_1/top` 上
-      - `notebook_1` 在 `desk_1/top` 上
-    - 第 6 组：
-      - `pen_2` 在 `desk_1/top` 上
-      - `notebook_2` 在 `desk_1/top` 上
-- 摆法 `single`：
-  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `pen` 在 `desk_1/top` 上
-      - `notebook_1` 在 `desk_1/top` 上
-- 摆法 `pencil_only`：
-  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `pencil` 在 `desk_1/top` 上
-      - `notebook_1` 在 `desk_1/top` 上
+- **好（1.0）**：
+
+  - 摆法 `several`：
+    - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+      - 第 5 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+  - 摆法 `single`：
+    - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+  - 摆法 `pencil_only`：
+    - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+- **次好（0.6）**：
+
+  - 摆法 `several`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+      - 第 5 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `notebook_2` 在 `desk_1/top` 上
+  - 摆法 `single`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+  - 摆法 `pencil_only`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `notebook_1` 在 `desk_1/top` 上
+- **最不好（0.3）**：
+
+  - 摆法 `several`：
+    - `book_red` 在 `desk_1/top` 上
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+  - 摆法 `single`：
+    - `book_red` 在 `desk_1/top` 上
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pen` 在 `desk_1/top` 上
+  - 摆法 `pencil_only`：
+    - `book_red` 在 `desk_1/top` 上
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+- **不行（0）**：只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 

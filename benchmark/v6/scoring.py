@@ -344,11 +344,35 @@ SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
      "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
     "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
 
+
+def _homework_ready(task: dict) -> dict:
+    """T05 homework_ready: something to write with and a notebook, next to the red book and the teddy bear.  The book
+    or the teddy moved too is the second tier; the red book in place of a notebook the worst (user 11-11)."""
+    lays = task["v6_variants"]["homework_ready"]["layouts"]
+    second, worst = {}, {}
+    for lid in lays:
+        g = task["variants"][lid]["goal"]
+        second[lid] = {"all": [["hand_empty", "right"]], "any": g["any"]}
+        writers = sorted({grp[0][1] for grp in g["any"]})
+        worst[lid] = {"all": [["on", "book_red", "desk_1/top"], ["hand_empty", "right"]],
+                      "any": [[["on", w, "desk_1/top"]] for w in writers]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every "
+                "pen and notebook does not cost)"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "a pen or pencil with the red book in place of a notebook"}],
+        "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
+                  "elsewhere; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
-         ("T03", "no_bin_substitute"): _no_bin_substitute}
+         ("T03", "no_bin_substitute"): _no_bin_substitute,
+         ("T05", "homework_ready"): _homework_ready}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -453,5 +477,6 @@ NOT_OK_ZH = {
     ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
     ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
+    ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
