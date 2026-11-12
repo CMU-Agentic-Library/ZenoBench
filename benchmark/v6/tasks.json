@@ -70931,6 +70931,77 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge in the tray, the spare sponge still in it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "kitchen_sponge",
+            "sponge_tray"
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "kitchen_sponge",
+            [
+             "kitchen_island/top",
+             "kitchen_counter_1/top",
+             "kitchen_counter_2/top",
+             "kitchen_stove/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in the tray with the spare knocked out"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "return_sponge_home__study": {
@@ -71122,6 +71193,77 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge in the tray, the spare sponge still in it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "kitchen_sponge",
+            "sponge_tray"
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "kitchen_sponge",
+            [
+             "kitchen_island/top",
+             "kitchen_counter_1/top",
+             "kitchen_counter_2/top",
+             "kitchen_stove/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in the tray with the spare knocked out"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "return_sponge_home__far_dining": {
@@ -71342,6 +71484,77 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge in the tray, the spare sponge still in it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "kitchen_sponge",
+            "sponge_tray"
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "kitchen_sponge",
+            [
+             "kitchen_island/top",
+             "kitchen_counter_1/top",
+             "kitchen_counter_2/top",
+             "kitchen_stove/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in the tray with the spare knocked out"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "which_surface__island": {
@@ -72961,6 +73174,77 @@
       "17": "return_sponge_home__far_dining",
       "18": "return_sponge_home__far_dining",
       "19": "return_sponge_home__study"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the island wiped, the sponge in the tray, the spare sponge still in it"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "inside",
+            "kitchen_sponge",
+            "sponge_tray"
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "kitchen_sponge",
+            [
+             "kitchen_island/top",
+             "kitchen_counter_1/top",
+             "kitchen_counter_2/top",
+             "kitchen_stove/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in the tray with the spare knocked out"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "wiped",
+           "kitchen_island/top"
+          ],
+          [
+           "not on_floor",
+           "kitchen_sponge"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
      }
     },
     "which_surface": {

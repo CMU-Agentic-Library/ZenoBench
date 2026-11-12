@@ -600,6 +600,23 @@ def _wipe_and_sort(task: dict) -> dict:
         "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; "
                   "the sponge still held or dropped on the floor"}
 
+# T08 return_sponge_home: the sponge left on a table out of view; after wiping it goes to the tray on the low cabinet
+# with the spare sponge (where it is kept, not said).  In the kitchen but not the tray, or the spare knocked out of
+# the tray, is the second tier; back on the table or anywhere else (not the floor) the worst (user 11-11)
+_KITCHEN_TOPS = ["kitchen_island/top", "kitchen_counter_1/top", "kitchen_counter_2/top", "kitchen_stove/top"]
+SCORING[("T08", "return_sponge_home")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the island wiped, the sponge in the tray, the spare sponge still in it"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["hand_empty", "right"]],
+              "any": [[["inside", "kitchen_sponge", "sponge_tray"]], [["on_any", "kitchen_sponge", _KITCHEN_TOPS]]]},
+     "why": "the island wiped, the sponge left in the kitchen (island, a counter, the stove) but not in the tray; or in "
+            "the tray with the spare knocked out"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
+     "why": "the island wiped, the sponge back on the table it was found on or elsewhere outside the kitchen"}],
+    "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -732,5 +749,6 @@ NOT_OK_ZH = {
     ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "far_sponge_tv"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "wipe_and_sort"): "还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上",
+    ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

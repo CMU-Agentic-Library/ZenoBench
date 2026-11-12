@@ -2320,12 +2320,30 @@
 
 **指令**：有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `sponge_tray` 里
-- `spare_sponge` 在 `sponge_tray` 里
-- 手里空着
+- **好（1.0）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 在 `sponge_tray` 里
+  - `spare_sponge` 在 `sponge_tray` 里
+  - 手里空着
+- **次好（0.6）**：
+
+  - `kitchen_island/top` 擦过
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `kitchen_sponge` 在 `sponge_tray` 里
+    - 第 2 组：
+      - `kitchen_sponge` 在其中任一处上：`kitchen_island/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_stove/top`
+- **最不好（0.3）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 不在地上
+  - 手里空着
+- **不行（0）**：没找到海绵；没擦或没擦完；海绵还拿着或掉在地上
+
 
 **参考调用顺序**：
 
