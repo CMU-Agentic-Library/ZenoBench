@@ -76,6 +76,10 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T03", "utensils_apart"): only("the rolling pin and the spoon both in the wide bin, the hand empty",
                                     "one left out (the spoon not found); in a cabinet, drawer or on a table; "
                                     "still held or dropped"),
+    # T04 cup_available (control): a glass cup and a mug side by side on the island; a mug is a cup too (no_cup
+    # tests the mug as the stand-in), so either one, or both, is the task done
+    ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
+                                   "lying or upside down; on another cabinet, counter or table; still held or dropped"),
 }
 
 
@@ -371,5 +375,6 @@ NOT_OK_ZH = {
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
     ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
+    ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

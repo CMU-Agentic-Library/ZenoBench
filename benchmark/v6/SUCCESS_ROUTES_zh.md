@@ -920,25 +920,29 @@
 
 **情况**：岛台上有杯子 → 拿到饮品角
 
-**成功条件**：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-  - 第 2 组：
-    - `mug` 在 `kitchen_cabinet_6/top` 上
-    - `mug` 立着
-  - 第 3 组：
-    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-    - `mug_dining_cabinet` 立着
-  - 第 4 组：
-    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-    - `mug_shelf` 立着
-  - 第 5 组：
-    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-    - `mug_counter` 立着
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+    - 第 2 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 3 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 4 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 5 组：
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了
+
 
 **参考调用顺序**：
 

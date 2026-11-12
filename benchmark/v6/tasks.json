@@ -43273,6 +43273,18 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty"
+       }
+      ],
+      "not_ok": "lying or upside down; on another cabinet, counter or table; still held or dropped"
      }
     },
     "no_cup": {
@@ -45961,6 +45973,18 @@
       "17": "cup_available",
       "18": "cup_available",
       "19": "cup_available"
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty"
+       }
+      ],
+      "not_ok": "lying or upside down; on another cabinet, counter or table; still held or dropped"
      }
     },
     "no_cup": {
