@@ -51361,6 +51361,88 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, the mug upright on a kitchen counter"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "on_any",
+           "used_mug",
+           [
+            "kitchen_island/top",
+            "kitchen_stove/top",
+            "kitchen_counter_1/top",
+            "kitchen_counter_2/top"
+           ]
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "not on",
+           "used_mug",
+           "desk_1/top"
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "pen",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "pencil",
+            "desk_1/top"
+           ]
+          ]
+         ]
+        },
+        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"
+       }
+      ],
+      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped"
      }
     },
     "errand_combined__pen_dining": {
@@ -51631,6 +51713,88 @@
        "hide": [],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, the mug upright on a kitchen counter"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "on_any",
+           "used_mug",
+           [
+            "kitchen_island/top",
+            "kitchen_stove/top",
+            "kitchen_counter_1/top",
+            "kitchen_counter_2/top"
+           ]
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "not on",
+           "used_mug",
+           "desk_1/top"
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "pen",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "pencil",
+            "desk_1/top"
+           ]
+          ]
+         ]
+        },
+        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"
+       }
+      ],
+      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped"
      }
     },
     "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
@@ -53770,6 +53934,88 @@
       "17": "errand_combined__pen_bedroom",
       "18": "errand_combined__pen_dining",
       "19": "errand_combined__pen_bedroom"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, the mug upright on a kitchen counter"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "on_any",
+           "used_mug",
+           [
+            "kitchen_island/top",
+            "kitchen_stove/top",
+            "kitchen_counter_1/top",
+            "kitchen_counter_2/top"
+           ]
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "not on",
+           "used_mug",
+           "desk_1/top"
+          ],
+          [
+           "upright",
+           "used_mug"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "pen",
+            "desk_1/top"
+           ]
+          ],
+          [
+           [
+            "on",
+            "pencil",
+            "desk_1/top"
+           ]
+          ]
+         ]
+        },
+        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"
+       }
+      ],
+      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped"
      }
     },
     "x6_gd_pen_or_pencil_cabinets": {

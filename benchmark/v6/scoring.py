@@ -378,6 +378,25 @@ SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
      "why": "too many brought (one more, or all four), against \"no more\""}],
     "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"}
 
+# T05 errand_combined: a pen to the study desk, the used mug from it to a kitchen counter.  The errands' order is
+# SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
+# for the pen (the mug anywhere off the desk), the worst (user 11-11)
+_MUG, _DESK = "used_mug", "desk_1/top"
+SCORING[("T05", "errand_combined")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the pen on the desk, the mug upright on a kitchen counter"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["on", "pen", _DESK], ["on_any", _MUG, ["kitchen_island/top", "kitchen_stove/top",
+                                                               "kitchen_counter_1/top", "kitchen_counter_2/top"]],
+                      ["upright", _MUG], ["hand_empty", "right"]]},
+     "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["not on", _MUG, _DESK], ["upright", _MUG], ["hand_empty", "right"]],
+              "any": [[["on", "pen", _DESK]], [["on", "pencil", _DESK]]]},
+     "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"}],
+    "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or "
+              "dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -490,5 +509,6 @@ NOT_OK_ZH = {
     ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
     ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
+    ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

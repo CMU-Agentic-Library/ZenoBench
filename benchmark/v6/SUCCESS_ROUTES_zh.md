@@ -1633,12 +1633,32 @@
 
 **指令**：孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `pen` 在 `desk_1/top` 上
-- `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
-- `used_mug` 立着
-- 手里空着
+- **好（1.0）**：
+
+  - `pen` 在 `desk_1/top` 上
+  - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `used_mug` 立着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `pen` 在 `desk_1/top` 上
+  - `used_mug` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `used_mug` 立着
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `["not on", "used_mug", "desk_1/top"]`
+  - `used_mug` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pen` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `pencil` 在 `desk_1/top` 上
+- **不行（0）**：只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了
+
 
 **参考调用顺序**：
 
