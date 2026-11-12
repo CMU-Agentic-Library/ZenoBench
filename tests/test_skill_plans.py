@@ -9,7 +9,7 @@ import pytest
 
 from tests.test_primitives import IKKin as FakeKin, _q
 from zeno_skills import primitives as P, run as RUN
-from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, Spec, State
+from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, Spec, State, chains, with_arm
 from zeno_skills.primitives import PoseSet
 from zeno_skills.rig import SkillFailure
 from zeno_skills.skill_plans import PICK_STAGES, plan_pick, plan_place
@@ -33,7 +33,7 @@ def _named(plan, name):
 
 
 def _state(q, held=None, objects=None):
-    return State(base=(0.0, 0.0, 0.0), q_right=np.asarray(q, float), q_left=np.zeros(7),
+    return State(base=(0.0, 0.0, 0.0), **chains(np.asarray(q, float), np.zeros(7)),
                  hands={"right": Hand(width=0.03, held=held)}, objects=objects or {})
 
 
@@ -258,7 +258,7 @@ def test_run_builds_the_rest_again_when_a_segment_no_longer_holds(monkeypatch):
 
     def rebuild(state, name, prior):
         asked.append(name)
-        return Plan((_seg("a2", state.q_right, np.full(9, 0.3)),))
+        return Plan((_seg("a2", state.q("right"), np.full(9, 0.3)),))
     rig.kin.path_free = lambda qs: len(asked) > 0                   # the rebuilt one is free
     done = RUN.run(rig, Plan((_seg("a", np.zeros(9), np.full(9, 0.1)),)), rebuild)
     assert asked == ["a"] and [s.name for s in done] == ["a2"]
@@ -280,9 +280,9 @@ def test_run_hands_the_plan_as_it_stands_to_a_rebuild_its_decisions_kept(monkeyp
     def rebuild(state, name, prior):
         priors.append((name, [s.name for s in prior.segments], prior.decisions))   # kept as handed over
         if name == "a":
-            return Plan((_seg("a2", state.q_right, np.full(9, 0.3)), _seg("b2", np.full(9, 0.3), np.full(9, 0.9))),
+            return Plan((_seg("a2", state.q("right"), np.full(9, 0.3)), _seg("b2", np.full(9, 0.3), np.full(9, 0.9))),
                         decisions={"a_reach": 2})
-        return Plan((_seg("b3", state.q_right, np.full(9, 0.4)),))
+        return Plan((_seg("b3", state.q("right"), np.full(9, 0.4)),))
     plan = Plan((_seg("a", np.zeros(9), np.full(9, 0.9)),), decisions={"a_reach": 1, "tuck": 0})
     done = RUN.run(rig, plan, rebuild)
     assert [s.name for s in done] == ["a2", "b3"]
@@ -407,20 +407,20 @@ def test_a_contact_segment_whose_end_the_base_has_moved_off_its_target_does_not_
     assert np.allclose(grasp.info["end"][0], GRASP_P)                # recorded at the base it was built at
     from dataclasses import replace
     for seg in (reach, grasp):
-        at = replace(st, q_right=np.asarray(seg.q_from, float))                       # the arm where it starts
+        at = with_arm(st, seg.q_from)                       # the arm where it starts
         assert P.holds(kin, replace(at, base=(0.0005, 0.0, 0.0)), seg) is None      # within PICK_TOL
         why = P.holds(kin, replace(at, base=(0.0, 0.002, 0.0)), seg)                 # 2 mm off
         assert why is not None and "0.0020 m, 0.00 deg further off its target" in why
     q_p = _q(0.5, 0.0, 0.10)
     sd = _state(q0, held=Held("cup", np.eye(4)))
     down = _named(plan_place(BaseKin(near_z=0.115), sd, _at(q_p[:3]), 0.03, 0.07, (np.zeros(9),)), "place_down")
-    at = replace(sd, q_right=np.asarray(down.q_from, float))
+    at = with_arm(sd, down.q_from)
     assert P.holds(BaseKin(near_z=0.115), replace(at, base=(0.003, 0.0, 0.0)), down) is None
     assert "0.0060 m" in P.holds(BaseKin(near_z=0.115), replace(at, base=(0.0, 0.006, 0.0)), down)
     # the end's own offset from the pose (an IK solution's, a planner's) is what it was: not judged
     off = Segment("pick_grasp", Spec(), grasp.q_from, (grasp.q_end + np.r_[0.004, np.zeros(8)],),
                   info={**grasp.info, "end": (GRASP_P + [0.004, 0.0, 0.0], np.eye(3))})
-    assert P.holds(kin, replace(st, q_right=np.asarray(grasp.q_from, float)), off) is None
+    assert P.holds(kin, with_arm(st, grasp.q_from), off) is None
 
 
 def test_run_builds_a_pick_again_where_the_object_now_stands(monkeypatch):
@@ -571,7 +571,7 @@ def test_the_place_tuck_takes_the_first_free_of_its_goals_as_a_joint_set():
 def test_a_pick_opens_the_hand_in_its_own_state_for_every_later_stage():
     # the search and a rebuild alike: plan_pick moves the State's hand to pre_open itself
     seen = []
-    st = State(base=(0.0, 0.0, 0.0), q_right=_q(0.3, 0.0, 0.40), q_left=np.zeros(7),
+    st = State(base=(0.0, 0.0, 0.0), **chains(_q(0.3, 0.0, 0.40), np.zeros(7)),
                hands={"right": Hand(width=0.0)}, objects={"cup": np.eye(4)})
     plan = plan_pick(FakeKin(near_z=0.12, ik=[_q(0.3, 0.0, 0.40)]), st, GRASP, _carry(seen))
     assert isinstance(plan, Plan) and seen and seen[0].hands["right"].width == GRASP["pre_open"]

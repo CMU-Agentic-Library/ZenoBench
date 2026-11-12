@@ -16,7 +16,7 @@ from ..clearance import Allow, closing
 from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding,
                             released, with_arm, with_part, with_width)
 from ..tolerances import DOOR_LEAVE, DOOR_TOL
-from ..primitives import JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
+from ..primitives import sided, JointSet, PartAt, Script, free_leg, query, ride_base, scripted, straight
 from ._common import FREE_HAND, T_of, _aimed, _kept, _move, _reach, anchor
 
 DOOR_STAGES = ("door_arrive", "door_open_hand", "door_reach", "door_grasp", "door_close_hand", "door_held",
@@ -143,4 +143,4 @@ def _plan_door(kin, state, grip, rest_goals, base, start, prior_plan, step):
             return Failure(seg.why, seg.segment, {"stage_s": times})
         segs.append(seg)
         q = seg.q_end
-    return Plan(tuple(segs), info={"stage_s": times}, decisions=decided)
+    return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)

@@ -35,8 +35,9 @@ def execute(act, seg):
         what = seg.action[0]
         if what == "grip":
             _, width, ticks, gradual = seg.action
-            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
-            act.grip(width, ticks if ticks is not None else _hz(), gradual=gradual)
+            side = seg.info.get("side", "right")
+            act.declare(seg.name, seg.spec.allow, side=side, follows=False)
+            act.grip(width, ticks if ticks is not None else _hz(), gradual=gradual, side=side)
             return
         if what == "wait":                      # let the world settle (an object let go), nothing moves
             act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
@@ -51,8 +52,8 @@ def execute(act, seg):
                         **({"posture": st[2]} if len(st) > 2 else {}))
                 act.drive_base(list(st[1]), allow=seg.spec.allow, **kw)
             else:
-                _, name, qr, ql = st
-                act.swing(qr, ql, f"{seg.name}_{name}")
+                _, name, posture = st
+                act.swing(posture, f"{seg.name}_{name}")
         return
     if seg.kind == "scripted":
         side = seg.info.get("side", "right")
@@ -109,7 +110,7 @@ def _why_rebuilt(act, state, old):
     hold there (an earlier segment of the rest came out otherwise)."""
     out = {}
     for name, seg in old.items():
-        kin = act.arm_kin(seg.info.get("side", "right"))
+        kin = act.arm_kin(seg.info.get("side", "right"))     # moves only (the anchor log's rebuilt)
         why = holds(kin, with_arm(state, seg.q_from, kin.side), seg)
         out[name] = "its start moved" if why is None else why[:160]
     return out

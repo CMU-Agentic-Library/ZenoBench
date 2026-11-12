@@ -10,7 +10,7 @@ import pytest
 
 from zeno_skills import primitives as P
 from zeno_skills import run as RUN
-from zeno_skills.motion_state import (Failure, Hand, Held, Segment, SkillFailure, Spec, State, holding, released,
+from zeno_skills.motion_state import (Failure, chains, Hand, Held, Segment, SkillFailure, Spec, State, holding, released,
                                       touch_entries, touches, with_part)
 
 DOOR = "kitchen_cabinet_4"
@@ -82,7 +82,7 @@ class FakeBase:
 
 def _state(q=None, base=(0.0, 0.0, 0.0), door=0.0, held=None, objects=None):
     q = np.zeros(9) if q is None else np.asarray(q, float)
-    return State(base=base, q_right=q, q_left=np.zeros(7), hands={"right": Hand(width=0.0, held=held)},
+    return State(base=base, **chains(q, np.zeros(7)), hands={"right": Hand(width=0.0, held=held)},
                  parts={DOOR: door}, objects=objects or {})
 
 

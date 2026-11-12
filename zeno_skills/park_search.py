@@ -10,22 +10,24 @@ from __future__ import annotations
 
 import math
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Callable
 
 import numpy as np
 
 from .kinematics import manipulability
-from .motion_state import Failure, at_base, with_arm
+from .motion_state import Failure, at_base, with_posture
 from .tolerances import DEPTH_TOL
 
 RADII = np.arange(0.45, 1.0, 0.05)    # m: rings of base positions around a goal's centre (as planner.find_park)
 ANGLE_STEP = 15                        # deg between positions on a ring
 YAW_OFFSETS = (-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90)   # deg off facing the centre
-SHOULDER = (0.09, -0.18)               # m: right shoulder in the base frame
+SHOULDER = (0.09, -0.18)               # m: right shoulder in the base frame (the left's: y mirrored, shoulder)
 REACH_XY = 0.78                        # m: the arm's horizontal reach from the shoulder (prefilter)
 REACH_Z = (0.0, 1.5)                   # m: TCP heights the torso lift reaches (down to the floor)
 FACE_LEFT = 30                         # deg: the right arm on the -y side, facing slightly left of the goal is
+                                       # (the left arm: mirrored, face_off)
                                        # cheaper -- the goal FACE_LEFT to the right (yaw = face + FACE_LEFT)...
 FACE_COST = 0.002                      # m of cost per deg off that.  (Before 11-09 the term was |off + FACE_LEFT|,
                                        # the goal 30 deg to the LEFT, against its own comment; the 11-08 parks
@@ -41,11 +43,21 @@ BUILD_S = 20.0                         # s: plans are built in rank order for at
 BUILD_MAX = 60                         # ...and at most this many
 
 
+def shoulder(side):
+    """(x, y) m of ``side``'s shoulder in the base frame: the arms are mirror images in y."""
+    return (SHOULDER[0], SHOULDER[1] if side == "right" else -SHOULDER[1])
+
+
+def face_off(side):
+    """deg the base preferably turns off facing a goal of ``side``'s arm (FACE_LEFT, mirrored)."""
+    return FACE_LEFT if side == "right" else -FACE_LEFT
+
+
 @dataclass(frozen=True)
 class Problem:
     """What a skill asks of a park search.
     goals:  per goal of the goal set, (TCP points the arm must reach (prefilter), the relay pose
-            (p, R) the ranking IK solves, cost in m).
+            (p, R) the ranking IK solves, cost in m[, the hand: "right" / "left", default ``hand``]).
     build:  build(state_at_park, k, prior) -> Plan | Failure, the skill's plan builder; prior
             {relay: the ranking's kinematic solution of goal k's relay pose} here (decide_ik's
             prior: kept where it is free, else a seed -- never a check), a Plan where run_skill
@@ -54,12 +66,15 @@ class Problem:
     relay:  the decision of the builder the relay pose stands for (skill_plans.PICK_RELAY,
             PLACE_RELAY) -- required: the ranking always solves a relay pose, and a builder reads its
             solution by this name only.
-    arrive: arrive(x, y, yaw) -> the arm posture at that park (what the drive arrives in, or the
-            posture now where the base will not move).
+    arrive: arrive(x, y, yaw) -> the posture at that park (what the drive arrives in, or the
+            posture now where the base will not move): a motion_state.Posture -- the arms it names, its
+            body unless another hand holds something (with_posture) -- or a planning chain of the goal's hand.
     near:   (x, y) or (x, y, yaw): parks cost NEAR_COST per m away from it; with a yaw it is the
             current pose, a candidate of its own, tried first.
     prefer: base poses tried before the rings (in front of a door's free edge: skill_jobs.pick).
-    travel: the arm posture the base drives in (the whole-body test at the parks).
+    travel: the posture the base drives in (the whole-body test at the parks, once for every goal):
+            a Posture, or a planning chain of ``hand``.
+    hand:   the hand of a goal that names none.
     arrive / travel come from the skill's catalog entry (motion_skills.run_skill sets them)."""
     goals: tuple
     build: Callable
@@ -69,6 +84,12 @@ class Problem:
     near: tuple | None = None
     prefer: tuple = ()
     label: str = "park"
+    hand: str = "right"
+
+    def side(self, k):
+        """The hand of goal k."""
+        g = self.goals[k] if 0 <= k < len(self.goals) else ()
+        return g[3] if len(g) > 3 else self.hand
 
 
 @dataclass
@@ -89,20 +110,21 @@ class Found:
 def candidates(problem):
     """[(cost, x, y, yaw, k)] cheapest first: the current pose and the preferred ones, then the rings."""
     out = []
-    for k, (points, _, gcost) in enumerate(problem.goals):
+    for k, (points, _, gcost, *_) in enumerate(problem.goals):
+        pref = face_off(problem.side(k))
         c = np.mean([np.asarray(p, float)[:2] for p in points], axis=0)
         for r in RADII:
             for ang in np.radians(np.arange(0, 360, ANGLE_STEP)):
                 x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
                 face = math.degrees(math.atan2(c[1] - y, c[0] - x))
                 for off in YAW_OFFSETS:
-                    cost = r + FACE_COST * abs(off - FACE_LEFT) + float(gcost)
+                    cost = r + FACE_COST * abs(off - pref) + float(gcost)
                     if problem.near is not None:
                         cost += NEAR_COST * math.hypot(x - problem.near[0], y - problem.near[1])
                     out.append((cost, x, y, face + off, k))
     out.sort(key=lambda t: t[0])
     first = []
-    for k, (_, _, gcost) in enumerate(problem.goals):
+    for k, (_, _, gcost, *_) in enumerate(problem.goals):
         if problem.near is not None and len(problem.near) == 3:
             first.append((-1.0 + float(gcost) * 1e-3, *map(float, problem.near), k))
         first += [(-0.5 + float(gcost) * 1e-3, *map(float, p), k) for p in problem.prefer]
@@ -110,11 +132,12 @@ def candidates(problem):
 
 
 def reachable(cands, problem):
-    """Per candidate: every TCP point within REACH_XY of the right shoulder, heights in REACH_Z."""
+    """Per candidate: every TCP point within REACH_XY of its goal's hand's shoulder, heights in REACH_Z."""
     out = []
     for _, x, y, yaw, k in cands:
         c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        sh = np.array([x + SHOULDER[0] * c - SHOULDER[1] * s, y + SHOULDER[0] * s + SHOULDER[1] * c])
+        sx, sy = shoulder(problem.side(k))
+        sh = np.array([x + sx * c - sy * s, y + sx * s + sy * c])
         P = np.array([np.asarray(p, float) for p in problem.goals[k][0]])
         out.append(bool(np.all(np.linalg.norm(P[:, :2] - sh, axis=1) < REACH_XY) and
                         np.all((P[:, 2] > REACH_Z[0]) & (P[:, 2] < REACH_Z[1]))))
@@ -147,13 +170,14 @@ def rank_ik(kin, cands, problem, q0):
 def score(kin, cands, sols):
     """Ranking score per candidate (lower is better), as planner.rank_parks without the clearance
     (a world query per park): joints near a limit, manipulability below the best, the candidate's
-    own cost above the cheapest."""
-    lo, hi = np.asarray(kin.lo, float)[2:], np.asarray(kin.hi, float)[2:]
-    manip = [manipulability(kin, q) if q is not None else 0.0 for q in sols]
+    own cost above the cheapest.  ``kin``: the arm's kinematics, or one per candidate (its hand's)."""
+    ks = list(kin) if isinstance(kin, (list, tuple)) else [kin] * len(cands)
+    manip = [manipulability(k, q) if q is not None else 0.0 for k, q in zip(ks, sols)]
     best = max(max(manip, default=0.0), 1e-9)
     c0 = min((c[0] for c in cands), default=0.0)
     out = []
-    for c, q, m in zip(cands, sols, manip):
+    for c, q, m, k in zip(cands, sols, manip, ks):
+        lo, hi = np.asarray(k.lo, float)[2:], np.asarray(k.hi, float)[2:]
         margin = float(np.min(np.minimum(np.asarray(q)[2:] - lo, hi - np.asarray(q)[2:])))
         out.append(max(0.0, LIMIT_CLEAR - margin) / LIMIT_CLEAR + (1.0 - m / best) + PARK_DIST_W * (c[0] - c0))
     return out
@@ -162,9 +186,11 @@ def score(kin, cands, sols):
 def find_park(kin, world, problem, state, log, base=None):
     """The park for ``problem`` (Problem) from ``state`` (motion_state.State, now): Found with the
     plan the skill's builder made there, or None; the counts of every test in ``diag`` either way
-    (also logged as park_search through ``log``).  ``kin`` the arm's kinematics, ``world`` the
+    (also logged as park_search through ``log``).  ``kin`` the arms' kinematics, {side: ArmKin} (one
+    ArmKin: that arm's only) -- each goal's ranking IK in its hand's (docs 7, which hand); ``world`` the
     WorldModel (footprints), ``base`` the motion_state.BaseModel (the whole robot in its travel
     posture at a park, the base reaching it; None: neither is tested).  No rig: docs 2.5."""
+    kins = dict(kin) if isinstance(kin, Mapping) else {kin.side: kin}
     t0 = time.time()
     diag = {"candidates": 0, "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "drive": 0, "ik": 0,
             "built": 0, "no_path": 0, "build_failed": {}, "stage_s": {}, "filter_s": {}}
@@ -198,7 +224,7 @@ def find_park(kin, world, problem, state, log, base=None):
             break
     timed("candidates_reach_footprint")
     # batched: the whole robot in its travel posture at each park; the base can drive there
-    travel = with_arm(state, problem.travel, kin.side)
+    travel = with_posture(state, problem.travel, problem.hand)
     moving = [c for c in pool if not is_here(c)]
     if base is not None and moving:
         d = base.depths(travel, [c[1:4] for c in moving])
@@ -214,11 +240,17 @@ def find_park(kin, world, problem, state, log, base=None):
         pool = [c for c in pool if is_here(c) or c[1:4] not in unreachable]
     timed("drive")
     # ranking: a kinematic IK of each relay pose, then joint margin, manipulability and cost
-    sols = rank_ik(kin, pool, problem, problem.travel)
+    sols = [None] * len(pool)
+    for side in sorted({problem.side(c[4]) for c in pool}):      # one batched IK per hand
+        if side not in kins:
+            raise ValueError(f"{problem.label}: a goal of the {side} hand, no {side} kinematics")
+        idx = [i for i, c in enumerate(pool) if problem.side(c[4]) == side]
+        for i, q in zip(idx, rank_ik(kins[side], [pool[i] for i in idx], problem, travel.q(side))):
+            sols[i] = q
     timed("rank_ik")
     diag["ik"] = sum(q is None for q in sols)
     ranked = [(c, q) for c, q in zip(pool, sols) if q is not None]
-    scores = score(kin, [c for c, _ in ranked], [q for _, q in ranked])
+    scores = score([kins[problem.side(c[4])] for c, _ in ranked], [c for c, _ in ranked], [q for _, q in ranked])
     order = sorted(range(len(ranked)), key=lambda i: (not is_here(ranked[i][0]), scores[i]))
     timed("score")
     diag["pool"] = len(pool)
@@ -229,7 +261,7 @@ def find_park(kin, world, problem, state, log, base=None):
             break
         (cost, x, y, yaw, k), q_rank = ranked[i]
         diag["built"] += 1
-        s = with_arm(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), kin.side)
+        s = with_posture(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), problem.side(k))
         plan = problem.build(s, k, {problem.relay: q_rank})
         for st_, sec in getattr(plan, "info", {}).get("stage_s", {}).items():     # where the building time goes
             diag["stage_s"][st_] = round(diag["stage_s"].get(st_, 0.0) + sec, 2)

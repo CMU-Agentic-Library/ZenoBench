@@ -9,7 +9,7 @@ import numpy as np
 
 from ..clearance import LEAVE_CONTACT, closing
 from ..motion_state import Aim, Failure, Held, Plan, Segment, Spec, aim_pose, decisions_of, holding, with_width
-from ..primitives import free_leg, query, straight
+from ..primitives import sided, free_leg, query, straight
 from ..tolerances import HELD_POSE_MARGIN, PICK_TOL  # noqa: F401  (skill_plans re-exports)
 from ._common import FREE_HAND, FREE_LOAD, T_of, _aimed, _contact, _kept, _move, _reach, anchor
 
@@ -108,6 +108,6 @@ def _plan_pick(kin, state, grasp, carry_goals, start, prior_plan, step):
             return Failure(seg.why, seg.segment, {"stage_s": times})
         segs.append(seg)
         q = seg.q_end
-    return Plan(tuple(segs), info={"stage_s": times}, decisions=decided)
+    return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)
 
 

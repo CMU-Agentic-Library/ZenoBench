@@ -10,7 +10,7 @@ import pytest
 from zeno_skills import motion_skills as MS
 from zeno_skills import skill_plans
 from zeno_skills.motion_skills import Job, Skill
-from zeno_skills.motion_state import Hand, Plan, Segment, Spec, State
+from zeno_skills.motion_state import Hand, Plan, Segment, Spec, State, chains
 from zeno_skills.park_search import Found, Problem
 
 
@@ -20,7 +20,7 @@ def _rig(held=None, base=(0.0, 0.0, 0.0)):
 
 
 def _state(rig):
-    return State(base=tuple(rig.base_pose()), q_right=rig.q_cmd.copy(), q_left=np.zeros(7),
+    return State(base=tuple(rig.base_pose()), **chains(rig.q_cmd.copy(), np.zeros(7)),
                  hands={"right": Hand(0.0)})
 
 
@@ -51,12 +51,13 @@ def test_the_catalog_postures_are_the_park_searchs(monkeypatch):
     monkeypatch.setattr(MS, "run", lambda *a, **k: [])
     monkeypatch.setattr("zeno_skills.skill_jobs.base.RigBase", lambda rig: None)
     MS.run_skill(rig, _skill(job), {})
-    assert np.allclose(seen["travel"], rig.kin.rest) and np.allclose(seen["arrive_far"], rig.kin.rest)
-    assert np.allclose(seen["arrive_here"], rig.q_cmd)                # no drive: the arm as it stands
-    with pytest.raises(ValueError, match="nothing in the hand"):
+    assert np.allclose(seen["travel"].q("right"), rig.kin.rest) and np.allclose(seen["arrive_far"].q("right"), rig.kin.rest)
+    assert set(seen["travel"].arms) == {"right"}                      # the right arm's posture: the left as it is
+    assert np.allclose(seen["arrive_here"].q("right"), rig.q_cmd)     # no drive: the arm as it stands
+    with pytest.raises(ValueError, match="nothing in the right hand"):
         MS.posture(rig, "carry")
     rig.held = {"name": "cup"}
-    assert np.allclose(MS.posture(rig, "fold_or_carry"), rig.q_cmd)
+    assert np.allclose(MS.posture(rig, "fold_or_carry").q("right"), rig.q_cmd)
 
 
 def test_a_park_too_close_to_drive_to_has_its_plan_made_again_where_the_base_stands(monkeypatch):

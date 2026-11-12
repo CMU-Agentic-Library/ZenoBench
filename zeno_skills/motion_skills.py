@@ -30,6 +30,8 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
 
+import numpy as np
+
 from .motion_state import Failure
 from .park_search import find_park
 from .run import observe, run
@@ -82,14 +84,28 @@ class Skill:
         return getattr(skill_plans, self.template)
 
 
-def posture(rig, name):
-    """The right arm's joints for a catalog posture: "fold" the travel fold (kin.rest), "carry" the
-    carry posture the arm holds the load in now, "fold_or_carry" the one of the two the hand calls for."""
-    if name == "fold" or (name == "fold_or_carry" and rig.held is None):
-        return rig.kin.rest.copy()
-    if rig.held is None:
-        raise ValueError(f"posture {name!r} with nothing in the hand")
-    return rig.q_cmd.copy()
+def posture(rig, name, side="right"):
+    """``side``'s arm in a catalog posture (motion_state.Posture of that arm and the body): "fold" the
+    travel fold (its kin.rest), "carry" the carry posture the arm holds the load in now,
+    "fold_or_carry" the one of the two the hand calls for.  The body goes with it only where the other
+    hand holds nothing (with_posture, docs 4.1)."""
+    from .motion_state import Posture
+    from .rig import _chain_cmd, _held_of
+    held = _held_of(rig, side)
+    if name == "fold" or (name == "fold_or_carry" and held is None):
+        return Posture.of_chain((rig.kin if side == "right" else rig.left_kin).rest, side)
+    if held is None:
+        raise ValueError(f"posture {name!r} with nothing in the {side} hand")
+    return Posture.of_chain(_chain_cmd(rig, side), side)
+
+
+def _posture_now(rig):
+    """The whole posture as commanded now (an arm that stays where it is: no drive)."""
+    from .motion_state import Posture
+    arms = {"right": rig.q_cmd[2:].copy()}
+    if getattr(rig, "left_q_cmd", None) is not None:
+        arms["left"] = np.asarray(rig.left_q_cmd, float).copy()
+    return Posture(rig.q_cmd[:2].copy(), arms)
 
 
 def _same_pose(a, b):
@@ -110,10 +126,12 @@ def run_skill(rig, skill, args):
     if job.problem is not None:
         # the postures are the catalog's, taken now: the job may have moved the arm first (place
         # settles its carry posture).  At the current pose the arm stays as it stands (no drive)
-        travel, goes = posture(rig, skill.travel), posture(rig, skill.arrive)
+        hand = job.problem.hand
+        travel, goes = posture(rig, skill.travel, hand), posture(rig, skill.arrive, hand)
         problem = replace(job.problem, travel=travel,
-                          arrive=lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else goes)
-        found, diag = find_park(rig.kin, rig.world, problem, observe(rig), rig.log, base=RigBase(rig))
+                          arrive=lambda x, y, yaw: _posture_now(rig) if _at_park(rig, x, y, yaw) else goes)
+        kins = {"right": rig.kin, **({"left": rig.left_kin} if getattr(rig, "left_kin", None) is not None else {})}
+        found, diag = find_park(kins, rig.world, problem, observe(rig), rig.log, base=RigBase(rig))
         if found is None:
             raise job.no_park(diag) if job.no_park is not None else SkillFailure(f"{skill.name}: no park")
         if job.found is not None:
@@ -134,7 +152,9 @@ def run_skill(rig, skill, args):
                 found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan)
     from .run import run_clear
     from .skill_plans import plan_clear
-    clear = lambda st, what: plan_clear(rig.kin, st, **what)      # the failure exit (docs 8.6)
+    # the failure exit (docs 8.6), of the hand the plan works with
+    side = "right" if found is None else problem.side(found.k)
+    clear = lambda st, what: plan_clear(rig.kin if side == "right" else rig.left_kin, st, **what)
     plan, build, hooks = job.ready(found)
     try:
         run(rig, plan, build, hooks, clear=clear)

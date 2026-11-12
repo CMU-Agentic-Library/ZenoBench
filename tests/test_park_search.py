@@ -8,7 +8,7 @@ import numpy as np
 
 from zeno_skills import park_search as PS
 from zeno_skills import skills
-from zeno_skills.motion_state import Failure, Hand, Plan, State
+from zeno_skills.motion_state import Failure, Hand, Plan, State, chains
 
 
 class Kin:
@@ -55,7 +55,7 @@ def _find(log, problem, state, reach=True):
 
 
 def _state():
-    return State(base=(0.0, 0.0, 0.0), q_right=np.zeros(9), q_left=np.zeros(7), hands={"right": Hand(width=0.04)})
+    return State(base=(0.0, 0.0, 0.0), **chains(np.zeros(9), np.zeros(7)), hands={"right": Hand(width=0.04)})
 
 
 def _problem(build, near=None, prefer=()):

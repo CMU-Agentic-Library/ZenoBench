@@ -48,6 +48,34 @@ RIDE_STALL_CHECKS = 4                # checks in a row a part moved less than RI
                                      # RIDE_STALL, RIDE_SLIP_LEADS: tolerances.py)
 
 
+
+# one arm of the rig by side: its planning chain (torso, waist, 7 arm joints), what it holds, its
+# fingers (module functions: the old entries' tests bind Rig's methods to stand-ins)
+def _chain_q(rig, side):
+    return rig.q() if side == "right" else rig.left_q()
+
+
+def _chain_cmd(rig, side):
+    return rig.q_cmd.copy() if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+
+
+def _set_chain_cmd(rig, side, q):
+    """Command ``side``'s planning chain (the body with it: both arms ride on it)."""
+    q = np.asarray(q, float)
+    if side == "right":
+        rig.q_cmd = q.copy()
+    else:
+        rig.q_cmd = np.r_[q[:2], rig.q_cmd[2:]]
+        rig.left_q_cmd = q[2:].copy()
+
+
+def _held_of(rig, side):
+    return getattr(rig, "held" if side == "right" else "left_held", None)
+
+
+def _fingers_of(rig, side):
+    return rig.fingers() if side == "right" else rig.left_fingers()
+
 class Rig:
     sticky = None                # zeno_skills.sticky.StickyHands when the profile turns sticky hands on
 
@@ -158,6 +186,18 @@ class Rig:
     def left_q(self):
         arm = self.robot.get_joint_positions()[self.left.long()].cpu().numpy().astype(float)
         return np.r_[self.q()[:2], arm]
+
+    def chain_q(self, side="right"):
+        return _chain_q(self, side)
+
+    def chain_cmd(self, side="right"):
+        return _chain_cmd(self, side)
+
+    def held_of(self, side="right"):
+        return _held_of(self, side)
+
+    def fingers_of(self, side="right"):
+        return _fingers_of(self, side)
 
     def head_q(self):
         v = self.robot.get_joint_positions()[self.head.long()].cpu().numpy().astype(float)
@@ -312,9 +352,9 @@ class Rig:
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
 
-    def _held_container(self):
-        """The right hand holds a container (by its rim: it hangs off a thin wall)."""
-        h = self.held
+    def _held_container(self, side="right"):
+        """The hand holds a container (by its rim: it hangs off a thin wall)."""
+        h = _held_of(self, side)
         if h is None or h.get("kind") == "bimanual" or h.get("name") not in self.ann.objects:
             return False
         return bool(self.ann.asset_of(self.ann.objects[h["name"]]).get("container"))
@@ -327,26 +367,27 @@ class Rig:
             return DRIVE_SWINGING
         return DRIVE_LOADED if self.held is not None else DRIVE_EMPTY
 
-    def _vmax(self):
-        """Joint speeds paths are executed at: 60% of the URDF limits (torso lift is 0.117 m/s;
+    def _vmax(self, side="right"):
+        """Joint speeds ``side``'s paths are executed at: 60% of the URDF limits (torso lift is 0.117 m/s;
         ignoring this was a 0.29 m tracking error); with an object in the hand the arm joints at
-        most CARRY_VEL (RIM_VEL for a rim-held container) so it is not flung."""
-        v = 0.6 * vel_limits(self.kin.names)
-        if self._carrying():
-            v[2:] = np.minimum(v[2:], RIM_VEL if self._held_container() else CARRY_VEL)
+        most CARRY_VEL (RIM_VEL for a rim-held container) so it is not flung.  (The other hand's
+        load rides the body only, which stays put while that hand holds it: docs 4.1.)"""
+        v = 0.6 * vel_limits((self.kin if side == "right" else self.left_kin).names)
+        if self._carrying(side):
+            v[2:] = np.minimum(v[2:], RIM_VEL if self._held_container(side) else CARRY_VEL)
         return v
 
-    def follow_smooth(self, qs, steps_per_wp=3, settle=150, tol=0.01):
+    def follow_smooth(self, qs, steps_per_wp=3, settle=150, tol=0.01, side="right"):
         """Follow the same planned joint waypoints with a gentle start and stop.
 
         Time scaling only changes progress along the existing joint segments;
         it never rounds a corner into a configuration outside that path.
         """
         self.clear.executing()
-        points = [self.q_cmd.copy()] + [np.asarray(q, float) for q in qs]
+        points = [_chain_cmd(self, side)] + [np.asarray(q, float) for q in qs]
         if len(points) == 1:
             return
-        vmax = self._vmax()
+        vmax = self._vmax(side)
         segment_times = [max(steps_per_wp / PHYSICS_HZ,
                              float(np.max(np.abs(b - a) / vmax)))
                          for a, b in zip(points[:-1], points[1:])]
@@ -366,22 +407,23 @@ class Rig:
                 progress = path_time - 0.5 * (remaining - ramp / math.pi * math.sin(math.pi * remaining / ramp))
             segment = min(len(segment_times) - 1, int(np.searchsorted(times, progress, side="right") - 1))
             fraction = min(1.0, max(0.0, (progress - times[segment]) / segment_times[segment]))
-            self.q_cmd = points[segment] + fraction * (points[segment + 1] - points[segment])
+            _set_chain_cmd(self, side, points[segment] + fraction * (points[segment + 1] - points[segment]))
             self.step(1)
-        self._settle(settle, tol)
+        self._settle(settle, tol, side)
 
-    def _settle(self, settle, tol):
+    def _settle(self, settle, tol, side="right"):
         """After a follow's last command: step (2 ticks at a time, ``settle`` times at most) until the
         arm has arrived -- the TCP within SETTLE_TCP of where q_cmd puts it and no joint off by
         ``tol`` -- or has stopped: the TCP moved less than SETTLE_STILL over the last SETTLE_WINDOW
         ticks.  What is left of the error then is the caller's to judge (a reach check: blocked)."""
-        target = self.kin.tcp(self.q_cmd)[0]
+        kin, cmd = (self.kin if side == "right" else self.left_kin), _chain_cmd(self, side)
+        target = kin.tcp(cmd)[0]
         span = max(1, SETTLE_WINDOW // 2)
         seen = []
         for _ in range(settle):
-            q = self.q()
-            tcp = self.kin.tcp(q)[0]
-            if np.linalg.norm(tcp - target) < SETTLE_TCP and np.max(np.abs(q - self.q_cmd)) < tol:
+            q = _chain_q(self, side)
+            tcp = kin.tcp(q)[0]
+            if np.linalg.norm(tcp - target) < SETTLE_TCP and np.max(np.abs(q - cmd)) < tol:
                 return
             seen.append(tcp)
             if len(seen) > span and np.linalg.norm(tcp - seen[-1 - span]) < SETTLE_STILL * 2 * span / PHYSICS_HZ:
@@ -391,18 +433,18 @@ class Rig:
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01, smooth=False, side="right"):
         """Waypoints time-scaled to the joint speeds of _vmax; with an object in the hand (or
         ``smooth``) always follow_smooth's gentle start and stop (a jerk shakes it out of the pinch).
-        ``side`` "left": the left arm's waypoints (torso and waist first, as left_kin's chain), left_follow."""
-        if side == "left":
-            return self.left_follow([np.asarray(q, float) for q in qs], steps_per_wp)
-        if smooth or self._carrying():
-            return self.follow_smooth(qs, steps_per_wp, settle, tol)
+        ``side``: whose waypoints (its planning chain, torso and waist first) -- the same execution
+        for either arm (the old left_follow stays for the old entries)."""
+        if smooth or self._carrying(side):
+            return self.follow_smooth(qs, steps_per_wp, settle, tol, side=side)
         self.clear.executing()
-        vmax = self._vmax()
+        vmax = self._vmax(side)
         for q in qs:
-            need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * PHYSICS_HZ))
-            self.q_cmd = q
+            q = np.asarray(q, float)
+            need = int(math.ceil(np.max(np.abs(q - _chain_cmd(self, side)) / vmax) * PHYSICS_HZ))
+            _set_chain_cmd(self, side, q)
             self.step(max(steps_per_wp, need))
-        self._settle(settle, tol)
+        self._settle(settle, tol, side)
 
     # ------------------------------------------------------------ arm motions
     # Every arm motion has two ways (docs/COLLISION_PLAN.md principle 2): collision-checked, the
@@ -768,9 +810,9 @@ class Rig:
                 T = motion.held_in_tcp(kin, q(), name) if motion is not None and motion.by_owner.get(f"object:{name}") \
                     else np.eye(4)
                 h = Held(name, T, held.get("kind", "pinch"))
-            elif side == "right" and handle is not None:
-                # a handle in the right hand (policies GraspArticulatedHandle): the part frame in the
-                # TCP frame at the measured joints
+            elif handle is not None and handle.get("side", "right") == side:
+                # a handle in this hand (skill_jobs.door, policies GraspArticulatedHandle): the part
+                # frame in the TCP frame at the measured joints
                 a = self.ann.art(handle["name"])
                 p, R = kin.tcp(q())
                 T_tcp = np.eye(4)
@@ -778,8 +820,9 @@ class Rig:
                 h = Held(handle["name"], np.linalg.inv(T_tcp) @ self.ann.part_pose(a, self.joint(handle["name"])),
                          "part")
             hands[side] = Hand(width=width, held=h)
-        return State(base=tuple(self.base_pose()), q_right=np.asarray(self.q_cmd, float).copy(),
-                     q_left=np.asarray(self.left_q_cmd, float).copy(), head=dict(self.head_q()), hands=hands,
+        return State(base=tuple(self.base_pose()), body=np.asarray(self.q_cmd, float)[:2].copy(),
+                     arms={"right": np.asarray(self.q_cmd, float)[2:].copy(),
+                           "left": np.asarray(self.left_q_cmd, float).copy()}, head=dict(self.head_q()), hands=hands,
                      objects=motion.object_frames() if motion is not None else {},
                      parts={a["name"]: self.joint(a["name"]) for a in self.ann.articulated})
 
@@ -822,8 +865,9 @@ class Rig:
             x, y, _ = self.base_pose()
             base_err = max(base_err, math.hypot(x - b[0], y - b[1]))
             if it % RIDE_LOG_EVERY == 0:
+                hand = (getattr(self, "_handle_grasp", None) or {}).get("side", "right")
                 self.log("ride", target=label, s=round(s, 4), cmd=round(cmd, 4), lag=round(lag, 4),
-                         fingers=[round(v, 4) for v in self.fingers()])
+                         fingers=[round(v, 4) for v in _fingers_of(self, hand)])
                 if it and abs(s - last) < RIDE_STALL:
                     stall += 1
                     if stall >= RIDE_STALL_CHECKS:
@@ -918,9 +962,10 @@ class Rig:
             return self._joint_path(q_goal, label, FREE)[0]
         return self._dense(self.q_cmd, q_goal)
 
-    def _carrying(self):
-        """An object in the right hand (its tilt is held on planned moves)."""
-        return self.held is not None and self.held.get("kind") != "bimanual"
+    def _carrying(self, side="right"):
+        """An object in the hand (its tilt is held on planned moves)."""
+        h = _held_of(self, side)
+        return h is not None and h.get("kind") != "bimanual"
 
     @staticmethod
     def _dense(qa, qb):
@@ -960,23 +1005,25 @@ class Rig:
         self.log("joint_plan", target=label, waypoints=len(qs), carry=carry)
         return self.joint_path_via(qs)
 
-    def grip(self, width, steps=100, gradual=False):
+    def grip(self, width, steps=100, gradual=False, side="right"):
+        """``side``'s gripper to ``width`` (m per finger) over ``steps`` ticks (``gradual``: a smooth ramp)."""
+        attr = "grip_cmd" if side == "right" else "left_grip_cmd"
         if getattr(self, "sticky", None) is not None:
-            self.sticky.on_open("right", width)      # letting go: the weld goes before the fingers open
+            self.sticky.on_open(side, width)      # letting go: the weld goes before the fingers open
         if gradual and steps > 1:
-            start = float(self.grip_cmd)
+            start = float(getattr(self, attr))
             ramp = max(1, steps // 2)
             for i in range(1, ramp + 1):
                 u = i / ramp
-                self.grip_cmd = start + (width - start) * (3 * u**2 - 2 * u**3)
+                setattr(self, attr, start + (width - start) * (3 * u**2 - 2 * u**3))
                 self.step(1)
-            self.grip_cmd = width
+            setattr(self, attr, width)
             self.step(steps - ramp)
         else:
-            self.grip_cmd = width
+            setattr(self, attr, width)
             self.step(steps)
-        f = self.fingers()
-        self.log("grip", cmd=width, fingers=[round(v, 4) for v in f])
+        f = _fingers_of(self, side)
+        self.log("grip" if side == "right" else "left_grip", cmd=width, fingers=[round(v, 4) for v in f])
         return f
 
     def left_grip(self, width, steps=100):
@@ -1129,13 +1176,14 @@ class Rig:
         self.kin.set_base((x, y, 0.0), yaw)
         self.left_kin.set_base((x, y, 0.0), yaw)
 
-    def swing(self, q_right, q_left, label, allow=FREE, settle=150, tol=0.01):
-        """Both arms (and the shared torso and waist) straight in joint space to (q_right: torso,
-        waist, 7 right-arm joints; q_left: 7 left-arm joints) with a gentle start and stop: a
-        posture switch the caller checked (the base planner's, Motion.base_depths)."""
+    def swing(self, posture, label, allow=FREE, settle=150, tol=0.01):
+        """The body and both arms straight in joint space to ``posture`` (motion_state.Posture) with a
+        gentle start and stop: a posture switch the caller checked (the base planner's,
+        Motion.base_depths)."""
         self.clear.motion(label, allow, side="both", follows=False)
         r0, l0 = self.q_cmd.copy(), self.left_q_cmd.copy()
-        r1, l1 = np.asarray(q_right, float), np.asarray(q_left, float)[-len(l0):]
+        r1, l1 = posture.pair()
+        r1, l1 = np.asarray(r1, float), np.asarray(l1, float)[-len(l0):]
         vr = self._vmax()
         vl = np.minimum(0.6 * vel_limits(self.left_kin.names[2:]), vr[2:].max())
         T = max(float(np.max(np.abs(r1 - r0) / vr)), float(np.max(np.abs(l1 - l0) / vl)), 0.05) * 1.5

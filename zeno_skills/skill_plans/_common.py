@@ -15,7 +15,7 @@ import numpy as np
 from ..clearance import FREE, LEAVE_CONTACT
 from ..motion_state import Failure, Plan, Segment, Spec, released, with_arm, with_width
 from ..tolerances import NUMERIC_M
-from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg,
+from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg, sided,
                           holds, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
@@ -137,4 +137,4 @@ def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, na
             why = seg.why
         elif seg.qs:
             segs.append(seg)
-    return Plan(tuple(segs), info={"exit": why}) if segs else None
+    return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"exit": why}) if segs else None

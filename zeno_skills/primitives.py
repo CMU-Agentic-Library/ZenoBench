@@ -18,13 +18,13 @@ returns a Failure with why -- no fallback (COLLISION_PLAN section 1, principle 2
 from __future__ import annotations
 
 from contextlib import contextmanager, nullcontext
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Callable
 
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import Failure, Segment, Spec, aim_pose, at_base, touches, with_part
+from .motion_state import N_BODY, Failure, Segment, Spec, aim_pose, at_base, body_locked, touches, with_part
 
 # the contact geometry and the checks' thresholds: one source with their units and where their values
 # come from (tolerances.py, docs 4.5); here as the primitives' own names
@@ -72,6 +72,7 @@ class Extent:
     qs: tuple
     length: float
     clear: bool
+    side: str = "right"
 
 
 # ------------------------------------------------------------------------- touching predicates
@@ -125,6 +126,22 @@ def query(kin, state, spec):
     motion = getattr(kin, "motion", None)
     with (motion.query(kin, state, spec) if motion is not None and hasattr(motion, "query") else nullcontext()):
         yield
+
+
+def _keep_body(state, spec, side, q0, q1):
+    """A joint goal q1 with the body kept at q0's where it may not move (body_locked: the other hand
+    holds something, docs 4.1) -- a fold names the arm, not where the torso goes."""
+    q1 = np.asarray(q1, float)
+    if body_locked(state, spec, side):
+        q1 = np.r_[np.asarray(q0, float)[:N_BODY], q1[N_BODY:]]
+    return q1
+
+
+def sided(seg, side):
+    """seg with the arm it moves in its info (run executes and checks it with that arm's kin)."""
+    if isinstance(seg, Segment) and seg.info.get("side") != side:
+        return replace(seg, info={**seg.info, "side": side})
+    return seg
 
 
 def dense(qa, qb):
@@ -228,16 +245,22 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
     PoseSet: the cheapest reachable goal (batched IK), then as a Pose with its solution.  JointSet:
     the first goal free where it stands, then as a Joint.  ``first``: a set's goal decided before,
     (info["chosen"], info["goals"]) of a plan's segment -- that one while its set is the same size
-    (_first) and it is reachable (PoseSet) / free (JointSet), else chosen again."""
+    (_first) and it is reachable (PoseSet) / free (JointSet), else chosen again.  A joint goal keeps
+    the body where it may not move (body_locked, docs 4.1)."""
+    return sided(_free_leg(kin, state, spec, goal, name, step, q_from, first), kin.side)
+
+
+def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
     q0 = np.asarray(state.q(kin.side) if q_from is None else q_from, float)
     with query(kin, state, spec):
         if isinstance(goal, JointSet):
             f = _first(first, len(goal.goals))
             order = sorted(range(len(goal.goals)), key=lambda j: j != f)
-            i = next((i for i in order if kin.free(np.asarray(goal.goals[i], float))), None)
+            goals = [_keep_body(state, spec, kin.side, q0, g) for g in goal.goals]
+            i = next((i for i in order if kin.free(goals[i])), None)
             if i is None:
                 return Failure(f"every goal of {len(goal.goals)} collides", name)
-            seg = free_leg(kin, state, spec, Joint(np.asarray(goal.goals[i], float)), name, step, q0)
+            seg = _free_leg(kin, state, spec, Joint(goals[i]), name, step, q0)
             if isinstance(seg, Segment):
                 seg = Segment(seg.name, seg.spec, seg.q_from, seg.qs, target=seg.target,
                               info={**seg.info, "chosen": i, "goals": len(goal.goals)})
@@ -256,14 +279,14 @@ def free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
             if not np.isfinite(score[i]):
                 return Failure(f"no goal of {len(goal.goals)} reachable", name)
             p, R = goal.goals[i]
-            seg = free_leg(kin, state, spec, Pose(np.asarray(p, float), np.asarray(R, float), sols[i]), name,
+            seg = _free_leg(kin, state, spec, Pose(np.asarray(p, float), np.asarray(R, float), sols[i]), name,
                            step, q0)
             if isinstance(seg, Segment):
                 seg = Segment(seg.name, seg.spec, seg.q_from, seg.qs, target=seg.target,
                               info={**seg.info, "chosen": i, "goals": len(goal.goals)})
             return seg
         if isinstance(goal, Joint):
-            q1 = np.asarray(goal.q, float)
+            q1 = _keep_body(state, spec, kin.side, q0, goal.q)
             if kin.segment_free(q0, q1) and not (spec.hold_tilt and tips_over(kin, q0, q1)):
                 return Segment(name, spec, q0, tuple(dense(q0, q1)), target=("q", q1), info={"how": "joint"})
             qs, status = kin.plan(q0, q1, carry=spec.hold_tilt)
@@ -314,7 +337,7 @@ def straight(kin, state, spec, p, R, name, step=0.003, q_from=None):
             return Failure(f"no collision-free straight (the arm, not its touching links, touches "
                            f"{', '.join(n for n, _ in t)})", name)
     return Segment(name, spec, q0, tuple(qs), target=("pose", p, R),
-                   info={"length": float(np.linalg.norm(p - kin.tcp(q0)[0]))})
+                   info={"length": float(np.linalg.norm(p - kin.tcp(q0)[0])), "side": kin.side})
 
 
 def contact_extent(kin, state, spec, u, touching, name, step=0.004, q_from=None):
@@ -339,13 +362,14 @@ def contact_extent(kin, state, spec, u, touching, name, step=0.004, q_from=None)
         return Failure(f"still touching {LEAVE_MAX} m along the exit", name)
     qs = tuple(line[:n])
     length = float(np.linalg.norm(kin.tcp(qs[-1])[0] - p0)) if qs else 0.0
-    return Extent(q0, qs, length, True)
+    return Extent(q0, qs, length, True, kin.side)
 
 
 def contact_segment(spec, extent, name):
     """The contact a contact_extent measured, as a segment run under spec.allow (a contact Allow:
     LEAVE_CONTACT, lifting; unchecked, only what is touched at its start may be touched)."""
-    return Segment(name, spec, extent.q_from, extent.qs, target=None, info={"length": extent.length})
+    return Segment(name, spec, extent.q_from, extent.qs, target=None,
+                   info={"length": extent.length, "side": extent.side})
 
 
 # ------------------------------------------------------------------------- task segments (3.1, 5.5)
@@ -472,6 +496,8 @@ def _script_path(kin, state, spec, script, info, base=None, arm_step=0.005):
     "arm": the TCP at s by the kinematic straight from the arm at the s before (IK continued), that
     motion free with the coupling at s.  (qs, s at each q) or why it fails (a str)."""
     q, qs, s_at = np.asarray(state.q(kin.side), float), [], []
+    if script.carry == "base":           # both arms ride rigidly with the base (docs 4.4)
+        spec = replace(spec, arms_still=True)
     for i, s in enumerate(script.samples()):
         st = script.coupling.moved(state, s)
         where = f"s={s:.3f}"
@@ -558,15 +584,16 @@ def scripted(kin, state, spec, script, name, base=None, track=None, arm_step=0.0
 def drive(base, state, goal, chain, name, spec=None, **drive_kw):
     """The base to ``goal`` (x, y, yaw_deg; None: as little as possible) on a whole-body plan of
     ``base`` (motion_state.BaseModel: what the hands hold counts), the arms leaving the state's
-    posture through ``chain`` [(name, (q_right, q_left))] where the planner puts each switch (a
-    checked straight joint move: Rig.swing).  One segment, kind "drive": the drives and swings in
-    info["steps"], ``drive_kw`` (speed, turn, ramp) for the execution.  Failure when there is none."""
+    posture through ``chain`` [(name, Posture)] where the planner puts each switch (a checked
+    straight joint move: Rig.swing).  One segment, kind "drive": the drives and swings in
+    info["steps"], ``drive_kw`` (speed, turn, ramp) for the execution; its q_from and qs the whole
+    posture (Posture.vec) at the start and after each swing.  Failure when there is none."""
     from .clearance import FREE
     steps, why = base.plan(state, goal, chain, name)
     if steps is None:
         return Failure(why, name)
-    arm = tuple(np.asarray(st[2], float) for st in steps if st[0] == "swing")
-    return Segment(name, spec or Spec(allow=FREE), np.asarray(state.q_right, float), arm, kind="drive",
+    arm = tuple(st[2].vec() for st in steps if st[0] == "swing")
+    return Segment(name, spec or Spec(allow=FREE), state.posture().vec(), arm, kind="drive",
                    target=("base", None if goal is None else tuple(map(float, goal))),
                    info={"steps": tuple(steps), "drive_kw": drive_kw})
 
@@ -580,7 +607,7 @@ def drive_straight(base, state, target, name, spec=None, **drive_kw):
     if path is None:
         return Failure(why, name)
     path = [tuple(map(float, w)) for w in path]
-    return Segment(name, spec or Spec(allow=FREE), np.asarray(state.q_right, float), (), kind="drive",
+    return Segment(name, spec or Spec(allow=FREE), state.posture().vec(), (), kind="drive",
                    target=("base", path[-1]), info={"steps": (("drive", path),), "drive_kw": drive_kw})
 
 
@@ -624,6 +651,10 @@ def holds(kin, state, seg):
     segments (docs 8.3)."""
     if seg.kind in ("action", "anchor"):
         return None
+    if seg.kind == "drive":                # the whole posture where it starts (Posture.vec)
+        if np.max(np.abs(state.posture().vec() - np.asarray(seg.q_from, float))) > PLAN_AT_START:
+            return "the arms are not where the drive starts"
+        return None
     q = state.q(kin.side)
     if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
         return "the arm is not where the segment starts"
@@ -636,8 +667,6 @@ def holds(kin, state, seg):
         if off > tol or rot > tol_turn:
             return (f"its end is {off:.4f} m, {np.degrees(rot):.2f} deg further off its target than built "
                     f"(the target moved {moved:.4f} m, turned {np.degrees(moved_turn):.2f} deg)")
-    if seg.kind == "drive":
-        return None
     if seg.kind == "scripted":
         info = seg.info
         script = info["script"]

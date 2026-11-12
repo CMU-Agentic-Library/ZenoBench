@@ -99,9 +99,10 @@ def _drivable(kin, world, body, origin, goal):
     depths, _, travel = body
     rig = kin.motion.rig
     hand = lambda h: Hand(0.0, None if h is None else Held(h["name"], np.eye(4)))
-    st = State(base=tuple(origin), q_right=np.asarray(travel[0], float), q_left=np.asarray(travel[1], float),
+    tr = np.asarray(travel[0], float)
+    st = State(base=tuple(origin), body=tr[:2].copy(), arms={"right": tr[2:].copy(), "left": np.asarray(travel[1], float)[-7:]},
                hands={"right": hand(rig.held), "left": hand(rig.left_held)})
-    chain = [p for _, p in travel_chain(rig.kin, rig.left_kin, st)]
+    chain = [p.pair() for _, p in travel_chain(rig.kin, rig.left_kin, st)]
     if any(np.max(np.abs(p[0] - chain[0][0])) >= 0.02 for p in chain):
         sets, switches, dense = posture_sets(rig, chain)
     else:

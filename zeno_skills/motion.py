@@ -46,7 +46,7 @@ from scipy.spatial.transform import Rotation
 
 from . import scene_geometry as G
 from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt, tips_over
-from .motion_state import touch_entries, touches
+from .motion_state import N_BODY, body_locked, other_side, touch_entries, touches
 from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -561,6 +561,9 @@ class Motion:
         self.enabled = {c.name: True for c in self.cols.items}
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
         self._held_sph = {}              # side -> spheres of the held object on its held link (scope), or None
+        self._cross_sph = {}             # (arm side, hand side) -> the other hand's load on its held link in
+                                         # this arm's model (Spec.arms_still, docs 4.4), or None
+        self._fk = {}                    # side -> an ArmKin of its own: the other hand's TCP for a State
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self._held_sph_of = {}           # object name -> its held spheres in that frame (held_spheres)
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
@@ -856,10 +859,17 @@ class Motion:
         """Queries of ``kin``'s arm inside take the world and the robot as ``state`` has them and
         the collision rules of ``spec`` (docs/MOTION_ARCHITECTURE.md 4.4): the base, the other
         arm, the head and finger locks, what each hand holds (on its held link, not an obstacle to
-        it), objects and parts where the state puts them, and kin.coll_kw from the spec.  Only
-        what differs from the synced world is changed, and everything is put back after.  The
-        first form over the per-purpose contexts (hand_open, carrying, released, scope)."""
+        it), objects and parts where the state puts them, and kin.coll_kw from the spec.  The body
+        (torso, waist) is pinned where the state has it when it may not move (motion_state.body_locked:
+        the other hand holds something, docs 4.1).  What the other hand holds is an obstacle where
+        the state puts it -- its TCP there times its hold -- or, under spec.arms_still (both arms ride
+        rigidly with the base), on that hand's held link in this arm's model: a held link checks
+        against the world but never against the arms (no self-collision pairs left), and the
+        same object cannot be both (docs 4.4).  Only what differs from the synced world is changed,
+        and everything is put back after.  The first form over the per-purpose contexts (hand_open,
+        carrying, released, scope)."""
         side = kin.side
+        other = other_side(side)
         other_attr = "left_q" if side == "right" else "right_q"
         scene = kin.scene
         saved = {"base": (kin.base_p.copy(), kin.base_R.copy()), "kw": kin.coll_kw,
@@ -867,14 +877,18 @@ class Motion:
                  "other": getattr(scene, other_attr, None) if scene is not None else None,
                  "width": dict(self.hand_width), "head": getattr(self, "head_override", None),
                  "held": {s_: set(v) for s_, v in self.held.items()},
-                 "sph": dict(self._held_sph)}
+                 "sph": dict(self._held_sph),
+                 "lim": (np.array(kin.lo, float).copy(), np.array(kin.hi, float).copy())
+                 if hasattr(kin, "lo") else None}
         moved = {}
+        cross = False
         try:
             x, y, yaw = state.base
             kin.set_base((x, y, 0.0), math.radians(yaw))
             if scene is not None:
-                setattr(scene, other_attr, np.r_[np.asarray(state.q_right, float)[:2], state.q_left]
-                        if side == "right" else np.asarray(state.q_right, float))
+                setattr(scene, other_attr, state.q(other))
+            if saved["lim"] is not None and body_locked(state, spec, side):
+                kin.lo[:N_BODY] = kin.hi[:N_BODY] = np.asarray(state.body, float)
             self.hand_width = {s_: h.width for s_, h in state.hands.items()}
             self.head_override = dict(state.head) if state.head else None
             kw = {k: v for k, v in (kin.coll_kw or {}).items() if k not in ("ignore_fingers", "exempt_targets")}
@@ -884,8 +898,25 @@ class Motion:
             # what the hand may touch (Spec.touch and a part it holds): no obstacle in these queries;
             # path_free_only checks the rest of the arm against them apart
             self.finger_touch = {self.touch_owner(n) for n, _ in touches(state, spec, side)}
-            # objects and parts the state has elsewhere than the synced world
-            for name, T in state.objects.items():
+            # objects and parts the state has elsewhere than the synced world; the other hand's load
+            # (and what is in it) where that hand has it in the state
+            objects = dict(state.objects)
+            oh = state.held(other)
+            carried = set()
+            if oh is not None and oh.kind not in ("part", "bimanual") and self.by_owner.get(f"object:{oh.name}"):
+                T_obj = self._tcp_of(other, state) @ np.asarray(oh.T_tcp_obj, float)
+                if not spec.arms_still:
+                    frame, _, _ = self._box_of(oh.name)
+                    T0 = np.asarray(objects.get(oh.name, G.world_pose(frame, self.body_pose.get)), float)
+                    D = T_obj @ np.linalg.inv(T0)
+                    for o in self._held_owners(oh.name):
+                        n = o.split(":", 1)[1]
+                        if n in objects:
+                            objects[n] = D @ np.asarray(objects[n], float)
+                    objects[oh.name] = T_obj
+                else:
+                    carried = self._held_owners(oh.name)
+            for name, T in objects.items():
                 owner = f"object:{name}"
                 if not self.by_owner.get(owner):
                     continue
@@ -921,11 +952,18 @@ class Motion:
                         self._attach_rel(self.arms[s_], h.name, np.asarray(h.T_tcp_obj, float), h.pad)
                     else:
                         self._attach_rel(self.arms[s_], None, None)
+            if carried:
+                # the other hand's load rides on its held link in this arm's model, no obstacle to it
+                self.held[side] = self.held[side] | carried
+                self._attach_cross(self.arms[side], other, oh.name, np.asarray(oh.T_tcp_obj, float), oh.pad)
+                cross = True
             self.cull_at = None
             yield
         finally:
             kin.base_p, kin.base_R = saved["base"]
             kin.coll_kw = saved["kw"]
+            if saved["lim"] is not None:
+                kin.lo[:], kin.hi[:] = saved["lim"]
             self.finger_touch = saved["touch"]
             if scene is not None:
                 setattr(scene, other_attr, saved["other"])
@@ -935,6 +973,8 @@ class Motion:
             if moved:
                 self.body_pose.update(moved)
                 self._put_poses(moved)
+            if cross:
+                self._attach_cross(self.arms[side], other, None, None)
             for s_ in SIDES_:
                 sph = saved["sph"].get(s_)
                 if sph is not None or self._held_sph.get(s_) is not None:
@@ -942,10 +982,38 @@ class Motion:
                     self._held_sph[s_] = sph
             self.cull_at = None
 
-    def _set_held_spheres(self, arm, sph):
-        """Write the held link's spheres (None: emptied) into every robot model of the arm."""
+    def _tcp_of(self, side, state):
+        """4x4 world pose of ``side``'s TCP where ``state`` has that arm and the base."""
+        from .kinematics import ArmKin
+        k = self._fk.get(side)
+        if k is None:
+            k = self._fk[side] = ArmKin(side=side)
+        x, y, yaw = state.base
+        k.set_base((x, y, 0.0), math.radians(yaw))
+        p, R = k.tcp(state.q(side))
+        T = np.eye(4)
+        T[:3, :3], T[:3, 3] = R, p
+        return T
+
+    def _attach_cross(self, arm, side, name, M, pad=0.0):
+        """Spheres of ``name`` held in ``side``'s hand (box frame at M in its TCP frame) on that
+        hand's held link in ``arm``'s model -- the other arm's (Spec.arms_still); None: emptied."""
+        sph = None
+        if name is not None:
+            b = self.held_spheres(name, side)
+            sph = np.full((HELD_SPHERES[side], 4), [0.0, 0.0, 0.0, -100.0])
+            sph[:len(b), :3] = b[:, :3] @ M[:3, :3].T + M[:3, 3]
+            sph[:len(b), 3] = b[:, 3] + pad
+        key = (arm.side, side)
+        if sph is not None or self._cross_sph.get(key) is not None:
+            self._set_held_spheres(arm, sph, side)
+        self._cross_sph[key] = sph
+
+    def _set_held_spheres(self, arm, sph, side=None):
+        """Write the held link's spheres (None: emptied) into every robot model of the arm; ``side``:
+        the held link of that hand (default the arm's own)."""
         t = arm.torch
-        link = held_link(arm.side)
+        link = held_link(side or arm.side)
         for kc in arm.kcs:
             if sph is None:
                 kc.detach_object(link)

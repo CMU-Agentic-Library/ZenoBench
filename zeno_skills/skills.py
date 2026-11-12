@@ -326,7 +326,7 @@ def _base_steps(rig, goal, postures, label, state=None, quiet=False):
     motion = rig.kin.motion
     if motion is None:
         return None, [], f"{label}: no whole-body model (cuRobo) to plan the base with"
-    q_r, q_l = (rig.q_cmd, rig.left_q_cmd) if state is None else (state.q_right, state.q_left)
+    q_r, q_l = (rig.q_cmd, rig.left_q_cmd) if state is None else state.posture().pair()
     origin = rig.base_pose() if state is None else tuple(state.base)
     chain = [("start", (np.asarray(q_r, float).copy(), np.asarray(q_l, float).copy()))]
     for name, (qr, ql) in postures:

@@ -7,7 +7,7 @@ import pytest
 
 from tests.test_scripted import DOOR, DoorKin, FakeBase, door_pose
 from zeno_skills import primitives as P
-from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, State, holding, with_part
+from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, State, holding, with_part, chains
 from zeno_skills.skill_plans import DOOR_RELAY, DOOR_STAGES, plan_clear, plan_door
 from zeno_skills.tolerances import DOOR_LEAVE
 
@@ -49,7 +49,7 @@ RESTS = (FOLD, _q([0.1, -0.3, 0.4]))
 
 
 def _state(q=None, door=0.0, held=None):
-    return State(base=(0.0, 0.0, 0.0), q_right=_q([0.3, -0.3, 0.7]) if q is None else q, q_left=np.zeros(7),
+    return State(base=(0.0, 0.0, 0.0), **chains(_q([0.3, -0.3, 0.7]) if q is None else q, np.zeros(7)),
                  hands={"right": Hand(width=0.0, held=held)}, parts={DOOR: door})
 
 

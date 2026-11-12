@@ -18,6 +18,12 @@ from .clearance import FREE, Allow
 from .tolerances import MOVED_MM
 
 SIDES = ("right", "left")
+BODY_JOINTS = ("torso_lift_joint", "waist_pitch_joint")   # the joints both arms ride on (q_body)
+N_BODY = len(BODY_JOINTS)
+
+
+def other_side(side):
+    return "left" if side == "right" else "right"
 
 
 class SkillFailure(RuntimeError):
@@ -75,12 +81,46 @@ class Hand:
     held: Held | None = None
 
 
+@dataclass(frozen=True, eq=False)
+class Posture:
+    """The robot's joints, or some of them (docs/MOTION_ARCHITECTURE.md 4.1): ``body`` the torso lift
+    and the waist both arms ride on (None: as they are), ``arms`` {side: its 7 joints} (a side left
+    out: as it is).  A posture goal (a fold, an arrival) names the arms it moves; its body applies
+    only where no other hand holds something (with_posture)."""
+    body: np.ndarray | None
+    arms: Mapping[str, np.ndarray]
+
+    def q(self, side="right"):
+        """``side``'s planning chain (body first, as ArmKin.names)."""
+        return np.r_[np.asarray(self.body, float), np.asarray(self.arms[side], float)]
+
+    def vec(self):
+        """The whole body as one vector: body, right arm, left arm (a drive segment's posture)."""
+        return np.r_[np.asarray(self.body, float), np.asarray(self.arms["right"], float),
+                     np.asarray(self.arms["left"], float)]
+
+    @staticmethod
+    def from_vec(v):
+        v = np.asarray(v, float)
+        return Posture(v[:N_BODY].copy(), {"right": v[N_BODY:N_BODY + 7].copy(), "left": v[N_BODY + 7:].copy()})
+
+    @staticmethod
+    def of_chain(q, side="right"):
+        """A planning chain's joints (body first) as a Posture of that arm and the body."""
+        q = np.asarray(q, float)
+        return Posture(q[:N_BODY].copy(), {side: q[N_BODY:].copy()})
+
+    def pair(self):
+        """(right chain, left arm): the base planner's form (skills._base_steps, Motion.body_spheres)."""
+        return self.q("right"), np.asarray(self.arms["left"], float)
+
+
 @dataclass(frozen=True)
 class State:
     """The robot and the world for a collision query; whatever changes a query is in here."""
     base: tuple                      # (x, y, yaw_deg), as Rig.base_pose
-    q_right: np.ndarray              # torso, waist and the 7 right-arm joints (the commanded posture)
-    q_left: np.ndarray               # the 7 left-arm joints
+    body: np.ndarray                 # torso lift and waist pitch: both arms ride on them (commanded)
+    arms: Mapping[str, np.ndarray]   # "right" / "left" -> its 7 arm joints (commanded)
     head: Mapping[str, float] = field(default_factory=dict)       # head joint -> value
     hands: Mapping[str, Hand] = field(default_factory=dict)       # "right" / "left"
     objects: Mapping[str, np.ndarray] = field(default_factory=dict)   # name -> 4x4 world pose of its box frame
@@ -88,8 +128,10 @@ class State:
 
     def q(self, side="right"):
         """The joints of ``side``'s planning chain (torso and waist first, as ArmKin.names)."""
-        return np.asarray(self.q_right, float) if side == "right" else \
-            np.r_[np.asarray(self.q_right, float)[:2], np.asarray(self.q_left, float)]
+        return np.r_[np.asarray(self.body, float), np.asarray(self.arms[side], float)]
+
+    def posture(self):
+        return Posture(np.asarray(self.body, float), {k: np.asarray(v, float) for k, v in self.arms.items()})
 
     def held(self, side="right"):
         h = self.hands.get(side)
@@ -105,6 +147,11 @@ class Spec:
     """The collision rules of one segment.  ``fingers``: the hand's fingers in the collision model.
     ``exempt``: what the TCP target touches may be touched (the backend exempts by the target's
     position; never with a load in the hand).  ``hold_tilt``: a load in the hand keeps its tilt.
+    ``joints``: the planning-chain joints that may move, the rest kept where the segment starts;
+    None the rule of body_locked (the body kept while the other hand holds something).
+    ``arms_still``: both arms stay as they are relative to the base all along (a task segment that
+    carries the base): the other hand's load rides on its held link in this arm's model rather than
+    standing as an obstacle (Motion.query, docs 4.4).
     ``touch``: what the hand may touch -- each entry an object or articulated part name (the
     fingers may touch it) or (name, links), links one of TOUCH_LINKS ("hand": the fingers, the
     gripper and its camera: a door pushed with the hand).  No obstacle to those links, still one
@@ -116,6 +163,19 @@ class Spec:
     exempt: bool = False
     hold_tilt: bool = False
     touch: tuple = ()
+    joints: tuple | None = None
+    arms_still: bool = False
+
+
+def body_locked(state, spec, side):
+    """Whether ``side``'s queries under ``spec`` keep the body (torso, waist) where ``state`` has it
+    (docs/MOTION_ARCHITECTURE.md 4.1, 4.2): Spec.joints names what may move (only whether the body
+    joints are in it is read so far); None, the rule -- locked while the other hand holds something,
+    which would ride the body along (a waist bowed 39 degrees to a cabinet door knocked the load in
+    the other hand out: skills._move_with_retry)."""
+    if spec is not None and spec.joints is not None:
+        return not any(j in spec.joints for j in BODY_JOINTS)
+    return state is not None and state.held(other_side(side)) is not None
 
 
 @dataclass(frozen=True)
@@ -202,11 +262,29 @@ def at_base(s: State, base) -> State:
     return replace(s, base=tuple(float(v) for v in base))
 
 
+def chains(q_right, q_left=None):
+    """State's body and arms from the right planning chain (body first) and the left arm (its 7
+    joints, or its chain; None: zeros) -- {"body", "arms"}, for State(**chains(...))."""
+    qr = np.asarray(q_right, float)
+    ql = np.zeros(7) if q_left is None else np.asarray(q_left, float)[-7:]
+    return {"body": qr[:N_BODY].copy(), "arms": {"right": qr[N_BODY:].copy(), "left": ql.copy()}}
+
+
 def with_arm(s: State, q, side="right") -> State:
+    """``side``'s planning chain at q (a planner's solution, body first): the body with it."""
     q = np.asarray(q, float)
-    if side == "right":
-        return replace(s, q_right=q.copy())
-    return replace(s, q_right=np.r_[q[:2], np.asarray(s.q_right, float)[2:]], q_left=q[2:].copy())
+    return replace(s, body=q[:N_BODY].copy(), arms={**s.arms, side: q[N_BODY:].copy()})
+
+
+def with_posture(s: State, p, side="right") -> State:
+    """``s`` with the posture ``p`` (Posture; an array: ``side``'s planning chain, as with_arm): the arms
+    it names, and its body unless a hand it does not name holds something (the body stays where that
+    hand's load has it, docs 4.1)."""
+    if not isinstance(p, Posture):
+        p = Posture.of_chain(p, side)
+    arms = {**s.arms, **{k: np.asarray(v, float).copy() for k, v in p.arms.items()}}
+    keep = p.body is None or any(s.held(k) is not None for k in SIDES if k not in p.arms)
+    return replace(s, body=np.asarray(s.body if keep else p.body, float).copy(), arms=arms)
 
 
 def with_width(s: State, side, width) -> State:
@@ -263,9 +341,7 @@ def state_offset(assumed: State, now: State, watch=()) -> dict:
     b0, b1 = assumed.base, now.base
     out = {"base": [round(1000.0 * float(np.hypot(b1[0] - b0[0], b1[1] - b0[1])), 2),
                     round(abs((float(b1[2]) - float(b0[2]) + 180.0) % 360.0 - 180.0), 3)],
-           "arm": round(float(max(np.max(np.abs(np.asarray(now.q_right, float) - np.asarray(assumed.q_right, float))),
-                                  np.max(np.abs(np.asarray(now.q_left, float) - np.asarray(assumed.q_left, float))))),
-                        4)}
+           "arm": round(float(np.max(np.abs(now.posture().vec() - assumed.posture().vec()))), 4)}
     held = set()
     for side in SIDES:
         h0, h1 = assumed.held(side), now.held(side)
@@ -333,10 +409,11 @@ class Actuator(Protocol):
                                                ``lead`` ahead of the measured one, within [s_from, s_to]; stops
                                                when the part reaches ``done``, drops back behind the command
                                                (it slipped) or stalls.  -> {"done": bool, "s", "why", ...}
-      grip(width, steps, gradual)              the gripper
+      grip(width, steps, gradual, side)        side's gripper
       wait(ticks)                              the world settles that many physics ticks, nothing moves
       drive_base(path, allow=...)              the base along waypoints [(x, y, yaw_deg)]
-      swing(q_right, q_left, label)            both arms straight in joint space (a travel-posture switch)
+      swing(posture, label)                    the body and both arms straight in joint space to a Posture
+                                               (a travel-posture switch)
       declare(name, allow, side, follows)      the segment to the contact monitor (Clearance.motion)
       contact_allow(kin, allow)                a from-contact Allow narrowed to what the hand touches now
     Reads:
@@ -346,10 +423,10 @@ class Actuator(Protocol):
 
     def follow(self, qs, steps_per_wp=3, smooth=False, side="right"): ...
     def ride(self, part, base_at, s_from, s_to, label, lead, rate, done): ...
-    def grip(self, width, steps=100, gradual=False): ...
+    def grip(self, width, steps=100, gradual=False, side="right"): ...
     def wait(self, ticks): ...
     def drive_base(self, path, **kw): ...
-    def swing(self, q_right, q_left, label, **kw): ...
+    def swing(self, posture, label, **kw): ...
     def declare(self, name, allow, side="right", follows=True): ...
     def contact_allow(self, kin, allow): ...
     def snapshot(self) -> State: ...
@@ -366,8 +443,8 @@ class BaseModel(Protocol):
 
       plan(state, goal, chain, label, quiet=False) -> (steps | None, why)
             the base from state.base to goal (x, y, yaw_deg; None: as little as possible) with the arms
-            leaving state's posture through ``chain`` [(name, (q_right, q_left))]; steps
-            [("drive", [(x, y, yaw_deg)...]) | ("swing", name, q_right, q_left)]
+            leaving state's posture through ``chain`` [(name, Posture)] (whole postures); steps
+            [("drive", [(x, y, yaw_deg)...], posture name) | ("swing", name, Posture)]
       straight(state, target, label) -> (path | None, why)   the straight base move to target (the yaw the
                                                       short way round), the arms as they are
       depths(state, poses) -> [m]                     penetration in the travel posture at each base pose

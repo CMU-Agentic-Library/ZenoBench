@@ -8,7 +8,7 @@ import numpy as np
 
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
-from ..primitives import JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
+from ..primitives import sided, JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
 from ..tolerances import LEAVE_GAP, PLACE_TOL
 from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
@@ -162,4 +162,4 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
             return Failure(seg.why, seg.segment, {"stage_s": times})
         segs.append(seg)
         q = seg.q_end
-    return Plan(tuple(segs), info={"stage_s": times}, decisions=decided)
+    return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)

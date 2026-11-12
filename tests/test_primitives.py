@@ -5,7 +5,7 @@ import pytest
 
 from zeno_skills import primitives as P
 from zeno_skills.clearance import LEAVE_CONTACT
-from zeno_skills.motion_state import (Failure, Hand, Held, Segment, Spec, State, at_base, holding, released,
+from zeno_skills.motion_state import (Failure, chains, Hand, Held, Segment, Spec, State, at_base, holding, released,
                                       with_arm, with_width)
 
 
@@ -69,7 +69,7 @@ class FakeKin:
 
 def _state(q=None):
     q = np.zeros(9) if q is None else np.asarray(q, float)
-    return State(base=(0.0, 0.0, 0.0), q_right=q, q_left=np.zeros(7), hands={"right": Hand(width=0.04)})
+    return State(base=(0.0, 0.0, 0.0), **chains(q, np.zeros(7)), hands={"right": Hand(width=0.04)})
 
 
 def _q(x, y, z):
@@ -121,7 +121,7 @@ def test_holding_is_what_the_hand_holds():
 
 def test_the_left_arm_shares_the_torso_and_waist():
     s = with_arm(_state(np.arange(9.0)), np.r_[7.0, 8.0, np.full(7, 1.0)], side="left")
-    assert np.allclose(s.q_right[:2], [7, 8]) and np.allclose(s.q_left, 1.0)
+    assert np.allclose(s.body, [7, 8]) and np.allclose(s.arms["left"], 1.0)
     assert np.allclose(s.q("left"), np.r_[7.0, 8.0, np.full(7, 1.0)])
 
 

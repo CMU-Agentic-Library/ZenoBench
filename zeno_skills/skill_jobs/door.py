@@ -4,6 +4,8 @@ to hold the handle one goal -- the plan to run (skill_plans.plan_door), the resu
 from __future__ import annotations
 
 import math
+import os
+
 import numpy as np
 
 from ..motion_state import clearing
@@ -91,11 +93,14 @@ def open_job(rig, args, state, skill=None):
     a = rig.ann.art(name)
     if a.get("handle") is None:
         raise SkillFailure(f"open {name}: no graspable handle annotated")
-    if rig.held is not None or getattr(rig, "_handle_grasp", None) is not None:
-        raise SkillFailure(f"open {name}: the right hand is not empty")
+    # the hand: the args', else ZENO_OPEN_SIDE (a diagnostic switch: the left arm through the same
+    # path, docs 9.3 step 6a), else the right
+    side = args.get("side") or os.environ.get("ZENO_OPEN_SIDE") or "right"
+    if (rig.held if side == "right" else rig.left_held) is not None or getattr(rig, "_handle_grasp", None) is not None:
+        raise SkillFailure(f"open {name}: the {side} hand is not empty")
     goal = float(a["open_q"] if args.get("goal") is None else args["goal"])
     q0 = rig.joint(name)
-    kin, base = rig.kin, RigBase(rig)
+    kin, base = rig.arm_kin(side), RigBase(rig)
     build_with = skill.build if skill is not None else plan_door
     grips = door_grips(rig, a, goal)
     if not grips:
@@ -111,7 +116,7 @@ def open_job(rig, args, state, skill=None):
     def build(s, k, prior):
         return build_with(kin, s, grips[k][0], rests, base=base, prior=prior, step=0.004)
 
-    problem = Problem(tuple(goals), build, DOOR_RELAY, near=rig.base_pose(), label=f"open {name}")
+    problem = Problem(tuple(goals), build, DOOR_RELAY, near=rig.base_pose(), label=f"open {name}", hand=side)
     ctx = {}
 
     def no_park(diag):
@@ -120,7 +125,7 @@ def open_job(rig, args, state, skill=None):
 
     def found_park(found):
         grasp, flip, tilt = grips[found.k][1]
-        rig.log("open_park", park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)],
+        rig.log("open_park", park=[round(found.x, 3), round(found.y, 3), round(found.yaw, 1)], side=side,
                 hook_side="far" if flip else "near", tilt_deg=round(math.degrees(tilt)), grasp=grasp)
         rig.caption = f"OPEN {a['category']}: go to handle"
 
@@ -135,12 +140,12 @@ def open_job(rig, args, state, skill=None):
             rig.caption = f"OPEN {a['category']}: grasp handle ({'side hook' if grasp == 'side' else 'front pinch'})"
 
         def after_close(rig):
-            f = np.asarray(rig.fingers(), float)[:2]
+            f = np.asarray(rig.fingers_of(side), float)[:2]
             if not handle_closed_on(f, t):
                 raise clearing(SkillFailure(f"open {name}: handle not grasped, fingers {f.round(4).tolist()}"),
                                grip["pre_open"])
             rig._handle_grasp = {"name": name, "pre_open": grip["pre_open"], "q": rig.joint(name),
-                                 "coll_kw": rig.kin.coll_kw}
+                                 "coll_kw": kin.coll_kw, "side": side}
             rig.log("handle_grasped", name=name, fingers=f.round(4).tolist())
             rig.caption = f"OPEN {a['category']}: base follows the joint motion"
 
@@ -156,7 +161,8 @@ def open_job(rig, args, state, skill=None):
 
     def failed(exc):
         # the failure exit (plan_clear) opened the hand: the handle is no longer held
-        if getattr(rig, "_handle_grasp", None) is not None and float(np.min(rig.fingers()[:2])) > HAND_OPENED_FRAC * ctx["grip"]["pre_open"]:
+        if getattr(rig, "_handle_grasp", None) is not None and \
+                float(np.min(rig.fingers_of(side)[:2])) > HAND_OPENED_FRAC * ctx["grip"]["pre_open"]:
             rig._handle_grasp = None
         return None
 
