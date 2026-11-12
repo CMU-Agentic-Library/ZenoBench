@@ -297,6 +297,16 @@ SCORING[("T04", "clear_the_drinks_spot")] = {"D": 1, "tiers": [
     "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the "
               "bowl tipped; no cup set out, or lying; still held or dropped"}
 
+# T04 two_guests: one glass cup (island), the mug in another room; any two of the cup and the mugs count (two mugs
+# too, user 11-11).  Touching or closer than 3 cm, against "not touching each other", is the worst tier
+SCORING[("T04", "two_guests")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "two cups (the glass cup and a mug, or two mugs) upright on the drinks spot, at least 3 cm apart"},
+    {"name": "worst", "score": 0.3, "goal": {"drop": ["clear_of"]},
+     "why": "two cups upright on the spot, but touching or closer than 3 cm (the instruction says apart)"}],
+    "not_ok": "one cup only (the second not found); a non-cup (the juice bottle) for the second; lying or upside "
+              "down; elsewhere; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
@@ -400,5 +410,6 @@ NOT_OK_ZH = {
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
+    ("T04", "two_guests"): "只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

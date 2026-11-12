@@ -569,8 +569,10 @@ def T04(t):
     away = {"dining": (P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
             "study": (P("desk_1/top", -0.7, -6.0), "living_room_0_1")}
     # two_guests: two drinks, one cup in the house; a mug (in another room) for the second
-    two_goal = {"any": [[["on", C, SPOT], ["upright", C], ["on", m, SPOT], ["upright", m], ["clear_of", C, [m], 0.03]]
-                        for m in MUGS], "all": [["hand_empty", "right"]]}
+    # any two of the cup and the mugs (two mugs are two cups too, user 11-11)
+    from itertools import combinations
+    two_goal = {"any": [[["on", a, SPOT], ["upright", a], ["on", m, SPOT], ["upright", m], ["clear_of", a, [m], 0.03]]
+                        for a, m in combinations([C, *MUGS], 2)], "all": [["hand_empty", "right"]]}
     two_cases = {c: dict(move={"mug": pose},
                          route=base[:4] + [place(C, SPOT, [3.36, 0.36]), S("search", object="mug", region=region),
                                            nav("mug"), pick("mug"), nav(SPOT), place("mug", SPOT, [3.62, 0.36])])

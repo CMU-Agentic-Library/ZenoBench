@@ -1047,34 +1047,128 @@
 
 **指令**：有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-    - `mug` 在 `kitchen_cabinet_6/top` 上
-    - `mug` 立着
-    - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
-  - 第 2 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-    - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-    - `mug_dining_cabinet` 立着
-    - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
-  - 第 3 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-    - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-    - `mug_shelf` 立着
-    - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
-  - 第 4 组：
-    - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-    - `cup_counter_b` 立着
-    - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-    - `mug_counter` 立着
-    - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
+    - 第 2 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+    - 第 3 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 4 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 5 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+    - 第 6 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 7 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 8 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 9 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 10 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+    - 第 2 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 3 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 4 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+    - 第 5 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+    - 第 6 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 7 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+    - 第 8 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 9 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+    - 第 10 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了
+
 
 **参考调用顺序**：
 
