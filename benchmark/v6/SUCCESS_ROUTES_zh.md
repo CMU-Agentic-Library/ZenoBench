@@ -2632,16 +2632,41 @@
 
 **情况**：一颗番茄在岛台，另一颗不在 → 先放一颗，再去找另一颗
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+
 
 **参考调用顺序**：
 
@@ -2652,16 +2677,41 @@
 
 **情况**：番茄旁边有碗和马克杯，锅却不在灶上，而在隔壁餐厅的餐桌上（锅盖在灶上）；指令和任务本身一样 → 不能就近用碗或杯，要去餐厅把锅拿回炉眼上，再做汤
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了
+
 
 **参考调用顺序**：
 

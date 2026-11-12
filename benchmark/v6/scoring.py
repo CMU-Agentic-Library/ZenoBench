@@ -709,6 +709,15 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
          # second tier too
          ("T09", "pot_in_use"): _pot_in_use,
+         # the second tomato left on the dining table or the wall cabinet: tiers as the control
+         ("T09", "x6_gd_tomato_elsewhere"): _soup_steps("x6_gd_tomato_elsewhere", "one tomato only (the other not "
+                                                        "found); below 60 C; the stove left on; a tomato out of the "
+                                                        "pot; still held or dropped"),
+         # the pot on the dining table (lid on the stove), a bowl and a mug by the tomatoes: tiers as the control;
+         # the bowl or the mug for the pot is not ok (the tomatoes not in the pot)
+         ("T09", "pot_in_dining_room"): _soup_steps("pot_in_dining_room", "the bowl or the mug used for the pot; the "
+                                                    "pot not found; one tomato only; below 60 C; the stove left on; "
+                                                    "still held or dropped"),
          # three tomatoes, the third in the closed fridge or on the island; the fridge door is a side step too
          ("T09", "tomato_in_fridge"): _soup_steps("tomato_in_fridge", "two tomatoes only (the third not found); "
                                                   "below 60 C; the stove left on; a tomato out of the pot; still held "
@@ -843,5 +852,7 @@ NOT_OK_ZH = {
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "x6_gd_tomato_elsewhere"): "只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "pot_in_dining_room"): "用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }
