@@ -240,10 +240,37 @@ SCORING[("T03", "which_bin_by_contents")] = {"D": 1, "tiers": [
     "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or "
               "dropped"}
 
+
+def _no_bin_substitute(task: dict) -> dict:
+    """T03 no_bin_substitute: no wide bin; the substitute (basket or tray, seed) in another room; the small bin
+    (two blocks) holds the pin only slanted; the fruit basket holds an apple and an orange.  The fruit basket,
+    fruit in it or taken out, is the worst tier (user 11-11)."""
+    lays = task["v6_variants"]["no_bin_substitute"]["layouts"]
+    both = lambda c: [["inside", _P, c], ["inside", _S, c]]
+    fruit = [["inside", "apple", "fruit_basket"], ["inside", "orange", "fruit_basket"]]
+    second, worst = {}, {}
+    for lid in lays:
+        x = next(a[2] for a in task["variants"][lid]["goal"]["all"] if a[:2] == ["inside", _P])
+        second[lid] = {"all": [["hand_empty", "right"]],
+                       "any": [both(x), both(_SB) + [["inside", "small_bin_block_1", _SB],
+                                                     ["inside", "small_bin_block_2", _SB]] + fruit]}
+        worst[lid] = {"all": [["hand_empty", "right"]], "any": [both(_SB), both("fruit_basket")]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin "
+                "slanted in), its blocks still in it, the fruit untouched"},
+        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
+         "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit "
+                "basket, with the fruit in it or taken out"}],
+        "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
-         ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat}
+         ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
+         ("T03", "no_bin_substitute"): _no_bin_substitute}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -337,5 +364,6 @@ NOT_OK_ZH = {
     ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
+    ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
 }

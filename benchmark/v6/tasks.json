@@ -40205,6 +40205,212 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+       }
+      ],
+      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"
      }
     },
     "no_bin_substitute__tray": {
@@ -40650,6 +40856,212 @@
        ],
        "look": []
       }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+       }
+      ],
+      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"
      }
     },
     "utensils_apart__dining": {
@@ -42341,6 +42753,212 @@
       "17": "no_bin_substitute__tray",
       "18": "no_bin_substitute__basket",
       "19": "no_bin_substitute__tray"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          },
+          "no_bin_substitute__tray": {
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+       }
+      ],
+      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"
      }
     },
     "utensils_apart": {

@@ -825,24 +825,66 @@
 
 **指令**：烘焙结束了，把擀面杖和勺子一起收进一个容器里。
 
-**成功条件**：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
-- 摆法 `tray`：
-  - `rolling_pin` 在 `serving_tray` 里
-  - `breakfast_spoon` 在 `serving_tray` 里
-  - `apple` 在 `fruit_basket` 里
-  - `orange` 在 `fruit_basket` 里
-  - `small_bin_block_1` 在 `small_storage_bin` 里
-  - `small_bin_block_2` 在 `small_storage_bin` 里
+- **好（1.0）**：
+
+  - 摆法 `tray`：
+    - `rolling_pin` 在 `serving_tray` 里
+    - `breakfast_spoon` 在 `serving_tray` 里
+    - `apple` 在 `fruit_basket` 里
+    - `orange` 在 `fruit_basket` 里
+    - `small_bin_block_1` 在 `small_storage_bin` 里
+    - `small_bin_block_2` 在 `small_storage_bin` 里
+    - 手里空着
+  - 摆法 `basket`：
+    - `rolling_pin` 在 `storage_basket` 里
+    - `breakfast_spoon` 在 `storage_basket` 里
+    - `apple` 在 `fruit_basket` 里
+    - `orange` 在 `fruit_basket` 里
+    - `small_bin_block_1` 在 `small_storage_bin` 里
+    - `small_bin_block_2` 在 `small_storage_bin` 里
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `tray`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `serving_tray` 里
+        - `breakfast_spoon` 在 `serving_tray` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `small_storage_bin` 里
+        - `breakfast_spoon` 在 `small_storage_bin` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+  - 摆法 `basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `small_storage_bin` 里
+        - `breakfast_spoon` 在 `small_storage_bin` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+- **最不好（0.3）**：
+
   - 手里空着
-- 摆法 `basket`：
-  - `rolling_pin` 在 `storage_basket` 里
-  - `breakfast_spoon` 在 `storage_basket` 里
-  - `apple` 在 `fruit_basket` 里
-  - `orange` 在 `fruit_basket` 里
-  - `small_bin_block_1` 在 `small_storage_bin` 里
-  - `small_bin_block_2` 在 `small_storage_bin` 里
-  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `rolling_pin` 在 `small_storage_bin` 里
+      - `breakfast_spoon` 在 `small_storage_bin` 里
+    - 第 2 组：
+      - `rolling_pin` 在 `fruit_basket` 里
+      - `breakfast_spoon` 在 `fruit_basket` 里
+- **不行（0）**：两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了
+
 
 **参考调用顺序**：
 
