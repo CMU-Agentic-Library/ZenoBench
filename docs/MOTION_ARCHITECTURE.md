@@ -72,7 +72,7 @@ PickPolicy.execute
 
 `PICK_STAGES` 是 8 段（`pick_arrive`、`pick_open`、`pick_reach`、`pick_grasp`、`pick_close`、`pick_held`、`pick_lift`、`carry_in`），两个锚点（`PICK_ANCHORS`）；`PLACE_STAGES` 也是 8 段，锚点 `place_arrive`、`place_landed`（`PLACE_ANCHORS`）。`plan_navigate` 末尾的 `arrive` 锚点后面没有段，`run` 在那里不复核什么。
 
-9.3 第 1 步以后，pick / place / navigate 都走 `motion_skills.run_skill`（2.3）：`skills.pick` → `_pick_pinch_core` → `run_skill(SKILLS["pick"])`，`skill_jobs/pick.py` 的 `pick_job` 给出 `Problem`（`_pick_problem`）、开到以后的计划和 hooks（`_pick_ready`）、结果判断（`_pick_judged`）；place 是 `_set_down` → `run_skill(SKILLS["place"])`，`skill_jobs/place.py`；navigate 是 `skill_jobs/navigate.py`（`plan_navigate`）。其余技能还不走 ①–④，直接调 `rig.move_to` / `joint_path` 等旧入口。
+9.3 第 1 步以后，pick / place / navigate 都走 `motion_skills.run_skill`（2.3）：`skills.pick` → `_pick_pinch_core` → `run_skill(SKILLS["pick"])`，`skill_jobs/pick.py` 的 `pick_job` 给出 `Problem`（`_pick_problem`）、开到以后的计划和 hooks（`_pick_ready`）、结果判断（`_pick_judged`）；place 是 `_set_down` → `run_skill(SKILLS["place"])`，`skill_jobs/place.py`；navigate 是 `skill_jobs/navigate.py`（`plan_navigate`）。之后迁过来的：开门、关门（`skills.open_articulated` / `close_articulated` → `skill_jobs/door.py` 的 `open_job` / `close_job`，9.3 第 6、6b 步），推桌上的物体（`skill_jobs/slide.py` 的 `push_object` → `slide_job`，第 7 步）。其余技能（微波炉的开关门、`drop_into`、`place_flat`、倒、搅拌、翻书……）还不走 ①–④，直接调 `rig.move_to` / `joint_path` 等旧入口。
 
 ### 2.3 第 ⑤ 层：所有技能的统一形式
 
@@ -95,7 +95,7 @@ Skill(
 
 `AtomicPolicy.execute` 只剩 `run_skill(self.rig, SKILLS[name], args)`。迁一个技能 = 给它写 `problem`（目标集合）和 `build`（尽量用下表的模板），hooks 照搬，然后不再调旧入口。
 
-**过渡形式（`zeno_skills/motion_skills.py`）**：技能的 Python 部分是一个 `job(rig, args, state, skill) -> Job`（`skill.build` 是 catalog 的 `template`，job 用它构造计划），`Job` 按 `run_skill` 的步骤给回调：`problem`（没有就原地做，如 navigate）、`no_park(diag)`、`found(found)`（日志）、`travel`（开到停车点时给 navigate 的参数，如 `min_bottom_z`）、`ready(found) -> (plan, build, hooks)`（只交出找到的计划、重做用的 `build` 和 hooks，不重新测量、不重做）、`failed(exc)`、`done()`。日志和结果判断挪走以后，`Job` 收缩成上面的三样。现在走 `run_skill` 的是 navigate、pick、place；它们的 policy 照旧调 `skills.navigate / pick / place`，这三个函数内部转到 `run_skill`。
+**过渡形式（`zeno_skills/motion_skills.py`）**：技能的 Python 部分是一个 `job(rig, args, state, skill) -> Job`（`skill.build` 是 catalog 的 `template`，job 用它构造计划），`Job` 按 `run_skill` 的步骤给回调：`problem`（没有就原地做，如 navigate）、`no_park(diag)`、`found(found)`（日志）、`travel`（开到停车点时给 navigate 的参数，如 `min_bottom_z`）、`ready(found) -> (plan, build, hooks)`（只交出找到的计划、重做用的 `build` 和 hooks，不重新测量、不重做）、`failed(exc)`、`done()`。日志和结果判断挪走以后，`Job` 收缩成上面的三样。现在走 `run_skill` 的是 catalog 里的 6 个：navigate、pick、place、open、close、push；它们的 policy 照旧调原来的函数（`skills.navigate / pick / place`、`open_articulated` / `close_articulated`、`push_object`），这些函数内部转到 `run_skill`。
 
 形状相同的技能共用一个 `build` 模板（括号里是 v6 路线里的步数，共 2992 步）：
 
@@ -231,8 +231,8 @@ class Hand:
 @dataclass(frozen=True)
 class State:
     base: tuple                  # (x, y, yaw_deg)
-    q_right: np.ndarray          # 躯干、腰 + 右臂 7 个关节（指令姿态）
-    q_left: np.ndarray           # 左臂 7 个关节
+    body: np.ndarray             # 躯干升降、腰（q_body：两条手臂都挂在上面；指令姿态）
+    arms: Mapping[str, np.ndarray]   # "right" / "left" -> 那条手臂的 7 个关节（指令姿态）
     head: Mapping[str, float]
     hands: Mapping[str, Hand]    # "right" / "left"
     objects: Mapping[str, np.ndarray]   # 物体框的世界位姿：实测，或假设（刚放下落在哪）
@@ -243,7 +243,7 @@ class State:
 - **完整性**：凡是影响碰撞查询的都在 `State` 里（头、左臂、手指宽度、部件值）。
 - `Held(kind="part")`：手握着部件的把手。握着时，那只手的手指对这个部件不算障碍物（和持物一样），松开就恢复。它取代技能里设了不恢复的 `hand_touches_part`。
 - `Held.T_tcp_obj` 是"手里的东西在 TCP 里的位姿"的唯一表示。实测的握法按**实测**关节角下的 TCP 量（`Rig.snapshot`，8.2）：焊住（sticky）时它不随姿态、下垂、接触顶偏而变，不焊（physical）时变的就是手里真的滑动，两种模式同一个口径。工具的工作点（勺尖、海绵底面）是它的直接延伸：`T_tcp_tool = T_tcp_obj · T_obj_tool`，其中 `T_obj_tool` 是标注里的 `tool_frame`（第 6 节接触类技能）。
-- **要改**（9.3 第 6a 步，从第 5 步提前）：腰和躯干两条链共用，拆成 `q_body`（躯干、腰）+ `arms`（`{"right": 7 维, "left": 7 维}`）。`State.q(side)` 照旧拼出那只手的规划链（9 维），规划器给出的 9 维解照旧用 `with_arm(state, q, side)` 写回。新层全部改用新字段，不留 `q_right` / `q_left` 的别名。
+- **已改**（9.3 第 6a 步，从第 5 步提前；11-11，bdc2a23）：腰和躯干两条链共用，拆成 `body`（躯干、腰，文中叫 q_body）+ `arms`（`{"right": 7 维, "left": 7 维}`）。`State.q(side)` 照旧拼出那只手的规划链（9 维），规划器给出的 9 维解照旧用 `with_arm(state, q, side)` 写回。新层全部改用新字段，不留 `q_right` / `q_left` 的别名。
   - **两条手臂都挂在躯干上**：q_body 一动，另一条手臂和它手里的东西跟着动（腰弯 39° 够柜门时把左手的擀面杖撞掉过，`skills._move_with_retry` 因此在左手拿着东西时把腰压在 0.25 rad 以内；`policies/bimanual._lock_shared_posture`、`policies/hand.py` 的 steady 都锁住 q_body；导航的 `left_fold` 也只动左臂 7 个关节）。规则：**另一只手拿着东西时，这只手的段锁住 q_body**（`Spec.joints` 的最小版，6a）；需要动 q_body 的，单独一段只动 q_body，手臂相对躯干不动，不和手臂在同一段里一起动。
   - **姿态目标的 q_body 只在 q_body 能动时生效**：收臂、下垂、行驶、arrive 这些姿态带着 q_body（`kin.rest` / `kin.drive` 是 9 维、q_body 是 (0, 0)：两手都空时收臂顺手把身体扶正，这是要的），但另一只手拿着东西时只动手臂、q_body 保持——不然一只手收臂会把躯干升到顶、腰扳直，另一只手跟着动。实现两处：`free_leg` 的 `Joint` / `JointSet` 目标在 q_body 锁住时把 q_body 换成起点的（`primitives._keep_body`）；`motion_state.with_posture(state, posture)` 只在没被点到的手都空着时才用姿态的 q_body（`find_park` 的 arrive / travel 都走它）。整机姿态是 `motion_state.Posture(body, arms)`（`arms` 只写它动的手），用在 `swing`、`BaseModel.plan` 的 chain 和 steps、drive 段（`q_from` / `qs` 是 `Posture.vec()`：body + 右臂 + 左臂 16 维，`holds` 查两只手都在起点）。
 - 不在 `State` 里的：
@@ -269,7 +269,8 @@ class Spec:
     exempt: bool = False         # TCP 目标处碰到的可以碰（后端按目标位置豁免；持物时恒 False）
     hold_tilt: bool = False      # 手里的东西保持这段起点的倾角
     touch: tuple = ()            # 可以碰的物体 / 部件：对指定部位不算障碍物，其余部位照查
-    joints: tuple | None = None  # 这段允许动的关节，其余锁在起点；None = 规划链全部（待加）
+    joints: tuple | None = None  # 这段允许动的关节，其余锁在起点；None = 默认规则：另一只手拿着东西时锁 q_body（locked_body）
+    arms_still: bool = False     # 两条手臂相对底盘都不动（底盘带门的任务段）：另一只手的东西挂在它的 held link 上（4.4）
     margin: float = 0.0          # m 计划时要求的余量：不在 touch / exempt 里的部位离世界至少这么远（待加）
 ```
 
@@ -293,7 +294,7 @@ class Spec:
 
 `Motion.query` 把 `State` + `Spec` 翻译成一次 cuRobo 查询：
 - 锁定底盘、另一只手臂、头和手指宽度；
-- 把手里的东西挂到夹爪上（`pad` 放大），握着的部件对那只手不算障碍物。现在只挂进拿着它的那条手臂的模型；另一条手臂查询时，它是碰撞世界里一个不动的障碍物，停在同步时的位置（停车点搜索换了底盘它不跟着走：原地留一个幽灵，新位置没人查；腰、躯干一动也对不上）。
+- 把手里的东西挂到夹爪上（`pad` 放大），握着的部件对那只手不算障碍物。6a 之前只挂进拿着它的那条手臂的模型；另一条手臂查询时，它是碰撞世界里一个不动的障碍物，停在同步时的位置（停车点搜索换了底盘它不跟着走：原地留一个幽灵，新位置没人查；腰、躯干一动也对不上）。现在按下面的两种表示查。
 
   **另一只手的东西怎么进查询**（9.3 第 6a 步，已做：`Motion.query` 里 `_tcp_of` 推位置、`_attach_cross` 挂 held link）：每个手臂模型里两只手各有一个 held link；另一只手的 held link 在这条手臂的模型里不参与自碰撞（下面的"每条手臂的自碰撞表"）。所以挂在 held link 上只查得到"它 vs 世界"，查不到"这条手臂 vs 它"；它也不能同时是世界障碍物（held link 上的球会和它自己撞）。两种情况各用一种表示，由这段的 `Spec` 定：
   - 这条手臂在动、另一只手不动（另一只手拿着东西时 q_body 锁住，4.1）：它是世界障碍物，位置**从 `State` 推**（另一只手的 TCP × `Held.T_tcp_obj`，在 `State.base` 下），不用同步时的位置；另一只手的整只手（手指、夹爪、相机）在这些查询里不查（`Motion._query`，`other_hand_off`）：它握着这个东西、不动，它碰着的是自己手里的东西（11-12 T30：碗沿捏取时右手夹爪离碗 3 mm，左手的每个解都被它挡掉），它在世界里的位置由底盘模型的整机检查管。
@@ -305,7 +306,7 @@ class Spec:
 - 把 `objects` 和 `parts` 同步到碰撞世界；
 - 按 `Spec` 开关手指碰撞球、目标豁免、`touch`。
 
-退出时全部复原。现在是包一层：内部调旧的上下文管理器（`_planning`、`_fingers_checked`、`_carrying` 等）。全部技能迁完后改成直接实现。`touch` 的"其余部位照查"由 `Motion.path_free_only` / `Kinematics.path_free_only` 另查一遍，`primitives.free_path` 把两次查询合起来。
+只改和同步时不同的，退出时全部复原。6a 起是直接实现，不再包旧的上下文管理器；旧的按用途分的那几个（`Motion.scope`、`hand_open`、`carrying`、`released`，`Rig._planning`、`_fingers_checked`）还留给旧入口用，第 10 步删。`touch` 的"其余部位照查"由 `Motion.path_free_only` / `Kinematics.path_free_only` 另查一遍，`primitives.free_path` 把两次查询合起来。
 
 **每条手臂的自碰撞表（11-12 加，`motion.arm_self_collision`、`HELD_SELF_BODY`）**：两条手臂的 cuRobo 模型各从同一份配置拷贝，自碰撞表按手臂裁：
 - 留下共用表（`zeno_malo.yml`，左右对称，16171 对）里有这条手臂的对：它对身体（升降滑块、躯干、头底座、头、头上相机）、它自己内部、它对另一条手臂；
@@ -317,15 +318,15 @@ class Spec:
 **机器人自己的底盘（11-12 加，`zeno_skills/body_collision.py`、`scene_geometry.body_world`）**：手臂模型里只有升降滑块、躯干、头和两条手臂有碰撞球，底盘（底座和上面的立柱）没有，所以手臂、手、手里的东西都查不到它。T05 homework_ready 里，焊在手上的作业本在去 `flat_pre` 的路上卡在立柱上，两个腕关节被顶到限位，旧代码的全量里也是这样。做成机器人的球放不下：快速自碰撞内核最多 16384 对、共用表用了 16171 对，整个模型最多 512 个球、现在 505 个；通用内核又太慢。所以底盘是同一个碰撞检查器的第二个环境（`BODY_ENV`）：
 - 形状就是底盘规划量出来的两层（`collision.py`）：立柱一个长方体；底座的圆角方形用 4 个长方体拼（每个的角落在圆角弧上，最多比真形状少 1.2 cm）。不用网格：cuRobo 只在网格表面附近找，底座里面 12 cm 的点读成不碰。
 - 它跟着底盘走：`_Arm.prepare` 按这次查询的底盘位姿原地更新（`place_body`，两条手臂共用一份，CUDA graph 里也成立）。
-- 每个查世界的 rollout（`MotionGen` 里的 IK、图搜索、轨迹优化、精调，共 24 个）多一个代价项和一个约束项，用同样的配置（检查器、权重、激活距离、扫掠）查 `BODY_ENV`，输入的机器人球里把身体（`BODY_LINKS`：升降滑块套在立柱上、躯干和头贴着它，本来就算碰）和另一条手臂（这一段里不动）的半径设成 −1，cuRobo 跳过负半径的球（`ArmBase.cost_fn` / `constraint_fn` 的补丁，在求解器捕获 CUDA graph 之前装上）。所以是规划器自己绕开，不是事后拒绝。
-- 我们自己的检查走同一个判据：`free` / `path_free` 经 `check_constraints` 用的就是 rollout 的约束；`near`、`contact_extent`、`explain` 用的 `_sphere_depths` 也查一遍 `BODY_ENV`。
+- 每个查世界的 rollout（`MotionGen` 里的 IK、图搜索、轨迹优化、精调，共 24 个）多一个代价项和一个约束项查 `BODY_ENV`（`body_collision.attach`；`ArmBase.cost_fn` / `constraint_fn` 的补丁，在求解器捕获 CUDA graph 之前装上）。检查器、权重、扫掠和世界那一项相同，激活距离多 `BODY_GAP`（= `LEAVE_GAP`：零余量时，贴着立柱搬运的作业本在下一段起点读成压进立柱 0.6 mm、被从模型里拿掉，接着就穿过立柱，T05 homework_ready 11-12）。只查这条手臂、它的手和手里东西的球（`body_collision.kept` + `index_select`）；身体（`BODY_LINKS`：升降滑块套在立柱上、躯干和头贴着它，本来就算碰）和另一条手臂（这一段里不动）不查。起初是把整组球拷一份、把不查的球半径设成 −1（cuRobo 跳过负半径的球），每个仿真多占 3.8 GB 显存（T29 several，11-12），改成只取要查的球。这样是规划器自己绕开底盘，不是事后拒绝。
+- 我们自己的检查走同一个判据：`free` / `path_free` 经 `check_constraints` 用的就是 rollout 的约束；`near`、`contact_extent`、`explain` 用的 `_sphere_depths` 也查一遍 `BODY_ENV`（这里是把不查的球半径设成 −1 再查，`body_collision.masked`）。
 - 手里的东西是 held link 上的球，和手臂一样查底盘。另一只手里的东西照旧（上面两种表示）。
 - 没覆盖：停车点和开车的整机检查（`base_depths`）不查它（底盘和立柱随底盘一起动，手臂相对底盘不动时它们之间的关系不变）。
 - 检查：`tools/check_body_collision.py`（GPU，不起仿真）：立柱、底座的位置对；收起、下垂、行驶姿态离立柱 7–8 cm、可行；随机采样到手臂伸进立柱 3 cm 以上、去掉底盘就可行的姿态，加上底盘全都不可行。
 
 ### 4.5 阈值常数：一处出处（`tolerances.py`）
 
-现在散在十来个文件加一份文档：
+迁移前散在十来个文件加一份文档（下表是 11-11 第一批之前的样子；搬过以后的现状见表后的两批和"后来加的"）：
 
 | 在哪 | 有什么 |
 |---|---|
@@ -352,6 +353,8 @@ class Spec:
 - `skills.PICK_REACH_TOL` 删掉（它就是 `TARGET_TOL`），`skill_jobs` 直接用 `TARGET_TOL`。
 
 原模块里的名字照旧导入着（`clearance.MIN_DEPTH`、`base_planner.DEPTH_TOL`、`kinematics.REST_TOL` 等），改名的只有上面括号里写明的几个。仍不在这里的：执行参数、搜索预算和代价、`predicates.py` 的任务判定（评测层），以及旧代码（`skills`、`policies`）自己的阈值——随迁移再搬。
+
+**后来加的（11-11 以后，随迁移的那一步）**：开关门的 `DOOR_LEAVE`（第 6 步）；推门的 `PUSH_ABOVE`、`PUSH_PRE`、`PUSH_TIP_GAP`、`PUSH_TRACK`、`BODY_SAME`（6b）；推桌上的物体的 `SLIDE_GAP`、`SLIDE_PAD_GAP`、`DRAG_RIM`、`DRAG_PRESS`、`DRAG_SKID`、`SLIDE_TOL`、`PUSH_DONE_TOL`、`PUSH_MOVED_MIN`（第 7 步）；机器人自己的底盘的 `BODY_GAP`（4.4）。
 
 原来的目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
 
@@ -419,7 +422,7 @@ run.observe(act)    -> (State, Observation | None)
 
 ### 5.4 `drive`：底盘一段（9.3 第 1 步）
 
-`primitives.drive(base, state, goal, chain, name)` 和 `drive_straight(base, state, target, name)`，`base` 是 `motion_state.BaseModel`（2.5）。产出一段 `kind="drive"`：`info["steps"]` 是开车和换姿态的序列，`qs` 是每次换姿态后的右臂姿态（所以 `q_end` 是开完以后的手臂）。`run.execute` 交给 `Actuator.drive_base` / `swing`；`holds` 只查手臂在起点（路径是 navigate 计划时从同一个状态做的）。`skills.relocate` 和 `straight_base_move` 都改成"构造这一段 + `run.execute`"。
+`primitives.drive(base, state, goal, chain, name)` 和 `drive_straight(base, state, target, name)`，`base` 是 `motion_state.BaseModel`（2.5）。产出一段 `kind="drive"`：`info["steps"]` 是开车和换姿态的序列，`q_from` / `qs` 是起点和每次换姿态后的整机姿态（`Posture.vec()`：body + 右臂 + 左臂 16 维，4.1；所以 `q_end` 是开完以后的姿态）。`run.execute` 交给 `Actuator.drive_base` / `swing`；`holds` 只查整机姿态在起点（路径是 navigate 计划时从同一个状态做的）。`skills.relocate` 和 `straight_base_move` 都改成"构造这一段 + `run.execute`"。
 
 两种：
 - **规划的**：从 `State.base` 到目标底盘位姿。包现在的 `_base_plan`（`base_planner`）：整机碰撞，手里的东西也算，手臂从 `State` 里的姿态出发；路上折叠放不下的地方换成下垂，在哪换由底盘规划器定（`travel_postures` / `posture_sets`），换姿态是一次查过碰撞的关节直线（`Rig.swing`）。一段 `drive` 就是规划器给出的这一串（开车，换姿态，开车……），执行照旧交给 `drive_base` / `swing`。用于 navigate。
@@ -454,7 +457,7 @@ Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives
 - **段里存什么**：`info["script"]`（函数本身）、`base0`（构造时的底盘）、`rel`（`s0` 时 TCP 在坐标系里的位姿）、`executor`、`track`；`carry="arm"` 时 `qs` 是 IK 延续出的手臂轨迹（和 `straight` 的路点一样是轨迹，8.1），`s_at` 是每个路点对应的 `s`；`carry="base"` 时 `qs` 为空（手臂不动）。
 - **执行器**：
   - `follow`（`carry="arm"`）：照 `qs` 开环走，用于推桌上的物体（`pushed`）、画圈、擦条带、转腕，以及手臂走门的圆弧；
-  - `ride`（`carry="base"`，`Actuator.ride` / `Rig.ride`）：闭环，底盘跟着实测开度走。每个物理步对**同一个函数** `ride_base` 在指令值 `cmd` 处求值，不在计划的采样点之间插值，也不出 `[s0, s1]`；`cmd` 以不超过 `rate` 的速度追"实测值 + `lead`"。部件到 `done` 算完成；卡住（`RIDE_STALL`）、超时、或者突然落到 `cmd` 后面 `RIDE_SLIP_LEADS`（2）个 `lead` 以上（把手滑脱、门弹回）就停下，`run.execute` 抛 `SkillFailure`。正常跟着走时，落后量按构造不超过 `lead` + `rate` / `PHYSICS_HZ`（指令往两个方向都追实测值），所以这条线不用实测来定，只用来认出"滑脱"；没开到位由卡住判据和技能的结果检查接住。闭环只调节怎么跟，不改几何。`ride` / `ride_end` 事件记落后量和底盘离指令的距离（任务段余量的数据，8.2）；`lead` / `rate` / `done`（`TRACK_KW`）由技能的 `build` 给。旧的 `skills._ride` 没改，门的技能迁移时删。
+  - `ride`（`carry="base"`，`Actuator.ride` / `Rig.ride`）：闭环，底盘跟着实测开度走。每个物理步对**同一个函数** `ride_base` 在指令值 `cmd` 处求值，不在计划的采样点之间插值，也不出 `[s0, s1]`；`cmd` 以不超过 `rate` 的速度追"实测值 + `lead`"。部件到 `done` 算完成；卡住（`RIDE_STALL`）、超时、或者突然落到 `cmd` 后面 `RIDE_SLIP_LEADS`（2）个 `lead` 以上（把手滑脱、门弹回）就停下，`run.execute` 抛 `SkillFailure`。正常跟着走时，落后量按构造不超过 `lead` + `rate` / `PHYSICS_HZ`（指令往两个方向都追实测值），所以这条线不用实测来定，只用来认出"滑脱"；没开到位由卡住判据和技能的结果检查接住。闭环只调节怎么跟，不改几何。`ride` / `ride_end` 事件记落后量和底盘离指令的距离（任务段余量的数据，8.2）；`lead` / `rate` / `done`（`TRACK_KW`）由技能的 `build` 给。旧的 `skills._ride` 没改，开关门迁过来以后只剩微波炉在用，第 8 步删。
 - 任务段后面跟一个锚点（8.2），用实测的部件值 / 物体位姿推进 `State`。
 
 ### 5.6 动作
@@ -532,7 +535,7 @@ navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选�
 
 **retreat**：一段直线 `drive`（5.4），挡住就失败。
 
-**开门**（`skill_plans/door.py` 的 `plan_door`，job 在 `skill_jobs/door.py`，到达姿态是收起；11-10，未跑仿真；物理步骤见 `skills/open.md`）：
+**开门**（`skill_plans/door.py` 的 `plan_door`，job 在 `skill_jobs/door.py`，到达姿态是收起；11-10 迁移，11-11 跑仿真后的修正见 9.3 第 6 步；物理步骤见 `skills/open.md`）：
 
 | # | 段 | 原语 | Spec | State 推进 |
 |---|---|---|---|---|
@@ -545,15 +548,15 @@ navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选�
 | 7 | 开（`door_ride`） | `scripted(Script(hinge / slider(部件, part_pose), 现在的值, 目标 + 0.02, carry="base"))`，执行器 `ride`；停下时的失败出口写在段里（`clear`：张开、退出接触） | 手指可碰部件 | `with_part(目标 + 0.02)`、底盘到 `ride_base` |
 | 8 | 开完（`door_moved`） | 锚点：部件值 | — | 实测 |
 | 9 | 松开 | 动作 `grip` | 手指可碰部件 | `released` |
-| 10 | 离开 | `contact_extent(near_world)` + `contact_segment`，沿接近方向反着退 | `LEAVE_CONTACT` | — |
+| 10 | 离开（`door_leave`） | `straight` 沿接近方向反着退固定的 `DOOR_LEAVE`（17 cm，从骑门结束时手的位置算）。`contact_extent` 在门上量出 0 m（张开的钩子离把手比接触间隙远），11-11 弃用（f418f58、cbf8eec） | 手指可碰部件 | — |
 | 11 | 收臂 | `free_leg(JointSet{收起, 下垂})`，不复用 | `FREE_HAND` | — |
 | 12 | 停稳 | 动作 `wait` 60 帧 | — | — |
 
 抓法变体（侧钩不倾斜 / 10° / 20°、两端、正面捏）是 `Problem.goals`。停车点只按通用排序（第 7 节）：旧代码按力矩比挑停车点（`planner.find_park(score=torque_ratio)`），第 7 节不要 `score` 这类开关，迁移时去掉了；要是仿真里出现停车点选得腕关节拉不动门，改成 `build` 里的约束（握把手的解上力矩比超过关节上限就不要这个停车点，底盘带门时整段受力方向不变，算一次就够）。中继位姿是把手前那一点（`DOOR_RELAY` = `door_reach`）。整个过程只握一次。
 
-还没做：手臂走圆弧（`carry="arm"`）作为目标集合里的另一种做法（第 10 节）；一只手拿着东西时用另一只手开门（第 6b 步，和关门一起）；微波炉（第 8 步）。
+还没做：手臂走圆弧（`carry="arm"`）作为目标集合里的另一种做法（第 10 节）；微波炉（第 8 步）。一只手拿着东西时用另一只手开门在第 6b 步做了（`skill_jobs.door.door_hand`：只有一只手空就用那只，两只都空用右手），v6 里没有这种集，还没在仿真里跑到。
 
-**关门**（9.3 第 6b 步，代码已做 11-12，未提交）：`skills.close_articulated` → `run_skill(SKILLS["close"])`，job 是 `skill_jobs/door.py` 的 `close_job`，推门的计划是 `skill_plans/door.py` 的 `plan_push`（catalog 的 `template`），握把手关是同一个 `plan_door`。微波炉和没有把手的部件还走旧的 `_move_with_retry`（第 8 步）。迁移前是：铰链门先推（`_push_close`），找不到推的停车点再 `try/except` 换成握把手（`_move_articulated`，两次抓的老路径）；合约的 `handle_push`、`dispatch` 两条路径都要求 `hand_empty(hand=right)`。
+**关门**（9.3 第 6b 步，11-12，a33d852）：`skills.close_articulated` → `run_skill(SKILLS["close"])`，job 是 `skill_jobs/door.py` 的 `close_job`，推门的计划是 `skill_plans/door.py` 的 `plan_push`（catalog 的 `template`），握把手关是同一个 `plan_door`。微波炉和没有把手的部件还走旧的 `_move_with_retry`（第 8 步）。迁移前是：铰链门先推（`_push_close`），找不到推的停车点再 `try/except` 换成握把手（`_move_articulated`，两次抓的老路径）；合约的 `handle_push`、`dispatch` 两条路径都要求 `hand_empty(hand=right)`。
 
 v6 批次（153 集）里的 44 次关门：柜门空手 12、柜门右手拿着东西 10、冰箱空手 11、冰箱右手拿着东西 3、微波炉 8；没有抽屉，也没有左手拿着东西的。右手拿着东西的 13 次都是"柜里 pick → 退开 → 关门"，现在全被 `hand_empty(hand=right)` 拒掉（11-11 侧面捏取以后，T02、T19、T25 都停在这里）。
 
@@ -592,14 +595,14 @@ close(部件)
   - 旧代码按力矩比挑推的停车点、最近不许近过 `PUSH_MIN_R`，都去掉：停车点只按通用排序（第 7 节），手臂贴身推不了的由 `build` 的 IK 和碰撞判定拒掉。仿真里要是推不动，按开门那条处理（力矩比做成 `build` 里的约束）。
 - 合约（做成了另一种样子）：不合并 `handle_push` / `dispatch`，在它们前面加一条 `loaded`（有把手且右手拿着东西：只调 policy_023，不先收臂——policy_003 只收右臂，右手拿着东西时它拒绝；前提 `hand_empty(hand=left)`）。右手空的照旧走 `handle_push`（先收臂再关，job 里两只手都在目标集合里），这样空手关门的路径不变；微波炉的 `powered` / `powered_loaded` 不变。开门 `contract_048` 同样加 `refrigerator_loaded` / `loaded`（右手拿着东西：左手开），删掉 `left_holds_load`（policy_060 退役，`skill_library/check.py` 的 `RETIRED_POLICIES`）：左手拿着东西时照常走 `refrigerator` / `drawer` / `hinged_door`，右手开、q_body 锁住。
 - 结果判据沿用 `DOOR_CLOSED_TOL`（铰链 0.10 rad、抽屉 4 cm）。
-- 删了 `_push_close`、`_push_targets`（搬进 `skill_jobs.door.push_target`，写在部件坐标系里）、`_NoPushPark` 和旧的 `PUSH_*` 常数（`PUSH_ABOVE`、`PUSH_PRE` 在 `skill_jobs/door.py`，`PUSH_MIN_R`、`PUSH_OUT`、`PUSH_SPREAD` 不要了）。`skills._ride` / `_ride_check` / `_move_articulated` / `_move_with_retry` 还留着：微波炉的开关门还在用，跟第 8 步走。
+- 删了 `_push_close`、`_push_targets`（搬进 `skill_jobs.door.push_target`，写在部件坐标系里）、`_NoPushPark` 和旧的 `PUSH_*` 常数（`PUSH_ABOVE`、`PUSH_PRE` 留下，进了 `tolerances.py`；`PUSH_MIN_R`、`PUSH_OUT`、`PUSH_SPREAD` 不要了）。`skills._ride` / `_ride_check` / `_move_articulated` / `_move_with_retry` 还留着：微波炉的开关门还在用，跟第 8 步走。
 - 检查：空手关柜门、右手拿着东西关门的 T02 block_put_away、T19 can_put_away、T25 cold_one、T05 pen_in_6、T20 bottle_put_away（`/data/zenobench/close6b_1112`）。v6 里没有能走到空手关冰箱的集（11-12 全量的冰箱关门全是右手拿着东西的）。结果见 9.3 第 6b 步。
 - 推门的常数（`PUSH_ABOVE`、`PUSH_PRE`、`PUSH_TIP_GAP`、`PUSH_TRACK`、`BODY_SAME`）在 `tolerances.py`，各带来源。
 - 诊断（11-12 加）：直线撞了写出撞到哪个物体（`primitives._who`，`Motion.contacts_by_owner`），IK 解不出写明是够不着还是撞了（`ik_why`），停车点搜索的 `diag["build_examples"]` 每类失败留一条完整原因。
 
 **接触类技能**（press、touch、stir、wipe、push、roll、flip、expose、sweep，待做）都是同一个形状：到达（锚点）→ 过渡段 → 进入段（`straight`，深度常数）→ 任务段（`scripted`）→ 锚点 → 撤出段（`straight` 或离开段）→ 收臂。工具的工作点（勺尖、海绵底面）是标注里的具名坐标系 `tool_frame`（和 `grasps` 一样写在 `annotations/assets.json` 的资产条目里），由一个函数统一解析成 `T_tcp_tool = Held.T_tcp_obj · T_obj_tool`（4.1），轨迹函数只拿这个矩阵。不要让 10 个接触技能各自从标注换算一遍：那是未来重复代码的主要来源，也是最容易和标注失配的地方。新加一个工具 = 加一条标注，不是加一段代码。跨多个停车点的任务（长推、sweep 逐个物体）每段做一次 `find_park`，段与段之间看实测结果决定下一段。这是任务层的闭环，不是运动的退路。长推每段推多远不写死（`COLLISION_PLAN.md` 第 2 节）：选沿推的方向能推得最远的停车点，推到够不着为止，再换停车点接着推（11-12 已做，见下面推桌上的物体）。
 
-**推桌上的物体**（`plan_slide`，`skill_plans/contact.py`；catalog 的 `push`，job 是 `skill_jobs/slide.py` 的 `slide_job`；11-12，第 7 步里先做的一项）：推到桌边（policy_045 `SlideToEdgePolicy`）走它，抓伸出去的那条边是普通的 pick（policy_013 → `plan_pick`，`thickness_pinch` 候选），两者不合成一个 `build`：推完物体停在哪只预测得到厘米级（8.5），抓伸出去的边要按实测的位姿选抓法，合起来搜索时证明不了后面的抓；两步的停车点也不同。它们在任务层串（2.3 复合技能）。旧的 `skills.push` 删了（11-12）：push、push_from_behind、top_drag、pull、separate、center、sweep 也都走 `push_object`（这 7 个策略在 v6 里一次都没用到，11-12 全量的日志）。
+**推桌上的物体**（`plan_slide`，`skill_plans/contact.py`；catalog 的 `push`，job 是 `skill_jobs/slide.py` 的 `slide_job`；11-12，2d2aff1，第 7 步里先做的一项；物理步骤见 `skills/push.md`）：推到桌边（policy_045 `SlideToEdgePolicy`）走它，抓伸出去的那条边是普通的 pick（policy_013 → `plan_pick`，`thickness_pinch` 候选），两者不合成一个 `build`：推完物体停在哪只预测得到厘米级（8.5），抓伸出去的边要按实测的位姿选抓法，合起来搜索时证明不了后面的抓；两步的停车点也不同。它们在任务层串（2.3 复合技能）。旧的 `skills.push` 删了（11-12）：push、push_from_behind、top_drag、pull、separate、center、sweep 也都走 `push_object`（这 7 个策略在 v6 里一次都没用到，11-12 全量的日志）。
 
 | # | 段 | 原语 | Spec | State 推进 |
 |---|---|---|---|---|
@@ -662,7 +665,7 @@ Problem(goals, build, relay, arrive, travel, near, prefer, label, hand, body_fre
 
 计划按（停车点，目标组 k）存。技能要查的东西都在自己的 `build` 里，搜索不再有 `check`、`ride`、`score`、`carry` 之类的开关。任务的不同做法都进 `goals`，不按变体各调一次 `find_park`。
 
-**哪只手**（9.3 第 6a 步）：现在搜索写死右臂：够得着预检用右肩（`SHOULDER` (0.09, −0.18)），朝向偏好让右臂那一侧朝目标（`FACE_LEFT`）。对称以后每组目标带自己的手（`side`），肩的位置和偏好按手镜像（y 取反、偏好的符号取反），排序 IK 和 `build` 用那只手的 `kin`：`find_park` 收两只手的 `kin`，不再只收一个。同一个问题里可以有两只手的目标（关门）；pick / place 现在只给右手的目标（6a 末尾）。已做（11-11）：目标组的第 4 项是手（`Problem.side(k)`，缺省 `Problem.hand`），`park_search.shoulder(side)` / `face_off(side)` 镜像，`find_park` 收 `{side: kin}`。随之改的：
+**哪只手**（9.3 第 6a 步）：6a 之前搜索写死右臂：够得着预检用右肩（`SHOULDER` (0.09, −0.18)），朝向偏好让右臂那一侧朝目标（`FACE_LEFT`）。对称以后每组目标带自己的手（`side`），肩的位置和偏好按手镜像（y 取反、偏好的符号取反），排序 IK 和 `build` 用那只手的 `kin`：`find_park` 收两只手的 `kin`，不再只收一个。同一个问题里可以有两只手的目标（关门）；pick / place 现在只给右手的目标（6a 末尾）。已做（11-11）：目标组的第 4 项是手（`Problem.side(k)`，缺省 `Problem.hand`），`park_search.shoulder(side)` / `face_off(side)` 镜像，`find_park` 收 `{side: kin}`。随之改的：
 - `arrive` / `travel` 是整机姿态 `(q_body, arms)`，不是"那只手的 9 维"：`travel` 用在 `base.depths` 的整机检查上，对所有目标只做一次，不能随目标的手变；`arrive` 只换要干活的那只手的手臂（4.1：姿态目标只给手臂），另一只手、q_body 照现在的样子。`motion_skills.posture` 同改。
 - 排序 IK 一次只用一个 `kin`（`rank_ik` 的批量调用）：候选按手分两批算，`score` 照旧放在一起排（两只手的限位、可操作度镜像相同）。
 - 镜像只镜像底盘系里的量（肩的位置、朝向偏好）。关节值不能直接拿来用：URDF 里两臂的关节 3、5、6 轴相同，镜像一个姿态要把这三个取反（`q_左 = (+, +, −, +, −, −, +) · q_右`）；左右的收臂、种子姿态本来就是各自的数据（左手的 `LEFT_ARM_FOLD` 是单独搜的），不互相镜像。
@@ -715,7 +718,9 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 余量还是重做：误差上限小、事先知道、加了余量也不会拒掉多少候选的（握法、漂移），用余量；误差让目标本身变了的（底盘偏了，同样的关节角就到不了目标），用重做。
 
-**握法按实测关节角量**：`State` 里的握法（`Rig.snapshot`）、`place_job` 求放下位姿用的握法、`held_offset` 日志都相对于**实测**关节角下的 TCP（`rig.q()`），不是指令 TCP（`q_cmd`）。持物的手臂会下垂（`q - q_cmd` 中位 0.004 rad、最多 0.013 rad），接触会把手臂顶偏；相对指令 TCP 量的"握法"把这些都读成物体在手里动了，而且随姿态变（同一个焊住的物体，搬运姿态和放下段起点量出来不一样）。按实测量，焊住时握法不变，不焊时变的就是真的滑动，sticky 和 physical 同一个口径。代价：指令 TCP 照这个握法推出的位姿去，手臂还会下垂，物体比计划低约一个下垂量（毫米级，放下段终点离支撑面留着 `LEAVE_GAP`）。
+**握法按实测关节角量**：`State` 里的握法（`Rig.snapshot`）、`place_job` 求放下位姿用的握法、`held_offset` 日志都相对于**实测**关节角下的 TCP（`rig.q()`），不是指令 TCP（`q_cmd`）。持物的手臂会下垂（`q - q_cmd` 中位 0.004 rad、最多 0.013 rad；这是加重力前馈之前量的，见下一段），接触会把手臂顶偏；相对指令 TCP 量的"握法"把这些都读成物体在手里动了，而且随姿态变（同一个焊住的物体，搬运姿态和放下段起点量出来不一样）。按实测量，焊住时握法不变，不焊时变的就是真的滑动，sticky 和 physical 同一个口径。代价：指令 TCP 照这个握法推出的位姿去，手臂还会下垂，物体比计划低约一个下垂量（毫米级，放下段终点离支撑面留着 `LEAVE_GAP`；有了重力前馈以后边夹抬起只差约 1 mm）。
+
+**手里东西的重量由手臂扛**（11-12，b1862b0）：仿真里机器人自己的连杆不受重力（手臂控制器的补偿），手里的东西却只靠位置驱动顶着：边夹抬起后 TCP 比指令低 5–9 mm、物体倾 1.5–2.5°，这时已经没有接触，关节上是静态的 0.4–1.5 N·m，正好是负载的 `Jᵀ m g`（liftdbg_1112）；T01 / T07 / T26 的 `pick_lift` 因此超过 `TARGET_TOL` 失败。现在 `Rig` 在每个物理步之前给每只手的负载加重力前馈（`Rig._payload_feedforward`、`payload_torques`：`J_comᵀ (0, 0, m g)`，质量和质心从 PhysX 读；双手抱的一边一半，躯干和腰取两边之和；质心离 TCP 超过 `PAYLOAD_REACH` 0.4 m 的不算在手里）。加了以后抬起误差约 1 mm、倾角 0.2–0.7°，这三集都成功。这是 `Actuator` 的实现，计划层不变。
 
 ### 8.3 复核和重做是同一个 `build`
 
@@ -783,15 +788,15 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 ### 9.1 已实现
 
-- 数据：`State`、`Hand`、`Held`、`Spec`（`allow`、`fingers`、`exempt`、`hold_tilt`、`touch`）、`Segment`（`move` / `action` / `drive` / `anchor`）、`Plan`（含 `decisions`）、`Failure`、`Aim` / `aim_pose`，以及推进 `State` 的小函数；协议 `Actuator`、`BaseModel`（2.5）。实测握法按实测关节角量（8.2）。
+- 数据：`State`、`Hand`、`Held`、`Spec`（`allow`、`fingers`、`exempt`、`hold_tilt`、`touch`）、`Segment`（`move` / `action` / `drive` / `scripted` / `anchor`）、`Plan`（含 `decisions`）、`Failure`、`Aim` / `aim_pose`，以及推进 `State` 的小函数；协议 `Actuator`、`BaseModel`（2.5）。实测握法按实测关节角量（8.2）。
 - 查询层：`Motion.query`（包一层）、`path_free_only`；手里物体的碰撞球按碰撞体拟合（`held_spheres`，4.4）。
 - 原语：`free_leg`（`Joint`、`Pose`、`PoseSet`、`JointSet`）、`straight`、`contact_extent`、`contact_segment`，三个"还在碰"判据，`exit_length`；`drive`、`drive_straight`（5.4）；`scripted`（任务段，耦合 `hinge` / `slider` / `still` / `pushed`（带死区），手臂带的可以 `reach`：走到够不着为止，5.5）；`decide_ik`（5.7）；`holds`（8.4）。
 - 计划：`plan_pick`、`plan_place`、`set_down_length`、`plan_navigate`、`travel_chain`、`Carry`、`plan_door`（开门，11-10）、`plan_push`（推门关，11-12）、`plan_slide`（推桌上的物体，11-12）、`plan_clear`（手握部件时松开）；目标从 `State` 推出（第 6 节）；锚点 `pick_arrive` / `pick_held` / `place_arrive` / `place_landed`；`prior` 是 `Plan` 时还成立的运动段原样复用（`_kept`，收臂除外）；`HELD_POSE_MARGIN` 5 mm，`PICK_TOL` 1 mm，`PLACE_TOL` 5 mm。
 - 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`posture`，`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载，`template` / `park` / `arrive` / `travel` 都起作用，2.3）；navigate、pick、place、open、close、push 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`、`door`（open、close）、`slide`（push，和任务层一段段推的 `push_object`），加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
 - 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`（目标带手、`body_free`、`tiers`、`relay_from`，第 7 节），pick / place / open / close / push 在用；门后物体（柜子 / 冰箱 `inside_` 支撑面上）的种子停车点由标注推出（`_front_of`）。微波炉腔体里取物不走这里：合约路由到 `PickFromCavity`（policy_048，旧实现，第 8 步）。
 - 执行：`run.observe`、`execute`、`run(act, plan, rebuild, hooks, clear)`（每段 `holds`、锚点复核剩下的整份，`rebuild=None` 合法，8.8；失败出口 `run_clear`，8.6）。
-- 单测：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`、`test_motion_skills.py`（FakeKin，不起仿真）。
-- 基线：全量跑 v6（`COLLISION_PLAN.md` 第 5 节）。最后一次全量是 `1c5b98d` 的 69/153（11-10）；`6938eac` 以后（底盘分层、9.3 第 2.3、2.4 步）还没跑全量。
+- 单测（假的 kin / 底盘 / 执行器，不起仿真）：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`、`test_motion_skills.py`、`test_scripted.py`、`test_door_plan.py`、`test_symmetry.py`、`test_slide_plan.py`、`test_push_object.py`；碰撞模型的构造：`test_held_collision.py`（手里东西的球、每条手臂的自碰撞表）、`test_body_collision.py`（底盘环境；GPU 那一侧是 `tools/check_body_collision.py`）；`test_payload_feedforward.py`（重力前馈）。
+- 基线：全量跑 v6（`COLLISION_PLAN.md` 第 5 节）。`1c5b98d` 69/153（11-10，`/data/zenobench/v6full_1109`）→ `c096313` 82/153（11-11，`v6full_1111`）→ `bdc2a23` 87/153（11-12，`v6full_1112`，现在的基线）；6b（`a33d852`）以后还没跑全量。
 - 静态审计：`tools/audit_collision.py`，`tests/test_collision_audit.py` 是棘轮，`tools/stop_check.py` 每轮也跑。它认识 `Spec`（`Spec(allow=LEGACY / unchecked(...))`、`Spec(exempt=...)`、`Spec(fingers=False)` 和写在 `move_to` 上一样算）；执行入口（`EXECUTION`：`run.py`、`rig.py`）和查询层（`QUERY_LAYER`：`Motion.query`、`Motion.path_free_only`）里的 follow / 豁免不算，这些放宽在写 `Spec` 的地方已经算过；`find_park` 按顺序调 `build` 不算重试。另有 `old_entry` 一类（9.3"只降不升的计数"）。
 
 ### 9.2 pick / place 还没解决的
@@ -813,27 +818,28 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 1. **框架（第 ⑤ 层，已完成 11-08）**：`Skill`、`run_skill`、`drive`（包 `_base_plan` 和 `straight_base_move`）、`plan_navigate`；pick / place 改走 `run_skill`；`skill_plans.py` 拆成包（9.4），`Actuator` 协议（2.5），`SKILLS` 进 catalog（2.3），`plan_navigate` 第 1 段按约束复核持物姿态（删 `_carry_pose` 和它的 `FREE_ELSE_STRAIGHT`），`_drivable` 和 `plan_navigate` 用同一组行驶姿态（`travel_chain`）。navigate 一项就覆盖 1099 步。和计划的出入：`find_park` 多一个参数 `base`；协议方法叫 `arm_kin`；技能接口是过渡形式 `Job`；`min_bottom_z` 是"能抬就抬"不是约束（第 6 节）。
 2. **pick / place 收尾**，每项单独提交：
    1. 先只记录不改行为：到达、握上、落下时的实测偏差（底盘、握法、漂移、终点 TCP 离目标多远）写进日志（锚点的 `info`，4.3），跑一次定 `BASE_TOL`、`HOLD_DRIFT`、`TARGET_TOL` / `PICK_TOL`；同一次提交里建 `tolerances.py`（4.5），把散落的阈值搬进去、补上来源标记。
-      **记录已加（11-11，未提交，等下一次全量出数）**：
+      **记录已加（11-11，c096313）**：
       - 锚点段带 `info["assumed"]`（计划在这一刻假设的 `State`）和 `info["watch"]`（pick：目标物体；place：放下的物体；开门：部件）。`run` 每个锚点都记一条 `anchor` 事件（以前只在复核时记），`off` = `motion_state.state_offset(假设, 读回)`：`base` [mm, °]（停车偏差）、`arm`（指令关节角和计划差多少）、`hold_<side>` {mm, °, 握法类别, 计划时的 `pad`}（`pick_held`：合爪前假设的握法对实测；`place_arrive` / `arrive`：开车这一路握法变了多少 = 漂移）、`watch`（瞄准的物体 [mm, °] / 部件关节值差；`place_landed` 是落点对预测）、`moved`（其它物体离假设超过 5 mm 的，最多 5 个：被碰动）。复核时 `why_rebuilt` 记每个重做的段为什么不成立（`holds` 的原因，或"起点变了"）。
       - 接触位姿所在的段（带 `aim`）执行前的 `segment` 事件加 `aim_off` = [比建时多偏 mm, °, 目标自己挪了 mm]（`primitives.aim_excess`，和 `holds` 同一个算法）：`PICK_TOL` / `PLACE_TOL` 切的就是这个量。
       - `tools/anchor_stats.py RUN_DIR`（只用标准库）汇总：各锚点的偏差分布和超过几个候选阈值的个数、`aim_off` 分布、`held_offset` 按握法、锚点复核 kept / rebuilt / 失败和原因、段的重做、`decide_ik` 的 prior / solved、停车点搜索各阶段耗时和 `filter_s`、构造失败原因——第 10 节几个"先看数据"的问题（锚点处重做做不出来有多少、pick 到达锚点是不是几乎每次重做、搬运段和 place 搜索构造前的耗时）也从这里读。
       - `tolerances.py`（4.5）第一批建好。
+      - 数据：11-11、11-12 两次全量都写了 `ANCHOR_STATS.md`（`/data/zenobench/v6full_1111/runs/`、`v6full_1112/runs/`）；`BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 还没据此定值（`tolerances.py` 里仍标着没实测）。
    2. **已做（11-09，376b692）**：`decide_ik`（5.7）、`Plan.decisions`（4.3）、`build` 的 `prior`。和计划的出入：`Problem.relay` 告诉 `find_park` 排序 IK 解属于哪个决定；搬运目标的选择也复用（(序号, 集合大小)）；`Plan.decisions` 记计划实际走到的解。针对性对照新 4/8、旧 3/8（T20 bottle_on_cabinet 改好：放下段起点的解原样用，不再被 `Motion.ik` 的可操作度项换掉）；
    3. **已做（11-10，c21cb48）**：目标从 `State` 推出（`Aim`，第 6 节），删 `_pick_ready` / `_place_ready` 开头的整份重做和 place 开车后的重新测量，`plan_place` 去掉 `u_out`。sticky/gt 下 5 集事件日志和旧代码逐条相同；
-   4. **已做（11-10，83a4209、43eaa13，审计修正未提交）**：`holds` 挪进 `primitives`；锚点段，`run` 在锚点复核剩下的整份（`anchor` 事件记 `kept` / `rebuilt` / `seconds`）；`build` 原样复用 `prior` 里还成立的运动段（`_kept`）。针对性对照 5 集成败同旧代码，31 个锚点没有一次重做，每次 0.04–0.35 s。
+   4. **已做（11-10，83a4209、43eaa13，审计修正 38ca97c）**：`holds` 挪进 `primitives`；锚点段，`run` 在锚点复核剩下的整份（`anchor` 事件记 `kept` / `rebuilt` / `seconds`）；`build` 原样复用 `prior` 里还成立的运动段（`_kept`）。针对性对照 5 集成败同旧代码，31 个锚点没有一次重做，每次 0.04–0.35 s。
       审计后修正（11-10）：收臂段不复用（之前 `_kept` 会把搜索时选的下垂原样留下，违反第 1 节第 8 条）；握法改按实测关节角量（8.2，之前相对指令 TCP，sticky 下手臂下垂、被接触顶偏会读成"目标挪了"，T09 两次 place 失败都是这样触发的）；目标检查和底盘终点检查合成一个判据，容差按技能：pick `PICK_TOL` 1 mm、place `PLACE_TOL` 5 mm（之前物体位移 1 mm、底盘位移 5 mm，两个技能一样）；`after_grasp` / `after_down` 判被挡住改为比实测 TCP 和指令 TCP（之前比执行后重推的目标，接触中目标跟着变，混进了目标的位移）。`anchor` 事件的 `rebuilt` 只列路点变了的运动段（收臂每次重做，做出来一样的不算）。验证（v6 sticky/gt，8 集，`/data/zenobench/verify_1110`）：5/8 成功（T02、T05、T09 pot_in_use、T24、T25）。T09 是这一系列改动里第一次成功（之前各版本都在放锅时失败：目标被读成"挪了"后重做，或重做后停短）；T24 在 2.2 对照里放苹果失败、这次成功。失败的三集和以前同处：T13 的 look 视线被挡、T04 一只杯子始终倒着（倾角 81.3°，各版本相同）、T17 放锅盖时手臂离指令 14 cm（旧代码在同一处报"目标挪了 11 cm / 41°"，是同一件事：手臂没跟上 `place_reach`）。69 个锚点（pick 38 个，`PICK_TOL` 1 mm 下一次也没重做），段的重做 0 次；伸入后实测 TCP 离指令中位 0.9 mm、最多 1.0 mm；松手前物体离支撑面的间隙中位 5.8 mm（之前 6.0 mm），握法改按实测关节角以后看不出下垂的影响。
       对照方法：锚点多出的复核查询（`contact_extent` 等调 cuRobo IK）会改变求解器的调用历史，之后的排序 IK 跟着变，五集都在某次停车点搜索处和旧代码分开——没有单独做实验证明。以后的对照不再要求事件日志逐条相同，比锚点 / 段的重做、成败和失败类别；
    5. 余量：place 计划带 `HOLD_DRIFT`；
    6. **已做（11-09）**：hooks 不动机器人，失败出口是 `run` 执行的计划（`clearing` + `plan_clear`，8.6）；
    7. 9.2 第一张表里剩下的：收臂预算、搬运慢、书进 `plan_place`（删 `place_flat`）。
-   8. **手里物体的碰撞球（11-11，分支 `held-spheres`）**：原来的 `box_spheres` 是包围盒里等大的内切球，离物体表面中位 6–19 mm、最多 15–28 mm（锅盖底边、mug 侧边整片没盖住），圆物体的盒子四角又多出约 4 cm。T17 掀锅盖放到灶台时锅盖边压上锅沿、手臂被卡 14 cm，T04 拿着 mug 开车擦倒柜面上的杯子，规划和复核都看不见，接触监视也不看手里的东西。改成按碰撞体拟合的变半径球（4.4），`HELD_SPHERES` 32 / 32 → 右手 140 / 左手 60；PhysX 接触监视加上手里的东西碰外界。离线核过（预算 140）：锅盖 127 个球、mug 39、杯子 41、书 101、带把手的锅 130（放宽到 7.5 mm），多出都 ≤ 4.0 mm，其余表面离球 ≤ 6.3 mm；自碰撞对数不变（16271），球总数 505 ≤ 512。接触监视的 PhysX 实体按接触点所在的标注家具命名（`Motion.entity_of_contact`，和球模型的命名一致：之前同一张桌子一边叫 `desk_1`、一边叫 `SupportRepairs/desk_1__top`，放行对不上）；松手时物体碰它被放到的东西放行（`release_spec(on=)`，`place_job` 由支撑面得出）。针对性对照（v6 sticky/gt，旧 = `9f6dc08`，各一个仿真，`/data/zenobench/held_spheres_1111`）：T04 two_guests 新成功、旧失败（mug 擦倒杯子：所有版本里第一次没倒），T17 hide_both 新成功（旧侧显存不够崩了），T02 crowded 两边成功（挤着的方块照样拿得起来），T14 shelve_the_book 两边成功（新侧第一次两个仿真同时跑显存不够崩了，单独重跑成功）。停车点搜索总耗时 334 → 345 s（+3%）。新的手持物接触里剩下的是真实接触：T14 搬书时擦到铅笔，以及还没迁移的旧 `place_flat`（`flat_lower`）。
+   8. **手里物体的碰撞球（11-11，7e82e60）**：原来的 `box_spheres` 是包围盒里等大的内切球，离物体表面中位 6–19 mm、最多 15–28 mm（锅盖底边、mug 侧边整片没盖住），圆物体的盒子四角又多出约 4 cm。T17 掀锅盖放到灶台时锅盖边压上锅沿、手臂被卡 14 cm，T04 拿着 mug 开车擦倒柜面上的杯子，规划和复核都看不见，接触监视也不看手里的东西。改成按碰撞体拟合的变半径球（4.4），`HELD_SPHERES` 32 / 32 → 右手 140 / 左手 60；PhysX 接触监视加上手里的东西碰外界。离线核过（预算 140）：锅盖 127 个球、mug 39、杯子 41、书 101、带把手的锅 130（放宽到 7.5 mm），多出都 ≤ 4.0 mm，其余表面离球 ≤ 6.3 mm；自碰撞对数不变（当时 16271；90a2a31 把共用表改成左右对称以后是 16171，4.4），球总数 505 ≤ 512。接触监视的 PhysX 实体按接触点所在的标注家具命名（`Motion.entity_of_contact`，和球模型的命名一致：之前同一张桌子一边叫 `desk_1`、一边叫 `SupportRepairs/desk_1__top`，放行对不上）；松手时物体碰它被放到的东西放行（`release_spec(on=)`，`place_job` 由支撑面得出）。针对性对照（v6 sticky/gt，旧 = `9f6dc08`，各一个仿真，`/data/zenobench/held_spheres_1111`）：T04 two_guests 新成功、旧失败（mug 擦倒杯子：所有版本里第一次没倒），T17 hide_both 新成功（旧侧显存不够崩了），T02 crowded 两边成功（挤着的方块照样拿得起来），T14 shelve_the_book 两边成功（新侧第一次两个仿真同时跑显存不够崩了，单独重跑成功）。停车点搜索总耗时 334 → 345 s（+3%）。新的手持物接触里剩下的是真实接触：T14 搬书时擦到铅笔，以及还没迁移的旧 `place_flat`（`flat_lower`）。
 3. **感知类**：look、search、explore_furniture / explore_room、inspect、measure、identify、count。navigate + 头部动作，只依赖第 1 步。
 4. **取放家族**：drop、stack、lift、hover、cover、present；collect 在任务层串。在 `plan_pick` / `plan_place` 上换目标集合。
 5. **姿态类**：`Spec.joints`（`q_body` 和锁 q_body 这一种用法在第 6a 步做；`JointSet` 第 1 步已加）（`joints` 按关节名写，不按规划链的下标）。bend / straighten、升降躯干、wave、nod；删改 `kin.lo / hi` 和 `_lock_shared_posture` 的地方。
 6. **部件类 + retreat**：`scripted` + `Held(kind="part")` + `touch` 扩到部件和部位。开关门，`_ride` 变成闭环执行器，删 `hand_touches_part`；retreat 用直线 `drive`。
-   **框架已做（11-10，未跑仿真）**：`Script` + 耦合（`hinge` / `slider` / `still`）、`scripted` 段（`carry` 底盘 / 手臂）和 `run.execute` 的两种执行器、`Actuator.ride`（`Rig.ride`）、`BaseModel.clear`（`RigBase.clear`）、`Held(kind="part")`（`Rig.snapshot` 从 `_handle_grasp` 读出，`Motion.query` 不挂盒子、只放开手指对这个部件）、`Spec.touch` 写部件和 `hand`；FakeKin 单测 `tests/test_scripted.py`。
-   **开门已迁（11-10；11-11 跑仿真后修了 f418f58、30c4278、cbf8eec，柜门和冰箱开门都过了）**：`plan_door` + `open_job`（第 6 节），`skills.open_articulated` 转到 `run_skill`（左手拿着东西、微波炉还走旧代码）；合约 `hinged_door` / `drawer` 路径改成和冰箱一样的 policy_003 + policy_022，只握一次，policy_046 / 047 / 049 / 050 退役；`Aim` 可以写在部件坐标系里（`frame`）；`plan_clear` 能松开把手；旧代码按力矩比挑停车点，去掉了（第 6 节开门）。单测 `tests/test_door_plan.py`。关门见 6b。还没做：手臂走圆弧、门扫过的扇形对家具、`Spec.margin`、`Allow` 由 `touch` 推出；删 `skills._ride` / `_ride_check` / `_move_articulated` 要等关门也迁完。
-   **6a. 左右对称（从第 5、9 步提前，关门的前提；代码已做 11-11，未提交，仿真检查见下）**：机器人本身左右镜像（URDF 两臂 7 个关节上下限、力矩都一样，关节原点 y 取反，关节 3、5、6 镜像时取反，第 7 节；两只夹爪都有腕部相机），代码不对称是先写右臂留下的：`q_right` 9 维、`q_left` 7 维，`held` / `left_held`、`grip` / `left_grip`、`follow` / `left_follow` 两套，停车点搜索写死右肩。新层其实已经大多按手走（`State.q(side)`、`with_arm(side)`、原语用 `kin.side`、`run` 用 `info["side"]`、`Actuator.follow / declare / arm_kin(side)`、`Aim.side`、`touches(side)`），左手推门缺的是三样：**两条手臂共用躯干的规则**（4.1）、另一只手的东西怎么进查询（4.4）、按手搜停车点（第 7 节）。这一步做这三样和它们要的接口，右手技能的行为不变：
+   **框架已做（11-10，9f6dc08；11-11 随开门跑了仿真）**：`Script` + 耦合（`hinge` / `slider` / `still`）、`scripted` 段（`carry` 底盘 / 手臂）和 `run.execute` 的两种执行器、`Actuator.ride`（`Rig.ride`）、`BaseModel.clear`（`RigBase.clear`）、`Held(kind="part")`（`Rig.snapshot` 从 `_handle_grasp` 读出，`Motion.query` 不挂盒子、只放开手指对这个部件）、`Spec.touch` 写部件和 `hand`；FakeKin 单测 `tests/test_scripted.py`。
+   **开门已迁（11-10；11-11 跑仿真后修了 f418f58、30c4278、cbf8eec，柜门和冰箱开门都过了）**：`plan_door` + `open_job`（第 6 节），`skills.open_articulated` 转到 `run_skill`（微波炉还走旧代码；左手拿着东西时当时也走旧代码，6b 起改成用空着的手）；合约 `hinged_door` / `drawer` 路径改成和冰箱一样的 policy_003 + policy_022，只握一次，policy_046 / 047 / 049 / 050 退役；`Aim` 可以写在部件坐标系里（`frame`）；`plan_clear` 能松开把手；旧代码按力矩比挑停车点，去掉了（第 6 节开门）。单测 `tests/test_door_plan.py`。关门见 6b。还没做：手臂走圆弧、门扫过的扇形对家具、`Spec.margin`、`Allow` 由 `touch` 推出；删 `skills._ride` / `_ride_check` / `_move_articulated` 要等关门也迁完。
+   **6a. 左右对称（从第 5、9 步提前，关门的前提；11-11，bdc2a23，仿真检查见下）**：机器人本身左右镜像（URDF 两臂 7 个关节上下限、力矩都一样，关节原点 y 取反，关节 3、5、6 镜像时取反，第 7 节；两只夹爪都有腕部相机），代码不对称是先写右臂留下的：`q_right` 9 维、`q_left` 7 维，`held` / `left_held`、`grip` / `left_grip`、`follow` / `left_follow` 两套，停车点搜索写死右肩。新层其实已经大多按手走（`State.q(side)`、`with_arm(side)`、原语用 `kin.side`、`run` 用 `info["side"]`、`Actuator.follow / declare / arm_kin(side)`、`Aim.side`、`touches(side)`），左手推门缺的是三样：**两条手臂共用躯干的规则**（4.1）、另一只手的东西怎么进查询（4.4）、按手搜停车点（第 7 节）。这一步做这三样和它们要的接口，右手技能的行为不变：
       1. `State` 拆成 `body` + `arms`（4.1）；姿态目标的 q_body 只在 q_body 能动时生效（`with_posture`、`free_leg` 的 `_keep_body`）；整机姿态 `Posture(body, arms)` 用在 `swing`、`BaseModel.plan`、drive 段（现在 drive 段的 `q_from` / `qs` 只记右臂，开完车 `_plan_navigate` 只推进右臂，`holds` 也只查右臂在起点）；
       2. 共用躯干的规则：另一只手拿着东西时，这只手的段锁住 q_body（`Spec.joints` 的最小版，4.2）；
       3. `Motion.query` 里另一只手的东西：手臂在动的段是世界障碍物、位置从 `State` 推；整机在动、手臂相对底盘不动的检查挂在它的 held link 上（4.4）；
@@ -850,14 +856,14 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
       - 右手不变（对照 `sidepinch_1111`）：T02 block_put_away、T25 cold_one 的 21 / 8 个调用逐条相同，停车点和构造次数相同（T02 取方块 38 次、T25 取果汁 14 次），锚点 24 / 10 个、重做 0；两集都停在旧关门的 `hand_empty(hand=right)`，和改之前一样。
       - 左手能用（`ZENO_OPEN_SIDE=left`）：3 次左手开门都成功——T25 冰箱（正面捏，-1.036 / -1.05）、T05 柜门 4（侧钩 20°）、柜门 6（侧钩）；停车点换到了左手那一侧（柜门 6：右手 (2.872, 0.833, −30°)，左手 (2.827, 0.492, −30°)），握上、底盘带门、松手、收臂都走新路径（`left_grip`、左手的 `_handle_grasp`）。后面的调用和对照（T05 `maxdt_1111/runs3`）逐条相同，PhysX 接触和意外接触的条数也相同。
       - 没查到的：另一只手拿着东西时锁 q_body、另一只手的东西两种表示——这 4 集里干活的手对面都是空的，要到 6b 右手拿着东西、左手推门时才第一次用上。
-   **6b. 关门，开门用空着的手（代码已做 11-12，未提交，见第 6 节关门）**：第 6 节关门（目标集合 = 空着的手 × {推，握把手}，推门 `plan_push` 复用 `hinge` + `ride`）。同一步把开门也改成用空着的手：只有一只手空时用那只手（`open_job` 的 `side`），两只手都空时照旧右手（不换基线）；合约 `contract_048` 的 `hinged_door` / `refrigerator` / `drawer` 前提从 `hand_empty(hand=right)` 改成至少一只手空，`left_holds_load`（旧 `_move_with_retry` 压腰）退役，微波炉不动（第 8 步）。11-11 全量的 31 次开门里没有一只手拿着东西去开的，所以开门这一半靠关门的 13 次（右手拿着东西、左手干活）验证锁 q_body 和另一只手的东西两种表示，再放开。
+   **6b. 关门，开门用空着的手（11-12，a33d852，见第 6 节关门）**：第 6 节关门（目标集合 = 空着的手 × {推，握把手}，推门 `plan_push` 复用 `hinge` + `ride`）。同一步把开门也改成用空着的手：只有一只手空时用那只手（`open_job` 的 `side`），两只手都空时照旧右手（不换基线）；合约 `contract_048` 的 `hinged_door` / `refrigerator` / `drawer` 前提从 `hand_empty(hand=right)` 改成至少一只手空，`left_holds_load`（旧 `_move_with_retry` 压腰）退役，微波炉不动（第 8 步）。11-11 全量的 31 次开门里没有一只手拿着东西去开的，所以开门这一半靠关门的 13 次（右手拿着东西、左手干活）验证锁 q_body 和另一只手的东西两种表示，再放开。
       **检查结果（11-12，`/data/zenobench/close6b_1112/runs_final` + `runs_final_t20`，v6 sticky/gt，单测 382 个、stop_check 都过）**：
       - 右手拿着东西、左手关门 5 次全成功：T25 冰箱（把手下方推）、T20 柜门 6、T19 柜门 6 和柜门 4（都是把手上方推；柜门 4 先 `push_body` 降躯干）。T25 cold_one、T20 bottle_put_away 两集整集成功（改之前都停在关门的 `hand_empty(hand=right)`）；T19 关完门以后停在看书架的视线被挡（原有的 look 那一类）。
       - 空手关门 4 次全成功：T02、T20 右手握把手，T05、T19 左手推。右手推这几扇柜门在快关上时夹爪、相机撞台面（"static"），所以选了别的做法。
       - 连锁变化：T02 block_put_away、T05 pen_in_6 关门以后的取物（层板上的 `floor_block`、`pen`）失败了："找不到够得着的抓法"，60 / 48 次构造都没成。改之前这两次取物也很勉强（T02 第 38 次构造才成），关门方式变了、机器人之后的停车点跟着变，就没取到。这是取物那一侧的问题，不是关门的。
       - 两个仿真同时跑时 T20 在关柜门 6 时 CUDA 显存不够，单独重跑整集成功。
       - 一只手拿着东西时用另一只手开门：v6 里没有这种集，没在仿真里跑到。
-7. **接触类**：推桌上的物体已先做（11-12，第 6 节）：推到桌边和旧 `skills.push` 的其余 7 个调用方都走 `push_object`，`skills.push` 删了；原则审查后（11-12）：选边、pull、separate 的重试换成一次搜索的目标；进入按 pick 的规则、离开按 `contact_extent` 实测；耦合加死区；段长不写死（`scripted` 的 `reach`、`Problem.relay_from`）；骑门段不复用。
+7. **接触类**：推桌上的物体已先做（11-12，2d2aff1，第 6 节）：推到桌边和旧 `skills.push` 的其余 7 个调用方都走 `push_object`，`skills.push` 删了；原则审查后（11-12）：选边、pull、separate 的重试换成一次搜索的目标；进入按 pick 的规则、离开按 `contact_extent` 实测；耦合加死区；段长不写死（`scripted` 的 `reach`、`Problem.relay_from`）；骑门段不复用。
    **检查结果（11-12，`/data/zenobench/slide_review_1112`，v6 sticky/gt，HEAD 88efcbf + 未提交改动，单测 402 个、stop_check 都过；对照 `slide_1112`）**：
    - 8 集的推全部成功，都是从后面推。推完的锚点上预测和实测差 1.2–3.4 mm（加死区之前 9.4–13.9 mm）；实际推的距离比要求的少 1–3 mm（几何没解释的那约 2 mm；之前因为 `SLIDE_SHORT` 重复算，多推 4–7 mm）。离开段 8–9 个路点、约 2.5 cm（之前退 2.5 cm 再抬 10 cm，34 个路点），锚点处都原样保留。T26 要推 45 cm，一段推完（之前 25 + 20.5 cm 两段）。
    - 没触发的：每次都有停车点能一次推完，段在够不着处截短（`reach`）和按能推多远二分排序都没在仿真里用上，只有单测。
@@ -867,7 +873,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
    - 代价：两条边都能伸出的集（T01、T05、T15），推的停车点搜索从 10–14 s 变成 16–24 s：16 组目标各自生成一圈候选、各自查底盘占地（`candidates_reach_footprint` 9.5 → 18.9 s），排序 IK 只多约 1 s。同一位置的几组目标共用底盘候选是第 10 节已有的一项。其余按 v6 用量排，依次是 stir、wipe、roll / flip、expose、press / touch、push、sweep、pour。先加 `tool_frame` 标注和它的解析（第 6 节接触类技能），再迁第一个技能，否则 9 个技能各写一遍换算。删 `LEGACY` 直线和"到不了的点跳过"。
 8. **微波炉和电器动作**：`drive_part`、`toggle`、电机开门前让开的检查。删 `withdraw_microwave_cavity` 记的 `microwave_retrieval_q`（pick 已经不读；`policies/embedded.py` 的 `PickFromCavity` 还在用）。
 9. **两臂**：两手一起搬的物体进碰撞模型（闭链约束另议）；pick / place 选手（6a 末尾）。手臂对称、`q_body`、共用躯干的规则、另一只手的东西进查询已在第 6a 步做；两只手一起动时手里的东西对另一条手臂查不到（held link 只对躯干和头有自碰撞，4.4），两手搬要另想办法。
-10. **收尾**：删 `Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`、旧的 `planner.find_park`；`Motion.query` 改成直接实现。
+10. **收尾**：删 `Rig.move_to` / `move_to_any` / `joint_path` / `move_left_to` / `leave`、旧的 `planner.find_park`，以及旧的按用途分的碰撞上下文（`Motion.scope` / `hand_open` / `carrying` / `released`、`Rig._planning` / `_fingers_checked`；`Motion.query` 6a 起已经是直接实现，4.4）。
 
 每步单独提交，先针对性检查再全量（全量跑 v6，`COLLISION_PLAN.md` 第 5 节）。
 
@@ -875,13 +881,13 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 ### 9.4 代码放哪
 
-`skills.py` 约 2200 行，`policies/` 另有约 5400 行（量级，精确数用 `wc -l`）。迁移有 10 步，新的 `Skill` / `build` 要是继续往 `skills.py` 里加、旧的又注释着不删，它会长期背着死代码，同时还在变长。
+`skills.py` 约 2000 行，`policies/` 另有约 5400 行（量级，精确数用 `wc -l`）。迁移有 10 步，新的 `Skill` / `build` 要是继续往 `skills.py` 里加、旧的又注释着不删，它会长期背着死代码，同时还在变长。
 
 规则：
 
 | 放什么 | 放哪 |
 |---|---|
-| `build`（第 ② 层） | `skill_plans/` 包，**按 2.3 的形状分文件**：`pick.py`、`place.py`、`navigate.py`、`door.py`、`contact.py`、`posture.py`，共用部分在 `_common.py` |
+| `build`（第 ② 层） | `skill_plans/` 包，**按 2.3 的形状分文件**：`pick.py`、`place.py`、`navigate.py`、`door.py`、`contact.py`、`posture.py`〔待加，第 5 步〕，共用部分在 `_common.py` |
 | `Skill` 的数据部分 | `skill_library/catalog.json` 的 `motion_skills`，出处是 `tools/build_skill_library.py` 的 `MOTION_SKILLS`（2.3） |
 | `Skill` 的代码部分里不碰 rig 的（轨迹函数 `traj`） | 和它的 `build` 同一个文件 |
 | `Skill` 的 `job`（目标采样、hooks、结果判断：要读 rig 的标注和状态，属第 ⑤ 层）、`RigBase` | `zeno_skills/skill_jobs/`，一个技能一个文件。不能放进 `skill_plans/`（它不许碰 rig），也不放 `skills.py`（只减不增） |
@@ -898,7 +904,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 | 搜索第 3 步的批量 IK（不查碰撞，排序 + 当 `prior`）要不要 | 先留；量排序准不准，不准就去掉。去掉后 `decide_ik` 只是少一个种子，手臂质量从做好的计划里算 |
 | 构造预算 | 按时间（`BUILD_S` 20 s）；收臂失败太慢的问题先解决，再看要不要调 |
 | 持物去搬运姿态太慢 | 调小保持倾角规划的尝试次数，或让搬运目标优先选关节直走不倾斜超标的 |
-| `BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 的值 | 9.3 第 2.1 步先记录实测偏差再定（记录已加，下一次全量跑完看 `tools/anchor_stats.py`）；现在 `PICK_TOL` 取 `HINT_REACH` 1 mm、`PLACE_TOL` 取 `PICK_REACH_TOL` 5 mm（8.4） |
+| `BASE_TOL`、`HOLD_DRIFT`、`PICK_TOL`、`PLACE_TOL` 的值 | 9.3 第 2.1 步先记录实测偏差再定（记录已加；11-11、11-12 两次全量的 `ANCHOR_STATS.md` 已经有了，还没据此定值）；现在 `PICK_TOL` 取 `HINT_REACH` 1 mm、`PLACE_TOL` 取 `TARGET_TOL` 5 mm（8.4） |
 | 底盘误差用重做还是余量 | 重做（8.2）。要是 pick 的到达锚点（`PICK_TOL` 1 mm）几乎每次都重做，而且重做常碰上慢的搬运段规划，再考虑放宽或给 `free_leg` 加余量 |
 | 锚点处重做做不出来，要不要换停车点再找一次 | 倾向任务层最多再找一次：约束不变，不算 fallback；要先看 9.3 第 2.1 步的记录里这种情况有多少 |
 | 任务段的余量（`Spec.margin`） | 底盘带门的停止线不用实测（5.5，`RIDE_SLIP_LEADS`）；余量等门迁移后看意外接触，有手臂蹭门板再按 `ride_end` 的落后量定 |

@@ -192,8 +192,9 @@ KEPT_KINDS = ("move", "scripted")   # the segments a rebuild keeps as they are w
 class Segment:
     """One step of a plan.  kind "move": joint waypoints ``qs`` after ``q_from`` (of the arm
     ``info["side"]``, default right); "action": no arm motion, ``action`` says what (("grip", width),
-    ...); "drive": the base, ``info["steps"]`` (BaseModel.plan's), ``qs`` the right arm's postures after
-    each swing on the way; "scripted": a task segment (primitives.scripted, docs 5.5) -- ``info["script"]``
+    ...); "drive": the base, ``info["steps"]`` (BaseModel.plan's), ``q_from`` / ``qs`` the whole posture
+    (Posture.vec: body, right arm, left arm) at the start and after each swing on the way; "scripted": a
+    task segment (primitives.scripted, docs 5.5) -- ``info["script"]``
     its trajectory (primitives.Script: a function of the task quantity s over an interval, and what
     moves with s), ``qs`` the arm's IK continuation along it (none when the base carries it),
     ``info["executor"]`` what runs it ("follow": the arm's qs open loop;

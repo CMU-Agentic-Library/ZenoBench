@@ -6,7 +6,7 @@
 
 入口：`skills.open_articulated` → `motion_skills.run_skill(SKILLS["open"])` → `skill_jobs/door.py` 的 `open_job` + `skill_plans/door.py` 的 `plan_door`。合约路径 `refrigerator`、`drawer`、`hinged_door` 都是 tuck（policy_003）+ policy_022；以前 `hinged_door` / `drawer` 先用 policy_046 抓一次、policy_049 / 050 里再抓一次，这四个策略（046、047、049、050）已退役（`skill_library/check.py` 的 `RETIRED_POLICIES`）。
 
-已经在目标开度（铰链差 `DONE_REV` 0.02 rad、抽屉差 `DONE_PRIS` 6 mm 以内）就什么都不做。
+已经在目标开度（铰链差 `RIDE_DONE_REV` 0.02 rad、抽屉差 `RIDE_DONE_PRIS` 6 mm 以内）就什么都不做。
 
 ## 步骤
 
@@ -50,4 +50,4 @@
 - 不再按力矩比挑停车点。仿真里要是出现"门拉不动"，先看是不是停车点让腕关节吃力。
 - 握着门时只有手指可以碰这扇门（旧的 `hand_touches_part` 是整只手对整个世界都不查）。侧钩时手掌如果也贴着把手，会被当成碰撞：第一次跑仿真要看这一点。
 
-**还没跑过仿真。**
+**仿真**：11-11 起跑过，柜门和冰箱的开门都过了（跑出来的修正 f418f58、30c4278、cbf8eec，见 `../MOTION_ARCHITECTURE.md` 9.3 第 6 步）；11-12 全量（bdc2a23）里开门不再停在 `door_held`（11-11 全量 14 次）。一只手拿着东西时用另一只手开门，v6 里没有这种集，还没在仿真里跑到。

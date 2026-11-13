@@ -13,8 +13,9 @@ T29 several 11-12).  What the hand holds is
 a sphere set on its held link: checked against the base like the arm.
 
 install() patches ArmBase.cost_fn / constraint_fn once; attach(rollouts, side) gives each rollout that has a
-world-collision cost or constraint its own pair of terms (same configuration: the checker, the weight, the
-activation distance, the sweep) -- before the solvers' CUDA graphs are captured (motion._Arm, before warmup).
+world-collision cost or constraint its own pair of terms (the world term's configuration: the checker, the
+weight, the sweep; its activation distance BODY_GAP more) -- before the solvers' CUDA graphs are captured
+(motion._Arm, before warmup).
 """
 
 from __future__ import annotations
