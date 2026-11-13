@@ -279,6 +279,9 @@ class World:
         if self.hand != n:
             self.bad(i, s, f"not holding {n} (holding {self.hand})")
 
+    def art_category(self, art):
+        return next((x.get("category") for x in self.ann.articulated if x["name"] == art), None)
+
     def need_empty(self, i, s):
         if self.hand:
             self.bad(i, s, f"hand not empty (holding {self.hand})")
@@ -406,6 +409,9 @@ class World:
             (self.open.add if k == "open" else self.open.discard)(art)
             if k == "close" and self.hand and self.closed_around(self.hand) == art:
                 self.bad(i, s, f"closing {art} on the held {self.hand}")
+            elif k == "close" and self.hand and self.art_category(art) != "microwave":
+                self.bad(i, s, f"close {art}: hand not empty (holding {self.hand}); only the microwave closes "
+                               "with a load (skill close, path powered_loaded)")
         elif k == "uncover":
             c = a["container"]
             self.need_empty(i, s)
@@ -470,7 +476,7 @@ class World:
             self.need_empty(i, s)
             self.need_near(i, s, a["object"])
             self.flags.add(("object_rolled", a["object"]))
-        elif k in ("expose", "separate", "push", "touch"):
+        elif k in ("expose", "separate", "push", "touch", "square"):   # square: picks, turns, sets back in place
             self.need_empty(i, s)
             self.need_near(i, s, a["object"])
         elif k in ("rotate", "lift", "hover", "present"):

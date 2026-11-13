@@ -49,6 +49,9 @@ REACH_NEAR_M = 0.08      # ...or its near side this close to that edge (a big th
 REACH_LATERAL_M = 0.25   # ...and its centre at most this far along the edge past where the base can stand
 REACH_TRIES = 200
 GROUP_STEP_M = 0.15     # one of a group moves at most this far into reach on its own
+FINGER_M = 0.03         # what the route picks keeps this from anything else on the top (the fingers' slots)
+LONG_SUPPORT_M = 1.2    # a top at least this long...
+SEARCH_END_M = 0.4      # ...holds what the route searches for at least this far (its centre) from either end
 EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
 STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
                                          # from 0.45 out is still well inside the arm's 0.78 m
@@ -495,6 +498,7 @@ def layout_spec(task, vid, registry, control=None):
     placed = {**move, **add}
     steps = task["routes"][task["oracle"][vid]]["steps"]
     picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
+    searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
     # stacked objects (no support) go with the object they stand on
@@ -576,8 +580,9 @@ def layout_spec(task, vid, registry, control=None):
                     rng[ax] = [min(lo, 0.0), max(hi, 0.0)]
             if rng:
                 pk = sorted(set(g) & picked)
+                sk = sorted(set(g) & searched)
                 clusters.append({"names": g, "support": sup, "box": [round(x, 4) for x in B], **rng,
-                                 **({"pick": pk} if pk else {})})
+                                 **({"pick": pk} if pk else {}), **({"search": sk} if sk else {})})
     # what stands on those supports and does not move: base-scene objects, other task objects, reserved places
     in_cluster = {n for c in clusters for n in c["names"]}
     static = {}
@@ -686,6 +691,7 @@ def apply_layout(cfg, spec, rng):
     area = lambda i: (spec["clusters"][i]["box"][2] - spec["clusters"][i]["box"][0]) * \
         (spec["clusters"][i]["box"][3] - spec["clusters"][i]["box"][1])  # noqa: E731
     order.sort(key=lambda i: -area(i))
+    picked_at = {}                                     # support -> boxes of picked things already drawn
     for i in order:
         c = spec["clusters"][i]
         others = list(spec["static"].get(c["support"], [])) + \
@@ -701,11 +707,28 @@ def apply_layout(cfg, spec, rng):
                  for n in c["names"] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")] \
             or [c["box"]]
 
-        def fits(tx, ty, each=True):
+        picks = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                 for n in c.get("pick") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+        sought = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                  for n in c.get("search") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+        S = _sups(base)[c["support"]]["aabb_xy"]
+        k_long = 0 if S[2] - S[0] >= S[3] - S[1] else 1
+        long_top = max(S[2] - S[0], S[3] - S[1]) >= LONG_SUPPORT_M
+
+        def fits(tx, ty, each=True, finger=True):
             sh = lambda r: [r[0] + tx, r[1] + ty, r[2] + tx, r[3] + ty]  # noqa: E731
             b = sh(c["box"])
             # each object against what stands there (the cluster's whole box takes in what lies between them)
             if any(_overlap(sh(m), o, CLEAR_M) for m in every for o in others):
+                return False
+            # room for the fingers around what the route picks, and around what was drawn before it
+            if finger and (any(_overlap(sh(m), o, FINGER_M) for m in picks for o in others) or
+                           any(_overlap(sh(m), o, FINGER_M) for m in every for o in picked_at.get(c["support"], []))):
+                return False
+            # what search looks for: not at the far ends of a long top (one stand pose, head turned: 11-10 T25)
+            if long_top and any(min((sh(m)[k_long] + sh(m)[k_long + 2]) / 2 - S[k_long],
+                                    S[k_long + 2] - (sh(m)[k_long] + sh(m)[k_long + 2]) / 2) < SEARCH_END_M
+                                for m in sought):
                 return False
             # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
             return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))
@@ -720,10 +743,12 @@ def apply_layout(cfg, spec, rng):
                 axis = lambda k: [round(c[k][0] + i * 0.02, 2) for i in range(int((c[k][1] - c[k][0]) / 0.02) + 1)] \
                     if k in c else [0.0]  # noqa: E731
                 grid = [(tx, ty) for tx in axis("dx") for ty in axis("dy")]
-                ok = [g for g in grid if fits(*g)] or [g for g in grid if fits(*g, each=False)]
+                ok = [g for g in grid if fits(*g)] or [g for g in grid if fits(*g, finger=False)] or \
+                    [g for g in grid if fits(*g, each=False, finger=False)]
                 if ok:
                     dx, dy = rng.choice(ok)
         current[i] = [c["box"][0] + dx, c["box"][1] + dy, c["box"][2] + dx, c["box"][3] + dy]
+        picked_at.setdefault(c["support"], []).extend([m[0] + dx, m[1] + dy, m[2] + dx, m[3] + dy] for m in picks)
         for n in c["names"]:
             where = cfg["move"] if n in cfg["move"] else cfg["add"]
             m = dict(where[n])

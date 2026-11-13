@@ -119,6 +119,8 @@ def main():
                     report.update(goal=res["goal"], dropped=res["dropped"], final_state=res["final_state"],
                                   sim_ticks=res["sim_ticks"], task_success=res["success"], success=res["success"],
                                   incomplete=False, stop_reason="planner_done")
+                    if res.get("score") is not None:          # graded outcome (benchmark/v6/scoring.py)
+                        report["score"] = res["score"]
                     write_result()
                     send(res)
                 elif op == "close":

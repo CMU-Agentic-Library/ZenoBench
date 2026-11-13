@@ -4753,9 +4753,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4786,9 +4789,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4819,9 +4825,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4852,9 +4861,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4885,9 +4897,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -4918,9 +4933,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5018,9 +5036,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5051,9 +5072,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5084,9 +5108,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5117,9 +5144,12 @@
       "floor_block"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5150,9 +5180,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5183,9 +5216,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "floor_block",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5287,9 +5323,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5320,9 +5359,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5424,9 +5466,12 @@
       "wooden_block_b"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_a",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -5457,9 +5502,12 @@
       "wooden_block_a"
      ],
      [
-      "on",
+      "on_any",
       "wooden_block_b",
-      "dining_table_2/top"
+      [
+       "dining_table_2/top",
+       "dining_table_1/top"
+      ]
      ],
      [
       "away_from_edge",
@@ -7145,6 +7193,174 @@
       ],
       0.03
      ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_dining_cabinet"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "mug_dining_cabinet",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug_dining_cabinet",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug_shelf",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
     ]
    ],
    "all": [
@@ -7297,6 +7513,174 @@
      [
       "clear_of",
       "cup_counter_b",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_dining_cabinet"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "mug_dining_cabinet",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug_dining_cabinet",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "mug_shelf",
       [
        "mug_counter"
       ],
@@ -8290,7 +8674,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8301,7 +8685,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "hand_empty",
@@ -8449,7 +8833,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8460,7 +8844,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "near_any",
@@ -8471,7 +8855,7 @@
       "pen_2",
       "pencil_2"
      ],
-     0.1
+     0.15
     ],
     [
      "hand_empty",
@@ -13755,12 +14139,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -13958,12 +14342,12 @@
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small"
     ],
@@ -14161,12 +14545,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -14364,12 +14748,12 @@
      "toy_bin_small"
     ],
     [
-     "fully_inside",
+     "inside",
      "toy_car",
      "toy_bin_small_2"
     ],
     [
-     "fully_inside",
+     "inside",
      "rubber_duck",
      "toy_bin_small_2"
     ],
@@ -14429,48 +14813,48 @@
    "any": [
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
@@ -14559,48 +14943,48 @@
    "any": [
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_bin_small"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_bin_small"
      ]
     ],
     [
      [
-      "fully_inside",
+      "inside",
       "toy_car",
       "toy_tray"
      ],
      [
-      "fully_inside",
+      "inside",
       "rubber_duck",
       "toy_tray"
      ]
@@ -16661,6 +17045,7 @@
     "oatmeal",
     "pot_lid",
     "rolling_pin",
+    "spoon_kitchen_cabinet",
     "wooden_block_b"
    ],
    "added": [],
