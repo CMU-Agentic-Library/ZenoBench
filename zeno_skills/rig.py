@@ -76,6 +76,32 @@ def _held_of(rig, side):
 def _fingers_of(rig, side):
     return rig.fingers() if side == "right" else rig.left_fingers()
 
+GRAVITY = 9.81          # m/s^2
+PAYLOAD_REACH = 0.4     # m: a held load's centre of mass further than this from its hand's TCP is not in the hand
+                        # (dropped, or the hold not cleared yet): no feedforward for it
+
+
+def payload_torques(kin, q, com, mass):
+    """The joint torques (one per joint of ``kin``'s chain) that carry ``mass`` kg at the world point
+    ``com`` held rigidly in its hand at ``q``: J_com^T (0, 0, m g), J_com the position Jacobian of that
+    point (the TCP's, its lever r = com - tcp added: v = v_tcp + w x r).  The robot's own links fly
+    with gravity off (physics.fix_robot: the arm controller's gravity compensation); the load in the hand
+    weighed on the position drives alone -- an edge-pinched book 9 mm low, a held notebook's carry
+    sagging off its plan (liftdbg_1112, 11-12) -- so the controller compensates the payload too."""
+    J, tcp, _ = kin.jac(np.asarray(q, float))
+    r = np.asarray(com, float) - tcp
+    skew = np.array([[0.0, -r[2], r[1]], [r[2], 0.0, -r[0]], [-r[1], r[0], 0.0]])
+    Jp = J[:3] - skew @ J[3:]
+    return Jp.T @ np.array([0.0, 0.0, mass * GRAVITY])
+
+
+def _quat_R(q):
+    w, x, y, z = (float(v) for v in q)
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y)],
+                     [2 * (x * y + w * z), 1 - 2 * (x * x + z * z), 2 * (y * z - w * x)],
+                     [2 * (x * z - w * y), 2 * (y * z + w * x), 1 - 2 * (x * x + y * y)]])
+
+
 class Rig:
     sticky = None                # zeno_skills.sticky.StickyHands when the profile turns sticky hands on
 
@@ -336,6 +362,7 @@ class Rig:
                                                        joint_velocities=t.tensor(self.base_vel, dtype=t.float32),
                                                        joint_indices=self.base))
             self.base_vel = np.zeros(3)         # a set_base each tick keeps the base moving
+            self._payload_feedforward()
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
@@ -351,6 +378,57 @@ class Rig:
                     cam.update(1 / PHYSICS_HZ)
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
+
+    def _payload_mass(self, name):
+        """(kg, centre of mass in the body frame) of object ``name`` as PhysX has it (cached)."""
+        cache = self.__dict__.setdefault("_payload_cache", {})
+        if name not in cache:
+            b = self._bodies[name]
+            com, _ = b.get_com()
+            com = com.cpu().numpy() if hasattr(com, "cpu") else np.asarray(com)
+            m = b.get_mass()
+            cache[name] = (float(m.item() if hasattr(m, "item") else m), np.asarray(com, float).reshape(3))
+        return cache[name]
+
+    def _payload_feedforward(self):
+        """The held loads' weight carried by joint torques on top of the position drives (payload_torques),
+        set before every physics step: one hand's load on its chain; a bimanual hold half on each.  The
+        torso and the waist, shared by both chains, take the sum.  Zero when nothing is held."""
+        h, lh = getattr(self, "held", None), getattr(self, "left_held", None)
+        if h and h.get("kind") == "bimanual":
+            loads = [("right", h.get("name"), 0.5), ("left", h.get("name"), 0.5)]   # (side, name, share)
+        else:
+            loads = [(s, x.get("name"), 1.0) for s, x in (("right", h), ("left", lh)) if x and x.get("kind") != "part"]
+        right, left = np.zeros(len(self.kin.names)), np.zeros(len(self.left_kin.names))
+        on = {}
+        for side, name, share in loads:
+            if name not in self._bodies:
+                continue
+            kin = self.kin if side == "right" else self.left_kin
+            q = _chain_q(self, side)
+            mass, com_b = self._payload_mass(name)
+            p, quat = self.obj_pose(name)
+            com = p + _quat_R(quat) @ com_b
+            if np.linalg.norm(com - kin.tcp(q)[0]) > PAYLOAD_REACH:
+                continue
+            tau = payload_torques(kin, q, com, mass * share)
+            if side == "right":
+                right += tau
+            else:
+                left += tau
+            on[side] = (name, round(mass * share, 3))
+        right[:2] += left[:2]                           # the body both chains ride on
+        if not on and not getattr(self, "_payload_on", None):
+            return                                      # nothing held, and nothing set before
+        if on != getattr(self, "_payload_on", None):
+            self.log("payload_feedforward", loads={s: {"obj": n, "kg": m} for s, (n, m) in on.items()},
+                     tau_right=np.round(right, 3).tolist(), tau_left=np.round(left[2:], 3).tolist())
+        self._payload_on = on
+        t = self.torch
+        # one call: set_joint_efforts writes every DOF's actuation force, the ones not named zero (a second
+        # call for the left arm cleared the right's -- liftdbg_1112 ran with no feedforward at all)
+        self.robot.set_joint_efforts(t.tensor(np.r_[right, left[2:]], dtype=t.float32),
+                                     joint_indices=t.cat([self.arm, self.left]))
 
     def _held_container(self, side="right"):
         """The hand holds a container (by its rim: it hangs off a thin wall)."""
