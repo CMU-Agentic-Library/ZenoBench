@@ -2,7 +2,7 @@
 cuRobo's optimisation and feasibility, inside the planner -- not a check after it.
 
 The base (chassis and column) has no collision spheres: the robot model's sphere and self-collision budgets
-are spent (305 robot spheres + the held ones of 512; 16271 of the fast self-collision kernel's 16384 pairs,
+are spent (305 robot spheres + the held ones of 512; 16171 of the fast self-collision kernel's 16384 pairs,
 the general kernel too slow).  So the base is a second environment of the one world checker
 (scene_geometry.BODY_ENV, its two layers rigid with the base: place_body), and every rollout that queries the
 world queries it once more: the robot spheres with the body's switched off (BODY_LINKS: the torso rides on the

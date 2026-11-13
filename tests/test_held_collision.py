@@ -7,7 +7,8 @@ import pytest
 import yaml
 
 from zeno_skills import held_spheres as H
-from zeno_skills.motion import HELD_SPHERES, ROBOT_CFG, ROBOT_SPHERES_MAX, add_held_links, held_link
+from zeno_skills.motion import (HELD_SELF_BODY, HELD_SPHERES, ROBOT_CFG, ROBOT_SPHERES_MAX, SELF_PAIRS_MAX,
+                                add_held_links, arm_self_collision, held_link, self_pairs, self_sphere_pairs)
 from zeno_skills.primitives import LEAVE_GAP
 
 
@@ -76,6 +77,46 @@ def test_held_links_on_the_tcp_and_out_of_self_collision():
         assert h in k["collision_link_names"]
         assert set(k["self_collision_ignore"][h]) >= set(links)
     assert k["mesh_link_names"] == links        # the yaml alias is not extended
+
+
+def _arm_model(side):
+    k = copy.deepcopy(yaml.safe_load(open(ROBOT_CFG))["robot_cfg"]["kinematics"])
+    add_held_links(k)
+    shared = {frozenset(p) for p in self_pairs(k)}
+    return arm_self_collision(k, side), shared
+
+
+def _mirror(link):
+    for a, b in (("right_", "left_"), ("left_", "right_")):
+        if link.startswith(a):
+            return b + link[len(a):]
+    return link
+
+
+@pytest.mark.parametrize("side", ["right", "left"])
+def test_each_arm_model_checks_its_own_arm_and_load_only(side):
+    k, shared = _arm_model(side)
+    other = "left" if side == "right" else "right"
+    pairs = {frozenset(p) for p in self_pairs(k)}
+    mine = lambda l: l.startswith(side + "_")
+    # the load: against the torso and the head, nothing else; the other hand's in no pair
+    load = {next(iter(p - {held_link(side)})) for p in pairs if held_link(side) in p}
+    assert load == set(HELD_SELF_BODY)
+    assert not any(held_link(other) in p for p in pairs)
+    # every pair has this arm (or its load) in it: the other arm and the body among themselves are locked
+    assert all(any(mine(l) for l in p) for p in pairs)
+    # the shared table's pairs with this arm in them are all kept: the body, this arm, the other arm
+    kept = {p for p in shared if any(mine(l) for l in p) and not any("held_object" in l for l in p)}
+    assert kept <= pairs
+    assert any(any(l.startswith(other + "_") for l in p) for p in pairs)
+    assert self_sphere_pairs(k) <= SELF_PAIRS_MAX
+
+
+def test_the_two_arm_models_mirror_each_other():
+    r, _ = _arm_model("right")
+    l, _ = _arm_model("left")
+    mirrored = {frozenset(map(_mirror, p)) for p in self_pairs(r)}
+    assert mirrored == {frozenset(p) for p in self_pairs(l)}
 
 
 def test_the_robot_model_stays_within_curobos_self_collision_kernel():

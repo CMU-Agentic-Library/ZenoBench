@@ -1635,6 +1635,7 @@ robot_cfg:
       - head_link
       - head_yaw_link
       - left_arm_link_1
+      - left_arm_link_2
       - right_arm_link_1
       - right_arm_link_2
       - stereo_camera_link
@@ -1755,7 +1756,6 @@ robot_cfg:
       - left_arm_link_2
       - left_arm_link_3
       - left_arm_link_4
-      - left_gripper_camera_link
       - right_arm_link_5
       - right_arm_link_7
       - right_gripper_camera_link
@@ -1767,7 +1767,6 @@ robot_cfg:
       - left_arm_link_2
       - left_arm_link_3
       - left_arm_link_4
-      - left_gripper_camera_link
       - right_arm_link_6
       - right_gripper_camera_link
       - right_gripper_left_finger_link
@@ -1837,6 +1836,7 @@ robot_cfg:
       - left_arm_link_5
       - left_arm_link_6
       - left_arm_link_7
+      - left_gripper_camera_link
       - left_gripper_left_finger_link
       - left_gripper_right_finger_link
       left_arm_link_4:

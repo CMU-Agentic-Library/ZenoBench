@@ -21,7 +21,8 @@ Collision semantics:
     object being grasped or pushed);
   * inside ``scope`` (every collision-checked rig motion, Rig._planning) the held object is a
     grid of spheres filling its box on the arm's ``<side>_held_object`` link: the planner keeps
-    it clear of the world (never of the robot itself).  Not while it still touches something;
+    it clear of the world and, in its own arm's model, of the torso and the head (HELD_SELF_BODY,
+    arm_self_collision).  Not while it still touches something (or the torso or head);
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
     finger, gripper and wrist-camera spheres (hand on a handle; the old skills set it against
     the whole world -- Motion.query takes a Spec.touch / a held part instead, against that only);
@@ -83,13 +84,17 @@ TRAJOPT_DT = 0.15
 MAX_TRAJ_DT = 0.3
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
-# spheres pre-allocated on each hand's held link for what it holds (held_spheres.fit's budget).  The held
-# link is in no self-collision pair, so they add no pair (cuRobo's fast kernel holds 16384, the robot
-# uses 16271); but cuRobo's self-collision kernel runs at least one thread per sphere of the whole
+# spheres pre-allocated on each hand's held link for what it holds (held_spheres.fit's budget).  Each arm's
+# model checks its own held link against the torso and the head only (arm_self_collision: 140 x 43 pairs
+# in the right arm's, within cuRobo's fast kernel's 16384); but cuRobo's self-collision kernel runs at least one thread per sphere of the whole
 # model and its pair buffer holds 512 threads' worth: past 512 spheres it reads out of bounds (CUDA
 # illegal memory access, 11-11).  The robot has 305, so 207 are left: the right hand, which every
 # migrated pick / place uses, gets the most (tests/test_held_collision.py checks the sum)
 HELD_SPHERES = {"right": 140, "left": 60}
+# the body links a hand's load is checked against in its own arm's model (arm_self_collision); the lift
+# is left out: 140 x 20 more pairs would not fit cuRobo's fast self-collision kernel
+HELD_SELF_BODY = ("torso_link", "head_yaw_link", "head_link", "stereo_camera_link")
+SELF_PAIRS_MAX = 16384    # cuRobo's fast self-collision kernel (32 threads x 512 checks); past it a kernel far too slow
 ROBOT_SPHERES_MAX = 512
 COARSE_STEP = 0.02        # m: a finer Cartesian line that fails is solved again at this step, then densified
 BASE_CHUNK = 2048         # base poses per batched whole-body query (base_depths)
@@ -181,6 +186,39 @@ def add_held_links(k):
     return k
 
 
+def self_pairs(k):
+    """[(link a, link b)] of the self-collision pairs the kinematics dict ``k`` checks (cuRobo skips a pair
+    either link's self_collision_ignore lists)."""
+    links = list(k["collision_link_names"])
+    ig = k.get("self_collision_ignore", {})
+    return [(a, b) for i, a in enumerate(links) for b in links[i + 1:]
+            if b not in ig.get(a, ()) and a not in ig.get(b, ())]
+
+
+def self_sphere_pairs(k):
+    """The sphere pairs cuRobo's self-collision kernel checks for ``k`` (add_held_links: with the held links')."""
+    n = {l: len(v) for l, v in k["collision_spheres"].items()}
+    n.update(k.get("extra_collision_spheres", {}))
+    return sum(n[a] * n[b] for a, b in self_pairs(k))
+
+
+def arm_self_collision(k, side):
+    """``k`` (add_held_links' kinematics dict, a copy for ``side``'s arm model) with that model's
+    self-collision pairs (docs/MOTION_ARCHITECTURE.md 4.4): the shared table's pairs that involve this
+    arm -- with the body and with the other arm; the other arm's own pairs and its pairs with the body
+    dropped (locked in this arm's queries, it rides the torso: only its distance to the lift changes,
+    with the waist), so are the body's among themselves (none checked); this hand's held link against
+    HELD_SELF_BODY, the other hand's held link in none.  Fits cuRobo's fast kernel (SELF_PAIRS_MAX)."""
+    held = {held_link(s) for s in ("right", "left")}
+    on = {frozenset(p) for p in self_pairs(k) if not (set(p) & held) and any(l.startswith(side + "_") for l in p)}
+    on |= {frozenset((held_link(side), b)) for b in HELD_SELF_BODY}
+    links = list(k["collision_link_names"])
+    k["self_collision_ignore"] = {a: [b for b in links if b != a and frozenset((a, b)) not in on] for a in links}
+    n = self_sphere_pairs(k)
+    assert n <= SELF_PAIRS_MAX, f"{side} arm model: {n} self-collision sphere pairs > {SELF_PAIRS_MAX}"
+    return k
+
+
 class _Locks:
     """In-place rewrite of locked joints' fixed transforms (cuRobo's own
     update_locked_joints re-parses the URDF: seconds per call).  A joint that mimics a locked one
@@ -267,6 +305,7 @@ class _Arm:
         fold.update(LEFT_ARM_FOLD)
         cfg = copy.deepcopy(cfg)
         k = cfg["kinematics"]
+        arm_self_collision(k, side)
         k["ee_link"] = f"{side}_tcp"
         k["link_names"] = [f"{side}_tcp"]
         lock = {"head_yaw_joint": 0.0, "head_pitch_joint": 0.0,
@@ -574,6 +613,7 @@ class Motion:
         self.enabled = {c.name: True for c in self.cols.items}
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
         self._held_sph = {}              # side -> spheres of the held object on its held link (scope), or None
+        self._held_off_logged = set()    # (side, load, posture) whose spheres in the body were logged (_held_off_body)
         self._cross_sph = {}             # (arm side, hand side) -> the other hand's load on its held link in
                                          # this arm's model (Spec.arms_still, docs 4.4), or None
         self._fk = {}                    # side -> an ArmKin of its own: the other hand's TCP for a State
@@ -752,6 +792,8 @@ class Motion:
                     self._attach_held(arm, kin, q, None)
                     rig.log("held_collision", side=side, state=f"{name} (touching: off)",
                             depth_scene=round(d_scene, 4), depth_base=round(d_base, 4))
+                elif name is not None:
+                    self._held_off_body(arm, q, name)
             yield
         finally:
             self._attach_held(self.arms[side], None, None, None)
@@ -975,6 +1017,9 @@ class Motion:
                 self.held[side] = self.held[side] | carried
                 self._attach_cross(self.arms[side], other, oh.name, np.asarray(oh.T_tcp_obj, float), oh.pad)
                 cross = True
+            h = state.held(side)
+            if h is not None and h.kind not in ("part", "bimanual"):
+                self._held_off_body(self.arms[side], state.q(side), h.name)
             self.cull_at = None
             yield
         finally:
@@ -1038,6 +1083,39 @@ class Motion:
             else:
                 kc.attach_object(sphere_tensor=t.as_tensor(sph, device=kc.link_spheres.device,
                                                            dtype=kc.link_spheres.dtype), link_name=link)
+
+    def _held_off_body(self, arm, q, name):
+        """The spheres of ``arm``'s own load (on its held link) inside the torso or the head (HELD_SELF_BODY)
+        at q switched off, logged once per load and posture: a start in self-collision fails every plan,
+        and they sit against the robot, not where the world is.  How many."""
+        sph = self._held_sph.get(arm.side)
+        if sph is None:
+            return 0
+        kc = arm.kcs[0]
+        s = arm.spheres(np.asarray(q, float)).cpu().numpy()
+        idx = kc.link_sphere_idx_map.cpu().numpy()
+        ids = kc.link_name_to_idx_map
+        h = s[idx == ids[held_link(arm.side)]]
+        b = s[np.isin(idx, [ids[l] for l in HELD_SELF_BODY])]
+        b = b[b[:, 3] > 0]
+        if not len(h) or not len(b):
+            return 0
+        d = h[:, 3:4] + b[None, :, 3] - np.linalg.norm(h[:, None, :3] - b[None, :, :3], axis=2)
+        over = (h[:, 3] > 0) & (d.max(1) > 0)
+        if not over.any():
+            return 0
+        sph = np.array(sph, float)
+        sph[over[:len(sph)], 3] = -100.0
+        self._set_held_spheres(arm, sph)
+        self._held_sph[arm.side] = sph
+        key = (arm.side, name, tuple(np.round(np.asarray(q, float), 2)))
+        rig = getattr(self, "rig", None)
+        logged = self.__dict__.setdefault("_held_off_logged", set())
+        if rig is not None and key not in logged:
+            logged.add(key)
+            rig.log("held_collision", side=arm.side, state=f"{name} (in the body: {int(over.sum())} spheres off)",
+                    depth_self=round(float(d.max()), 4))
+        return int(over.sum())
 
     def held_spheres(self, name, side="right"):
         """(n, 4) spheres of ``name`` in its box frame (_box_of) for the planner's model of it in
