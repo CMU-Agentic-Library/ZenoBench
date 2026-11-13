@@ -15,6 +15,7 @@ import numpy as np
 
 from .motion_state import KEPT_KINDS, Failure, SkillFailure, clearing, state_offset, with_arm
 from .primitives import aim_excess, holds, ride_base
+from .tolerances import TARGET_TOL
 
 
 def observe(act):
@@ -28,7 +29,9 @@ def execute(act, seg):
     planner put it); a task segment by its executor (docs 5.5: "follow" the arm's IK continuation
     open loop; "ride" the base at the script's function of the commanded s, closed on the measured
     part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
-    touch now), at its speed.  An anchor moves nothing and declares nothing."""
+    touch now), at its speed.  An anchor moves nothing and declares nothing.  Returns, for what the arm
+    follows (a move, a "follow" task segment), how far the TCP stopped off where it was sent
+    (Actuator.follow's result; None from an actuator that does not tell), else None."""
     if seg.kind == "anchor":
         return
     if seg.kind == "action":
@@ -59,8 +62,8 @@ def execute(act, seg):
         side = seg.info.get("side", "right")
         act.declare(seg.name, seg.spec.allow, side=side)
         if seg.info["executor"] == "follow":
-            act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
-            return
+            return act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")),
+                              side=side)
         if seg.info["executor"] == "ride":
             script, tr = seg.info["script"], seg.info["track"]
             base_at = partial(ride_base, script, seg.info["base0"])
@@ -79,7 +82,7 @@ def execute(act, seg):
     kin = act.arm_kin(side)
     allow = act.contact_allow(kin, seg.spec.allow) if seg.spec.allow.from_contact else seg.spec.allow
     act.declare(seg.name, allow, side=side)
-    act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
+    return act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
 
 
 def _hz():
@@ -223,9 +226,17 @@ def _run(act, plan, rebuild, hooks):
         with ExitStack() as st:
             if "around" in h:
                 st.enter_context(h["around"]())
-            execute(act, seg)
-        if "after" in h:
+            off = execute(act, seg)
+        if "after" in h:                        # a skill's own judgement first (pick's grasp: its failure exit)
             h["after"](act)
+        if off is not None and off > TARGET_TOL:
+            # it stopped short of where it was sent: something is in the way (the arm stops where the TCP no
+            # longer moves, Rig._settle) -- not a segment that ran (T05: a carry whose wrist never turned, the
+            # held book 25 cm off its pose through the drive and the place)
+            exc = SkillFailure(f"{seg.name}: the arm stopped {off:.3f} m short of where it was sent")
+            if seg.info.get("clear"):
+                clearing(exc, **seg.info["clear"])
+            raise exc
         done.append(seg)
         i += 1
     return done

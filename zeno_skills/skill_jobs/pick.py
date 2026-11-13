@@ -110,9 +110,10 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None):
         return plan_pick(kin, state, grasp, carry_goals, start=frm, prior=prior, step=APPROACH_STEP)
 
     def after_grasp(rig):
-        # the hand against where the reach-in sent it (its end, the command now): whether the
-        # grasp is still the object's was checked before the reach-in ran (primitives.holds)
-        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - kin.tcp(rig.q_cmd)[0]))
+        # the hand against where the reach-in sent it (Rig._settle measured it as the reach-in stopped; run
+        # judges every segment by the same, after this hook): whether the grasp is still the object's was
+        # checked before the reach-in ran (primitives.holds)
+        err = rig.last_off
         if kin.motion is not None:
             # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
             rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),

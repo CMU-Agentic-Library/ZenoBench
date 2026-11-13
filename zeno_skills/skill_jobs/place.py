@@ -152,9 +152,10 @@ def _place_ready(rig, name, s, goal, open_w, plan, plan_place=None):
                 rig.log("place_pull_out_touching", obj=name, why=kin.explain(st.q(kin.side)))
 
     def after_down(rig):
-        # the hand against where the set-down sent it (its end, the command now): whether the hold
-        # still gives that pose was checked before the set-down ran (primitives.holds, PLACE_TOL)
-        err = float(np.linalg.norm(kin.tcp(rig.q())[0] - kin.tcp(rig.q_cmd)[0]))
+        # the hand against where the set-down sent it (Rig._settle measured it as the set-down stopped; run
+        # judges every segment by the same, after this hook): whether the hold still gives that pose was
+        # checked before the set-down ran (primitives.holds, PLACE_TOL)
+        err = rig.last_off
         if err > TARGET_TOL:
             # the set-down is checked free all the way: stopped short, something is in the way
             raise SkillFailure(f"place {name}: the set-down stopped {err:.3f} m short of its pose")

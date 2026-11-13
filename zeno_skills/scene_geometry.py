@@ -208,3 +208,69 @@ def mark_two_sided(checker, cols, env_idx=0):
     for c in cols.items:
         if c.kind == "mesh" and c.two_sided:
             flags[env_idx, checker.get_mesh_idx(c.name, env_idx)] = 2
+
+
+# ------------------------------------------------------------------ the robot's own base (docs 4.4)
+# The base -- the chassis and the column above it -- carries no collision spheres in the arm models (only
+# the torso, the head and the arms do), so nothing an arm plan checks met it: a held book swept through the
+# column (T05 homework_ready, 11-12).  It is a second environment of the same checker (BODY_ENV): its two
+# layers, the shapes the base planner measured (collision.py), rigid with the base (place_body).  The arms,
+# the hands and what they hold are checked against it; the body (body_collision.BODY_LINKS: it rides on the
+# column and leans over it) is not.
+BODY_ENV = 1
+BODY_COLUMN = "body:column"
+BODY_CHASSIS = "body:chassis"
+BODY_ARC_STEPS = (0.0, 30.0, 60.0, 90.0)   # deg: the chassis' rounded square as the union of the rectangles
+                                           # with a corner on each corner arc at these angles -- boxes, exact
+                                           # at any depth (a mesh is only searched near its surface: a point
+                                           # 12 cm inside a chassis prism read as clear); 1.2 cm short of the
+                                           # arcs at most, between the steps
+
+
+def _base_T(base):
+    """4x4 of the base (x, y, yaw_deg) on the floor."""
+    x, y, yaw = base
+    c, s = np.cos(np.radians(yaw)), np.sin(np.radians(yaw))
+    T = np.eye(4)
+    T[:2, :2] = [[c, -s], [s, c]]
+    T[:2, 3] = x, y
+    return T
+
+
+def _body_boxes():
+    """[(name, centre in the base frame, dims)] of the base's two layers (collision.py): the chassis'
+    rounded square (BASE_HALF, LOW_CORNER) from LOW_BOTTOM to LOW_TOP as BODY_ARC_STEPS rectangles, the
+    column above it."""
+    from .collision import BASE_HALF, COLUMN_TOP, COLUMN_XY, LOW_BOTTOM, LOW_CORNER, LOW_TOP
+    c = BASE_HALF - LOW_CORNER
+    out = []
+    for i, a in enumerate(BODY_ARC_STEPS):
+        hx, hy = c + LOW_CORNER * np.cos(np.radians(a)), c + LOW_CORNER * np.sin(np.radians(a))
+        out.append((f"{BODY_CHASSIS}_{i}", np.array([0.0, 0.0, (LOW_BOTTOM + LOW_TOP) / 2]),
+                    [2 * hx, 2 * hy, LOW_TOP - LOW_BOTTOM]))
+    x0, y0, x1, y1 = COLUMN_XY
+    out.append((BODY_COLUMN, np.array([(x0 + x1) / 2, (y0 + y1) / 2, (LOW_TOP + COLUMN_TOP) / 2]),
+                [x1 - x0, y1 - y0, COLUMN_TOP - LOW_TOP]))
+    return out
+
+
+def _at(T, ctr):
+    M = T.copy()
+    M[:3, 3] = T[:3, :3] @ ctr + T[:3, 3]
+    return M
+
+
+def body_world(base=(0.0, 0.0, 0.0)):
+    """cuRobo WorldConfig of the base's two layers at ``base`` (boxes: _body_boxes)."""
+    from curobo.geom.types import Cuboid, WorldConfig
+    T = _base_T(base)
+    return WorldConfig(cuboid=[Cuboid(name=n, pose=pose7(_at(T, ctr)), dims=[*map(float, dims)])
+                               for n, ctr, dims in _body_boxes()])
+
+
+def place_body(checker, base):
+    """Move the base's two layers to ``base`` (x, y, yaw_deg) in the checker's BODY_ENV, in place."""
+    from curobo.types.math import Pose
+    T = _base_T(base)
+    for n, ctr, _ in _body_boxes():
+        checker.update_obstacle_pose(n, Pose.from_list(pose7(_at(T, ctr))), env_idx=BODY_ENV)

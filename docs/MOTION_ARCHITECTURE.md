@@ -307,6 +307,15 @@ class Spec:
 
 退出时全部复原。现在是包一层：内部调旧的上下文管理器（`_planning`、`_fingers_checked`、`_carrying` 等）。全部技能迁完后改成直接实现。`touch` 的"其余部位照查"由 `Motion.path_free_only` / `Kinematics.path_free_only` 另查一遍，`primitives.free_path` 把两次查询合起来。
 
+**机器人自己的底盘（11-12 加，`zeno_skills/body_collision.py`、`scene_geometry.body_world`）**：手臂模型里只有升降滑块、躯干、头和两条手臂有碰撞球，底盘（底座和上面的立柱）没有，所以手臂、手、手里的东西都查不到它。T05 homework_ready 里，焊在手上的作业本在去 `flat_pre` 的路上卡在立柱上，两个腕关节被顶到限位，旧代码的全量里也是这样。做成机器人的球放不下：快速自碰撞内核最多 16384 对、现在用了 16271 对，整个模型最多 512 个球、现在 505 个；通用内核又太慢。所以底盘是同一个碰撞检查器的第二个环境（`BODY_ENV`）：
+- 形状就是底盘规划量出来的两层（`collision.py`）：立柱一个长方体；底座的圆角方形用 4 个长方体拼（每个的角落在圆角弧上，最多比真形状少 1.2 cm）。不用网格：cuRobo 只在网格表面附近找，底座里面 12 cm 的点读成不碰。
+- 它跟着底盘走：`_Arm.prepare` 按这次查询的底盘位姿原地更新（`place_body`，两条手臂共用一份，CUDA graph 里也成立）。
+- 每个查世界的 rollout（`MotionGen` 里的 IK、图搜索、轨迹优化、精调，共 24 个）多一个代价项和一个约束项，用同样的配置（检查器、权重、激活距离、扫掠）查 `BODY_ENV`，输入的机器人球里把身体（`BODY_LINKS`：升降滑块套在立柱上、躯干和头贴着它，本来就算碰）和另一条手臂（这一段里不动）的半径设成 −1，cuRobo 跳过负半径的球（`ArmBase.cost_fn` / `constraint_fn` 的补丁，在求解器捕获 CUDA graph 之前装上）。所以是规划器自己绕开，不是事后拒绝。
+- 我们自己的检查走同一个判据：`free` / `path_free` 经 `check_constraints` 用的就是 rollout 的约束；`near`、`contact_extent`、`explain` 用的 `_sphere_depths` 也查一遍 `BODY_ENV`。
+- 手里的东西是 held link 上的球，和手臂一样查底盘。另一只手里的东西照旧（上面两种表示）。
+- 没覆盖：停车点和开车的整机检查（`base_depths`）不查它（底盘和立柱随底盘一起动，手臂相对底盘不动时它们之间的关系不变）。
+- 检查：`tools/check_body_collision.py`（GPU，不起仿真）：立柱、底座的位置对；收起、下垂、行驶姿态离立柱 7–8 cm、可行；随机采样到手臂伸进立柱 3 cm 以上、去掉底盘就可行的姿态，加上底盘全都不可行。
+
 ### 4.5 阈值常数：一处出处（`tolerances.py`）
 
 现在散在十来个文件加一份文档：
@@ -723,7 +732,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 任务段：`carry="base"` 的底盘离构造时不超过 `TARGET_TOL` / `TARGET_TURN`；耦合的部件在能起步的范围里（`part_start`，同 5.5）；按实测的物体 / 部件重查机器人——`carry="base"` 用同一个函数从构造时的底盘重算，`carry="arm"` 查存下的 `qs`，每段的部件在它的 `s` 处（底盘本体搜索时对静态世界查过，`holds` 没有 `BaseModel`，不重查）；
 - 动作段总是成立；锚点不复核自己，它触发复核剩下的。
 
-执行完以后，hook 判"被挡住"（`after_grasp`、`after_down`）比的是实测 TCP 和这段送去的指令 TCP（`q_cmd`），差过 `TARGET_TOL` 就是停在半路；目标对不对已经在这段之前由 `holds` 查过，不在这里再混进来。
+执行完以后，判"被挡住"比的是实测 TCP 和这段送去的指令 TCP（`q_cmd`），差过 `TARGET_TOL` 就是停在半路。这个距离由 `Rig._settle` 在手臂停下时量一次（`follow` 返回它，`rig.last_off`）：`run` 对每段手臂跟随的运动（move 段、`follow` 执行器的任务段）都判，在这段自己的 hook 之后（`after_grasp`、`after_down` 先用同一个值做自己的判断和失败出口）。11-12 之前只有这两个 hook 判，其余段停偏了也照样往下走：T05 取书后的 `carry_in` 手腕没转过去，书偏了 25 cm 一路带到书桌，放书时才出事（`_settle` 只认 TCP 不再动就算停下）；目标对不对已经在这段之前由 `holds` 查过，不在这里再混进来。
 
 ### 8.5 推完的落点是预测的，预测不了的才截止
 

@@ -76,6 +76,7 @@ def _held_of(rig, side):
 def _fingers_of(rig, side):
     return rig.fingers() if side == "right" else rig.left_fingers()
 
+SETTLE_OFF_LOG = 0.05   # rad: a follow that stops with a joint further off its command than this is logged (settle_off)
 GRAVITY = 9.81          # m/s^2
 PAYLOAD_REACH = 0.4     # m: a held load's centre of mass further than this from its hand's TCP is not in the hand
                         # (dropped, or the hold not cleared yet): no feedforward for it
@@ -132,6 +133,7 @@ class Rig:
         self.base_cmd = self.robot.get_joint_positions()[self.base.long()].cpu().numpy().astype(float)
         self.base_vel = np.zeros(3)
         self.q_cmd = self.q()
+        self.last_off = 0.0                     # m the last follow stopped off its command (_settle)
         self.grip_cmd = 0.04
         self.tick, self.stride = 0, stride
         self.frames = []             # JPEG bytes, composed as they are rendered
@@ -464,7 +466,8 @@ class Rig:
         self.clear.executing()
         points = [_chain_cmd(self, side)] + [np.asarray(q, float) for q in qs]
         if len(points) == 1:
-            return
+            self.last_off = 0.0
+            return 0.0
         vmax = self._vmax(side)
         segment_times = [max(steps_per_wp / PHYSICS_HZ,
                              float(np.max(np.abs(b - a) / vmax)))
@@ -487,13 +490,14 @@ class Rig:
             fraction = min(1.0, max(0.0, (progress - times[segment]) / segment_times[segment]))
             _set_chain_cmd(self, side, points[segment] + fraction * (points[segment + 1] - points[segment]))
             self.step(1)
-        self._settle(settle, tol, side)
+        return self._settle(settle, tol, side)
 
     def _settle(self, settle, tol, side="right"):
         """After a follow's last command: step (2 ticks at a time, ``settle`` times at most) until the
         arm has arrived -- the TCP within SETTLE_TCP of where q_cmd puts it and no joint off by
         ``tol`` -- or has stopped: the TCP moved less than SETTLE_STILL over the last SETTLE_WINDOW
-        ticks.  What is left of the error then is the caller's to judge (a reach check: blocked)."""
+        ticks.  Returns how far (m) the TCP stands off where q_cmd puts it: the caller judges it (run: a
+        segment that stopped further off than TARGET_TOL is blocked; Rig.move_to: its reach check)."""
         kin, cmd = (self.kin if side == "right" else self.left_kin), _chain_cmd(self, side)
         target = kin.tcp(cmd)[0]
         span = max(1, SETTLE_WINDOW // 2)
@@ -502,11 +506,19 @@ class Rig:
             q = _chain_q(self, side)
             tcp = kin.tcp(q)[0]
             if np.linalg.norm(tcp - target) < SETTLE_TCP and np.max(np.abs(q - cmd)) < tol:
-                return
+                self.last_off = float(np.linalg.norm(tcp - target))
+                return self.last_off
             seen.append(tcp)
             if len(seen) > span and np.linalg.norm(tcp - seen[-1 - span]) < SETTLE_STILL * 2 * span / PHYSICS_HZ:
-                return
+                break
             self.step(2)
+        q = _chain_q(self, side)
+        off = float(np.linalg.norm(kin.tcp(q)[0] - target))
+        if np.max(np.abs(q - cmd)) > SETTLE_OFF_LOG:      # stopped off the command: which joints
+            self.log("settle_off", side=side, q=np.round(q, 3).tolist(), q_cmd=np.round(cmd, 3).tolist(),
+                     tcp_err_m=round(off, 4), carrying=bool(self._carrying(side)))
+        self.last_off = off                      # (the last follow's: what a skill's hook judges after it)
+        return off
 
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01, smooth=False, side="right"):
         """Waypoints time-scaled to the joint speeds of _vmax; with an object in the hand (or
@@ -522,7 +534,7 @@ class Rig:
             need = int(math.ceil(np.max(np.abs(q - _chain_cmd(self, side)) / vmax) * PHYSICS_HZ))
             _set_chain_cmd(self, side, q)
             self.step(max(steps_per_wp, need))
-        self._settle(settle, tol, side)
+        return self._settle(settle, tol, side)
 
     # ------------------------------------------------------------ arm motions
     # Every arm motion has two ways (docs/COLLISION_PLAN.md principle 2): collision-checked, the
@@ -1297,7 +1309,7 @@ class Rig:
         qa = self.q()
         _, _, J = self.kin.fk_all(qa)
         tcp_a, _ = self.kin.tcp(qa)
-        self.log("drive_arm", q=np.round(qa, 3).tolist(), tcp=np.round(tcp_a, 3).tolist(),
+        self.log("drive_arm", q=np.round(qa, 3).tolist(), q_cmd=np.round(self.q_cmd, 3).tolist(), tcp=np.round(tcp_a, 3).tolist(),
                  min_joint_z=round(float(min(j[0][2] for j in J[2:])), 3),
                  q_err=round(float(np.max(np.abs(qa - self.q_cmd))), 3))
         pts = [(x0, y0, yaw0)]

@@ -44,6 +44,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+from . import body_collision
 from . import scene_geometry as G
 from .kinematics import CARRY_TILT, kept_joints, manipulability, max_tilt, tilt, tips_over
 from .motion_state import locked_body, other_side, touch_entries, touches
@@ -300,6 +301,10 @@ class _Arm:
         self.limits = None
         self.lo, self.hi = self.kin.lo.copy(), self.kin.hi.copy()
         self.disabled_links = set()
+        self.motion, self.checker = motion, checker
+        # the base's terms in every rollout that queries the world, before the CUDA graphs are captured
+        body_collision.attach(self.mg.get_all_rollout_instances(), side)
+        self.body_mask = body_collision._mask(self.kcs[0], side)
         self.mg.warmup(enable_graph=True, warmup_js_trajopt=True)
         self.ik_free.solve_single(self._pose(*self.kin.tcp(self.kin.posture)))
         p, R = self.kin.tcp(self.kin.posture)
@@ -312,6 +317,10 @@ class _Arm:
         switched-off links for the next query."""
         yaw = math.atan2(kin.base_R[1, 0], kin.base_R[0, 0])
         vals = {"base_x": kin.base_p[0], "base_y": kin.base_p[1], "base_yaw": yaw}
+        base = (round(float(kin.base_p[0]), 6), round(float(kin.base_p[1]), 6), round(math.degrees(yaw), 6))
+        if getattr(self, "motion", None) is not None and base != self.motion.body_at:   # (shared by both arms)
+            G.place_body(self.checker, base)
+            self.motion.body_at = base
         if other_q is not None:
             vals.update(zip(self.other_names, np.asarray(other_q, float)[-len(self.other_names):]))
         vals.update(live or {})
@@ -529,9 +538,13 @@ class Motion:
         self.cols = G.collect(stage, ann)
         body_pose = G.usd_body_pose(stage)
         world = G.to_world_config(self.cols, body_pose)
+        # the scene in environment 0; the robot's own base in G.BODY_ENV, checked by every rollout through
+        # body_collision's terms (the body's spheres off) -- installed before any solver captures its graphs
+        body_collision.install()
         self.checker = create_collision_checker(WorldCollisionConfig(
-            TensorDeviceType(), world_model=world, checker_type=CollisionCheckerType.MESH,
+            TensorDeviceType(), world_model=[world, G.body_world()], checker_type=CollisionCheckerType.MESH,
             cache={"obb": len(world.cuboid) + 16, "mesh": len(world.mesh) + 8}))
+        self.body_at = None                   # the base pose the base's environment stands at (place_body)
         self.mesh_idx = {c.name: self.checker.get_mesh_idx(c.name) for c in self.cols.items if c.kind == "mesh"}
         G.mark_two_sided(self.checker, self.cols)
         cfg = yaml.safe_load(open(robot_cfg))["robot_cfg"]
@@ -733,8 +746,12 @@ class Motion:
                 name = self._attach_held(arm, kin, q, h)
                 if name is not None and not keep_held and held_link(side) in self._touching(arm, q):
                     # still on its support (or in a container): no collision-free start, left out
+                    _, _, links = self._sphere_depths(arm, q)
+                    on = [i for i, l in enumerate(links) if l == held_link(side)]
+                    d_scene, d_base = (float(np.max(d[on])) if on else 0.0 for d in self.last_depth_parts)
                     self._attach_held(arm, kin, q, None)
-                    rig.log("held_collision", side=side, state=f"{name} (touching: off)")
+                    rig.log("held_collision", side=side, state=f"{name} (touching: off)",
+                            depth_scene=round(d_scene, 4), depth_base=round(d_base, 4))
             yield
         finally:
             self._attach_held(self.arms[side], None, None, None)
@@ -1405,8 +1422,16 @@ class Motion:
         d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"),
                                              torch.full((1,), float(gap), device="cuda"),
                                              sum_collisions=False).view(-1).cpu().numpy()
+        # the robot's own base (G.BODY_ENV), the body's and the other arm's spheres off (body_collision)
+        buf_b = CollisionQueryBuffer.initialize_from_shape(q4.shape, arm.mg.tensor_args, self.checker.collision_types)
+        d_b = self.checker.get_sphere_distance(body_collision.masked(q4, arm.body_mask), buf_b,
+                                               torch.ones(1, device="cuda"), torch.full((1,), float(gap), device="cuda"),
+                                               env_query_idx=torch.full((1,), G.BODY_ENV, dtype=torch.int32, device="cuda"),
+                                               sum_collisions=False).view(-1).cpu().numpy()
         s = sph.cpu().numpy()
-        d = np.where(s[:, 3] > 0, np.maximum(d, 0.0), 0.0)
+        live = s[:, 3] > 0
+        self.last_depth_parts = (np.where(live, np.maximum(d, 0.0), 0.0), np.where(live, np.maximum(d_b, 0.0), 0.0))
+        d = np.where(live, np.maximum(np.maximum(d, d_b), 0.0), 0.0)
         return s, d, [by_idx.get(int(i), str(i)) for i in idx]
 
     def near(self, kin, q, gap, other_q=None, coll_kw=None):

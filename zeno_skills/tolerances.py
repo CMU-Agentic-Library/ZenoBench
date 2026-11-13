@@ -41,6 +41,7 @@ def _t(name, value, unit, src):
 # --------------------------------------------------------------- contact geometry (5.1-5.3)
 LEAVE_GAP = _t("LEAVE_GAP", 0.005, "m", "chosen: closer to the world than this still touches it; a set-down "
                "pose stands this high and the load falls it (COLLISION_PLAN 6); unmeasured")
+BODY_GAP = _t("BODY_GAP", LEAVE_GAP, "m", "= LEAVE_GAP: the arms, the hands and what they hold stay this far off the robot's own base (body_collision: its terms' activation, cost and constraint) -- with no margin a load carried flush against the column read as touching it 0.6 mm in at the next motion's start and was left out of the model, then swept through the column (T05 homework_ready, 11-12)")
 LEAVE_MARGIN = _t("LEAVE_MARGIN", 0.01, "m", "chosen: a contact exit runs this far past clear (Rig.leave's "
                   "1 cm, inherited); unmeasured")
 LEAVE_MAX = _t("LEAVE_MAX", 0.06, "m", "chosen: a contact exit runs no further (Rig.leave's 6 cm, inherited)")
@@ -98,7 +99,8 @@ DRAG_PRESS = _t("DRAG_PRESS", 0.006, "m", "inherited (skills' old push: top - 4 
 DRAG_SKID = _t("DRAG_SKID", 0.025, "m", "inherited (skills' old push): a drag's lag -- the hand runs this much "
                "further than the object, the fingertips skid on the top (primitives.Pushed)")
 TARGET_TOL = _t("TARGET_TOL", 0.005, "m", "chosen: a hand stopped this far short of where it was sent is "
-                "blocked (pick's after_grasp, place's after_down; until 11-11 also named skills.PICK_REACH_TOL): reach "
+                "blocked (run: every segment the arm follows, after its hooks -- pick's after_grasp, place's after_down "
+                "judge theirs first; Rig._settle measures it; until 11-11 also named skills.PICK_REACH_TOL): reach "
                 "errors 0.1-0.4 mm in pick612_verify, 34.6 mm where a finger rode on a mug's wall (T13 no_cup "
                 "fingers_cover_1105); the threshold itself unmeasured")
 TARGET_TURN = _t("TARGET_TURN", HINT_TURN, "rad", "= HINT_TURN")

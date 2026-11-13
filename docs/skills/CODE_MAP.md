@@ -59,6 +59,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | `base_planner.py` | `skills._base_plan`（经 `skill_jobs.base.RigBase`） | **底盘路径规划**：在 (x, y, yaw) 网格上做 A*，同时考虑手臂姿态链（收臂 → 下垂 → 收臂）|
 | `clearance.py` | rig、skills、policies | `Allow`：一段运动允许碰什么（第 3 节）；`rig.clear`：接触监视器、fallback 计数 |
 | `collision.py` | planner | 标注包围盒，只给底盘的占地检查和网格用；手臂不用 |
+| `body_collision.py` | `motion.Motion`、`_Arm` | 机器人自己的底盘（`scene_geometry.body_world`，形状来自 `collision.py`）作为碰撞检查器的第二个环境：每个查世界的 cuRobo rollout 多一个代价项和一个约束项，查它时身体和另一条手臂的球关掉（`MOTION_ARCHITECTURE.md` 4.4） |
 | `sticky.py` | skill_runtime | sticky hands（焊接、snap），只是执行辅助 |
 | `physx_contacts.py` | clearance | 读 PhysX 的真实接触 |
 | `annotations.py` / `predicates.py` / `scene_geometry.py` | 各层 | 场景和资产的真值、谓词、碰撞体 |

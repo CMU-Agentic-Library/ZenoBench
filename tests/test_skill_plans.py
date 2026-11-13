@@ -264,6 +264,20 @@ def test_run_builds_the_rest_again_when_a_segment_no_longer_holds(monkeypatch):
     assert asked == ["a"] and [s.name for s in done] == ["a2"]
 
 
+def test_a_segment_the_arm_stopped_short_on_fails_after_its_own_hook(monkeypatch):
+    rig = FakeRig(FakeKin(), np.zeros(9))
+    monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd))
+    plan = Plan((_seg("a", np.zeros(9), np.full(9, 0.1)), _seg("b", np.full(9, 0.1), np.full(9, 0.2))))
+    follow = rig.follow
+    rig.follow = lambda qs, *a, **k: follow(qs) or 0.25                # stopped 25 cm off (a T05 carry)
+    seen = []
+    with pytest.raises(SkillFailure, match="a: the arm stopped 0.250 m short"):
+        RUN.run(rig, plan, None, {"a": {"after": lambda act: seen.append("hook")}})
+    assert seen == ["hook"]                                         # the skill's own judgement came first
+    rig.follow = lambda qs, *a, **k: follow(qs) or 0.002              # within TARGET_TOL: arrived
+    assert [s.name for s in RUN.run(rig, Plan((_seg("c", rig.q_cmd, np.full(9, 0.3)),)), None)] == ["c"]
+
+
 def test_a_rest_that_cannot_be_built_fails_the_skill(monkeypatch):
     rig = FakeRig(FakeKin(), np.full(9, 0.5))                       # not where the segment starts
     monkeypatch.setattr(RUN, "observe", lambda rig: _state(rig.q_cmd))
@@ -530,17 +544,17 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
 
 
 def test_a_reach_in_is_judged_stopped_short_against_where_it_sent_the_hand():
-    # after the reach-in: the measured TCP against the commanded one (the segment's end), whatever
-    # the object did -- whether its grasp still stood was checked before the reach-in ran
+    # after the reach-in: how far the hand stopped off where the reach-in sent it (Rig._settle's measure,
+    # rig.last_off), whatever the object did -- whether its grasp still stood was checked before it ran
     from zeno_skills.motion_state import SkillFailure
     from zeno_skills.skill_jobs import pick as PJ
     rig = _job_rig()
     rig.q_cmd = _q(0.3, 0.0, 0.40)
     _, _, hooks = PJ._pick_ready(rig, "cup", {"kind": "top_pinch", "pre_open": 0.03}, GRASP, Plan(()), None, {},
                                  lambda *a, **k: Plan(()))
-    rig.q = lambda: _q(0.3, 0.0, 0.403)                              # 3 mm off: reached
+    rig.last_off = 0.003                                             # 3 mm off: reached
     hooks["pick_grasp"]["after"](rig)
-    rig.q = lambda: _q(0.3, 0.0, 0.41)                               # 1 cm off: blocked
+    rig.last_off = 0.010                                             # 1 cm off: blocked
     with pytest.raises(SkillFailure, match="stopped 0.010 m short"):
         hooks["pick_grasp"]["after"](rig)
 
