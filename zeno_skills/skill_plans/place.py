@@ -118,7 +118,7 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
             q_p, how = d
             L, why = set_down_length(kin, s, FREE_LOAD, q_p)
             if L is None:
-                return Failure(f"set-down length: {why}", stage, {"stage_s": times})
+                return Failure(f"set-down length: {why}", stage, {"stage_s": times, "q_relay": q_p})
             # the planner's joint goal for the set-down's start: q_p's branch, up the straight (kinematic)
             scene, kin.scene = kin.scene, None
             try:
@@ -127,6 +127,8 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
                 kin.scene = scene
             start_q = line[-1] if line else None
             seg = _reach(kin, s, FREE_LOAD, p, R, down, L, q, start_q, stage, step, decision="set_down_start")
+            if isinstance(seg, Failure):
+                seg = Failure(seg.why, seg.segment, {**(seg.info or {}), "q_relay": q_p})
             if not isinstance(seg, Failure):
                 seg = _aimed(kin, seg, aim, aimed, PLACE_TOL, steps_per_wp=8, smooth=True, set_down_m=L,
                              decided={**seg.info.get("decided", {}), "place_reach": how})
@@ -163,7 +165,9 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
             seg = Segment(stage, Spec(), q, kind="action", action=("wait", SETTLE_TICKS))
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
-            return Failure(seg.why, seg.segment, {"stage_s": times})
+            # the set-down pose's solution once decided (a debug view shows the arm there: park_search dump)
+            q_rel = (seg.info or {}).get("q_relay", decided.get("place_reach"))
+            return Failure(seg.why, seg.segment, {"stage_s": times, **({"q_relay": q_rel} if q_rel is not None else {})})
         segs.append(seg)
         q = seg.q_end
     return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"stage_s": times}, decisions=decided)

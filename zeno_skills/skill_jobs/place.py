@@ -12,7 +12,7 @@ from ..rig import FREE_SPACE_KW
 from ..rig import SkillFailure
 from ..primitives import query
 from ..run import observe
-from ..skill_plans import FREE_HAND, PLACE_RELAY, T_of
+from ..skill_plans import FREE_HAND, FREE_LOAD, PLACE_RELAY, T_of
 from ..sticky import rest_R
 from ..skills import (APPROACH_STEP, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
 from ..tolerances import LEAVE_GAP, PLACE_LEVEL_MIN, PLACE_XY_TOL, PLACE_XY_TOL_CORNER, TARGET_TOL
@@ -55,6 +55,19 @@ def place_job(rig, args, state, skill=None):
         R_lvl = rest_R(q_obj) @ R_obj.T
         relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
                              -float(asset["origin_to_bottom_center"][2])))
+    if door is not None and _lies_on_a_face(asset):
+        # behind a door a box may also go in on another face: hand and load turned a quarter about one of
+        # the hand's horizontal axes -- the fingers' closing axis (they stay on its sides) or the one across
+        # it (they end above and below it, as on a plate) -- so a top pinch's way out becomes horizontal,
+        # through the opening (leave_tier ranks it first), where a load held from above has no room under
+        # the shelf above (11-13: a snack carton under cabinet_6's).  Both senses of each: the collision
+        # check decides (the camera below the TCP; a finger under the load, in the shelf) -- also a load
+        # stood on its longest axis (the user, 11-13: some go in only that way).  Not in the open (there it
+        # goes down as it hangs, or levelled), nor for what rolls or holds something (asset.round grasps, a
+        # container).
+        R_base = R_lvl if relations[0][2] is not None else np.eye(3)
+        relations += [_on_side(asset, R_base, R_obj, tcp - p_obj, R_tcp, axis, sign) for axis in (1, 0)
+                      for sign in (1.0, -1.0)]
     search_near, prefer = rig.base_pose(), ()
     if math.hypot(search_near[0] - spots[0][0], search_near[1] - spots[0][1]) > 1.0:
         # far from the target: rank parks by reach to the target, not by
@@ -96,7 +109,8 @@ def place_job(rig, args, state, skill=None):
     # outward grasp first) -- else the 60 builds went on wrist turns with the hand in the back wall
     tiers = () if door is None else tuple(leave_tier(door, ls[0][1][:, 2]) for ls in leg_sets)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
-                      PLACE_RELAY, near=search_near, prefer=prefer, tiers=tiers, label=f"place {name}")
+                      PLACE_RELAY, near=search_near, prefer=prefer, tiers=tiers,
+                      relay_free=FREE_LOAD if door is not None else None, label=f"place {name}")
     ctx = {}
 
     def no_park(diag):
@@ -129,6 +143,33 @@ def place_job(rig, args, state, skill=None):
     return Job(problem=problem, no_park=no_park, found=found_park,
                travel={"min_bottom_z": carry_bottom_z, "raise_load": False},
                ready=ready, done=done)
+
+
+def _lies_on_a_face(asset):
+    """A box: it rests on any face -- none of its grasps round, no container profile or tag."""
+    return not (asset.get("container") or "container" in asset.get("tags", ())
+                or any(g.get("round") for g in asset.get("grasps", ())))
+
+
+def _on_side(asset, R_base, R_obj, off, R_tcp, axis, sign):
+    """The relation (TCP minus origin, TCP rotation, label, origin above the lowest point) of the hold
+    turned ``sign`` quarter about the hand's axis ``axis`` (R_tcp's column after R_base, the levelling:
+    1 the fingers' closing axis, 0 the one across it), then levelled (the body axis nearest the vertical
+    turned onto it, as sticky.rest_R: a load hanging a few degrees off lands flat)."""
+    from scipy.spatial.transform import Rotation
+    a = (R_base @ R_tcp)[:, axis]
+    Q = Rotation.from_rotvec(sign * 0.5 * math.pi * a / np.linalg.norm(a)).as_matrix() @ R_base
+    Rn = Q @ R_obj
+    i = int(np.argmax(np.abs(Rn[2])))
+    up = Rn[:, i] * np.sign(Rn[2, i])
+    ax = np.cross(up, [0.0, 0.0, 1.0])
+    if float(np.linalg.norm(ax)) > 1e-9:
+        L = Rotation.from_rotvec(ax / np.linalg.norm(ax) * math.atan2(np.linalg.norm(ax), float(up[2]))).as_matrix()
+        Q, Rn = L @ Q, L @ Rn
+    size = np.asarray(asset["size"], float)
+    centre = np.asarray(asset["origin_to_bottom_center"], float) + np.array([0.0, 0.0, 0.5 * size[2]])
+    lowest = float((Rn @ centre)[2] - np.abs(Rn[2, :]) @ (0.5 * size))
+    return Q @ off, Q @ R_tcp, f"turned{'yx'[axis == 0]}{'+' if sign > 0 else '-'}", -lowest
 
 
 def _set_down_on(s):
@@ -202,7 +243,9 @@ def _place_result(rig, name, s, spot, kind, tray):
         if not ok:
             raise SkillFailure(f"place {name} in {tray}: {why}")
         return True
-    b = rig.geo.bottom(name, st)
+    # the lowest face of the box as it lies (Geometry.resting): an object set down on another face (behind
+    # a door, _on_side) has its own bottom face on its side
+    b = rig.geo.resting(name, st)
     err = float(np.linalg.norm(b[:2] - np.asarray(spot)))
     on, why = rig.geo.on(name, s["name"], st)
     rig.log("place_result", obj=name, support=s["name"], xy_err_m=round(err, 4), on_support=bool(on))

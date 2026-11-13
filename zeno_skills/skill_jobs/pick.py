@@ -13,7 +13,7 @@ from ..primitives import turn
 from ..rig import SkillFailure
 from ..run import observe
 from ..sticky import note_grasp
-from ..skill_plans import PICK_RELAY
+from ..skill_plans import FREE_HAND, PICK_RELAY
 from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, SHUT, TARGET_TOL
 from .door_access import door_ahead, front_of, outward
 from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
@@ -22,7 +22,7 @@ from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_
 PICK_CAND_COST = 0.05          # m of park cost per rank of a grasp candidate (their order: centre, nearest first)
 
 
-def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None):
+def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None, relay_free=None):
     """The park of the pick of ``name`` (its box frame at T_obj, the State's): every grasp candidate
     is one goal (its reach-in's start, the grasp, the first of the lift as the points the arm must
     reach; the reach-in's start as the relay pose the ranking solves), and a park counts when the
@@ -44,7 +44,8 @@ def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None):
     def build(s, k, prior):
         return build_with(kin, s, grasps[k], carry_goals, prior=prior, step=APPROACH_STEP)
 
-    problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), label=f"pick {name}")
+    problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), relay_free=relay_free,
+                      label=f"pick {name}")
     return problem, carry_goals, grasps
 
 
@@ -168,7 +169,9 @@ def pick_job(rig, args, state, skill=None):
     # one where the whole pick can be planned (skill_plans.plan_pick) -- that plan is run
     goal_cands = cands[:max_candidates] + extra
     build_with = skill.build if skill is not None else None
-    problem, carry_goals, grasps = _pick_problem(rig, name, goal_cands, T_obj, near, prefer, build_with)
+    # behind a door: the parks whose ranking solution of the reach-in start is free first (Problem.relay_free)
+    problem, carry_goals, grasps = _pick_problem(rig, name, goal_cands, T_obj, near, prefer, build_with,
+                                                 relay_free=FREE_HAND if door is not None else None)
     ctx = {"out": {}}
 
     def no_park(diag):

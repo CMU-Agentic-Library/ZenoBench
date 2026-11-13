@@ -182,6 +182,18 @@ def free_at(kin, state, spec, q):
         return not t or kin.path_free_only([q, q], t)
 
 
+def robot_spheres(kin, state, spec, q):
+    """For a debug view: [[x, y, z, r, depth, link], ...] of the arm's collision model at q in ``state``
+    by ``spec`` (world frame; depth > 0 where it penetrates the world), [] without a collision backend."""
+    motion = getattr(kin, "motion", None)
+    if motion is None or not hasattr(motion, "_sphere_depths"):
+        return []
+    with query(kin, state, spec):
+        with motion._query(kin, kin._other_q(), kin.coll_kw) as arm:
+            s, d, links = motion._sphere_depths(arm, np.clip(np.asarray(q, float), arm.lo, arm.hi))
+    return [[round(float(v), 4) for v in s[i]] + [round(float(d[i]), 4), links[i]] for i in range(len(s)) if s[i, 3] > 0]
+
+
 def ik_why(kin, state, spec, p, R, seeds=()):
     """Why (p, R) has no collision-free IK in ``state`` by ``spec``, for a failure's why: out of the arm's
     reach (no kinematic solution either, the locked joints locked), or what the robot penetrates at the

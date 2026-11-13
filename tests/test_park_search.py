@@ -9,7 +9,7 @@ import pytest
 
 from zeno_skills import park_search as PS
 from zeno_skills import skills
-from zeno_skills.motion_state import Failure, Hand, Plan, State, chains
+from zeno_skills.motion_state import Failure, Hand, Plan, Spec, State, chains
 
 
 class Kin:
@@ -166,3 +166,44 @@ def test_the_cheapest_yaw_puts_the_goal_on_the_right_arms_side():
     face = np.degrees(np.arctan2(goal[1] - y, goal[0] - x))
     bearing = (face - yaw + 180) % 360 - 180
     assert abs(bearing + PS.FACE_LEFT) < 1e-6
+
+
+def test_behind_a_door_the_parks_whose_ranking_solution_is_free_are_built_first():
+    # the ranking solution carries the goal in the park's frame (Kin.ik_set): "free" at about half the
+    # parks (by that), the others put a forearm through a door the ranking cannot see
+    kin, built = Kin(), []
+    ok = lambda q: int(round(float(q[0]) * 1000)) % 2 == 0     # noqa: E731
+    kin.free = ok
+    goal = np.array([1.0, 0.0, 0.8])
+    problem = PS.Problem(goals=(((goal,), (goal, np.eye(3)), 0.0),),
+                         build=lambda s, k, prior: built.append(ok(prior["pick_reach"])) or Failure("no", "x"),
+                         relay="pick_reach", arrive=lambda x, y, yaw: np.zeros(9), travel=np.zeros(9),
+                         relay_free=Spec())
+    _, diag = PS.find_park(kin, SimpleNamespace(footprint_clear=lambda x, y, yaw: True), problem, _state(),
+                           lambda ev, **kw: None, base=Base())
+    n_free = diag["relay_free"][1]
+    assert 0 < n_free < diag["relay_free"][0]
+    assert built[:min(n_free, len(built))] == [True] * min(n_free, len(built))   # the free ones first
+    assert diag["built"] == len(built)
+
+
+def test_without_relay_free_the_order_is_the_rankings():
+    kin = Kin()
+    kin.free = lambda q: (_ for _ in ()).throw(AssertionError("checked"))
+    found, diag = PS.find_park(kin, SimpleNamespace(footprint_clear=lambda x, y, yaw: True),
+                               _problem(lambda s, k, prior: Plan(())), _state(), lambda ev, **kw: None, base=Base())
+    assert found is not None and "relay_free" not in diag
+
+
+def test_a_search_records_its_candidates_only_when_asked(monkeypatch, tmp_path):
+    monkeypatch.setenv("ZB_PARK_DUMP", str(tmp_path))
+    monkeypatch.setenv("ZB_PARK_DUMP_MATCH", "park")
+    built = []
+    found, _ = _find([], _problem(lambda s, k, prior: built.append(1) or (Plan(()) if len(built) > 1 else
+                                                                          Failure("no", "x"))), _state())
+    rec = [__import__("json").loads(p.read_text()) for p in tmp_path.glob("*.json")]
+    assert len(rec) == 1 and rec[0]["found"][:3] == [found.x, found.y, found.yaw]
+    assert len(rec[0]["built"]) == 2 and rec[0]["built"][0][4].startswith("x: no") and rec[0]["ranked"]
+    monkeypatch.setenv("ZB_PARK_DUMP_MATCH", "place")                    # another label: nothing written
+    _find([], _problem(lambda s, k, prior: Plan(())), _state())
+    assert len(list(tmp_path.glob("*.json"))) == 1

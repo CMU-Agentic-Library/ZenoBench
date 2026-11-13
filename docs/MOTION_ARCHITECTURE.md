@@ -644,6 +644,7 @@ Problem(goals, build, relay, arrive, travel, near, prefer, label, hand, body_fre
 | `arrive` | 停车点上的手臂姿态（catalog 的 `arrive`；就地的候选是现在的姿态） | 收起 | 搬运姿态 |
 | `travel` | 开车时的手臂姿态 | 收起 | 搬运姿态 |
 | `near` / `prefer` | 离谁近更好 / 先试的底盘位姿 | 当前位置；门后的物体（`annotations.behind_door`：`inside_` 支撑面上、腔体或冰箱柜体里）先试门自由边前方的停车点（`door_access.front_of`，由标注算） | 当前位置（离目标 1 m 以上时不加“近”的代价）；放到门后的层板上和 pick 一样先试门自由边前方 |
+| `relay_free` | 排序解在停车点的状态里不碰的先构造（查碰撞不占构造预算，最多 `FREE_CHECKS` 个） | 门后的取物（`FREE_HAND`） | 门后的放置（`FREE_LOAD`）：11-13 排序把手臂排进开着的门板 |
 | `tiers` | 每组目标的层（`Problem.tier`）：低层的候选全部构造完才轮到高层，不看 score。严格偏好；代价只是弱偏好（见第 3 步） | — | — |
 | `relay_from` / `reach_step` | 每组目标可以声明中继位姿是沿一条直线（姿态不变）从哪一点到达的：这组目标可以只做一部分（推：手臂能推多远推多远）。见第 3 步 | — | — |
 

@@ -35,17 +35,15 @@ def outward(a, p):
 
 
 def leave_tier(a, u):
-    """How many 45-degree steps the horizontal part of the hand's way out ``u`` (a unit 3-vector: a
-    set-down's pull-out, back along the gripper axis) turns from ``a``'s opening: 0 straight out
-    through it, 4 into the back wall.  The arm reaches in through the opening, so a hand whose way out
-    points elsewhere has the wrist somewhere the arm cannot be -- the kinematic ranking of a park search
-    does not see that (it checks no collisions), so these are the goal set's tiers (Problem.tiers):
-    built in this order.  A way out mostly vertical (a top pinch, lifted off) turns from nothing: 0."""
-    h = np.asarray(u, float)[:2]
-    n = float(np.linalg.norm(h))
-    if n < 0.5:
-        return 0
-    c = max(-1.0, min(1.0, float(h @ opening(a)) / n))
+    """How many 45-degree steps the hand's way out ``u`` (a unit 3-vector: a set-down's pull-out, back
+    along the gripper axis) turns from ``a``'s opening (horizontal): 0 straight out through it, 2 straight
+    up or sideways, 4 into the back wall.  The hand leaves the cavity through the opening, so a way out
+    that points elsewhere leaves it still inside, or has the wrist where the arm cannot be -- the
+    kinematic ranking of a park search does not see that (it checks no collisions), so these are the
+    goal set's tiers (Problem.tiers): built in this order."""
+    u = np.asarray(u, float)
+    o = np.r_[opening(a), 0.0]
+    c = max(-1.0, min(1.0, float(u @ o) / max(float(np.linalg.norm(u)), 1e-9)))
     return int(round(math.degrees(math.acos(c)) / 45.0))
 
 

@@ -42,6 +42,15 @@ class Geometry:
         R = quat_R(o["quat"])
         return np.asarray(o["pos"], float) + R @ np.asarray(self._asset(name)["origin_to_bottom_center"], float)
 
+    def resting(self, name, st):
+        """World centre of the lowest face of the object's box as it lies: its centre, half its vertical
+        extent down.  Upright it is bottom(); on another face (a box laid on its side, a bottle fallen
+        over) bottom() is on its side, this is still under it."""
+        R = quat_R(st["objects"][name]["quat"])
+        c = self.centre(name, st)
+        size = np.asarray(self._asset(name)["size"], float)
+        return np.array([c[0], c[1], c[2] - 0.5 * float(np.abs(R[2, :]) @ size)])
+
     def centre(self, name, st):
         o = st["objects"][name]
         R = quat_R(o["quat"])
@@ -69,7 +78,10 @@ class Geometry:
         return out or [s for s in self.ann.supports if s.get("furniture") == place]
 
     def on(self, name, place, st):
-        b = self.bottom(name, st)
+        """Whether ``name`` rests on ``place`` (a support, a furniture's supports, the floor): the lowest
+        face of its box as it lies (resting) within -2..+5 cm of the support height, over its box (11-13:
+        the bottom face's centre before -- a box laid on its side read as hanging in the air)."""
+        b = self.resting(name, st)
         places = place if isinstance(place, list) else [place]
         for p in places:
             if isinstance(p, dict) or p == "floor":
@@ -82,7 +94,7 @@ class Geometry:
                 if x0 - 0.02 <= b[0] <= x1 + 0.02 and y0 - 0.02 <= b[1] <= y1 + 0.02 \
                         and -0.02 <= b[2] - s["z"] <= 0.05:
                     return True, s["name"]
-        return False, f"bottom at ({b[0]:.2f}, {b[1]:.2f}, {b[2]:.3f})"
+        return False, f"lowest face at ({b[0]:.2f}, {b[1]:.2f}, {b[2]:.3f})"
 
     def inside(self, name, cont, st):
         if name == cont:
@@ -110,11 +122,7 @@ class Geometry:
 
         Uses the lowest point of the rotated box, so a bottle lying on its side
         still rests on its table."""
-        o = st["objects"][name]
-        R = quat_R(o["quat"])
-        c = self.centre(name, st)
-        size = np.asarray(self._asset(name)["size"], float)
-        b = np.array([c[0], c[1], c[2] - 0.5 * float(np.abs(R[2, :]) @ size)])
+        b = self.resting(name, st)
         best = None
         for s in self.ann.supports:
             x0, y0, x1, y1 = s["aabb_xy"]

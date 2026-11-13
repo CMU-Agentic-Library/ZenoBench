@@ -8,7 +8,9 @@ with.  The old planner.find_park stays for the skills not moved yet."""
 
 from __future__ import annotations
 
+import json
 import math
+import os
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -44,6 +46,7 @@ BUILD_S = 20.0                         # s: plans are built in rank order for at
                                        # in T20 s10 11-08, where 8 were too few: the reach-in straight
                                        # into the cabinet failed on 5 of the first 8)
 BUILD_MAX = 60                         # ...and at most this many
+FREE_CHECKS = 600                      # Problem.relay_free: at most this many ranking solutions checked free
 
 
 def shoulder(side):
@@ -85,6 +88,11 @@ class Problem:
             candidate reaches any goal's relay, the ranking measures how far along that straight each one's
             arm gets (reach_ik, to ``reach_step`` m) and ranks by what it leaves undone (Problem.start_of).
     reach_step: m, the resolution of that measure (a push: the plan's own sample step).
+    relay_free: a Spec, or None: the parks whose ranking solution is free by it (in the State at the
+            park) built first -- the relay's decide_ik takes such a solution as it is -- the others after
+            them (at most FREE_CHECKS checked, in rank order; a check costs no build).  For a goal behind
+            a door: the ranking checks no collisions, and an open door's leaf is where a forearm went
+            (11-13: the fridge, 60 builds through it).
     body_free: the body joints a goal's build may still move while the other hand holds something (the
             rule keeps the body, motion_state.body_locked; a push lifts the torso on a leg of its own:
             skill_plans.plan_push) -- the ranking IK keeps the others where the state has them, as the
@@ -100,6 +108,7 @@ class Problem:
     label: str = "park"
     hand: str = "right"
     body_free: tuple = ()
+    relay_free: Spec | None = None
     tiers: tuple = ()
     relay_from: tuple = ()
     reach_step: float = 0.0
@@ -171,6 +180,28 @@ def reachable(cands, problem):
         out.append(bool(np.all(np.linalg.norm(P[:, :2] - sh, axis=1) < REACH_XY) and
                         np.all((P[:, 2] > REACH_Z[0]) & (P[:, 2] < REACH_Z[1]))))
     return out
+
+
+def _free_first(kins, problem, state, ranked, order, diag, dbg=None):
+    """``order`` with the candidates whose ranking solution is free by problem.relay_free (in the State
+    at the park, as the build will have it) first, the rest after them in their order; the first
+    FREE_CHECKS checked, the rest after those.  diag["relay_free"]: (checked, free)."""
+    from .primitives import query
+    free, other = [], []
+    for n, i in enumerate(order):
+        if n >= FREE_CHECKS:
+            break
+        (cost, x, y, yaw, k), q, _ = ranked[i]
+        side = problem.side(k)
+        kin = kins[side]
+        s = with_posture(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), side)
+        with query(kin, s, problem.relay_free):
+            ok = kin.free(np.asarray(q, float))
+            (free if ok else other).append(i)
+            if dbg is not None:
+                dbg.setdefault("free_checked", []).append([x, y, yaw, k, bool(ok)])
+    diag["relay_free"] = [len(free) + len(other), len(free)]
+    return free + other + list(order[FREE_CHECKS:])
 
 
 def rank_ik(kin, cands, problem, q0, poses=None):
@@ -247,6 +278,43 @@ def score(kin, cands, sols):
     return out
 
 
+def _dumping(problem):
+    """The search's debug record (env ZB_PARK_DUMP: a directory; ZB_PARK_DUMP_MATCH: a substring of the
+    problem's label, default every search) -- {} to fill, or None: not recorded.  Changes nothing found."""
+    out = os.environ.get("ZB_PARK_DUMP")
+    if not out or os.environ.get("ZB_PARK_DUMP_MATCH", "") not in problem.label:
+        return None
+    return {"label": problem.label, "dir": out, "near": problem.near, "prefer": list(problem.prefer),
+            "goals": [[float(v) for v in np.asarray(g[1][0], float)] for g in problem.goals],
+            "goal_cost": [float(g[2]) for g in problem.goals],
+            "tiers": [problem.tier(k) for k in range(len(problem.goals))]}
+
+
+def _dump_arm(dbg, kin, s, problem, k, q_rank, plan):
+    """The debug record of one build: the relay pose (the EEP), the arm's collision spheres at the
+    ranking solution and at the relay solution the build decided (a Failure's info["q_relay"]; a
+    plan's decisions), in the State at the park."""
+    from .primitives import robot_spheres
+    spec = problem.relay_free or Spec()
+    p, R = problem.goals[k][1]
+    rec = {"eep": [[float(v) for v in np.asarray(p, float)], np.asarray(R, float).tolist()],
+           "base": list(s.base), "rank": robot_spheres(kin, s, spec, q_rank)}
+    q_rel = (plan.info or {}).get("q_relay") if isinstance(plan, Failure) else \
+        (getattr(plan, "decisions", None) or {}).get(problem.relay)
+    if q_rel is not None:
+        rec["relay"] = robot_spheres(kin, s, spec, q_rel)
+    dbg.setdefault("arms", []).append(rec)
+
+
+def _dump_write(dbg, found):
+    """Write the debug record next to the others (one JSON per search)."""
+    os.makedirs(dbg["dir"], exist_ok=True)
+    dbg["found"] = None if found is None else [found.x, found.y, found.yaw, found.k]
+    name = "".join(ch if ch.isalnum() else "_" for ch in dbg["label"]) + f"_{int(time.time() * 1000)}.json"
+    with open(os.path.join(dbg.pop("dir"), name), "w") as f:
+        json.dump(dbg, f, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o))
+
+
 def find_park(kin, world, problem, state, log, base=None):
     """The park for ``problem`` (Problem) from ``state`` (motion_state.State, now): Found with the
     plan the skill's builder made there, or None; the counts of every test in ``diag`` either way
@@ -267,6 +335,9 @@ def find_park(kin, world, problem, state, log, base=None):
 
     cands = candidates(problem)
     diag["candidates"] = len(cands)
+    dbg = _dumping(problem)
+    if dbg is not None:
+        dbg["base_now"], dbg["rejected"] = list(state.base), {"out_of_reach": [], "footprint": []}
     here = None if problem.near is None or len(problem.near) != 3 else tuple(map(float, problem.near))
     is_here = lambda c: here is not None and c[1:4] == here
 
@@ -278,9 +349,13 @@ def find_park(kin, world, problem, state, log, base=None):
             continue
         if not ok:
             diag["out_of_reach"] += 1
+            if dbg is not None:
+                dbg["rejected"]["out_of_reach"].append(c[1:5])
             continue
         if not is_here(c) and not world.footprint_clear(c[1], c[2], math.radians(c[3])):
             diag["footprint"] += 1
+            if dbg is not None:
+                dbg["rejected"]["footprint"].append(c[1:5])
             continue
         pool.append(c)
         per[k] += 1
@@ -294,6 +369,8 @@ def find_park(kin, world, problem, state, log, base=None):
         d = base.depths(travel, [c[1:4] for c in moving])
         blocked = {c[1:4] for c, dc in zip(moving, d) if dc > DEPTH_TOL}
         diag["travel_pose"] = len(blocked)
+        if dbg is not None:
+            dbg["rejected"]["travel_pose"] = sorted(blocked)
         pool = [c for c in pool if is_here(c) or c[1:4] not in blocked]
         moving = [c for c in pool if not is_here(c)]
     timed("travel_pose")
@@ -301,6 +378,8 @@ def find_park(kin, world, problem, state, log, base=None):
         reach = base.reachable(state, [c[1:4] for c in moving])
         unreachable = {c[1:4] for c, r in zip(moving, reach) if not r}
         diag["drive"] = len(unreachable)
+        if dbg is not None:
+            dbg["rejected"]["drive"] = sorted(unreachable)
         pool = [c for c in pool if is_here(c) or c[1:4] not in unreachable]
     timed("drive")
     # ranking: a kinematic IK of each relay pose, then joint margin, manipulability and cost
@@ -342,7 +421,12 @@ def find_park(kin, world, problem, state, log, base=None):
                                                       not is_here(ranked[i][0]), scores[i]))
     timed("score")
     diag["pool"] = len(pool)
-    # the skill's plan, in that order
+    # the skill's plan, in that order (Problem.relay_free: the free ranking solutions first)
+    if dbg is not None:
+        dbg["rejected"]["ik"] = [c[1:5] for c, q in zip(pool, sols) if q is None]
+        dbg["ranked"] = [[*ranked[i][0][1:5], problem.tier(ranked[i][0][4]), float(scores[i])] for i in order]
+    if problem.relay_free is not None:
+        order = _free_first(kins, problem, state, ranked, order, diag, dbg)
     found, t_build = None, time.time()
     for i in order:
         if diag["built"] >= BUILD_MAX or time.time() - t_build > BUILD_S:
@@ -353,6 +437,10 @@ def find_park(kin, world, problem, state, log, base=None):
         plan = problem.build(s, k, {problem.relay: q_rank})
         for st_, sec in getattr(plan, "info", {}).get("stage_s", {}).items():     # where the building time goes
             diag["stage_s"][st_] = round(diag["stage_s"].get(st_, 0.0) + sec, 2)
+        if dbg is not None:
+            dbg.setdefault("built", []).append([x, y, yaw, k, "ok" if not isinstance(plan, Failure)
+                                                else f"{plan.segment}: {plan.why[:200]}"])
+            _dump_arm(dbg, kins[problem.side(k)], s, problem, k, q_rank, plan)
         if isinstance(plan, Failure):
             key = f"{plan.segment}: {plan.why.split(' (')[0]}"
             diag["build_failed"][key] = diag["build_failed"].get(key, 0) + 1
@@ -368,6 +456,8 @@ def find_park(kin, world, problem, state, log, base=None):
     diag["build_seconds"] = round(time.time() - t_build, 2)
     log("park_search", target=problem.label, found=None if found is None else
             [round(found.x, 3), round(found.y, 3), round(found.yaw, 1), found.k], **diag)
+    if dbg is not None:
+        _dump_write(dbg, found)
     if found is not None:
         found.diag = diag
     return found, diag
