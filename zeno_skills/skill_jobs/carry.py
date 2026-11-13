@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import numpy as np
 
+from ..annotations import behind_door
 from ..motion_state import Failure
 from ..rig import SkillFailure
 from ..run import observe
@@ -106,7 +107,7 @@ def _carry_bottom_z(rig, place):
             z = float(sup["z"]) if sup is not None else None
     if z is None or z < CARRY_SUPPORT_Z[0] or z > CARRY_SUPPORT_Z[1]:
         return None                 # floor-level or out-of-reach heights keep the default carry
-    if kind == "support" and rec.get("category") != "cabinet_inside" and "/inside" not in rec["name"]:
+    if kind == "support" and behind_door(rig.ann, rec) is None:
         # over the loose objects already standing there: the base drives in
         # along the counter and a load held 3 cm above the top swept a
         # rolling pin and a bottle (capped: tall items are passed by the arm)

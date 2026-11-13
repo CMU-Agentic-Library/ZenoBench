@@ -336,7 +336,7 @@ class Spec:
 | `kinematics.py` | `REST_TOL`、`STOWED_TOL`、`CARRY_TILT` |
 | `skills.py` | `CARRY_Z`、`PICK_REACH_TOL`（= `TARGET_TOL`）、`APPROACH_STEP`、`PICK_LEAVE_CHECK`、`AT_PARK_M` / `AT_PARK_DEG`（inherited, unmeasured）、`CARRY_SPOTS`、`PLACE_*` 代价…… |
 | `skill_plans/` | `HELD_POSE_MARGIN`、`PICK_TOL`（= `HINT_REACH` / `HINT_TURN`，`pick.py`）、`PLACE_TOL`（= `TARGET_TOL` / `TARGET_TURN`，`place.py`）、`SETTLE_TICKS`（`place.py`）、`SAME_POSTURE`（`navigate.py`） |
-| `skill_jobs/` | `CARRY_FRONT_X/Y`、`CARRY_LOW_TOL`、`CARRY_LOW_COST`（`carry.py`）、`PICK_CAND_COST`、`FRONT_SEED_M`（`pick.py`） |
+| `skill_jobs/` | `CARRY_FRONT_X/Y`、`CARRY_LOW_TOL`、`CARRY_LOW_COST`（`carry.py`）、`PICK_CAND_COST`（`pick.py`）、`FRONT_SEED_M`（`door_access.py`） |
 | `park_search.py` | `RADII`、`YAW_OFFSETS`、`REACH_XY`、`MAX_PER_GOAL`、`BUILD_S`、`BUILD_MAX`…… |
 | `base_planner.py`、`collision.py` | `DEPTH_TOL`、`FOOTPRINT_MARGIN`（inherited, unmeasured）…… |
 | `COLLISION_PLAN.md` 第 8 节 | 力的几何替身（`PRESS_DEPTH`、`WIPE_PRESS`、`TOUCH_DEPTH`……） |
@@ -643,7 +643,7 @@ Problem(goals, build, relay, arrive, travel, near, prefer, label, hand, body_fre
 | `build` | 技能的计划构造函数 | `plan_pick` | `plan_place` |
 | `arrive` | 停车点上的手臂姿态（catalog 的 `arrive`；就地的候选是现在的姿态） | 收起 | 搬运姿态 |
 | `travel` | 开车时的手臂姿态 | 收起 | 搬运姿态 |
-| `near` / `prefer` | 离谁近更好 / 先试的底盘位姿 | 当前位置；门后的物体（腔体里、`inside_` 支撑面上）先试门自由边前方的停车点（`_front_of`，由标注算） | 当前位置（离目标 1 m 以上时不加“近”的代价） |
+| `near` / `prefer` | 离谁近更好 / 先试的底盘位姿 | 当前位置；门后的物体（`annotations.behind_door`：`inside_` 支撑面上、腔体或冰箱柜体里）先试门自由边前方的停车点（`door_access.front_of`，由标注算） | 当前位置（离目标 1 m 以上时不加“近”的代价）；放到门后的层板上和 pick 一样先试门自由边前方 |
 | `tiers` | 每组目标的层（`Problem.tier`）：低层的候选全部构造完才轮到高层，不看 score。严格偏好；代价只是弱偏好（见第 3 步） | — | — |
 | `relay_from` / `reach_step` | 每组目标可以声明中继位姿是沿一条直线（姿态不变）从哪一点到达的：这组目标可以只做一部分（推：手臂能推多远推多远）。见第 3 步 | — | — |
 
@@ -793,7 +793,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 - 原语：`free_leg`（`Joint`、`Pose`、`PoseSet`、`JointSet`）、`straight`、`contact_extent`、`contact_segment`，三个"还在碰"判据，`exit_length`；`drive`、`drive_straight`（5.4）；`scripted`（任务段，耦合 `hinge` / `slider` / `still` / `pushed`（带死区），手臂带的可以 `reach`：走到够不着为止，5.5）；`decide_ik`（5.7）；`holds`（8.4）。
 - 计划：`plan_pick`、`plan_place`、`set_down_length`、`plan_navigate`、`travel_chain`、`Carry`、`plan_door`（开门，11-10）、`plan_push`（推门关，11-12）、`plan_slide`（推桌上的物体，11-12）、`plan_clear`（手握部件时松开）；目标从 `State` 推出（第 6 节）；锚点 `pick_arrive` / `pick_held` / `place_arrive` / `place_landed`；`prior` 是 `Plan` 时还成立的运动段原样复用（`_kept`，收臂除外）；`HELD_POSE_MARGIN` 5 mm，`PICK_TOL` 1 mm，`PLACE_TOL` 5 mm。
 - 第 ⑤ 层：`motion_skills`（`Skill`、`Job`、`run_skill`、`posture`，`SKILLS` 从 `skill_library/catalog.json` 的 `motion_skills` 加载，`template` / `park` / `arrive` / `travel` 都起作用，2.3）；navigate、pick、place、open、close、push 走它，它们的 job 在 `zeno_skills/skill_jobs/`（`navigate`、`pick`、`place`、`door`（open、close）、`slide`（push，和任务层一段段推的 `push_object`），加上 `base` 的 `RigBase`、`carry` 的搬运判据）。
-- 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`（目标带手、`body_free`、`tiers`、`relay_from`，第 7 节），pick / place / open / close / push 在用；门后物体（柜子 / 冰箱 `inside_` 支撑面上）的种子停车点由标注推出（`_front_of`）。微波炉腔体里取物不走这里：合约路由到 `PickFromCavity`（policy_048，旧实现，第 8 步）。
+- 搜索：`park_search.find_park(kin, world, problem, state, log, base)`、`Problem`（目标带手、`body_free`、`tiers`、`relay_from`，第 7 节），pick / place / open / close / push 在用；门后（柜子 / 冰箱 `inside_` 支撑面上）的取放，种子停车点由标注推出（`door_access.front_of`）。微波炉腔体里取物不走这里：合约路由到 `PickFromCavity`（policy_048，旧实现，第 8 步）。
 - 执行：`run.observe`、`execute`、`run(act, plan, rebuild, hooks, clear)`（每段 `holds`、锚点复核剩下的整份，`rebuild=None` 合法，8.8；失败出口 `run_clear`，8.6）。
 - 单测（假的 kin / 底盘 / 执行器，不起仿真）：`tests/test_primitives.py`、`test_skill_plans.py`、`test_park_search.py`、`test_navigate_plan.py`、`test_layering.py`、`test_motion_skills.py`、`test_scripted.py`、`test_door_plan.py`、`test_symmetry.py`、`test_slide_plan.py`、`test_push_object.py`；碰撞模型的构造：`test_held_collision.py`（手里东西的球、每条手臂的自碰撞表）、`test_body_collision.py`（底盘环境；GPU 那一侧是 `tools/check_body_collision.py`）；`test_payload_feedforward.py`（重力前馈）。
 - 基线：全量跑 v6（`COLLISION_PLAN.md` 第 5 节）。`1c5b98d` 69/153（11-10，`/data/zenobench/v6full_1109`）→ `c096313` 82/153（11-11，`v6full_1111`）→ `bdc2a23` 87/153（11-12，`v6full_1112`，现在的基线）；6b（`a33d852`）以后还没跑全量。

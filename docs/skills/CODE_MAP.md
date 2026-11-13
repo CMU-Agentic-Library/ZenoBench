@@ -181,7 +181,7 @@ run_skill
 
 ```
 skill_jobs/pick.py  pick_job
-  候选抓取（annotation）；门后的（_behind_door：腔体里、inside_ 支撑面上）朝开口排序，prefer = _front_of（门自由边前）
+  候选抓取（annotation）；门后的（annotations.behind_door：inside_ 支撑面上、腔体或冰箱柜体里）朝开口排序，prefer = door_access.front_of（门自由边前）
   _pick_problem：所有候选 = 一个目标集合 → Problem(goals, build, PICK_RELAY, near, prefer)
      build = skill.build（plan_pick）(state_at_park, 候选(物体框里), _carry_goal_set)：pick_arrive（锚点）→ pick_open（State 手张开）
              → pick_reach（free_leg）→ pick_grasp（straight）→ pick_close（holding）→ pick_held（锚点）
@@ -199,7 +199,7 @@ skill_jobs/pick.py  pick_job
 
 ```
 place
-  "in:" 非托盘容器 → drop_into；微波炉 → place_microwave；柜门后层板 → SkillFailure
+  "in:" 非托盘容器 → drop_into；微波炉 → place_microwave（柜门后层板、冰箱层板走下面的 _set_down）
   edge 持法（书） → place_flat（旧的写死路径，见第 5 节）
   其他（台面 / 托盘底板） → _set_down → run_skill(SKILLS["place"])
 skill_jobs/place.py  place_job

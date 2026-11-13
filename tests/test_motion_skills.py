@@ -82,15 +82,18 @@ def test_a_park_too_close_to_drive_to_has_its_plan_made_again_where_the_base_sta
 
 
 def test_a_pick_behind_a_door_is_seeded_in_front_of_its_free_edge_from_the_annotation():
-    from zeno_skills.skill_jobs.pick import _behind_door, _front_of
+    from zeno_skills.annotations import behind_door
+    from zeno_skills.skill_jobs.door_access import front_of
     door = {"name": "fridge", "type": "revolute", "closed_q": 0.0, "pivot": [5.615, 3.003, 0.69],
             "part_frame": np.eye(4).tolist(), "part_box": [[0.0, -0.1075, -0.62], [0.57, 0.0175, 0.62]],
             "handle": {"center": [6.13, 2.908, 0.74], "outward": [0.0, -1.0, 0.0]}}
     door["part_frame"][0][3], door["part_frame"][1][3], door["part_frame"][2][3] = 5.615, 3.003, 0.69
     ann = SimpleNamespace(articulated=[door], part_pose=lambda a, q: np.asarray(a["part_frame"], float))
     rig = SimpleNamespace(ann=ann)
-    assert _behind_door(rig, {"support": "fridge/inside_shelf"}, (5.9, 3.3, 0.85)) is door
-    assert _behind_door(rig, {"support": "fridge/top"}, (5.9, 3.3, 1.4)) is None          # on it, not in it
-    x, y, yaw = _front_of(rig, door, (5.9, 3.3, 0.85))
+    shelf = {"name": "fridge/inside_shelf", "furniture": "fridge", "category": "cabinet_inside"}
+    top = {"name": "fridge/top", "furniture": "fridge", "category": "cabinet_top"}
+    assert behind_door(ann, shelf, (5.9, 3.3, 0.85)) is door
+    assert behind_door(ann, top, (5.9, 3.3, 1.4)) is None                     # on it, not in it
+    x, y, yaw = front_of(rig, door, (5.9, 3.3, 0.85))
     # the hand-placed seed it replaces: (6.246, 2.337, 135)
     assert abs(x - 6.246) < 0.1 and abs(y - 2.337) < 0.1 and abs(yaw - 135.0) < 3.0

@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import numpy as np
 
+from ..annotations import opening
 from ..motion_state import Aim, aim_pose, clearing
 from ..park_search import Problem
 from ..rig import Dropped
@@ -14,6 +15,7 @@ from ..run import observe
 from ..sticky import note_grasp
 from ..skill_plans import PICK_RELAY
 from ..tolerances import FLOOR_Z, GRIP_CLOSED_BY, SHUT, TARGET_TOL
+from .door_access import door_ahead, front_of, outward
 from ..skills import (APPROACH_STEP, PICK_LEAVE_CHECK, PINCH_KINDS, _carry_goal_set, _grasp_approach, _grasp_of, _pick_judged, _pinch_candidates, _surface_under, _watching, check_held, edge_held)
 
 
@@ -27,7 +29,7 @@ def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None):
     whole pick plans from it (``build_with``: the catalog's builder, skill_plans.plan_pick, from the
     posture the arm arrives in -- run_skill sets it from the catalog -- the hand opened to the
     candidate's width; the grasp in the object's frame, _grasp_of).  ``near`` / ``prefer`` as
-    Problem's (in front of a door's free edge: _front_of).  (Problem, the carry goal set, the grasps)."""
+    Problem's (in front of a door's free edge: door_access.front_of).  (Problem, the carry goal set, the grasps)."""
     kin = rig.kin
     build_with = build_with or _plan_pick()
     carry_goals = _carry_goal_set(rig, name)
@@ -44,52 +46,6 @@ def _pick_problem(rig, name, cands, T_obj, near, prefer=(), build_with=None):
 
     problem = Problem(tuple(goals), build, PICK_RELAY, near=near, prefer=tuple(prefer), label=f"pick {name}")
     return problem, carry_goals, grasps
-
-
-FRONT_SEED_M = 0.65            # m in front of a door's free edge the first park of a pick behind it stands
-                               # (the hand-placed fridge seed of 11-0x stood 0.67 m out, 6 cm past the edge)
-
-
-def _outward(a):
-    """The unit horizontal direction out of articulated ``a``'s opening: its handle's outward normal."""
-    out = np.asarray(a["handle"]["outward"], float)[:2]
-    return out / np.linalg.norm(out)
-
-
-def _behind_door(rig, obj, pos):
-    """The articulated (with a door handle) ``obj`` stands behind: in its cavity, or on one of its
-    inside supports ("<name>/inside_...": a shelf, a drawer's bottom) -- not on its top."""
-    sup = str(obj.get("support", ""))
-    for a in rig.ann.articulated:
-        if not isinstance(a.get("handle"), dict) or "outward" not in a["handle"]:
-            continue
-        cav = a.get("cavity_aabb")
-        if cav is not None and all(cav[i] < pos[i] < cav[i + 3] for i in range(3)):
-            return a
-        if sup.startswith(a["name"] + "/inside"):
-            return a
-    return None
-
-
-def _front_of(rig, a, target):
-    """A base pose FRONT_SEED_M out of ``a``'s opening (_outward) in front of its door's free edge --
-    the end of the closed door away from the hinge, where the open door is not; the handle for a
-    drawer -- facing ``target`` with it off to the right arm's side by park_search.FACE_LEFT, as the
-    candidates' cost prefers (and the hand-placed seeds had it)."""
-    from ..park_search import FACE_LEFT
-    out = _outward(a)
-    if a.get("type") == "revolute":
-        T = rig.ann.part_pose(a, a["closed_q"])
-        boxes = a.get("part_boxes") or [a["part_box"]]
-        ends = [T[:3, :3] @ np.array([x, 0.5 * (lo[1] + hi[1]), 0.0]) + T[:3, 3]
-                for lo, hi in boxes for x in (lo[0], hi[0])]
-        pivot = np.asarray(a["pivot"], float)
-        edge = max(ends, key=lambda e: float(np.hypot(*(e - pivot)[:2])))[:2]
-    else:
-        edge = np.asarray(a["handle"]["center"], float)[:2]
-    xy = edge + FRONT_SEED_M * out
-    face = math.degrees(math.atan2(target[1] - xy[1], target[0] - xy[0]))
-    return float(xy[0]), float(xy[1]), float(face + FACE_LEFT)
 
 
 def _plan_pick():
@@ -194,18 +150,15 @@ def pick_job(rig, args, state, skill=None):
     bx, by, _ = rig.base_pose()
     # behind a door (a cavity it stands in, a shelf of the articulated): the robot's pose after
     # opening it biases the search toward the hinge, so a park in front of the door's free edge is
-    # tried first (_front_of, from the annotation: no scene's coordinates written here), and the
+    # tried first (door_access.front_of, from the annotation: no scene's coordinates written here), and the
     # grasps most outward (toward the opening) first
-    door = _behind_door(rig, obj, pos)
+    door = door_ahead(rig, rig.geo.support_under(name, st), pos, f"pick {name}")
     near, prefer = rig.base_pose(), ()
     if door is not None:
-        from ..predicates import OPEN_ENOUGH, _art_open
-        if _art_open(rig, door["name"])[0] < OPEN_ENOUGH:
-            raise SkillFailure(f"pick {name}: {door['name']} door is closed")
-        out = _outward(door)
-        prefer, near = (_front_of(rig, door, pos),), rig.base_pose()[:2]
+        out = opening(door)
+        prefer, near = (front_of(rig, door, pos),), rig.base_pose()[:2]
         across = np.array([-out[1], out[0]])
-        cands.sort(key=lambda g: (-float(np.asarray(g["p"])[:2] @ out), -g.get("tilt", 0),
+        cands.sort(key=lambda g: (-outward(door, g["p"]), -g.get("tilt", 0),
                                   abs(float((np.asarray(g["p"])[:2] - np.asarray(pos)[:2]) @ across))))
     else:
         # off-centre pinch points of a long object let it swing in the hand:

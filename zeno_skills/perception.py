@@ -153,14 +153,10 @@ def dynamic_occluder(rig, name, cam, point, st=None):
     if name in held:
         return None
     # closed doors: cavity / body boxes and shelves behind a door
-    sup = rig.geo.support_under(name, st)
-    for a in ann.articulated:
-        box = a.get("cavity_aabb") or (a.get("body_aabb") if a.get("category") == "refrigerator" else None)
-        inside = box is not None and all(box[i] < c[i] < box[i + 3] for i in range(3))
-        inside = inside or (sup is not None and sup.get("furniture") == a["name"]
-                            and sup.get("category") == "cabinet_inside")
-        if inside and _open_fraction(rig, a) < 0.3:
-            return f"inside closed {a['name']}"
+    from .annotations import behind_door
+    a = behind_door(ann, rig.geo.support_under(name, st), c)
+    if a is not None and _open_fraction(rig, a) < 0.3:
+        return f"inside closed {a['name']}"
     from .predicates import lid_on, lids
     for other, o in ann.objects.items():
         if other == name or other in held:

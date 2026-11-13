@@ -57,23 +57,21 @@ def load_contracts(path=CATALOG):
 
 # ----------------------------------------------------------------- noun attributes
 def _object_location(rig, name, st):
+    from .annotations import behind_door
     c = rig.geo.centre(name, st)
-    for a in rig.ann.articulated:
-        box = a.get("cavity_aabb")
-        if box and all(box[i] < c[i] < box[i + 3] for i in range(3)):
-            return ("microwave_cavity" if a.get("category") == "microwave" else "appliance_cavity"), a["name"]
+    a = behind_door(rig.ann, point=c)            # in a cavity, in the fridge's body
+    if a is not None:
         if a.get("category") == "refrigerator":
-            b = a["body_aabb"]
-            if all(b[i] < c[i] < b[i + 3] for i in range(3)):
-                return "refrigerator", a["name"]
+            return "refrigerator", a["name"]
+        return ("microwave_cavity" if a.get("category") == "microwave" else "appliance_cavity"), a["name"]
     for other, o in rig.ann.objects.items():
         if other != name and rig.ann.asset_of(o).get("container") and rig.geo.inside(name, other, st)[0]:
             return "container", other
     s = rig.geo.support_under(name, st)
     if s is not None:
-        f = s.get("furniture")
-        if f and any(a["name"] == f for a in rig.ann.articulated) and s.get("category") == "cabinet_inside":
-            return "cabinet", f
+        a = behind_door(rig.ann, s)              # on a shelf behind a door, not on a top
+        if a is not None:
+            return "cabinet", a["name"]
         return "support", None
     if float(rig.geo.bottom(name, st)[2]) < 0.05:
         return "floor", None

@@ -1385,9 +1385,6 @@ def place(rig, name, support, xy=None, spots=None):
     s = rig.ann.support(support)
     if s.get("furniture") == "kitchen_microwave":
         return place_microwave(rig, name, support)
-    if s.get("category") == "cabinet_inside":
-        raise SkillFailure(f"place {name}: onto a shelf behind a door is not supported yet "
-                           f"(set down from the open side, docs/COLLISION_PLAN.md 6.2)")
     if rig.held["kind"] == "edge":
         return place_flat(rig, name, support, xy)
     return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
@@ -1480,15 +1477,18 @@ def _drop_check(rig):
 
 def free_spots(rig, name, support, hint=None, k=8):
     """Collision-free xy on a support for the object's footprint, near the
-    hint (or near an open edge, where the arm reaches), best first."""
+    hint (or near an open edge, where the arm reaches; behind a door, near its
+    opening: the arm reaches in from there), best first."""
+    from .annotations import behind_door, opening
     s = rig.ann.support(support)
+    door = behind_door(rig.ann, s)
     st = rig.state()
     asset = rig.ann.asset_of(rig.ann.objects[name])
     size = asset["size"]
     r = 0.5 * math.hypot(size[0], size[1]) + 0.015          # any yaw
     if (asset.get("container") or {}).get("shape") == "round" or any(g.get("round") for g in asset.get("grasps", [])):
         r = 0.5 * max(size[0], size[1]) + 0.015            # round: yaw does not matter
-    if s.get("category") == "cabinet_inside":
+    if door is not None:
         # The cavity is narrow. The carried container is held upright, so its
         # actual lateral half-width is more useful than its diagonal radius.
         r = 0.5 * max(size[0], size[1]) + 0.008
@@ -1500,6 +1500,8 @@ def free_spots(rig, name, support, hint=None, k=8):
     if x1 - x0 < 2 * r or y1 - y0 < 2 * r:
         r = 0.5 * min(size[0], size[1]) + 0.01
     edges = _open_edges(rig, s) or [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+    out_dir = None if door is None else opening(door)
+    front = None if out_dir is None else max(float(out_dir @ np.array(c)) for c in ((x0, y0), (x0, y1), (x1, y0), (x1, y1)))
     bx, by, _ = rig.base_pose()
     out = []
     if hint is not None:
@@ -1528,10 +1530,15 @@ def free_spots(rig, name, support, hint=None, k=8):
                 if _overlaps_objects(rig, box, {name}, st, margin=margin):
                     continue
                 to_edge = min(_edge_coord(s, n) - float(n @ np.array([x, y])) for n in edges)
+                if out_dir is not None:
+                    # behind a door: as deep in as the spot stands from the opening (the pick
+                    # behind a door takes the most outward grasp first, door_access.outward)
+                    to_edge = front - float(out_dir @ np.array([x, y]))
                 # no hint: prefer spots near the robot (all edge spots score 0 otherwise
                 # and the search started in the far corner of a long counter)
                 score = (math.hypot(x - hint[0], y - hint[1]) if hint is not None
-                         else 0.3 * math.hypot(x - bx, y - by)) + 0.5 * max(0.0, to_edge - 0.2)
+                         else 0.3 * math.hypot(x - bx, y - by)) + \
+                    (to_edge if out_dir is not None else 0.5 * max(0.0, to_edge - 0.2))
                 out.append((score, float(x), float(y)))
         if len(out) > (1 if hint is not None and out and out[0][0] < 0 else 0):
             break
@@ -1545,34 +1552,11 @@ def place_on(rig, name, support, hint=None, tries=4):
         return place_microwave(rig, name, support)
     if rig.held is not None and rig.held["kind"] == "edge":
         return place_flat(rig, name, support, hint)
-    if hint is None:
-        hint = _behind_door_hint(rig, support)
     spots = free_spots(rig, name, support, hint)
     if not spots:
         raise SkillFailure(f"place {name}: no free spot on {support}")
     # the free spots are one goal set of the place (not tried one after another)
     return place(rig, name, support, spots=spots[:tries])
-
-
-def _behind_door_hint(rig, support):
-    """A shelf behind a hinged door is reachable through the open side only:
-    the front corner farthest from the hinge (None for other supports)."""
-    furniture = support.split("/", 1)[0]
-    a = next((x for x in rig.ann.articulated if x["name"] == furniture and x.get("type") == "revolute"), None)
-    if a is None or "/" not in support:
-        return None
-    x0, y0, x1, y1 = rig.ann.support(support)["aabb_xy"]
-    pivot = np.asarray(a["pivot"][:2], float)
-    body = a.get("body_aabb")
-    centre = np.array([(x0 + x1) / 2, (y0 + y1) / 2])
-    front = pivot - centre                     # the hinge sits on the front face
-    front = np.array([np.sign(front[0]), 0.0]) if abs(front[0]) > abs(front[1]) else np.array([0.0, np.sign(front[1])])
-    corners = [np.array([x, y]) for x in (x0 + 0.08, x1 - 0.08) for y in (y0 + 0.08, y1 - 0.08)]
-    corners = [c for c in corners if (c - centre) @ front > 0] or corners
-    far = max(corners, key=lambda c: np.linalg.norm(c - pivot))
-    # halfway between the shelf centre and the open front corner: in the
-    # corner itself the hand meets the side wall
-    return tuple(centre + 0.5 * (far - centre))
 
 
 def place_flat(rig, name, support, hint=None):

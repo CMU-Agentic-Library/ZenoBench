@@ -1124,13 +1124,12 @@ def _hidden(rig, ctx, object):
         if c != object and rig.ann.asset_of(o).get("container") and rig.geo.inside(object, c, st)[0]:
             if any(lid_on(rig, c, l, st)[0] for l in lids(rig) if l != c):
                 return True, f"in covered {c}"
-    s = rig.geo.support_under(object, st)
-    if s is not None and s.get("category") == "cabinet_inside":
-        a = next((x for x in rig.ann.articulated if x["name"] == s.get("furniture")), None)
-        if a is not None:
-            tol = 0.10 if a["type"] == "revolute" else 0.04
-            if abs(rig.joint(a["name"]) - a["closed_q"]) <= tol:
-                return True, f"in closed {a['name']}"
+    from .annotations import behind_door
+    a = behind_door(rig.ann, rig.geo.support_under(object, st))     # on a shelf behind a door
+    if a is not None:
+        tol = 0.10 if a["type"] == "revolute" else 0.04
+        if abs(rig.joint(a["name"]) - a["closed_q"]) <= tol:
+            return True, f"in closed {a['name']}"
     return False, "visible"
 
 

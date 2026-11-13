@@ -264,6 +264,43 @@ class SceneAnnotations:
         raise KeyError(name)
 
 
+def behind_door(ann, support=None, point=None):
+    """The articulated (a door, a drawer front) that shuts in what stands on ``support`` (a support
+    record) or at ``point`` (world xyz), else None.  One rule for every reader -- the pick and the place
+    behind a door, the location and visibility attributes, the hidden predicate, the carry height:
+
+    * a support inside it: category ``cabinet_inside`` (tools/annotate_scene.py: the shelves, bottoms
+      and floors inside a carcass; its top is ``cabinet_top``, in the open), its ``furniture`` the
+      articulated;
+    * otherwise the point in its cavity (``cavity_aabb``: the microwave) or a refrigerator's body
+      (``body_aabb``: the fridge has no cavity box) -- something standing on no annotated support.
+
+    Whether it is open is each reader's question (the reach asks more than the view)."""
+    if support is not None and support.get("category") == "cabinet_inside":
+        f = support.get("furniture")
+        a = next((x for x in ann.articulated if x["name"] == f), None)
+        if a is not None:
+            return a
+    if point is None:
+        return None
+    for a in ann.articulated:
+        box = a.get("cavity_aabb") or (a.get("body_aabb") if a.get("category") == "refrigerator" else None)
+        if box is not None and all(box[i] < point[i] < box[i + 3] for i in range(3)):
+            return a
+    return None
+
+
+def opening(a):
+    """The unit horizontal direction out of articulated ``a``'s opening (its handle's outward normal,
+    annotated), or None where it has none."""
+    h = a.get("handle")
+    if not isinstance(h, dict) or "outward" not in h:
+        return None
+    out = np.asarray(h["outward"], float)[:2]
+    n = float(np.linalg.norm(out))
+    return out / n if n > 1e-9 else None
+
+
 def _quat_R(q):
     w, x, y, z = q
     return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y)],

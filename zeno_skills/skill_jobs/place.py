@@ -17,6 +17,7 @@ from ..sticky import rest_R
 from ..skills import (APPROACH_STEP, PLACE_SPOT_COST, PLACE_TILTED_COST, PLACE_YAWS, PLACE_YAW_COST, _lowest_z, check_held, pick_approach)
 from ..tolerances import LEAVE_GAP, PLACE_LEVEL_MIN, PLACE_XY_TOL, PLACE_XY_TOL_CORNER, TARGET_TOL
 from .carry import _carry_bottom_z, carry_posture
+from .door_access import door_ahead, front_of, leave_tier
 
 
 def place_job(rig, args, state, skill=None):
@@ -28,6 +29,9 @@ def place_job(rig, args, state, skill=None):
     from ..motion_skills import Job
     name, s, spots, tray = args["name"], args["support"], args["spots"], args.get("tray")
     kin = rig.kin
+    # behind a door (a shelf inside a cabinet, the fridge): open enough to reach past it, checked
+    # before anything moves -- as the pick behind a door (door_access.door_ahead)
+    door = None if tray else door_ahead(rig, s, None, f"place {name}")
     plan_place = skill.build if skill is not None else _plan_place()
     asset = rig.ann.asset_of(rig.ann.objects[name])
     # the carry posture of the drive to the park, before the park search checks it there
@@ -51,11 +55,16 @@ def place_job(rig, args, state, skill=None):
         R_lvl = rest_R(q_obj) @ R_obj.T
         relations.insert(0, (R_lvl @ (tcp - p_obj), R_lvl @ R_tcp, round(over, 1),
                              -float(asset["origin_to_bottom_center"][2])))
-    search_near = rig.base_pose()
+    search_near, prefer = rig.base_pose(), ()
     if math.hypot(search_near[0] - spots[0][0], search_near[1] - spots[0][1]) > 1.0:
         # far from the target: rank parks by reach to the target, not by
         # distance from here (all tries were spent near a corner 1.4 m away)
         search_near = None
+    if door is not None:
+        # the pose the open left the robot in biases the search toward the hinge: a park in front of
+        # the door's free edge first, the pose now not tried first (the pick behind a door, alike)
+        prefer = (front_of(rig, door, (spots[0][0], spots[0][1], s["z"])),)
+        search_near = None if search_near is None else search_near[:2]
     # the set-down poses (the relay pose): every spot, relation and wrist turn is one goal
     goals, leg_sets, cost = [], [], []
     for rank, spot in enumerate(spots):
@@ -82,8 +91,12 @@ def place_job(rig, args, state, skill=None):
     def build(st, k, prior):
         return plan_place(kin, st, targets[k], open_w, pick_approach(), rests, prior=prior, step=APPROACH_STEP,
                           obj=name, on=on)
+    # behind a door: the set-downs whose pull-out (back along the gripper axis) leaves straightest
+    # through the opening built first (door_access.leave_tier; the pick behind a door takes the most
+    # outward grasp first) -- else the 60 builds went on wrist turns with the hand in the back wall
+    tiers = () if door is None else tuple(leave_tier(door, ls[0][1][:, 2]) for ls in leg_sets)
     problem = Problem(tuple(((ls[0][0],), (ls[0][0], ls[0][1]), c) for ls, c in zip(leg_sets, cost)), build,
-                      PLACE_RELAY, near=search_near, label=f"place {name}")
+                      PLACE_RELAY, near=search_near, prefer=prefer, tiers=tiers, label=f"place {name}")
     ctx = {}
 
     def no_park(diag):

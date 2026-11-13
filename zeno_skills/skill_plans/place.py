@@ -8,7 +8,7 @@ import numpy as np
 
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
-from ..primitives import sided, JointSet, contact_extent, decide_ik, free_leg, off_support, query, straight
+from ..primitives import sided, JointSet, contact_extent, decide_ik, free_leg, ik_why, off_support, query, straight
 from ..tolerances import LEAVE_GAP, PLACE_TOL
 from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
@@ -110,7 +110,11 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
         elif stage == "place_reach":
             d = decide_ik(kin, s, FREE_LOAD, p, R, prior.get(stage), seeds=(q,))
             if d is None:
-                return Failure("no collision-free IK at the set-down pose", stage, {"stage_s": times})
+                # what the robot penetrates there (ik_why: at the ranking's solution, else a kinematic
+                # one), as the pick's reach-in start says it -- the park search keeps it as an example
+                seeds = tuple(x for x in (prior.get(stage), q) if x is not None)
+                return Failure(f"no collision-free IK at the set-down pose ({ik_why(kin, s, FREE_LOAD, p, R, seeds)})",
+                               stage, {"stage_s": times})
             q_p, how = d
             L, why = set_down_length(kin, s, FREE_LOAD, q_p)
             if L is None:
