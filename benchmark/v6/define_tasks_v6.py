@@ -1885,7 +1885,7 @@ def T17(t):
                    "lid_away": dict(move={LID: P("kitchen_cabinet_6/top", 3.335, 0.36)},
                                     route=[look("kitchen_island/top"), nav("kitchen_stove/top"), look("kitchen_stove/top"),
                                            nav("kitchen_cabinet_4"), S("open", articulated="kitchen_cabinet_4"), nav(B),
-                                           pick(B), nav("kitchen_cabinet_4"),
+                                           pick(B, grasp="side"), nav("kitchen_cabinet_4"),
                                            place(B, "kitchen_cabinet_4/inside_shelf", [1.40, 0.42]),
                                            S("close", articulated="kitchen_cabinet_4")])}),
     }

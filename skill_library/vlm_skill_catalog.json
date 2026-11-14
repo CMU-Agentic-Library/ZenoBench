@@ -4336,9 +4336,11 @@
     "grasp": {
      "type": "tag",
      "required": false,
-     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).",
+     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; \"top\" / \"side\" pinch only from above / from the side (fails when the object has no such pinch) -- a block going onto a low shelf behind a door needs \"side\": a top pinch holds the palm above it; otherwise the grasp follows the annotation (rim before handle before top).",
      "enum": [
-      "handle"
+      "handle",
+      "top",
+      "side"
      ]
     },
     "pass_by": {
@@ -4362,7 +4364,7 @@
    },
    "applicability": {
     "always": false,
-    "summary": "Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
+    "summary": "Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object)."
    },
    "preconditions": [
     {
@@ -4547,7 +4549,7 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_061($object)"
+      "policy_061($object, grasp=$grasp)"
      ],
      "policies": [
       "policy_061"
@@ -4570,6 +4572,37 @@
       "policy_055"
      ],
      "note": "Handle pinch on request; a container held by its handle can swing, so carry it gently."
+    },
+    {
+     "path_id": "pinch_requested",
+     "when": [
+      "args.grasp in ['top', 'side']"
+     ],
+     "extra_preconditions": [
+      {
+       "predicate": "grasp_clearance(object=$object)",
+       "name": "grasp_clearance",
+       "args": {
+        "object": "$object"
+       },
+       "negated": false,
+       "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
+       "kind": "fluent",
+       "gt_sources": [
+        "object_pose",
+        "asset_annotation"
+       ],
+       "checked": "before execution on live GT state; the Contract does not move if false"
+      }
+     ],
+     "extra_postconditions": [],
+     "chain": [
+      "policy_061($object, grasp=$grasp)"
+     ],
+     "policies": [
+      "policy_061"
+     ],
+     "note": "Only the requested pinch kind (top / side); no other kind when it has none."
     },
     {
      "path_id": "on_the_move",

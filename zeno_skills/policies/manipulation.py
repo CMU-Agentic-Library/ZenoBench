@@ -23,8 +23,8 @@ def _require_grasp(rig, name, kind):
 class PickPolicy(AtomicPolicy):
     """Choose pinch or push-then-edge grasp from the concrete object's annotation."""
 
-    def execute(self, name, *, max_candidates=12):
-        return skills.pick(self.rig, name, max_candidates=max_candidates)
+    def execute(self, name, *, max_candidates=12, grasp=None):
+        return skills.pick(self.rig, name, max_candidates=max_candidates, grasp=grasp)
 
 
 class TopPinchPickPolicy(AtomicPolicy):

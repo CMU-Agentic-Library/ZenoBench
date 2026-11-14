@@ -65920,7 +65920,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "wooden_block_b"
+        "object": "wooden_block_b",
+        "grasp": "side"
        }
       },
       {

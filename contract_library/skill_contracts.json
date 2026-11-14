@@ -2463,9 +2463,11 @@
     "grasp": {
      "type": "tag",
      "required": false,
-     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).",
+     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; \"top\" / \"side\" pinch only from above / from the side (fails when the object has no such pinch) -- a block going onto a low shelf behind a door needs \"side\": a top pinch holds the palm above it; otherwise the grasp follows the annotation (rim before handle before top).",
      "enum": [
-      "handle"
+      "handle",
+      "top",
+      "side"
      ]
     },
     "pass_by": {
@@ -2584,6 +2586,22 @@
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "path inside_cabinet_or_fridge"
+    },
+    {
+     "predicate": "grasp_clearance(object=$object)",
+     "name": "grasp_clearance",
+     "args": {
+      "object": "$object"
+     },
+     "negated": false,
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
+     "kind": "fluent",
+     "gt_sources": [
+      "object_pose",
+      "asset_annotation"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path pinch_requested"
     },
     {
      "predicate": "grasp_clearance(object=$object)",
@@ -2827,7 +2845,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "grasp": "$grasp"
+        }
        }
       ],
       "requires": [
@@ -2875,6 +2895,41 @@
       "requires": [],
       "ensures": [],
       "note": "Handle pinch on request; a container held by its handle can swing, so carry it gently."
+     },
+     {
+      "path_id": "pinch_requested",
+      "when": [
+       {
+        "noun": "args",
+        "field": "grasp",
+        "op": "in",
+        "value": [
+         "top",
+         "side"
+        ]
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_061",
+        "args": [
+         "$object"
+        ],
+        "kwargs": {
+         "grasp": "$grasp"
+        }
+       }
+      ],
+      "requires": [
+       {
+        "pred": "grasp_clearance",
+        "args": {
+         "object": "$object"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "Only the requested pinch kind (top / side); no other kind when it has none."
      },
      {
       "path_id": "on_the_move",

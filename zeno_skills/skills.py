@@ -986,18 +986,27 @@ def _watching(rig, name):
     return clear.watch(name) if clear is not None and hasattr(clear, "watch") else nullcontext()
 
 
-def pick(rig, name, max_candidates=12):
+def pick(rig, name, max_candidates=12, grasp=None):
     """Pinch grasp from the asset's annotation, one flow for every kind (top, side, rim, thickness):
     a flat object wider than the gripper is pinched across its thickness at a side that overhangs
     its support -- sliding it there is expose's job, not pick's.  (The edge pinch's own flow, the
-    push inside pick and the floor corner pinch are gone, 2026-11-05.)"""
+    push inside pick and the floor corner pinch are gone, 2026-11-05.)
+
+    ``grasp`` "top" / "side" (GRASP_REQUEST) keeps only that pinch kind -- the caller knows where the
+    object goes next: a top pinch leaves the palm above the object, too high for a low shelf
+    (docs/skills/place.md).  An object without one fails; it never falls back to another kind."""
     obj = rig.ann.objects[name]
-    if not rig.ann.asset_of(obj)["grasps"]:
+    grasps = rig.ann.asset_of(obj)["grasps"]
+    if not grasps:
         raise SkillFailure(f"pick {name}: asset '{obj['asset']}' has no Zeno-feasible grasp annotation")
-    return _pick_pinch(rig, name, max_candidates)
+    kinds = GRASP_REQUEST.get(grasp, PINCH_KINDS)
+    if not any(g["type"] in kinds for g in grasps):
+        raise SkillFailure(f"pick {name}: no {grasp} pinch annotated (has {sorted({g['type'] for g in grasps})})")
+    return _pick_pinch(rig, name, max_candidates, kinds)
 
 
 PINCH_KINDS = ("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect", "thickness_pinch")
+GRASP_REQUEST = {"top": ("top_pinch",), "side": ("side_pinch",)}   # pick(grasp=...): the kinds it keeps
 
 
 def _pick_pinch(rig, name, max_candidates=12, kinds=PINCH_KINDS):

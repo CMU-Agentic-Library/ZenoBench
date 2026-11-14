@@ -114,3 +114,17 @@ def test_policy_value_error_is_a_policy_failure(monkeypatch):
     with pytest.raises(ContractError) as exc:
         runner._run_steps([{"policy": "policy_103", "args": [700]}], {}, {}, {}, SimpleNamespace(policy_steps=[]), 0)
     assert exc.value.code == "POLICY_FAILED" and "out of range" in str(exc.value)
+
+
+@pytest.mark.parametrize("grasp, location, want", [
+    ("side", "kitchen_island", "pinch_requested"),
+    ("top", "kitchen_island", "pinch_requested"),
+    (None, "kitchen_island", "top_pinch"),
+    ("side", "cabinet", "inside_cabinet_or_fridge"),     # behind a door the request rides along (grasp="$grasp")
+])
+def test_pick_grasp_request_picks_the_pinch_path(grasp, location, want):
+    nouns = {"args": {"grasp": grasp}, "object": {"location": location, "grasp_types": ["top_pinch", "side_pinch"]}}
+    assert _path("pick", nouns) == want
+    step = next(p for p in CONTRACTS["pick"]["policy_plan"]["paths"] if p["path_id"] == want)["steps"][0]
+    if want != "top_pinch":
+        assert step["kwargs"] == {"grasp": "$grasp"}
