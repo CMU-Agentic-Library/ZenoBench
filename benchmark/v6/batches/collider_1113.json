@@ -1,0 +1,128 @@
+[
+ {
+  "task": "T24_snack_for_kid",
+  "seed": 10,
+  "variant": "no_apples_for_him",
+  "route": "v6_no_apples_for_him",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "seed": 10,
+  "variant": "no_bowl",
+  "route": "v6_no_bowl",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "variant": "copy_the_setting__plate_bowl_mug_left",
+  "route": "v6_copy_the_setting__plate_bowl_mug_left",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "seed": 10,
+  "variant": "spoon_on_floor",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "variant": "vessel_decides_appliance__in_foil_tray",
+  "route": "v6_vessel_decides_appliance__in_foil_tray",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "variant": "fruits_on_table",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "castle_stays__tall_none_loose",
+  "route": "v6_castle_stays__tall_none_loose",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 10,
+  "variant": "car_in_living_room",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 10,
+  "variant": "bear_to_bed",
+  "route": "v6_bear_to_bed",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "tissue_out_of_view",
+  "route": "v6_tissue_out_of_view",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "tissue_on_tv_stand",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T29_clear_table_for_dinner",
+  "seed": 10,
+  "variant": "car_on_table",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "bins_capacity__side_left_full",
+  "route": "v6_bins_capacity__side_left_full",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "variant": "large_only",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt",
+  "video": true
+ }
+]

@@ -384,18 +384,18 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Control
 
-* `tissue_on_tv_stand` (nominal, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.928, 6.655])
+* `tissue_on_tv_stand` (nominal, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.908, 6.655])
 
 ### Task-Level
 
-* `tissue_out_of_view` (v6_tissue_out_of_view, 5 steps): search(tissue,living_room_0_1) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.928, 6.655])
-* `which_table__east` (v6_which_table__east, 8 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_1/top) look(dining_table_1/top) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.928, 6.655])
+* `tissue_out_of_view` (v6_tissue_out_of_view, 5 steps): search(tissue,living_room_0_1) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.908, 6.655])
+* `which_table__east` (v6_which_table__east, 8 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_1/top) look(dining_table_1/top) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.908, 6.655])
 * `which_table__west` (v6_which_table__west, 8 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) look(dining_table_2/top) navigate(dining_table_1/top) place(tissue,dining_table_1/top,[-7.621, 7.409])
 * `no_tissue` (v6_no_tissue, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(spare_sponge) pick(spare_sponge) navigate(dining_table_2/top) place(spare_sponge,dining_table_2/top,[2.928, 6.655])
-* `tissue_put_away__in_4` (v6_tissue_put_away__in_4, 18 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_4,0.3) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.928, 6.655]) navigate(kitchen_cabinet_4) close(kitchen_cabinet_4)
-* `tissue_put_away__in_6` (v6_tissue_put_away__in_6, 18 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_6,0.3) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.928, 6.655]) navigate(kitchen_cabinet_6) close(kitchen_cabinet_6)
-* `the_kids_side__kid_north` (v6_the_kids_side__kid_north, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.708, 7.555])
-* `the_kids_side__kid_south` (v6_the_kids_side__kid_south, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.708, 6.295])
+* `tissue_put_away__in_4` (v6_tissue_put_away__in_4, 18 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_4,0.3) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.908, 6.655]) navigate(kitchen_cabinet_4) close(kitchen_cabinet_4)
+* `tissue_put_away__in_6` (v6_tissue_put_away__in_6, 18 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_6,0.3) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[2.908, 6.655]) navigate(kitchen_cabinet_6) close(kitchen_cabinet_6)
+* `the_kids_side__kid_north` (v6_the_kids_side__kid_north, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.708, 7.355])
+* `the_kids_side__kid_south` (v6_the_kids_side__kid_south, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.708, 6.495])
 
 ## T22_put_away_shopping
 

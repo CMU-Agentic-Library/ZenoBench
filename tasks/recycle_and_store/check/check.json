@@ -4,13 +4,13 @@
  "objects": {
   "/World/TaskAssets/plate_counter_a/Asset/breakfast_plate": {
    "drift_m": 0.0,
-   "z0": 0.8746,
-   "z": 0.8746
+   "z0": 1.0146,
+   "z": 1.0146
   },
   "/World/TaskAssets/plate_counter_b/Asset/breakfast_plate": {
    "drift_m": 0.0,
-   "z0": 1.0236,
-   "z": 1.0236
+   "z0": 1.0146,
+   "z": 1.0146
   },
   "/World/TaskAssets/plate_dining_cabinet/Asset/breakfast_plate": {
    "drift_m": 0.0,
@@ -29,23 +29,23 @@
   },
   "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl": {
    "drift_m": 0.0,
-   "z0": 0.7473,
-   "z": 0.7473
+   "z0": 0.7562,
+   "z": 0.7562
   },
   "/World/TaskAssets/cup_kitchen_cabinet/Asset/breakfast_cup": {
    "drift_m": 0.0,
-   "z0": 1.2644,
-   "z": 1.2644
+   "z0": 1.2643,
+   "z": 1.2643
   },
   "/World/TaskAssets/cup_counter_b/Asset/breakfast_cup": {
    "drift_m": 0.0,
-   "z0": 1.0001,
-   "z": 1.0001
+   "z0": 1.075,
+   "z": 1.075
   },
   "/World/TaskAssets/cup_side_table/Asset/breakfast_cup": {
    "drift_m": 0.0,
-   "z0": 0.7592,
-   "z": 0.7592
+   "z0": 0.7861,
+   "z": 0.7861
   },
   "/World/TaskAssets/mug_dining_cabinet/Asset/breakfast_mug": {
    "drift_m": 0.0,
@@ -54,8 +54,8 @@
   },
   "/World/TaskAssets/mug_shelf/Asset/breakfast_mug": {
    "drift_m": 0.0,
-   "z0": 1.4727,
-   "z": 1.4727
+   "z0": 1.479,
+   "z": 1.479
   },
   "/World/TaskAssets/mug_counter/Asset/breakfast_mug": {
    "drift_m": 0.0,
@@ -64,38 +64,38 @@
   },
   "/World/TaskAssets/spoon_counter/Asset/breakfast_spoon": {
    "drift_m": 0.0,
-   "z0": 1.0459,
-   "z": 1.0459
+   "z0": 1.0239,
+   "z": 1.0239
   },
   "/World/TaskAssets/spoon_kitchen_cabinet/Asset/breakfast_spoon": {
    "drift_m": 0.0,
-   "z0": 0.8138,
-   "z": 0.8138
+   "z0": 0.8133,
+   "z": 0.8133
   },
   "/World/TaskAssets/spoon_side_table/Asset/breakfast_spoon": {
-   "drift_m": 0.0,
-   "z0": 0.7103,
-   "z": 0.7103
+   "drift_m": 0.0001,
+   "z0": 0.7186,
+   "z": 0.7186
   },
   "/World/TaskAssets/spoon_target_table/Asset/breakfast_spoon": {
    "drift_m": 0.0,
-   "z0": 0.8641,
-   "z": 0.8641
+   "z0": 0.8558,
+   "z": 0.8558
   },
   "/World/TaskAssets/clutter_cereal_a/Asset/cereal_box": {
    "drift_m": 0.0,
-   "z0": 1.0068,
-   "z": 1.0068
+   "z0": 0.9991,
+   "z": 0.9991
   },
   "/World/TaskAssets/clutter_cereal_b/Asset/cereal_box": {
    "drift_m": 0.0,
-   "z0": 1.0068,
-   "z": 1.0068
+   "z0": 0.9991,
+   "z": 0.9991
   },
   "/World/TaskAssets/plate_inside_kitchen_cabinet/Asset/breakfast_plate": {
    "drift_m": 0.0,
-   "z0": 0.4264,
-   "z": 0.4264
+   "z0": 0.4265,
+   "z": 0.4265
   },
   "/World/TaskAssets/bowl_inside_kitchen_cabinet/Asset/breakfast_bowl": {
    "drift_m": 0.0,
@@ -104,18 +104,18 @@
   },
   "/World/TaskAssets/spoon_inside_kitchen_drawer/Asset/breakfast_spoon": {
    "drift_m": 0.0,
-   "z0": 0.5886,
-   "z": 0.5886
+   "z0": 0.5839,
+   "z": 0.5839
   },
   "/World/Tasks/soda_can/Asset/soda_can": {
    "drift_m": 0.0,
-   "z0": 0.5324,
-   "z": 0.5324
+   "z0": 0.5445,
+   "z": 0.5445
   },
   "/World/Tasks/snack_carton/Asset/snack_carton": {
-   "drift_m": 0.0002,
-   "z0": 0.558,
-   "z": 0.558
+   "drift_m": 0.0,
+   "z0": 0.5701,
+   "z": 0.5701
   },
   "/World/Tasks/foam_cube/Asset/foam_cube": {
    "drift_m": 0.0,
@@ -124,8 +124,8 @@
   },
   "/World/Tasks/wide_storage_bin/Asset/wide_storage_bin": {
    "drift_m": 0.0,
-   "z0": 0.776,
-   "z": 0.776
+   "z0": 0.7789,
+   "z": 0.7789
   }
  },
  "articulations": {

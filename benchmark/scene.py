@@ -289,9 +289,4 @@ def add_objects(stage, add: dict, assets: dict, supports: dict):
             rb = PhysxSchema.PhysxRigidBodyAPI.Apply(P.body_prim(stage, root))
             rb.CreateEnableCCDAttr().Set(True)
             rb.CreateAngularDampingAttr().Set(3.0)
-        if spec.get("container"):
-            c = spec["container"]
-            P.container_collider(stage, root, c["bands"], shape=c["shape"], mats=mats,
-                                 handle=c.get("handle_collider"), extra_handles=c.get("extra_handle_colliders", []))
-        else:
-            P.solid_collider(stage, root, mats=mats)
+        P.apply_asset_colliders(stage, root, spec, mats=mats)
