@@ -178,22 +178,22 @@
   "prompt": "one closed green paperback book lying flat, isolated product"
  },
  "tissue_box": {
-  "size": 0.14,
-  "mass": 0.17,
+  "size": 0.12,
+  "mass": 0.12,
   "tags": [
-   "box",
-   "flat"
+   "box"
   ],
   "collider": "solid",
   "lay_flat": false,
   "urdf": "assets/asset3d/tissue_box/result/tissue_box.urdf",
   "target_size": [
-   0.14,
-   0.09,
+   0.12,
+   0.06,
    0.06
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
-  "prompt": "rectangular patterned tissue box with one white tissue emerging, isolated product"
+  "prompt": "rectangular patterned tissue box with one white tissue emerging, isolated product",
+  "note": "12 x 6 x 6 cm (was 14 x 9 x 6): 6 cm across fits the 8 cm gripper as a top pinch; 9 cm only by the push-to-edge thickness pinch, which failed in v6 (11-13)"
  },
  "rolling_pin": {
   "size": 0.22,

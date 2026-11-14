@@ -430,14 +430,16 @@ Each fix removes a bug found in the URDF→USD import. The code is in `zeno_skil
 | Floating base on 2 N·m wheel drives: the base moved instead of the door | Fixed-base articulation with holonomic x, y, yaw base joints on position drives (`physics.base_joints`, applied at load). A first fix hung the base on a fixed joint from the world whose frame was moved: that drag bent the waist to its limit on every forward drive |
 | Finger colliders (convex decomposition) fused pad and rail into a wedge, so the fingers stalled 3.4 cm open | Pad-sized box colliders, rubber friction (μ 2.0, combine = max) |
 | Left arm hung into the floor when the torso lowered | Held folded |
-| Containers were imported as one convex hull (a solid dome) | Walls following the mesh profile plus a base plate |
+| Containers were imported as one convex hull (a solid dome) | Walls following the mesh profile plus a base plate, fitted around the body: handles left out (the mug's walls were 1.2 cm too wide and 1.6 cm off towards the handle), oval rims as ellipses |
 | Placeholder inertia (1, 1, 1) kg·m² | Box inertia from real size and mass |
 | Rigid body nested under a rigid body (`collisions` prim) | Stripped |
-| Collision API on Xforms, uneven bottoms: boxes rocked, spoons fell through | Convex hull on the collision mesh |
+| Collision API on Xforms, uneven bottoms: boxes rocked, spoons fell through | Convex hull on the collision mesh; concave solids (banana, teddy bear, toy car, duck, spoon, plate), whose one hull filled hollows by 1-4 cm, as 16-32 V-HACD convex pieces (`annotations/collision_hulls.json`, `tools/prepare_assets.py --hulls`) |
 | Hinges with no damping; joint friction made doors un-openable | Viscous damping only on hinges; small friction on drawers |
 | Objects spawned floating or interpenetrating | Drop-and-settle, rest poses written back |
 | Every generated asset shared one texture file (`material_0.png`) | Per-asset textures (`tools/fix_textures.py`) |
 | Round containers had a gap between the floor plate and the wall; small items fell through | Floor tiles out to the wall |
+
+Built scenes get changed collider rules with `tools/refresh_colliders.py` (in place, positions kept), then `tools/settle_scene.py` and `tools/check_scene.py`.
 | Small light bodies tunnelled and rolled forever | Per-body CCD and angular damping for objects < 6 cm |
 | Dangling `lidar_link` visual reference in the robot USD | Empty prim at the referenced path |
 

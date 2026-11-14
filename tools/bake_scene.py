@@ -95,13 +95,7 @@ def main():
             continue
         path = str(inst.GetPath())
         P.set_box_inertia(stage, path, a["mass"])
-        if a["collider"] != "solid" and a.get("container"):
-            c = a["container"]
-            n = P.container_collider(stage, path, c["bands"], shape=c["shape"], mats=mats, handle=c.get("handle_collider"))
-            report[inst.GetName()] = f"{t}: container walls x{n}"
-        else:
-            P.solid_collider(stage, path, mats=mats)
-            report[inst.GetName()] = f"{t}: solid"
+        report[inst.GetName()] = f"{t}: " + P.apply_asset_colliders(stage, path, a, mats=mats)
     # start every free object 1 cm above its support; settle_scene.py then
     # drops it and bakes the true rest pose (no initial interpenetration)
     for inst in stage.GetPrimAtPath("/World/TaskAssets").GetChildren():

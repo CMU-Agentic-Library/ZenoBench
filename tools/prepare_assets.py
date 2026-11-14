@@ -135,29 +135,79 @@ def mesh_zup(urdf):
     return mesh
 
 
+ELLIPSE_MIN = 1.06           # body outline with axis ratio above this: an ellipse, not a circle
+CENTRE_MIN_M = 0.002         # body centre further than this from the bbox centre is written out
+
+
+def _outline(xy, c, nsec=36):
+    """Outermost point per angular sector around c (top view)."""
+    d = xy - c
+    k = ((np.arctan2(d[:, 1], d[:, 0]) + np.pi) / (2 * np.pi) * nsec).astype(int) % nsec
+    r = np.hypot(d[:, 0], d[:, 1])
+    out = [d[k == s][np.argmax(r[k == s])] + c for s in range(nsec) if (k == s).sum() >= 3]
+    return np.asarray(out)
+
+
+def fit_body(xy, c0):
+    """Centre and axis radii (outer surface) of a container body in top view.
+
+    The outline is the outermost point per 10-degree sector; sectors sticking out more
+    than 12 % past the median radius are a handle (mug, pot) and are left out.  An
+    axis-aligned ellipse is fitted to the rest, re-centred, four times.  (The old profile
+    took the 90th-percentile radius around the bounding-box centre: a mug's handle moved
+    that centre 1.6 cm towards the handle and widened the walls by 1.2 cm.)"""
+    c = np.asarray(c0, float)
+    for _ in range(4):
+        e = _outline(xy, c)
+        r = np.hypot(*(e - c).T)
+        p = e[r <= 1.12 * np.median(r)]
+        A, B, C, D = np.linalg.lstsq(np.c_[p[:, 0] ** 2, p[:, 1] ** 2, p[:, 0], p[:, 1]],
+                                     np.ones(len(p)), rcond=None)[0]
+        c = np.array([-C / (2 * A), -D / (2 * B)])
+        g = 1 + A * c[0] ** 2 + B * c[1] ** 2
+        rx, ry = math.sqrt(g / A), math.sqrt(g / B)
+    return c, rx, ry
+
+
 def container_profile(mesh, kind, wall=0.007, body_fraction=1.0):
+    """Wall bands of a container (consumed by zeno_skills.physics.container_collider).
+
+    round:   bands (z_lo, z_hi, r)        wall-centre radius
+    ellipse: bands (z_lo, z_hi, rx, ry)   wall-centre semi-axes
+    rect:    bands (z_lo, z_hi, hx, hy)   wall-centre half sizes, per height (sloped sides)
+    centre:  body centre minus the bbox bottom centre (x, y), when they differ (a mug's handle)"""
     b = mesh.bounds
     h = (b[1, 2] - b[0, 2]) * body_fraction
+    v = mesh.vertices
+    c0 = (b[0, :2] + b[1, :2]) / 2
+    z = v[:, 2] - b[0, 2]
+    edges = np.linspace(0.12 * h, h, 5)
+    slabs = [(za, zb, (z >= za) & (z <= zb)) for za, zb in zip(edges[:-1], edges[1:])]
+    slabs = [s for s in slabs if s[2].sum() >= 10]
     if kind == "rect_container":
+        # one band of straight walls at the bbox.  Walls per height band following sloped sides
+        # were tried (11-13): the rim lip of the small storage bin left a 2 cm step between the top
+        # band and the one below, and dropping the toy car into it failed in T12 bins_capacity
+        # (passes with these walls).
         hx, hy = (b[1, 0] - b[0, 0]) / 2 - wall / 2, (b[1, 1] - b[0, 1]) / 2 - wall / 2
         return {"shape": "rect", "bands": [[0.0, round(h, 4), round(hx, 4), round(hy, 4)]],
                 "rim_height": round(h, 4)}
-    v = mesh.vertices
-    c = (b[0, :2] + b[1, :2]) / 2
-    r = np.linalg.norm(v[:, :2] - c, axis=1)
-    z = v[:, 2] - b[0, 2]
-    bands = []
-    edges = np.linspace(0.12 * h, h, 5)
-    for za, zb in zip(edges[:-1], edges[1:]):
-        sel = (z >= za) & (z <= zb)
-        if sel.sum() < 10:
-            continue
-        # wall centre: outer radius minus half a wall (handles excluded by the
-        # 90th percentile)
-        ro = float(np.percentile(r[sel], 90))
-        bands.append([round(za, 4), round(zb, 4), round(ro - wall / 2, 4)])
-    return {"shape": "round", "bands": bands, "rim_height": round(h, 4),
-            "rim_radius": bands[-1][2] if bands else None}
+    fits = [(za, zb, *fit_body(v[sel, :2], c0)) for za, zb, sel in slabs]
+    centre = np.mean([f[2] for f in fits], axis=0) - c0
+    ratio = max(max(f[3], f[4]) / min(f[3], f[4]) for f in fits)
+    if ratio > ELLIPSE_MIN:
+        shape = "ellipse"
+        bands = [[round(za, 4), round(zb, 4), round(rx - wall / 2, 4), round(ry - wall / 2, 4)]
+                 for za, zb, _, rx, ry in fits]
+        rim = min(bands[-1][2:])
+    else:
+        shape = "round"
+        bands = [[round(za, 4), round(zb, 4), round((rx + ry) / 2 - wall / 2, 4)] for za, zb, _, rx, ry in fits]
+        rim = bands[-1][2]
+    out = {"shape": shape, "bands": bands, "rim_height": round(h, 4), "rim_radius": rim}
+    if np.hypot(*centre) > CENTRE_MIN_M:
+        out["centre"] = [round(float(centre[0]), 4), round(float(centre[1]), 4)]
+    return out
 
 
 def palm_spheres():
@@ -209,9 +259,14 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     out = []
     if kind == "round_container":
         prof = profile or container_profile(mesh, kind, body_fraction=body_fraction)
-        out.append({"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
-                    "depth": 0.035, "azimuths_deg": list(range(0, 360, 30)), "tilts": [0.5, 0.35, 0.2],
-                    "pre_open": 0.03})
+        g = {"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
+             "depth": 0.035, "azimuths_deg": list(range(0, 360, 30)), "tilts": [0.5, 0.35, 0.2],
+             "pre_open": 0.03}
+        if prof.get("centre"):
+            g["centre"] = prof["centre"]               # the body's centre, not the bbox's (mug handle)
+        if prof.get("shape") == "ellipse":
+            g["radii"] = prof["bands"][-1][2:4]        # wall-centre semi-axes at the rim
+        out.append(g)
     elif kind == "rect_container":
         out.append({"type": "rim_pinch_rect", "half_x": float(ext[0] / 2), "half_y": float(ext[1] / 2),
                     "rim_height": float(ext[2]), "depth": 0.03, "tilts": [0.4, 0.2], "pre_open": 0.03})
@@ -460,12 +515,57 @@ def patch_usd(name, urdf):
     lay.Save()
 
 
+# Concave solids whose single convex hull fills hollows by 1.3-3.7 cm (95th percentile of the hull's
+# surface off the mesh): they collide as V-HACD convex pieces instead (zeno_skills.physics.solid_collider).
+# Not pot_lid / soup_pot: the lid's hull only fills under its dome, and the pot's pieces bulged
+# 2-6 cm past the mesh (worse than its hull).  Not foil_takeout_tray: it is a closed takeout box
+# with food in it; as an open shell, expose's top push pressed into it and it did not move (11-13).
+DECOMPOSE = {"banana", "teddy_bear", "toy_car", "rubber_duck", "breakfast_spoon", "breakfast_plate"}
+HULLS = ROOT / "annotations" / "collision_hulls.json"
+HULL_VERTS = 60              # cuRobo takes at most 64 vertices per hull (zeno_skills/scene_geometry.py)
+
+
+def _outer_overfill(parts, mesh):
+    """95th percentile distance from the pieces' outer surface (not the faces shared inside the union)
+    to the mesh: how far the collider bulges past what is drawn."""
+    pts = []
+    area = sum(p.area for p in parts)
+    for i, h in enumerate(parts):
+        p, _ = trimesh.sample.sample_surface(h, max(200, int(3000 * h.area / area)), seed=i)
+        keep = np.ones(len(p), bool)
+        for j, o in enumerate(parts):
+            if j != i:
+                keep &= ~o.contains(p)
+        pts.append(p[keep])
+    _, d, _ = trimesh.proximity.closest_point(mesh, np.vstack(pts))
+    return float(np.percentile(d, 95))
+
+
+def convex_pieces(name):
+    """V-HACD pieces of the sim mesh in the body frame (16 or 32 pieces, whichever bulges less)."""
+    mesh = mesh_zup(source_urdf(name).parent / f"{name}_sim.urdf")   # the body frame (write_sim_urdf)
+    best = None
+    for n in (16, 32):
+        parts = mesh.convex_decomposition(maxConvexHulls=n, resolution=400000, maxNumVerticesPerCH=HULL_VERTS)
+        parts = [p if isinstance(p, trimesh.Trimesh) else trimesh.Trimesh(**p) for p in parts]
+        err = _outer_overfill(parts, mesh)
+        if best is None or err < best[0]:
+            best = (err, parts)
+    err, parts = best
+    single = _outer_overfill([mesh.convex_hull], mesh)
+    print(f"HULLS {name}: {len(parts)} pieces, bulge p95 {err * 1000:.1f} mm (one hull {single * 1000:.1f} mm)",
+          flush=True)
+    return [{"points": np.round(p.vertices, 5).tolist(), "faces": p.faces.tolist()} for p in parts]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--convert", action="store_true", help="URDF -> USD for assets missing a USD")
     ap.add_argument("--patch-usd", action="store_true",
                     help="rescale the existing USDs in place from the sim URDFs (no EmbodiedGen needed)")
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--hulls", action="store_true",
+                    help="recompute the convex pieces of the DECOMPOSE assets (annotations/collision_hulls.json)")
     args = ap.parse_args()
     names = [n for n in SPECS if (args.only is None or n in args.only) and source_urdf(n).exists()]
     missing = [n for n in SPECS if not source_urdf(n).exists()]
@@ -477,6 +577,12 @@ def main():
     ANN.parent.mkdir(parents=True, exist_ok=True)
     ANN.write_text(json.dumps(anns, indent=1))
     print("MISSING (not generated yet):", missing)
+    if args.hulls:
+        hulls = json.loads(HULLS.read_text()) if HULLS.exists() else {}
+        for n in names:
+            if n in DECOMPOSE:
+                hulls[n] = convex_pieces(n)
+        HULLS.write_text(json.dumps(hulls, separators=(",", ":")))
     if args.patch_usd:
         for n in names:
             patch_usd(n, urdfs[n])

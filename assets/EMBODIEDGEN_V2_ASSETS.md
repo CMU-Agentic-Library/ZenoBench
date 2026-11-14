@@ -14,7 +14,7 @@ The assets extend the **existing house** through [`recycle_and_store`](../task_s
 | `juice_bottle` | 5.8 × 5.8 × 18 | utility task TV stand object |
 | `plastic_cup` | 8 × 8 × 9.5 | utility task table object |
 | `paperback_book` | 18 × 12 × 2.5 | utility task table object |
-| `tissue_box` | 14 × 9 × 6 | utility task TV stand object |
+| `tissue_box` | 12 × 6 × 6 | utility task TV stand object (was 14 × 9 × 6: 9 cm is wider than the 8 cm gripper) |
 | `rolling_pin` | 22 × 4.6 × 4.6 | utility task side table object |
 | `shallow_sorting_tray` | 27 × 20 × 5.5 | utility task bookcase target |
 | `handled_cooking_pot` | 26 × 30 × 16 | kitchen counter grasp demo |

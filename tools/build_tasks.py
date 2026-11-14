@@ -237,11 +237,9 @@ def main():
             # PhysX has no rolling resistance: small round items otherwise roll
             # around a cup floor forever.  Angular damping stands in for it.
             rb.CreateAngularDampingAttr().Set(3.0)
+        P.apply_asset_colliders(stage, f"/World/Tasks/{name}", spec_a, mats=mats)
         if spec_a.get("container"):
             c = spec_a["container"]
-            P.container_collider(stage, f"/World/Tasks/{name}", c["bands"], shape=c["shape"],
-                                 mats=mats, handle=c.get("handle_collider"),
-                                 extra_handles=c.get("extra_handle_colliders", []))
             # grip bars added to an asset (storage bin end handles) also get a visible mesh
             body = P.body_prim(stage, f"/World/Tasks/{name}")
             for i, hc in enumerate(c.get("extra_handle_colliders", []), start=1):
@@ -253,7 +251,6 @@ def main():
                                          Gf.Matrix4d().SetTranslate(Gf.Vec3d(*hc["center"])))
                 bar.CreateDisplayColorAttr([Gf.Vec3f(0.12, 0.25, 0.55)])
         else:
-            P.solid_collider(stage, f"/World/Tasks/{name}", mats=mats)
             if spec_a.get("knob_collider"):
                 # a grasp post on a flat knob: collider + matching dark visual
                 body = P.body_prim(stage, f"/World/Tasks/{name}")

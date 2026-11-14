@@ -142,9 +142,17 @@ class SceneAnnotations:
             if kinds and g["type"] not in kinds:
                 continue
             if g["type"] == "rim_pinch":
+                # the body's centre (a mug's handle shifts the bbox) and, for an oval rim, the
+                # radius along each azimuth
+                centre = bottom + rz(yaw) @ np.array([*g.get("centre", (0.0, 0.0)), 0.0])
                 for az in g["azimuths_deg"]:
                     d = np.array([math.cos(math.radians(az) + yaw), math.sin(math.radians(az) + yaw), 0.0])
-                    p = bottom + g["radius"] * d + np.array([0, 0, g["rim_height"] - g["depth"]])
+                    r = g["radius"]
+                    if g.get("radii"):
+                        rx, ry = g["radii"]
+                        ca, sa = math.cos(math.radians(az)), math.sin(math.radians(az))
+                        r = rx * ry / math.hypot(ry * ca, rx * sa)
+                    p = centre + r * d + np.array([0, 0, g["rim_height"] - g["depth"]])
                     for tilt in g["tilts"]:
                         appr = np.array([0, 0, -math.cos(tilt)]) - d * math.sin(tilt)
                         out.append({"kind": "rim_pinch", "p": p, "R": gripper_rot(appr, d),

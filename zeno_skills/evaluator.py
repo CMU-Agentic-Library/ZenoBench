@@ -97,12 +97,20 @@ class Geometry:
         top = prof["rim_height"] + 0.03
         if not (-0.01 <= local[2] <= top):
             return False, f"height {local[2]:.3f} m outside [0, {top:.3f}]"
+        cx, cy = prof.get("centre", (0.0, 0.0))        # body centre off the bbox (a mug's handle)
+        lx, ly = local[0] - cx, local[1] - cy
         if prof["shape"] == "round":
-            r = float(np.hypot(local[0], local[1]))
+            r = float(np.hypot(lx, ly))
             lim = max(b[2] for b in prof["bands"]) + 0.01
             return r <= lim, f"r {r:.3f} / {lim:.3f}"
-        _, _, hx, hy = prof["bands"][0]
-        ok = abs(local[0]) <= hx + 0.01 and abs(local[1]) <= hy + 0.01
+        if prof["shape"] == "ellipse":
+            rx = max(b[2] for b in prof["bands"]) + 0.01
+            ry = max(b[3] for b in prof["bands"]) + 0.01
+            q = float(np.hypot(lx / rx, ly / ry))
+            return q <= 1.0, f"ellipse {q:.2f} of ({rx:.3f}, {ry:.3f})"
+        hx = max(b[2] for b in prof["bands"])          # widest band (sloped sides narrow downwards)
+        hy = max(b[3] for b in prof["bands"])
+        ok = abs(lx) <= hx + 0.01 and abs(ly) <= hy + 0.01
         return ok, f"local ({local[0]:.3f}, {local[1]:.3f}) / ({hx:.3f}, {hy:.3f})"
 
     def support_under(self, name, st):

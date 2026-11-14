@@ -24,7 +24,7 @@
    {
     "type": "thickness_pinch",
     "depth": 0.025,
-    "pre_open": 0.02825,
+    "pre_open": 0.028250112806053433,
     "note": "pads above and below, from outside a side; the side must overhang its support"
    }
   ],
@@ -56,7 +56,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0853,
+    "radius": 0.0852,
     "rim_height": 0.09,
     "depth": 0.035,
     "azimuths_deg": [
@@ -90,26 +90,26 @@
     [
      0.0108,
      0.0306,
-     0.0639
+     0.0662
     ],
     [
      0.0306,
      0.0504,
-     0.0736
+     0.0747
     ],
     [
      0.0504,
      0.0702,
-     0.0792
+     0.0802
     ],
     [
      0.0702,
      0.09,
-     0.0853
+     0.0852
     ]
    ],
    "rim_height": 0.09,
-   "rim_radius": 0.0853
+   "rim_radius": 0.0852
   }
  },
  "breakfast_cup": {
@@ -137,7 +137,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0507,
+    "radius": 0.0509,
     "rim_height": 0.15,
     "depth": 0.035,
     "azimuths_deg": [
@@ -171,26 +171,26 @@
     [
      0.018,
      0.051,
-     0.0356
+     0.0362
     ],
     [
      0.051,
      0.084,
-     0.0387
+     0.0394
     ],
     [
      0.084,
      0.117,
-     0.0419
+     0.0426
     ],
     [
      0.117,
      0.15,
-     0.0507
+     0.0509
     ]
    ],
    "rim_height": 0.15,
-   "rim_radius": 0.0507
+   "rim_radius": 0.0509
   }
  },
  "breakfast_mug": {
@@ -218,7 +218,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0566,
+    "radius": 0.043,
     "rim_height": 0.12,
     "depth": 0.035,
     "azimuths_deg": [
@@ -240,7 +240,11 @@
      0.35,
      0.2
     ],
-    "pre_open": 0.03
+    "pre_open": 0.03,
+    "centre": [
+     -0.0004,
+     0.0162
+    ]
    },
    {
     "type": "handle_pinch",
@@ -272,26 +276,30 @@
     [
      0.0144,
      0.0408,
-     0.0556
+     0.0422
     ],
     [
      0.0408,
      0.0672,
-     0.0561
+     0.0425
     ],
     [
      0.0672,
      0.0936,
-     0.0585
+     0.0428
     ],
     [
      0.0936,
      0.12,
-     0.0566
+     0.043
     ]
    ],
    "rim_height": 0.12,
-   "rim_radius": 0.0566,
+   "rim_radius": 0.043,
+   "centre": [
+    -0.0004,
+    0.0162
+   ],
    "handle_collider": {
     "center": [
      0.0,
@@ -509,7 +517,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.1326,
+    "radius": 0.1223,
     "rim_height": 0.174,
     "depth": 0.035,
     "azimuths_deg": [
@@ -531,38 +539,54 @@
      0.35,
      0.2
     ],
-    "pre_open": 0.03
+    "pre_open": 0.03,
+    "centre": [
+     -0.0018,
+     0.0013
+    ],
+    "radii": [
+     0.1413,
+     0.1223
+    ]
    }
   ],
   "usd": "usd/assets/fruit_basket.usd",
   "source_urdf": "assets/asset3d/fruit_basket/result/fruit_basket_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
-   "shape": "round",
+   "shape": "ellipse",
    "bands": [
     [
      0.0209,
      0.0592,
-     0.1102
+     0.1183,
+     0.102
     ],
     [
      0.0592,
      0.0974,
-     0.1177
+     0.1256,
+     0.1086
     ],
     [
      0.0974,
      0.1357,
-     0.1219
+     0.1297,
+     0.1125
     ],
     [
      0.1357,
      0.174,
-     0.1326
+     0.1413,
+     0.1223
     ]
    ],
    "rim_height": 0.174,
-   "rim_radius": 0.1326
+   "rim_radius": 0.1223,
+   "centre": [
+    -0.0018,
+    0.0013
+   ]
   }
  },
  "serving_tray": {
@@ -1394,7 +1418,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0364,
+    "radius": 0.0366,
     "rim_height": 0.095,
     "depth": 0.035,
     "azimuths_deg": [
@@ -1428,26 +1452,26 @@
     [
      0.0114,
      0.0323,
-     0.0264
+     0.0269
     ],
     [
      0.0323,
      0.0532,
-     0.0289
+     0.0294
     ],
     [
      0.0532,
      0.0741,
-     0.0314
+     0.0319
     ],
     [
      0.0741,
      0.095,
-     0.0364
+     0.0366
     ]
    ],
    "rim_height": 0.095,
-   "rim_radius": 0.0364
+   "rim_radius": 0.0366
   }
  },
  "paperback_book": {
@@ -1485,14 +1509,13 @@
  "tissue_box": {
   "name": "tissue_box",
   "tags": [
-   "box",
-   "flat"
+   "box"
   ],
-  "mass": 0.17,
+  "mass": 0.12,
   "collider": "solid",
   "size": [
-   0.14,
-   0.09,
+   0.12,
+   0.06,
    0.06
   ],
   "origin_to_bottom_center": [
@@ -1500,14 +1523,19 @@
    0.0,
    -0.0302
   ],
-  "min_pinch_width": 0.09,
+  "min_pinch_width": 0.06,
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "thickness_pinch",
-    "depth": 0.025,
-    "pre_open": 0.04,
-    "note": "pads above and below, from outside a side; the side must overhang its support"
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.05997508680213149,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.03576532517716247,
+    "pre_open": 0.04
    }
   ],
   "usd": "usd/assets/tissue_box.usd",
@@ -1834,7 +1862,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.1264,
+    "radius": 0.1267,
     "rim_height": 0.3,
     "depth": 0.035,
     "azimuths_deg": [
@@ -1868,26 +1896,26 @@
     [
      0.036,
      0.102,
-     0.1073
+     0.1082
     ],
     [
      0.102,
      0.168,
-     0.1116
+     0.1124
     ],
     [
      0.168,
      0.234,
-     0.1156
+     0.1165
     ],
     [
      0.234,
      0.3,
-     0.1264
+     0.1267
     ]
    ],
    "rim_height": 0.3,
-   "rim_radius": 0.1264
+   "rim_radius": 0.1267
   }
  },
  "cherry_tomato": {
@@ -2041,7 +2069,7 @@
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0844,
+    "radius": 0.0851,
     "rim_height": 0.09,
     "depth": 0.035,
     "azimuths_deg": [
@@ -2075,26 +2103,26 @@
     [
      0.0108,
      0.0306,
-     0.056
+     0.0577
     ],
     [
      0.0306,
      0.0504,
-     0.0704
+     0.0713
     ],
     [
      0.0504,
      0.0702,
-     0.0813
+     0.082
     ],
     [
      0.0702,
      0.09,
-     0.0844
+     0.0851
     ]
    ],
    "rim_height": 0.09,
-   "rim_radius": 0.0844
+   "rim_radius": 0.0851
   }
  },
  "glass_food_container": {
