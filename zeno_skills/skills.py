@@ -42,7 +42,8 @@ from .tolerances import (DOOR_CLOSED_TOL, DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HELD_
 TCP_BACKOFF = 0.12   # the old handle paths' pre-grasp (_handle_targets); the door framework has DOOR_REACH_IN
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
-COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
+COM_MARGIN = 0.015            # centre of mass stays at least this far inside the edge while overhanging (3.5 cm until
+                              # 11-13: objects under 18 cm long -- a tissue box, a rice container -- had no edge at all)
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
 APPROACH_STEP = 0.003         # m between the waypoints of a reach-in / set-down straight (the search's plan and its execution)
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)

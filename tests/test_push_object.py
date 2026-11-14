@@ -130,11 +130,12 @@ def test_slide_to_edge_pushes_once_with_every_free_edge_and_no_edge_after_a_fail
     monkeypatch.setattr(slide, "push_object", failing)
     with pytest.raises(SkillFailure, match="did not move"):
         SlideToEdgePolicy(rig).execute("book")
-    # +x: 0.065 m overhang wanted, the book 0.1 m inside (need 0.165); +y: 0.15 m inside (need 0.215)
+    # +x: EDGE_MIN_OVERHANG 0.055 m wanted, the book 0.1 m inside (need 0.155, aimed 5 mm past); +y: 0.15 m
+    # inside (need 0.205)
     assert len(calls) == 1 and len(calls[0]) == 2
     (n0, d0, e0), (n1, d1, e1) = calls[0]
-    assert np.allclose(n0, X) and (d0, e0) == pytest.approx((0.170, 0.165))
-    assert np.allclose(n1, Y) and (d1, e1) == pytest.approx((0.220, 0.215))
+    assert np.allclose(n0, X) and (d0, e0) == pytest.approx((0.160, 0.155))
+    assert np.allclose(n1, Y) and (d1, e1) == pytest.approx((0.210, 0.205))
 
 
 def test_slide_to_edge_judges_the_overhang_along_the_edge_the_push_went(monkeypatch):
@@ -147,4 +148,34 @@ def test_slide_to_edge_judges_the_overhang_along_the_edge_the_push_went(monkeypa
         return n, d
     monkeypatch.setattr(slide, "push_object", pushing)
     out = SlideToEdgePolicy(rig).execute("book")
-    assert out["direction"] == [0.0, 1.0] and out["overhang_m"] == pytest.approx(0.07)
+    assert out["direction"] == [0.0, 1.0] and out["overhang_m"] == pytest.approx(0.06)
+
+
+def test_slide_to_edge_keeps_a_short_object_s_centre_of_mass_on_the_top(monkeypatch):
+    # a 14 cm tissue box: half 0.07, so at most 0.055 m out (its centre of mass COM_MARGIN 0.015 on the top) --
+    # exactly what the edge pinch needs, no 5 mm extra; pushed past that it is refused
+    from zeno_skills import skills
+    _edges(monkeypatch)
+    rig = _Book()
+    rig.ann.asset_of = lambda obj: {"size": [0.14, 0.14, 0.06]}
+    seen = []
+
+    def pushing(rig_, name, s, ways, label="PUSH", modes=MODES):
+        seen.extend(ways)
+        n, d, _ = ways[0]
+        rig.at[:2] += d * n
+        return n, d
+    monkeypatch.setattr(slide, "push_object", pushing)
+    out = SlideToEdgePolicy(rig).execute("book")
+    assert all(d == pytest.approx(e) for _, d, e in seen)                 # no aim past the centre-of-mass limit
+    assert out["overhang_m"] == pytest.approx(skills.EDGE_MIN_OVERHANG)
+
+    def overshooting(rig_, name, s, ways, label="PUSH", modes=MODES):
+        n, d, _ = ways[0]
+        rig_.at[:2] += (d + 0.004) * n                                 # 4 mm past: under 1.5 cm on the top
+        return n, d
+    rig2 = _Book()
+    rig2.ann.asset_of = lambda obj: {"size": [0.14, 0.14, 0.06]}
+    monkeypatch.setattr(slide, "push_object", overshooting)
+    with pytest.raises(SkillFailure, match="centre of mass"):
+        SlideToEdgePolicy(rig2).execute("book")

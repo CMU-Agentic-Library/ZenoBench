@@ -32,7 +32,7 @@ Requires hand_empty(hand=right); base_near(place=$object).
 
 ## Postconditions (verified on live GT state)
 
-- `edge_overhang(object=$object)` — A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge. GT: object_pose, asset_annotation, support_annotation.
+- `edge_overhang(object=$object)` — A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays at least 1.5 cm inside the edge. GT: object_pose, asset_annotation, support_annotation.
 
 ## Verifier
 

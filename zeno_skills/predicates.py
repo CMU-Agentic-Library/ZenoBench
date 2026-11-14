@@ -625,13 +625,13 @@ def edge_overhang(rig, name, st):
 
 @predicate("edge_overhang", [("object", "object_ref")], "fluent",
            "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre "
-           "of mass stays 3.5 cm inside the edge.")
+           "of mass stays at least 1.5 cm inside the edge.")
 def _edge_overhang(rig, ctx, object):
     from . import skills
     over, half = edge_overhang(rig, object, _state(rig, ctx))
     if over is None:
         return False, "not on a support"
-    ok = skills.EDGE_MIN_OVERHANG - 0.01 <= over <= half - skills.COM_MARGIN + 0.015
+    ok = skills.EDGE_MIN_OVERHANG - 0.01 <= over <= half - skills.COM_MARGIN
     return ok, f"overhang {over:.3f} m"
 
 
