@@ -134,20 +134,20 @@
   },
   "tissue_box": {
     "prompt": "rectangular patterned tissue box with one white tissue emerging, isolated product",
-    "size": 0.14,
-    "mass": 0.17,
+    "size": 0.12,
+    "mass": 0.12,
     "tags": [
-      "box",
-      "flat"
+      "box"
     ],
     "collider": "solid",
     "lay_flat": false,
     "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
     "target_size": [
-      0.14,
-      0.09,
+      0.12,
+      0.06,
       0.06
-    ]
+    ],
+    "note": "12 x 6 x 6 cm (was 14 x 9 x 6): 6 cm across fits the 8 cm gripper as a top pinch; 9 cm only by the push-to-edge thickness pinch, which failed in v6 (11-13)"
   },
   "rolling_pin": {
     "prompt": "wooden rolling pin lying horizontally with cylindrical roller and short handles, isolated product",

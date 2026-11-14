@@ -3,13 +3,13 @@
       <visual>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/tissue_box.obj" scale="0.940791 0.500002 0.625238" />
+            <mesh filename="mesh/tissue_box.obj" scale="0.806392 0.500002 0.416826" />
          </geometry>
       </visual>
       <collision>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/tissue_box_collision.obj" scale="0.940791 0.500002 0.625238" />
+            <mesh filename="mesh/tissue_box_collision.obj" scale="0.806392 0.500002 0.416826" />
          </geometry>
          <gazebo>
             <mu1>0.60</mu1>
@@ -17,9 +17,9 @@
          </gazebo>
       </collision>
       <inertial>
-         <mass value="0.1700" />
+         <mass value="0.1200" />
          <origin xyz="0 0 0" />
-         <inertia ixx="1.657e-04" ixy="0.0" ixz="0.0" iyy="3.287e-04" iyz="0.0" izz="3.924e-04" />
+         <inertia ixx="7.200e-05" ixy="0.0" ixz="0.0" iyy="1.800e-04" iyz="0.0" izz="1.800e-04" />
       </inertial>
       <extra_info>
          <scale>0.148811</scale>

@@ -325,25 +325,74 @@ CONTAINER_WALL = 0.007        # m: wall thickness of a rebuilt container collide
 CONTAINER_BASE_T = 0.012      # m: thickness of its base plate (its floor is this far above its bottom)
 
 
-def container_collider(stage, root_path, profile, n_seg=24, wall=CONTAINER_WALL, shape="round", mats=None, handle=None, extra_handles=()):
+GENERATED_COLLIDERS = ("wall_", "hull_", "handle_collider")   # child prims these builders author
+HULLS_FILE = "annotations/collision_hulls.json"   # convex pieces of concave solids (tools/prepare_assets.py)
+_HULLS = None
+
+
+def collision_hulls(asset_name):
+    """The convex pieces of an asset in its body frame, or None (one hull of its collision mesh)."""
+    global _HULLS
+    if _HULLS is None:
+        import json
+        from pathlib import Path
+        f = Path(__file__).resolve().parents[1] / HULLS_FILE
+        _HULLS = json.loads(f.read_text()) if f.exists() else {}
+    return _HULLS.get(asset_name)
+
+
+def apply_asset_colliders(stage, root_path, asset, mats=None):
+    """The collider an annotated asset (annotations/assets.json record) gets in every scene:
+    container walls, or a solid's convex hull / convex pieces.  Returns a short report."""
+    c = asset.get("container")
+    if c and asset.get("collider", "solid") != "solid":
+        n = container_collider(stage, root_path, c["bands"], shape=c["shape"], mats=mats,
+                               handle=c.get("handle_collider"), extra_handles=c.get("extra_handle_colliders", []),
+                               origin=asset.get("origin_to_bottom_center"), centre=c.get("centre"))
+        return f"container walls x{n}"
+    hulls = collision_hulls(asset["name"])
+    solid_collider(stage, root_path, mats=mats, hulls=hulls)
+    return f"solid, {len(hulls)} convex pieces" if hulls else "solid, convex hull"
+
+
+def _clear_generated(stage, body):
+    """Remove the collider prims an earlier run authored under ``body`` (re-runs are exact)."""
+    for child in list(body.GetChildren()):
+        if child.GetName().startswith(GENERATED_COLLIDERS):
+            stage.RemovePrim(child.GetPath())
+
+
+def container_collider(stage, root_path, profile, n_seg=24, wall=CONTAINER_WALL, shape="round", mats=None,
+                       handle=None, extra_handles=(), origin=None, centre=None):
     """Thin-walled containers (bowl, cup, basket, box, tray) were imported with
     a single convex hull or a cavity-filling decomposition: a *solid* object
     that cannot hold anything or be rim-pinched.  Rebuild the collider as wall
     segments following the mesh profile plus a base plate.
 
-    profile: list of (z_lo, z_hi, r) bands above the object's bottom (round),
-             or for shape="rect": (z_lo, z_hi, half_x, half_y).
+    profile: bands above the object's bottom --
+             round (z_lo, z_hi, r), ellipse (z_lo, z_hi, rx, ry), rect (z_lo, z_hi, half_x, half_y),
+             all wall-centre sizes (tools/prepare_assets.container_profile).
+    origin:  the bottom centre in the body frame (asset origin_to_bottom_center); the walls are
+             then authored in the body frame, right at any yaw.  None: the old world-bbox placement.
+    centre:  (x, y) of the body's centre from the bottom centre (a mug's handle moves its bbox).
     """
     from pxr import Gf, UsdGeom, UsdPhysics
     deinstance(stage, root_path)
     root = stage.GetPrimAtPath(root_path)
     body = body_prim(stage, root_path)
+    _clear_generated(stage, body)
     disable_colliders(stage, root_path)
-    Mb = UsdGeom.XformCache().GetLocalToWorldTransform(body)
-    Minv = Mb.GetInverse()
-    rng = UsdGeom.Imageable(root).ComputeWorldBound(0, "default").ComputeAlignedRange()
-    cx, cy = (rng.GetMin()[0] + rng.GetMax()[0]) / 2, (rng.GetMin()[1] + rng.GetMax()[1]) / 2
-    z0 = rng.GetMin()[2]
+    if origin is not None:
+        to_body = Gf.Matrix4d(1.0)
+        cx, cy, z0 = float(origin[0]), float(origin[1]), float(origin[2])
+    else:
+        Mb = UsdGeom.XformCache().GetLocalToWorldTransform(body)
+        to_body = Mb.GetInverse()
+        rng = UsdGeom.Imageable(root).ComputeWorldBound(0, "default").ComputeAlignedRange()
+        cx, cy = (rng.GetMin()[0] + rng.GetMax()[0]) / 2, (rng.GetMin()[1] + rng.GetMax()[1]) / 2
+        z0 = rng.GetMin()[2]
+    if centre is not None:
+        cx, cy = cx + float(centre[0]), cy + float(centre[1])
     mats = mats or materials(stage)
     k = 0
 
@@ -353,46 +402,48 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=CONTAINER_WALL,
         k += 1
         cube.CreateSizeAttr(1.0)
         cube.CreatePurposeAttr().Set("guide")
-        world = Gf.Matrix4d().SetScale(Gf.Vec3d(*size)) * \
+        m = Gf.Matrix4d().SetScale(Gf.Vec3d(*size)) * \
             Gf.Matrix4d().SetRotate(Gf.Rotation(Gf.Vec3d(0, 0, 1), math.degrees(yaw))) * \
             Gf.Matrix4d().SetTranslate(Gf.Vec3d(*center))
         cube.ClearXformOpOrder()
-        cube.AddTransformOp().Set(world * Minv)
+        cube.AddTransformOp().Set(m * to_body)
         UsdPhysics.CollisionAPI.Apply(cube.GetPrim()).CreateCollisionEnabledAttr().Set(True)
         bind(cube.GetPrim(), mats[OBJECT_MATERIAL])
 
-    base_r = None
-    for band in profile:
-        if shape == "round":
-            za, zb, r = band
-            seg_w = 2 * math.pi * r / n_seg * 1.15
-            for i in range(n_seg):
-                a = 2 * math.pi * i / n_seg
-                add_box((cx + r * math.cos(a), cy + r * math.sin(a), z0 + (za + zb) / 2),
-                        (wall, seg_w, zb - za), a)
-            base_r = r if base_r is None else min(base_r, r)
-        else:
-            za, zb, hx, hy = band
-            zc = z0 + (za + zb) / 2
-            add_box((cx + hx, cy, zc), (wall, 2 * hy, zb - za), 0.0)
-            add_box((cx - hx, cy, zc), (wall, 2 * hy, zb - za), 0.0)
-            add_box((cx, cy + hy, zc), (2 * hx, wall, zb - za), 0.0)
-            add_box((cx, cy - hy, zc), (2 * hx, wall, zb - za), 0.0)
-            base_r = (hx, hy)
-    # base plate
-    if shape == "round":
-        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * base_r, 1.5 * base_r, CONTAINER_BASE_T), 0.0)
-        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * base_r, 1.5 * base_r, CONTAINER_BASE_T), math.pi / 4)
-        # The two squares only cover ~0.75 r; tiles out to the wall close the
-        # ring where small items (cherry tomatoes) used to fall through.
-        tile_w = 2 * math.pi * base_r / n_seg * 1.15
+    def ring(rx, ry, z, height, scale=1.0, thick=wall):
+        """n_seg boxes around an ellipse (a circle when rx == ry): centres on it, each
+        facing its outward normal, as long as its arc plus 15 % overlap."""
         for i in range(n_seg):
-            a = 2 * math.pi * i / n_seg
-            rm = 0.82 * base_r
-            add_box((cx + rm * math.cos(a), cy + rm * math.sin(a), z0 + 0.006),
-                    (0.36 * base_r + wall / 2, tile_w, CONTAINER_BASE_T), a)
+            t = 2 * math.pi * i / n_seg
+            arc = 2 * math.pi / n_seg * math.hypot(rx * math.sin(t), ry * math.cos(t))
+            add_box((cx + scale * rx * math.cos(t), cy + scale * ry * math.sin(t), z),
+                    (thick, arc * 1.15, height), math.atan2(math.sin(t) / ry, math.cos(t) / rx))
+
+    if shape in ("round", "ellipse"):
+        axes = [(b[2], b[2]) if shape == "round" else (b[2], b[3]) for b in profile]
+        for (za, zb, *_), (rx, ry) in zip(profile, axes):
+            ring(rx, ry, z0 + (za + zb) / 2, zb - za)
+        rx, ry = min(a[0] for a in axes), min(a[1] for a in axes)
+        # base plate: two crossed squares (they cover ~0.75 r), then tiles out to the wall close
+        # the ring where small items (cherry tomatoes) used to fall through
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * rx, 1.5 * ry, CONTAINER_BASE_T), 0.0)
+        rm = min(rx, ry)
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (1.5 * rm, 1.5 * rm, CONTAINER_BASE_T), math.pi / 4)
+        for i in range(n_seg):
+            t = 2 * math.pi * i / n_seg
+            arc = 2 * math.pi / n_seg * math.hypot(rx * math.sin(t), ry * math.cos(t))
+            add_box((cx + 0.82 * rx * math.cos(t), cy + 0.82 * ry * math.sin(t), z0 + 0.006),
+                    (0.36 * rm + wall / 2, arc * 1.15, CONTAINER_BASE_T),
+                    math.atan2(math.sin(t) / ry, math.cos(t) / rx))
     else:
-        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (2 * base_r[0], 2 * base_r[1], CONTAINER_BASE_T), 0.0)
+        for za, zb, hx, hy in profile:
+            zc = z0 + (za + zb) / 2
+            add_box((cx + hx, cy, zc), (wall, 2 * hy + wall, zb - za), 0.0)
+            add_box((cx - hx, cy, zc), (wall, 2 * hy + wall, zb - za), 0.0)
+            add_box((cx, cy + hy, zc), (2 * hx + wall, wall, zb - za), 0.0)
+            add_box((cx, cy - hy, zc), (2 * hx + wall, wall, zb - za), 0.0)
+        _, _, hx, hy = profile[0]                       # the lowest band: sloped sides narrow downwards
+        add_box((cx, cy, z0 + CONTAINER_BASE_T / 2), (2 * hx, 2 * hy, CONTAINER_BASE_T), 0.0)
     if handle is not None:
         add_handle_collider(stage, str(body.GetPath()), handle, mats)
         k += 1
@@ -421,7 +472,7 @@ def add_handle_collider(stage, body_path, handle, mats=None, name="handle_collid
     return cube.GetPrim()
 
 
-def solid_collider(stage, root_path, approximation="convexHull", mats=None):
+def solid_collider(stage, root_path, approximation="convexHull", mats=None, hulls=None):
     """Solid objects (fruit, books, toys, boxes).
 
     The importer put CollisionAPI on *Xforms* ('collisions' with a convex
@@ -430,14 +481,35 @@ def solid_collider(stage, root_path, approximation="convexHull", mats=None):
     convex hull on the collision Mesh itself (flat, stable base; generated
     meshes have uneven bottoms that made tall boxes rock forever) and strip
     the Xform-level APIs.
+
+    hulls: convex pieces in the body frame, [{"points": [[x, y, z], ...], "faces": [[i, j, k], ...]}]
+    (annotations/assets.json "collision_hulls", tools/prepare_assets.py).  A concave object (banana,
+    teddy bear, spoon, plate) as one hull filled its hollows by 2-4 cm; with pieces the collision
+    mesh is switched off and each piece is its own convex-hull collider.
     """
     from pxr import PhysxSchema, Usd, UsdGeom, UsdPhysics
     deinstance(stage, root_path)
     mats = mats or materials(stage)
+    body = body_prim(stage, root_path)
+    for child in list(body.GetChildren()):           # pieces of an earlier run (handles are kept)
+        if child.GetName().startswith("hull_"):
+            stage.RemovePrim(child.GetPath())
+    for i, h in enumerate(hulls or ()):
+        mesh = UsdGeom.Mesh.Define(stage, f"{body.GetPath()}/hull_{i:02d}")
+        mesh.CreatePointsAttr([tuple(map(float, p)) for p in h["points"]])
+        mesh.CreateFaceVertexCountsAttr([3] * len(h["faces"]))
+        mesh.CreateFaceVertexIndicesAttr([int(j) for f in h["faces"] for j in f])
+        mesh.CreatePurposeAttr().Set("guide")
+        prim = mesh.GetPrim()
+        UsdPhysics.CollisionAPI.Apply(prim).CreateCollisionEnabledAttr().Set(True)
+        UsdPhysics.MeshCollisionAPI.Apply(prim).CreateApproximationAttr().Set("convexHull")
+        PhysxSchema.PhysxCollisionAPI.Apply(prim).CreateContactOffsetAttr().Set(0.004)
+        PhysxSchema.PhysxCollisionAPI.Apply(prim).CreateRestOffsetAttr().Set(0.0)
+        bind(prim, mats[OBJECT_MATERIAL])
     for prim in list(Usd.PrimRange(stage.GetPrimAtPath(root_path))):
         in_col = "/collisions" in str(prim.GetPath())
         if prim.IsA(UsdGeom.Mesh) and in_col:
-            UsdPhysics.CollisionAPI.Apply(prim).CreateCollisionEnabledAttr().Set(True)
+            UsdPhysics.CollisionAPI.Apply(prim).CreateCollisionEnabledAttr().Set(not hulls)
             UsdPhysics.MeshCollisionAPI.Apply(prim).CreateApproximationAttr().Set(approximation)
             PhysxSchema.PhysxCollisionAPI.Apply(prim).CreateContactOffsetAttr().Set(0.004)
             PhysxSchema.PhysxCollisionAPI.Apply(prim).CreateRestOffsetAttr().Set(0.0)

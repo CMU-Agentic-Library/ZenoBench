@@ -246,6 +246,9 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         report["dropped"] = chk["dropped"]
         report["final_state"] = chk["final_state"]           # side effects for benchmark/evaluate.py
         report["sim_ticks"] = chk["sim_ticks"]               # 120 ticks per simulated second
+        if chk.get("score") is not None:                      # graded outcome (benchmark/v6/scoring.py)
+            report["score"] = chk["score"]
+            print("SCORE", chk["score"]["tier"], chk["score"]["score"], "D", chk["score"]["D"], flush=True)
         report["task_success"] = bool(chk["success"])
         report["skill_calls"] = len(report["calls"])
         report["skill_failures"] = [c["feedback"]["action"] for c in report["calls"] if not c["feedback"]["success"]]

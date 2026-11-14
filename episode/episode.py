@@ -199,6 +199,8 @@ class Episode:
         if cfg.get("thermal_sources") is not None:
             base_task = dict(base_task, thermal_sources=cfg["thermal_sources"])
         rig.configure_thermal(base_task)
+        from episode.heat_log import track
+        track(rig)                                        # which appliance heated what (scoring, T07)
         rig.step(30)
         if cfg.get("start"):
             x0, y0, yaw0 = rig.base_pose()
@@ -416,13 +418,21 @@ class Episode:
     # -- end --------------------------------------------------------------------------
     def check(self) -> dict:
         """Settle, then judge the goal on the GT state.  ``success`` also requires that no watched
-        object fell to the floor when the profile says so (evaluation.drops_fail)."""
+        object fell to the floor when the profile says so (evaluation.drops_fail).  A design with graded
+        outcomes (benchmark/v6/scoring.py) succeeds when any of its tiers holds; ``score`` says which."""
         self.rig.step(60)
         ok, goal = evaluate_goal(self.rig, self.task["goal"], self.start)
         drops = floor_drops(self.rig, self.task, self.start)
         fail_on_drop = self.profile["evaluation"]["drops_fail"]
-        return {"success": bool(ok and not (drops and fail_on_drop)), "goal_ok": bool(ok), "goal": goal,
-                "dropped": drops, "final_state": state_summary(self.rig, self.task), "sim_ticks": int(self.rig.tick)}
+        from benchmark.v6.scoring import score       # graded outcomes of a reviewed design (D, tiers)
+        graded = score(self.task.get("scoring"), self.task, self.cfg.get("variant"),
+                       lambda g: bool(evaluate_goal(self.rig, g, self.start)[0]))
+        # a graded design succeeds on any tier (best, second, worst); the score tells them apart.  ``goal_ok``
+        # stays the best tier (the layout's goal)
+        done = graded["score"] > 0 if graded is not None else ok
+        return {"success": bool(done and not (drops and fail_on_drop)), "goal_ok": bool(ok), "goal": goal,
+                "dropped": drops, "final_state": state_summary(self.rig, self.task), "sim_ticks": int(self.rig.tick),
+                "score": graded}
 
     def close(self):
         """Finish the streamed video, if any (call once, also after a crash)."""

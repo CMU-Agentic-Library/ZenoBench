@@ -885,8 +885,9 @@ def _stirred(rig, ctx, container):
 
 # --------------------------------------------------------------------- articulated / thermal
 OPEN_ENOUGH = 0.6    # fraction of the way from closed to open_q that counts as open: is_open, and what pick
-                     # from behind a door asks (open rides a fridge to 75 %, wide_open_q: a pick that wanted the
-                     # door within 0.1 rad of open_q, 93 %, failed after every open -- T25 cold_one)
+                     # from behind a door asks (open rides a fridge to 90 %, wide_open_q, and stopped at 74 %
+                     # when that was 75 %: a pick that wanted it within 0.1 rad of open_q, 93 %, failed after every
+                     # open -- T25 cold_one)
 
 
 def _art_open(rig, name):

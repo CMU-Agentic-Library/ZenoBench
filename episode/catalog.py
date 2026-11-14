@@ -49,7 +49,8 @@ def selectable_variants(task: dict, difficulty: str | None = None) -> list[str]:
 
 # task fields a variant may replace (benchmark v4 Hard: an instruction that names the wider goal, and the
 # goal / watched objects that go with it); every other variant keeps the task's own
-VARIANT_OVERRIDES = ("instruction", "instruction_zh", "goal", "watch", "may_end_on_floor", "handle_objects")
+VARIANT_OVERRIDES = ("instruction", "instruction_zh", "goal", "watch", "may_end_on_floor", "handle_objects",
+                     "scoring")
 
 
 def resolve_task(task: dict, variant: str | None) -> dict:

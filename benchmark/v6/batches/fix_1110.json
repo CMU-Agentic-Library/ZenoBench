@@ -1,0 +1,98 @@
+[
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "variant": "display_row__spread",
+  "route": "v6_display_row__spread",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "variant": "seen_from_bed__boxes_corner",
+  "route": "v6_seen_from_bed__boxes_corner",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T30_bowls_for_soup",
+  "seed": 10,
+  "variant": "bowls_in_cabinet__one_inside",
+  "route": "v6_bowls_in_cabinet__one_inside",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 11,
+  "variant": "cups_for_two__none_one_inside",
+  "route": "v6_cups_for_two__none_one_inside",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "cold_one",
+  "route": "v6_cold_one",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "tissue_put_away__in_4",
+  "route": "v6_tissue_put_away__in_4",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 12,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/benchmark"
+ },
+ {
+  "task": "T26_kids_things_to_room",
+  "seed": 19,
+  "variant": "two_bedrooms__room_south",
+  "route": "v6_two_bedrooms__room_south",
+  "planner": "scripted",
+  "profile": "sticky_snap/benchmark"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "bins_capacity__side_left_full",
+  "route": "v6_bins_capacity__side_left_full",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "pens_per_notebook__notebooks_3",
+  "route": "v6_pens_per_notebook__notebooks_3",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "variant": "h_task_lid_elsewhere",
+  "route": "v5_h_task_lid_elsewhere",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ },
+ {
+  "task": "T25_drink_for_guest",
+  "seed": 10,
+  "variant": "cup_elsewhere",
+  "route": "v6_cup_elsewhere",
+  "planner": "scripted",
+  "profile": "sticky_snap/gt"
+ }
+]

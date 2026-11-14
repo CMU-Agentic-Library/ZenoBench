@@ -339,7 +339,7 @@ class ExpManager:
             finally:
                 self._release_locked(exp, "checked")
         return {"exp_id": exp_id, "success": res["success"], "goal": flat_goal(res["goal"]),
-                "dropped": res.get("dropped", []), "episode": exp.episode}
+                "dropped": res.get("dropped", []), "score": res.get("score"), "episode": exp.episode}
 
     # -- release ----------------------------------------------------------------------
     def release(self, exp, reason):
