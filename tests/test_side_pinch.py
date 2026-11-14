@@ -60,3 +60,23 @@ def test_low_block_is_dipped_tall_objects_level():
 def test_box_face_wider_than_the_gripper_is_left_out():
     carton = prepare_assets.side_pinches(np.array([0.06, 0.11, 0.17]), 0.17)
     assert [g["azimuths_deg"] for g in carton] == [[90, 270]]
+
+
+def test_rim_pinch_depth_keeps_the_open_fingers_off_a_shallow_containers_support():
+    # rim_height - depth puts the TCP; the lowest open finger point (any tilt) stays LEAVE_GAP above the bottom
+    from zeno_skills.annotations import gripper_rot
+    from zeno_skills.kinematics import PAD_HALF_WIDTH, finger_model_box
+    from zeno_skills.rig import LEAVE_GAP
+    half_w, y_in, y_out, tip = finger_model_box()
+    tilts, pre_open = [0.4, 0.2], 0.03
+    tray = prepare_assets.rim_pinch_depth("rim_pinch_rect", 0.055, tilts, pre_open)
+    assert tray < 0.03                                  # the 5.5 cm tray (T11 fruit_tray): shallower than the default
+    d = np.array([1.0, 0.0, 0.0])
+    corners = np.array([[sx * half_w, sy * (pre_open + t), -tip]
+                        for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+    for t in tilts:
+        R = gripper_rot(np.array([0.0, 0.0, -np.cos(t)]) - d * np.sin(t), d)
+        assert 0.055 - tray + (corners @ R.T)[:, 2].min() >= LEAVE_GAP - 1e-4
+    assert prepare_assets.rim_pinch_depth("rim_pinch_rect", 0.38, tilts, pre_open) == 0.03     # deep: the cap
+    assert prepare_assets.rim_pinch_depth("rim_pinch", 0.15, [0.5, 0.35, 0.2], pre_open) == 0.035
+    assert prepare_assets.rim_pinch_depth("rim_pinch_rect", 0.02, tilts, pre_open) == round(0.5 * PAD_HALF_WIDTH, 4)

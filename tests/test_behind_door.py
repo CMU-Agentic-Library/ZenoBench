@@ -150,3 +150,54 @@ def test_on_reads_the_face_a_box_lies_on_and_the_floor_alike():
     side = {"objects": {"snack": {"pos": [3.5, 0.36, 0.412 + 0.055], "quat": [q[3], q[0], q[1], q[2]]}}}
     assert g.on("snack", "cab/inside_shelf", side)[0]
     assert g.support_under("snack", side) is shelf
+
+
+def test_spots_in_a_tray_are_free_of_its_load_and_the_centre_comes_first_when_free():
+    # place("in:<tray>"): free_spots on the tray's floor (a support record), the tray not in the way
+    from zeno_skills import skills
+    floor = {"name": "in:tray", "furniture": None, "category": "tray", "z": 0.97,
+             "aabb_xy": [-0.128, -0.093, 0.128, 0.093]}          # a 27 x 20 cm tray's floor
+    assets = {"tray": {"size": [0.27, 0.2, 0.055], "grasps": [], "container": {"shape": "rect"}},
+              "fruit": {"size": [0.065, 0.065, 0.07], "grasps": []}}
+    objects = {"tray": {"asset": "tray"}, "apple": {"asset": "fruit"}, "orange": {"asset": "fruit"}}
+    at = {"tray": ((0.0, 0.0), 0.957, 0.135, 0.1)}
+    ann = SimpleNamespace(articulated=[], asset_of=lambda o: assets[o["asset"]], objects=objects,
+                          support=lambda n: (_ for _ in ()).throw(KeyError(n)))
+
+    def geo_for(load):
+        def bottom(o, st):
+            (x, y), z, _, _ = load.get(o, ((9.0, 9.0), 0.0, 0.03, 0.03))   # not in the tray: far away
+            return np.array([x, y, z])
+
+        def footprint(o, st, margin=0.0):
+            (x, y), _, hx, hy = load.get(o, ((9.0, 9.0), 0.0, 0.03, 0.03))
+            return [x - hx - margin, y - hy - margin, x + hx + margin, y + hy + margin]
+        return SimpleNamespace(bottom=bottom, footprint=footprint, resting=bottom)
+
+    rig = SimpleNamespace(ann=ann, state=lambda: {}, base_pose=lambda: (0.0, -0.8, 90.0), geo=geo_for(at))
+    empty = skills.free_spots(rig, "apple", floor, hint=(0.0, 0.0), exclude={"tray"})
+    assert empty[0] == (0.0, 0.0)                            # an empty tray: its centre
+    assert skills.free_spots(rig, "apple", floor, hint=(0.0, 0.0)) == []     # the tray itself counted: nothing
+    rig.geo = geo_for({**at, "apple": ((0.0, 0.0), 0.97, 0.0325, 0.0325)})
+    spots = skills.free_spots(rig, "orange", floor, hint=(0.0, 0.0), exclude={"tray"})
+    assert spots and (0.0, 0.0) not in spots
+    for x, y in spots:                                       # clear of the apple, inside the floor
+        assert max(abs(x), abs(y)) >= 0.0325 + 0.0325 + 0.005 + 0.01 - 1e-9   # half-sizes, 5 mm, the 1 cm gap
+        assert -0.128 <= x <= 0.128 and -0.093 <= y <= 0.093
+
+
+def test_a_round_object_lying_on_its_side_still_blocks_its_spot():
+    # _overlaps_objects reads the lowest point as it lies (geo.resting), not the box's bottom face: an
+    # apple turned 99 deg in a tray has its box bottom 3 cm up, the orange was set down onto it (T11, 11-14)
+    from zeno_skills import skills
+    from zeno_skills.evaluator import Geometry
+    asset = {"size": [0.062, 0.064, 0.07], "origin_to_bottom_center": [0.0, 0.0, -0.035], "grasps": []}
+    ann = SimpleNamespace(objects={"apple": {"asset": "apple"}}, assets={"apple": asset},
+                          asset_of=lambda o: asset)
+    geo = Geometry(ann)
+    geo._asset = lambda name: asset
+    st = {"objects": {"apple": {"pos": [0.0, 0.0, 0.524], "quat": [-0.502, -0.131, 0.751, 0.409]}}}
+    assert geo.bottom("apple", st)[2] > 0.501 + 0.01           # the box's bottom face: up at the middle
+    rig = SimpleNamespace(ann=ann, geo=geo)
+    floor_box = [-0.04, -0.04, 0.04, 0.04, 0.4963 + 0.005, 0.4963 + 0.0586]
+    assert skills._overlaps_objects(rig, floor_box, set(), st, margin=0.01)

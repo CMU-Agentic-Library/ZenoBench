@@ -300,6 +300,30 @@ def side_pinches(ext, top, round_width=None, offset_xy=(0.0, 0.0)):
     return out
 
 
+RIM_DEPTH = {"rim_pinch": 0.035, "rim_pinch_rect": 0.03}   # the TCP this far below the rim, at most
+
+
+def rim_pinch_depth(kind, rim_height, tilts, pre_open):
+    """How far below the rim a rim pinch's TCP goes: RIM_DEPTH[kind], but no deeper than leaves the
+    open fingers' lowest point (the planner's finger box, finger_model_box, at every tilt of the
+    grasp: the outer finger hangs lowest) LEAVE_GAP above the container's bottom -- the surface it
+    stands on.  At 3 cm a 5.5 cm tray's outer fingertip reached its shelf (T11 fruit_tray, 11-13: 46
+    builds, every one 0-1 mm on cell_shelf_4).  Never shallower than half a pad below the rim."""
+    from zeno_skills.annotations import gripper_rot
+    from zeno_skills.kinematics import PAD_HALF_WIDTH, finger_model_box
+    from zeno_skills.rig import LEAVE_GAP
+    half_w, y_in, y_out, tip = finger_model_box()
+    corners = np.array([[sx * half_w, sy * (pre_open + t), -tip]
+                        for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+    d = np.array([1.0, 0.0, 0.0])                       # the wall's outward normal; reach is the same at any azimuth
+    reach = 0.0                                         # lowest finger point below the TCP
+    for t in tilts:
+        R = gripper_rot(np.array([0.0, 0.0, -math.cos(t)]) - d * math.sin(t), d)
+        reach = max(reach, -float((corners @ R.T)[:, 2].min()))
+    depth = min(RIM_DEPTH[kind], rim_height - LEAVE_GAP - reach)
+    return round(max(depth, 0.5 * PAD_HALF_WIDTH), 4)
+
+
 def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     """Grasp primitives in the object frame (origin = bbox centre of the
     bottom face, z up).  Consumed by zeno_skills.annotations.grasp_poses."""
@@ -308,17 +332,20 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     out = []
     if kind == "round_container":
         prof = profile or container_profile(mesh, kind, body_fraction=body_fraction)
+        tilts = [0.5, 0.35, 0.2]
         g = {"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
-             "depth": 0.035, "azimuths_deg": list(range(0, 360, 30)), "tilts": [0.5, 0.35, 0.2],
-             "pre_open": 0.03}
+             "depth": rim_pinch_depth("rim_pinch", prof["rim_height"], tilts, 0.03),
+             "azimuths_deg": list(range(0, 360, 30)), "tilts": tilts, "pre_open": 0.03}
         if prof.get("centre"):
             g["centre"] = prof["centre"]               # the body's centre, not the bbox's (mug handle)
         if prof.get("shape") == "ellipse":
             g["radii"] = prof["bands"][-1][2:4]        # wall-centre semi-axes at the rim
         out.append(g)
     elif kind == "rect_container":
+        tilts = [0.4, 0.2]
         out.append({"type": "rim_pinch_rect", "half_x": float(ext[0] / 2), "half_y": float(ext[1] / 2),
-                    "rim_height": float(ext[2]), "depth": 0.03, "tilts": [0.4, 0.2], "pre_open": 0.03})
+                    "rim_height": float(ext[2]), "depth": rim_pinch_depth("rim_pinch_rect", float(ext[2]), tilts, 0.03),
+                    "tilts": tilts, "pre_open": 0.03})
     # top pinch: slide a pad-wide (2.8 cm) slab along the object and find the
     # narrowest graspable cross-section (bananas, pens, spoons, toy cars)
     best = None

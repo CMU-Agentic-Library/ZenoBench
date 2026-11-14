@@ -898,13 +898,17 @@ def _free_beyond_hold(rig, s, n, hold, depth):
 
 
 def _overlaps_objects(rig, box, exclude, st, margin=0.02):
+    """Whether an object (not in ``exclude``) stands in ``box`` [x0, y0, x1, y1, z0, z1]: its footprint
+    (grown by ``margin``) over the box's, its lowest point as it lies (geo.resting) at the box's level.
+    Not its box's bottom face: on a round object lying on another face that is up at its middle (11-14,
+    T11: an apple 99 deg over in a tray read 3 cm above the tray's floor, and the orange went onto it)."""
     for other in rig.ann.objects:
         if other in exclude:
             continue
-        b = rig.geo.bottom(other, st)
+        low = float(rig.geo.resting(other, st)[2])
         fp = rig.geo.footprint(other, st, margin)
         if box[0] < fp[2] and fp[0] < box[2] and box[1] < fp[3] and fp[1] < box[3] and \
-                box[4] > b[2] - 0.01 and box[5] < b[2] + 0.5:
+                box[4] > low - 0.01 and box[5] < low + 0.5:
             return True
     return False
 
@@ -1390,8 +1394,17 @@ def place(rig, name, support, xy=None, spots=None):
         container = support[3:]
         if not _is_tray(rig, container):
             return drop_into(rig, name, container)
+        # free spots on its floor, the centre first when it is free: with only the centre a second
+        # load was set down onto the first (T11 fruit_plate_for_guests, 11-14: the orange 57 mm into
+        # the apple at every one of 60 builds)
+        floor = _tray_support(rig, container)
         c = rig.geo.centre(container, rig.state())
-        return _set_down(rig, name, _tray_support(rig, container), [(float(c[0]), float(c[1]))], tray=container)
+        spots = free_spots(rig, name, floor, hint=(float(c[0]), float(c[1])), exclude={container})
+        rig.log("place_tray_spots", obj=name, tray=container, floor=[round(v, 3) for v in floor["aabb_xy"]],
+                spots=[[round(x, 3), round(y, 3)] for x, y in spots[:4]])
+        if not spots:
+            raise SkillFailure(f"place {name}: no free spot in {container}")
+        return _set_down(rig, name, floor, spots[:4], tray=container)
     s = rig.ann.support(support)
     if s.get("furniture") == "kitchen_microwave":
         return place_microwave(rig, name, support)
@@ -1485,12 +1498,15 @@ def _drop_check(rig):
     return check
 
 
-def free_spots(rig, name, support, hint=None, k=8):
+def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     """Collision-free xy on a support for the object's footprint, near the
     hint (or near an open edge, where the arm reaches; behind a door, near its
-    opening: the arm reaches in from there), best first."""
+    opening: the arm reaches in from there), best first.  ``support``: an
+    annotated support's name, or a support record (a tray's floor, _tray_support);
+    ``exclude``: objects that do not count as in the way (the tray itself)."""
     from .annotations import behind_door, opening
-    s = rig.ann.support(support)
+    s = support if isinstance(support, dict) else rig.ann.support(support)
+    skip = {name, *exclude}
     door = behind_door(rig.ann, s)
     st = rig.state()
     asset = rig.ann.asset_of(rig.ann.objects[name])
@@ -1506,10 +1522,16 @@ def free_spots(rig, name, support, hint=None, k=8):
             # The round bowl can safely overhang the flat floor by a few mm.
             # This shifts it left of the low right wall during insertion.
             r = 0.5 * max(size[0], size[1]) - 0.004
+    tray = s.get("category") == "tray"
+    if tray:
+        # a tray holds loads side by side: the load's own half-size and a 1 cm gap (with the any-yaw
+        # radius and 2 cm a 27 cm tray had no room left beside a fruit at its centre)
+        r = 0.5 * max(size[0], size[1]) + 0.005
     x0, y0, x1, y1 = s["aabb_xy"]
     if x1 - x0 < 2 * r or y1 - y0 < 2 * r:
         r = 0.5 * min(size[0], size[1]) + 0.01
-    edges = _open_edges(rig, s) or [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+    edges = (None if tray else _open_edges(rig, s)) or \
+        [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))]
     out_dir = None if door is None else opening(door)
     front = None if out_dir is None else max(float(out_dir @ np.array(c)) for c in ((x0, y0), (x0, y1), (x1, y0), (x1, y1)))
     bx, by, _ = rig.base_pose()
@@ -1520,7 +1542,7 @@ def free_spots(rig, name, support, hint=None, k=8):
         re = 0.5 * max(size[0], size[1]) + 0.002          # the object's own half-size, not any-yaw
         re += 0.04 if s.get("category") == "counter" else 0.0   # (off the counter's open edge)
         if x0 + re <= hx <= x1 - re and y0 + re <= hy <= y1 - re and not _overlaps_objects(
-                rig, [hx - re, hy - re, hx + re, hy + re, s["z"] + 0.005, s["z"] + size[2]], {name}, st, margin=0.005):
+                rig, [hx - re, hy - re, hx + re, hy + re, s["z"] + 0.005, s["z"] + size[2]], skip, st, margin=0.005):
             out.append((-1.0, hx, hy))
     # first keep a finger's clearance to every neighbour (the object stays
     # pickable afterwards), then accept the tight 2 cm margin
@@ -1529,15 +1551,17 @@ def free_spots(rig, name, support, hint=None, k=8):
     # (7 cm first: lowered 4.5 cm from a rolling pin, a rim-held bowl and the
     # hand around it pushed the pin and the bowl came to rest tilted on it)
     first = (0.10,) if asset.get("container") else ()   # the hand wraps a rim-held bowl
-    for margin in ((0.02, 0.045) if hint is not None and not str(support).startswith("breakfast_fridge")
+    step = 0.015 if tray else 0.03
+    for margin in ((0.01,) if tray else
+                   (0.02, 0.045) if hint is not None and not s["name"].startswith("breakfast_fridge")
                    else first + (0.07, 0.045, 0.02)):
         # 4 cm in from the open edges of a counter: a block left 3 cm from the
         # island edge was knocked off by the robot body driving along it
         ins = 0.04 if s.get("category") == "counter" else 0.0
-        for x in np.arange(x0 + r + ins, x1 - r - ins + 1e-6, 0.03):
-            for y in np.arange(y0 + r + ins, y1 - r - ins + 1e-6, 0.03):
+        for x in np.arange(x0 + r + ins, x1 - r - ins + 1e-6, step):
+            for y in np.arange(y0 + r + ins, y1 - r - ins + 1e-6, step):
                 box = [x - r, y - r, x + r, y + r, s["z"] + 0.005, s["z"] + size[2]]
-                if _overlaps_objects(rig, box, {name}, st, margin=margin):
+                if _overlaps_objects(rig, box, skip, st, margin=margin):
                     continue
                 to_edge = min(_edge_coord(s, n) - float(n @ np.array([x, y])) for n in edges)
                 if out_dir is not None:
