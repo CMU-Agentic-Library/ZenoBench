@@ -1157,7 +1157,7 @@ def T09(t):
     three_goal = {"all": [*goal["all"], ["inside", F3, POT], ["temperature_at_least", F3, 60],
                           ["is_closed", FRIDGE]]}
     fridge = dict(
-        add={F3: {"asset": "cherry_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.90, 3.30], "yaw_deg": 0.0}},
+        add={F3: {"asset": "cherry_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.90, 3.14], "yaw_deg": 0.0}},
         route=base[:2] + open_explore(FRIDGE) + [nav(F3), pick(F3), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                                                  S("close", articulated=FRIDGE), nav(POT),
                                                  S("drop", object=F3, container=POT)] + base[2:])
