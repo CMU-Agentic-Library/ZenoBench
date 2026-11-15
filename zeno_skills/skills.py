@@ -1005,7 +1005,8 @@ def pick(rig, name, max_candidates=12, grasp=None):
         raise SkillFailure(f"pick {name}: asset '{obj['asset']}' has no Zeno-feasible grasp annotation")
     kinds = GRASP_REQUEST.get(grasp, PINCH_KINDS)
     if not any(g["type"] in kinds for g in grasps):
-        raise SkillFailure(f"pick {name}: no {grasp} pinch annotated (has {sorted({g['type'] for g in grasps})})")
+        raise SkillFailure(f"pick {name}: no {grasp + ' ' if grasp else ''}pinch annotated "
+                           f"(has {sorted({g['type'] for g in grasps})})")
     return _pick_pinch(rig, name, max_candidates, kinds)
 
 
