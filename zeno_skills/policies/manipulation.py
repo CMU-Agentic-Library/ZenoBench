@@ -111,7 +111,7 @@ class EdgePlacePolicy(AtomicPolicy):
         held = self.rig.held
         if held is None or held["name"] != name or held["kind"] != "edge":
             raise SkillFailure(f"edge place {name}: object is not edge-held")
-        return skills.place_flat(self.rig, name, support, hint)
+        return skills.place(self.rig, name, support, hint)
 
 
 class MicrowavePlacePolicy(AtomicPolicy):

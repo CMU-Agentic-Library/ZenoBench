@@ -40,7 +40,6 @@ from .tolerances import (DOOR_CLOSED_TOL, DOOR_OPEN_TOL, DRAWER_OPEN_FRAC, HELD_
                          SAME_POSTURE, SHUT)
 
 TCP_BACKOFF = 0.12   # the old handle paths' pre-grasp (_handle_targets); the door framework has DOOR_REACH_IN
-EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
 COM_MARGIN = 0.015            # centre of mass stays at least this far inside the edge while overhanging (3.5 cm until
                               # 11-13: objects under 18 cm long -- a tissue box, a rice container -- had no edge at all)
@@ -93,7 +92,7 @@ def _carry_ref(kin, q):
 def _carry_floor(rig, name, min_bottom_z=None):
     """The lowest a carried load's bottom may ride: CARRY_Z (floor picks), or ``min_bottom_z`` (a
     rim the destination asks to clear) -- an edge-held book 6 cm more, its free end droops on the
-    way (step 3c: the droop goes into the held object's model with place_flat)."""
+    way (step 3c: the droop goes into the held object's model with the edge place)."""
     z = CARRY_Z
     if min_bottom_z is not None:
         h = rig.held if rig.held is not None and rig.held.get("name") == name else {}
@@ -1111,7 +1110,7 @@ def edge_held(rig, name, tcp, R):
     """``rig.held`` fields of a flat object pinched across its thickness at a side (the gripper axis
     along -n, n the side's outward normal): kind "edge", the object's half length along n ``h``, the
     TCP's ``depth`` inside the side, the half width across ``lat_half`` and the TCP's height ``dz``
-    above the object's bottom -- what place_flat lays it down by."""
+    above the object's bottom -- what the edge place lays it down by (skill_jobs.place._edge_goals)."""
     st = rig.state()
     _, quat = rig.obj_pose(name)
     size = rig.ann.asset_of(rig.ann.objects[name])["size"]
@@ -1410,15 +1409,30 @@ def place(rig, name, support, xy=None, spots=None):
     if s.get("furniture") == "kitchen_microwave":
         return place_microwave(rig, name, support)
     if rig.held["kind"] == "edge":
-        return place_flat(rig, name, support, xy)
+        # set down over an open edge (skill_jobs.place._edge_goals; xy, if given, ranks the positions), the
+        # fingers clear of the support; then pushed on with the catalog's push until its gripped face is
+        # EDGE_PUSH_IN inside the edge (place_flat's final push, now checked) -- or, given xy further in,
+        # until its centre is there along the edge's normal (a tray hinted on a burner: 1.4 cm short of the
+        # old push's spot was off the burner disc, T07 11-15)
+        from .skill_jobs.place import EDGE_PUSH_IN
+        from .skill_jobs.slide import push_object
+        hint = None if xy is None else (float(xy[0]), float(xy[1]))
+        x0, y0, x1, y1 = s["aabb_xy"]
+        n, over = _set_down(rig, name, s, [hint or ((x0 + x1) / 2, (y0 + y1) / 2)], hint=hint)["edge"]
+        dist = over + EDGE_PUSH_IN
+        if hint is not None:
+            c = np.asarray(rig.geo.centre(name, rig.state()), float)[:2]
+            dist = max(dist, float((c - np.asarray(hint)) @ n))
+        push_object(rig, name, s, [(-n, dist, None)], label="EDGE_PUSH_IN")
+        return True
     return _set_down(rig, name, s, list(spots) if spots is not None else [xy])
 
 
-def _set_down(rig, name, s, spots, tray=None):
+def _set_down(rig, name, s, spots, tray=None, hint=None):
     """place onto the support ``s`` (an annotated one, or a tray's floor) at one of ``spots``
-    (motion_skills.run_skill of place_job)."""
+    (motion_skills.run_skill of place_job); an edge hold over an edge of it, ``hint`` ranking them."""
     from .motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS["place"], {"name": name, "support": s, "spots": spots, "tray": tray})
+    return run_skill(rig, SKILLS["place"], {"name": name, "support": s, "spots": spots, "tray": tray, "hint": hint})
 
 
 def drop_into(rig, name, container):
@@ -1515,197 +1529,12 @@ def place_on(rig, name, support, hint=None, tries=4):
     if rig.ann.support(support).get("furniture") == "kitchen_microwave":
         return place_microwave(rig, name, support)
     if rig.held is not None and rig.held["kind"] == "edge":
-        return place_flat(rig, name, support, hint)
+        return place(rig, name, support, hint)
     spots = free_spots(rig, name, support, hint)
     if not spots:
         raise SkillFailure(f"place {name}: no free spot on {support}")
     # the free spots are one goal set of the place (not tried one after another)
     return place(rig, name, support, spots=spots[:tries])
-
-
-def place_flat(rig, name, support, hint=None):
-    """Edge-held flat object: its gripped edge goes back over a free edge of
-    the support (the front of an interior shelf), EDGE_PLACE_OVERHANG past
-    it, so the lower finger never ends up between the object and the surface."""
-    held = rig.held
-    # fingertips at least 3.5 cm past the support edge: real tops reach a bit
-    # beyond the annotated edge and a lower finger resting on it gets pinned
-    over_p = max(EDGE_PLACE_OVERHANG, held["depth"] + 0.035)
-    s = rig.ann.support(support)
-    st = rig.state()
-    h, lat_half = held["h"], held["lat_half"]
-    size = rig.ann.asset_of(rig.ann.objects[name])["size"]
-    x0, y0, x1, y1 = s["aabb_xy"]
-    bx, by, _ = rig.base_pose()
-    cands = []
-    open_dirs = [tuple(np.round(d, 3)) for d in _open_edges(rig, s)]
-    for n in _open_edges(rig, s):
-        lat = _perp(n)
-        e = _edge_coord(s, n)
-        depth = (x1 - x0) if abs(n[0]) > 0.5 else (y1 - y0)
-        if 2 * h - over_p > depth + 0.02:
-            continue
-        # 4 cm from an end that is closed (a raised side panel, not part of the
-        # annotated top, caught a book released at the very end of a bookcase
-        # top); 1 cm from an open end, where extra margin only costs reach
-        ax = np.array([0.0, 1.0]) if abs(n[0]) > 0.5 else np.array([1.0, 0.0])
-        m_lo = 0.01 if tuple(np.round(-ax, 3)) in open_dirs else 0.04
-        m_hi = 0.01 if tuple(np.round(ax, 3)) in open_dirs else 0.04
-        lo_l = (y0 if abs(n[0]) > 0.5 else x0) + lat_half + m_lo
-        hi_l = (y1 if abs(n[0]) > 0.5 else x1) - lat_half - m_hi
-        for l in np.arange(lo_l, hi_l + 1e-6, 0.03) if hi_l >= lo_l else []:
-            edge_pt = n * e + np.abs(lat) * l
-            c = edge_pt - n * (h - over_p)
-            half = np.abs(n) * h + np.abs(lat) * lat_half
-            # free where it is released and where it is pushed to afterwards
-            c_in = c - n * (over_p + 0.01)
-            box = [min(c[0], c_in[0]) - half[0], min(c[1], c_in[1]) - half[1],
-                   max(c[0], c_in[0]) + half[0], max(c[1], c_in[1]) + half[1], s["z"] + 0.005, s["z"] + size[2]]
-            if _overlaps_objects(rig, box, {name}, st, margin=0.02):
-                continue
-            score = math.hypot(c[0] - hint[0], c[1] - hint[1]) if hint is not None else \
-                0.3 * math.hypot(c[0] - bx, c[1] - by)
-            if "bookcase" in str(s.get("category", "")).lower():
-                # on shelving: the long (front) edge, away from its ends (a book
-                # slid in over the short side / next to a side panel stalled)
-                edge_len = (y1 - y0) if abs(n[0]) > 0.5 else (x1 - x0)
-                score += 0.5 * abs(l - 0.5 * (lo_l + hi_l))
-                if edge_len < 0.8 * max(x1 - x0, y1 - y0):
-                    score += 0.4
-            cands.append((score, n, c))
-    cands.sort(key=lambda t: t[0])
-    if not cands:
-        raise SkillFailure(f"place {name}: no free edge spot on {support}")
-    R0 = held["R"]
-    a0 = -R0[:, 2]
-    # under another level the whole object comes down outside the front (3 cm clear) before it slides in: from
-    # 10 cm out the far end of a book hung under the level above and was knocked out of the pinch on the way down
-    pre = max(0.10, 2 * h - over_p + 0.03) if _interior(rig, s) else 0.10
-    rig.sync_world()
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    start, attempts = 0, 0
-    while True:
-        park = None
-        for idx in range(start, min(len(cands), start + 6)):
-            _, n, c = cands[idx]
-            n3 = np.r_[n, 0.0]
-            psi = math.atan2(-n[1], -n[0]) - math.atan2(a0[1], a0[0])
-            R = rz(psi) @ R0
-            tcp = np.r_[c + n * (h - held["depth"]), s["z"] + held["dz"] + 0.004]
-            legs = [(tcp + n3 * pre + np.array([0, 0, 0.04]), R), (tcp + np.array([0, 0, 0.02]), R), (tcp, R)]
-            retreat = tcp + n3 * 0.10
-            face = math.degrees(math.atan2(-n[1], -n[0]))
-
-            def square(x, y, yaw, qs, face=face):
-                # facing the edge squarely: from 15 deg off, another link caught
-                # the book during the release push and flipped it off the shelf
-                # (find_park keeps the lowest score: the smallest yaw error)
-                return abs((yaw - face + 180.0) % 360.0 - 180.0)
-            # the park must also reach the final push (fingertips push the book
-            # fully on); without it the squarest park could leave the book
-            # hanging over the edge: fall back to the release legs only
-            push = np.r_[(tcp + n3 * (held["depth"] - over_p - 0.01))[:2], s["z"] + size[2] / 2]
-            for tg in (legs + [(retreat, R), (push, R)], legs + [(retreat, R)]):
-                park = find_park(rig.kin, rig.world, tg, near=rig.base_pose(), max_tries=120,
-                                 q_start=rig.q_cmd, travel_q=_travel_q(rig), score=square, n_best=5)
-                if park:
-                    break
-            if park:
-                break
-        if park is None:
-            raise SkillFailure(f"place {name}: no reachable edge spot on {support}")
-        rig.log("place_flat_park", obj=name, support=support, centre=[round(v, 3) for v in c],
-                park=[round(v, 3) for v in park[:3]])
-        rig.caption = f"PLACE {name}: carry to the {s.get('category', 'support')} edge"
-        rig.focus_z = s["z"]
-        _goto_park(rig, park)
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        # an edge-held book turns down in the pinch during the carry (7 cm of
-        # droop dropped it in front of the shelf): level it with the wrist
-        st_lv = rig.state()
-        bz = quat_R(st_lv["objects"][name]["quat"])[:, 2]
-        bz = bz if bz[2] >= 0 else -bz
-        droop = math.degrees(math.acos(float(np.clip(bz[2], -1.0, 1.0))))
-        if droop > 6.0:
-            ax = np.cross(bz, [0.0, 0.0, 1.0])
-            R_fix = Rotation.from_rotvec(ax / max(1e-9, np.linalg.norm(ax)) * math.radians(droop)).as_matrix()
-            legs2 = [(lp, R_fix @ lR) for lp, lR in legs]
-            if all(rig.kin.ik_global(lp, lR, seeds=[park[3][0]])[1] for lp, lR in legs2):
-                legs = legs2
-                R = R_fix @ R
-                rig.log("flat_level", obj=name, droop_deg=round(droop, 1))
-        # turn the hand to the release yaw where it is first (a turn about the
-        # vertical keeps the book level), by a straight Cartesian path only: a
-        # grasp taken from another side needed a larger turn, the straight path
-        # to flat_pre failed and the joint-space swing to the park's solution
-        # (another arm branch) flipped the book out of the pinch
-        t_now, _ = rig.kin.tcp(rig.q_cmd)
-        qs_turn, ok_turn = rig.kin.cart_path(rig.q_cmd, t_now, R, step=0.01)
-        if ok_turn:
-            rig.follow(qs_turn, 4)
-            check_held(rig, "flat_turn")
-            rig.log("flat_turn", obj=name)
-        rig.move_to(*legs[0], step=0.01, label="flat_pre", q_hint=park[3][0] if droop <= 6.0 else None)
-        # the book may hang lower in the pinch than when it was picked (droop
-        # during the carry): slide in with its lowest point 1 cm above the surface
-        st_now = rig.state()
-        t_now, _ = rig.kin.tcp(rig.q_cmd)
-        sag = float(t_now[2] - _lowest_z(rig, name, st_now))
-        need = s["z"] + 0.01 + sag - float(legs[1][0][2])
-        if need > 0.10:
-            # not a droop: the object turned in the pinch on the way (sliding it in from that high dropped it on the
-            # floor); stop outside the support with it still in hand
-            raise SkillFailure(f"place {name}: it turned in the grip ({sag:.2f} m below the fingers)")
-        if need > 0.002:
-            legs = [legs[0], (legs[1][0] + np.array([0, 0, need]), legs[1][1]), legs[2]]
-            rig.log("flat_over_raised", obj=name, raised_m=round(need, 3))
-        rig.caption = f"PLACE {name}: slide in over the surface"
-        rig.move_to(*legs[1], step=0.004, steps_per_wp=4, label="flat_over", allow=FREE_ELSE_STRAIGHT)
-        err = float(np.linalg.norm(rig.kin.tcp(rig.q())[0] - legs[1][0]))
-        if err < 0.02 or attempts >= 2 or rig.held is None:
-            break
-        # the book caught on the shelf (side panel / a neighbour): back out
-        # and use the next free spot
-        rig.log("flat_over_blocked", obj=name, err_m=round(err, 3), centre=[round(v, 3) for v in c])
-        rig.move_to(*legs[0], step=0.004, label="flat_back_out", allow=FREE_ELSE_STRAIGHT)
-        check_held(rig, "flat_back_out")
-        # skip spots within 8 cm of the blocked one (3 cm steps along the edge)
-        cands = cands[:idx + 1] + [t for t in cands[idx + 1:] if np.linalg.norm(t[2] - c) > 0.08]
-        start, attempts = idx + 1, attempts + 1
-    rig.move_to(*legs[2], step=0.002, steps_per_wp=6, label="flat_lower", allow=LEGACY)
-    rig.step(30)
-    rig.caption = f"PLACE {name}: release, pull the hand out"
-    rig.grip(0.04, 70)
-    rig.held = None
-    # the open pads drag the object back out with them: drop the hand 1.5 cm
-    # (frees the lower finger pinned under the overhang; the upper pad still
-    # clears the top), back out, then push the object fully onto the surface
-    # with the closed fingertips (gripped edge ends 1 cm inside the support edge)
-    up = tcp - np.array([0, 0, 0.015])
-    out = up + n3 * 0.10
-    low = np.r_[out[:2], s["z"] + size[2] / 2]
-    push_end = np.r_[(tcp + n3 * (held["depth"] - over_p - 0.01))[:2], low[2]]
-    try:
-        rig.move_to(up, R, step=0.003, steps_per_wp=4, label="flat_release_down", allow=LEGACY)
-        rig.move_to(out, R, step=0.004, label="flat_retreat", allow=LEAVE_CONTACT)
-        rig.grip(0.0, 40)
-        rig.caption = f"PLACE {name}: push it fully onto the surface"
-        rig.move_to(low, R, step=0.004, label="flat_push_down", allow=LEGACY)
-        rig.move_to(push_end, R, step=0.003, steps_per_wp=4, label="flat_push", allow=LEGACY)
-        rig.move_to(push_end + n3 * 0.12 + np.array([0, 0, 0.06]), R, step=0.01, label="flat_up",
-                    allow=LEAVE_CONTACT)
-    except SkillFailure as e:
-        rig.log("retreat_short", reason=str(e))
-    rig.step(90)
-    rig.focus_z = None
-    st = rig.state()
-    on, why = rig.geo.on(name, support, st)
-    from .evaluator import tilt_deg
-    tilt = tilt_deg(st["objects"][name]["quat"])
-    rig.log("place_result", obj=name, support=support, on_support=bool(on), tilt_deg=round(tilt, 1), detail=why)
-    if not on or tilt > 20:
-        raise SkillFailure(f"place {name} on {support}: {why}, tilt {tilt:.0f} deg")
-    return True
 
 
 def _microwave_start_food(rig, name):

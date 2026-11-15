@@ -119,6 +119,26 @@ def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
     assert pull.spec.allow.touch == ("cup",) and pull.spec.allow.links == "fingers"
 
 
+def test_an_edge_place_moves_its_open_pads_clear_of_the_load_only_as_far_as_needed():
+    # the book's box frame at the TCP, its box 1 cm off along the closing axis (Y_link); the hand opens 4 cm a
+    # finger.  A thin book (half 2.2 cm along Y): both pads clear it by EDGE_PAD_CLEAR already -- no move.
+    # A thick one (half 3.3 cm): the near pad 3 mm into it -- the least move that clears both, 8 mm
+    q_p = _q(0.5, 0.0, 0.10)
+
+    def plan(half):
+        box = (np.array([-0.1, 0.01 - half, -0.1]), np.array([0.1, 0.01 + half, 0.1]))
+        return plan_place(_place_kin(), _state(_q(0.3, 0.0, 0.40), held=Held("book", np.eye(4))), _at(q_p[:3]), 0.04,
+                          0.07, (np.zeros(9),), prior={"place_reach": q_p}, obj="book", edge_box=box)
+    thin, thick = plan(0.022), plan(0.033)
+    assert isinstance(thin, Plan) and isinstance(thick, Plan), (thin, thick)
+    assert "place_clear" not in [sg.name for sg in thin.segments]
+    names = [sg.name for sg in thick.segments]
+    assert names[names.index("place_landed") + 1:names.index("place_landed") + 3] == ["place_clear", "place_pull_out"]
+    clear, pull = _named(thick, "place_clear"), _named(thick, "place_pull_out")
+    assert np.allclose(clear.q_end[:3] - clear.q_from[:3], [0.0, 0.008, 0.0], atol=1e-3)
+    assert pull.spec.touch == () and not pull.spec.allow.touch               # a touch drags the book out
+
+
 # ------------------------------------------------------------------- drop (docs/skills/drop_hover.md)
 def test_a_drop_reaches_over_the_opening_lets_go_waits_and_tucks():
     q_p = _q(0.5, 0.0, 0.30)
@@ -547,7 +567,7 @@ def test_the_jobs_run_the_found_plan_and_rebuild_from_the_same_target():
         return Plan(())
 
     def plan_place_(kin, state, goal, pre_open, out_len, rest_goals, start="place_reach", prior=None, step=0.003,
-                    obj=None, on=None):
+                    obj=None, on=None, edge_box=None):
         calls.append(("place", goal, start, prior, on))
         return Plan(())
     found = Plan((Segment("pick_grasp", Spec(), np.zeros(9)),))

@@ -103,7 +103,7 @@ def _pick_ready(rig, name, g, grasp, plan, carry_goals, out, plan_pick=None):
         rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp0 - rig.obj_pose(name)[0], "R": R,
                     "pre_open": g["pre_open"]}
         if g["kind"] == "thickness_pinch":
-            # a flat object held at a side: what placing it flat needs (kind "edge", place_flat)
+            # a flat object held at a side: what placing it flat needs (kind "edge", skill_jobs.place._edge_goals)
             rig.held.update(edge_held(rig, name, tcp0, R))
         out["tcp0"] = tcp0
         if "T_obj0" in out:

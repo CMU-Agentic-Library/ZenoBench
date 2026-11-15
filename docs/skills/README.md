@@ -23,12 +23,12 @@
 
 - navigate，包括拿着东西开车（[导航与收臂](navigate.md)、[搬运姿态](carry.md)）；
 - pick（[pick](pick.md)）；
-- place 到支撑面和托盘上（[place](place.md)）；书的平放、放进微波炉除外；
+- place 到支撑面和托盘上（[place](place.md)），包括捏边放下的书（11-14）；放进微波炉除外；
 - drop：扔进容器，包括 `place(name, "in:<容器>")`（托盘除外）（[drop 和 hover](drop_hover.md)，11-14）；
 - open、close 门和抽屉（[open](open.md)、[close](close.md)）；微波炉除外；
 - push：推到桌边和另外 7 个调 `push_object` 的策略（[push](push.md)）。
 
-还是旧代码（直接调 `rig.move_to` 等旧入口）：书的平放（`place_flat`）、hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、搅拌、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类和姿态类还没按第 ⑤ 层的形式迁（`../MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）。
+还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、搅拌、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类和姿态类还没按第 ⑤ 层的形式迁（`../MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）。
 
 ## 11-04（3b 第 2 项）改了什么
 

@@ -811,7 +811,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 | 持物在手里滑动没有余量，按实测复核判碰就得重做 | — | 开车前的 place 计划带 `HOLD_DRIFT` 余量（8.2，2.5 步）；`HOLD_DRIFT` 要在 `physical` 下按实测滑动定（握法按实测关节角量，sticky 下它不变） |
 | 持物去搬运姿态的规划慢（保持倾角按位姿规划单次 0.6–8.4 s） | pick 构造时间的大头（`carry_in` 约占 77%） | 不涉及；pick 锚点处重做（`PICK_TOL` 1 mm）常碰上它会更慢（第 10 节） |
 | place 搜索的时间大多花在构造之前 | place 搜索中位 16.3 s 里 11.6 s；候选中位 11 万个，构造中位只做 1 份。候选 + 够得着 0.7 s，柱体约 3.5 s，其余在行驶姿态 / 排序 IK（`diag["filter_s"]`） | 先按 `filter_s` 找大头，再考虑分批排序或同一空位的手腕朝向共用底盘候选（第 10 节） |
-| 书还走旧 `place_flat`，翻书走旧 `FlipFlat` | T15 s10/s11 | 2.7 步 |
+| 翻书走旧 `FlipFlat`（书的放置 11-14 已进 `plan_place`） | T15 s10/s11 | 2.7 步 |
 
 第 1 节第 2 条（每个决定一个出处）在 pick / place / navigate 里已经没有重复的出处。
 
@@ -835,7 +835,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
       对照方法：锚点多出的复核查询（`contact_extent` 等调 cuRobo IK）会改变求解器的调用历史，之后的排序 IK 跟着变，五集都在某次停车点搜索处和旧代码分开——没有单独做实验证明。以后的对照不再要求事件日志逐条相同，比锚点 / 段的重做、成败和失败类别；
    5. 余量：place 计划带 `HOLD_DRIFT`；
    6. **已做（11-09）**：hooks 不动机器人，失败出口是 `run` 执行的计划（`clearing` + `plan_clear`，8.6）；
-   7. 9.2 第一张表里剩下的：收臂预算、搬运慢、书进 `plan_place`（删 `place_flat`）。
+   7. 9.2 第一张表里剩下的：收臂预算、搬运慢、书进 `plan_place`（删 `place_flat`）。**书已进（11-14）**：捏边的东西走 `place_job`，目标集合是边缘（`_edge_goals`），`plan_place` 加 `place_clear`（松手后指垫离书不够 `EDGE_PAD_CLEAR` 才挪，挪到够为止，和抽出一样不许碰书），悬出量给下指尖留 2 cm，放完用 `push_object` 推进去；`place_flat` 删了，叠书时底下那本书不再挡住所有空位。见 `skills/place.md`。
    8. **手里物体的碰撞球（11-11，7e82e60）**：原来的 `box_spheres` 是包围盒里等大的内切球，离物体表面中位 6–19 mm、最多 15–28 mm（锅盖底边、mug 侧边整片没盖住），圆物体的盒子四角又多出约 4 cm。T17 掀锅盖放到灶台时锅盖边压上锅沿、手臂被卡 14 cm，T04 拿着 mug 开车擦倒柜面上的杯子，规划和复核都看不见，接触监视也不看手里的东西。改成按碰撞体拟合的变半径球（4.4），`HELD_SPHERES` 32 / 32 → 右手 140 / 左手 60；PhysX 接触监视加上手里的东西碰外界。离线核过（预算 140）：锅盖 127 个球、mug 39、杯子 41、书 101、带把手的锅 130（放宽到 7.5 mm），多出都 ≤ 4.0 mm，其余表面离球 ≤ 6.3 mm；自碰撞对数不变（当时 16271；90a2a31 把共用表改成左右对称以后是 16171，4.4），球总数 505 ≤ 512。接触监视的 PhysX 实体按接触点所在的标注家具命名（`Motion.entity_of_contact`，和球模型的命名一致：之前同一张桌子一边叫 `desk_1`、一边叫 `SupportRepairs/desk_1__top`，放行对不上）；松手时物体碰它被放到的东西放行（`release_spec(on=)`，`place_job` 由支撑面得出）。针对性对照（v6 sticky/gt，旧 = `9f6dc08`，各一个仿真，`/data/zenobench/held_spheres_1111`）：T04 two_guests 新成功、旧失败（mug 擦倒杯子：所有版本里第一次没倒），T17 hide_both 新成功（旧侧显存不够崩了），T02 crowded 两边成功（挤着的方块照样拿得起来），T14 shelve_the_book 两边成功（新侧第一次两个仿真同时跑显存不够崩了，单独重跑成功）。停车点搜索总耗时 334 → 345 s（+3%）。新的手持物接触里剩下的是真实接触：T14 搬书时擦到铅笔，以及还没迁移的旧 `place_flat`（`flat_lower`）。
 3. **感知类**：look、search、explore_furniture / explore_room、inspect、measure、identify、count。navigate + 头部动作，只依赖第 1 步。
 4. **取放家族**：drop、stack、lift、hover、cover、present；collect 在任务层串。在 `plan_pick` / `plan_place` 上换目标集合。
@@ -882,7 +882,7 @@ run(act, plan, build, hooks):          # act: Actuator（2.5）；build 可为 N
 
 每步单独提交，先针对性检查再全量（全量跑 v6，`COLLISION_PLAN.md` 第 5 节）。
 
-**只降不升的计数**：静态审计的 `old_entry` 一类（棘轮，按文件计）：执行入口（`run.py`、`rig.py`）以外直接调 rig 旧运动入口的地方（`OLD_ENTRIES`：`move_to`、`move_to_any`、`joint_path`、`joint_path_via`、`move_left_to`、`leave`、`tuck`、`swing`、`follow` / `follow_smooth` / `left_follow` / `follow_both`、`drive_base`、`grip`）。现在 191 处（11-14 drop 迁走以后；`skills.py` 38、`orientation.py` 24、`hand.py` 19、`extra.py` 18、`bimanual.py` 17、`tooluse.py` 17、`embedded.py` 14……；`skill_jobs/` 0）。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
+**只降不升的计数**：静态审计的 `old_entry` 一类（棘轮，按文件计）：执行入口（`run.py`、`rig.py`）以外直接调 rig 旧运动入口的地方（`OLD_ENTRIES`：`move_to`、`move_to_any`、`joint_path`、`joint_path_via`、`move_left_to`、`leave`、`tuck`、`swing`、`follow` / `follow_smooth` / `left_follow` / `follow_both`、`drive_base`、`grip`）。现在 179 处（11-14 drop、书的放置迁走以后；`skills.py` 26、`orientation.py` 24、`hand.py` 19、`extra.py` 18、`bimanual.py` 17、`tooluse.py` 17、`embedded.py` 14……；`skill_jobs/` 0）。每步迁移必须让它下降，第 10 步到 0。每个新 `build` 有 FakeKin 单测（`tests/test_skill_plans.py` 的写法）。
 
 ### 9.4 代码放哪
 

@@ -272,7 +272,7 @@ class StickyHands:
         if cands:
             g = min(cands, key=lambda c: float(np.linalg.norm(c["p"][:2] - np.array([bx, by]))) +
                     0.3 * c.get("along_rank", 0))
-            # a thickness pinch holds a flat object at its side: an edge hold (place_flat)
+            # a thickness pinch holds a flat object at its side: an edge hold (skill_jobs.place._edge_goals)
             return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb,
                         kind="edge" if g["kind"] == "thickness_pinch" else "pinch",
                         pre_open=float(g["pre_open"]), source=f"annotated_{g['kind']}")

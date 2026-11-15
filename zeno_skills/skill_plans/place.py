@@ -9,11 +9,11 @@ import numpy as np
 from ..clearance import Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, released, with_width
 from ..primitives import sided, JointSet, Pose, contact_extent, decide_ik, free_leg, ik_why, off_support, query, straight
-from ..tolerances import LEAVE_GAP, PLACE_TOL
+from ..tolerances import EDGE_PAD_CLEAR, LEAVE_GAP, NUMERIC_M, PLACE_TOL
 from ._common import FREE_HAND, FREE_LOAD, _aimed, _kept, _move, _reach, anchor, held_frame
 
-PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_pull_out", "tuck",
-                "place_settle")
+PLACE_STAGES = ("place_arrive", "place_reach", "place_down", "place_release", "place_landed", "place_clear",
+                "place_pull_out", "tuck", "place_settle")
 PLACE_ANCHORS = ("place_arrive", "place_landed")   # the base and the hold as they are; where it landed (docs 8.2)
 PLACE_RELAY = "place_reach"   # the decision the park search's ranking IK solves for (park_search.Problem.relay)
 # PLACE_TOL (m, rad): the set-down's start and end may come further off their pose than when built
@@ -51,7 +51,7 @@ def set_down_length(kin, state, spec, q_p, step=0.004):
 
 
 def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arrive", prior=None,
-               step=0.003, obj=None, on=None):
+               step=0.003, obj=None, on=None, edge_box=None):
     """The set-down of what the hand holds with its box frame at the world pose ``goal`` (4x4) from
     ``state``: the set-down pose (p, R) the TCP that puts it there through the hold the State has
     (Aim, aim_pose: the hold as it is now, in the search and every rebuild alike).  The anchor where
@@ -70,10 +70,14 @@ def plan_place(kin, state, goal, pre_open, out_len, rest_goals, start="place_arr
     decision: chosen again whenever it is built.  ``obj``: the object set down (default: what the
     state's hand holds) -- given, a plan built again after the release (the hand holds nothing
     then) lets the fingers touch it as the first one did.  ``on``: what it is set down on (the
-    release lets it touch that: release_spec).  From ``start`` on.  Plan (its
-    decisions) or Failure, info["stage_s"] the time per stage."""
+    release lets it touch that: release_spec).  ``edge_box``: an edge hold (a flat load pinched at its
+    thickness, the fingers above and below it) -- the load's box (lo, hi) in its box frame: after it
+    landed the open pads are moved along their closing axis only as far as they need to clear it by
+    EDGE_PAD_CLEAR (place_clear: it fell the gap, the hand did not), and neither they nor the
+    pull-out may touch it, a touch drags it back out with the hand.  From ``start`` on.  Plan (its decisions) or Failure, info["stage_s"] the time per
+    stage."""
     with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
-        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj, on)
+        return _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior, step, obj, on, edge_box)
 
 
 def release_spec(side, obj, on=None):
@@ -90,7 +94,34 @@ def release_spec(side, obj, on=None):
                 fingers=True, exempt=False, touch=(obj,))
 
 
-def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None, on=None):
+def _pads_clear(kin, state, q, obj, box, name):
+    """The straight that gives an edge hold's open pads EDGE_PAD_CLEAR from ``obj`` on both sides along
+    their closing axis (Y_link, kinematics.gripper_rot), the load as the State has it (it fell the gap,
+    the hand stayed): the least move that does -- none when they clear it already -- or the load centred
+    between them when the opening leaves less.  ``box`` (lo, hi): its box in its box frame; the pads
+    stand the hand's width (per finger) off the TCP.  Checked, the load an obstacle (FREE_HAND).  None:
+    nothing to move (or the load not in the State)."""
+    T, hand = state.objects.get(obj), state.hands.get(kin.side)
+    if T is None or hand is None:
+        return None
+    T = np.asarray(T, float)
+    lo, hi = (np.asarray(v, float) for v in box)
+    p, R = kin.tcp(q)
+    y = R[:, 1]
+    c = (T @ np.r_[0.5 * (lo + hi), 1.0])[:3]
+    half = float(np.abs(T[:3, :3].T @ y) @ (0.5 * (hi - lo)))      # the load's half extent along y
+    w, m = float(hand.width), EDGE_PAD_CLEAR
+    d = float((c - p) @ y)                                          # its centre off the TCP along y
+    least, most = half + m - w, w - half - m                        # where d leaves both pads m clear
+    s = d - (0.0 if least > most else min(max(d, least), most))     # the TCP's move along y
+    if abs(s) < NUMERIC_M:
+        return None
+    seg = straight(kin, state, FREE_HAND, p + s * y, R, name, step=0.002, q_from=q)
+    return seg if isinstance(seg, Failure) else _move(seg, steps_per_wp=3, smooth=True)
+
+
+def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_plan, step, obj=None, on=None,
+                edge_box=None):
     i0 = PLACE_STAGES.index(start)
     prior = decisions_of(prior_plan)
     q = state.q(kin.side)
@@ -152,14 +183,19 @@ def _plan_place(kin, state, goal, pre_open, out_len, rest_goals, start, prior_pl
                 T[2, 3] -= LEAVE_GAP                 # let go, it falls the gap onto the support
                 s = released(s, kin.side, held.name, T)
             s = with_width(s, kin.side, pre_open)    # the hand opened to the grasp's width
+        elif stage == "place_clear":
+            seg = None if edge_box is None else (kept or _pads_clear(kin, s, q, obj, edge_box, stage))
+            if seg is None:                     # not an edge hold, or its pads clear the load already
+                times[stage] = round(time.time() - t0, 3)
+                continue
         elif stage == "place_pull_out":
             # back along the gripper axis, a finger's length (release_spec: the fingers may touch
-            # obj): the set-down pose's, else (built again after the release: nothing held to derive
-            # it from) the axis where the hand let go
+            # obj; an edge hold: they may not, FREE_HAND): the set-down pose's, else (built again after
+            # the release: nothing held to derive it from) the axis where the hand let go
             p0, R0 = kin.tcp(q)
             u = (R if R is not None else R0)[:, 2]
-            seg = kept or straight(kin, s, release_spec(kin.side, obj), p0 + out_len * u, R0, stage, step=0.004,
-                                   q_from=q)
+            spec = FREE_HAND if edge_box is not None else release_spec(kin.side, obj)
+            seg = kept or straight(kin, s, spec, p0 + out_len * u, R0, stage, step=0.004, q_from=q)
             seg = seg if isinstance(seg, Failure) or kept else _move(seg, steps_per_wp=3, smooth=True)
         elif stage == "tuck":   # the first free of the fold, hanging -- made again whenever it is built,
             # never kept: the last motion, it binds no segment after it (docs 8.1), and the fold is
