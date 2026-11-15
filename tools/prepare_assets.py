@@ -653,7 +653,9 @@ def main():
         urdfs[n], anns[n] = write_sim_urdf(n)
         print("ANNOTATED", n, anns[n]["size"], [g["type"] for g in anns[n]["grasps"]], flush=True)
     ANN.parent.mkdir(parents=True, exist_ok=True)
-    ANN.write_text(json.dumps(anns, indent=1))
+    from collider_hulls import dump                 # other assets' hulls kept, one line each
+    ANN.write_text(dump(anns))
+    print("collider_hull: run tools/collider_hulls.py for", names, flush=True)
     print("MISSING (not generated yet):", missing)
     if args.hulls:
         hulls = json.loads(HULLS.read_text()) if HULLS.exists() else {}

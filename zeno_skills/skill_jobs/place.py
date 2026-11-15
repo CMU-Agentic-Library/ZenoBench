@@ -243,7 +243,7 @@ def _place_result(rig, name, s, spot, kind, tray):
         if not ok:
             raise SkillFailure(f"place {name} in {tray}: {why}")
         return True
-    # the lowest face of the box as it lies (Geometry.resting): an object set down on another face (behind
+    # the lowest point as it lies (Geometry.resting): an object set down on another face (behind
     # a door, _on_side) has its own bottom face on its side
     b = rig.geo.resting(name, st)
     err = float(np.linalg.norm(b[:2] - np.asarray(spot)))

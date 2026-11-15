@@ -43,13 +43,22 @@ class Geometry:
         return np.asarray(o["pos"], float) + R @ np.asarray(self._asset(name)["origin_to_bottom_center"], float)
 
     def resting(self, name, st):
-        """World centre of the lowest face of the object's box as it lies: its centre, half its vertical
-        extent down.  Upright it is bottom(); on another face (a box laid on its side, a bottle fallen
-        over) bottom() is on its side, this is still under it."""
-        R = quat_R(st["objects"][name]["quat"])
+        """World point under the object's centre at its lowest: its box centre's xy, the height of its
+        collider's lowest point as it lies (the asset's collider_hull, tools/collider_hulls.py).
+        Upright it is bottom(); on another face (a box laid on its side, a bottle fallen over)
+        bottom() is on its side, this is still under it.  Not the box's lowest corner: that hangs below
+        a tilted round body (11-14: an apple at rest on desk_1 read 2.2 cm under it).  An asset with
+        no hull falls back to that corner."""
+        o = st["objects"][name]
+        R = quat_R(o["quat"])
         c = self.centre(name, st)
-        size = np.asarray(self._asset(name)["size"], float)
-        return np.array([c[0], c[1], c[2] - 0.5 * float(np.abs(R[2, :]) @ size)])
+        a = self._asset(name)
+        V = a.get("collider_hull")
+        if V:
+            low = float(o["pos"][2]) + float((np.asarray(V, float) @ R[2, :]).min())
+        else:
+            low = c[2] - 0.5 * float(np.abs(R[2, :]) @ np.asarray(a["size"], float))
+        return np.array([c[0], c[1], low])
 
     def centre(self, name, st):
         o = st["objects"][name]
@@ -78,9 +87,9 @@ class Geometry:
         return out or [s for s in self.ann.supports if s.get("furniture") == place]
 
     def on(self, name, place, st):
-        """Whether ``name`` rests on ``place`` (a support, a furniture's supports, the floor): the lowest
-        face of its box as it lies (resting) within -2..+5 cm of the support height, over its box (11-13:
-        the bottom face's centre before -- a box laid on its side read as hanging in the air)."""
+        """Whether ``name`` rests on ``place`` (a support, a furniture's supports, the floor): its lowest
+        point as it lies (resting) within -2..+5 cm of the support height, over its box (11-13: the
+        bottom face's centre before -- a box laid on its side read as hanging in the air)."""
         b = self.resting(name, st)
         places = place if isinstance(place, list) else [place]
         for p in places:
@@ -94,7 +103,7 @@ class Geometry:
                 if x0 - 0.02 <= b[0] <= x1 + 0.02 and y0 - 0.02 <= b[1] <= y1 + 0.02 \
                         and -0.02 <= b[2] - s["z"] <= 0.05:
                     return True, s["name"]
-        return False, f"lowest face at ({b[0]:.2f}, {b[1]:.2f}, {b[2]:.3f})"
+        return False, f"lowest point at ({b[0]:.2f}, {b[1]:.2f}, {b[2]:.3f})"
 
     def inside(self, name, cont, st):
         if name == cont:
@@ -128,7 +137,7 @@ class Geometry:
     def support_under(self, name, st):
         """The highest annotated surface the object rests on (None = floor/unknown).
 
-        Uses the lowest point of the rotated box, so a bottle lying on its side
+        Uses the lowest point as it lies (resting), so a bottle lying on its side
         still rests on its table."""
         b = self.resting(name, st)
         best = None

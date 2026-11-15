@@ -152,6 +152,39 @@ def test_on_reads_the_face_a_box_lies_on_and_the_floor_alike():
     assert g.support_under("snack", side) is shelf
 
 
+
+def test_a_round_object_is_judged_by_its_collider_not_its_box_corner():
+    # 11-14 v6 T24 apple_on_table: the apple at rest on desk_1 (z 0.700), its box's lowest corner 2.2 cm
+    # under the desk; its collider's lowest point (annotations/assets.json collider_hull) 0.696
+    import json
+    from zeno_skills.evaluator import Geometry
+    apple = json.loads((ROOT / "annotations" / "assets.json").read_text())["apple"]
+    desk = {"name": "desk_1/top", "z": 0.7, "aabb_xy": [-1.408, -6.326, -0.025, -5.709]}
+    ann = SimpleNamespace(objects={"apple": {"asset": "apple"}}, asset_of=lambda o: apple, supports=[desk], rooms=[])
+    g = Geometry(ann)
+    q = np.array([0.345, 0.729, 0.22, 0.548])
+    st = {"objects": {"apple": {"pos": [-1.249, -5.946, 0.728], "quat": list(q / np.linalg.norm(q))}}}
+    assert abs(g.resting("apple", st)[2] - 0.696) < 0.001
+    assert g.on("apple", "desk_1/top", st)[0] and g.support_under("apple", st) is desk
+    up = {"objects": {"apple": {"pos": [-1.249, -5.946, 0.735], "quat": [1.0, 0.0, 0.0, 0.0]}}}
+    assert abs(g.resting("apple", up)[2] - g.bottom("apple", up)[2]) < 0.0005   # upright: the box's bottom
+    del apple["collider_hull"]                                                  # the box's corner: under the desk
+    assert not g.on("apple", "desk_1/top", st)[0]
+
+
+def test_every_asset_has_a_collider_hull_standing_on_its_box_bottom():
+    # tools/collider_hulls.py: upright, the collider's lowest point is the box's bottom (the same body frame)
+    # (convex pieces, annotations/collision_hulls.json, hug the mesh and may stop a few mm above its
+    # lowest bulge: teddy_bear 2.2 mm)
+    import json
+    pieces = json.loads((ROOT / "annotations" / "collision_hulls.json").read_text())
+    for name, a in json.loads((ROOT / "annotations" / "assets.json").read_text()).items():
+        V = np.asarray(a["collider_hull"], float)
+        assert len(V) >= 4, name
+        tol = 0.003 if name in pieces else 0.0015
+        assert abs(V[:, 2].min() - a["origin_to_bottom_center"][2]) < tol, name
+
+
 def test_spots_in_a_tray_are_free_of_its_load_and_the_centre_comes_first_when_free():
     # place("in:<tray>"): free_spots on the tray's floor (a support record), the tray not in the way
     from zeno_skills import skills
