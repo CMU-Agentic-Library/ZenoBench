@@ -1254,6 +1254,10 @@ class Motion:
         # and whatever of it already touches the world (a hand holding a handle) stay out
         links = {f"{kin.side}_{l}" for l in own} | {f"{other}_{l}" for l in FINGER_LINKS} | \
             self.other_touching.get(kin.side, set())
+        if coll_kw.get("held_touches"):
+            # Spec.touch (name, "held"): the load in the hand is what touches (a spoon in the pot), its
+            # held link off with the fingers in path_free_only's check of the rest of the arm
+            links |= {f"{kin.side}_{l}" for l in FINGER_LINKS} | {held_link(kin.side)}
         if getattr(self, "other_hand_off", {}).get(kin.side):
             # the other hand holds a load standing as an obstacle here (Motion.query): its hand is at it --
             # a rim pinch's gripper body sits millimetres from the rim -- and stays where it is
@@ -1407,7 +1411,8 @@ class Motion:
     @_timed("check_s")
     def path_free_only(self, kin, qs, names, other_q=None, coll_kw=None):
         """The arm without the touching links clear of what they may touch alone, all along ``qs``
-        (Spec.touch: the fingers -- or the whole hand, (name, "hand") -- may touch it, the rest of
+        (Spec.touch: the fingers -- or the whole hand, (name, "hand"), or the fingers and their load,
+        (name, "held") -- may touch it, the rest of
         the arm may not).  ``names``: object / part names (the fingers'), or (name, links) pairs."""
         STATS["check"] += 1
         by_links = {}
@@ -1419,6 +1424,8 @@ class Motion:
                 kw = {**(coll_kw or {}), "ignore_fingers": True}
                 if links == "hand":
                     kw["hand_touches_part"] = True          # _query: the hand links off (HAND_LINKS)
+                elif links == "held":
+                    kw["held_touches"] = True               # _query: the fingers and the held link off
                 with self._query(kin, other_q, kw) as arm:
                     on = [c for c in self.cols.items if self.enabled[c.name]]
                     try:

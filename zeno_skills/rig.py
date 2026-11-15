@@ -139,6 +139,7 @@ class Rig:
         self.frames = []             # JPEG bytes, composed as they are rendered
         self.events, self.caption, self.trace = [], "", []
         self.clear = Clearance(self)        # collision policy of the motions + contact monitor (clearance.py)
+        self.tick_watchers = []             # fn() called after every physics tick (skill_jobs.stir: the tip sampled)
         self._scope = False                 # a motion is being planned (_planning)
         self._log = log
         self._arts, self._dof, self._bodies = {}, {}, {}
@@ -374,6 +375,8 @@ class Rig:
                 self.clear.every_tick()
                 if self.tick % MONITOR_EVERY == 0:
                     self.clear.tick()
+            for watch in self.tick_watchers:      # a skill's own measurement while a segment runs (stir's turns)
+                watch()
             if render:
                 imgs = []
                 for cam in self.cams.values():

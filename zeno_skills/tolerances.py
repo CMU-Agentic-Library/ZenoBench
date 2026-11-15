@@ -111,6 +111,18 @@ PLACE_TOL = _t("PLACE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = TARGE
                "only sets the load down a few mm off; unmeasured -- anchor_stats 2 (place_reach / place_down)")
 DOOR_TOL = _t("DOOR_TOL", (HINT_REACH, HINT_TURN), "m, rad", "chosen as PICK_TOL (the hook onto a bar is a "
               "fine motion); no sim run yet")
+STIR_TOL = _t("STIR_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = SLIDE_TOL: the spoon's tip goes 3.5 cm "
+              "round inside a pot over 10 cm wide -- a reach or dip a few mm off still stirs inside it; no sim run yet")
+STIR_TILT = _t("STIR_TILT", 0.873, "rad", "inherited, unmeasured: the old StirContainerPolicy's tilt_deg 50 -- the "
+               "spoon's far end turned down about the horizontal across it, so its bowl reaches below the rim "
+               "while the hand stays above it")
+STIR_DEPTH = _t("STIR_DEPTH", (0.04, 0.015), "m", "inherited, unmeasured (old StirContainerPolicy): the tip this far "
+                "below the rim, at most; and at least this far above the pot's floor (min(0.04, rim - 0.015))")
+STIR_RADII = _t("STIR_RADII", (0.035, 0.022, 0.012), "m", "inherited, unmeasured (old StirContainerPolicy): the "
+                "tip's circle, the widest a park reaches first (the first capped at 0.45 of the rim's radius); "
+                "a tighter circle needs less arm travel and still turns the tip round the pot's centre")
+STIR_ABOVE = _t("STIR_ABOVE", 0.06, "m", "inherited, unmeasured (old StirContainerPolicy's 'above'): the dip comes "
+                "straight down from where the tip is this far above the rim, and the leave goes back up to it")
 SLIDE_TOL = _t("SLIDE_TOL", (TARGET_TOL, TARGET_TURN), "m, rad", "chosen = PLACE_TOL: an object pushed across its "
                "support is a coarse contact -- the push point less off only moves it a few mm otherwise; slide_1112 "
                "(11-12, 12 pushes): the reach, descent and push-in ended at most 0.02 mm further off than built and "

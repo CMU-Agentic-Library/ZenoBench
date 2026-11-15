@@ -67,6 +67,12 @@ SIDE_PINCH_EXTRA = {"wooden_block", "soda_can", "snack_carton"}
 # rad a side pinch's approach dips below level, the first that fits (side_pinches): level, else
 # enough to lift the palm off the surface for a 4 cm block (the TCP 43 mm up level, 26 mm dipped 15 degrees)
 SIDE_PINCH_TILTS = (0.0, 0.3)
+# a tool's working points in the body frame (the asset's own, as grasps): the frames the contact skills move
+# (docs/MOTION_ARCHITECTURE.md 6, contact; skill_jobs.tool.tool_in_tcp).  The spoon's two ends: the bowl at +x
+# (the collider hull 4 cm wide there; 1 cm in from the end, 4 mm down in the bowl) and the handle's end at -x
+# (5 mm in).  Its top pinch closes on the bowl end (the fingers ~4 cm apart: v6 stir_1115), so a stir puts the
+# end away from the hand in the pot -- the handle, as the old stir's "far end of the long axis" did
+TOOL_FRAMES = {"breakfast_spoon": {"bowl": [0.08, 0.0, -0.004], "handle": [-0.085, 0.0, 0.003]}}
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 # lay-flat assets whose generated mesh is too thick: resting height (m); the
 # footprint keeps the uniform scale from SPECS
@@ -554,6 +560,8 @@ def write_sim_urdf(name):
            "generator": CUSTOM_RECORDS.get(name, {}).get("generator", "EmbodiedGen V2 text3d-cli (SAM3D backend)")}
     if "knob_collider" in custom:
         ann["knob_collider"] = custom["knob_collider"]
+    if name in TOOL_FRAMES:
+        ann["tool_frame"] = TOOL_FRAMES[name]
     if kind != "solid":
         ann["container"] = profile
         if "handle_collider" in custom:

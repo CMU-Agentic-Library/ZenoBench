@@ -1,5 +1,5 @@
 """Skill plans (docs/MOTION_ARCHITECTURE.md section 6, layer 2): one module per shape of skill
-(9.4) -- pick, place, navigate, door, contact -- what they share in _common.  They know no simulator: no module
+(9.4) -- pick, place, navigate, door, contact (slide, stir) -- what they share in _common.  They know no simulator: no module
 here imports the rig (tests/test_layering.py)."""
 
 from ._common import FREE_HAND, FREE_LOAD, TOUCHING, T_of, held_frame, plan_clear
@@ -9,4 +9,5 @@ from .place import (DROP_RELAY, DROP_STAGES, PLACE_ANCHORS, PLACE_RELAY, PLACE_S
 from .navigate import NAV_STAGES, Carry, plan_navigate, travel_chain
 from .door import (DOOR_ANCHORS, DOOR_RELAY, DOOR_STAGES, DOOR_TOL, PUSH_ANCHORS, PUSH_RELAY, PUSH_STAGES,
                    plan_door, plan_push)
-from .contact import SLIDE_ANCHORS, SLIDE_RELAY, SLIDE_STAGES, SLIDE_STEP, plan_slide, slide_travel
+from .contact import (SLIDE_ANCHORS, SLIDE_RELAY, SLIDE_STAGES, SLIDE_STEP, STIR_ANCHORS, STIR_RELAY, STIR_STAGES,
+                      plan_slide, plan_stir, slide_travel, stir_tcp)

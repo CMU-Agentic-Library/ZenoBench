@@ -138,7 +138,9 @@ class State:
         return None if h is None else h.held
 
 
-TOUCH_LINKS = ("fingers", "hand")   # what of a hand a Spec.touch entry lets touch (clearance.Allow.links)
+TOUCH_LINKS = ("fingers", "hand", "held")   # what of a hand a Spec.touch entry lets touch: the fingers, the whole
+                                            # hand (clearance.Allow.links), or the fingers and what they hold (a
+                                            # spoon stirred in a pot: the load in the contact, not the hand)
 PART_HOLD = "fingers"                # the links of a hand holding a part's handle that may touch the part
 
 
@@ -154,7 +156,8 @@ class Spec:
     standing as an obstacle (Motion.query, docs 4.4).
     ``touch``: what the hand may touch -- each entry an object or articulated part name (the
     fingers may touch it) or (name, links), links one of TOUCH_LINKS ("hand": the fingers, the
-    gripper and its camera: a door pushed with the hand).  No obstacle to those links, still one
+    gripper and its camera: a door pushed with the hand; "held": the fingers and the load on the
+    hand's held link -- a tool in the contact it is used in).  No obstacle to those links, still one
     to the rest of the arm (primitives.free_path checks that apart); ``allow`` then lists them for
     the monitor.  A part the hand holds (Held kind "part") is touched the same way without being
     listed (touches)."""

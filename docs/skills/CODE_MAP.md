@@ -28,11 +28,12 @@ skills.py         技能本体：pick / place / navigate / 开关门 / 微波炉
   │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：头回正 → job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
   │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / drop / door（open、close）/
-  │                       slide（push：slide_job，和任务层一段段推的 push_object）；
+  │                       slide（push：slide_job，和任务层一段段推的 push_object）；stir（stir_job）；
+  │                       tool（tool_in_tcp：标注的 tool_frame → T_tcp_tool）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
-  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door / plan_push / plan_slide（build）：
+  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door / plan_push / plan_slide / plan_stir（build）：
   │                       原语串成整份计划，State 在段间推进；plan_clear（失败出口：张手、竖直退出接触）
   │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
   │                       scripted（任务段：Script + 耦合 hinge / slider / still / pushed，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
@@ -255,6 +256,22 @@ skill_jobs/slide.py  slide_job（一段；右手空着）
      接触位姿段的容差 SLIDE_TOL
   run.run：slide_push 由 execute 按 follow 执行；hooks：slide_push 前 caption
   done：（走了 dirs 里哪个方向，沿它实测推了多远，计划预测的）
+```
+
+### stir（policy_085 `StirContainerPolicy` → `run_skill(SKILLS["stir"])`；DipUtensilPolicy 用 turns=0）
+
+```
+skill_jobs/stir.py  stir_job（右手拿着勺子）
+  先 carry_posture；勺尖 = 离手远的那一端 free_end(bowl, handle) 的 tool_in_tcp（skill_jobs/tool.py，标注 tool_frame）
+  goals：圈半径 STIR_RADII（Problem.tiers，大的先）× 手绕竖直轴 STIR_YAWS，勺子转 STIR_TILT 朝下；
+         圈在锅的坐标系里（stir_tcp），relay 是下勺点（STIR_RELAY）；touch = 锅 + objects_inside
+  plan_stir(kin, state, stir)（skill_plans/contact.py）
+     stir_arrive 锚点 → stir_reach（_reach，FREE_HAND：不保持倾角）→ stir_dip（straight，in_pot）
+     → stir_circle（scripted，Script(still(锅))，carry="arm"，整圈）→ stir_stirred 锚点
+     → stir_leave（straight 向上，in_pot）→ stir_back（free_leg 回到进来时的姿态，FREE_HAND）
+     in_pot：Spec.touch (名字, "held")——手指和手里的勺子可碰锅和锅里的东西，手臂其余部分照查
+  run.run：hooks：stir_dip / stir_circle 期间 Rig.tick_watchers 每 4 个物理步采一次勺尖，算转过的角度；stir_back 后 check_held
+  done：memory["stirred"]（满 1 圈）/ memory["dipped"]
 ```
 
 ### navigate（`skills.navigate → run_skill(SKILLS["navigate"])`）

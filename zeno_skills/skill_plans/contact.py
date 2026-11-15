@@ -1,5 +1,5 @@
 """Contact skills (docs/MOTION_ARCHITECTURE.md section 6, contact): an object pushed or dragged across its
-support by the closed fingers -- plan_slide.  Its trajectory is a task segment over the hand's travel
+support by the closed fingers -- plan_slide; a held spoon stirred round inside a pot -- plan_stir.  Its trajectory is a task segment over the hand's travel
 (primitives.Pushed: the object along n from where the fingers meet it, the hand rigid in its frame), checked
 whole with the object where each step of the push puts it, as far as the arm reaches from the park; where
 the object really went is read at the anchor after it."""
@@ -10,10 +10,10 @@ import time
 
 import numpy as np
 
-from ..clearance import LEAVE_CONTACT
+from ..clearance import LEAVE_CONTACT, Allow
 from ..motion_state import Aim, Failure, Plan, Segment, Spec, aim_pose, decisions_of, with_arm, with_width
-from ..primitives import JointSet, Script, free_leg, pushed, query, scripted, sided, straight
-from ..tolerances import SLIDE_TOL
+from ..primitives import JointSet, Script, free_leg, pushed, query, scripted, sided, still, straight
+from ..tolerances import SLIDE_TOL, STIR_TOL
 from ._common import FREE_HAND, _aimed, _contact, _kept, _move, _reach, anchor, may_touch
 
 SLIDE_STAGES = ("slide_arrive", "slide_close_hand", "slide_reach", "slide_down", "slide_in", "slide_push",
@@ -148,6 +148,130 @@ def _plan_slide(kin, state, push, rest_goals, start, prior_plan, step):
         else:                                               # slide_open_hand
             seg = Segment(stage, FREE_HAND, q, kind="action", action=("grip", SLIDE_OPEN, 40, False))
             s = with_width(s, side, SLIDE_OPEN)
+        times[stage] = round(time.time() - t0, 3)
+        if isinstance(seg, Failure):
+            return Failure(seg.why, seg.segment, {"stage_s": times})
+        segs.append(seg)
+        q = seg.q_end
+    return Plan(tuple(sided(sg, side) for sg in segs), info={"stage_s": times}, decisions=decided)
+
+
+STIR_STAGES = ("stir_arrive", "stir_reach", "stir_dip", "stir_circle", "stir_stirred", "stir_leave", "stir_back")
+STIR_ANCHORS = ("stir_arrive", "stir_stirred")   # the base, the pot and the spoon as they are; after the circle
+STIR_RELAY = "stir_reach"     # what the park search's ranking IK solves: the dip's end (the tip at the circle's start,
+                              # in the pot) -- a seed of the reach's IK at the dip's start, as SLIDE_RELAY
+STIR_STEP = 2 * np.pi / 24    # rad of the circle between the task segment's checked samples (docs 2.4: by angle; the
+                              # old stir moved through 16 points a turn and checked none)
+
+
+def stir_tcp(stir, s):
+    """The TCP's pose (4x4) in the pot's box frame with the tip at angle ``s`` of the circle: the tip at
+    stir["c"] + stir["r"] (cos s ex + sin s ey) -- ex, ey (stir["axes"], default the frame's x and y) the
+    world's horizontal x and y written in the pot's frame, so the circle is level however that frame is
+    turned -- the TCP turned stir["R"] there (the hand's orientation in the pot's frame, the spoon tilted),
+    stir["t_tool"] the tip in the TCP frame (skill_jobs.tool.tool_in_tcp)."""
+    R = np.asarray(stir["R"], float)
+    ex, ey = (np.asarray(v, float) for v in stir.get("axes", ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0))))
+    tip = np.asarray(stir["c"], float) + float(stir["r"]) * (np.cos(s) * ex + np.sin(s) * ey)
+    T = np.eye(4)
+    T[:3, :3], T[:3, 3] = R, tip - R @ np.asarray(stir["t_tool"], float)
+    return T
+
+
+def in_pot(side, stir):
+    """The Spec of the motions in the pot: the spoon and the fingers holding it may touch the pot and what is
+    in it (Spec.touch (name, "held"): the held link and the fingers off against those, the rest of the arm
+    checked against them as ever); the monitor told the same (the load on the pot, Allow.held_on)."""
+    names = tuple(stir["touch"])
+    return Spec(allow=Allow(hand=side, links="fingers", touch=names, held_on=names,
+                            reason="stir: the spoon and its fingers in the pot and among what is in it"),
+                fingers=True, exempt=False, touch=tuple((n, "held") for n in names))
+
+
+def plan_stir(kin, state, stir, start="stir_arrive", prior=None, step=0.003):
+    """The spoon in ``kin``'s hand stirred round inside the pot stir["pot"] from ``state``: stir = {pot, c, r,
+    R, t_tool (stir_tcp), turns (0: a dip, no circle), above (m the dip comes straight down), touch (what the
+    spoon may touch in the pot: the pot and what is in it)}:
+
+        stir_arrive   anchor: the base, the pot and the hold as they are
+        stir_reach    the free leg to ``above`` over the dip's end (decide_ik: _reach), the spoon tilted as it
+                      will stir -- free space, the load's tilt not held: a tool is turned on purpose (the one
+                      tilt rule of a carry, kinematics.carry_tilt_allowed, is for loads that must stay level)
+        stir_dip      the straight down: the tip into the pot at the circle's start (in_pot)
+        stir_circle   the task segment (Script, primitives.Still: the pot stays, its frame the TCP's): the tip
+                      round the circle stir["turns"] times, the arm's IK continued (carry "arm"), checked whole
+                      -- all or nothing (in_pot)
+        stir_stirred  anchor: the pot and the spoon after the circle
+        stir_leave    the straight back up ``above`` (in_pot: it starts among what is in the pot)
+        stir_back     the free leg back to the arm's posture where the stir arrived (the carry it came in, a
+                      decision of the plan: rebuilt later, the one the first build recorded), the tilt not held
+
+    The reach and the dip carry the Aim (the TCP at the circle's start in the pot's frame) and STIR_TOL
+    (primitives.holds checks them again).  From ``start`` on; ``prior`` as plan_slide's (a Plan: its motions
+    that still hold kept, its decisions tried first; else the park search's ranking solution of the dip's
+    end, STIR_RELAY).  Plan or Failure."""
+    with query(kin, state, FREE_HAND):          # kin.tcp at the state's base throughout
+        return _plan_stir(kin, state, stir, start, prior, step)
+
+
+def _plan_stir(kin, state, stir, start, prior_plan, step):
+    i0 = STIR_STAGES.index(start)
+    prior = decisions_of(prior_plan)
+    pot, side = stir["pot"], kin.side
+    up = np.array([0.0, 0.0, 1.0])
+    above, turns = float(stir["above"]), float(stir["turns"])
+    if state.held(side) is None:
+        return Failure("nothing in the hand to stir with", start)
+    aim = Aim(pot, stir_tcp(stir, 0.0), side=side)
+    aimed = aim_pose(state, aim)
+    if aimed is None and i0 <= STIR_STAGES.index("stir_circle"):
+        return Failure(f"{pot} is not in the State", start)
+    p, R = aimed if aimed is not None else (None, None)
+    spec = in_pot(side, stir)
+    q, s = state.q(side), state
+    back = prior.get("stir_back")
+    segs, decided, times = [], {}, {}
+    if i0 == 0:
+        back = np.asarray(q, float).copy()          # the posture it arrives in: where stir_back returns
+    if back is not None:
+        decided["stir_back"] = np.asarray(back, float)
+    for stage in STIR_STAGES[i0:]:
+        t0 = time.time()
+        kept = _kept(kin, s, q, prior_plan, stage) if stage != "stir_back" else None
+        if stage in STIR_ANCHORS:
+            seg = anchor(stage, q, s, (pot,), side)
+        elif stage == "stir_reach":
+            seg = kept or _reach(kin, s, FREE_HAND, p, R, -up, above, q, prior.get(stage, prior.get(STIR_RELAY)),
+                                 stage, step)
+            if not isinstance(seg, Failure):
+                seg = kept or _aimed(kin, seg, aim, aimed, STIR_TOL, steps_per_wp=4, smooth=True)
+                if seg.qs:                                  # the dip's start as the plan reaches it
+                    decided[stage] = seg.q_end
+        elif stage == "stir_dip":
+            seg = kept or straight(kin, s, spec, p, R, stage, step=step, q_from=q)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _aimed(kin, seg, aim, aimed, STIR_TOL, steps_per_wp=5)
+        elif stage == "stir_circle":
+            if turns <= 0:                                  # a dip: no circle
+                times[stage] = round(time.time() - t0, 3)
+                continue
+            script = Script(still(pot), 0.0, 2 * np.pi * turns, step=STIR_STEP,
+                            tcp=lambda a: stir_tcp(stir, a), carry="arm")
+            seg = kept or scripted(kin, with_arm(s, q, side), spec, script, stage, arm_step=step)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=4)
+        elif stage == "stir_leave":
+            p0, R0 = kin.tcp(q)
+            seg = kept or straight(kin, s, spec, np.asarray(p0, float) + above * up, R0, stage, step=step, q_from=q)
+            if not (isinstance(seg, Failure) or kept):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
+        else:                                               # stir_back: chosen again whenever it is built
+            if back is None:
+                return Failure("no posture to go back to (the stir's arrival not in its plan)", stage,
+                               {"stage_s": times})
+            seg = free_leg(kin, s, FREE_HAND, JointSet((np.asarray(back, float),)), stage, q_from=q)
+            if not isinstance(seg, Failure):
+                seg = _move(seg, steps_per_wp=4, smooth=True)
         times[stage] = round(time.time() - t0, 3)
         if isinstance(seg, Failure):
             return Failure(seg.why, seg.segment, {"stage_s": times})
