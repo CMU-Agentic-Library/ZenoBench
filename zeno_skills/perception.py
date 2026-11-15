@@ -113,10 +113,12 @@ def _segment_blocked(world, a, b, exclude_boxes=()):
     return False
 
 
-def project_to_head_camera(rig, point, exclude=None):
-    """(visible, detail) for a world point in the current head camera."""
-    cam, R = rig_head_pose(rig)
-    d = R.T @ (np.asarray(point, float) - cam)
+def project_from(rig, cam, R, point):
+    """(visible, detail) for a world point from a head camera at ``cam`` turned ``R``: inside the frustum
+    (``rig.head_fov_deg``, VIEW_RANGE_M) and no annotated furniture box on the line of sight.  The static
+    part of project_to_head_camera, also for a pose the robot is not in yet (in_view_from)."""
+    point = np.asarray(point, float)
+    d = R.T @ (point - cam)
     dist = float(np.linalg.norm(d))
     if d[0] <= 0.05:
         return False, "behind the camera"
@@ -125,13 +127,30 @@ def project_to_head_camera(rig, point, exclude=None):
     hfov, vfov = getattr(rig, "head_fov_deg", (HEAD_HFOV_DEG, HEAD_VFOV_DEG))
     if abs(h) > hfov / 2 or abs(v) > vfov / 2 or dist > VIEW_RANGE_M:
         return False, f"outside frustum (h {h:.0f}, v {v:.0f} deg, {dist:.1f} m)"
-    if _segment_blocked(getattr(rig, "world", None), cam, np.asarray(point, float)):
+    if _segment_blocked(getattr(rig, "world", None), cam, point):
         return False, f"line of sight blocked (h {h:.0f}, v {v:.0f} deg)"
-    if getattr(rig, "occlusion", False) and exclude is not None:
+    return True, f"h {h:.0f}, v {v:.0f} deg, {dist:.1f} m"
+
+
+def project_to_head_camera(rig, point, exclude=None):
+    """(visible, detail) for a world point in the current head camera."""
+    cam, R = rig_head_pose(rig)
+    ok, detail = project_from(rig, cam, R, point)
+    if ok and getattr(rig, "occlusion", False) and exclude is not None:
         why = dynamic_occluder(rig, exclude, cam, np.asarray(point, float))
         if why:
             return False, f"occluded: {why}"
-    return True, f"h {h:.0f}, v {v:.0f} deg, {dist:.1f} m"
+    return ok, detail
+
+
+def in_view_from(rig, base_pose, point, torso_waist):
+    """(visible, detail) for ``point`` once the base stands at ``base_pose`` (x, y, yaw_deg) with the torso and
+    waist at ``torso_waist`` ({joint: q}) and the head aimed at it as look aims it (look_angles, within the
+    head's limits): project_from's frustum and furniture boxes.  No dynamic occluders: where the base goes
+    must not depend on objects the observation-limited benchmark has not shown the robot."""
+    yaw, pitch = look_angles(rig, point, base_pose=base_pose, torso_waist=torso_waist)
+    cam, R = head_camera_pose(base_pose, dict(torso_waist, head_yaw_joint=yaw, head_pitch_joint=pitch))
+    return project_from(rig, cam, R, point)
 
 
 def _open_fraction(rig, a):

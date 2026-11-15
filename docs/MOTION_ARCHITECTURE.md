@@ -534,7 +534,7 @@ Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives
 
 实现：判据在 `skill_jobs/carry.py` 的 `_carry`，三条——TCP 在底盘系里落在 `CARRY_SPOTS` 外扩 10 cm 的范围（`CARRY_FRONT_X` 0.25–0.55 m、`CARRY_FRONT_Y` −0.40–0 m）；物体底面不低于 `CARRY_Z` 减 `CARRY_LOW_TOL` 1 cm；整机在这个姿态下原地不碰（`RigBase.depths` ≤ `DEPTH_TOL`）。不满足就 `free_leg(搬运目标集合)`（要求的高度优先），做不出来技能失败（没有不查碰撞的直线）。`min_bottom_z`（`_carry_floor`：目的地的边沿高度，边夹的书再加 6 cm）不是约束而是"能抬就抬"：够得着那个高度的搬运目标就抬上去，够不着就原样带着走，日志写明原因——带物开车的整机底盘规划本来就查物体和世界的碰撞（当成约束的话，v6 T07 / T23 要的 1.15–1.18 m 够不着，navigate 直接失败）。`carry_posture(rig, min_bottom_z)` 是这第 1 段单独跑：place 在停车点搜索之前（这样搜索假设的搬运姿态就是开车时的姿态）、drop、去停靠点前的检查、`stow_load` 用它。空手的 `tuck`、左臂收起做不出来就省掉，由底盘规划在路上换。
 
-navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选（2.3、第 10 节）。
+navigate(x) 只负责开到 x 那一带，停车点由后面的技能自己选（2.3、第 10 节）。x 是物体时，"那一带"里先取头部相机看得到它的站位（`NavigateToPlacePolicy` 的 `_in_view_poses`：到达姿态的躯干和腰、按 look 的瞄法把头对准它，`perception.in_view_from` 判视锥和家具盒视线，和 look 同一判据；不算动态遮挡，观测受限的 benchmark 里没见过的物体不能左右底盘停哪）；能到的站位一个都看不到才取最近的，这时 look 如实失败。look 和 benchmark 的观测门（navigate 后看一眼，接触技能要物体在视野里）都要它看得见：头最多低 18°，地上的物体离底盘不到 0.60 m（7.5 mm 镜头）/ 0.81 m（10 mm）就出了视锥（11-14 T23 belongs_on_floor），站位也可能被家具挡住视线（T23 dropped_out_of_view 的盆栽）。
 
 **retreat**：一段直线 `drive`（5.4），挡住就失败。
 
