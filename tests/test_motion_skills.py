@@ -81,6 +81,29 @@ def test_a_park_too_close_to_drive_to_has_its_plan_made_again_where_the_base_sta
     assert priors == [old]                                             # the found plan's decisions: the prior
 
 
+def test_a_skill_plans_with_the_head_straight_ahead(monkeypatch):
+    """A look leaves the head where it aimed (T07 11-14: at its 18 deg down limit over the tray it had
+    looked at): run_skill turns it straight ahead before it reads the state it plans from, and leaves a
+    head already there as it is."""
+    rig, head, logs, seen = _rig(), {"head_yaw_joint": 0.3, "head_pitch_joint": 0.314}, [], []
+
+    def step(n=1):                                                     # the head reaches its command at once
+        head["head_yaw_joint"], head["head_pitch_joint"] = (float(v) for v in rig.head_cmd)
+    rig.head_cmd, rig.step, rig.head_q = np.zeros(2), step, lambda: dict(head)
+    rig.log = lambda label, **k: logs.append((label, k))
+    plan = Plan((Segment("a", Spec(), rig.q_cmd, kind="anchor"),))
+    monkeypatch.setattr(MS, "observe", lambda rig_: seen.append(rig_.head_q()) or _state(rig_))
+    monkeypatch.setattr(MS, "run", lambda *a, **k: [])
+    monkeypatch.setattr("zeno_skills.skill_jobs.base.RigBase", lambda rig: None)
+    navigate = Skill("navigate", "drive", "plan_navigate", False, "fold", "fold",
+                     lambda rig_, args, state, skill: Job(ready=lambda f: (plan, None, {})))
+    MS.run_skill(rig, navigate, {})
+    assert seen == [{"head_yaw_joint": 0.0, "head_pitch_joint": 0.0}]
+    assert logs == [("head_straight", {"skill": "navigate", "was": [0.3, 0.314]})]
+    MS.run_skill(rig, navigate, {})                                    # straight already: not driven again
+    assert len(logs) == 1
+
+
 def test_a_pick_behind_a_door_is_seeded_in_front_of_its_free_edge_from_the_annotation():
     from zeno_skills.annotations import behind_door
     from zeno_skills.skill_jobs.door_access import front_of

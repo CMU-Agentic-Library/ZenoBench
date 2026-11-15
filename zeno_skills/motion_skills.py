@@ -3,6 +3,8 @@ its data from the catalog (skill_library/catalog.json, "motion_skills": generate
 tools/build_skill_library.py from its MOTION_SKILLS), its Python part a ``job`` function -- and every
 skill runs through the one ``run_skill``:
 
+    0. the head straight ahead (HEAD_STRAIGHT, _head_straight)  every skill plans and holds its arm
+                                                               postures against the same head
     1. job = skill.job(rig, args, state, skill)                what this call asks for; the job
                                                                builds with skill.build (the catalog's template)
     2. job.problem: park_search.find_park, the arm postures from the catalog -- travel the one the
@@ -35,9 +37,10 @@ import numpy as np
 from .motion_state import Failure
 from .park_search import find_park
 from .run import observe, run
-from .tolerances import SAME_PARK
+from .tolerances import HEAD_AT, SAME_PARK
 
 CATALOG = Path(__file__).resolve().parents[1] / "skill_library" / "catalog.json"
+HEAD_STRAIGHT = (0.0, 0.0)      # rad: head yaw, pitch while a skill plans and moves (where explore / search leave it)
 SHAPES = ("drive", "perceive", "pick_place", "part", "posture", "contact", "bimanual")     # 2.3's table
 POSTURES = ("fold", "carry", "fold_or_carry")
 FIELDS = {"name": str, "shape": str, "template": str, "park": bool, "arrive": str, "travel": str, "job": str,
@@ -112,11 +115,30 @@ def _same_pose(a, b):
     return math.hypot(a[0] - b[0], a[1] - b[1]) < SAME_PARK[0] and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < SAME_PARK[1]
 
 
+def _head_straight(rig, skill):
+    """The head straight ahead (HEAD_STRAIGHT) before the skill reads the state it plans from: a look
+    leaves it aimed where it looked -- a near or low target at its 18 deg down limit -- and the arms are
+    planned around the head where it stands (Motion.live_locks), the waist bowing it further over the
+    workspace (T07 11-14: head_link 40 mm into the tray it had looked at).  The observation
+    benchmark's gate checked the call before it ran (GatedRunner.run), so the look's view still
+    counts.  A rig without a head (the tests' stand-ins) is left as it is."""
+    if not hasattr(rig, "head_q"):
+        return
+    from .policies.perceive import drive_head
+    q = rig.head_q()
+    was = (q["head_yaw_joint"], q["head_pitch_joint"])
+    if all(abs(v - s) < HEAD_AT for v, s in zip(was, HEAD_STRAIGHT)):
+        return
+    drive_head(rig, *HEAD_STRAIGHT)
+    rig.log("head_straight", skill=skill.name, was=[round(v, 3) for v in was])
+
+
 def run_skill(rig, skill, args):
     """Run ``skill`` (Skill) with ``args`` on ``rig`` (see the module docstring)."""
     from .rig import SkillFailure
     from .skill_jobs.base import RigBase
     from .skills import _at_park
+    _head_straight(rig, skill)
     state = observe(rig)
     job = skill.job(rig, args, state, skill)
     if skill.park != (job.problem is not None):

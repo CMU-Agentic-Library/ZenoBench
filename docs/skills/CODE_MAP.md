@@ -25,7 +25,7 @@ policies/*.py     PolicySuite → XxxPolicy.execute     115 个原子策略（ca
 skills.py         技能本体：pick / place / navigate / 开关门 / 微波炉…
   │                        │  决定"中继位姿是什么、停车点在哪、接触段往哪个方向走"
   │   navigate / pick / place / open / close / push（MOTION_ARCHITECTURE 的五层，catalog 的 6 个 motion_skills）：
-  │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：job → find_park → 开过去 → run；
+  │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：头回正 → job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
   │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open、close）/
   │                       slide（push：slide_job，和任务层一段段推的 push_object）；

@@ -88,6 +88,7 @@ Skill(
 ```
 
 `run_skill(rig, skill, args)` 只有一个：
+0. 头转回正前方（`HEAD_STRAIGHT`，yaw、pitch 都是 0，explore / search 结束时就停在这里），再读规划用的状态。look 会把头留在它看的方向，近处、低处的目标会让头压到俯仰下限（往下 18°）；手臂规划把头当成锁在当前角度，一弯腰头就压到手和工作台上（T07，11-14：head_link 插进刚看过的托盘 40 mm）。这样每个技能都对着同一个头规划、保持姿态。观测受限 benchmark 的门在调用开始前就查完了（`GatedRunner.run`），look 看到的视野照样算数；
 1. `problem = skill.problem(...)`；
 2. 要选停车点的，`find_park`（`travel` / `arrive` 姿态取 catalog 的；在现在的位置上，手臂就是现在的样子）；不选的（姿态类、感知类的头部动作），只在原地 `build`，停车点就是现在的位置；
 3. 不在停车点，就构造并执行 navigate 的计划（`plan_navigate`，第 6 节）；离停车点在 `AT_PARK_M` / `AT_PARK_DEG`（2 cm / 2°）以内、不开车的，用同一个 `build` 在现在的底盘位置重做一次计划（`park_here`，找到的计划当 `prior`：接触位姿段的终点在这个底盘下没多偏的原样留下——pick 按 `PICK_TOL` 1 mm、place 按 `PLACE_TOL` 5 mm，8.4——其余重做），做不出来就开过去；

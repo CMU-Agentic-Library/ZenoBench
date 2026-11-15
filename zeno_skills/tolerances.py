@@ -228,3 +228,5 @@ RIDE_STALL = _t("RIDE_STALL", 0.003, "rad / m", "inherited (skills._ride's): a p
 RIDE_SLIP_LEADS = _t("RIDE_SLIP_LEADS", 2.0, "leads", "not measured: a part this many leads behind a ride's "
                      "command dropped back, it slipped (a part that follows lags at most lead + rate / PHYSICS_HZ "
                      "by construction)")
+HEAD_AT = _t("HEAD_AT", 0.02, "rad", "inherited (policies.perceive.drive_head's): a head joint this close to its "
+             "command has arrived; run_skill leaves a head this close to straight ahead where it is")

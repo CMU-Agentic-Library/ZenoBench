@@ -27,6 +27,7 @@ from ..perception import (HEAD_LIMITS, _segment_blocked, head_camera_pose, look_
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
 from ..rig import SkillFailure
+from ..tolerances import HEAD_AT
 
 # Exploration (ExploreRoomPolicy, ExploreFurniturePolicy); inherited, unmeasured: docs/COLLISION_PLAN.md §8.
 COVER_MIN_AREA = 0.05           # m^2: a support smaller than this is not a room-coverage target
@@ -47,7 +48,7 @@ def drive_head(rig, yaw, pitch, steps=90):
     for _ in range(steps // 10):
         rig.step(10)
         hq = rig.head_q()
-        if abs(hq["head_yaw_joint"] - yaw) < 0.02 and abs(hq["head_pitch_joint"] - pitch) < 0.02:
+        if abs(hq["head_yaw_joint"] - yaw) < HEAD_AT and abs(hq["head_pitch_joint"] - pitch) < HEAD_AT:
             break
 
 
