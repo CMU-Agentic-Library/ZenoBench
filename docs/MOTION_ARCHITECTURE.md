@@ -401,6 +401,8 @@ run.observe(act)    -> (State, Observation | None)
 - 能走直线就走直线：关节目标走关节直线，位姿目标走 TCP 直线；直线不通就规划。
 - 位姿目标直线不通、有 `q_hint`（这个位姿的、查过碰撞的 IK 解：`decide_ik` 定的分支，或位姿集合的批量 IK 解）时，按关节目标走到 `q_hint`：关节直线，不通就关节规划；持物时倾斜超标或失败，再按位姿保持倾角规划（`Kinematics.plan(carry=True)`）。终点就是定下的分支。
 - 没有 `q_hint` 才按位姿规划（空手最后一段沿轴直线进入，持物全程保持倾角）。
+- "倾斜超标"各处是同一条规则（`kinematics.carry_tilt_allowed`，11-14 起）：持物的一次移动里，物体相对起点的倾斜最多比目标本身的倾斜多 `CARRY_TILT`（0.15 rad）。关节直线（`tips_over`）、关节规划（`_plan_js`）、位姿规划（`plan_to`）都按它查。目标离起点不超过 `CARRY_TILT` 的（`holds_level`），超标了才保持倾角重新规划；cuRobo 的保持倾角（`Arm.tilt_metric`）从第一步起就保持**目标**的倾角，所以完美保持的轨迹本来就倾斜了目标那么多。以前 `_plan_js` 从起点算 0.15，T23 放勺子目标本身就离起点 0.11，只剩 0.04。目标本身倾斜更多的（侧放的盒子）是有意转动物体，同样按这条规则限住路径，只是没有倾角可保持。
+- cuRobo 位姿规划失败时，只要开着 finetune，状态一律报 `FINETUNE_TRAJOPT_FAIL`，第一轮轨迹优化根本没有可行种子、finetune 没跑也一样（`finetune_time` 为 0）；这种情况改报 `TRAJOPT_FAIL (no feasible seed)`（`motion.plan_status`）。
 - 位姿集合用批量 IK 选最便宜的，再按单个位姿（带它的解）做。
 - `Spec.joints` 给出时，只动这些关节。
 

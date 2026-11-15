@@ -148,8 +148,9 @@ HELD_SPHERE_GAP = _t("HELD_SPHERE_GAP", 0.006, "m", "chosen: no point of a held 
                      "from its spheres (first try); offline 11-11: <= 6.3 mm")
 HELD_SPHERE_GAP_MAX = _t("HELD_SPHERE_GAP_MAX", 0.02, "m", "chosen: ...widened (x1.25 a step) up to this when the "
                          "spheres would be more than the budget (handled_cooking_pot: 7.5 mm)")
-CARRY_TILT = _t("CARRY_TILT", 0.15, "rad", "chosen, unmeasured: largest tilt of a held object from its start "
-                "orientation on a planned move")
+CARRY_TILT = _t("CARRY_TILT", 0.15, "rad", "chosen, unmeasured: a held object may tilt from its start this much "
+                "more than the move's goal itself does, on every move (kinematics.carry_tilt_allowed); a goal "
+                "within it of the start keeps the load level (holds_level)")
 CARRY_LOW_TOL = _t("CARRY_LOW_TOL", 0.01, "m", "inherited (the old 1 cm \"at a carry spot\"): a load's bottom may "
                    "sit this far below its carry floor")
 CARRY_SUPPORT_Z = _t("CARRY_SUPPORT_Z", (0.3, 1.0), "m", "chosen, unmeasured: a destination's support height in "

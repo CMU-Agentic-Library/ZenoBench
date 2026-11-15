@@ -47,7 +47,7 @@ from scipy.spatial.transform import Rotation
 
 from . import body_collision
 from . import scene_geometry as G
-from .kinematics import CARRY_TILT, kept_joints, manipulability, max_tilt, tilt, tips_over
+from .kinematics import carry_tilt_allowed, holds_level, kept_joints, manipulability, max_tilt, tilts_too_far, tips_over
 from .motion_state import locked_body, other_side, touch_entries, touches
 from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
 
@@ -132,6 +132,22 @@ def _report():
 def _quat_wxyz(R):
     x, y, z, w = Rotation.from_matrix(R).as_quat()
     return [float(w), float(x), float(y), float(z)]
+
+
+def _tilt_said(kin, R0, R1, qs):
+    """How far the waypoints qs tilt a held object from R0, and how far a move to R1 may."""
+    return f"tilts {max_tilt(kin, R0, qs):.2f} rad, {carry_tilt_allowed(R0, R1):.2f} allowed"
+
+
+def plan_status(r):
+    """cuRobo's status of a failed plan, as it is.  Its pose planner (plan_single) reports
+    FINETUNE_TRAJOPT_FAIL whenever finetuning is on and nothing succeeded (motion_gen.py,
+    _plan_from_solve_state), also when the first trajectory optimisation had no feasible seed and the
+    finetune never ran -- its finetune_time then 0 (22 of v6full_1113's "carry tilt held" messages):
+    said as the trajopt failure it is.  The joint-space planner (plan_single_js) says it right."""
+    if getattr(r.status, "name", None) == "FINETUNE_TRAJOPT_FAIL" and not r.finetune_time:
+        return "MotionGenStatus.TRAJOPT_FAIL (no feasible seed)"
+    return str(r.status)
 
 
 def held_link(side):
@@ -521,7 +537,7 @@ class _Arm:
 
     def _traj(self, r):
         if not bool(r.success.view(-1)[0].item()):
-            return None, str(r.status)
+            return None, plan_status(r)
         traj = r.get_interpolated_plan().position.view(-1, len(self.kin.names)).cpu().numpy().astype(float)
         return list(traj[1:]), None
 
@@ -1427,9 +1443,10 @@ class Motion:
     @_timed("plan_s")
     def plan(self, kin, q0, q1, other_q=None, coll_kw=None, carry=False):
         """cuRobo joint-space trajectory q0 -> q1 (waypoints after q0) or (None, status).
-        ``carry`` (an object in the hand): the held object may not tilt more than CARRY_TILT
-        on the way; a trajectory that would is re-planned to q1's TCP pose with the tilt held
-        (it then ends at that pose, not necessarily at q1)."""
+        ``carry`` (an object in the hand): the one tilt rule bounds the way
+        (kinematics.carry_tilt_allowed); a trajectory that breaks it is re-planned to q1's TCP pose
+        with the tilt held when q1 keeps the load level (it then ends at that pose, not necessarily
+        at q1)."""
         STATS["plan"] += 1
         q0, q1 = np.asarray(q0, float), np.asarray(q1, float)
         with self._query(kin, other_q, coll_kw) as arm:
@@ -1438,18 +1455,23 @@ class Motion:
         return qs, status
 
     def _plan_js(self, arm, kin, q0, q1, carry):
-        """plan's trajectory in the current query state."""
+        """plan's trajectory in the current query state.  With a load the one tilt rule bounds it
+        (kinematics.carry_tilt_allowed); one that breaks it, or none, is planned again to q1's pose
+        with the tilt held when q1 keeps the load level (holds_level)."""
         qs, status = arm.plan(q0, q1)
+        if not carry:
+            return qs, status
         R0 = kin.tcp(q0)[1]
         p1, R1 = kin.tcp(q1)
-        if carry and tilt(R0, R1) <= CARRY_TILT and (qs is None or max_tilt(kin, R0, qs) > CARRY_TILT):
-            STATS["plan_carry"] = STATS.get("plan_carry", 0) + 1
-            qc, sc = arm.plan_pose(q0, p1, R1, arm.tilt_metric())
-            if qc is not None and max_tilt(kin, R0, qc) <= CARRY_TILT:
-                qs, status = qc, None
-            else:
-                qs, status = None, f"carry tilt held: {sc or 'tilts %.2f rad' % max_tilt(kin, R0, qc)}"
-        return qs, status
+        if qs is not None and not tilts_too_far(kin, R0, R1, qs):
+            return qs, status
+        if not holds_level(R0, R1):
+            return (None, f"carry: {_tilt_said(kin, R0, R1, qs)}") if qs is not None else (None, status)
+        STATS["plan_carry"] = STATS.get("plan_carry", 0) + 1
+        qc, sc = arm.plan_pose(q0, p1, R1, arm.tilt_metric())
+        if qc is not None and not tilts_too_far(kin, R0, R1, qc):
+            return qc, None
+        return None, f"carry tilt held: {sc or _tilt_said(kin, R0, R1, qc)}"
 
     @_timed("plan_s")
     def plan_to(self, kin, q0, p0, p, R, other_q=None, coll_kw=None, carry=False, q_goal=None):
@@ -1464,15 +1486,15 @@ class Motion:
         q0 = np.asarray(q0, float)
         with self._query(kin, other_q, coll_kw, [p0, p]) as arm:
             R0 = kin.tcp(q0)[1]
-            if carry and tilt(R0, R) <= CARRY_TILT:
+            if carry and holds_level(R0, R):
                 metric = arm.tilt_metric()
             else:
                 metric = arm.approach_metric(p0, p, R)
             qs, status = None, "leg follows no TCP axis: no constrained approach"
             if metric is not None:
                 qs, status = arm.plan_pose(q0, np.asarray(p, float), R, metric)
-                if qs is not None and carry and max_tilt(kin, R0, qs) > CARRY_TILT + tilt(R0, R):
-                    qs, status = None, "held object tilts on the planned leg"
+                if qs is not None and carry and tilts_too_far(kin, R0, R, qs):
+                    qs, status = None, f"held object {_tilt_said(kin, R0, R, qs)} on the planned leg"
             how = "pose"
             if qs is None and q_goal is not None:
                 q_goal = np.asarray(q_goal, float)
