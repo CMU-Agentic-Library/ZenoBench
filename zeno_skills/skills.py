@@ -1423,80 +1423,9 @@ def _set_down(rig, name, s, spots, tray=None):
 
 def drop_into(rig, name, container):
     """Let the held object go into ``container`` (any container but a tray: place sets things down
-    on a tray's floor).  One relay pose: the load over the opening, its lowest point LEAVE_GAP above
-    the rim; no set-down (it is let go in the air) and no pull-out (nothing is left between the
-    fingers once it falls).  The planner takes the hand there and on to the travel posture
-    (Rig.tuck); the park search checks both (park_over, _drop_check)."""
-    if rig.held is None or rig.held["name"] != name:
-        raise SkillFailure(f"drop {name}: not holding it")
-    ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
-    if not ca:
-        raise SkillFailure(f"drop {name}: {container} is not a container")
-    st = rig.state()
-    cb = np.asarray(rig.geo.bottom(container, st), float)
-    rim_z = float(cb[2] + ca["rim_height"])
-    fp = rig.geo.footprint(name, st)
-    size = rig.ann.asset_of(rig.ann.objects[container])["size"]
-    inner = float(ca.get("rim_radius") or 0.0) or 0.5 * float(min(size[:2]))
-    centre = np.array([(fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2])
-    low = float(_lowest_z(rig, name, st))
-    if np.linalg.norm(centre - cb[:2]) < 0.6 * inner and rim_z < low < rim_z + 0.25:
-        # already held over the opening (after hover): let go here
-        rig.log("drop_in_place", obj=name, container=container, height_above_rim=round(low - rim_z, 3))
-    else:
-        from .skill_jobs.carry import _carry_bottom_z, carry_posture
-        carry_posture(rig, min_bottom_z=_carry_bottom_z(rig, container), label="drop_carry")
-        check_held(rig, "drop_carry")
-        st = rig.state()
-        tcp, R = rig.kin.tcp(rig.q_cmd)
-        body, _ = rig.obj_pose(name)
-        body = np.asarray(body, float)
-        hang = float(body[2] - _lowest_z(rig, name, st))
-        # the opening's centre, and off it toward each side as far as the load still clears the
-        # walls: a bin deep on a table is out of reach at its centre
-        osz = rig.ann.asset_of(rig.ann.objects[name])["size"]
-        room = inner - 0.5 * math.hypot(osz[0], osz[1]) - CONTAINER_WALL - LEAVE_GAP
-        z = rim_z + LEAVE_GAP + hang
-        anchors = [np.r_[cb[:2], z]] + ([np.r_[cb[:2] + room * np.asarray(d, float), z]
-                                         for d in ((1, 0), (-1, 0), (0, 1), (0, -1))] if room > LEAVE_MARGIN else [])
-        found = park_over(rig, "drop", anchors, tcp - body, R, anchor_cost=[0.0] + [PLACE_SPOT_COST] * (len(anchors) - 1),
-                          check=_drop_check(rig))
-        if found is None:
-            from .planner import LAST_PARK_DIAG
-            raise SkillFailure(f"drop {name}: no base pose above {container} "
-                               f"(rejected: { {k: v for k, v in LAST_PARK_DIAG.items() if v} })")
-        park, p, Rg = found
-        _goto_park(rig, park)
-        rig.caption = f"DROP {name} into {container}"
-        with fingers_checked(rig):
-            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", allow=FREE, smooth=True,
-                        q_hint=park[3][0])
-        check_held(rig, "drop_above")
-    rig.grip(rig.held.get("pre_open", 0.04), 40)
-    rig.held = None
-    rig.step(PHYSICS_HZ)                   # it falls clear of the open fingers
-    rig.tuck()
-    ok, why = rig.geo.inside(name, container, rig.state())
-    rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)
-    if not ok:
-        raise SkillFailure(f"drop {name} into {container}: {why}")
-    return True
-
-
-def _drop_check(rig):
-    """find_park check of a drop at qs[0]: with the hand empty and open to its grasp width (the
-    load let go and fallen), the tuck from there (Rig.tuck)."""
-    kin = rig.kin
-    motion = kin.motion
-    open_w = float(rig.held.get("pre_open", 0.04))
-
-    def check(x, y, yaw, qs):
-        if motion is None:
-            return True
-        with rig._fingers_checked(kin), motion.empty_hand(kin.side), motion.hand_open(kin.side, open_w):
-            goal = next((g for g in (kin.rest, kin.drive) if kin.free(g)), None)
-            return goal is not None and joint_reachable(kin, qs[0], goal)
-    return check
+    on a tray's floor): motion_skills.run_skill of drop_job (skill_jobs/drop.py, docs/skills/drop_hover.md)."""
+    from .motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["drop"], {"name": name, "container": container})
 
 
 def free_spots(rig, name, support, hint=None, k=8, exclude=()):

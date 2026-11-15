@@ -31,7 +31,7 @@ def _skill(job, arrive="fold", travel="fold"):
 def test_a_skill_builds_with_the_template_its_catalog_entry_names():
     skills = MS.load()
     assert skills["pick"].build is skill_plans.plan_pick and skills["place"].build is skill_plans.plan_place
-    assert skills["navigate"].build is skill_plans.plan_navigate
+    assert skills["navigate"].build is skill_plans.plan_navigate and skills["drop"].build is skill_plans.plan_drop
 
 
 def test_the_catalog_postures_are_the_park_searchs(monkeypatch):

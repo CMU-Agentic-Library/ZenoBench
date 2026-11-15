@@ -12,7 +12,7 @@ from zeno_skills import primitives as P, run as RUN
 from zeno_skills.motion_state import Failure, Hand, Held, Plan, Segment, Spec, State, chains, with_arm
 from zeno_skills.primitives import PoseSet
 from zeno_skills.rig import SkillFailure
-from zeno_skills.skill_plans import PICK_STAGES, plan_pick, plan_place
+from zeno_skills.skill_plans import DROP_STAGES, PICK_STAGES, plan_drop, plan_pick, plan_place
 
 GRASP_P = np.array([0.5, 0.0, 0.10])
 DOWN = np.array([0.0, 0.0, -1.0])
@@ -117,6 +117,29 @@ def test_the_pull_out_lets_the_fingers_touch_what_they_let_go():
     pull = _named(plan, "place_pull_out")
     assert pull.name == "place_pull_out" and pull.spec.touch == ("cup",)
     assert pull.spec.allow.touch == ("cup",) and pull.spec.allow.links == "fingers"
+
+
+# ------------------------------------------------------------------- drop (docs/skills/drop_hover.md)
+def test_a_drop_reaches_over_the_opening_lets_go_waits_and_tucks():
+    q_p = _q(0.5, 0.0, 0.30)
+    plan = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40), held=Held("cup", np.eye(4))), _at(q_p[:3]), 0.03,
+                     (np.zeros(9),), "bin", 0.2, prior={"drop_reach": q_p})
+    assert isinstance(plan, Plan), plan
+    assert tuple(s.name for s in plan.segments) == DROP_STAGES
+    assert [s.name for s in plan.segments if s.kind == "anchor"] == ["drop_arrive"]   # where it lands: not predicted
+    reach, release, fall = (_named(plan, n) for n in ("drop_reach", "drop_release", "drop_fall"))
+    assert np.allclose(reach.q_end[:3], q_p[:3]) and reach.spec.hold_tilt and reach.info["tol"]
+    assert release.action == ("grip", 0.03, 40, False) and fall.action == ("wait", 120)
+    assert release.spec.allow.touch == ("cup",) and release.spec.allow.held_on == ("bin",)
+    assert np.allclose(plan.decisions["drop_reach"], reach.q_end)
+
+
+def test_a_drop_needs_a_load_and_one_built_after_the_release_only_waits_and_tucks():
+    out = plan_drop(FakeKin(), _state(_q(0.3, 0.0, 0.40)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2)
+    assert isinstance(out, Failure) and "nothing in the hand" in out.why
+    after = plan_drop(FakeKin(), _state(_q(0.5, 0.0, 0.30)), _at([0.5, 0.0, 0.3]), 0.03, (np.zeros(9),), "bin", 0.2,
+                      start="drop_fall")
+    assert [s.name for s in after.segments] == ["drop_fall", "tuck"]
 
 
 # ------------------------------------------------------------------- decisions (docs 4.3, 5.7, 8.1)

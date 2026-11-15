@@ -528,6 +528,16 @@
     "skill_id": "skill_018"
    },
    {
+    "name": "drop",
+    "shape": "pick_place",
+    "template": "plan_drop",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.drop:drop_job",
+    "skill_id": "skill_019"
+   },
+   {
     "name": "open",
     "shape": "part",
     "template": "plan_door",

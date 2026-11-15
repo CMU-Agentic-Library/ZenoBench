@@ -24,10 +24,10 @@ policies/*.py     PolicySuite → XxxPolicy.execute     115 个原子策略（ca
   ▼                        │
 skills.py         技能本体：pick / place / navigate / 开关门 / 微波炉…
   │                        │  决定"中继位姿是什么、停车点在哪、接触段往哪个方向走"
-  │   navigate / pick / place / open / close / push（MOTION_ARCHITECTURE 的五层，catalog 的 6 个 motion_skills）：
+  │   navigate / pick / place / drop / open / close / push（MOTION_ARCHITECTURE 的五层，catalog 的 7 个 motion_skills）：
   │   motion_skills.py  ⑤ run_skill(rig, SKILLS[名], args)：头回正 → job → find_park → 开过去 → run；
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
-  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / door（open、close）/
+  │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / drop / door（open、close）/
   │                       slide（push：slide_job，和任务层一段段推的 push_object）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
@@ -114,7 +114,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 | 入口 | 用途 |
 |---|---|
 | `move_to(p, R, allow=, approach=, q_hint=)` | 手（TCP）到一个位姿。最主要的入口 |
-| `run.run(act, plan, rebuild, hooks, clear=)` | 运动分层上的技能（`run_skill`：navigate / pick / place / open / close / push）和 `carry_posture`：按计划逐段执行（复核、重做、`follow` / `grip` / `wait` / `drive_base` / `swing` / `ride`、监视声明），只经过 `Actuator`；手臂跟完一段 TCP 离指令超过 `TARGET_TOL` 就失败；异常带 `clearing` 时先跑失败出口 `clear`（`plan_clear`）。技能自己的步骤挂 hooks；`relocate`、`straight_base_move` 用它的 `execute` 跑一段 `drive` |
+| `run.run(act, plan, rebuild, hooks, clear=)` | 运动分层上的技能（`run_skill`：navigate / pick / place / drop / open / close / push）和 `carry_posture`：按计划逐段执行（复核、重做、`follow` / `grip` / `wait` / `drive_base` / `swing` / `ride`、监视声明），只经过 `Actuator`；手臂跟完一段 TCP 离指令超过 `TARGET_TOL` 就失败；异常带 `clearing` 时先跑失败出口 `clear`（`plan_clear`）。技能自己的步骤挂 hooks；`relocate`、`straight_base_move` 用它的 `execute` 跑一段 `drive` |
 | `move_to_any(goals, …)` | 先批量求 IK、挑代价最小的目标，再交给 `move_to`。已没有调用方（搬运姿态 11-08 起不用它了），只剩 `tests/test_motion_entry.py` |
 | `leave(u, label, allow)` | 沿方向 u 离开接触，**没有终点**：碰撞模型判断不再接触就停（最多 `LEAVE_MAX`）。已没有调用方，只剩 `tests/test_approach.py`（pick 抓空后的离开现在是失败出口 `plan_clear`）|
 | `joint_path(q)` / `joint_path_via` + `follow` | 关节空间运动 |

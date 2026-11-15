@@ -26,7 +26,7 @@
   "zeno_skills/rig.py": {"coll_kw": 2, "except": 3, "swallow": 2},
   "zeno_skills/run.py": {"except": 1},
   "zeno_skills/skill_runtime.py": {"except": 12, "swallow": 7},
-  "zeno_skills/skills.py": {"LEGACY": 8, "coll_kw": 11, "follow": 3, "ignore_fingers": 9, "offset": 17, "except": 7, "swallow": 5, "retry": 2, "old_entry": 41},
+  "zeno_skills/skills.py": {"LEGACY": 8, "coll_kw": 11, "follow": 3, "ignore_fingers": 9, "offset": 17, "except": 7, "swallow": 5, "retry": 2, "old_entry": 38},
   "zeno_skills/sticky.py": {"coll_kw": 1, "ignore_fingers": 1, "except": 4, "swallow": 4, "retry": 3, "old_entry": 8}
  }
 }
