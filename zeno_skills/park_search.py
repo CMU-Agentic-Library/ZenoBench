@@ -306,6 +306,46 @@ def _dump_arm(dbg, kin, s, problem, k, q_rank, plan):
     dbg.setdefault("arms", []).append(rec)
 
 
+def _dump_ranked_arms(dbg, kins, problem, state, ranked, order, n=FREE_CHECKS):
+    """The debug record's "ranked_arms": the first ``n`` ranked candidates' arms at their ranking
+    solution, in the State at the park, by problem.relay_free (else the default Spec): the spheres'
+    depth > 0 where they penetrate."""
+    from .primitives import robot_spheres
+    out = []
+    for i in order[:n]:
+        (cost, x, y, yaw, k), q, _ = ranked[i]
+        side = problem.side(k)
+        s = with_posture(at_base(state, (x, y, yaw)), problem.arrive(x, y, yaw), side)
+        out.append({"base": [x, y, yaw], "k": k, "side": side,
+                    "spheres": robot_spheres(kins[side], s, problem.relay_free or Spec(), np.asarray(q, float))})
+    dbg["ranked_arms"] = out
+
+
+def _dump_world(dbg, kin, radius=1.6):
+    """The debug record's world: every collider (static, object, part) within ``radius`` (xy) of the
+    goals' centre, as world vertices and triangles (a cuboid its 8 corners, 12 triangles)."""
+    motion = getattr(kin, "motion", None)
+    if motion is None or not dbg.get("goals"):
+        return
+    from . import scene_geometry as G
+    from .held_spheres import CUBOID_FACES
+    c = np.mean(np.asarray(dbg["goals"], float)[:, :2], axis=0)
+    out = []
+    for col in motion.cols.items:
+        T = G.world_pose(col, motion.body_pose.get)
+        if col.kind == "cuboid":
+            V = np.array([[i, j, k] for i in (-.5, .5) for j in (-.5, .5) for k in (-.5, .5)]) * col.dims
+            F = CUBOID_FACES
+        else:
+            V, F = np.asarray(col.vertices, float), np.asarray(col.faces, int)
+        W = V @ T[:3, :3].T + T[:3, 3]
+        if np.min(np.linalg.norm(W[:, :2] - c, axis=1)) > radius and \
+                not (W[:, 0].min() < c[0] < W[:, 0].max() and W[:, 1].min() < c[1] < W[:, 1].max()):
+            continue
+        out.append({"name": col.name, "owner": col.owner, "v": np.round(W, 4).tolist(), "f": np.asarray(F).tolist()})
+    dbg["world"] = out
+
+
 def _dump_write(dbg, found):
     """Write the debug record next to the others (one JSON per search)."""
     os.makedirs(dbg["dir"], exist_ok=True)
@@ -338,6 +378,7 @@ def find_park(kin, world, problem, state, log, base=None):
     dbg = _dumping(problem)
     if dbg is not None:
         dbg["base_now"], dbg["rejected"] = list(state.base), {"out_of_reach": [], "footprint": []}
+        _dump_world(dbg, next(iter(kins.values())))
     here = None if problem.near is None or len(problem.near) != 3 else tuple(map(float, problem.near))
     is_here = lambda c: here is not None and c[1:4] == here
 
@@ -425,6 +466,7 @@ def find_park(kin, world, problem, state, log, base=None):
     if dbg is not None:
         dbg["rejected"]["ik"] = [c[1:5] for c, q in zip(pool, sols) if q is None]
         dbg["ranked"] = [[*ranked[i][0][1:5], problem.tier(ranked[i][0][4]), float(scores[i])] for i in order]
+        _dump_ranked_arms(dbg, kins, problem, state, ranked, order)
     if problem.relay_free is not None:
         order = _free_first(kins, problem, state, ranked, order, diag, dbg)
     found, t_build = None, time.time()
