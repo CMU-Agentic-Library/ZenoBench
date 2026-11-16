@@ -144,6 +144,7 @@ class ExploreRoomPolicy(AtomicPolicy):
         ok = skills.base_reachable(rig, poses)
         reach = [p for p, o in zip(poses, ok) if o]
         rig.log("explore_goals", room=room, goals=len(poses), reachable=len(reach))
+        of = None
         if not reach:
             # a room the base gets into only a corner of (1116 T26 two_bedrooms: bedroom_0_0, 59 of its
             # 1780 free cells reachable, in a strip by the door; none of its 83 ring spots there): the
@@ -153,40 +154,19 @@ class ExploreRoomPolicy(AtomicPolicy):
             furn = sorted({k.split(":", 1)[1] for k in targets if k.startswith("furniture:")})
             near = [(f, p) for f in furn for p in standoff_poses(rig, f)]
             ok = skills.base_reachable(rig, [p for _, p in near]) if near else []
-            reach = []
+            of = {}             # stand-off -> the furniture it is for
             for f in furn:
                 for p in _in_view_poses(rig, f, [q for (g, q), o in zip(near, ok) if o and g == f]):
-                    if p not in reach:
-                        reach.append(p)
+                    of.setdefault(p, f)
+            reach = list(of)
             rig.log("explore_goals", room=room, furniture_standoffs=len(near), reachable=sum(ok), in_view=len(reach))
         if not reach:
             raise SkillFailure(f"explore {room}: no base path to any of {len(poses)} viewpoints "
                                "(even the column's inscribed circle cannot get there)")
-        poses = reach
-        # farthest-point sampling over the reachable poses spreads the viewpoints
-        chosen = [poses[0]]
-        while len(chosen) < max_views:
-            best = max(poses, key=lambda p: min(math.hypot(p[0] - q[0], p[1] - q[1]) for q in chosen))
-            if min(math.hypot(best[0] - q[0], best[1] - q[1]) for q in chosen) < min_spacing:
-                break
-            chosen.append(best)
-        # visit in a greedy nearest-next order
-        x, y, _ = rig.base_pose()
-        order, rest = [], list(chosen)
-        while rest:
-            nxt = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
-            order.append(nxt)
-            rest.remove(nxt)
-            x, y = nxt[0], nxt[1]
         seen, viewed = set(), set()
         visited = 0
-        for pose in order:
-            try:
-                skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
-            except SkillFailure as exc:
-                rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
-                continue
-            visited += 1
+
+        def look_around():
             for turn in VIEW_TURNS:
                 if turn:
                     bx, by, byaw = rig.base_pose()
@@ -200,6 +180,50 @@ class ExploreRoomPolicy(AtomicPolicy):
                     for k, pts in targets.items():
                         if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
                             seen.add(k)
+
+        def go(pose):
+            try:
+                skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
+                return True
+            except SkillFailure as exc:
+                rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
+                return False
+
+        if of is None:
+            poses = reach
+            # farthest-point sampling over the reachable poses spreads the viewpoints
+            chosen = [poses[0]]
+            while len(chosen) < max_views:
+                best = max(poses, key=lambda p: min(math.hypot(p[0] - q[0], p[1] - q[1]) for q in chosen))
+                if min(math.hypot(best[0] - q[0], best[1] - q[1]) for q in chosen) < min_spacing:
+                    break
+                chosen.append(best)
+            # visit in a greedy nearest-next order
+            x, y, _ = rig.base_pose()
+            order, rest = [], list(chosen)
+            while rest:
+                nxt = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
+                order.append(nxt)
+                rest.remove(nxt)
+                x, y = nxt[0], nxt[1]
+            for pose in order:
+                if go(pose):
+                    visited += 1
+                    look_around()
+        else:
+            # from the furniture's stand-offs: the nearest stand-off of a piece not seen yet, each time
+            # (spread viewpoints left 3 of bedroom_0_0's 8 targets unseen: coverage 0.62)
+            tried = set()
+            while visited < max_views and len(tried) < VIEW_TRIES * max_views:
+                x, y, _ = rig.base_pose()
+                rest = [p for p, f in of.items() if p not in tried and "furniture:" + f not in seen]
+                if not rest:
+                    break
+                pose = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
+                tried.add(pose)
+                if go(pose):
+                    visited += 1
+                    look_around()
         drive_head(rig, 0.0, 0.0)
         cov = len(seen) / len(targets)
         memory(rig)["explored"][room] = max(cov, memory(rig)["explored"].get(room, 0.0))

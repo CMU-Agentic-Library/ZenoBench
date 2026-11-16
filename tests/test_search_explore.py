@@ -186,3 +186,24 @@ def test_a_room_reached_only_in_a_corner_is_explored_from_its_furniture_stand_of
     monkeypatch.setattr(BM, "_in_view_poses", lambda rig, place, ps: list(ps))
     out = PC.ExploreRoomPolicy(_explore_rig()).execute("room")
     assert explore["went"] == [corner[0]] and out["coverage"] == 1.0
+
+
+def test_from_the_furniture_stand_offs_each_unseen_piece_gets_its_own_view(explore, monkeypatch):
+    """Spread viewpoints left 3 of bedroom_0_0's 8 targets unseen (coverage 0.62): from the furniture's
+    stand-offs, the nearest one of a piece not seen yet, each time."""
+    ann = SimpleNamespace(objects={}, articulated=[], appliances=[], rooms={"room": {}},
+                          supports=[{"name": "a/top", "furniture": "a", "aabb_xy": [1.0, 1.0, 1.5, 1.5], "z": 0.7},
+                                    {"name": "b/top", "furniture": "b", "aabb_xy": [5.0, 1.0, 5.5, 1.5], "z": 0.7}])
+    at = [None]
+    rig = SimpleNamespace(ann=ann, base_pose=lambda: at[0] or (0.0, 0.0, 0.0), log=lambda *a, **k: None,
+                          memory={}, state=lambda: {}, static_explore=True, held=None)
+    stand = {"a": [(1.2, 0.5, 90.0), (1.4, 0.5, 90.0)], "b": [(5.2, 0.5, 90.0)]}
+    monkeypatch.setattr(BM, "standoff_poses", lambda r, place: list(stand.get(place, [(9.0, 9.0, 0.0)])))
+    monkeypatch.setattr(BM.skills, "base_reachable", lambda r, ps: [p[1] < 1.0 for p in ps])
+    monkeypatch.setattr(BM, "_in_view_poses", lambda r, place, ps: list(ps))
+    went = explore["went"]
+    monkeypatch.setattr(BM.skills, "navigate", lambda r, pose, **kw: (went.append(pose), at.__setitem__(0, pose)))
+    monkeypatch.setattr(PC, "project_to_head_camera",
+                        lambda r, p, exclude=None: (abs(p[0] - (at[0] or (99,))[0]) < 1.0, ""))
+    out = PC.ExploreRoomPolicy(rig).execute("room")
+    assert went == [(1.2, 0.5, 90.0), (5.2, 0.5, 90.0)] and out["coverage"] == 1.0
