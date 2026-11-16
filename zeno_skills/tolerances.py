@@ -16,7 +16,7 @@ thresholds, what a skill's hooks judge a pick / place / door by, and the executi
 Not here: execution parameters (speeds, smooth, steps_per_wp: Segment.info), search budgets and
 costs (park_search, skills), the task predicates' thresholds (predicates.py: the evaluation, not the
 motion), and the old code's own thresholds (skills, policies) -- those go with the migration of what
-uses them."""
+uses them (the perception skills': 11-16, the last section)."""
 
 from __future__ import annotations
 
@@ -246,3 +246,13 @@ EDGE_PAD_CLEAR = _t("EDGE_PAD_CLEAR", 0.005, "m", "chosen: an edge hold's open p
                     "margin (cuRobo's collision constraint: activation distance 0)")
 HEAD_AT = _t("HEAD_AT", 0.02, "rad", "inherited (policies.perceive.drive_head's, now Rig.aim_head): a head joint this close to its "
              "command has arrived; run_skill leaves a head this close to straight ahead where it is")
+
+# --------------------------------------------------------------- what an exploration counts (policies.perceive, 9.3 step 3)
+COVER_MIN_AREA = _t("COVER_MIN_AREA", 0.05, "m^2", "inherited (5df416bf), unmeasured: a support smaller than this is "
+                    "not a room-coverage target (explore_room)")
+COVER_Z = _t("COVER_Z", (0.3, 1.6), "m", "inherited (5df416bf), unmeasured: support layers between these heights are "
+             "the horizontal surfaces in sight a room exploration must see")
+COVER_MIN_CLEARANCE = _t("COVER_MIN_CLEARANCE", 0.3, "m", "inherited (5df416bf), unmeasured: ...with at least this "
+                         "much free height above them")
+COVER_OK = _t("COVER_OK", 0.75, "1", "inherited (5df416bf), unmeasured: the fraction of its targets a room "
+              "exploration must see to succeed")

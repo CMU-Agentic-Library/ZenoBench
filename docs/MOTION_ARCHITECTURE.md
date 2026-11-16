@@ -356,7 +356,7 @@ class Spec:
 
 原模块里的名字照旧导入着（`clearance.MIN_DEPTH`、`base_planner.DEPTH_TOL`、`kinematics.REST_TOL` 等），改名的只有上面括号里写明的几个。仍不在这里的：执行参数、搜索预算和代价、`predicates.py` 的任务判定（评测层），以及旧代码（`skills`、`policies`）自己的阈值——随迁移再搬。
 
-**后来加的（11-11 以后，随迁移的那一步）**：开关门的 `DOOR_LEAVE`（第 6 步）；推门的 `PUSH_ABOVE`、`PUSH_PRE`、`PUSH_TIP_GAP`、`PUSH_TRACK`、`BODY_SAME`（6b）；推桌上的物体的 `SLIDE_GAP`、`SLIDE_PAD_GAP`、`DRAG_RIM`、`DRAG_PRESS`、`DRAG_SKID`、`SLIDE_TOL`、`PUSH_DONE_TOL`、`PUSH_MOVED_MIN`（第 7 步）；机器人自己的底盘的 `BODY_GAP`（4.4）。
+**后来加的（11-11 以后，随迁移的那一步）**：开关门的 `DOOR_LEAVE`（第 6 步）；推门的 `PUSH_ABOVE`、`PUSH_PRE`、`PUSH_TIP_GAP`、`PUSH_TRACK`、`BODY_SAME`（6b）；推桌上的物体的 `SLIDE_GAP`、`SLIDE_PAD_GAP`、`DRAG_RIM`、`DRAG_PRESS`、`DRAG_SKID`、`SLIDE_TOL`、`PUSH_DONE_TOL`、`PUSH_MOVED_MIN`（第 7 步）；机器人自己的底盘的 `BODY_GAP`（4.4）；探索的判据 `COVER_MIN_AREA`、`COVER_Z`、`COVER_MIN_CLEARANCE`、`COVER_OK`（第 3 步，11-16，都是 inherited, unmeasured；扫视的角度、步数和 `VIEW_TRIES` 是执行参数和预算，留在 `perceive.py`）。
 
 原来的目标：新架构用到的阈值集中到 `tolerances.py`，按**属于哪一层 / 哪一类误差**分组，每个带单位和**来源标记**：
 

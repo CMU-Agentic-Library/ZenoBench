@@ -29,19 +29,18 @@ from ..perception import (HEAD_LIMITS, look_angles, project_to_head_camera,
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
 from ..rig import SkillFailure
+from ..tolerances import COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z
 
-# Exploration (ExploreRoomPolicy, ExploreFurniturePolicy); inherited, unmeasured: docs/COLLISION_PLAN.md §8.
-COVER_MIN_AREA = 0.05           # m^2: a support smaller than this is not a room-coverage target
-COVER_Z = (0.3, 1.6)            # m: support layers between these heights are (horizontal surfaces in sight)
-COVER_MIN_CLEARANCE = 0.3       # m of free height above a layer for it to count
-COVER_OK = 0.75                 # fraction of the targets a room exploration must see
+# Exploration (ExploreRoomPolicy, ExploreFurniturePolicy).  What it counts and when it succeeds: tolerances
+# (COVER_*).  How it looks -- execution parameters and a budget, not thresholds -- here; inherited (5df416bf),
+# unmeasured: docs/COLLISION_PLAN.md §8.
 VIEW_TURNS = (0.0, 180.0)       # deg the base turns at each room viewpoint (look both ways)
 SWEEP_YAWS = (-1.0, -0.5, 0.0, 0.5, 1.0)   # rad: head yaws of a sweep...
 SWEEP_PITCH = 0.3               # rad: ...at this pitch (positive looks down)...
 SWEEP_STEPS = 50                # ...each reached in this many ticks
 VIEW_TRIES = 3                  # navigates a furniture exploration may try per view it wants
-SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a long support (one look at the
-                                # centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
+SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a long support (chosen, 5e962d8f: one look
+                                # at the centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
 
 
 def head_segment(rig, yaw, pitch, steps=90, name="head"):
