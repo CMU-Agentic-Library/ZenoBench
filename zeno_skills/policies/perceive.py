@@ -24,7 +24,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .. import skills
 from ..kinematics import gripper_rot
-from ..perception import (HEAD_LIMITS, _segment_blocked, head_camera_pose, look_angles, project_to_head_camera,
+from ..perception import (HEAD_LIMITS, look_angles, project_to_head_camera,
                           rig_head_pose)
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
@@ -221,8 +221,9 @@ def _board_blocks(cam, point, layers, thick=0.02):
 class ExploreFurniturePolicy(AtomicPolicy):
     """Look at every support layer of one piece of furniture (each shelf, the top,
     a cabinet's inside shelves): sweep from where the robot stands when it is
-    already near, else from up to ``max_views`` stand-off poses in front of it,
-    aiming the head at each layer not seen yet, and again with the torso lowered
+    already near, else from up to ``max_views`` stand-off poses the base can get to
+    and the furniture is in view from (navigate_place's goal set), aiming the head
+    at each layer not seen yet, and again with the torso lowered
     (empty hand only) for the layers still hidden, e.g. a bottom shelf behind the
     front edge of the shelf above it.  A layer is seen when the space just above
     its board is in the head camera and no board of the furniture is in the way.
@@ -231,7 +232,7 @@ class ExploreFurniturePolicy(AtomicPolicy):
 
     def execute(self, furniture, *, max_views=3, min_spacing=0.4):
         rig = self.rig
-        from .base_motion import standoff_poses
+        from .base_motion import _in_view_poses, standoff_poses
         from .posture import LowerTorsoPolicy, SetTorsoHeightPolicy
         from ..predicates import NEAR_M
         layers = sorted((s_ for s_ in rig.ann.supports if s_.get("furniture") == furniture), key=lambda s_: s_["z"])
@@ -272,19 +273,29 @@ class ExploreFurniturePolicy(AtomicPolicy):
         if here:
             sweep()
             views.append((x, y))
-        tw = {n: float(v) for n, v in zip(rig.kin.names[:2], rig.q()[:2])}
-        for pose in standoff_poses(rig, furniture):
+        if len(seen) < len(targets):
+            if rig.held is not None:
+                # the stand-offs are checked in the posture the drives carry the load in (as navigate_place)
+                from ..skill_jobs.carry import carry_posture
+                carry_posture(rig, min_bottom_z=None)
+            # the views are one goal set, as navigate_place has it: the stand-offs the base can get to (one
+            # base_reachable field) the furniture is in view from (its top or any layer, the head aimed as look
+            # aims it: walls and furniture boxes; base_motion._in_view_poses), nearest first
+            poses = standoff_poses(rig, furniture)
+            ok = skills.base_reachable(rig, poses) if poses else []
+            cands = _in_view_poses(rig, furniture, [p for p, o in zip(poses, ok) if o])
+            rig.log("explore_furniture_goals", furniture=furniture, goals=len(poses), reachable=sum(ok),
+                    in_view=len(cands))
+        else:
+            cands = []
+        for pose in cands:
             if len(seen) == len(targets) or len(views) - here >= max_views or tries >= VIEW_TRIES * max_views:
                 break
             if any(math.hypot(pose[0] - vx, pose[1] - vy) < min_spacing for vx, vy in views):
                 continue
-            # a stand-off pose within reach can be behind a wall: skip it unless some layer is in sight
-            cam = head_camera_pose(pose, tw)[0]
-            if all(_segment_blocked(rig.world, cam, q) for q in targets.values()):
-                continue
             tries += 1
             try:
-                skills.navigate(rig, pose, label=f"explore_{furniture}")
+                skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=rig.held is None)
             except SkillFailure as exc:
                 rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
                 continue

@@ -130,3 +130,35 @@ def test_explore_carrying_takes_the_carry_posture_before_the_viewpoints(explore,
     monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: order.append("poses") or list(explore["poses"]))
     PC.ExploreRoomPolicy(_explore_rig(held={"name": "living_car"})).execute("room", min_spacing=0.5)
     assert order[:2] == ["carry", "poses"]
+
+
+def _furniture_rig(near=False):
+    layers = [{"name": "shelf/top", "furniture": "shelf", "aabb_xy": [1.0, 1.0, 1.5, 1.5], "z": 1.0},
+              {"name": "shelf/shelf_0", "furniture": "shelf", "aabb_xy": [1.0, 1.0, 1.5, 1.5], "z": 0.5}]
+    ann = SimpleNamespace(objects={}, articulated=[], appliances=[], rooms={}, supports=layers)
+    pose = (0.0, 0.0, 0.0) if not near else (1.2, 0.8, 90.0)
+    return SimpleNamespace(ann=ann, base_pose=lambda: pose, log=lambda *a, **k: None, memory={}, held=None,
+                           state=lambda: {})
+
+
+def test_explore_furniture_drives_only_to_reachable_stand_offs_it_is_in_view_from(monkeypatch):
+    """The hand-written wall test (head straight ahead, every layer behind a wall) is the in-view goal set of
+    navigate_place now; unreachable stand-offs are not tried either."""
+    went, seen_from = [], {(2.0, 0.0, 0.0)}
+    poses = [(0.5, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0), (3.0, 0.0, 0.0)]
+    monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: list(poses))
+    monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: [p != (1.0, 0.0, 0.0) for p in ps])
+    monkeypatch.setattr(BM, "_in_view_poses", lambda rig, place, ps: [p for p in ps if p in seen_from])
+    monkeypatch.setattr(BM.skills, "navigate", lambda rig, pose, **kw: went.append(pose))
+    monkeypatch.setattr(BM, "entity_footprint", lambda rig, name: [1.0, 1.0, 1.5, 1.5])
+    monkeypatch.setattr(PC, "entity_footprint", lambda rig, name: [1.0, 1.0, 1.5, 1.5])
+    monkeypatch.setattr(PC, "drive_head", lambda *a, **k: None)
+    monkeypatch.setattr(PC, "record_view", lambda rig: [])
+    monkeypatch.setattr(PC, "look_angles", lambda rig, p: (0.0, 0.0))
+    monkeypatch.setattr(PC, "rig_head_pose", lambda rig: (np.zeros(3), np.eye(3)))
+    monkeypatch.setattr(PC, "project_to_head_camera", lambda rig, p, exclude=None: (bool(went), ""))
+    monkeypatch.setattr(PC, "_board_blocks", lambda cam, q, layers: False)
+    monkeypatch.setattr(PC, "memory", lambda rig: rig.memory.setdefault("m", {"explored": {}}))
+    out = PC.ExploreFurniturePolicy(_furniture_rig()).execute("shelf")
+    assert went == [(2.0, 0.0, 0.0)]
+    assert out["layers"] == ["shelf/shelf_0", "shelf/top"]
