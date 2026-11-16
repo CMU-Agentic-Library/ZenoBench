@@ -56,10 +56,10 @@
   ],
   "routes_between_layouts": {
    "passes": 110,
-   "goal_not_met": 152,
+   "goal_not_met": 151,
    "not_observed": 21,
    "argument_mismatch": 90,
-   "resource_missing": 79
+   "resource_missing": 80
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -211,8 +211,7 @@
     "hw_pencil"
    ],
    "T18 enough_for_dinner": [
-    "clean_bowl_2",
-    "clean_bowl_3"
+    "clean_bowl_2"
    ],
    "T21 no_tissue": [
     "spare_sponge"
@@ -3593,7 +3592,7 @@
    "task": "T18_check_cabinet_dishes",
    "variant": "enough_for_dinner",
    "layout": "enough_for_dinner__one_short",
-   "steps": 10,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -3607,7 +3606,7 @@
    "task": "T18_check_cabinet_dishes",
    "variant": "enough_for_dinner",
    "layout": "enough_for_dinner__two_short",
-   "steps": 16,
+   "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -3792,14 +3791,14 @@
   {
    "task": "T14_shelve_the_book",
    "variant": "stack_them_stably",
-   "layout": "stack_them_stably__red_blue_paperback",
-   "steps": 14,
+   "layout": "stack_them_stably__red_blue",
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
     "stack_them_stably__green_paperback": "resource_missing",
-    "stack_them_stably__blue_green_paperback": "resource_missing"
+    "stack_them_stably__blue_green": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -3812,22 +3811,22 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "stack_them_stably__red_blue_paperback": "resource_missing",
-    "stack_them_stably__blue_green_paperback": "resource_missing"
+    "stack_them_stably__red_blue": "resource_missing",
+    "stack_them_stably__blue_green": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T14_shelve_the_book",
    "variant": "stack_them_stably",
-   "layout": "stack_them_stably__blue_green_paperback",
-   "steps": 14,
+   "layout": "stack_them_stably__blue_green",
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "stack_them_stably__red_blue_paperback": "goal_not_met",
-    "stack_them_stably__green_paperback": "goal_not_met"
+    "stack_them_stably__red_blue": "goal_not_met",
+    "stack_them_stably__green_paperback": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -4078,7 +4077,7 @@
    "task": "T22_put_away_shopping",
    "variant": "two_spots",
    "layout": "two_spots",
-   "steps": 22,
+   "steps": 23,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright bought_juice"
@@ -5552,9 +5551,9 @@
    "task": "T14_shelve_the_book",
    "variant": "stack_them_stably",
    "candidates": [
-    "stack_them_stably__red_blue_paperback",
+    "stack_them_stably__red_blue",
     "stack_them_stably__green_paperback",
-    "stack_them_stably__blue_green_paperback",
+    "stack_them_stably__blue_green",
     "e1_book_ready"
    ],
    "passes_all": []
@@ -8267,7 +8266,7 @@
    "task": "T14_shelve_the_book",
    "variant": "stack_them_stably",
    "layouts": [
-    "stack_them_stably__red_blue_paperback",
+    "stack_them_stably__red_blue",
     "stack_them_stably__green_paperback"
    ],
    "start_room": "bedroom_0_1",
@@ -8280,8 +8279,8 @@
    "task": "T14_shelve_the_book",
    "variant": "stack_them_stably",
    "layouts": [
-    "stack_them_stably__red_blue_paperback",
-    "stack_them_stably__blue_green_paperback"
+    "stack_them_stably__red_blue",
+    "stack_them_stably__blue_green"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": true,
@@ -8294,11 +8293,11 @@
    "variant": "stack_them_stably",
    "layouts": [
     "stack_them_stably__green_paperback",
-    "stack_them_stably__blue_green_paperback"
+    "stack_them_stably__blue_green"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": true,
-   "route_a_on_b": "goal_not_met",
+   "route_a_on_b": "resource_missing",
    "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },

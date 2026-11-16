@@ -11,7 +11,7 @@
       "metal",
       "handled"
     ],
-    "collider": "solid",
+    "collider": "round_container",
     "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
     "target_size": [
       0.26,
@@ -62,7 +62,21 @@
           0.013
         ]
       }
-    ]
+    ],
+    "container_profile": {
+      "shape": "round",
+      "bands": [
+        [
+          0.0,
+          0.16,
+          0.115
+        ]
+      ],
+      "rim_height": 0.16,
+      "rim_radius": 0.115
+    },
+    "rim_pinch_depth": 0.025,
+    "note": "pot of soup: walls like handled_cooking_pot (the soup is liquid, nothing rests on it) so the rim pinch fits; the soup surface is 3.2 cm below the rim, so the TCP goes 2.5 cm down, not 3.5 (11-15)"
   },
   "oatmeal_bowl": {
     "prompt": "a bowl of oatmeal",

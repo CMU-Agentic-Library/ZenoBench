@@ -3922,29 +3922,29 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 10,
-"variant": "stack_them_stably__blue_green_paperback",
-"route": "v6_stack_them_stably__blue_green_paperback",
+"variant": "stack_them_stably__blue_green",
+"route": "v6_stack_them_stably__blue_green",
 "family": "stack_them_stably"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 11,
-"variant": "stack_them_stably__red_blue_paperback",
-"route": "v6_stack_them_stably__red_blue_paperback",
+"variant": "stack_them_stably__red_blue",
+"route": "v6_stack_them_stably__red_blue",
 "family": "stack_them_stably"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 12,
-"variant": "stack_them_stably__blue_green_paperback",
-"route": "v6_stack_them_stably__blue_green_paperback",
+"variant": "stack_them_stably__blue_green",
+"route": "v6_stack_them_stably__blue_green",
 "family": "stack_them_stably"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 13,
-"variant": "stack_them_stably__red_blue_paperback",
-"route": "v6_stack_them_stably__red_blue_paperback",
+"variant": "stack_them_stably__red_blue",
+"route": "v6_stack_them_stably__red_blue",
 "family": "stack_them_stably"
 },
 {
@@ -3957,15 +3957,15 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 15,
-"variant": "stack_them_stably__blue_green_paperback",
-"route": "v6_stack_them_stably__blue_green_paperback",
+"variant": "stack_them_stably__blue_green",
+"route": "v6_stack_them_stably__blue_green",
 "family": "stack_them_stably"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 16,
-"variant": "stack_them_stably__red_blue_paperback",
-"route": "v6_stack_them_stably__red_blue_paperback",
+"variant": "stack_them_stably__red_blue",
+"route": "v6_stack_them_stably__red_blue",
 "family": "stack_them_stably"
 },
 {
@@ -3985,8 +3985,8 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 19,
-"variant": "stack_them_stably__red_blue_paperback",
-"route": "v6_stack_them_stably__red_blue_paperback",
+"variant": "stack_them_stably__red_blue",
+"route": "v6_stack_them_stably__red_blue",
 "family": "stack_them_stably"
 },
 {

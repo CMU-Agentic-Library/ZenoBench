@@ -557,7 +557,7 @@ def T04(t):
         return [look("kitchen_island/top")] + open_explore(first) + [S("close", articulated=first)] + open_explore(second) \
             + [nav(C), pick(C), S("retreat", obstacle=second, distance_m=0.3), S("close", articulated=second),
                nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top")]
-    shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
+    shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.50], "yaw_deg": 0.0},  # front: 0.30 m headroom
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
     cup_cases = {}
     for where, first in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4")):
@@ -1666,11 +1666,13 @@ def T14(t):
             add={f"set_book_{i + 1}": book("book_red", high, x, y) for i, x in enumerate(xs)},
             watch=[B, "set_book_1", "set_book_2"],
             route=[look(DESK), S("explore_room", room="bedroom_0_1")] + shelve(B, lower, [xs[0] + 0.5, y]))
-    # stack_them_stably: every book from the desk onto the bookcase in one pile, the largest at the bottom
+    # stack_them_stably: every book from the desk onto the bookcase in one pile, the largest at the bottom.
+    # Two books per seed (11-15): a third book onto the second found no edge spot in every run (the edge
+    # place needs an overhang off a small, raised book); one book onto another went through.
     stack_cases = {}
-    for c, books in (("red_blue_paperback", ("paperback_book", "book_red", "book_blue")),
+    for c, books in (("red_blue", ("book_red", "book_blue")),
                      ("green_paperback", ("paperback_book", "book_green")),
-                     ("blue_green_paperback", ("book_blue", "paperback_book", "book_green"))):
+                     ("blue_green", ("book_blue", "book_green"))):
         names = {a: ("book_red" if a == "book_red" else f"desk_{a}") for a in books}
         add = {names[a]: on_desk(a, x) for a, x in zip(books, (-1.20, -0.90, -0.60)) if a != "book_red"}
         move = {B: on_desk("book_red", -0.90 if books[1] == "book_red" else -1.20)} if "book_red" in books else {}
@@ -1749,10 +1751,10 @@ def T14(t):
             instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the "
                         "biggest at the bottom and the smallest on top.",
             instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
-            factor="which books are on the desk (seed: three or two, of different sizes)",
-            challenge="two or three books of different sizes on the desk; one pile on the bookcase",
-            rationale="the order follows from the sizes: the largest at the bottom, each smaller one on top, so no "
-                      "book overhangs the one below",
+            factor="which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
+            challenge="two books of different sizes on the desk; one pile on the bookcase",
+            rationale="the order follows from the sizes: the larger at the bottom, the smaller on top, so the top "
+                      "book does not overhang the one below",
             cases=stack_cases),
         "homework_stays": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["category_rule", "multi_object_goal"],
@@ -1915,22 +1917,28 @@ def T18(t):
     goal_3 = copy.deepcopy(goal_mw)
     goal_3["all"].append(["is_closed", C4])
     in_mw = {"support": "kitchen_microwave/inside_floor", "xy": [4.5, 2.5], "yaw_deg": 0.0}
-    # enough_for_dinner: three bowls are needed in the cabinet; count, fetch only what is missing
+    # enough_for_dinner: two bowls are needed in the cabinet; count, fetch only what is missing
+    # (two, not three: three 17.8 cm bowls fill the 56 cm shelf with no free spot left for the third place)
     SHELF6 = "kitchen_cabinet_6/inside_shelf"
-    slots = [3.315, 3.50, 3.685]
+    slots = [3.32, 3.52]            # sim: a bowl went in at x 3.50, not at 3.38 / 3.62 / 3.685 (no reachable spot)
     spares = ["bowl_kitchen_cabinet", "bowl_side_table"]
+    NEED = 2
     dinner_cases = {}
-    for c, have in (("enough", 3), ("one_short", 2), ("two_short", 1)):
-        inside = ["bowl_inside_kitchen_cabinet"] + [f"clean_bowl_{i}" for i in range(2, have + 1)]
-        add = {f"clean_bowl_{i}": {"asset": "breakfast_bowl", **P(SHELF6, slots[i - 1], 0.36)} for i in range(2, have + 1)}
+    for c, have in (("enough", 2), ("one_short", 1), ("two_short", 0)):
+        inside = ["bowl_inside_kitchen_cabinet", "clean_bowl_2"][:have]
+        add = {"clean_bowl_2": {"asset": "breakfast_bowl", **P(SHELF6, slots[1], 0.36)}} if have == 2 else {}
         route = [nav(C6), S("open", articulated=C6), S("inspect", receptacle=C6)]
-        for k, b in enumerate(spares[:3 - have]):
-            route += [nav(b), pick(b), nav(C6), place(b, SHELF6, [slots[have + k], 0.36])]
+        free = slots[have:] if have else slots[::-1]            # the reachable middle spot first
+        for k, b in enumerate(spares[:NEED - have]):
+            route += [nav(b), pick(b), nav(C6), place(b, SHELF6, [free[k], 0.36])]
+        move = {"bowl_kitchen_cabinet": P("kitchen_cabinet_4/top", 1.40, 0.42)}  # the spare off the tall cabinet (z 1.17, no IK)
+        if have:
+            move["bowl_inside_kitchen_cabinet"] = P(SHELF6, slots[0], 0.36)
         dinner_cases[c] = dict(
-            add=add, move={"bowl_inside_kitchen_cabinet": P(SHELF6, slots[0], 0.36)},
+            add=add, move=move, **({} if have else {"remove": ["bowl_inside_kitchen_cabinet"]}),
             watch=[*inside, *spares],
-            goal={"all": [["count_on_at_least", inside + spares, SHELF6, 3], ["is_closed", C6], ["hand_empty", "right"]]
-                  + [["near_start", b, 0.03] for b in spares[3 - have:]]},
+            goal={"all": [["count_on_at_least", inside + spares, SHELF6, NEED], ["is_closed", C6], ["hand_empty", "right"]]
+                  + [["near_start", b, 0.03] for b in spares[NEED - have:]]},
             route=route + [S("close", articulated=C6)])
     return {
         "dishes_spread": dict(
@@ -1956,14 +1964,14 @@ def T18(t):
         "enough_for_dinner": dict(
             base="at_island", control="at_island", conditions=["count_against_need"],
             remove=["plate_inside_kitchen_cabinet"],
-            instruction="Three of us are having dinner tonight; there should be enough clean bowls in the low wall "
+            instruction="Two of us are having dinner tonight; there should be enough clean bowls in the low wall "
                         "cabinet. Close its door when you are done.",
-            instruction_zh="今晚三个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
-            factor="how many clean bowls are in the cabinet (seed: three, two or one)",
-            challenge="the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and "
+            instruction_zh="今晚两个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
+            factor="how many clean bowls are in the cabinet (seed: two, one or none)",
+            challenge="the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and "
                       "the side table in the west dining room",
             rationale="count what is there against what is needed and act only on the difference: nothing to "
-                      "bring when there are three, one or two bowls fetched otherwise",
+                      "bring when there are two, one or two bowls fetched otherwise",
             cases=dinner_cases),
     }
 

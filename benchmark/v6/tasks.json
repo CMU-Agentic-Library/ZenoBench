@@ -45225,7 +45225,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.4,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       }
@@ -122952,8 +122952,16 @@
       "bowl_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.315,
+        3.32,
         0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
        ],
        "yaw_deg": 0.0
       }
@@ -122964,23 +122972,14 @@
      "conditions": [
       "count_against_need"
      ],
-     "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-     "instruction_zh": "今晚三个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
+     "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+     "instruction_zh": "今晚两个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
      "add": {
       "clean_bowl_2": {
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.5,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "clean_bowl_3": {
-       "asset": "breakfast_bowl",
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.685,
+        3.52,
         0.36
        ],
        "yaw_deg": 0.0
@@ -122993,12 +122992,11 @@
         [
          "bowl_inside_kitchen_cabinet",
          "clean_bowl_2",
-         "clean_bowl_3",
          "bowl_kitchen_cabinet",
          "bowl_side_table"
         ],
         "kitchen_cabinet_6/inside_shelf",
-        3
+        2
        ],
        [
         "is_closed",
@@ -123023,26 +123021,73 @@
      "watch": [
       "bowl_inside_kitchen_cabinet",
       "clean_bowl_2",
-      "clean_bowl_3",
       "bowl_kitchen_cabinet",
       "bowl_side_table"
      ],
      "since": "v6",
-     "note": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+     "note": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
      "v6": {
       "family": "enough_for_dinner",
       "case": "enough",
-      "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+      "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
       "control": "at_island",
       "contrast": null,
-      "factor": "how many clean bowls are in the cabinet (seed: three, two or one)",
+      "factor": "how many clean bowls are in the cabinet (seed: two, one or none)",
       "derived_from": "at_island"
      },
      "layout": {
-      "clusters": [],
+      "clusters": [
+       {
+        "names": [
+         "bowl_kitchen_cabinet"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3109,
+         0.3322,
+         1.489,
+         0.5079
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.06,
+         0.06
+        ]
+       }
+      ],
       "static": {},
-      "reach": {},
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -123056,7 +123101,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "three clean bowls in the cabinet, the door closed, no spare moved needlessly"
+        "why": "two clean bowls in the cabinet, the door closed, no spare moved needlessly"
        },
        {
         "name": "second",
@@ -123070,12 +123115,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123109,12 +123153,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123142,12 +123185,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123166,7 +123208,7 @@
           }
          }
         },
-        "why": "three bowls in, but the door left open or more spares fetched than needed"
+        "why": "two bowls in, but the door left open or more spares fetched than needed"
        },
        {
         "name": "worst",
@@ -123180,12 +123222,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123199,12 +123240,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123217,12 +123257,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123232,10 +123271,10 @@
           }
          }
         },
-        "why": "three bowls in, the door open and spares fetched needlessly"
+        "why": "two bowls in, the door open and spares fetched needlessly"
        }
       ],
-      "not_ok": "fewer than three bowls in the cabinet; a bowl dropped; still held"
+      "not_ok": "fewer than two bowls in the cabinet; a bowl dropped; still held"
      }
     },
     "enough_for_dinner__one_short": {
@@ -123251,8 +123290,16 @@
       "bowl_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.315,
+        3.32,
         0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
        ],
        "yaw_deg": 0.0
       }
@@ -123263,31 +123310,20 @@
      "conditions": [
       "count_against_need"
      ],
-     "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-     "instruction_zh": "今晚三个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
-     "add": {
-      "clean_bowl_2": {
-       "asset": "breakfast_bowl",
-       "support": "kitchen_cabinet_6/inside_shelf",
-       "xy": [
-        3.5,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      }
-     },
+     "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+     "instruction_zh": "今晚两个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
+     "add": {},
      "goal": {
       "all": [
        [
         "count_on_at_least",
         [
          "bowl_inside_kitchen_cabinet",
-         "clean_bowl_2",
          "bowl_kitchen_cabinet",
          "bowl_side_table"
         ],
         "kitchen_cabinet_6/inside_shelf",
-        3
+        2
        ],
        [
         "is_closed",
@@ -123306,26 +123342,76 @@
      },
      "watch": [
       "bowl_inside_kitchen_cabinet",
-      "clean_bowl_2",
       "bowl_kitchen_cabinet",
       "bowl_side_table"
      ],
      "since": "v6",
-     "note": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+     "note": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
      "v6": {
       "family": "enough_for_dinner",
       "case": "one_short",
-      "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+      "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
       "control": "at_island",
       "contrast": null,
-      "factor": "how many clean bowls are in the cabinet (seed: three, two or one)",
+      "factor": "how many clean bowls are in the cabinet (seed: two, one or none)",
       "derived_from": "at_island"
      },
      "layout": {
-      "clusters": [],
+      "clusters": [
+       {
+        "names": [
+         "bowl_kitchen_cabinet"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3109,
+         0.3322,
+         1.489,
+         0.5079
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.06,
+         0.06
+        ],
+        "pick": [
+         "bowl_kitchen_cabinet"
+        ]
+       }
+      ],
       "static": {},
-      "reach": {},
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -123339,7 +123425,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "three clean bowls in the cabinet, the door closed, no spare moved needlessly"
+        "why": "two clean bowls in the cabinet, the door closed, no spare moved needlessly"
        },
        {
         "name": "second",
@@ -123353,12 +123439,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123392,12 +123477,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123425,12 +123509,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123449,7 +123532,7 @@
           }
          }
         },
-        "why": "three bowls in, but the door left open or more spares fetched than needed"
+        "why": "two bowls in, but the door left open or more spares fetched than needed"
        },
        {
         "name": "worst",
@@ -123463,12 +123546,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123482,12 +123564,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123500,12 +123581,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123515,10 +123595,10 @@
           }
          }
         },
-        "why": "three bowls in, the door open and spares fetched needlessly"
+        "why": "two bowls in, the door open and spares fetched needlessly"
        }
       ],
-      "not_ok": "fewer than three bowls in the cabinet; a bowl dropped; still held"
+      "not_ok": "fewer than two bowls in the cabinet; a bowl dropped; still held"
      }
     },
     "enough_for_dinner__two_short": {
@@ -123534,8 +123614,16 @@
       "bowl_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        3.315,
-        0.36
+        3.3599,
+        0.3601
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
        ],
        "yaw_deg": 0.0
       },
@@ -123549,25 +123637,25 @@
       }
      },
      "remove": [
+      "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
      ],
      "conditions": [
       "count_against_need"
      ],
-     "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-     "instruction_zh": "今晚三个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
+     "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+     "instruction_zh": "今晚两个人吃晚饭，靠墙矮柜里的干净碗要够用。弄完把柜门关好。",
      "add": {},
      "goal": {
       "all": [
        [
         "count_on_at_least",
         [
-         "bowl_inside_kitchen_cabinet",
          "bowl_kitchen_cabinet",
          "bowl_side_table"
         ],
         "kitchen_cabinet_6/inside_shelf",
-        3
+        2
        ],
        [
         "is_closed",
@@ -123580,20 +123668,19 @@
       ]
      },
      "watch": [
-      "bowl_inside_kitchen_cabinet",
       "bowl_kitchen_cabinet",
       "bowl_side_table"
      ],
      "since": "v6",
-     "note": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+     "note": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
      "v6": {
       "family": "enough_for_dinner",
       "case": "two_short",
-      "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+      "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+      "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
       "control": "at_island",
       "contrast": null,
-      "factor": "how many clean bowls are in the cabinet (seed: three, two or one)",
+      "factor": "how many clean bowls are in the cabinet (seed: two, one or none)",
       "derived_from": "at_island"
      },
      "layout": {
@@ -123619,6 +123706,29 @@
         ],
         "pick": [
          "bowl_side_table"
+        ]
+       },
+       {
+        "names": [
+         "bowl_kitchen_cabinet"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3109,
+         0.3322,
+         1.489,
+         0.5079
+        ],
+        "dx": [
+         -0.26,
+         0.26
+        ],
+        "dy": [
+         -0.06,
+         0.06
+        ],
+        "pick": [
+         "bowl_kitchen_cabinet"
         ]
        }
       ],
@@ -123672,6 +123782,32 @@
          -7.588,
          0.2
         ]
+       ],
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
        ]
       },
       "start": {
@@ -123687,7 +123823,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "three clean bowls in the cabinet, the door closed, no spare moved needlessly"
+        "why": "two clean bowls in the cabinet, the door closed, no spare moved needlessly"
        },
        {
         "name": "second",
@@ -123701,12 +123837,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123740,12 +123875,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123773,12 +123907,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123797,7 +123930,7 @@
           }
          }
         },
-        "why": "three bowls in, but the door left open or more spares fetched than needed"
+        "why": "two bowls in, but the door left open or more spares fetched than needed"
        },
        {
         "name": "worst",
@@ -123811,12 +123944,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123830,12 +123962,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123848,12 +123979,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -123863,10 +123993,10 @@
           }
          }
         },
-        "why": "three bowls in, the door open and spares fetched needlessly"
+        "why": "two bowls in, the door open and spares fetched needlessly"
        }
       ],
-      "not_ok": "fewer than three bowls in the cabinet; a bowl dropped; still held"
+      "not_ok": "fewer than two bowls in the cabinet; a bowl dropped; still held"
      }
     }
    },
@@ -124098,18 +124228,6 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_3/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_3/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "bowl_kitchen_cabinet"
        }
       },
@@ -124131,7 +124249,7 @@
         "object": "bowl_kitchen_cabinet",
         "receptacle": "kitchen_cabinet_6/inside_shelf",
         "hint_xy": [
-         3.685,
+         3.52,
          0.36
         ]
        }
@@ -124169,18 +124287,6 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_3/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_3/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "bowl_kitchen_cabinet"
        }
       },
@@ -124202,7 +124308,7 @@
         "object": "bowl_kitchen_cabinet",
         "receptacle": "kitchen_cabinet_6/inside_shelf",
         "hint_xy": [
-         3.5,
+         3.52,
          0.36
         ]
        }
@@ -124243,7 +124349,7 @@
         "object": "bowl_side_table",
         "receptacle": "kitchen_cabinet_6/inside_shelf",
         "hint_xy": [
-         3.685,
+         3.32,
          0.36
         ]
        }
@@ -124428,7 +124534,7 @@
       "enough_for_dinner__one_short",
       "enough_for_dinner__two_short"
      ],
-     "factor": "how many clean bowls are in the cabinet (seed: three, two or one)",
+     "factor": "how many clean bowls are in the cabinet (seed: two, one or none)",
      "seeds": {
       "10": "enough_for_dinner__two_short",
       "11": "enough_for_dinner__enough",
@@ -124448,7 +124554,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "three clean bowls in the cabinet, the door closed, no spare moved needlessly"
+        "why": "two clean bowls in the cabinet, the door closed, no spare moved needlessly"
        },
        {
         "name": "second",
@@ -124462,12 +124568,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124501,12 +124606,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124534,12 +124638,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124558,7 +124661,7 @@
           }
          }
         },
-        "why": "three bowls in, but the door left open or more spares fetched than needed"
+        "why": "two bowls in, but the door left open or more spares fetched than needed"
        },
        {
         "name": "worst",
@@ -124572,12 +124675,11 @@
              [
               "bowl_inside_kitchen_cabinet",
               "clean_bowl_2",
-              "clean_bowl_3",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124591,12 +124693,11 @@
              "count_on_at_least",
              [
               "bowl_inside_kitchen_cabinet",
-              "clean_bowl_2",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124609,12 +124710,11 @@
             [
              "count_on_at_least",
              [
-              "bowl_inside_kitchen_cabinet",
               "bowl_kitchen_cabinet",
               "bowl_side_table"
              ],
              "kitchen_cabinet_6/inside_shelf",
-             3
+             2
             ],
             [
              "hand_empty",
@@ -124624,10 +124724,10 @@
           }
          }
         },
-        "why": "three bowls in, the door open and spares fetched needlessly"
+        "why": "two bowls in, the door open and spares fetched needlessly"
        }
       ],
-      "not_ok": "fewer than three bowls in the cabinet; a bowl dropped; still held"
+      "not_ok": "fewer than two bowls in the cabinet; a bowl dropped; still held"
      }
     }
    },
@@ -129561,13 +129661,13 @@
       "not_ok": "the book left on the desk, on the floor or elsewhere; still held or dropped"
      }
     },
-    "stack_them_stably__red_blue_paperback": {
+    "stack_them_stably__red_blue": {
      "move": {
       "book_red": {
        "asset": "book_red",
        "support": "desk_1/top",
        "xy": [
-        -0.9,
+        -1.2,
         -6.271
        ],
        "yaw_deg": 90.0
@@ -129581,20 +129681,11 @@
      "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
      "remove": [],
      "add": {
-      "desk_paperback_book": {
-       "asset": "paperback_book",
-       "support": "desk_1/top",
-       "xy": [
-        -1.2,
-        -6.301
-       ],
-       "yaw_deg": 90.0
-      },
       "desk_book_blue": {
        "asset": "book_blue",
        "support": "desk_1/top",
        "xy": [
-        -0.6,
+        -0.9,
         -6.291
        ],
        "yaw_deg": 90.0
@@ -129616,31 +129707,25 @@
         "book_red"
        ],
        [
-        "on_top_of",
-        "desk_paperback_book",
-        "desk_book_blue"
-       ],
-       [
         "hand_empty",
         "right"
        ]
       ]
      },
      "watch": [
-      "desk_paperback_book",
       "book_red",
       "desk_book_blue"
      ],
      "since": "v6",
-     "note": "two or three books of different sizes on the desk; one pile on the bookcase",
+     "note": "two books of different sizes on the desk; one pile on the bookcase",
      "v6": {
       "family": "stack_them_stably",
-      "case": "red_blue_paperback",
-      "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-      "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+      "case": "red_blue",
+      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+      "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: three or two, of different sizes)",
+      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
@@ -129648,24 +129733,22 @@
        {
         "names": [
          "book_red",
-         "desk_book_blue",
-         "desk_paperback_book"
+         "desk_book_blue"
         ],
         "support": "desk_1/top",
         "box": [
-         -1.26,
+         -1.2837,
          -6.391,
-         -0.5301,
+         -0.8301,
          -6.151
         ],
         "dx": [
-         -0.13,
-         0.49
+         -0.11,
+         0.79
         ],
         "pick": [
          "book_red",
-         "desk_book_blue",
-         "desk_paperback_book"
+         "desk_book_blue"
         ]
        }
       ],
@@ -129718,7 +129801,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue_paperback": {
+          "stack_them_stably__red_blue": {
            "all": [
             [
              "on_any",
@@ -129745,15 +129828,6 @@
             [
              "not on_floor",
              "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -129795,7 +129869,7 @@
             ]
            ]
           },
-          "stack_them_stably__blue_green_paperback": {
+          "stack_them_stably__blue_green": {
            "all": [
             [
              "on_any",
@@ -129822,15 +129896,6 @@
             [
              "not on_floor",
              "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -129912,15 +129977,15 @@
       "desk_book_green"
      ],
      "since": "v6",
-     "note": "two or three books of different sizes on the desk; one pile on the bookcase",
+     "note": "two books of different sizes on the desk; one pile on the bookcase",
      "v6": {
       "family": "stack_them_stably",
       "case": "green_paperback",
-      "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-      "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+      "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: three or two, of different sizes)",
+      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
@@ -129997,7 +130062,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue_paperback": {
+          "stack_them_stably__red_blue": {
            "all": [
             [
              "on_any",
@@ -130024,15 +130089,6 @@
             [
              "not on_floor",
              "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -130074,7 +130130,7 @@
             ]
            ]
           },
-          "stack_them_stably__blue_green_paperback": {
+          "stack_them_stably__blue_green": {
            "all": [
             [
              "on_any",
@@ -130103,15 +130159,6 @@
              "desk_book_green"
             ],
             [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
-            ],
-            [
              "hand_empty",
              "right"
             ]
@@ -130125,7 +130172,7 @@
       "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped"
      }
     },
-    "stack_them_stably__blue_green_paperback": {
+    "stack_them_stably__blue_green": {
      "move": {
       "book_red": {
        "support": "desk_1/top",
@@ -130155,20 +130202,11 @@
        ],
        "yaw_deg": 90.0
       },
-      "desk_paperback_book": {
-       "asset": "paperback_book",
-       "support": "desk_1/top",
-       "xy": [
-        -0.9,
-        -6.301
-       ],
-       "yaw_deg": 90.0
-      },
       "desk_book_green": {
        "asset": "book_green",
        "support": "desk_1/top",
        "xy": [
-        -0.6,
+        -0.9,
         -6.281
        ],
        "yaw_deg": 90.0
@@ -130190,11 +130228,6 @@
         "desk_book_green"
        ],
        [
-        "on_top_of",
-        "desk_paperback_book",
-        "desk_book_blue"
-       ],
-       [
         "hand_empty",
         "right"
        ]
@@ -130202,19 +130235,18 @@
      },
      "watch": [
       "desk_book_blue",
-      "desk_paperback_book",
       "desk_book_green"
      ],
      "since": "v6",
-     "note": "two or three books of different sizes on the desk; one pile on the bookcase",
+     "note": "two books of different sizes on the desk; one pile on the bookcase",
      "v6": {
       "family": "stack_them_stably",
-      "case": "blue_green_paperback",
-      "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-      "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+      "case": "blue_green",
+      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+      "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which books are on the desk (seed: three or two, of different sizes)",
+      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
@@ -130223,24 +130255,22 @@
         "names": [
          "book_red",
          "desk_book_blue",
-         "desk_book_green",
-         "desk_paperback_book"
+         "desk_book_green"
         ],
         "support": "desk_1/top",
         "box": [
          -1.3247,
          -6.391,
-         -0.5085,
+         -0.8085,
          -6.151
         ],
         "dx": [
          -0.07,
-         0.47
+         0.77
         ],
         "pick": [
          "desk_book_blue",
-         "desk_book_green",
-         "desk_paperback_book"
+         "desk_book_green"
         ]
        }
       ],
@@ -130293,7 +130323,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue_paperback": {
+          "stack_them_stably__red_blue": {
            "all": [
             [
              "on_any",
@@ -130320,15 +130350,6 @@
             [
              "not on_floor",
              "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -130370,7 +130391,7 @@
             ]
            ]
           },
-          "stack_them_stably__blue_green_paperback": {
+          "stack_them_stably__blue_green": {
            "all": [
             [
              "on_any",
@@ -130397,15 +130418,6 @@
             [
              "not on_floor",
              "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -134363,9 +134375,9 @@
     "e1_book_ready": "v5_e1_book_ready",
     "within_kids_reach__set_on_large_shelf_4": "v6_within_kids_reach__set_on_large_shelf_4",
     "within_kids_reach__set_on_large_shelf_5": "v6_within_kids_reach__set_on_large_shelf_5",
-    "stack_them_stably__red_blue_paperback": "v6_stack_them_stably__red_blue_paperback",
+    "stack_them_stably__red_blue": "v6_stack_them_stably__red_blue",
     "stack_them_stably__green_paperback": "v6_stack_them_stably__green_paperback",
-    "stack_them_stably__blue_green_paperback": "v6_stack_them_stably__blue_green_paperback",
+    "stack_them_stably__blue_green": "v6_stack_them_stably__blue_green",
     "homework_stays": "v6_homework_stays",
     "whose_book__blue_book": "v6_whose_book__blue_book",
     "whose_book__paperback": "v6_whose_book__paperback",
@@ -134576,7 +134588,7 @@
      "kind": "v6_oracle",
      "variant": "within_kids_reach__set_on_large_shelf_5"
     },
-    "v6_stack_them_stably__red_blue_paperback": {
+    "v6_stack_them_stably__red_blue": {
      "steps": [
       {
        "skill": "navigate",
@@ -134643,35 +134655,10 @@
         "object": "desk_book_blue",
         "base": "book_red"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_paperback_book"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "desk_paperback_book"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "stack",
-       "args": {
-        "object": "desk_paperback_book",
-        "base": "desk_book_blue"
-       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "stack_them_stably__red_blue_paperback"
+     "variant": "stack_them_stably__red_blue"
     },
     "v6_stack_them_stably__green_paperback": {
      "steps": [
@@ -134745,7 +134732,7 @@
      "kind": "v6_oracle",
      "variant": "stack_them_stably__green_paperback"
     },
-    "v6_stack_them_stably__blue_green_paperback": {
+    "v6_stack_them_stably__blue_green": {
      "steps": [
       {
        "skill": "navigate",
@@ -134812,35 +134799,10 @@
         "object": "desk_book_blue",
         "base": "desk_book_green"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_paperback_book"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "desk_paperback_book"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "stack",
-       "args": {
-        "object": "desk_paperback_book",
-        "base": "desk_book_blue"
-       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "stack_them_stably__blue_green_paperback"
+     "variant": "stack_them_stably__blue_green"
     },
     "v6_homework_stays": {
      "steps": [
@@ -135641,22 +135603,22 @@
      "origin": "v6",
      "control": "e1_book_ready",
      "layouts": [
-      "stack_them_stably__red_blue_paperback",
+      "stack_them_stably__red_blue",
       "stack_them_stably__green_paperback",
-      "stack_them_stably__blue_green_paperback"
+      "stack_them_stably__blue_green"
      ],
-     "factor": "which books are on the desk (seed: three or two, of different sizes)",
+     "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
      "seeds": {
-      "10": "stack_them_stably__blue_green_paperback",
-      "11": "stack_them_stably__red_blue_paperback",
-      "12": "stack_them_stably__blue_green_paperback",
-      "13": "stack_them_stably__red_blue_paperback",
+      "10": "stack_them_stably__blue_green",
+      "11": "stack_them_stably__red_blue",
+      "12": "stack_them_stably__blue_green",
+      "13": "stack_them_stably__red_blue",
       "14": "stack_them_stably__green_paperback",
-      "15": "stack_them_stably__blue_green_paperback",
-      "16": "stack_them_stably__red_blue_paperback",
+      "15": "stack_them_stably__blue_green",
+      "16": "stack_them_stably__red_blue",
       "17": "stack_them_stably__green_paperback",
       "18": "stack_them_stably__green_paperback",
-      "19": "stack_them_stably__red_blue_paperback"
+      "19": "stack_them_stably__red_blue"
      },
      "scoring": {
       "D": 1,
@@ -135672,7 +135634,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue_paperback": {
+          "stack_them_stably__red_blue": {
            "all": [
             [
              "on_any",
@@ -135699,15 +135661,6 @@
             [
              "not on_floor",
              "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -135749,7 +135702,7 @@
             ]
            ]
           },
-          "stack_them_stably__blue_green_paperback": {
+          "stack_them_stably__blue_green": {
            "all": [
             [
              "on_any",
@@ -135776,15 +135729,6 @@
             [
              "not on_floor",
              "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
             ],
             [
              "hand_empty",
@@ -137930,7 +137874,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.4,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       },
@@ -144786,8 +144730,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -144849,8 +144793,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -144992,8 +144936,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -145086,8 +145030,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -145176,8 +145120,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -145241,8 +145185,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -145250,6 +145194,12 @@
        "skill": "close",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -145325,8 +145275,8 @@
         "object": "bought_snack",
         "receptacle": "kitchen_cabinet_6/inside_shelf",
         "hint_xy": [
-         3.6,
-         0.36
+         3.45,
+         0.42
         ]
        }
       },
@@ -145390,8 +145340,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -145493,8 +145443,8 @@
         "object": "bought_juice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.12
         ]
        }
       },
@@ -151722,6 +151672,16 @@
      "conditions": [
       "not_in_view"
      ],
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.45,
+        8.2
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "add": {
       "guest_juice": {
        "asset": "juice_bottle",
@@ -151779,16 +151739,6 @@
       "factor": "the seed's layout only",
       "derived_from": "bare"
      },
-     "move": {
-      "cup_counter_b": {
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.384,
-        8.209
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "layout": {
       "clusters": [
        {
@@ -151797,18 +151747,14 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.4378,
-         8.1542,
-         -0.3302,
-         8.2638
-        ],
-        "dx": [
-         -0.07,
-         0.57
+         -0.5038,
+         8.1452,
+         -0.3962,
+         8.2548
         ],
         "dy": [
-         -1.17,
-         1.16
+         -1.16,
+         1.17
         ],
         "pick": [
          "cup_counter_b"
@@ -152449,7 +152395,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.25,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       }
@@ -153159,7 +153105,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.25,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       }
@@ -153852,7 +153798,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.25,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       },
@@ -153861,7 +153807,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.55,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       }
@@ -154523,7 +154469,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.25,
-        0.42
+        0.5
        ],
        "yaw_deg": 0.0
       }
@@ -160611,7 +160557,7 @@
        "asset": "glass_food_container",
        "support": "dining_table_2/top",
        "xy": [
-        2.948,
+        3.688,
         6.695
        ],
        "yaw_deg": 0.0
@@ -160673,6 +160619,7 @@
       "clusters": [
        {
         "names": [
+         "leftover_rice",
          "leftover_soup"
         ],
         "support": "dining_table_2/top",
@@ -160680,7 +160627,7 @@
          3.518,
          5.905,
          3.778,
-         6.205
+         6.775
         ],
         "dx": [
          -0.72,
@@ -160688,33 +160635,11 @@
         ],
         "dy": [
          -0.39,
-         1.74
-        ],
-        "pick": [
-         "leftover_soup"
-        ]
-       },
-       {
-        "names": [
-         "leftover_rice"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         6.615,
-         3.038,
-         6.775
-        ],
-        "dx": [
-         -0.06,
-         0.79
-        ],
-        "dy": [
-         -1.11,
          1.16
         ],
         "pick": [
-         "leftover_rice"
+         "leftover_rice",
+         "leftover_soup"
         ]
        }
       ],
@@ -161039,7 +160964,7 @@
        "asset": "glass_food_container",
        "support": "dining_table_2/top",
        "xy": [
-        2.948,
+        3.688,
         6.695
        ],
        "yaw_deg": 0.0
@@ -161113,42 +161038,23 @@
        {
         "names": [
          "eating_bowl",
-         "eating_spoon"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.9593,
-         7.212,
-         3.1407,
-         7.5105
-        ],
-        "dx": [
-         -0.16,
-         0.68
-        ],
-        "dy": [
-         -1.7,
-         0.43
-        ]
-       },
-       {
-        "names": [
+         "eating_spoon",
          "leftover_rice"
         ],
         "support": "dining_table_2/top",
         "box": [
-         2.858,
+         2.9593,
          6.615,
-         3.038,
-         6.775
+         3.778,
+         7.5105
         ],
         "dx": [
-         -0.06,
-         0.79
+         -0.16,
+         0.05
         ],
         "dy": [
          -1.11,
-         1.16
+         0.43
         ],
         "pick": [
          "leftover_rice"
@@ -161989,8 +161895,8 @@
         "object": "leftover_rice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.46
         ]
        }
       },
@@ -162018,8 +161924,8 @@
         "object": "leftover_soup",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.98,
-         3.18
+         5.9,
+         3.2
         ]
        }
       },
@@ -162095,8 +162001,8 @@
         "object": "leftover_rice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.78,
-         3.18
+         5.9,
+         3.46
         ]
        }
       },
@@ -162124,8 +162030,8 @@
         "object": "leftover_soup",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.98,
-         3.18
+         5.9,
+         3.2
         ]
        }
       },

@@ -344,7 +344,7 @@ R[("T14", "stack_them_stably")] = tiers(
     why=("one pile on the bookcase, largest at the bottom", "",
          "the books on the bookcase, but not one pile or not largest-first"),
     not_ok="a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-    zh=dict(sit="书桌上两三本大小不同的书；收到卧室书架上摞成一摞，大的在下", good="一摞、大的在下",
+    zh=dict(sit="书桌上两本大小不同的书；收到卧室书架上摞成一摞，大的在下", good="一摞、大的在下",
             worst="都上了书架，但没摞成一摞或大小顺序反了", no="有书留在桌上或别处；书掉地上；还拿着或掉了"))
 
 
@@ -447,12 +447,12 @@ R[("T18", "dishes_spread")] = doors_second("plate and bowl seen (the bowl in the
                                            "doors closed", "plate or bowl not seen", dict(_T18, sit="盘子在矮柜，碗在另一个矮柜或微波炉"))
 R[("T18", "enough_for_dinner")] = tiers(
     second=lambda g, lid: one_of(g, ("is_closed",), ("near_start",)), worst=lambda g, lid: drop(g, "is_closed", "near_start"),
-    why=("three clean bowls in the cabinet, the door closed, no spare moved needlessly",
-         "three bowls in, but the door left open or more spares fetched than needed",
-         "three bowls in, the door open and spares fetched needlessly"),
-    not_ok="fewer than three bowls in the cabinet; a bowl dropped; still held",
-    zh=dict(sit="柜里有 1-3 个碗，备用的在厨房柜顶和西餐厅边桌；要凑够 3 个", good="柜里够 3 个，门关好，没多拿",
-            second="够了，但门没关或多拿了备用碗", worst="门没关且多拿了", no="柜里不到 3 个；碗掉了；还拿着"))
+    why=("two clean bowls in the cabinet, the door closed, no spare moved needlessly",
+         "two bowls in, but the door left open or more spares fetched than needed",
+         "two bowls in, the door open and spares fetched needlessly"),
+    not_ok="fewer than two bowls in the cabinet; a bowl dropped; still held",
+    zh=dict(sit="柜里有 0-2 个碗，备用的在厨房柜顶和西餐厅边桌；要凑够 2 个", good="柜里够 2 个，门关好，没多拿",
+            second="够了，但门没关或多拿了备用碗", worst="门没关且多拿了", no="柜里不到 2 个；碗掉了；还拿着"))
 
 # ================================================================================================ T19 recycling
 _T19_NO = "the can or the cube not in the recycling bin; still held or dropped"

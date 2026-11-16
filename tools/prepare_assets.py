@@ -342,6 +342,8 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
         g = {"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
              "depth": rim_pinch_depth("rim_pinch", prof["rim_height"], tilts, 0.03),
              "azimuths_deg": list(range(0, 360, 30)), "tilts": tilts, "pre_open": 0.03}
+        if CUSTOM_RECORDS.get(name, {}).get("rim_pinch_depth"):      # e.g. the soup pot: no deeper than the soup
+            g["depth"] = min(g["depth"], CUSTOM_RECORDS[name]["rim_pinch_depth"])
         if prof.get("centre"):
             g["centre"] = prof["centre"]               # the body's centre, not the bbox's (mug handle)
         if prof.get("shape") == "ellipse":

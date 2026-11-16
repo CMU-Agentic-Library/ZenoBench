@@ -17545,81 +17545,13 @@
    16,
    17
   ],
-  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [
-    "clean_bowl_2",
-    "clean_bowl_3"
-   ],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "count_against_need"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "count_on_at_least",
-     [
-      "bowl_inside_kitchen_cabinet",
-      "clean_bowl_2",
-      "clean_bowl_3",
-      "bowl_kitchen_cabinet",
-      "bowl_side_table"
-     ],
-     "kitchen_cabinet_6/inside_shelf",
-     3
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "near_start",
-     "bowl_kitchen_cabinet",
-     0.03
-    ],
-    [
-     "near_start",
-     "bowl_side_table",
-     0.03
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v6_enough_for_dinner__enough",
-  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/enough_for_dinner__one_short": {
-  "variant": "enough_for_dinner",
-  "category": "task",
-  "seeds": [
-   12,
-   18,
-   19
-  ],
-  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
+    "bowl_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
    "added": [
@@ -17645,7 +17577,7 @@
       "bowl_side_table"
      ],
      "kitchen_cabinet_6/inside_shelf",
-     3
+     2
     ],
     [
      "is_closed",
@@ -17657,32 +17589,37 @@
     ],
     [
      "near_start",
+     "bowl_kitchen_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
      "bowl_side_table",
      0.03
     ]
    ]
   },
   "control": "at_island",
-  "oracle_route": "v6_enough_for_dinner__one_short",
-  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+  "oracle_route": "v6_enough_for_dinner__enough",
+  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T18_check_cabinet_dishes/enough_for_dinner__two_short": {
+ "T18_check_cabinet_dishes/enough_for_dinner__one_short": {
   "variant": "enough_for_dinner",
   "category": "task",
   "seeds": [
-   10,
-   13,
-   15
+   12,
+   18,
+   19
   ],
-  "instruction": "Three of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "bowl_inside_kitchen_cabinet",
-    "bowl_side_table",
+    "bowl_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
    "added": [],
@@ -17705,7 +17642,68 @@
       "bowl_side_table"
      ],
      "kitchen_cabinet_6/inside_shelf",
-     3
+     2
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ]
+   ]
+  },
+  "control": "at_island",
+  "oracle_route": "v6_enough_for_dinner__one_short",
+  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T18_check_cabinet_dishes/enough_for_dinner__two_short": {
+  "variant": "enough_for_dinner",
+  "category": "task",
+  "seeds": [
+   10,
+   13,
+   15
+  ],
+  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_inside_kitchen_cabinet",
+    "bowl_kitchen_cabinet",
+    "bowl_side_table",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "count_against_need"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "bowl_kitchen_cabinet",
+      "bowl_side_table"
+     ],
+     "kitchen_cabinet_6/inside_shelf",
+     2
     ],
     [
      "is_closed",
@@ -17719,8 +17717,8 @@
   },
   "control": "at_island",
   "oracle_route": "v6_enough_for_dinner__two_short",
-  "challenge": "the cabinet holds one to three bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are three, one or two bowls fetched otherwise",
+  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
+  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/bin_on_bookcase": {
@@ -18748,7 +18746,7 @@
   "rationale": "weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a low shelf (below 0.8 m), not back with its set",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/stack_them_stably__red_blue_paperback": {
+ "T14_shelve_the_book/stack_them_stably__red_blue": {
   "variant": "stack_them_stably",
   "category": "task",
   "seeds": [
@@ -18765,8 +18763,7 @@
     "book_red"
    ],
    "added": [
-    "desk_book_blue",
-    "desk_paperback_book"
+    "desk_book_blue"
    ],
    "removed": [],
    "conditions": [
@@ -18792,20 +18789,15 @@
      "book_red"
     ],
     [
-     "on_top_of",
-     "desk_paperback_book",
-     "desk_book_blue"
-    ],
-    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__red_blue_paperback",
-  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+  "oracle_route": "v6_stack_them_stably__red_blue",
+  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/stack_them_stably__green_paperback": {
@@ -18860,11 +18852,11 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_stack_them_stably__green_paperback",
-  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/stack_them_stably__blue_green_paperback": {
+ "T14_shelve_the_book/stack_them_stably__blue_green": {
   "variant": "stack_them_stably",
   "category": "task",
   "seeds": [
@@ -18881,8 +18873,7 @@
    ],
    "added": [
     "desk_book_blue",
-    "desk_book_green",
-    "desk_paperback_book"
+    "desk_book_green"
    ],
    "removed": [
     "book_red"
@@ -18910,20 +18901,15 @@
      "desk_book_green"
     ],
     [
-     "on_top_of",
-     "desk_paperback_book",
-     "desk_book_blue"
-    ],
-    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__blue_green_paperback",
-  "challenge": "two or three books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the largest at the bottom, each smaller one on top, so no book overhangs the one below",
+  "oracle_route": "v6_stack_them_stably__blue_green",
+  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/homework_stays": {

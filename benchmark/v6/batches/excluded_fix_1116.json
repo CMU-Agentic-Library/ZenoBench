@@ -1,0 +1,65 @@
+[
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "variant": "enough_for_dinner__two_short",
+  "route": "v6_enough_for_dinner__two_short",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "variant": "enough_for_dinner__one_short",
+  "route": "v6_enough_for_dinner__one_short",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "variant": "enough_for_dinner__enough",
+  "route": "v6_enough_for_dinner__enough",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "seed": 10,
+  "variant": "two_leftovers__soup_on_table",
+  "route": "v6_two_leftovers__soup_on_table",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T27_leftovers_to_fridge",
+  "seed": 10,
+  "variant": "two_leftovers__soup_on_stove",
+  "route": "v6_two_leftovers__soup_on_stove",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "seed": 10,
+  "variant": "two_spots",
+  "route": "v6_two_spots",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "seed": 10,
+  "variant": "juice_on_table",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]
