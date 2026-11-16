@@ -30,6 +30,15 @@
 | B3 | `T27_leftovers_to_fridge/s10_two_leftovers__soup_on_table_v6_two_leftovers__soup_on_table` | pick leftover_rice：slide_push: the arm stopped 0.007 m short of where it was sent | 饭盒（4e89016 后 18 × 16 × 5 cm，上宽下窄）往 -x 桌边推 12 cm，手停在目标前 7 mm（1113 / 1115 为 6 / 12 mm），饭盒只推了 11.4 cm。诊断（pushshort_1115、wrist10_1115）：只有腕部 joint_5/6 落后 0.02–0.03 rad，饭盒只碰桌面、机器人只碰饭盒，没有东西挡；腕部驱动力上限从 3 提到 10 N·m 结果不变，说明手被卡住（疑为手指压在盒沿上把盒子压向桌面），不是力矩不够。同样的失败：T27 still_eating、T07 vessel_decides_appliance__in_glass_box（不在全量批次里） | xxxxx |
 | B6 | `T07_heat_oatmeal/s10_two_portions__counter_v6_two_portions__counter` | pick soup_pot：no pinch annotated (has ['handle_pinch']) | soup_pot（宽 26 cm）在 kitchen_counter_2/top，头顶有吊柜（净空 0.39 m）。只标了把手抓取点，而 pick 现在不支持抓把手 | xxxxx |
 
+## C. 精细操作：把书摞在另一本书上
+
+书只能用边缘抓取（伸出支撑面再从侧面夹），放到另一本书上时也要让它伸出下面那本书的边再松手。
+下面的书面积小、表面高，能留出伸出量又不压到下面那本书的位置很少。
+
+| # | episode | 失败步骤 | 物体与几何 | 历史 |
+|---|---|---|---|---|
+| C1 | `T14_shelve_the_book/s10_stack_them_stably__blue_green_paperback_v6_stack_them_stably__blue_green_paperback` | stack_object：place …: no free edge spot on top:… | 三本书按大小摞：蓝书放到绿书上，再把平装书放到蓝书上。1109–1113 都失败在第一摞（蓝书放到绿书上：no free edge spot on top:desk_book_green）；1115 和 edgeplace3_1115 第一摞过了，第二摞失败（平装书放到蓝书上：no free edge spot on top:desk_book_blue） | xxxxx |
+
 ## 可修、已移出排除（2026-11-15）
 
 | episode | 原来的编号 | 结论 |
@@ -46,6 +55,7 @@
 - A6：在柜内层板上放置，要能找到可用的空位。
 - B3：推上宽下窄的饭盒时手指不再卡在盒沿上（推的接触点、高度或方式要能推动这类外形）。
 - B6：pick 支持 `handle_pinch`。
+- C1：书能稳稳地摞到另一本书上（边缘放置能在小面积的书面上找到位置，或者有不靠伸出的抓放方式）。
 
 每补上一项能力，就把对应条目移出本文档，并对这些 episode 做一次定向重跑。
 
