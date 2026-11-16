@@ -514,7 +514,7 @@
   "prompt": "a bowl of oatmeal"
  },
  "glass_food_container": {
-  "size": 0.16,
+  "size": 0.18,
   "mass": 0.5,
   "tags": [
    "container",
@@ -526,9 +526,9 @@
   "lay_flat": false,
   "urdf": "assets/asset3d/glass_food_container/result/glass_food_container.urdf",
   "target_size": [
+   0.18,
    0.16,
-   0.11,
-   0.07
+   0.05
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "prompt": "a small clear glass rectangular food storage container with a blue snap-on plastic lid, leftover rice and vegetables inside, isolated product, plain white background"

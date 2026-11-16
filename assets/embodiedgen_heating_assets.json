@@ -86,7 +86,7 @@
   },
   "glass_food_container": {
     "prompt": "a small clear glass rectangular food storage container with a blue snap-on plastic lid, leftover rice and vegetables inside, isolated product, plain white background",
-    "size": 0.16,
+    "size": 0.18,
     "mass": 0.5,
     "tags": [
       "container",
@@ -97,9 +97,9 @@
     "collider": "solid",
     "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
     "target_size": [
+      0.18,
       0.16,
-      0.11,
-      0.07
+      0.05
     ]
   },
   "steel_lunch_box": {

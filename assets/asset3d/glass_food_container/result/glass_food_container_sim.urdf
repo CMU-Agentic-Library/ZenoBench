@@ -3,13 +3,13 @@
       <visual>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/glass_food_container.obj" scale="0.820614 0.466670 0.683700" />
+            <mesh filename="mesh/glass_food_container.obj" scale="0.923191 0.333337 0.994471" />
          </geometry>
       </visual>
       <collision>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/glass_food_container_collision.obj" scale="0.820614 0.466670 0.683700" />
+            <mesh filename="mesh/glass_food_container_collision.obj" scale="0.923191 0.333337 0.994471" />
          </geometry>
          <gazebo>
             <mu1>0.70</mu1>
@@ -19,7 +19,7 @@
       <inertial>
          <mass value="0.5000" />
          <origin xyz="0 0 0" />
-         <inertia ixx="7.083e-04" ixy="0.0" ixz="0.0" iyy="1.271e-03" iyz="0.0" izz="1.571e-03" />
+         <inertia ixx="1.171e-03" ixy="0.0" ixz="0.0" iyy="1.454e-03" iyz="0.0" izz="2.417e-03" />
       </inertial>
       <extra_info>
          <scale>0.194976</scale>
