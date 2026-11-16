@@ -184,6 +184,7 @@ def test_a_room_reached_only_in_a_corner_is_explored_from_its_furniture_stand_of
     monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: list(spots if place == "room" else corner))
     monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: [p in corner[:1] for p in ps])
     monkeypatch.setattr(BM, "_in_view_poses", lambda rig, place, ps: list(ps))
+    monkeypatch.setattr(PC, "look_angles", lambda rig, p: (0.0, 0.0))
     out = PC.ExploreRoomPolicy(_explore_rig()).execute("room")
     assert explore["went"] == [corner[0]] and out["coverage"] == 1.0
 
@@ -205,5 +206,25 @@ def test_from_the_furniture_stand_offs_each_unseen_piece_gets_its_own_view(explo
     monkeypatch.setattr(BM.skills, "navigate", lambda r, pose, **kw: (went.append(pose), at.__setitem__(0, pose)))
     monkeypatch.setattr(PC, "project_to_head_camera",
                         lambda r, p, exclude=None: (abs(p[0] - (at[0] or (99,))[0]) < 1.0, ""))
+    aims = []
+    monkeypatch.setattr(PC, "look_angles", lambda r, p: (float(p[0]), float(p[1])))
+    monkeypatch.setattr(PC, "drive_head", lambda r, yaw, pitch, steps=90: aims.append((yaw, pitch)))
     out = PC.ExploreRoomPolicy(rig).execute("room")
     assert went == [(1.2, 0.5, 90.0), (5.2, 0.5, 90.0)] and out["coverage"] == 1.0
+    assert aims[0] == (1.25, 1.25) and (5.25, 1.25) in aims       # each piece looked at from its stand-off
+
+
+def test_a_piece_still_unseen_from_its_stand_off_is_not_driven_to_again(explore, monkeypatch):
+    ann = SimpleNamespace(objects={}, articulated=[], appliances=[], rooms={"room": {}},
+                          supports=[{"name": "a/top", "furniture": "a", "aabb_xy": [1.0, 1.0, 1.5, 1.5], "z": 0.7}])
+    rig = SimpleNamespace(ann=ann, base_pose=lambda: (0.0, 0.0, 0.0), log=lambda *a, **k: None,
+                          memory={}, state=lambda: {}, static_explore=True, held=None)
+    stand = {"a": [(1.2, 0.5, 90.0), (1.4, 0.5, 90.0), (1.6, 0.5, 90.0)]}
+    monkeypatch.setattr(BM, "standoff_poses", lambda r, place: list(stand.get(place, [(9.0, 9.0, 0.0)])))
+    monkeypatch.setattr(BM.skills, "base_reachable", lambda r, ps: [p[1] < 1.0 for p in ps])
+    monkeypatch.setattr(BM, "_in_view_poses", lambda r, place, ps: list(ps))
+    monkeypatch.setattr(PC, "look_angles", lambda r, p: (0.0, 0.0))
+    monkeypatch.setattr(PC, "project_to_head_camera", lambda r, p, exclude=None: (False, ""))
+    with pytest.raises(SkillFailure, match="coverage 0.00"):
+        PC.ExploreRoomPolicy(rig).execute("room")
+    assert explore["went"] == [(1.2, 0.5, 90.0)]

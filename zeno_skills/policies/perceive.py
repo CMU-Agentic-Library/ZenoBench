@@ -166,7 +166,16 @@ class ExploreRoomPolicy(AtomicPolicy):
         seen, viewed = set(), set()
         visited = 0
 
-        def look_around():
+        def mark():
+            viewed.update(record_view(rig))
+            for k, pts in targets.items():
+                if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
+                    seen.add(k)
+
+        def look_around(aim=None):
+            for p, _ in targets.get(aim, ()):       # the furniture this view is for: the head at each layer
+                drive_head(rig, *look_angles(rig, p))
+                mark()
             for turn in VIEW_TURNS:
                 if turn:
                     bx, by, byaw = rig.base_pose()
@@ -176,10 +185,7 @@ class ExploreRoomPolicy(AtomicPolicy):
                         continue
                 for yaw in SWEEP_YAWS:
                     drive_head(rig, yaw, SWEEP_PITCH, steps=SWEEP_STEPS)
-                    viewed.update(record_view(rig))
-                    for k, pts in targets.items():
-                        if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
-                            seen.add(k)
+                    mark()
 
         def go(pose):
             try:
@@ -211,19 +217,22 @@ class ExploreRoomPolicy(AtomicPolicy):
                     visited += 1
                     look_around()
         else:
-            # from the furniture's stand-offs: the nearest stand-off of a piece not seen yet, each time
-            # (spread viewpoints left 3 of bedroom_0_0's 8 targets unseen: coverage 0.62)
-            tried = set()
+            # from the furniture's stand-offs: the nearest stand-off of a piece not seen yet, each time, the
+            # head aimed at that piece first (where its in-view test aimed it) -- spread viewpoints left 3 of
+            # bedroom_0_0's 8 targets unseen (coverage 0.62), sweeps alone at its stand-offs 6 of 8 (0.38).
+            # One view per piece: one it is still not seen from is not driven to again.
+            tried, done = set(), set()
             while visited < max_views and len(tried) < VIEW_TRIES * max_views:
                 x, y, _ = rig.base_pose()
-                rest = [p for p, f in of.items() if p not in tried and "furniture:" + f not in seen]
+                rest = [p for p, f in of.items() if p not in tried and f not in done and "furniture:" + f not in seen]
                 if not rest:
                     break
                 pose = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
                 tried.add(pose)
                 if go(pose):
                     visited += 1
-                    look_around()
+                    done.add(of[pose])
+                    look_around("furniture:" + of[pose])
         drive_head(rig, 0.0, 0.0)
         cov = len(seen) / len(targets)
         memory(rig)["explored"][room] = max(cov, memory(rig)["explored"].get(room, 0.0))
