@@ -174,3 +174,15 @@ def test_the_head_moves_through_the_actuator_as_a_segment():
     assert seg.kind == "action" and seg.action == ("head", 0.3, -0.1, 60)
     PC.drive_head(act, 0.3, -0.1, steps=60)
     assert calls == [("head", 0.3, -0.1, 60)]
+
+
+def test_a_room_reached_only_in_a_corner_is_explored_from_its_furniture_stand_offs(explore, monkeypatch):
+    """1116 T26 two_bedrooms: bedroom_0_0's ring spots all lie where the base cannot get (59 of 1780 free
+    cells reachable, by the door); the stand-offs of its furniture the base gets to and sees it from are the
+    viewpoints then."""
+    spots, corner = list(explore["poses"]), [(9.0, 0.0, 0.0), (9.0, 1.0, 0.0)]
+    monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: list(spots if place == "room" else corner))
+    monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: [p in corner[:1] for p in ps])
+    monkeypatch.setattr(BM, "_in_view_poses", lambda rig, place, ps: list(ps))
+    out = PC.ExploreRoomPolicy(_explore_rig()).execute("room")
+    assert explore["went"] == [corner[0]] and out["coverage"] == 1.0

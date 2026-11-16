@@ -118,7 +118,7 @@ def _in_view_poses(rig, place, poses):
     waist place the camera) and the head aimed as look aims it (perception.in_view_from: look_target's frustum
     and the static boxes, walls and furniture)."""
     pts = view_points(rig, place)
-    if pts is None:
+    if pts is None or not poses:
         return list(poses)
     tw = dict(zip(rig.kin.names[:2], (float(q) for q in skills._rest_posture(rig)[0][:2])))
     return [pose for pose in poses if any(in_view_from(rig, pose, p, tw)[0] for p in pts)]

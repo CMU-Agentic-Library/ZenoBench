@@ -145,6 +145,21 @@ class ExploreRoomPolicy(AtomicPolicy):
         reach = [p for p, o in zip(poses, ok) if o]
         rig.log("explore_goals", room=room, goals=len(poses), reachable=len(reach))
         if not reach:
+            # a room the base gets into only a corner of (1116 T26 two_bedrooms: bedroom_0_0, 59 of its
+            # 1780 free cells reachable, in a strip by the door; none of its 83 ring spots there): the
+            # stand-offs of its furniture the base can get to and the furniture is in view from -- where
+            # navigate_place would stand to look at it (base_motion._in_view_poses)
+            from .base_motion import _in_view_poses
+            furn = sorted({k.split(":", 1)[1] for k in targets if k.startswith("furniture:")})
+            near = [(f, p) for f in furn for p in standoff_poses(rig, f)]
+            ok = skills.base_reachable(rig, [p for _, p in near]) if near else []
+            reach = []
+            for f in furn:
+                for p in _in_view_poses(rig, f, [q for (g, q), o in zip(near, ok) if o and g == f]):
+                    if p not in reach:
+                        reach.append(p)
+            rig.log("explore_goals", room=room, furniture_standoffs=len(near), reachable=sum(ok), in_view=len(reach))
+        if not reach:
             raise SkillFailure(f"explore {room}: no base path to any of {len(poses)} viewpoints "
                                "(even the column's inscribed circle cannot get there)")
         poses = reach
