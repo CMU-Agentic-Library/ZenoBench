@@ -15,7 +15,7 @@
 |---|---|---|---|---|
 | A1 | `T04_cup_or_mug_to_cabinet/s10_x6_gd_cup_in_cabinets__cup_in_4_v6_x6_gd_cup_in_cabinets__cup_in_4` | pick cup_counter_b：no reachable grasp from any base pose | 杯子在 kitchen_cabinet_4/inside_shelf（z 0.31，上方净空 0.30 m）。breakfast_cup 只有从上方捏杯沿的抓法，600/600 个候选手臂的 link5-7 和夹爪都撞到柜顶板（z 0.6–0.7）。杯底直径 7.3 cm，大于 PINCH_MAX 6.8 cm，没有侧捏。11-16 把杯子挪到层板前沿（y 0.42 → 0.50）：构建出 12 个（原来 0），仍然失败在 pick_grasp 撞 link_7 / lift 时还碰着（excl_fix_1115） | xxxxx x |
 | A2 | `T25_drink_for_guest/s10_cups_for_two__one_there_v6_cups_for_two__one_there` | pick stock_cup_1：同上 | 同一层板，同 A1；挪到前沿后同样失败。同样的失败：`cups_for_two__none_two_inside` | xxxxx x |
-| A3 | `T21_bring_tissues/s10_tissue_put_away__in_4_v6_tissue_put_away__in_4` | pick tissue：同上 | 同一层板（净空 0.30 m），69 个候选在预抓取姿态全部撞固定物体（手指、link5-7）。11-16 纸巾挪到层板前沿（y 0.50），**未验证**：zihan 机器上这条第一步 tuck 就撞窗（见下“机器差异”），要在 muqingj 的机器上跑 | xxxxx |
+| A3 | `T21_bring_tissues/s10_tissue_put_away__in_4_v6_tissue_put_away__in_4` | pick tissue：同上 | 同一层板（净空 0.30 m），69 个候选在预抓取姿态全部撞固定物体（手指、link5-7）。muqingj 的 v6full_1116（旧位置）同样失败在 pick tissue：no reachable grasp from any base pose。11-16 纸巾挪到层板前沿（y 0.50），**未验证、仍排除**：zihan 机器上这条第一步 tuck 就撞窗（见下“机器差异”），muqingj 机器上还没跑过新位置 | xxxxx x |
 | A5 | `T18_check_cabinet_dishes/s10_enough_for_dinner__two_short_v6_enough_for_dinner__two_short` | place bowl_kitchen_cabinet → kitchen_cabinet_6/inside_shelf：no spot of 4 reachable | 11-16 已修取碗：备用碗从 kitchen_cabinet_3/top（z 1.17，没有 IK）挪到 kitchen_cabinet_4/top，pick 成功；设计改成“两个人吃饭、柜里要 2 个碗”（3 个 17.8 cm 的碗把 56 cm 的层板占满，第三个没有空位）。剩下的是往柜内层板（净空 0.38 m）放：只有 x 3.50 附近放进去过，3.38 / 3.62 / 3.685 都没有可达的空位；空柜子时 3.52 也失败过一次（excl_fix_1116b）。`enough`、`one_short` 已成功 | xxxxx x |
 
 ## B. 物体超出夹爪能力 / 放不下
@@ -26,6 +26,7 @@
 | B6 | `T27_leftovers_to_fridge/s10_two_leftovers__soup_on_table…`、`s10_two_leftovers__soup_on_stove…` | place → breakfast_fridge/inside_shelf：no free spot / push: no base pose reaches a push | 11-16 汤锅加了 rim_pinch（捏锅沿，深 2.5 cm，在汤面以上），**抓汤锅已修**：两条都抓起来了。剩下的是冰箱层板（54 × 52 cm）放不下 30 cm 宽（含把手）的锅加 18 cm 的饭盒：并排时放置检查要求锅中心 x ≤ 6.018、饭盒被推到 5.87；饭盒放后排（y 3.46）时 push 找不到底盘位置 | xxxxx xx |
 | B7 | `T07_heat_oatmeal/s10_two_portions__counter_v6_two_portions__counter` | place soup_pot → kitchen_stove/top：tuck: no collision-free trajectory (INVALID_START_STATE_WORLD_COLLISION) | 汤锅从吊柜下的台面上抓起来了（B6 已修）；放上灶台松手后锅偏 13 mm、倾 4°，tuck 起点手指嵌进 9 mm，规划不出路径 | xxxxx x |
 | B8 | `T07_heat_oatmeal/s10_two_portions__dining_v6_two_portions__dining` | press kitchen_microwave/start_button：no IK for microwave_button_press | 前 14 步全部成功（汤锅抓、放灶台、开灶、碗进微波炉、关门）；按微波炉启动键没有 IK。和汤锅无关 | x |
+| B9 | `T07_heat_oatmeal/s10_vessel_decides_appliance__in_pot_v6_vessel_decides_appliance__in_pot` | 未验证 | 汤锅（B6 的 rim_pinch 已能抓起）。**没有任何成功记录，仍排除**：zihan 机器上第一步 tuck 就撞（见“机器差异”）；muqingj 的 1113 / 1115 / 1116 批次里没有这一条（只有 in_foil_tray） | x |
 
 ## 机器差异：zihan 机器上第一步 tuck 失败（不排除，待在 muqingj 机器上验证）
 
@@ -33,10 +34,13 @@ zihan 的机器上 `rig.tuck` 一开局就判折叠姿态（rest）碰撞，改�
 `[start, hang, arrive]`，tuck 走 128 个路点；muqingj 的机器上是 `[start, fold, hang, arrive]`，tuck 只走 2 个路点。
 两边 zeno_skills 运动代码、scene.usd、assets.json 相同（除这次的汤锅），11-09 以来 zihan 的所有 run 都这样，所以是
 两台机器之间的差异（cuRobo 碰撞模型或缓存），不是任务的问题。下面几条在 zihan 机器上第一步就撞（窗户 / 桌子），
-11-16 的改动只能在 muqingj 机器上验证：
+这些条目在 zihan 机器上的结果不作数，以 muqingj 机器为准（11-16 查过 muqingj 的 v6full_1113 / 1115 / 1116，那时还是 c6c060a，早于 41b70a6）：
 
-- `T21 tissue_put_away__in_4`（A3，撞窗）、`T07 vessel_decides_appliance__in_pot`、`T14 stack_them_stably__blue_green`
-- `T09 pot_in_use__in_use`：zihan 机器上 carry_in 停在 0.294 m；muqingj 的 1113 / 1115 都成功，任务没改过
+- `T09 pot_in_use__in_use`：zihan 机器上 carry_in 停在 0.294 m；muqingj 的 1113 / 1115 / 1116 都成功，任务没改过 → 正常统计
+- `T21 tissue_put_away__in_4`（撞窗）：muqingj 机器上旧位置三次都失败，新位置没跑过 → 仍排除（A3）
+- `T07 vessel_decides_appliance__in_pot`：两边都没有成功记录 → 仍排除（B9）
+- `T14 stack_them_stably__blue_green`：muqingj 跑的是三本书的旧设计（blue_green_paperback，三次都失败在 stack：手指碰书 2 mm）；
+  两本书的新设计本身没跑通，只有同类的 red_blue、green_paperback 已验证 → 放回统计，但标为“同类设计已验证”
 
 ## 可修、已移出排除
 
@@ -48,7 +52,7 @@ zihan 的机器上 `rig.tuck` 一开局就判折叠姿态（rest）碰撞，改�
 | `T25_drink_for_guest/s10_cup_elsewhere_v6_cup_elsewhere` | A4 | **已修**（11-16）：杯子从吊柜下面挪到 kitchen_counter_2 前沿（x -0.45）。excl_fix_1115 整条成功 |
 | `T18_check_cabinet_dishes/s10_enough_for_dinner__one_short…`、`__enough…` | A5 | **已修**（11-16）：备用碗挪到 kitchen_cabinet_4/top，改成 2 个碗（见 A5）。excl_fix_1116 / 1116b 成功；`two_short` 还在 A5 |
 | `T27_leftovers_to_fridge/s10_two_leftovers__soup_on_table…` 的取饭盒 | B3 | 饭盒挪到桌子东侧（3.45, 6.70）后推、抓都成功；这条现在卡在冰箱放不下锅（B6），`still_eating` 在 B3 |
-| `T14_shelve_the_book/s10_stack_them_stably__*` | C1 | **已修**（11-16）：设计改成两本大小不同的书摞成一摞（红+蓝 / 绿+平装 / 蓝+绿），不再三本连摞。excl_fix_1115b：red_blue、green_paperback 整条成功；blue_green 待 muqingj 机器验证 |
+| `T14_shelve_the_book/s10_stack_them_stably__*` | C1 | **已修**（11-16）：设计改成两本大小不同的书摞成一摞（红+蓝 / 绿+平装 / 蓝+绿），不再三本连摞。excl_fix_1115b：red_blue、green_paperback 整条成功；blue_green 本身未跑通（zihan 机器第一步撞，muqingj 只跑过三本书的旧版），按同类设计已验证放回 |
 | `T26_kids_things_to_room/s10_where_in_room_v6_where_in_room` | B5 | **已修**（e3dcbb8）：书沿 14 cm 那边只能伸出 5.495 cm，比要求的 5.5 cm 差 0.05 mm；-x 端要推 46.5 cm，超过 45 cm 上限。在 new_tasks_v6.py 里把书转 90°（长边朝前沿）后，前沿只需推 6.9 cm，sim 检查 bookrot_1115 整条 episode 成功（11 步，700 s） |
 | `T27_leftovers_to_fridge/s10_rice_on_table_nominal`、`s10_which_is_leftover…`、`s10_fridge_out_of_view…` | B1、B2、B4 | **已修**（4e89016）：饭盒 16 × 11 × 7 → 18 × 16 × 5 cm。边缘抓取要伸出 ≥ 5.5 cm 且重心留在桌面内 1.5 cm，所以朝桌边那条边至少 14 cm；原来 11 cm 的一边永远不行，7 cm 高时夹爪上下只剩约 5 mm。sim 检查 ricebox_1115：rice_on_table、which_is_leftover、fridge_out_of_view、fruit_stays_out 整条成功 |
 
