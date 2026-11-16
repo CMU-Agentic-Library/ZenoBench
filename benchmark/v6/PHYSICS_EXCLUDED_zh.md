@@ -36,7 +36,7 @@
 | `T09_tomato_soup/s10_tomato_in_fridge__in_fridge_v6_tomato_in_fridge__in_fridge` | A7 | **已修**（88197712）：番茄从 y 3.30（冰箱正面往里 29 cm）挪到 y 3.14（离层板前沿 10 cm），pick 成功（sim 检查 fridgetomato_1115）。门开到 80° 或 92° 都没用 |
 | `T22_put_away_shopping/s10_juice_on_table_nominal` | A8 | 和番茄同一个原因：冰箱门开度有限，放置位置太靠里。改法同番茄，把冰箱里的目标位置往前挪（待改） |
 | `T26_kids_things_to_room/s10_where_in_room_v6_where_in_room` | B5 | **已修**（e3dcbb8）：书沿 14 cm 那边只能伸出 5.495 cm，比要求的 5.5 cm 差 0.05 mm；-x 端要推 46.5 cm，超过 45 cm 上限。在 new_tasks_v6.py 里把书转 90°（长边朝前沿）后，前沿只需推 6.9 cm，sim 检查 bookrot_1115 整条 episode 成功（11 步，700 s） |
-| `T27_leftovers_to_fridge/s10_rice_on_table_nominal`、`s10_which_is_leftover…`、`s10_fridge_out_of_view…` | B1、B2、B4 | **已修**（bf9c598）：饭盒 16 × 11 × 7 → 18 × 16 × 5 cm。边缘抓取要伸出 ≥ 5.5 cm 且重心留在桌面内 1.5 cm，所以朝桌边那条边至少 14 cm；原来 11 cm 的一边永远不行，7 cm 高时夹爪上下只剩约 5 mm。sim 检查 ricebox_1115：rice_on_table、which_is_leftover、fridge_out_of_view、fruit_stays_out 整条成功 |
+| `T27_leftovers_to_fridge/s10_rice_on_table_nominal`、`s10_which_is_leftover…`、`s10_fridge_out_of_view…` | B1、B2、B4 | **已修**（4e89016）：饭盒 16 × 11 × 7 → 18 × 16 × 5 cm。边缘抓取要伸出 ≥ 5.5 cm 且重心留在桌面内 1.5 cm，所以朝桌边那条边至少 14 cm；原来 11 cm 的一边永远不行，7 cm 高时夹爪上下只剩约 5 mm。sim 检查 ricebox_1115：rice_on_table、which_is_leftover、fridge_out_of_view、fruit_stays_out 整条成功 |
 | `T27_leftovers_to_fridge/s10_two_leftovers__soup_on_table…` | B3 | 改尺寸后仍失败：slide_push 停在目标前 7 mm（1113/1115 是 6/12 mm），同 T27 still_eating、T07 in_glass_box（7–9 mm）。不是物理极限，是 slide_push 的到位问题（待查） |
 
 ## 放回统计的条件
