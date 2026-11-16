@@ -128,10 +128,24 @@ class ExploreRoomPolicy(AtomicPolicy):
                     targets[n] = [(c, n)]
         if not targets:
             raise SkillFailure(f"explore {room}: nothing annotated in the room")
+        if rig.held is not None:
+            # the viewpoints are checked in the posture the drives carry the load in (as navigate_place does)
+            from ..skill_jobs.carry import carry_posture
+            carry_posture(rig, min_bottom_z=None)
         poses = standoff_poses(rig, room)
         if not poses:
             raise SkillFailure(f"explore {room}: no free viewpoint")
-        # farthest-point sampling over free poses spreads the viewpoints
+        # the viewpoints are one goal set: those the base can get to from here (one field over all of them,
+        # skills.base_reachable, as navigate_place has it), not tried in turn -- 1116 T26 two_bedrooms drove
+        # to none of the 5 picked from every free pose (coverage 0)
+        ok = skills.base_reachable(rig, poses)
+        reach = [p for p, o in zip(poses, ok) if o]
+        rig.log("explore_goals", room=room, goals=len(poses), reachable=len(reach))
+        if not reach:
+            raise SkillFailure(f"explore {room}: no base path to any of {len(poses)} viewpoints "
+                               "(even the column's inscribed circle cannot get there)")
+        poses = reach
+        # farthest-point sampling over the reachable poses spreads the viewpoints
         chosen = [poses[0]]
         while len(chosen) < max_views:
             best = max(poses, key=lambda p: min(math.hypot(p[0] - q[0], p[1] - q[1]) for q in chosen))
@@ -150,7 +164,7 @@ class ExploreRoomPolicy(AtomicPolicy):
         visited = 0
         for pose in order:
             try:
-                skills.navigate(rig, pose, label=f"explore_{room}")
+                skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
             except SkillFailure as exc:
                 rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
                 continue

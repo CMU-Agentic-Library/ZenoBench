@@ -81,3 +81,52 @@ def test_everything_seen_and_nothing_found_keeps_the_old_text(search):
     with pytest.raises(SkillFailure) as exc:
         PC.SearchObjectPolicy(_search_rig(SUPPORTS)).execute("cup")
     assert str(exc.value) == "search cup: not seen at ['a', 'b', 'c']"
+
+
+def _explore_rig(held=None):
+    ann = SimpleNamespace(objects={}, articulated=[], appliances=[], rooms={"room": {}},
+                          supports=[{"name": "t/top", "furniture": "t", "aabb_xy": [1.0, 1.0, 1.5, 1.5], "z": 0.7}])
+    return SimpleNamespace(ann=ann, base_pose=lambda: (0.0, 0.0, 0.0), log=lambda *a, **k: None, memory={},
+                           state=lambda: {}, static_explore=True, held=held)
+
+
+@pytest.fixture
+def explore(monkeypatch):
+    went = []
+    cfg = {"poses": [(0.0, 0.0, 0.0), (3.0, 0.0, 0.0), (0.0, 3.0, 0.0), (3.0, 3.0, 0.0)], "ok": None}
+    monkeypatch.setattr(evaluator, "room_of", lambda rooms, xy: "room")
+    monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: list(cfg["poses"]))
+    monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: cfg["ok"] or [True] * len(ps))
+    monkeypatch.setattr(BM.skills, "navigate", lambda rig, pose, **kw: went.append(pose))
+    monkeypatch.setattr(BM.skills, "straight_base_move", lambda *a, **k: None)
+    monkeypatch.setattr(PC, "drive_head", lambda *a, **k: None)
+    monkeypatch.setattr(PC, "record_view", lambda rig: [])
+    monkeypatch.setattr(PC, "project_to_head_camera", lambda rig, p, exclude=None: (True, ""))
+    monkeypatch.setattr(PC, "memory", lambda rig: rig.memory.setdefault("m", {"explored": {}}))
+    cfg["went"] = went
+    return cfg
+
+
+def test_explore_drives_only_to_viewpoints_the_base_can_get_to(explore):
+    """1116 T26 two_bedrooms: the 5 viewpoints were picked from every free pose and the base could get to
+    none of them (coverage 0); the field over all of them comes first now."""
+    explore["ok"] = [True, False, True, False]
+    out = PC.ExploreRoomPolicy(_explore_rig()).execute("room", min_spacing=0.5)
+    assert out["coverage"] == 1.0
+    assert set(explore["went"]) == {(0.0, 0.0, 0.0), (0.0, 3.0, 0.0)}
+
+
+def test_explore_with_no_reachable_viewpoint_says_so(explore):
+    explore["ok"] = [False] * 4
+    with pytest.raises(SkillFailure, match="no base path to any of 4 viewpoints"):
+        PC.ExploreRoomPolicy(_explore_rig()).execute("room")
+    assert explore["went"] == []
+
+
+def test_explore_carrying_takes_the_carry_posture_before_the_viewpoints(explore, monkeypatch):
+    from zeno_skills.skill_jobs import carry
+    order = []
+    monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None: order.append("carry"))
+    monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: order.append("poses") or list(explore["poses"]))
+    PC.ExploreRoomPolicy(_explore_rig(held={"name": "living_car"})).execute("room", min_spacing=0.5)
+    assert order[:2] == ["carry", "poses"]
