@@ -371,16 +371,19 @@ def _search_aims(support, base_xy):
 class SearchObjectPolicy(AtomicPolicy):
     """Look for an object at candidate places in order of distance until it is
     seen.  Candidates are the supports of the region (a room, or the robot's room), grouped by
-    furniture; at each the head is aimed at every support, highest first, and along a long support at
-    several points (_search_aims), nearest first."""
+    furniture; navigate takes the base to a stand-off the furniture is in view from (base_motion._in_view_poses),
+    and there the head is aimed at every support, highest first, and along a long support at
+    several points (_search_aims), nearest first.  A piece of furniture counts as visited only when the
+    base got there and some aim point was in the head camera (walls and furniture boxes, no dynamic
+    occluders); the failure names the ones it could not get to or not see from where it stood."""
 
     def execute(self, name, region=None):
         rig = self.rig
         from ..evaluator import room_of
+        from ..perception import project_from
         from .base_motion import NavigateToPlacePolicy
         x, y, _ = rig.base_pose()
         room = region or room_of(rig.ann.rooms, (x, y))
-        st = rig.state()
         furniture = {}
         for s in rig.ann.supports:
             x0, y0, x1, y1 = s["aabb_xy"]
@@ -391,28 +394,42 @@ class SearchObjectPolicy(AtomicPolicy):
         order = sorted(furniture, key=lambda f: min(
             math.hypot((s["aabb_xy"][0] + s["aabb_xy"][2]) / 2 - x, (s["aabb_xy"][1] + s["aabb_xy"][3]) / 2 - y)
             for s in furniture[f]))
-        visited = []
+        named = {s.get("furniture") for s in rig.ann.supports}
+        visited, unreachable, unviewable = [], [], []
         for f in order:
-            visited.append(f)
             try:
-                NavigateToPlacePolicy(rig).execute(f if f in {s.get("furniture") for s in rig.ann.supports}
-                                                   else furniture[f][0]["name"])
+                NavigateToPlacePolicy(rig).execute(f if f in named else furniture[f][0]["name"])
             except SkillFailure as exc:
+                unreachable.append(f)
                 rig.log("search_skip", place=f, reason=str(exc))
                 continue
+            in_view = False
             for s in sorted(furniture[f], key=lambda s: -s["z"]):
                 for p in _search_aims(s, rig.base_pose()[:2]):
                     yaw, pitch = look_angles(rig, p)
                     drive_head(rig, yaw, pitch, steps=60)
                     record_view(rig)
+                    in_view = in_view or project_from(rig, *rig_head_pose(rig), p)[0]
                     c = rig.geo.centre(name, rig.state())
                     if project_to_head_camera(rig, c, exclude=name)[0]:
                         found = rig.geo.support_under(name, rig.state())
                         found_on = found["name"] if found else None
                         memory(rig)["observed"][name] = rig.tick
+                        visited.append(f)
                         rig.log("search_result", obj=name, found_on=found_on, visited=visited)
                         return {"found_on": found_on, "visited": visited}
-        raise SkillFailure(f"search {name}: not seen at {visited}")
+            if in_view:
+                visited.append(f)
+            else:
+                unviewable.append(f)
+                rig.log("search_skip", place=f, reason="no aim point in view from the stand-off",
+                        pose=[round(v, 2) for v in rig.base_pose()])
+        why = f"search {name}: not seen at {visited}"
+        if unviewable:
+            why += f"; not in view from where the base stood: {unviewable}"
+        if unreachable:
+            why += f"; no base path to: {unreachable}"
+        raise SkillFailure(why)
 
 
 class PointAtPolicy(AtomicPolicy):
