@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_117",
+  "legacy_id": "view_support",
+  "name": "View Support",
+  "description": "Drive to the stand-off pose (within base_near) from which one head camera frame holds the whole support surface, else the one that sees most of it, and aim the head at it.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "perception",
+    "effect_summary": "in_view(support)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "in_view(support)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_117",
+    "legacy_attribute": "view_support",
+    "class": "ViewSupportPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_080:mark_spots/view_and_mark"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (visual prompting, 2026-11-15)"
+}

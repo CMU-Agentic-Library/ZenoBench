@@ -491,6 +491,13 @@
    "noun": "furniture",
    "contract_id": "contract_079",
    "definition": "skills/skill_071/skill.json"
+  },
+  {
+   "skill_id": "skill_072",
+   "verb": "mark_spots",
+   "noun": "support",
+   "contract_id": "contract_080",
+   "definition": "skills/skill_072/skill.json"
   }
  ],
  "motion_skills": {

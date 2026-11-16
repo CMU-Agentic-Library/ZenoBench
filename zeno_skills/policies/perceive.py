@@ -3,6 +3,8 @@
 policy_068 LookAtPolicy        aim head yaw/pitch at a target; record what is in view
 policy_069 ExploreRoomPolicy   visit stand-off poses in a room and sweep the head; counts furniture
 policy_116 ExploreFurniturePolicy  aim the head at every support layer (shelf, top) of one piece of furniture
+policy_117 ViewSupportPolicy  stand where one head camera frame holds a whole support surface, aim at it
+policy_118 MarkSpotsPolicy    number free spots for the held object on the support in view (visual prompting)
 policy_070 SearchObjectPolicy  visit candidate supports/cabinets in order until the object is seen
 policy_071 PointAtPolicy       point the closed right fingers at a target
 policy_072 PresentHeldPolicy   hold the carried object in front of the head camera
@@ -283,6 +285,76 @@ class ExploreFurniturePolicy(AtomicPolicy):
         if missing:
             raise SkillFailure(f"explore {furniture}: layers not seen {missing}")
         return {"seen": sorted(objects), "layers": sorted(seen)}
+
+
+class ViewSupportPolicy(AtomicPolicy):
+    """Bring a whole support surface into one head camera frame: the stand-off poses navigate uses
+    (base_motion.standoff_poses: within base_near of it) the base can get to, ranked as navigate ranks them,
+    the first one from which every sample of the support's top is in the frustum and behind no furniture
+    with the head aimed at it (visual_prompt.best_view), else the one that sees the most; the pose the robot
+    stands at now is tried first and kept when it sees it all.  A load is carried as navigate carries it.
+    Ends with the head aimed at the support (it stays so: mark_spots draws on this view)."""
+
+    def execute(self, support):
+        rig = self.rig
+        from .base_motion import _box_dist, standoff_poses
+        from ..predicates import NEAR_M
+        from ..skill_jobs.carry import _carry_bottom_z, carry_posture
+        from ..visual_prompt import best_view, view_coverage
+        s = rig.ann.support(support)
+        min_bottom_z = None
+        if rig.held is not None:
+            min_bottom_z = _carry_bottom_z(rig, support)
+            carry_posture(rig, min_bottom_z=min_bottom_z)
+        tw = dict(zip(rig.kin.names[:2], (float(q) for q in skills._rest_posture(rig)[0][:2])))
+        here = tuple(rig.base_pose())
+        best = None
+        if _box_dist(entity_footprint(rig, support), here[:2]) <= NEAR_M:
+            cov, yaw, pitch = view_coverage(rig, s, here, tw)
+            best = (here, cov, yaw, pitch)
+        if best is None or best[1] < 1.0:
+            poses = standoff_poses(rig, support)
+            ok = skills.base_reachable(rig, poses) if poses else []
+            reach = [p for p, o in zip(poses, ok) if o]
+            found = best_view(rig, s, reach, tw)
+            rig.log("view_support_goals", support=support, goals=len(poses), reachable=len(reach),
+                    coverage=None if found is None else round(found[1], 3))
+            if found is not None and (best is None or found[1] > best[1] + 1e-9):
+                best = found
+        if best is None:
+            raise SkillFailure(f"view {support}: no base path to any stand-off pose")
+        pose, cov, yaw, pitch = best
+        if pose != here:
+            rig.caption = f"VIEW {support}"
+            skills.navigate(rig, pose, label=f"view_{support}", min_bottom_z=min_bottom_z,
+                            raise_load=rig.held is None)
+            # the pose the base reached: aim again from there
+            cov, yaw, pitch = view_coverage(rig, s, tuple(rig.base_pose()), tw)
+        drive_head(rig, yaw, pitch)
+        record_view(rig)
+        rig.log("view_support", support=support, pose=[round(v, 3) for v in rig.base_pose()],
+                coverage=round(cov, 3), head=[round(yaw, 3), round(pitch, 3)])
+        return {"coverage": round(cov, 3)}
+
+
+class MarkSpotsPolicy(AtomicPolicy):
+    """Number free spots for the held object on a support in the head camera's current view
+    (visual_prompt.mark_spots); the drawn frame waits in rig.memory["visual_prompt"] for the next
+    observation (episode.Episode.observation adds it to the images).  Fails when no free spot is in view."""
+
+    def execute(self, object, support):
+        rig = self.rig
+        from ..visual_prompt import mark_spots
+        mem = memory(rig)
+        mem.pop("visual_prompt", None)
+        out = mark_spots(rig, object, support)
+        rig.log("mark_spots", object=object, support=support, spots=out["spots"], image=out["image"] is not None)
+        if not out["spots"]:
+            raise SkillFailure(f"mark spots on {support}: no free spot for {object} in view")
+        if out["image"] is not None:
+            mem["visual_prompt"] = {"camera": "head", "overlay": "place_spots", "image": out["image"],
+                                    "object": object, "support": support, "spots": out["spots"]}
+        return {"spots": out["spots"]}
 
 
 def _search_aims(support, base_xy):

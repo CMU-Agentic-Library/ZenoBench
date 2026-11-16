@@ -205,6 +205,12 @@
     "verb": "explore_furniture",
     "when": "use look instead when only one layer must be seen",
     "bind": {}
+   },
+   {
+    "skill_id": "skill_072",
+    "verb": "mark_spots",
+    "when": "use look instead when the surface only has to be seen, not marked",
+    "bind": {}
    }
   ]
  },

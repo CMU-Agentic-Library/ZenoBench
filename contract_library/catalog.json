@@ -421,6 +421,12 @@
    "skill_id": "skill_071",
    "verb": "explore_furniture",
    "definition": "contracts/contract_079/contract.json"
+  },
+  {
+   "contract_id": "contract_080",
+   "skill_id": "skill_072",
+   "verb": "mark_spots",
+   "definition": "contracts/contract_080/contract.json"
   }
  ],
  "legacy_family_contracts": [

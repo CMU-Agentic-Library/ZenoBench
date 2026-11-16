@@ -1667,6 +1667,36 @@
    "policy_id": "policy_116",
    "legacy_id": "explore_furniture",
    "class": "perceive.ExploreFurniturePolicy"
+  },
+  {
+   "id": "view_support",
+   "group": "perception",
+   "description": "Drive to the stand-off pose (within base_near) from which one head camera frame holds the whole support surface, else the one that sees most of it, and aim the head at it.",
+   "input": "support",
+   "effect": "in_view(support)",
+   "executor": "view_support",
+   "status": "callable",
+   "verification": "pending Isaac Sim check (visual prompting, 2026-11-15)",
+   "schema_version": 1,
+   "kind": "low_level_policy",
+   "policy_id": "policy_117",
+   "legacy_id": "view_support",
+   "class": "perceive.ViewSupportPolicy"
+  },
+  {
+   "id": "mark_spots",
+   "group": "perception",
+   "description": "Number up to six spread-out free spots for the held object on the support in the head camera view and draw them on the head image (visual prompting for place hint_xy).",
+   "input": "object, support",
+   "effect": "spots(object, support)",
+   "executor": "mark_spots",
+   "status": "callable",
+   "verification": "pending Isaac Sim check (visual prompting, 2026-11-15)",
+   "schema_version": 1,
+   "kind": "low_level_policy",
+   "policy_id": "policy_118",
+   "legacy_id": "mark_spots",
+   "class": "perceive.MarkSpotsPolicy"
   }
  ]
 }

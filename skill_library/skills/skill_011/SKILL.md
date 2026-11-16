@@ -70,6 +70,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Alternative: `inspect` (`skill_012`) — the target is a receptacle whose contents matter
 - Alternative: `point` (`skill_015`) — use look instead when a gaze is enough to indicate the target
 - Alternative: `explore_furniture` (`skill_071`) — use look instead when only one layer must be seen
+- Alternative: `mark_spots` (`skill_072`) — use look instead when the surface only has to be seen, not marked
 
 ## Failure
 

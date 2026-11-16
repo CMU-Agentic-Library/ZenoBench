@@ -293,19 +293,24 @@ class Episode:
         frames = self.rig.get_camera_images()
         self.n_obs += 1
         out = []
-        for name in self.cameras:
-            if name not in frames:
-                continue
-            img = Image.fromarray(frames[name])
+        # (camera, file name suffix, frame, extra fields of the entry)
+        shots = [(name, name, frames[name], {}) for name in self.cameras if name in frames]
+        # a visual prompt drawn by the last call (mark_spots: numbered spots on the head frame it was
+        # taken from), once, after the plain frames
+        vp = (getattr(self.rig, "memory", None) or {}).pop("visual_prompt", None)
+        if vp is not None and vp["camera"] in self.cameras:
+            shots.append((vp["camera"], f"{vp['camera']}_{vp['overlay']}", vp["image"], {"overlay": vp["overlay"]}))
+        for camera, suffix, frame, extra in shots:
+            img = Image.fromarray(frame)
             if encode == "path" and self.image_dir is not None:
                 self.image_dir.mkdir(parents=True, exist_ok=True)
-                path = self.image_dir / f"obs{self.n_obs:03d}_{re.sub(r'[^A-Za-z0-9_]+', '_', tag or 'view')[:40]}_{name}.png"
+                path = self.image_dir / f"obs{self.n_obs:03d}_{re.sub(r'[^A-Za-z0-9_]+', '_', tag or 'view')[:40]}_{suffix}.png"
                 img.save(path)
-                out.append({"camera": name, "path": str(path)})
+                out.append({"camera": camera, **extra, "path": str(path)})
             else:
                 buf = io.BytesIO()
                 img.save(buf, format="PNG")
-                out.append({"camera": name, "png_base64": base64.b64encode(buf.getvalue()).decode()})
+                out.append({"camera": camera, **extra, "png_base64": base64.b64encode(buf.getvalue()).decode()})
         return out
 
     def _gt_objects(self):

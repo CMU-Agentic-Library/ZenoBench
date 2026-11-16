@@ -49,6 +49,7 @@ SYNONYM_GROUPS = [
     {"search", "find", "seek", "locate", "hunt"},
     {"explore_room", "explore", "scan", "survey", "patrol", "sweep_room"},
     {"explore_furniture", "scan_shelves", "survey_furniture"},
+    {"mark_spots", "mark", "propose_spots", "show_spots"},
     {"point", "indicate", "gesture"},
     {"present", "show", "display", "offer"},
     {"release", "let_go", "unhand", "ungrip"},

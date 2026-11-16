@@ -1466,6 +1466,41 @@ skill("explore_furniture", "furniture", "Explore a piece of furniture",
                      "holding an object: the torso is not lowered, so low shelves may stay hidden"])
 
 
+# ================================================================= visual prompting for place (to 72)
+G = "perception_and_gesture"
+
+skill("mark_spots", "support", "Mark free spots on a support",
+      "Show where the held object can go on a support surface: drive to a stand-off pose from which the whole "
+      "surface is in one head camera frame (the pose the robot stands at is kept when it already is), aim the head "
+      "at it, and number up to six spread-out free spots on that head image. Every spot fits the object at any "
+      "turn with room left to its neighbours and is in view. The numbered image comes with the next observation "
+      "(images entry with overlay \"place_spots\"); disc n is spots[n-1]. Nothing is placed: place the object "
+      "with place(object, receptacle=support, hint_xy=<the chosen spot's xy>).",
+      group=G,
+      inputs={"object": I("object_ref", "The right-held object the spots are for (its footprint)."),
+              "support": I("support_ref", "The table, desk, counter or shelf surface to mark.")},
+      outputs={"spots": O("xy_list", "Free spots [x, y] in metres; spot n is the disc numbered n on the image."),
+               "coverage": O("number", "Fraction of the surface in the head camera frame (1 = all of it).")},
+      requires=[P("holding", hand="right", object="$object")],
+      ensures=[P("in_view", target="$support")],
+      invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
+      paths=[Path("view_and_mark", [], [St("policy_117", "$support"), St("policy_118", "$object", "$support")])],
+      relations=[R("sequence", "place", "the object goes to the chosen spot",
+                   bind={"object": "$object", "receptacle": "$support"},
+                   reason="one of the spots output becomes place's hint_xy"),
+                 R("alternative", "look", "the surface only has to be seen, not marked",
+                   bind={"target": "$support"})],
+      use_when="A held object must go on a large surface and where on it matters (next to something, away from "
+               "something, a free corner): choose a numbered spot on the image instead of guessing coordinates.",
+      distinct_from={"place": "place puts the object down; mark_spots only shows where it could go.",
+                     "look": "look aims the camera at a target; mark_spots frames a whole surface and numbers free "
+                             "spots on it."},
+      failure_modes=["no stand-off pose within reach sees the whole surface: the spots cover the part in view "
+                     "(coverage < 1)",
+                     "no free spot for the object is in view",
+                     "a spot may be drawn over the arm or the held object (the robot's own body is not checked)"])
+
+
 # ================================================================ planner hints
 # When-to-use text for the upper layer (fills nodes that did not set one) and
 # the verbs each node is most easily confused with.

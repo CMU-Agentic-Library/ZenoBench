@@ -67,10 +67,11 @@ def cond_text(c):
 
 
 def node_name(rec, sep):
-    """verb<sep>noun; a verb that already names its noun (explore_room) is not repeated."""
+    """verb<sep>noun, the verb's own words joined by <sep> too (mark_spots support: mark-spots-support); a verb
+    that already names its noun (explore_room) is not repeated."""
     if rec["verb"].endswith("_" + rec["noun"]):
         return rec["verb"].replace("_", sep)
-    return f"{rec['verb']}{sep}{rec['noun']}"
+    return f"{rec['verb'].replace('_', sep)}{sep}{rec['noun']}"
 
 
 def step_text(step):
@@ -492,6 +493,7 @@ def build():
     lib += [f"| {gtitle.get(g, g)} | {', '.join(f'`{v}`' for v in vs)} |" for g, vs in groups.items()]
     files[Path("README.md")] = _inject((ROOT / "README.md").read_text(), "library", "\n".join(lib))
     n_policy = len(names)
+    last_policy = max(names)                 # policy_NNN; numbers are not contiguous (policy_014 unused)
     n_planner = sum(1 for leg in names.values() if leg.startswith("plan_"))
     files[Path("contract_library/README.md")] = _inject(
         (ROOT / "contract_library/README.md").read_text(), "counts",
@@ -499,7 +501,7 @@ def build():
         f"共 {n_paths} 条 policy 路径。")
     files[Path("policy_library/README.md")] = _inject(
         (ROOT / "policy_library/README.md").read_text(), "counts",
-        f"当前有 **{n_policy} 个公开 policy**（`policy_001`–`policy_{n_policy:03d}`），其中 {n_planner} 个是只计算目标、"
+        f"当前有 **{n_policy} 个公开 policy**（`policy_001`–`{last_policy}`），其中 {n_planner} 个是只计算目标、"
         f"不运动的规划 policy；除 {len(RETIRED_POLICIES)} 个退役的以外，全部被 {len(records)} 个 Skill Contract 的路径覆盖。")
     return files, errors, records
 
