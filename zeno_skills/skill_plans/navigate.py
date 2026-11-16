@@ -14,18 +14,17 @@ travel_chain is the one source of the postures the base drives in: the park sear
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Callable
 
 import numpy as np
 
-from ..motion_state import Failure, Plan, Segment, Spec, at_base, with_arm
+from ..motion_state import Failure, Plan, Posture, Segment, Spec, at_base, with_arm, with_posture
 from ..primitives import JointSet, Joint, drive, free_leg, query
-from ._common import FREE_HAND, FREE_LOAD, _move
+from ..tolerances import PLAN_AT_START, SAME_POSTURE
+from ._common import FREE_HAND, FREE_LOAD, _move, anchor
 
 NAV_STAGES = ("arm", "left_fold", "drive", "arrive")
-SAME_POSTURE = 0.02          # rad: postures no joint of which differs by more are one (no swing, no chain
-                             # step: skills._base_steps too); inherited from the posture chain (ea47359), unmeasured
 
 
 @dataclass(frozen=True)
@@ -43,21 +42,30 @@ class Carry:
 
 
 def travel_chain(kin, left_kin, state, arrive=None):
-    """The postures the base drives in from ``state`` [(name, (q_right, q_left))]: the fold (each
-    empty arm folded, an arm with a load as it is), hanging at the side where the fold does not fit
-    (empty-handed only: both arms down, kin.drive), the arrival (the fold, or ``arrive``: right-arm
-    joints, or (right, left)).  The base planner passes to the arrival without a swing where it is
-    the fold and hangs only where the path needs it."""
+    """The postures the base drives in from ``state`` [(name, Posture)], whole: the fold (each empty
+    arm folded, an arm with a load as it is; the body the right fold's unless the right hand holds
+    something), hanging at the side where the fold does not fit (empty-handed only: both arms down,
+    kin.drive), the arrival (the fold, or ``arrive``: a Posture, right-arm joints, or (right, left)).  The base
+    planner passes to the arrival without a swing where it is the fold and hangs only where the
+    path needs it."""
     right_held, left_held = state.held("right") is not None, state.held("left") is not None
-    rest = (np.asarray(state.q_right, float).copy() if right_held else np.asarray(kin.rest, float).copy(),
-            np.asarray(state.q_left, float).copy() if left_held else np.asarray(left_kin.rest, float)[2:].copy())
-    hang = rest if right_held or left_held else (np.asarray(kin.drive, float), np.asarray(left_kin.drive, float)[2:])
+    rq = np.asarray(state.q("right") if right_held else kin.rest, float)
+    rest = Posture(rq[:2].copy(), {"right": rq[2:].copy(),
+                                   "left": np.asarray(state.arms["left"] if left_held else
+                                                      np.asarray(left_kin.rest, float)[2:], float).copy()})
+    hang = rest if right_held or left_held else \
+        Posture(np.asarray(kin.drive, float)[:2], {"right": np.asarray(kin.drive, float)[2:],
+                                                   "left": np.asarray(left_kin.drive, float)[2:]})
     if arrive is None:
         end = rest
     elif isinstance(arrive, tuple):
-        end = (np.asarray(arrive[0], float), np.asarray(arrive[1], float)[-7:])
+        a0 = np.asarray(arrive[0], float)
+        end = Posture(a0[:2].copy(), {"right": a0[2:].copy(), "left": np.asarray(arrive[1], float)[-7:].copy()})
+    elif isinstance(arrive, Posture):
+        end = with_posture(replace(state, body=rest.body, arms=dict(rest.arms)), arrive).posture()
     else:
-        end = (np.asarray(arrive, float), rest[1])
+        a = np.asarray(arrive, float)
+        end = Posture(a[:2].copy(), {"right": a[2:].copy(), "left": rest.arms["left"]})
     return [("fold", rest), ("hang", hang), ("arrive", end)]
 
 
@@ -80,7 +88,7 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
         if stage == "arm":
             q = s.q("right")
             if s.held("right") is None:
-                if np.max(np.abs(q - np.asarray(kin.rest, float))) > 1e-3:
+                if np.max(np.abs(q - np.asarray(kin.rest, float))) > PLAN_AT_START:
                     seg = free_leg(kin, s, FREE_HAND, JointSet((kin.rest, kin.drive)), "tuck")
                     if isinstance(seg, Failure):
                         skipped["tuck"], seg = seg.why, None
@@ -114,7 +122,7 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
             if isinstance(seg, Failure):
                 return seg
         else:                                               # arrive
-            seg = Segment("arrive", Spec(), np.asarray(s.q_right, float), kind="anchor",
+            seg = replace(anchor("arrive", s.q("right"), s),
                           target=("base", None if goal is None else tuple(map(float, goal))))
         if seg is None:
             continue
@@ -122,7 +130,7 @@ def _plan_navigate(kin, left_kin, state, goal, base, carry, arrive, label, start
         if seg.kind == "move":
             s = with_arm(s, seg.q_end, seg.info.get("side", "right"))
         elif seg.kind == "drive":
-            s = with_arm(s, seg.q_end, "right")
+            s = with_posture(s, Posture.from_vec(seg.q_end))
             if goal is not None:
                 s = at_base(s, goal)
     return Plan(tuple(segs), info={"skipped": skipped, **info})

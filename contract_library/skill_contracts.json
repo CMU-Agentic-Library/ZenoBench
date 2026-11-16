@@ -2463,9 +2463,11 @@
     "grasp": {
      "type": "tag",
      "required": false,
-     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).",
+     "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; \"top\" / \"side\" pinch only from above / from the side (fails when the object has no such pinch) -- a block going onto a low shelf behind a door needs \"side\": a top pinch holds the palm above it; otherwise the grasp follows the annotation (rim before handle before top).",
      "enum": [
-      "handle"
+      "handle",
+      "top",
+      "side"
      ]
     },
     "pass_by": {
@@ -2599,6 +2601,22 @@
       "asset_annotation"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path pinch_requested"
+    },
+    {
+     "predicate": "grasp_clearance(object=$object)",
+     "name": "grasp_clearance",
+     "args": {
+      "object": "$object"
+     },
+     "negated": false,
+     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
+     "kind": "fluent",
+     "gt_sources": [
+      "object_pose",
+      "asset_annotation"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "path on_the_move"
     },
     {
@@ -2654,7 +2672,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
+     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays at least 1.5 cm inside the edge. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -2827,7 +2845,9 @@
         "args": [
          "$object"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "grasp": "$grasp"
+        }
        }
       ],
       "requires": [
@@ -2875,6 +2895,41 @@
       "requires": [],
       "ensures": [],
       "note": "Handle pinch on request; a container held by its handle can swing, so carry it gently."
+     },
+     {
+      "path_id": "pinch_requested",
+      "when": [
+       {
+        "noun": "args",
+        "field": "grasp",
+        "op": "in",
+        "value": [
+         "top",
+         "side"
+        ]
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_061",
+        "args": [
+         "$object"
+        ],
+        "kwargs": {
+         "grasp": "$grasp"
+        }
+       }
+      ],
+      "requires": [
+       {
+        "pred": "grasp_clearance",
+        "args": {
+         "object": "$object"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "Only the requested pinch kind (top / side); no other kind when it has none."
      },
      {
       "path_id": "on_the_move",
@@ -6764,7 +6819,7 @@
       "object": "$object"
      },
      "negated": false,
-     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge.",
+     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays at least 1.5 cm inside the edge.",
      "kind": "fluent",
      "gt_sources": [
       "object_pose",
@@ -8645,10 +8700,10 @@
      "scope": "path powered_microwave"
     },
     {
-     "predicate": "hand_empty(hand=right)",
+     "predicate": "hand_empty(hand=left)",
      "name": "hand_empty",
      "args": {
-      "hand": "right"
+      "hand": "left"
      },
      "negated": false,
      "meaning": "The given gripper holds nothing.",
@@ -8657,7 +8712,22 @@
       "gripper_state"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "path left_holds_load"
+     "scope": "path refrigerator_loaded"
+    },
+    {
+     "predicate": "hand_empty(hand=left)",
+     "name": "hand_empty",
+     "args": {
+      "hand": "left"
+     },
+     "negated": false,
+     "meaning": "The given gripper holds nothing.",
+     "kind": "fluent",
+     "gt_sources": [
+      "gripper_state"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path loaded"
     },
     {
      "predicate": "hand_empty(hand=right)",
@@ -8772,26 +8842,57 @@
       "note": ""
      },
      {
-      "path_id": "left_holds_load",
+      "path_id": "refrigerator_loaded",
       "when": [
        {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "truthy",
-        "value": true
+        "noun": "articulated",
+        "field": "category",
+        "op": "equals",
+        "value": "refrigerator"
        },
        {
-        "noun": "articulated",
-        "field": "type",
-        "op": "equals",
-        "value": "revolute"
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
        }
       ],
       "steps": [
        {
-        "policy": "policy_060",
+        "policy": "policy_022",
         "args": [
-         "@robot.left_object",
+         "$articulated"
+        ],
+        "kwargs": {
+         "goal": "@articulated.wide_open_q"
+        }
+       }
+      ],
+      "requires": [
+       {
+        "pred": "hand_empty",
+        "args": {
+         "hand": "left"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
+     },
+     {
+      "path_id": "loaded",
+      "when": [
+       {
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_022",
+        "args": [
          "$articulated"
         ],
         "kwargs": {}
@@ -8801,12 +8902,12 @@
        {
         "pred": "hand_empty",
         "args": {
-         "hand": "right"
+         "hand": "left"
         }
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
      },
      {
       "path_id": "refrigerator",
@@ -8862,21 +8963,7 @@
         "kwargs": {}
        },
        {
-        "policy": "policy_046",
-        "args": [
-         "$articulated"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_050",
-        "args": [
-         "$articulated"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_047",
+        "policy": "policy_022",
         "args": [
          "$articulated"
         ],
@@ -8892,7 +8979,7 @@
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "One grasp: the handle pulled and the base riding the drawer, then let go."
      },
      {
       "path_id": "hinged_door",
@@ -8911,21 +8998,7 @@
         "kwargs": {}
        },
        {
-        "policy": "policy_046",
-        "args": [
-         "$articulated"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_049",
-        "args": [
-         "$articulated"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_047",
+        "policy": "policy_022",
         "args": [
          "$articulated"
         ],
@@ -8941,7 +9014,7 @@
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "One grasp: the side hook on the handle and the base riding the door, then let go."
      }
     ]
    },
@@ -9067,6 +9140,21 @@
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "all paths"
+    },
+    {
+     "predicate": "hand_empty(hand=left)",
+     "name": "hand_empty",
+     "args": {
+      "hand": "left"
+     },
+     "negated": false,
+     "meaning": "The given gripper holds nothing.",
+     "kind": "fluent",
+     "gt_sources": [
+      "gripper_state"
+     ],
+     "checked": "before execution on live GT state; the Contract does not move if false",
+     "scope": "path loaded"
     },
     {
      "predicate": "hand_empty(hand=right)",
@@ -9197,6 +9285,42 @@
       "note": ""
      },
      {
+      "path_id": "loaded",
+      "when": [
+       {
+        "noun": "articulated",
+        "field": "has_handle",
+        "op": "truthy",
+        "value": true
+       },
+       {
+        "noun": "robot",
+        "field": "right_held",
+        "op": "truthy",
+        "value": true
+       }
+      ],
+      "steps": [
+       {
+        "policy": "policy_023",
+        "args": [
+         "$articulated"
+        ],
+        "kwargs": {}
+       }
+      ],
+      "requires": [
+       {
+        "pred": "hand_empty",
+        "args": {
+         "hand": "left"
+        }
+       }
+      ],
+      "ensures": [],
+      "note": "The right hand holds a load: the left hand pushes the door shut (the body kept still)."
+     },
+     {
       "path_id": "handle_push",
       "when": [
        {
@@ -9229,7 +9353,7 @@
        }
       ],
       "ensures": [],
-      "note": ""
+      "note": "Every empty hand x {push the outer face, ride the handle (right)} in one park search."
      },
      {
       "path_id": "dispatch",
@@ -15089,6 +15213,11 @@
   }
  ],
  "retired_policies": {
+  "policy_046": "Grasp a door / drawer handle as a step of its own: open's hinged-door and drawer paths are one grasp in policy_022 (skill_plans.plan_door, 2026-11-10); the separate grasp was followed by a second one in policy_049 / policy_050.",
+  "policy_047": "Release a handle held by policy_046: plan_door lets go of its own grasp (see policy_046).",
+  "policy_049": "Open a hinged door after policy_046's grasp: grasped the handle again (see policy_046).",
+  "policy_050": "Open a drawer after policy_046's grasp: grasped the handle again (see policy_046).",
+  "policy_060": "Open a door with the right hand while the left holds a load: open's own paths do it (the empty hand opens, the body kept still under the other hand's load: motion_state.body_locked, 2026-11-12).",
   "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
   "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
   "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive speed capped by what the hands hold in Rig.drive_base (2026-11-04).",

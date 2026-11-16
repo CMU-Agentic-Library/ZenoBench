@@ -60,6 +60,19 @@ SPECS = {
 }
 # rest these with the thinnest axis vertical and the longest along x
 SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the side
+# solids v6 puts inside its kitchen cabinets: a top pinch's wrist does not fit under the shelf above
+# (T02's block: the forearm 5 cm into cabinet_4's top panel at every reach-in start), so they are
+# pinched from the side as well (side_pinches)
+SIDE_PINCH_EXTRA = {"wooden_block", "soda_can", "snack_carton"}
+# rad a side pinch's approach dips below level, the first that fits (side_pinches): level, else
+# enough to lift the palm off the surface for a 4 cm block (the TCP 43 mm up level, 26 mm dipped 15 degrees)
+SIDE_PINCH_TILTS = (0.0, 0.3)
+# a tool's working points in the body frame (the asset's own, as grasps): the frames the contact skills move
+# (docs/MOTION_ARCHITECTURE.md 6, contact; skill_jobs.tool.tool_in_tcp).  The spoon's two ends: the bowl at +x
+# (the collider hull 4 cm wide there; 1 cm in from the end, 4 mm down in the bowl) and the handle's end at -x
+# (5 mm in).  Its top pinch closes on the bowl end (the fingers ~4 cm apart: v6 stir_1115), so a stir puts the
+# end away from the hand in the pot -- the handle, as the old stir's "far end of the long axis" did
+TOOL_FRAMES = {"breakfast_spoon": {"bowl": [0.08, 0.0, -0.004], "handle": [-0.085, 0.0, 0.003]}}
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 # lay-flat assets whose generated mesh is too thick: resting height (m); the
 # footprint keeps the uniform scale from SPECS
@@ -251,6 +264,72 @@ def palm_floor(v, bottom_z, tcp_xy, close_yaws, gap):
     return need
 
 
+def side_pinches(ext, top, round_width=None, offset_xy=(0.0, 0.0)):
+    """Side pinch entries (annotations.side_pinch_rot) of a solid ``top`` m tall: round (``round_width``
+    across, every 30 degrees) or a box of extents ``ext`` (from the faces whose other two are at most
+    PINCH_MAX apart).  The first of SIDE_PINCH_TILTS that fits, from the planner's hand (its palm
+    and camera spheres, palm_spheres; its fingers, finger_model_box): the TCP height -- half way up
+    the object's upper part as before, raised until the palm stays LEAVE_GAP and the pads
+    PAD_FLOOR_GAP above the surface the object stands on; a tilt does not fit when that leaves less
+    than half a pad on the object -- and how deep inside the near face the TCP may go with the palm
+    LEAVE_GAP outside it (the spheres that reach down below the object's top: the camera rides
+    above a block)."""
+    from zeno_skills.annotations import side_pinch_rot
+    from zeno_skills.kinematics import PAD_HALF_WIDTH, finger_model_box
+    from zeno_skills.rig import LEAVE_GAP
+    from zeno_skills.skills import PAD_FLOOR_GAP
+    S = palm_spheres()
+    half_w, y_in, y_out, tip = finger_model_box()
+    if round_width is not None:
+        faces = [(list(range(0, 360, 30)), round(float(round_width), 4), True)]
+    else:
+        faces = [(azs, round(float(w), 4), False) for azs, w in (([0, 180], ext[1]), ([90, 270], ext[0]))
+                 if w <= PINCH_MAX]
+    out = []
+    for azs, w, rnd in faces:
+        pre_open = float(min(0.04, w / 2 + 0.012))
+        corners = np.array([[sx * half_w, sy * (pre_open + t), -tip]
+                            for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+        for t in SIDE_PINCH_TILTS:
+            R = side_pinch_rot([1.0, 0.0, 0.0], t)          # the hand on +x of the TCP
+            palm = S[:, :3] @ R.T
+            floor = max(float((S[:, 3] - palm[:, 2]).max()) + LEAVE_GAP,
+                        float(-(corners @ R.T)[:, 2].min()) + PAD_FLOOR_GAP)
+            h = max(float(min(max(0.55 * top, 0.04), top - 0.03)), floor)
+            if h > top - 0.5 * PAD_HALF_WIDTH:
+                continue
+            low = palm[:, 2] - S[:, 3] + h < top
+            out.append({"type": "side_pinch", "width": w, "offset_xy": [float(v) for v in offset_xy],
+                        "pre_open": pre_open, "azimuths_deg": azs, "round": rnd, "tilt": t, "height": round(h, 4),
+                        "depth": round(float((palm[low, 0] - S[low, 3]).min()) - LEAVE_GAP, 4)})
+            break
+    return out
+
+
+RIM_DEPTH = {"rim_pinch": 0.035, "rim_pinch_rect": 0.03}   # the TCP this far below the rim, at most
+
+
+def rim_pinch_depth(kind, rim_height, tilts, pre_open):
+    """How far below the rim a rim pinch's TCP goes: RIM_DEPTH[kind], but no deeper than leaves the
+    open fingers' lowest point (the planner's finger box, finger_model_box, at every tilt of the
+    grasp: the outer finger hangs lowest) LEAVE_GAP above the container's bottom -- the surface it
+    stands on.  At 3 cm a 5.5 cm tray's outer fingertip reached its shelf (T11 fruit_tray, 11-13: 46
+    builds, every one 0-1 mm on cell_shelf_4).  Never shallower than half a pad below the rim."""
+    from zeno_skills.annotations import gripper_rot
+    from zeno_skills.kinematics import PAD_HALF_WIDTH, finger_model_box
+    from zeno_skills.rig import LEAVE_GAP
+    half_w, y_in, y_out, tip = finger_model_box()
+    corners = np.array([[sx * half_w, sy * (pre_open + t), -tip]
+                        for sx in (-1, 1) for sy in (-1, 1) for t in (y_in, y_out)])
+    d = np.array([1.0, 0.0, 0.0])                       # the wall's outward normal; reach is the same at any azimuth
+    reach = 0.0                                         # lowest finger point below the TCP
+    for t in tilts:
+        R = gripper_rot(np.array([0.0, 0.0, -math.cos(t)]) - d * math.sin(t), d)
+        reach = max(reach, -float((corners @ R.T)[:, 2].min()))
+    depth = min(RIM_DEPTH[kind], rim_height - LEAVE_GAP - reach)
+    return round(max(depth, 0.5 * PAD_HALF_WIDTH), 4)
+
+
 def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     """Grasp primitives in the object frame (origin = bbox centre of the
     bottom face, z up).  Consumed by zeno_skills.annotations.grasp_poses."""
@@ -259,17 +338,20 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     out = []
     if kind == "round_container":
         prof = profile or container_profile(mesh, kind, body_fraction=body_fraction)
+        tilts = [0.5, 0.35, 0.2]
         g = {"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
-             "depth": 0.035, "azimuths_deg": list(range(0, 360, 30)), "tilts": [0.5, 0.35, 0.2],
-             "pre_open": 0.03}
+             "depth": rim_pinch_depth("rim_pinch", prof["rim_height"], tilts, 0.03),
+             "azimuths_deg": list(range(0, 360, 30)), "tilts": tilts, "pre_open": 0.03}
         if prof.get("centre"):
             g["centre"] = prof["centre"]               # the body's centre, not the bbox's (mug handle)
         if prof.get("shape") == "ellipse":
             g["radii"] = prof["bands"][-1][2:4]        # wall-centre semi-axes at the rim
         out.append(g)
     elif kind == "rect_container":
+        tilts = [0.4, 0.2]
         out.append({"type": "rim_pinch_rect", "half_x": float(ext[0] / 2), "half_y": float(ext[1] / 2),
-                    "rim_height": float(ext[2]), "depth": 0.03, "tilts": [0.4, 0.2], "pre_open": 0.03})
+                    "rim_height": float(ext[2]), "depth": rim_pinch_depth("rim_pinch_rect", float(ext[2]), tilts, 0.03),
+                    "tilts": tilts, "pre_open": 0.03})
     # top pinch: slide a pad-wide (2.8 cm) slab along the object and find the
     # narrowest graspable cross-section (bananas, pens, spoons, toy cars)
     best = None
@@ -333,9 +415,11 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
         # lying on its side it gets the top pinch across it).
         if out[-1].get("round") and top > SIDE_PINCH_MIN_H:
             tp = out.pop()
-            out.append({"type": "side_pinch", "width": tp["width"], "offset_xy": tp["offset_xy"],
-                        "height": float(min(max(0.55 * top, 0.04), top - 0.03)),
-                        "pre_open": tp["pre_open"], "azimuths_deg": list(range(0, 360, 30))})
+            out += side_pinches(ext, top, tp["width"], tp["offset_xy"])
+        elif name in SIDE_PINCH_EXTRA:
+            tp = out[-1]
+            out += side_pinches(ext, top, tp["width"], tp["offset_xy"]) if tp.get("round") else \
+                side_pinches(ext, float(ext[2]))
     # crown pinch: when no full-height slab fits, pinch only the top CROWN
     # metres (what the 5 cm pads span when the TCP sits 2.2 cm below the top):
     # the head of a plush toy, a knob, a lid handle.  Below the crown the
@@ -476,6 +560,8 @@ def write_sim_urdf(name):
            "generator": CUSTOM_RECORDS.get(name, {}).get("generator", "EmbodiedGen V2 text3d-cli (SAM3D backend)")}
     if "knob_collider" in custom:
         ann["knob_collider"] = custom["knob_collider"]
+    if name in TOOL_FRAMES:
+        ann["tool_frame"] = TOOL_FRAMES[name]
     if kind != "solid":
         ann["container"] = profile
         if "handle_collider" in custom:
@@ -575,7 +661,9 @@ def main():
         urdfs[n], anns[n] = write_sim_urdf(n)
         print("ANNOTATED", n, anns[n]["size"], [g["type"] for g in anns[n]["grasps"]], flush=True)
     ANN.parent.mkdir(parents=True, exist_ok=True)
-    ANN.write_text(json.dumps(anns, indent=1))
+    from collider_hulls import dump                 # other assets' hulls kept, one line each
+    ANN.write_text(dump(anns))
+    print("collider_hull: run tools/collider_hulls.py for", names, flush=True)
     print("MISSING (not generated yet):", missing)
     if args.hulls:
         hulls = json.loads(HULLS.read_text()) if HULLS.exists() else {}

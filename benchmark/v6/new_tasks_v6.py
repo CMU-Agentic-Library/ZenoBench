@@ -587,7 +587,9 @@ def t26():
             "car_in_living_room", ["storage_place", "multi_object_goal"], "the seed's layout only",
             "the car and one of his picture books in the living room",
             "in his room each by kind: the car into the toy basket, the book onto his bookcase",
-            {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36), **room},
+            # the book turned 90 deg, its 20 cm side to the stand's front edge: along its 14 cm side it could
+            # hang over by 5.5 cm with its centre 1.5 cm on the top -- just short (slide to edge, 11-15)
+            {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36, 90.0), **room},
                       watch=[CAR, kb, BASK],
                       goal={"all": [["inside", CAR, BASK], ["on_any", kb, KIDS_CASE], H]},
                       route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)

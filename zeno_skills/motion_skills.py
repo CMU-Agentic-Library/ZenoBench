@@ -3,6 +3,8 @@ its data from the catalog (skill_library/catalog.json, "motion_skills": generate
 tools/build_skill_library.py from its MOTION_SKILLS), its Python part a ``job`` function -- and every
 skill runs through the one ``run_skill``:
 
+    0. the head straight ahead (HEAD_STRAIGHT, _head_straight)  every skill plans and holds its arm
+                                                               postures against the same head
     1. job = skill.job(rig, args, state, skill)                what this call asks for; the job
                                                                builds with skill.build (the catalog's template)
     2. job.problem: park_search.find_park, the arm postures from the catalog -- travel the one the
@@ -18,10 +20,8 @@ What the catalog says is what runs: ``template`` is the builder the job gets (sk
 ``shape`` is the row of docs 2.3's table (coverage counts read it); a skill without a park
 search (navigate) states the postures its own plan takes (travel_chain) and nothing reads them.
 
-Job is the form of 9.3 step 1: the skill's own steps between the layers -- a re-measure after the
-drive, the logs, the result judged -- sit in its callbacks.  The re-measure leaves with 9.3 step
-2.3 (the targets read from the State by build), the hooks that move the robot with 2.6
-(build_clear)."""
+Job is the form of 9.3 step 1: the skill's own steps between the layers -- the logs after the
+drive, the hooks, the result judged -- sit in its callbacks (docs 2.3)."""
 
 from __future__ import annotations
 
@@ -32,11 +32,15 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
 
+import numpy as np
+
 from .motion_state import Failure
 from .park_search import find_park
 from .run import observe, run
+from .tolerances import HEAD_AT, SAME_PARK
 
 CATALOG = Path(__file__).resolve().parents[1] / "skill_library" / "catalog.json"
+HEAD_STRAIGHT = (0.0, 0.0)      # rad: head yaw, pitch while a skill plans and moves (where explore / search leave it)
 SHAPES = ("drive", "perceive", "pick_place", "part", "posture", "contact", "bimanual")     # 2.3's table
 POSTURES = ("fold", "carry", "fold_or_carry")
 FIELDS = {"name": str, "shape": str, "template": str, "park": bool, "arrive": str, "travel": str, "job": str,
@@ -51,7 +55,8 @@ class Job:
     found:    (Found) -> None, after the search (logs, captions)
     travel:   navigate's arguments for the drive to the park (min_bottom_z)
     ready:    (Found | None) -> (plan, build, hooks): the plan to run, its builder for the rest
-              (build(state, segment name) -> Plan | Failure, or None), the hooks
+              (build(state, segment name, prior) -> Plan | Failure, run.run's rebuild -- prior the
+              plan as it stands, its decisions; or None), the hooks
     failed:   (exception from run) -> the exception to raise instead, or None (raise it as it is)
     done:     () -> the skill's result"""
     problem: object = None
@@ -82,18 +87,50 @@ class Skill:
         return getattr(skill_plans, self.template)
 
 
-def posture(rig, name):
-    """The right arm's joints for a catalog posture: "fold" the travel fold (kin.rest), "carry" the
-    carry posture the arm holds the load in now, "fold_or_carry" the one of the two the hand calls for."""
-    if name == "fold" or (name == "fold_or_carry" and rig.held is None):
-        return rig.kin.rest.copy()
-    if rig.held is None:
-        raise ValueError(f"posture {name!r} with nothing in the hand")
-    return rig.q_cmd.copy()
+def posture(rig, name, side="right"):
+    """``side``'s arm in a catalog posture (motion_state.Posture of that arm and the body): "fold" the
+    travel fold (its kin.rest), "carry" the carry posture the arm holds the load in now,
+    "fold_or_carry" the one of the two the hand calls for.  The body goes with it only where the other
+    hand holds nothing (with_posture, docs 4.1)."""
+    from .motion_state import Posture
+    from .rig import _chain_cmd, _held_of
+    held = _held_of(rig, side)
+    if name == "fold" or (name == "fold_or_carry" and held is None):
+        return Posture.of_chain((rig.kin if side == "right" else rig.left_kin).rest, side)
+    if held is None:
+        raise ValueError(f"posture {name!r} with nothing in the {side} hand")
+    return Posture.of_chain(_chain_cmd(rig, side), side)
+
+
+def _posture_now(rig):
+    """The whole posture as commanded now (an arm that stays where it is: no drive)."""
+    from .motion_state import Posture
+    arms = {"right": rig.q_cmd[2:].copy()}
+    if getattr(rig, "left_q_cmd", None) is not None:
+        arms["left"] = np.asarray(rig.left_q_cmd, float).copy()
+    return Posture(rig.q_cmd[:2].copy(), arms)
 
 
 def _same_pose(a, b):
-    return math.hypot(a[0] - b[0], a[1] - b[1]) < 1e-4 and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < 1e-2
+    return math.hypot(a[0] - b[0], a[1] - b[1]) < SAME_PARK[0] and abs((a[2] - b[2] + 180.0) % 360.0 - 180.0) < SAME_PARK[1]
+
+
+def _head_straight(rig, skill):
+    """The head straight ahead (HEAD_STRAIGHT) before the skill reads the state it plans from: a look
+    leaves it aimed where it looked -- a near or low target at its 18 deg down limit -- and the arms are
+    planned around the head where it stands (Motion.live_locks), the waist bowing it further over the
+    workspace (T07 11-14: head_link 40 mm into the tray it had looked at).  The observation
+    benchmark's gate checked the call before it ran (GatedRunner.run), so the look's view still
+    counts.  A rig without a head (the tests' stand-ins) is left as it is."""
+    if not hasattr(rig, "head_q"):
+        return
+    from .policies.perceive import drive_head
+    q = rig.head_q()
+    was = (q["head_yaw_joint"], q["head_pitch_joint"])
+    if all(abs(v - s) < HEAD_AT for v, s in zip(was, HEAD_STRAIGHT)):
+        return
+    drive_head(rig, *HEAD_STRAIGHT)
+    rig.log("head_straight", skill=skill.name, was=[round(v, 3) for v in was])
 
 
 def run_skill(rig, skill, args):
@@ -101,6 +138,7 @@ def run_skill(rig, skill, args):
     from .rig import SkillFailure
     from .skill_jobs.base import RigBase
     from .skills import _at_park
+    _head_straight(rig, skill)
     state = observe(rig)
     job = skill.job(rig, args, state, skill)
     if skill.park != (job.problem is not None):
@@ -110,10 +148,12 @@ def run_skill(rig, skill, args):
     if job.problem is not None:
         # the postures are the catalog's, taken now: the job may have moved the arm first (place
         # settles its carry posture).  At the current pose the arm stays as it stands (no drive)
-        travel, goes = posture(rig, skill.travel), posture(rig, skill.arrive)
+        hand = job.problem.hand
+        travel, goes = posture(rig, skill.travel, hand), posture(rig, skill.arrive, hand)
         problem = replace(job.problem, travel=travel,
-                          arrive=lambda x, y, yaw: rig.q_cmd.copy() if _at_park(rig, x, y, yaw) else goes)
-        found, diag = find_park(rig.kin, rig.world, problem, observe(rig), rig.log, base=RigBase(rig))
+                          arrive=lambda x, y, yaw: _posture_now(rig) if _at_park(rig, x, y, yaw) else goes)
+        kins = {"right": rig.kin, **({"left": rig.left_kin} if getattr(rig, "left_kin", None) is not None else {})}
+        found, diag = find_park(kins, rig.world, problem, observe(rig), rig.log, base=RigBase(rig))
         if found is None:
             raise job.no_park(diag) if job.no_park is not None else SkillFailure(f"{skill.name}: no park")
         if job.found is not None:
@@ -122,9 +162,10 @@ def run_skill(rig, skill, args):
             run_skill(rig, SKILLS["navigate"], {"pose": found.pose, **job.travel})
         elif not _same_pose(rig.base_pose(), found.pose):
             # close enough not to drive, but the plan is the one for found.pose: the same build where
-            # the base stands (the joint waypoints of another base put the hand up to ~3 cm off)
+            # the base stands (the joint waypoints of another base put the hand up to ~3 cm off), the
+            # found plan's decisions its prior (decide_ik: off its pose here, the first seed of a solve)
             here = tuple(rig.base_pose())
-            plan = problem.build(observe(rig), found.k, found.q_rank)
+            plan = problem.build(observe(rig), found.k, found.plan)
             rig.log("park_here", target=problem.label, park=[round(v, 3) for v in found.pose],
                     here=[round(v, 3) for v in here], built=not isinstance(plan, Failure))
             if isinstance(plan, Failure):
@@ -133,7 +174,9 @@ def run_skill(rig, skill, args):
                 found = replace(found, x=here[0], y=here[1], yaw=here[2], plan=plan)
     from .run import run_clear
     from .skill_plans import plan_clear
-    clear = lambda st, what: plan_clear(rig.kin, st, **what)      # the failure exit (docs 8.6)
+    # the failure exit (docs 8.6), of the hand the plan works with
+    side = "right" if found is None else problem.side(found.k)
+    clear = lambda st, what: plan_clear(rig.kin if side == "right" else rig.left_kin, st, **what)
     plan, build, hooks = job.ready(found)
     try:
         run(rig, plan, build, hooks, clear=clear)

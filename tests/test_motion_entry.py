@@ -127,7 +127,7 @@ def test_a_load_in_the_hand_caps_the_arm_speed_and_smooths_the_path():
     assert np.all(mug[2:] <= CARRY_VEL) and np.all(bowl[2:] <= RIM_VEL) and np.all(free[2:] > CARRY_VEL)
     assert np.allclose(mug[:2], free[:2])                            # torso and waist unchanged
     smooth = []
-    rig.follow_smooth = lambda qs, *a: smooth.append(len(qs))
+    rig.follow_smooth = lambda qs, *a, **kw: smooth.append(len(qs))
     Rig.follow(rig, [np.zeros(9)])
     assert smooth == [1]
 

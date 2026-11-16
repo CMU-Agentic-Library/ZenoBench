@@ -1,6 +1,7 @@
 """Non-prehensile contact policies (closed fingers, no grasp).
 
-policy_079 PullTowardBasePolicy      drag an object toward the robot (pads pressed on its top)
+policy_079 PullTowardBasePolicy      drag an object toward the robot (pads pressed on its top; a push from
+                                     its far side where no drag reaches)
 policy_080 SeparateFromNeighbourPolicy  push an object away from its closest neighbour
 policy_081 RollCylinderPolicy        roll a lying cylinder by pushing above its axis
 policy_082 TipOverPolicy             push a standing object near its top so it lies down
@@ -52,7 +53,8 @@ def _room_along(rig, name, s, n, margin=0.02):
 
 
 class PullTowardBasePolicy(AtomicPolicy):
-    """Drag an object horizontally toward the base with the pads on its top."""
+    """Drag an object horizontally toward the base with the pads on its top -- or, where no drag reaches,
+    push it from its far side toward the base: one search, every drag before any push."""
 
     def execute(self, name, distance_m):
         rig = self.rig
@@ -68,15 +70,11 @@ class PullTowardBasePolicy(AtomicPolicy):
         d = min(float(distance_m), _room_along(rig, name, s, n))
         if d < 0.02:
             raise SkillFailure(f"pull {name}: already at the near edge")
-        try:
-            moved = skills.push(rig, name, s, n, d, label="PULL", mode="drag")
-        except SkillFailure as exc:
-            # pads slide over round or slippery tops: hook the far side instead
-            # (fingers down behind the object, pushing toward the base)
-            if "did not move" not in str(exc) or rig.held is not None:
-                raise
-            rig.log("pull_hook", obj=name, reason=str(exc))
-            moved = skills.push(rig, name, s, n, d, label="PULL", mode="push")
+        # the drag and the hook from the far side are ways of one search (Problem.tiers: every drag first),
+        # chosen before the hand moves; a drag whose pads slid over the top fails -- no hook after it
+        # (docs/COLLISION_PLAN.md 2: "拖不动改推" is a change of strategy)
+        from ..skill_jobs.slide import push_object
+        _, moved = push_object(rig, name, s, [(n, d, None)], label="PULL", modes=("drag", "push"))
         rig.log("pull_result", obj=name, moved_m=round(moved, 3))
         return moved
 
@@ -109,18 +107,12 @@ class SeparateFromNeighbourPolicy(AtomicPolicy):
                     choices.append((abs(ang), n, need))
             if not choices:
                 raise SkillFailure(f"separate {name}: no room on {s['name']} to move away from {other}")
-            # the most direct way first; the next one when the hand cannot get behind the object
-            # clear of the neighbours (the neighbour itself stands where a straight push starts)
-            for k, (ang, n, need) in enumerate(sorted(choices, key=lambda t: t[0])):
-                try:
-                    skills.push(rig, name, s, n, need, label="SEPARATE")
-                    break
-                except skills.ContactUnreachable as exc:
-                    rig.log("separate_direction_blocked", obj=name, deg=ang, dir=np.round(n, 3).tolist(),
-                            reason=str(exc)[:200])
-                    if k == len(choices) - 1:
-                        raise SkillFailure(f"separate {name}: no push direction away from {other} that the hand "
-                                           f"reaches clear of the neighbours")
+            # every direction away one goal of one push search, its cost how far it goes (the most direct
+            # is the shortest): no direction after another's failure (docs/MOTION_ARCHITECTURE.md 7; the
+            # neighbour itself may stand where a straight push starts)
+            from ..skill_jobs.slide import push_object
+            push_object(rig, name, s, [(n, need, None) for _, n, need in sorted(choices, key=lambda t: t[0])],
+                        label="SEPARATE")
         st = rig.state()
         gap2, other2 = neighbour_gap(rig, name, st)
         free2, why = finger_slots_free(rig, name, st)
@@ -282,7 +274,8 @@ class CenterOnSupportPolicy(AtomicPolicy):
         if need <= 0.005:
             return m
         n = np.array([dx, dy])
-        skills.push(rig, name, s, n, need + 0.01, label="CENTER")
+        from ..skill_jobs.slide import push_object
+        push_object(rig, name, s, [(n, need + 0.01, None)], label="CENTER")
         from ..predicates import REGISTRY
         ok, why = REGISTRY["away_from_edge"].evaluate(rig, None, object=name, margin_m=margin_m)
         rig.log("center_result", obj=name, ok=bool(ok), detail=why)

@@ -12,14 +12,23 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..clearance import FREE, LEAVE_CONTACT
-from ..motion_state import Failure, Plan, Segment, Spec, with_width
-from ..primitives import (ON_LINE, ON_LINE_TURN, Pose, contact_extent, contact_segment, free_leg, in_world, near_world,
-                          off_support, query)
+from ..clearance import FREE, LEAVE_CONTACT, Allow
+from ..motion_state import KEPT_KINDS, Failure, Plan, Segment, Spec, released, with_arm, with_width
+from ..tolerances import NUMERIC_M
+from ..primitives import (ON_LINE, ON_LINE_TURN, TOUCHING, Pose, contact_extent, contact_segment, decide_ik, free_leg, sided,
+                          holds, ik_why, turn)
 
 FREE_HAND = Spec(fingers=True, exempt=False)                  # free space, the fingers in, nothing exempt
 FREE_LOAD = Spec(fingers=True, exempt=False, hold_tilt=True)  # ...with a load in the hand, its tilt held
-TOUCHING = {"near_world": near_world, "off_support": off_support, "in_world": in_world}
+
+
+def may_touch(side, what, why, links="fingers"):
+    """The Spec of a motion whose fingers (``links`` "hand": the whole hand -- a door pushed) may touch
+    ``what``: an articulated part (the reach-in onto its handle, the release, a door pushed) or an
+    object (pushed or dragged across its support).  The monitor is told the same (Allow); the rest
+    of the arm is checked against it."""
+    return Spec(allow=Allow(hand=side, links=links, touch=(what,), reason=why), fingers=True, exempt=False,
+                touch=((what, links),))
 
 
 def T_of(R, p):
@@ -34,31 +43,74 @@ def _on_line(kin, q, s, R, u, L):
     p_q, R_q = kin.tcp(np.asarray(q, float))
     d = p_q - s
     along = float(d @ u)
-    turn = float(np.arccos(np.clip((np.trace(np.asarray(R, float).T @ R_q) - 1.0) / 2.0, -1.0, 1.0)))
-    return L >= ON_LINE and -1e-3 <= along <= L + 1e-3 and np.linalg.norm(d - along * u) < ON_LINE and \
-        turn < ON_LINE_TURN
+    return L >= ON_LINE and -NUMERIC_M <= along <= L + NUMERIC_M and np.linalg.norm(d - along * u) < ON_LINE and \
+        turn(R, R_q) < ON_LINE_TURN
 
 
-def _reach(kin, state, spec, p, R, u, L, q_from, seed, name, step):
+def _reach(kin, state, spec, p, R, u, L, q_from, prior, name, step, decision=None):
     """The free leg to the start of the straight of length L along u into (p, R): none when the
-    TCP is on it already; else to its start, a pose whose solution is solved here in the collision
-    model of ``state`` / ``spec`` (Kinematics.ik_global; ``seed`` -- the park search's ranking IK,
-    the straight's start up from the set-down pose -- only the first of its seeds, never the goal
-    as it is: those are kinematic, and a solution in collision made the leg fail where another
-    would do).  No collision-free solution: Failure."""
+    TCP is on it already; else to its start, a pose whose solution decide_ik decides in the collision
+    model of ``state`` / ``spec`` -- ``prior`` (the plan's own decision on a rebuild, the park
+    search's ranking IK, the straight's start up from the set-down pose) as it is while it still
+    reaches the start free, else the first seed of a solve (a kinematic solution in collision made
+    the leg fail where another would do).  That solution is the leg's joint goal only where the TCP
+    straight to the start fails (free_leg, Pose): a straight ends on its own solution, the one the
+    rest of the plan is built from -- the leg's q_end, what a plan records as its decision, not the
+    solution decided here.  Segment -- info["decided"] {``decision`` (default ``name``): how
+    decide_ik decided, "prior" | "solved"} -- or Failure."""
     s = p - L * u
     if _on_line(kin, q_from, s, R, u, L):
         return Segment(name, spec, q_from, (), info={"how": "on the straight"})
-    with query(kin, state, spec):
-        q_s, ok = kin.ik_global(s, R, seeds=([np.asarray(seed, float)] if seed is not None else []) + [q_from])
-    if not ok:
-        return Failure("no collision-free IK at the straight's start", name)
-    return free_leg(kin, state, spec, Pose(s, R, np.asarray(q_s, float)), name, step=step, q_from=q_from)
+    d = decide_ik(kin, state, spec, s, R, prior, seeds=(q_from,))
+    if d is None:
+        return Failure(f"no collision-free IK at the straight's start ({ik_why(kin, state, spec, s, R, (q_from,))})", name)
+    q_s, how = d
+    seg = free_leg(kin, state, spec, Pose(s, R, q_s), name, step=step, q_from=q_from)
+    return seg if isinstance(seg, Failure) else _move(seg, decided={decision or name: how})
+
+
+def _kept(kin, state, q, prior, name):
+    """``prior``'s motion ``name`` (a Plan's: run's rebuild) as it is, when it still holds from q in
+    ``state`` (primitives.holds: the check run makes before a segment, docs 8.3) -- else None, built
+    again.  Motions only (KEPT_KINDS: moves and task segments; holds checks a task segment whole): an
+    action or an anchor holds wherever the arm is, so one made for another start would carry that
+    start on; they are made again, at no cost.  So is a ride (a task segment the base carries): its
+    base path is relative to the part value it starts at (ride_base), and the part may stand anywhere
+    within its lead where it holds -- kept, it would carry the old start on.  (Not for a motion whose
+    goal is chosen again at every build: the tuck.)"""
+    if not isinstance(prior, Plan):
+        return None
+    seg = next((sg for sg in prior.segments if sg.name == name), None)
+    if seg is None or seg.kind not in KEPT_KINDS:
+        return None
+    if seg.kind == "scripted" and seg.info["script"].carry == "base":
+        return None
+    return seg if holds(kin, with_arm(state, q, kin.side), seg) is None else None
+
+
+def anchor(name, q, state, watch=(), side="right"):
+    """An anchor (docs 8.2): where an error comes in, nothing moves.  info["assumed"] the State the
+    plan assumes there -- ``state`` with ``side``'s arm at q (a plan carries its arm in q, not in the
+    State it moves on) -- info["watch"] the objects / parts it aims at: run logs how the State read
+    back stands off it (motion_state.state_offset, 9.3 step 2.1)."""
+    q = np.asarray(q, float)
+    return Segment(name, Spec(), q, kind="anchor",
+                   info={"assumed": with_arm(state, q, side), "watch": tuple(watch), "side": side})
 
 
 def _move(seg, **info):
     """seg with how it is executed added to its info (steps per waypoint, smooth)."""
     return Segment(seg.name, seg.spec, seg.q_from, seg.qs, seg.kind, seg.target, seg.action, {**seg.info, **info})
+
+
+def _aimed(kin, seg, aim, aimed, tol, **info):
+    """seg built for the contact pose ``aimed`` that ``aim`` (motion_state.Aim) derives from the
+    State: both recorded, where its end stands (kin.tcp at the built State's base) and ``tol`` (m,
+    rad), how much further off the target the end may come before the segment no longer does what
+    it was built for -- what primitives.holds checks again."""
+    p, R = kin.tcp(seg.q_end)
+    return _move(seg, aim=aim, aimed=aimed, end=(np.asarray(p, float).copy(), np.asarray(R, float).copy()),
+                 tol=tuple(map(float, tol)), **info)
 
 
 def _contact(kin, state, spec, u, touching, name, step, q_from, **info):
@@ -78,14 +130,17 @@ def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, na
     """A skill's failure exit (docs/MOTION_ARCHITECTURE.md 8.6, build_clear): with nothing in the
     hand, open it to ``open_width`` (None, or that open already: no open) and (``leave``) back out of
     any contact straight up (contact_extent, near_world: no segment when nothing is touched).  With
-    a load in the hand: None -- opening would drop it.  Still touching LEAVE_MAX up: the open alone
+    a load in the hand: None -- opening would drop it (a part's handle is let go: it stays where it is).  Still touching LEAVE_MAX up: the open alone
     (the exit is the contact model's call, not a shorter try).  Plan or None."""
-    if state.held(kin.side) is not None:
+    h = state.held(kin.side)
+    if h is not None and h.kind != "part":
         return None
     q = state.q(kin.side)
     segs, s, why = [], state, None
+    if h is not None:                     # a handle: let go first (open_width), then out of the contact
+        s = released(s, kin.side, h.name)
     hand = state.hands.get(kin.side)
-    if open_width is not None and (hand is None or hand.width < open_width - 1e-3):
+    if open_width is not None and (hand is None or hand.width < open_width - NUMERIC_M):
         segs.append(Segment(f"{name}_open", Spec(allow=FREE), q, kind="action",
                             action=("grip", float(open_width), int(ticks), False)))
         s = with_width(s, kin.side, open_width)
@@ -96,4 +151,4 @@ def plan_clear(kin, state, open_width=None, leave=True, ticks=60, step=0.005, na
             why = seg.why
         elif seg.qs:
             segs.append(seg)
-    return Plan(tuple(segs), info={"exit": why}) if segs else None
+    return Plan(tuple(sided(sg, kin.side) for sg in segs), info={"exit": why}) if segs else None

@@ -267,6 +267,13 @@ def _fingers_of(side):
     return [f"{side}_gripper_left_finger_link", f"{side}_gripper_right_finger_link"]
 
 
+# self-collision pairs set by hand so that the two arms have the same ones (self_collision_ignore)
+SYM_IGNORE = (("torso_link", "left_arm_link_2"),             # torso - right_arm_link_2 touches in the default posture
+              ("left_arm_link_3", "left_gripper_camera_link"))  # its mirror never touched in 40k postures; < 0.01 %, 5 mm
+SYM_CHECK = (("right_arm_link_6", "left_gripper_camera_link"),   # their mirrors (right camera - left 6 / 7) are
+             ("right_arm_link_7", "left_gripper_camera_link"))   # checked; both touch in < 0.01 %, up to 2.6 cm
+
+
 def self_collision_ignore(cfg, samples=40000, always=0.5):
     """MoveIt-style collision matrix on the fitted spheres: a link pair is ignored when the
     links are parent/child, touch in the default posture, touch in >= ``always`` of random
@@ -318,6 +325,13 @@ def self_collision_ignore(cfg, samples=40000, always=0.5):
             for b in links:
                 if b.startswith(o_ + "_") and f in out:
                     out[f].add(b)
+    # left and right alike: the pairs the sampling kept on one side only (11-12, 200k postures,
+    # /data/zenobench/probe_r3/pairs.csv), set the same on both
+    for a, b in SYM_IGNORE:
+        out[a].add(b)
+    for a, b in SYM_CHECK:
+        out[a].discard(b)
+        out[b].discard(a)
     n = [len(k["collision_spheres"][l]) for l in links]
     pairs = sum(n[i] * n[j] for i in range(len(links)) for j in range(i + 1, len(links))
                 if links[j] not in out[links[i]] and links[i] not in out[links[j]])

@@ -625,13 +625,13 @@ def edge_overhang(rig, name, st):
 
 @predicate("edge_overhang", [("object", "object_ref")], "fluent",
            "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre "
-           "of mass stays 3.5 cm inside the edge.")
+           "of mass stays at least 1.5 cm inside the edge.")
 def _edge_overhang(rig, ctx, object):
     from . import skills
     over, half = edge_overhang(rig, object, _state(rig, ctx))
     if over is None:
         return False, "not on a support"
-    ok = skills.EDGE_MIN_OVERHANG - 0.01 <= over <= half - skills.COM_MARGIN + 0.015
+    ok = skills.EDGE_MIN_OVERHANG - 0.01 <= over <= half - skills.COM_MARGIN
     return ok, f"overhang {over:.3f} m"
 
 
@@ -1125,13 +1125,12 @@ def _hidden(rig, ctx, object):
         if c != object and rig.ann.asset_of(o).get("container") and rig.geo.inside(object, c, st)[0]:
             if any(lid_on(rig, c, l, st)[0] for l in lids(rig) if l != c):
                 return True, f"in covered {c}"
-    s = rig.geo.support_under(object, st)
-    if s is not None and s.get("category") == "cabinet_inside":
-        a = next((x for x in rig.ann.articulated if x["name"] == s.get("furniture")), None)
-        if a is not None:
-            tol = 0.10 if a["type"] == "revolute" else 0.04
-            if abs(rig.joint(a["name"]) - a["closed_q"]) <= tol:
-                return True, f"in closed {a['name']}"
+    from .annotations import behind_door
+    a = behind_door(rig.ann, rig.geo.support_under(object, st))     # on a shelf behind a door
+    if a is not None:
+        tol = 0.10 if a["type"] == "revolute" else 0.04
+        if abs(rig.joint(a["name"]) - a["closed_q"]) <= tol:
+            return True, f"in closed {a['name']}"
     return False, "visible"
 
 

@@ -1,7 +1,7 @@
 """Tool-use policies with a held object.
 
 policy_084 WipeSurfacePolicy   press a held sponge on a support and sweep a strip; measure contact coverage
-policy_085 StirContainerPolicy dip a held spoon into a container and circle it; count turns below the rim
+policy_085 StirContainerPolicy dip a held spoon into a container and circle it (the motion-layer "stir")
 policy_086 PourIntoPolicy      tilt a held cup over a container so its loose contents fall in
 
 Each policy writes its measured result into rig.memory (wiped / stirred) or
@@ -18,7 +18,7 @@ from scipy.spatial.transform import Rotation
 from .base import AtomicPolicy
 from .. import skills
 from ..skill_jobs.carry import carry_posture
-from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, into_contact
 from ..evaluator import quat_R
 from ..planner import find_park, find_park_set
 from ..predicates import memory, objects_inside
@@ -180,141 +180,13 @@ class WipeSurfacePolicy(AtomicPolicy):
 
 
 class StirContainerPolicy(AtomicPolicy):
-    """Tilt a held spoon's far end down into the container and move it on a
-    circle; turns are counted only while the tip is inside the wall profile
-    and below the rim."""
+    """Dip a held spoon into the container and turn its tip round inside it: the catalog's "stir" on the
+    motion layers (skill_jobs.stir.stir_job, skill_plans.plan_stir; docs/skills/stir.md).  ``turns`` 0
+    is a dip (DipUtensilPolicy): the tip in and out, no circle."""
 
-    def execute(self, tool, container, *, turns=1.25, tilt_deg=50.0):
-        """Waist kept near upright first: a 0.54 rad bow over the low hob
-        stalled at 0.40 and the spoon tip stopped above the rim."""
-        rig = self.rig
-        widx = rig.kin.names.index("waist_pitch_joint")
-        hi = float(rig.kin.hi[widx])
-        rig.kin.hi[widx] = min(hi, 0.3)
-        try:
-            return self._stir(tool, container, turns=turns, tilt_deg=tilt_deg)
-        except SkillFailure as exc:
-            if "no base pose" not in str(exc) or rig.held is None:
-                raise
-            rig.log("stir_waist_relaxed", reason=str(exc))
-        finally:
-            rig.kin.hi[widx] = hi
-        return self._stir(tool, container, turns=turns, tilt_deg=tilt_deg)
-
-    def _stir(self, tool, container, *, turns=1.25, tilt_deg=50.0):
-        rig = self.rig
-        if rig.held is None or rig.held["name"] != tool:
-            raise SkillFailure(f"stir: {tool} is not right-held")
-        ca = rig.ann.asset_of(rig.ann.objects[container]).get("container")
-        if not ca:
-            raise SkillFailure(f"stir: {container} is not a container")
-        stow_load(rig)
-        st = rig.state()
-        cb = np.asarray(rig.geo.bottom(container, st), float)
-        rim_r = float(ca.get("rim_radius") or min(ca["bands"][0][2:4]))
-        tcp, R, body_in_tcp, Rb_in_tcp = _held_frame(rig, tool)
-        size = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["size"], float)
-        # far end of the tool along its long axis, in the TCP frame
-        axis_local = np.eye(3)[int(np.argmax(size))]
-        o2b = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["origin_to_bottom_center"], float)
-        centre_local = o2b + np.array([0, 0, size[2] / 2])
-        ends = [centre_local + axis_local * max(size) / 2 * sgn for sgn in (1, -1)]
-        ends_tcp = [body_in_tcp + Rb_in_tcp @ e for e in ends]
-        tip_tcp = max(ends_tcp, key=np.linalg.norm)
-        axis_w = R @ (tip_tcp / np.linalg.norm(tip_tcp))
-        side = np.cross(axis_w, [0, 0, 1.0])
-        if np.linalg.norm(side) < 1e-6:
-            side = np.array([1.0, 0, 0])
-        side /= np.linalg.norm(side)
-        R_goal = Rotation.from_rotvec(-side * math.radians(tilt_deg)).as_matrix() @ R
-        if (R_goal @ tip_tcp)[2] > 0:
-            R_goal = Rotation.from_rotvec(side * math.radians(tilt_deg)).as_matrix() @ R
-        depth = min(0.04, ca["rim_height"] - 0.015)
-        radius = min(0.035, 0.45 * rim_r)
-        tip_z = cb[2] + ca["rim_height"] - depth
-
-        def tcp_for_tip(th):
-            tip = np.array([cb[0] + radius * math.cos(th), cb[1] + radius * math.sin(th), tip_z])
-            return tip - R_goal @ tip_tcp
-
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park, R_base, r_full = None, R_goal, radius
-        # the whole circle is part of the base search (only 0 and 180 deg were
-        # checked and the arm lost IK at the quarter points); a tighter circle
-        # needs less arm travel and still turns the tip around the pot centre
-        for radius in (r_full, 0.022, 0.012):
-            for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):     # approach the pot from any side
-                R_goal = Rotation.from_euler("z", psi).as_matrix() @ R_base
-                above = tcp_for_tip(0.0) + np.array([0, 0, depth + 0.06])
-                legs = [(above, R_goal), (tcp_for_tip(0.0), R_goal), (tcp_for_tip(math.pi / 2), R_goal),
-                        (tcp_for_tip(math.pi), R_goal), (tcp_for_tip(1.5 * math.pi), R_goal)]
-                park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=60, q_start=rig.q_cmd,
-                                 travel_q=skills._travel_q(rig))
-                if park is not None:
-                    rig.log("stir_plan", radius_m=radius, wrist_turn_deg=round(math.degrees(psi)))
-                    break
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"stir {container}: no base pose reaches the stirring circle (rejected: {_park_diag()})")
-        skills._goto_park(rig, park)
-        rig.caption = f"STIR {container} with {tool}"
-        t0, R0 = rig.kin.tcp(rig.q_cmd)
-        try:            # a short lift first when the arm allows; "above" itself was planned reachable
-            rig.move_to(t0 + np.array([0, 0, 0.05]), R0, step=0.01, label="stir_raise", allow=FREE_ELSE_STRAIGHT)
-        except SkillFailure as exc:
-            if rig.held is None:
-                raise
-            rig.log("stir_raise_skipped", reason=str(exc))
-        rig.move_to(above, R_goal, step=0.005, steps_per_wp=5, label="stir_above",
-                    allow=FREE_ELSE_STRAIGHT, smooth=True,
-                    q_hint=park[3][0])
-        rig.move_to(tcp_for_tip(0.0), R_goal, step=0.003, steps_per_wp=5, label="stir_dip", allow=LEGACY)
-        swept, prev = 0.0, None
-        rim_top = cb[2] + ca["rim_height"]
-        tip_index = int(np.argmax([np.linalg.norm(e) for e in ends_tcp]))
-        rig.step(30)
-        body, q = rig.obj_pose(tool)
-        tip_w = body + quat_R(q) @ ends[tip_index]
-        if np.linalg.norm(tip_w[:2] - cb[:2]) < rim_r and tip_w[2] < rim_top:
-            memory(rig).setdefault("dipped", {})[container] = True
-        rig.log("dip_sample", tool=tool, container=container, tip=np.round(tip_w, 3).tolist(),
-                inside=bool(memory(rig).get("dipped", {}).get(container)))
-        if turns <= 0:
-            rig.step(90)
-            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=LEAVE_CONTACT)
-            skills.check_held(rig, "dip")
-            if not memory(rig).get("dipped", {}).get(container):
-                raise SkillFailure(f"dip {container}: the tip did not get below the rim inside")
-            return {"dipped": True}
-        for th in np.linspace(0, 2 * math.pi * turns, int(16 * turns) + 1)[1:]:
-            try:
-                rig.move_to(tcp_for_tip(th), R_goal, step=0.004, steps_per_wp=4, label="stir_circle",
-                            allow=LEGACY)
-            except SkillFailure as exc:
-                if rig.held is None:
-                    raise
-                rig.log("stir_circle_skip", theta_deg=round(math.degrees(th), 1), reason=str(exc))
-                prev = None
-                continue
-            t_now, R_now = rig.kin.tcp(rig.q())
-            body, q = rig.obj_pose(tool)
-            tip_w = body + quat_R(q) @ ends[tip_index]
-            rel = tip_w[:2] - cb[:2]
-            inside = np.linalg.norm(rel) < rim_r and tip_w[2] < rim_top
-            ang = math.atan2(rel[1], rel[0])
-            if prev is not None and inside:
-                swept += abs((ang - prev + math.pi) % (2 * math.pi) - math.pi)
-            prev = ang if inside else None
-        skills.check_held(rig, "stir")
-        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=LEAVE_CONTACT)
-        n_turns = swept / (2 * math.pi)
-        memory(rig)["stirred"][container] = max(n_turns, memory(rig)["stirred"].get(container, 0.0))
-        rig.log("stir_result", tool=tool, container=container, turns=round(n_turns, 2))
-        if n_turns < 1.0:
-            raise SkillFailure(f"stir {container}: {n_turns:.2f} turns inside")
-        return n_turns
+    def execute(self, tool, container, *, turns=1.25):
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["stir"], {"tool": tool, "container": container, "turns": turns})
 
 
 class PourIntoPolicy(AtomicPolicy):

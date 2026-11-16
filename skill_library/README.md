@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **114 条按名词选择的 policy 路径**，覆盖 **106/115 个底层 policy**（9 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **117 条按名词选择的 policy 路径**，覆盖 **101/115 个底层 policy**（14 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -101,7 +101,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_014` | **explore_room** room | `explore_room(room)` | viewpoints | `room_explored` |
 | `skill_015` | **point** target | `point(target)` | front, turn_and_point | `pointing_at`, `hand_empty` |
 | `skill_016` | **present** object | `present(object)` | front_of_head | `presenting`, `holding` |
-| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | microwave_cavity, inside_cabinet_or_fridge, handle_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
+| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | microwave_cavity, inside_cabinet_or_fridge, handle_requested, pinch_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
 | `skill_018` | **place** object | `place(object, receptacle, hint_xy?, near?, pass_by?)` | microwave_staged, microwave, cabinet_or_fridge_shelf, container, on_the_move, edge_held_flat, stove_burner, surface | `hand_empty` + `in_appliance`, `inside`, `on`, `on_burner` |
 | `skill_019` | **drop** object | `drop(object, container)` | above_opening | `inside`, `hand_empty` |
 | `skill_020` | **stack** object | `stack(object, base)` | top_face | `on_top_of`, `hand_empty` |
@@ -124,8 +124,8 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_037` | **wipe** surface | `wipe(surface, tool)` | sponge_strip | `wiped`, `holding` |
 | `skill_038` | **stir** container | `stir(container, tool)` | circle_below_rim | `stirred`, `holding` |
 | `skill_039` | **pour** contents | `pour(source, target)` | tilt_over_rim | `poured_into`, `holding` |
-| `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, left_holds_load, refrigerator, drawer, hinged_door | `is_open` |
-| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, handle_push, dispatch | `is_closed` |
+| `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, refrigerator_loaded, loaded, refrigerator, drawer, hinged_door | `is_open` |
+| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, loaded, handle_push, dispatch | `is_closed` |
 | `skill_042` | **press** button | `press(button)` | microwave_start_staged, microwave_door_key, generic_key | `button_pressed`, `hand_empty` + `heating` |
 | `skill_043` | **heat** food | `heat(food, appliance, temp_c)` | microwave, stove_pot | `temperature_at_least`, `heating` |
 | `skill_044` | **chill** food | `chill(food, appliance, temp_c)` | fridge_wait | `temperature_at_most` |

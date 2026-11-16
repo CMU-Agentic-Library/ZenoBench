@@ -76,10 +76,10 @@
    "scope": "path powered_microwave"
   },
   {
-   "predicate": "hand_empty(hand=right)",
+   "predicate": "hand_empty(hand=left)",
    "name": "hand_empty",
    "args": {
-    "hand": "right"
+    "hand": "left"
    },
    "negated": false,
    "meaning": "The given gripper holds nothing.",
@@ -88,7 +88,22 @@
     "gripper_state"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "path left_holds_load"
+   "scope": "path refrigerator_loaded"
+  },
+  {
+   "predicate": "hand_empty(hand=left)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "left"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path loaded"
   },
   {
    "predicate": "hand_empty(hand=right)",
@@ -203,26 +218,57 @@
     "note": ""
    },
    {
-    "path_id": "left_holds_load",
+    "path_id": "refrigerator_loaded",
     "when": [
      {
-      "noun": "robot",
-      "field": "left_held",
-      "op": "truthy",
-      "value": true
+      "noun": "articulated",
+      "field": "category",
+      "op": "equals",
+      "value": "refrigerator"
      },
      {
-      "noun": "articulated",
-      "field": "type",
-      "op": "equals",
-      "value": "revolute"
+      "noun": "robot",
+      "field": "right_held",
+      "op": "truthy",
+      "value": true
      }
     ],
     "steps": [
      {
-      "policy": "policy_060",
+      "policy": "policy_022",
       "args": [
-       "@robot.left_object",
+       "$articulated"
+      ],
+      "kwargs": {
+       "goal": "@articulated.wide_open_q"
+      }
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "left"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
+   },
+   {
+    "path_id": "loaded",
+    "when": [
+     {
+      "noun": "robot",
+      "field": "right_held",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_022",
+      "args": [
        "$articulated"
       ],
       "kwargs": {}
@@ -232,12 +278,12 @@
      {
       "pred": "hand_empty",
       "args": {
-       "hand": "right"
+       "hand": "left"
       }
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "The right hand holds a load: the left hand opens (the body kept still under the load)."
    },
    {
     "path_id": "refrigerator",
@@ -293,21 +339,7 @@
       "kwargs": {}
      },
      {
-      "policy": "policy_046",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_050",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_047",
+      "policy": "policy_022",
       "args": [
        "$articulated"
       ],
@@ -323,7 +355,7 @@
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "One grasp: the handle pulled and the base riding the drawer, then let go."
    },
    {
     "path_id": "hinged_door",
@@ -342,21 +374,7 @@
       "kwargs": {}
      },
      {
-      "policy": "policy_046",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_049",
-      "args": [
-       "$articulated"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_047",
+      "policy": "policy_022",
       "args": [
        "$articulated"
       ],
@@ -372,7 +390,7 @@
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "One grasp: the side hook on the handle and the base riding the door, then let go."
    }
   ]
  },

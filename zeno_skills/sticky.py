@@ -46,11 +46,10 @@ import numpy as np
 
 from .evaluator import quat_R
 from .physics import ASSET
+from .tolerances import SHUT, SNAP_NEAR  # noqa: F401  (skills, skill_jobs.pick import SHUT from here)
 
 JOINTS = "/World/StickyHands"
 LINKS = {"right": ASSET + "/right_gripper_link", "left": ASSET + "/left_gripper_link"}
-NEAR = 0.30            # the hand this close to the object: snap it where the hand is
-SHUT = 0.003           # fingers closer than this hold nothing between the pads
 
 
 def _wxyz(R):
@@ -273,7 +272,7 @@ class StickyHands:
         if cands:
             g = min(cands, key=lambda c: float(np.linalg.norm(c["p"][:2] - np.array([bx, by]))) +
                     0.3 * c.get("along_rank", 0))
-            # a thickness pinch holds a flat object at its side: an edge hold (place_flat)
+            # a thickness pinch holds a flat object at its side: an edge hold (skill_jobs.place._edge_goals)
             return dict(rel_p=g["R"].T @ (pos - g["p"]), rel_R=g["R"].T @ Rb,
                         kind="edge" if g["kind"] == "thickness_pinch" else "pinch",
                         pre_open=float(g["pre_open"]), source=f"annotated_{g['kind']}")
@@ -290,7 +289,7 @@ class StickyHands:
         rig = self.rig
         tcp, _ = rig.kin.tcp(rig.q())
         pos, quat = rig.obj_pose(name)
-        if float(np.linalg.norm(tcp - pos)) < NEAR:
+        if float(np.linalg.norm(tcp - pos)) < SNAP_NEAR:
             return "at_object"
         R_g = quat_R(quat) @ grasp["rel_R"].T                   # the grasp on the object where it is now
         p_g = pos - R_g @ grasp["rel_p"]

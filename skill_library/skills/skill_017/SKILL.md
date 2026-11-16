@@ -23,7 +23,7 @@ The robot must hold an object for any later hand action.
 
 - `object` (`object_ref`): The object to grasp.
 - `hands` (`hand`, optional): "both" requests a two-handed lift for wide items.
-- `grasp` (`tag`, optional): Optional: "handle" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).
+- `grasp` (`tag`, optional): Optional: "handle" grasps by the handle when the object has an annotated one; "top" / "side" pinch only from above / from the side (fails when the object has no such pinch) -- a block going onto a low shelf behind a door needs "side": a top pinch holds the palm above it; otherwise the grasp follows the annotation (rim before handle before top).
 - `pass_by` (`pose2d`, optional): Optional base waypoint: grasp while driving past.
 
 ## Outputs
@@ -33,7 +33,7 @@ The robot must hold an object for any later hand action.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
+Requires hand_empty(hand=right); base_near(place=$object). Depending on the bound nouns, the chosen path also needs: microwave_cavity (object.location == 'microwave_cavity'): is_open(articulated=@object.appliance); inside_cabinet_or_fridge (object.location in ['refrigerator', 'cabinet']): is_open(articulated=@object.appliance); pinch_requested (args.grasp in ['top', 'side']): grasp_clearance(object=$object); on_the_move (args.pass_by and 'top_pinch' in object.grasp_types): grasp_clearance(object=$object); two_hand_box (args.hands == 'both' and object.wide_box): hand_empty(hand=left); two_hand_flat (args.hands == 'both' and object.flat): hand_empty(hand=left); floor_top (object.on_floor and 'top_pinch' in object.grasp_types): on_floor(object=$object); flat_overhang_ready (object.flat and object.edge_ready): edge_overhang(object=$object); round_rim ('rim_pinch' in object.grasp_types): grasp_clearance(object=$object); top_pinch ('top_pinch' in object.grasp_types): grasp_clearance(object=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -66,7 +66,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `inside_cabinet_or_fridge` — when object.location in ['refrigerator', 'cabinet']
 
-1. `policy_061($object)`
+1. `policy_061($object, grasp=$grasp)`
 - extra precondition `is_open(articulated=@object.appliance)`
 - Annotation-selected grasp through the opened door.
 
@@ -74,6 +74,12 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 1. `policy_055($object)`
 - Handle pinch on request; a container held by its handle can swing, so carry it gently.
+
+### `pinch_requested` — when args.grasp in ['top', 'side']
+
+1. `policy_061($object, grasp=$grasp)`
+- extra precondition `grasp_clearance(object=$object)` (feasibility estimate: only recorded in the benchmark profiles)
+- Only the requested pinch kind (top / side); no other kind when it has none.
 
 ### `on_the_move` — when args.pass_by and 'top_pinch' in object.grasp_types
 

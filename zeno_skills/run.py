@@ -1,24 +1,21 @@
 """Executing a plan (docs/MOTION_ARCHITECTURE.md section 8): ``run`` takes the segments one by one
--- checks that each still holds in the world as it is now (``holds``), else builds the rest of the
+-- checks that each still holds in the world as it is now (primitives.holds), else builds the rest of the
 plan again from here with the skill's own builder, runs it, and reads the State back
 (``observe``).  It touches the simulator only through motion_state.Actuator (docs 2.5): the reads
 in ``observe``, the writes in ``execute``."""
 
 from __future__ import annotations
 
+import time
 from contextlib import ExitStack
+from dataclasses import replace
+from functools import partial
 
 import numpy as np
 
-from .motion_state import Failure, SkillFailure
-from .primitives import LEAVE_MARGIN, contact_extent, free_path, query
-
-PLAN_AT_START = 1e-3      # rad: the commanded arm this close (every joint) to where a segment starts is
-                          # there (q_cmd is a command: the posture a drive arrives in is set exactly)
-EXTENT_TOL = LEAVE_MARGIN / 2   # m: a contact exit measured again within this of the planned one is
-                          # that one -- its end still clears with half the margin, and it runs at most
-                          # this much further unchecked.  (One step, 2 mm, was the measure's own
-                          # resolution: 7 of the 13 rebuilds of the 11-08 run were +-1 step.)
+from .motion_state import KEPT_KINDS, Failure, SkillFailure, clearing, state_offset, with_arm
+from .primitives import aim_excess, holds, ride_base
+from .tolerances import TARGET_TOL
 
 
 def observe(act):
@@ -26,52 +23,24 @@ def observe(act):
     return act.snapshot()
 
 
-def holds(kin, state, seg):
-    """Why ``seg`` no longer holds in ``state``, or None: the arm not at its start (PLAN_AT_START);
-    a motion whose path is not free now (its Spec, the world as the state has it); a contact whose
-    extent measured again from here (contact_extent) ends elsewhere.  Actions and anchors always
-    hold; a drive holds while the arm is where it starts (its path is the base planner's, made from
-    this state when navigate was planned)."""
-    if seg.kind in ("action", "anchor"):
-        return None
-    q = state.q(kin.side)
-    if np.max(np.abs(q - np.asarray(seg.q_from, float))) > PLAN_AT_START:
-        return "the arm is not where the segment starts"
-    if seg.kind == "drive":
-        return None
-    if seg.spec.allow.from_contact:
-        from .skill_plans import TOUCHING
-        ext = contact_extent(kin, state, seg.spec, seg.info["u"], TOUCHING[seg.info["touching"]], seg.name,
-                             step=seg.info["step"], q_from=q)
-        if isinstance(ext, Failure):
-            return f"the contact measured again: {ext.why}"
-        if abs(ext.length - seg.info.get("length", 0.0)) > EXTENT_TOL:
-            return f"the contact measured again is {ext.length:.3f} m, planned {seg.info.get('length', 0.0):.3f} m"
-        return None
-    if not seg.qs:
-        return None
-    if not free_path(kin, state, seg.spec, [q] + list(seg.qs)):
-        with query(kin, state, seg.spec):
-            # where along it and into what
-            at = next((i for i, qi in enumerate(seg.qs) if not kin.free(qi)), None)
-            what = "" if at is None else f" at {at + 1}/{len(seg.qs)}: {kin.explain(seg.qs[at])}"
-            return "its path collides now" + (what or " (between waypoints)")
-    return None
-
-
 def execute(act, seg):
     """Run one segment through the Actuator, each declared to the contact monitor under its Allow
     first: an action (the gripper); a drive (the base along its paths, the arms switched where the
-    planner put it); the waypoints of an arm (a contact Allow with what the hand and its load touch
-    now), at its speed.  An anchor moves nothing and declares nothing."""
+    planner put it); a task segment by its executor (docs 5.5: "follow" the arm's IK continuation
+    open loop; "ride" the base at the script's function of the commanded s, closed on the measured
+    part -- a ride that stops short fails the skill, SkillFailure); the waypoints of an arm (a contact Allow with what the hand and its load
+    touch now), at its speed.  An anchor moves nothing and declares nothing.  Returns, for what the arm
+    follows (a move, a "follow" task segment), how far the TCP stopped off where it was sent
+    (Actuator.follow's result; None from an actuator that does not tell), else None."""
     if seg.kind == "anchor":
         return
     if seg.kind == "action":
         what = seg.action[0]
         if what == "grip":
             _, width, ticks, gradual = seg.action
-            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
-            act.grip(width, ticks if ticks is not None else _hz(), gradual=gradual)
+            side = seg.info.get("side", "right")
+            act.declare(seg.name, seg.spec.allow, side=side, follows=False)
+            act.grip(width, ticks if ticks is not None else _hz(), gradual=gradual, side=side)
             return
         if what == "wait":                      # let the world settle (an object let go), nothing moves
             act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
@@ -86,21 +55,78 @@ def execute(act, seg):
                         **({"posture": st[2]} if len(st) > 2 else {}))
                 act.drive_base(list(st[1]), allow=seg.spec.allow, **kw)
             else:
-                _, name, qr, ql = st
-                act.swing(qr, ql, f"{seg.name}_{name}")
+                _, name, posture = st
+                act.swing(posture, f"{seg.name}_{name}")
         return
+    if seg.kind == "scripted":
+        side = seg.info.get("side", "right")
+        act.declare(seg.name, seg.spec.allow, side=side)
+        if seg.info["executor"] == "follow":
+            return act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")),
+                              side=side)
+        if seg.info["executor"] == "ride":
+            script, tr = seg.info["script"], seg.info["track"]
+            base_at = partial(ride_base, script, seg.info["base0"])
+            out = act.ride(script.coupling.part, base_at, script.s0, script.s1, seg.name, lead=tr["lead"],
+                           rate=tr["rate"], done=tr["done"])
+            if not out.get("done"):
+                exc = SkillFailure(f"{seg.name}: {out.get('why', 'the ride stopped')}")
+                if seg.info.get("clear"):           # the exit the segment asks for (a handle let go, docs 8.6)
+                    clearing(exc, **seg.info["clear"])
+                raise exc
+            return
+        raise ValueError(f"unknown executor {seg.info['executor']}")
     if not seg.qs:
         return
     side = seg.info.get("side", "right")
     kin = act.arm_kin(side)
     allow = act.contact_allow(kin, seg.spec.allow) if seg.spec.allow.from_contact else seg.spec.allow
     act.declare(seg.name, allow, side=side)
-    act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
+    return act.follow(list(seg.qs), seg.info.get("steps_per_wp", 3), smooth=bool(seg.info.get("smooth")), side=side)
 
 
 def _hz():
     from .physics import PHYSICS_HZ
     return PHYSICS_HZ
+
+
+def _how_decided(seg):
+    """For the segment log: how the decisions a segment was built on were made, info["decided"]
+    {decision: "prior" kept | "solved" again} (decide_ik; the builder names them), if any."""
+    return {"decided": dict(seg.info["decided"])} if seg.info.get("decided") else {}
+
+
+def _aim_off(kin, state, seg):
+    """For the segment log of a contact pose's segment that holds (docs 9.3 step 2.1): [mm, deg] its
+    end stands further off its target than when built -- what PICK_TOL / PLACE_TOL judge -- and mm the
+    target itself moved since (primitives.aim_excess)."""
+    if seg.info.get("aim") is None:
+        return {}
+    ex = aim_excess(kin, state, seg)
+    return {} if ex is None else {"aim_off": [round(1000.0 * ex[0], 2), round(float(np.degrees(ex[1])), 3),
+                                              round(1000.0 * ex[2], 2)]}
+
+
+def _why_rebuilt(act, state, old):
+    """{name: why} for the motions an anchor's check built again (the anchor log): holds' reason for
+    the old segment from its own start in the State now, or "its start moved" when it would still
+    hold there (an earlier segment of the rest came out otherwise)."""
+    out = {}
+    for name, seg in old.items():
+        kin = act.arm_kin(seg.info.get("side", "right"))     # moves only (the anchor log's rebuilt)
+        why = holds(kin, with_arm(state, seg.q_from, kin.side), seg)
+        out[name] = "its start moved" if why is None else why[:160]
+    return out
+
+
+def _same_motion(a, b):
+    """Two motion segments with the same waypoints -- task segments also over the same interval of their
+    task quantity (a ride has no waypoints) -- for the anchor log."""
+    if b is None or len(a.qs) != len(b.qs) or not np.allclose(a.q_from, b.q_from) or \
+            not all(np.allclose(x, y) for x, y in zip(a.qs, b.qs)):
+        return False
+    sa, sb = a.info.get("script"), b.info.get("script")
+    return (sa is None) == (sb is None) and (sa is None or np.allclose((sa.s0, sa.s1), (sb.s0, sb.s1)))
 
 
 def run_clear(act, clear, exc):
@@ -123,8 +149,12 @@ def run_clear(act, clear, exc):
 def run(act, plan, rebuild, hooks=None, clear=None):
     """Run ``plan`` (motion_state.Plan): before each segment the State is read (observe) and the
     segment checked (holds); one that does not hold has the rest of the plan built again from here
-    by ``rebuild(state, segment name) -> Plan | Failure`` -- the skill's builder, the one the park
-    search used -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).
+    by ``rebuild(state, segment name, prior) -> Plan | Failure`` -- the skill's builder, the one the
+    park search used; ``prior`` the plan as it stands, its decisions kept where they still hold
+    (decide_ik) -- and a rest that cannot be built fails the skill (SkillFailure, no fallback).  At
+    an anchor (where an error comes in: the base arrived, the hand closed, the load let go) the
+    rest is built again from the State now the same way, the builder keeping as they are the
+    motions that still hold (docs 8.3); with no ``rebuild`` an anchor checks nothing ahead.
     ``act``: the motion_state.Actuator (the rig).  ``rebuild`` None: a segment that does not hold
     fails the skill (a plan nobody can build again, docs 8.8).
     ``hooks``: {segment name: {"around": context factory, "before": fn(act), "after": fn(act)}},
@@ -141,6 +171,7 @@ def run(act, plan, rebuild, hooks=None, clear=None):
 
 def _run(act, plan, rebuild, hooks):
     segs, done, i = list(plan.segments), [], 0
+    decisions = dict(plan.decisions)
     while i < len(segs):
         seg = segs[i]
         state = observe(act)
@@ -148,25 +179,64 @@ def _run(act, plan, rebuild, hooks):
         if why is not None:
             if rebuild is None:
                 raise SkillFailure(f"{seg.name}: {why}")
-            new = rebuild(state, seg.name)
-            act.log("segment", target=seg.name, reused=False, why=why,
-                    rebuilt=None if isinstance(new, Failure) else [s.name for s in new.segments])
+            # the plan as it stands: a copy, the decisions as of now (run's own dict goes on changing)
+            name = seg.name
+            new = rebuild(state, name, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
             if isinstance(new, Failure):
-                raise SkillFailure(f"{seg.name}: {why}; built again from here: {new.why}")
+                act.log("segment", target=name, reused=False, why=why, rebuilt=None)
+                raise SkillFailure(f"{name}: {why}; built again from here: {new.why}")
             segs = segs[:i] + list(new.segments)
+            decisions.update(new.decisions)
             seg = segs[i]
+            # the rebuilt segment run now has no event of its own: how it was decided goes here
+            act.log("segment", target=name, reused=False, why=why, rebuilt=[s.name for s in new.segments],
+                    **_how_decided(seg))
         else:
             act.log("segment", target=seg.name, reused=True, kind=seg.kind, waypoints=len(seg.qs),
-                    how=seg.info.get("how"))
+                    how=seg.info.get("how"), **_how_decided(seg),
+                    **_aim_off(act.arm_kin(seg.info.get("side", "right")), state, seg))
+        if seg.kind == "anchor":
+            # where an error comes in (docs 8.2): how the State read back stands off the one the plan
+            # assumed here (9.3 step 2.1: the log the error bounds are set from)
+            ev = {"target": seg.name}
+            if seg.info.get("assumed") is not None:
+                ev["off"] = state_offset(seg.info["assumed"], state, seg.info.get("watch", ()))
+            if rebuild is not None and i + 1 < len(segs):
+                # the rest checked whole from the State now -- the builder keeps every motion that
+                # still holds as it is and builds the others again
+                nxt, t0 = segs[i + 1].name, time.time()
+                new = rebuild(state, nxt, replace(plan, segments=tuple(segs), decisions=dict(decisions)))
+                if isinstance(new, Failure):
+                    act.log("anchor", **ev, kept=None, rebuilt=None, why=new.why, seconds=round(time.time() - t0, 3))
+                    raise SkillFailure(f"{seg.name}: the rest built again from here: {new.why}")
+                old = {sg.name: sg for sg in segs[i + 1:]}
+                kept = [sg.name for sg in new.segments if sg.kind in KEPT_KINDS and old.get(sg.name) is sg]
+                # made again but otherwise: a motion made again the same (the tuck, never kept) is no rebuild
+                rebuilt = [sg.name for sg in new.segments if sg.kind in KEPT_KINDS and sg.name not in kept
+                           and not _same_motion(sg, old.get(sg.name))]
+                ev.update(kept=kept, rebuilt=rebuilt, seconds=round(time.time() - t0, 3))
+                if rebuilt:
+                    ev["why_rebuilt"] = _why_rebuilt(act, state, {n: old[n] for n in rebuilt if n in old})
+                segs = segs[:i + 1] + list(new.segments)
+                decisions.update(new.decisions)
+            act.log("anchor", **ev)
         h = hooks.get(seg.name, {})
         if "before" in h:
             h["before"](act)
         with ExitStack() as st:
             if "around" in h:
                 st.enter_context(h["around"]())
-            execute(act, seg)
-        if "after" in h:
+            off = execute(act, seg)
+        if "after" in h:                        # a skill's own judgement first (pick's grasp: its failure exit)
             h["after"](act)
+        if off is not None and off > TARGET_TOL:
+            # it stopped short of where it was sent: something is in the way (the arm stops where the TCP no
+            # longer moves, Rig._settle) -- not a segment that ran (T05: a carry whose wrist never turned, the
+            # held book 25 cm off its pose through the drive and the place)
+            exc = SkillFailure(f"{seg.name}: the arm stopped {off:.3f} m short of where it was sent")
+            if seg.info.get("clear"):
+                clearing(exc, **seg.info["clear"])
+            raise exc
         done.append(seg)
         i += 1
     return done

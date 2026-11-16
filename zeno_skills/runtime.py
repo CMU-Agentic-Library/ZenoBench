@@ -82,7 +82,8 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
         prepare(stage)
     P.base_joints(stage)                # after prepare: it may move the robot's start
     from . import physx_contacts
-    physx_contacts.enable(stage, P.ASSET)   # the robot's real contacts (the contact monitor's ground truth)
+    # the robot's and the held objects' real contacts (the contact monitor's ground truth)
+    physx_contacts.enable(stage, P.ASSET, [o["body"] for o in ann.objects.values() if o.get("body")])
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / P.PHYSICS_HZ, device="cpu",
                                                               physics_prim_path="/World/PhysicsScene"))
     cams = {}
@@ -125,6 +126,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
     world = WorldModel(ann)
     kin.scene = world
     kin.motion = Motion(stage, ann)          # cuRobo against the stage's PhysX colliders
+    world.use_colliders(kin.motion.cols, kin.motion.body0.get)   # the base against the same colliders
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
               first_person_camera=first_person_camera, wrist_cameras=wrist)

@@ -5,9 +5,9 @@ a chain of postures ("modes", e.g. current -> tucked -> hanging -> tucked).  A m
 is the same as a later one's (the tuck and the arrival) passes to it where it stands without
 moving an arm: the modes between (hanging at the side, narrower) are a detour the search takes
 only where the path needs it.  A pose is feasible in a
-mode when the whole robot there is clear: the base column's footprint of the annotated furniture
-(WorldModel.footprints_clear -- the house's collision shells close doorways near the floor and
-the base collider is off in the simulator), both arms at that posture and what the hands hold of
+mode when the whole robot there is clear: the base's footprint, chassis and column, of the static
+colliders at their heights (WorldModel.footprints_clear, a hand-made shape: the base collider is
+off in the simulator and has no spheres in cuRobo), both arms at that posture and what the hands hold of
 the scene's real colliders (Motion.base_depths); a posture switch m -> m+1 is allowed at a pose
 where the straight joint interpolation between the two postures is.  A* finds the cheapest path from
 the start through every mode to the goal pose (or, without a goal, to the nearest pose where the
@@ -34,6 +34,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from .tolerances import DEPTH_TOL  # noqa: F401  (skills, skill_jobs read base_planner.DEPTH_TOL)
+
 RES = 0.05                  # m between lattice cells
 YAW_STEP = 15.0             # deg between lattice headings
 N_YAW = int(round(360 / YAW_STEP))
@@ -48,8 +50,6 @@ DENSE = 0.02                # m: the farthest any point of the robot moves betwe
 LAZY_ROUNDS = 40            # searches a plan may take, each cutting the edges the last path failed on
 MARGIN = 2.0                # m the search may stray beyond the start / goal box
 REGION_RADIUS = 1.0         # m around the start searched for a goal region
-DEPTH_TOL = 1e-4            # m: a penetration this shallow is clear (numerical slack of the sphere queries,
-                            # not a margin); every whole-body base check compares against it
 MAX_EXPAND = 200000          # lattice states one search may expand before it gives up (a budget, unmeasured)
 GREEDY = 2.5                # weighted A*: the heuristic counts this much (a path at most this much costlier
                             # than the cheapest, for far fewer expansions over a 4-D lattice)

@@ -61,6 +61,21 @@
    "scope": "all paths"
   },
   {
+   "predicate": "hand_empty(hand=left)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "left"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path loaded"
+  },
+  {
    "predicate": "hand_empty(hand=right)",
    "name": "hand_empty",
    "args": {
@@ -189,6 +204,42 @@
     "note": ""
    },
    {
+    "path_id": "loaded",
+    "when": [
+     {
+      "noun": "articulated",
+      "field": "has_handle",
+      "op": "truthy",
+      "value": true
+     },
+     {
+      "noun": "robot",
+      "field": "right_held",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_023",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "left"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": "The right hand holds a load: the left hand pushes the door shut (the body kept still)."
+   },
+   {
     "path_id": "handle_push",
     "when": [
      {
@@ -221,7 +272,7 @@
      }
     ],
     "ensures": [],
-    "note": ""
+    "note": "Every empty hand x {push the outer face, ride the handle (right)} in one park search."
    },
    {
     "path_id": "dispatch",

@@ -22,11 +22,13 @@ only: it never fails a skill, and it leaves the planner's state exactly as it fo
 
 With the monitor on it also reads, every tick, the robot's real contacts from PhysX
 (physx_contacts.py): each new robot link / entity pair the current motion's Allow does not
-permit is a ``physx_contact`` -- the ground truth the sphere model's checks approximate.  What a
-hand holds is left out.  And ``watch(name)`` follows one object every tick through a motion that
-must not touch it (the open hand's approach to a grasp): how far it moved and turned at most,
-logged as ``approach_watch`` (the disturbance check above, every MONITOR_EVERY ticks with 2 cm /
-20 deg, missed a fingertip knocking a mug 4 mm / 2.8 deg, and drops the picked object's record).
+permit is a ``physx_contact`` -- the ground truth the sphere model's checks approximate.  The
+hand touching what it holds is left out; what it holds touching the world is the pair
+``held:<object>`` / entity (judged by ``Allow.held_on``, as the sphere check has it).  And
+``watch(name)`` follows one object every tick through a motion that must not touch it (the open
+hand's approach to a grasp): how far it moved and turned at most, logged as ``approach_watch``
+(the disturbance check above, every MONITOR_EVERY ticks with 2 cm / 20 deg, missed a fingertip
+knocking a mug 4 mm / 2.8 deg, and drops the picked object's record).
 """
 
 from __future__ import annotations
@@ -36,23 +38,18 @@ from dataclasses import dataclass, replace
 
 import numpy as np
 
+from .tolerances import APPROACH_MOVED_M, APPROACH_TURN, CARRIED_M, MIN_DEPTH, MOVED_M, MOVED_TILT
+
 FINGER_LINKS = ("gripper_left_finger_link", "gripper_right_finger_link")
 HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 MONITOR_EVERY = 30          # ticks (4 per simulated second)
-MIN_DEPTH = 0.003           # m: shallower penetration is the sphere model's noise
 STILL = 1e-3                # rad / m: a robot that moved less since the last check is not checked again
 MAX_RECORDS = 200           # contact onsets / fallbacks kept per episode (the counts keep counting)
 # Disturbed objects: a movable object is pushed away at once, so a robot sphere never sinks into
 # it by MIN_DEPTH (a spoon carried along the island knocked a bottle over unseen); the monitor
-# watches the near objects' poses instead
-MOVED_M = 0.02              # m an object nobody holds may drift between checks...
-MOVED_TILT = 20.0           # ...or deg its up axis may tip (turning about it is not counted)
+# watches the near objects' poses instead (MOVED_M / MOVED_TILT / CARRIED_M; watch(): APPROACH_MOVED_M
+# / APPROACH_TURN -- all in tolerances.py)
 SETTLE_TICKS = 240          # an object just let go, or just knocked, settles (falls into a bin, rolls) this long
-CARRIED_M = 0.02            # m: an object that moved like a held one since the last check rides in / on it
-# watch(): an object the motion must not touch counts as moved past either (a fingertip knocking a
-# mug on its rim: 4 mm, 2.8 deg, T04 no_cup 2026-11-05; untouched, the mug stood within 0.01 mm)
-APPROACH_MOVED_M = 0.001
-APPROACH_TURN = 1.0         # deg, any axis
 
 
 @dataclass(frozen=True)
@@ -279,15 +276,23 @@ class Clearance:
     def _physx_tick(self):
         rig = self.rig
         pairs = self.physx.touching()
-        if not pairs and not self._px_live:
+        objects = getattr(rig.ann, "objects", {})
+        hands = {h["name"] for h in (getattr(rig, "held", None), getattr(rig, "left_held", None))
+                 if h and h.get("name") in objects and objects[h["name"]].get("body")}
+        # what the hands hold touching the world: link held:<name>, judged by Allow.held_on
+        body_of = {objects[n]["body"]: n for n in hands}
+        carried = self.physx.held_touching(body_of) if body_of and hasattr(self.physx, "held_touching") else {}
+        if not pairs and not carried and not self._px_live:
             return
         motion = getattr(rig.kin, "motion", None)
-        held = {h["name"] for h in (getattr(rig, "held", None), getattr(rig, "left_held", None)) if h}
+        held = set(hands)
         if motion is not None:
             held |= {o.split(":", 1)[1] for s in getattr(motion, "held", {}).values() for o in s}
         now = {}
-        for (link, path), (sep, imp) in pairs.items():
-            ent = motion.entity_of_path(path) if motion is not None else path
+        for (link, path), (sep, imp, at) in list(pairs.items()) + [((f"held:{body_of[b]}", p), v)
+                                                                     for (b, p), v in carried.items()]:
+            # named as the sphere check names it (a static collider by the furniture it is in)
+            ent = motion.entity_of_contact(path, at) if motion is not None else path
             if ent in held:
                 continue                             # the hand on what it holds (and what that carries)
             s0, i0, _ = now.get((link, ent), (float("inf"), 0.0, None))

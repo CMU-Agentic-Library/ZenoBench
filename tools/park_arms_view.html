@@ -1,0 +1,340 @@
+<title>Park Search Arm Overlays</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a working tool -- episode rail + facts on the left, the 3D scene filling the rest; stacked on phones */
+:root {
+  --bg: #eef0f2;
+  --panel: #f8f9fa;
+  --fg: #1c2127;
+  --muted: #5d6872;
+  --line: #d3d8dd;
+  --accent: #2563a8;
+  --hit: #d23a26;
+  --clear: #2f8a4c;
+  --goal: #d9a400;
+  --target: #df7d1f;
+  --part: #24919a;
+  --object: #4f7fcf;
+  --static: #7f8790;
+  --sphere: #8b95a1;
+  --scene: #f3f4f5;
+  --grid: #cfd4d9;
+  --rej-reach: #9aa0a6;
+  --rej-foot: #8e5bc4;
+  --rej-travel: #3f8fd1;
+  --rej-ik: #c98a12;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181c; --panel: #1b2026; --fg: #e3e7eb; --muted: #95a0aa; --line: #2d353d; --accent: #6aa5e8;
+    --hit: #f0604a; --clear: #4fb46d; --goal: #f1c232; --target: #f0943a; --part: #3fb4bd; --object: #7aa2e6;
+    --static: #8d96a0; --sphere: #a3adb8; --scene: #111417; --grid: #2a3138;
+    --rej-reach: #6f767d; --rej-foot: #a77fdb; --rej-travel: #67a9e3; --rej-ik: #e0a43a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181c; --panel: #1b2026; --fg: #e3e7eb; --muted: #95a0aa; --line: #2d353d; --accent: #6aa5e8;
+  --hit: #f0604a; --clear: #4fb46d; --goal: #f1c232; --target: #f0943a; --part: #3fb4bd; --object: #7aa2e6;
+  --static: #8d96a0; --sphere: #a3adb8; --scene: #111417; --grid: #2a3138;
+    --rej-reach: #6f767d; --rej-foot: #a77fdb; --rej-travel: #67a9e3; --rej-ik: #e0a43a; color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.45 var(--font-ui); }
+.app { height: 100%; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; }
+.rail { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; min-width: 0;
+  padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 16px;
+  display: flex; flex-direction: column; gap: 16px; }
+h1 { font-size: 17px; font-weight: 600; margin: 0; text-wrap: balance; }
+.lede { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.eps { display: flex; flex-direction: column; gap: 2px; }
+.ep { text-align: left; border: 1px solid transparent; background: none; color: var(--fg); font: inherit;
+  padding: 6px 8px; border-radius: 6px; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 8px;
+  align-items: baseline; }
+.ep:hover { border-color: var(--line); }
+.ep[aria-current="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.ep:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ep .n { font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+.pill { font: 500 11px var(--font-data); padding: 1px 6px; border-radius: 9px; white-space: nowrap;
+  color: var(--hit); background: color-mix(in srgb, var(--hit) 12%, transparent); }
+.pill.ok { color: var(--clear); background: color-mix(in srgb, var(--clear) 12%, transparent); }
+table.facts { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.facts td { padding: 3px 0; vertical-align: top; border-bottom: 1px solid var(--line); }
+.facts td:first-child { color: var(--muted); padding-right: 10px; width: 46%; }
+.facts td:last-child { font-family: var(--font-data); font-size: 12px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 12.5px; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.ctl { display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.ctl label { display: flex; align-items: center; gap: 8px; }
+.ctl input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+.ctl .v { font-family: var(--font-data); font-size: 12px; min-width: 3.5em; text-align: right; }
+.tabs { display: flex; gap: 6px; }
+.tabs button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--line);
+  background: none; color: var(--fg); cursor: pointer; }
+.tabs button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.stage { position: relative; min-width: 0; min-height: 0; background: var(--scene); }
+#c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#png { position: absolute; inset: 0; overflow: auto; padding: 12px; background: var(--scene); }
+#png img { width: 100%; max-width: 100%; height: auto; display: block; }
+.status { position: absolute; left: 12px; top: 12px; font-size: 12.5px; color: var(--muted); background: var(--panel);
+  border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px; }
+.hint { font-size: 12px; color: var(--muted); margin: 0; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 62vh auto; height: auto; }
+  .stage { grid-row: 1; height: 62vh; }
+  .rail { grid-row: 2; border-right: 0; border-top: 1px solid var(--line); overflow: visible;
+    padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div>
+      <h1>Park search: every candidate arm</h1>
+      <p class="lede">v6 sticky/gt seed 10, code c5b71ab. Picks that fail with "no reachable grasp from any base pose". Each search's first 600 ranked base poses: the arm at its ranking IK solution, all drawn on top of each other.</p>
+    </div>
+    <div>
+      <p class="label">Episode</p>
+      <div class="eps" id="eps"></div>
+    </div>
+    <div>
+      <p class="label">This search</p>
+      <table class="facts" id="facts"></table>
+    </div>
+    <div>
+      <p class="label">Legend</p>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--sphere)"></span>arm sphere, clear</span>
+        <span><span class="sw" style="background:var(--hit)"></span>arm sphere, penetrating</span>
+        <span><span class="sw" style="background:var(--goal)"></span>grasp relay pose</span>
+        <span><span class="sw" style="background:var(--target)"></span>target object</span>
+        <span><span class="sw" style="background:var(--clear)"></span>base, arm clear</span>
+        <span><span class="sw" style="background:var(--hit)"></span>base, arm penetrating</span>
+        <span><span class="sw" style="background:var(--part)"></span>door / drawer</span>
+        <span><span class="sw" style="background:var(--static)"></span>furniture, walls</span>
+      </div>
+      <p class="label" style="margin:10px 0 6px">Base poses rejected before any arm</p>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--rej-foot)"></span>base footprint hits</span>
+        <span><span class="sw" style="background:var(--rej-ik)"></span>no IK solution</span>
+        <span><span class="sw" style="background:var(--rej-reach)"></span>out of reach</span>
+        <span><span class="sw" style="background:var(--rej-travel)"></span>travel pose blocked</span>
+      </div>
+    </div>
+    <div class="ctl">
+      <p class="label" style="margin:0">View</p>
+      <div class="tabs">
+        <button id="t3d" aria-pressed="true">3D</button>
+        <button id="tpng" aria-pressed="false">Three flat views</button>
+      </div>
+      <label><input type="checkbox" id="onlyhit"> Only arms that penetrate</label>
+      <label><input type="checkbox" id="onlyclear"> Only arms that are clear</label>
+      <label><input type="checkbox" id="torso" checked> Include torso spheres</label>
+      <label><input type="checkbox" id="solid"> Solid furniture (not outlines)</label>
+      <label><input type="checkbox" id="rejon" checked> Rejected base poses</label>
+      <label>Opacity <input type="range" id="op" min="0.01" max="0.4" step="0.01" value="0.05"><span class="v" id="opv"></span></label>
+      <label>Arms <input type="range" id="n" min="1" max="600" step="1" value="600"><span class="v" id="nv"></span></label>
+      <p class="hint">Drag to orbit, right-drag to pan, scroll to zoom.</p>
+    </div>
+  </aside>
+  <main class="stage">
+    <canvas id="c"></canvas>
+    <div id="png" hidden><img id="pngimg" alt="Top view, view along the approach and side view of all candidate arms"></div>
+    <div class="status" id="status">Loading…</div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const status = $('status');
+  let index = [], data = null, cur = null, view = '3d';
+
+  // ---- three.js scene
+  const R = new THREE.WebGLRenderer({ canvas: $('c'), antialias: true });
+  R.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(45, 1, 0.01, 60);
+  cam.up.set(0, 0, 1);
+  const amb = new THREE.AmbientLight(0xffffff, 0.75); scene.add(amb);
+  const dl = new THREE.DirectionalLight(0xffffff, 0.5); dl.position.set(2, -3, 5); scene.add(dl);
+  const oc = new THREE.OrbitControls(cam, R.domElement);
+  const sg = new THREE.SphereGeometry(1, 10, 8);
+  const mClear = new THREE.MeshLambertMaterial({ transparent: true, depthWrite: false });
+  const mHit = new THREE.MeshLambertMaterial({ transparent: true, depthWrite: false });
+  let worldObjs = [], armObjs = [], fixed = [];
+
+  function colours() {
+    const c = k => new THREE.Color(css(k));
+    R.setClearColor(c('--scene'));
+    mClear.color = c('--sphere'); mHit.color = c('--hit');
+    return c;
+  }
+
+  function clearList(list) { list.forEach(o => { scene.remove(o); if (o.geometry && o.geometry !== sg) o.geometry.dispose(); }); return []; }
+
+  function buildWorld() {
+    worldObjs = clearList(worldObjs); fixed = clearList(fixed);
+    const c = colours(), solid = $('solid').checked;
+    const kc = { static: c('--static'), object: c('--object'), target: c('--target'), part: c('--part') };
+    data.world.forEach(w => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(w.v.flat(), 3));
+      g.setIndex(w.f.flat()); g.computeVertexNormals();
+      const isT = w.k === 'target';
+      if (isT || solid) {
+        const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: kc[w.k], transparent: !isT,
+          opacity: isT ? 1 : 0.22, side: THREE.DoubleSide, depthWrite: isT }));
+        scene.add(m); worldObjs.push(m);
+      }
+      const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 25),
+        new THREE.LineBasicMaterial({ color: kc[w.k], transparent: true, opacity: w.k === 'static' ? 0.45 : 0.9 }));
+      scene.add(e); worldObjs.push(e);
+    });
+    const G = data.goals; let cx = 0, cy = 0, cz = 0;
+    G.forEach(g => { cx += g[0]; cy += g[1]; cz += g[2]; }); const n = Math.max(G.length, 1); cx /= n; cy /= n; cz /= n;
+    const grid = new THREE.GridHelper(4, 40, c('--grid'), c('--grid'));
+    grid.rotation.x = Math.PI / 2; grid.position.set(cx, cy, 0); scene.add(grid); fixed.push(grid);
+    const gm = new THREE.MeshBasicMaterial({ color: c('--goal') }), gg = new THREE.SphereGeometry(0.009, 10, 8);
+    G.forEach(g => { const m = new THREE.Mesh(gg, gm); m.position.set(g[0], g[1], g[2]); scene.add(m); fixed.push(m); });
+    return [cx, cy, cz];
+  }
+
+  function buildArms() {
+    armObjs = clearList(armObjs);
+    const c = colours();
+    const onlyHit = $('onlyhit').checked, onlyClear = $('onlyclear').checked, torso = $('torso').checked;
+    const nmax = +$('n').value, op = +$('op').value;
+    $('nv').textContent = nmax; $('opv').textContent = op.toFixed(2);
+    mClear.opacity = op; mHit.opacity = Math.min(1, op * 2.2);
+    const arms = data.arms.slice(0, nmax).filter(a => !(onlyHit && !a.p) && !(onlyClear && a.p));
+    let nc = 0, nh = 0;
+    arms.forEach(a => a.s.forEach(s => { if (!torso && s[5]) return; s[4] ? nh++ : nc++; }));
+    const ic = new THREE.InstancedMesh(sg, mClear, Math.max(nc, 1)), ih = new THREE.InstancedMesh(sg, mHit, Math.max(nh, 1));
+    const M = new THREE.Matrix4(); let i = 0, j = 0;
+    arms.forEach(a => a.s.forEach(s => {
+      if (!torso && s[5]) return;
+      M.makeScale(s[3], s[3], s[3]); M.setPosition(s[0], s[1], s[2]);
+      if (s[4]) ih.setMatrixAt(j++, M); else ic.setMatrixAt(i++, M);
+    }));
+    ic.count = nc; ih.count = nh; ic.renderOrder = 1; ih.renderOrder = 2;
+    scene.add(ic); scene.add(ih); armObjs.push(ic, ih);
+    const pts = [], cols = [], ch = c('--hit'), cc = c('--clear');
+    arms.forEach(a => {
+      const [x, y, yaw] = a.b, t = yaw * Math.PI / 180, k = a.p ? ch : cc, L = 0.12;
+      const hx = x + L * Math.cos(t), hy = y + L * Math.sin(t);
+      pts.push(x, y, .003, hx, hy, .003, hx, hy, .003, hx - .04 * Math.cos(t - .5), hy - .04 * Math.sin(t - .5), .003,
+               hx, hy, .003, hx - .04 * Math.cos(t + .5), hy - .04 * Math.sin(t + .5), .003);
+      for (let q = 0; q < 6; q++) cols.push(k.r, k.g, k.b);
+    });
+    const bg = new THREE.BufferGeometry();
+    bg.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    bg.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+    const bl = new THREE.LineSegments(bg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55 }));
+    scene.add(bl); armObjs.push(bl);
+    status.textContent = `${arms.length} arms drawn`;
+  }
+
+  let rejObjs = [];
+  function buildRejected() {
+    rejObjs = clearList(rejObjs);
+    if (!$('rejon').checked || !data.rejected) return;
+    const c = colours(), kc = { out_of_reach: c('--rej-reach'), footprint: c('--rej-foot'),
+      travel_pose: c('--rej-travel'), ik: c('--rej-ik') };
+    Object.entries(data.rejected).forEach(([why, L]) => {
+      if (!L.length) return;
+      const pts = [];
+      L.forEach(([x, y, yaw]) => { const t = yaw * Math.PI / 180;
+        pts.push(x, y, .002, x + .05 * Math.cos(t), y + .05 * Math.sin(t), .002); });
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+      const m = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: kc[why], transparent: true, opacity: 0.45 }));
+      scene.add(m); rejObjs.push(m);
+    });
+  }
+
+  function fillFacts() {
+    const S = data.stats, row = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
+    const esc = s => String(s).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[ch]);
+    $('facts').innerHTML =
+      row('search', esc(S.label)) + row('base pose found', S.found ? esc(JSON.stringify(S.found)) : 'none') +
+      row('grasp goals', S.goals) + row('rejected: out of reach', S.out_of_reach) +
+      row('rejected: base footprint', S.footprint) + row('rejected: travel pose', S.travel_pose) +
+      row('rejected: no IK', S.ik) + row('with an IK solution', S.ranked) +
+      row('arms drawn', `${S.drawn} (${S.clear} clear)`) +
+      row('built', S.built + (S.built_why.length ? '<br>' + S.built_why.map(x => esc(x[0]) + ' ×' + x[1]).join('<br>') : '')) +
+      row('links penetrating, in how many arms', S.hits.map(x => esc(x[0]) + ' ' + x[1]).join('<br>') || '–');
+  }
+
+  function frame(cx, cy, cz) {
+    let bx = 0, by = 0; const A = data.arms;
+    A.forEach(a => { bx += a.b[0]; by += a.b[1]; });
+    const RB = Object.values(data.rejected || {}).flat();
+    if (A.length) { bx /= A.length; by /= A.length; }
+    else if (RB.length) { RB.forEach(b => { bx += b[0]; by += b[1]; }); bx /= RB.length; by /= RB.length; }
+    else { bx = cx - 1; by = cy; }
+    const dx = bx - cx, dy = by - cy, dn = Math.hypot(dx, dy) || 1;
+    cam.position.set(cx + 2.2 * dx / dn - 0.9 * dy / dn, cy + 2.2 * dy / dn + 0.9 * dx / dn, cz + 1.4);
+    oc.target.set((cx + bx) / 2, (cy + by) / 2, Math.max(cz - 0.2, 0.3)); oc.update();
+  }
+
+  async function load(id) {
+    cur = id; status.hidden = false; status.textContent = 'Loading…';
+    document.querySelectorAll('.ep').forEach(b => b.setAttribute('aria-current', b.dataset.id === id ? 'true' : 'false'));
+    try { if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id); } catch (e) {}
+    const r = await fetch(`data/${id}.json`);
+    if (!r.ok) { status.textContent = `Could not load data/${id}.json (${r.status})`; return; }
+    const d = await r.json(); if (cur !== id) return;
+    data = d;
+    // tag torso spheres (index 5) so they can be hidden
+    data.arms.forEach(a => a.s.forEach(s => { s[5] = s.length > 5 ? s[5] : 0; }));
+    $('n').max = Math.max(data.arms.length, 1); $('n').value = $('n').max;
+    fillFacts();
+    const e = index.find(x => x.id === id);
+    $('pngimg').src = e && e.png ? `data/${id}.png` : '';
+    $('tpng').disabled = !(e && e.png);
+    const [cx, cy, cz] = buildWorld(); buildArms(); buildRejected(); frame(cx, cy, cz);
+  }
+
+  function setView(v) {
+    view = v; $('t3d').setAttribute('aria-pressed', v === '3d'); $('tpng').setAttribute('aria-pressed', v === 'png');
+    $('png').hidden = v !== 'png'; $('c').style.visibility = v === '3d' ? 'visible' : 'hidden';
+  }
+
+  function resize() {
+    const st = document.querySelector('.stage'), w = st.clientWidth, h = st.clientHeight;
+    R.setSize(w, h, false); cam.aspect = w / Math.max(h, 1); cam.updateProjectionMatrix();
+  }
+
+  ['onlyhit', 'onlyclear', 'torso', 'op', 'n'].forEach(id => $(id).addEventListener('input', () => data && buildArms()));
+  $('solid').addEventListener('input', () => data && buildWorld());
+  $('rejon').addEventListener('input', () => data && buildRejected());
+  $('t3d').addEventListener('click', () => setView('3d'));
+  $('tpng').addEventListener('click', () => setView('png'));
+  addEventListener('resize', resize);
+  const retheme = () => { if (data) { buildWorld(); buildArms(); buildRejected(); } };
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme);
+  new MutationObserver(retheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && id !== cur && index.some(e => e.id === id)) load(id); });
+
+  (async function start() {
+    resize(); colours();
+    (function loop() { requestAnimationFrame(loop); R.render(scene, cam); })();
+    const r = await fetch('data/index.json');
+    if (!r.ok) { status.textContent = 'Could not load data/index.json'; return; }
+    index = await r.json();
+    $('eps').innerHTML = index.map(e => `<button class="ep" data-id="${e.id}"><span class="n">${e.title}</span>` +
+      `<span class="pill${e.clear ? ' ok' : ''}">${e.arms ? e.clear + '/' + e.arms + ' clear' : 'no IK at all'}</span></button>`).join('');
+    document.querySelectorAll('.ep').forEach(b => b.addEventListener('click', () => load(b.dataset.id)));
+    const h = location.hash.slice(1);
+    load(index.some(e => e.id === h) ? h : index[0].id);
+  })();
+})();
+</script>

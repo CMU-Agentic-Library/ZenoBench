@@ -17,10 +17,13 @@ from __future__ import annotations
 
 import math
 import xml.etree.ElementTree as ET
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
 from scipy.spatial.transform import Rotation
+
+from .tolerances import CARRY_TILT, REST_TOL, STOWED_TOL  # noqa: F401  (motion, skill_runtime, policies import them from here)
 
 ROOT = Path(__file__).resolve().parents[1]
 URDF = ROOT / "robot_sources/zeno_malo_description-master/zeno_malo_edu.isaac.urdf"
@@ -59,6 +62,26 @@ PAD_TIP = 0.12985 + 0.010 - TCP_DEPTH
 FINGER_JOINT_DEPTH = 0.12985   # finger joints below the gripper link (the finger link's origin)
 
 
+@contextmanager
+def kept_joints(kin, keep, values):
+    """Inside: ``kin``'s first len(keep) joints where ``keep`` is set pinned at ``values`` (lo = hi; the
+    collision backend gives a pinned joint a +-PIN band), every limit put back after -- the one place a
+    kept joint (motion_state.locked_body: the body while the other hand holds something) reaches the
+    kinematics, for the queries of a State (Motion.query) and the park search's ranking IK alike."""
+    keep = np.asarray(keep, bool)
+    if not keep.any():
+        yield
+        return
+    lo, hi = np.array(kin.lo, float).copy(), np.array(kin.hi, float).copy()
+    v = np.asarray(values, float)
+    try:
+        kin.lo[:len(keep)][keep] = v[keep]
+        kin.hi[:len(keep)][keep] = v[keep]
+        yield
+    finally:
+        kin.lo[:], kin.hi[:] = lo, hi
+
+
 def finger_model_box():
     """The planner's finger (its collision spheres, robot_sources/curobo/zeno_malo.yml) as a box in
     the frame of the pad box above: (half width across the closing plane, inner face, outer face --
@@ -94,9 +117,6 @@ def _finger_spheres():
 
 _FINGER_BOX = None
 _FINGER_SPH = None
-REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
-STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
-CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
 
 
 def gripper_rot(approach, close_dir):
@@ -122,14 +142,34 @@ def max_tilt(kin, R0, qs):
     return max((tilt(R0, kin.tcp(q)[1]) for q in qs), default=0.0)
 
 
+def carry_tilt_allowed(R0, R1):
+    """The one tilt rule of a held object, on every move from TCP orientation R0 to R1: it may tilt
+    from its start at most CARRY_TILT more than the goal itself does.  cuRobo's tilt-held plan
+    (motion.Arm.tilt_metric) holds the goal's tilt from the first step, so a plan holding it exactly
+    already tilts tilt(R0, R1) from the start: a bound of CARRY_TILT from the start left T23's place,
+    its goal 0.11 rad off the start, 0.04 rad (v6full_1113)."""
+    return CARRY_TILT + tilt(R0, R1)
+
+
+def holds_level(R0, R1):
+    """A move whose goal tilts at most CARRY_TILT from its start keeps the load level: one whose path
+    breaks the rule is planned again with the tilt held.  One tilted more turns the load on purpose
+    (a box set down on its side): the rule bounds its path as well, but there is no tilt to hold."""
+    return tilt(R0, R1) <= CARRY_TILT
+
+
+def tilts_too_far(kin, R0, R1, qs):
+    """The waypoints qs of a move from R0 to R1 tilt a held object more than carry_tilt_allowed."""
+    return max_tilt(kin, R0, qs) > carry_tilt_allowed(R0, R1)
+
+
 def tips_over(kin, qa, qb):
-    """The straight joint interpolation qa -> qb tilts a held object past CARRY_TILT while the goal
-    pose itself does not: such a move is planned with the tilt held instead."""
+    """The straight joint interpolation qa -> qb tilts a held object more than the one rule allows
+    (tilts_too_far): such a move is planned instead (motion.Motion._plan_js)."""
     qa, qb = np.asarray(qa, float), np.asarray(qb, float)
-    R0 = kin.tcp(qa)[1]
     k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
     dense = [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
-    return max_tilt(kin, R0, dense[::10] + [qb]) > CARRY_TILT and tilt(R0, kin.tcp(qb)[1]) <= CARRY_TILT
+    return tilts_too_far(kin, kin.tcp(qa)[1], kin.tcp(qb)[1], dense[::10] + [qb])
 
 
 def manipulability(kin, q):
@@ -319,7 +359,8 @@ class ArmKin:
         return self._motion().path_free(self, qs, self._other_q(), self.coll_kw)
 
     def path_free_only(self, qs, names):
-        """The arm without its fingers clear of the objects ``names`` along ``qs`` (Motion.path_free_only)."""
+        """The arm without its touching links clear of what they may touch (``names``: Spec.touch
+        entries, objects or parts) along ``qs`` (Motion.path_free_only)."""
         if self.scene is None:
             return True
         return self._motion().path_free_only(self, qs, names, self._other_q(), self.coll_kw)

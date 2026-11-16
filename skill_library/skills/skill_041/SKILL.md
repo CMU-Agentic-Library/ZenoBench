@@ -27,7 +27,7 @@ A door, drawer or appliance must be closed (before heating, after taking out).
 
 ## Applicability
 
-Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: handle_push (articulated.has_handle): hand_empty(hand=right); dispatch (always (default path)): hand_empty(hand=right).
+Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: loaded (articulated.has_handle and robot.right_held): hand_empty(hand=left); handle_push (articulated.has_handle): hand_empty(hand=right); dispatch (always (default path)): hand_empty(hand=right).
 
 ## Preconditions (checked on live GT state before moving)
 
@@ -58,11 +58,18 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 1. `policy_025($articulated)`
 
+### `loaded` — when articulated.has_handle and robot.right_held
+
+1. `policy_023($articulated)`
+- extra precondition `hand_empty(hand=left)`
+- The right hand holds a load: the left hand pushes the door shut (the body kept still).
+
 ### `handle_push` — when articulated.has_handle
 
 1. `policy_003()`
 2. `policy_023($articulated)`
 - extra precondition `hand_empty(hand=right)`
+- Every empty hand x {push the outer face, ride the handle (right)} in one park search.
 
 ### `dispatch` — when always (default path)
 

@@ -56,7 +56,7 @@ R 类不列。
 
 | 位置 | 内容 | 类 |
 |---|---|---|
-| `place` | 柜里层板：按门轴位置猜开口朝向，`search_near` 加手写偏置；离目标超过 1 m 就不按距离排序 | S |
+| `place` | 柜里层板：按门轴位置猜开口朝向，`search_near` 加手写偏置；离目标超过 1 m 就不按距离排序（11-13 删了门轴猜测：开口由标注的把手外法线给出） | S |
 | `place` | `kind == "corner"` 的分支（corner 捏取已删，死代码） | — |
 | `place` | `free_spots` 的 3 cm 网格、邻物余量 7 / 4.5 / 2 cm 和柜台内缩 4 cm 拍定（放下高度、`PLACE_APPROACH` 已不用） | 常数 |
 
@@ -212,7 +212,7 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | skills.py `_move_articulated` | 微波炉开门 park：`−0.555·along −0.25·outward`、yaw+15°；`n_best`：冰箱 1、微波炉 3、其他 10 |
 | skills.py `_pick_pinch_core` | `"breakfast_fridge/"` → 停车点种子 `(6.246, 2.337, 135)`；`"kitchen_microwave"` → `(4.8, 1.7, 150)`；按场景改 `max_tries`、`q_start`、`travel_q` |
 | skills.py `insert_microwave_cavity` | 微波炉放入的 4 个写死世界坐标 park |
-| skills.py `place` / `_behind_door_hint` | 门后层板：`search_near` +0.75 m、yaw+30°；角点内缩（6.2 重写时删） |
+| skills.py `place` / `_behind_door_hint` | 门后层板：`search_near` +0.75 m、yaw+30°；角点内缩（11-13 删：门后的层板走 `door_access`，和 pick 同一套） |
 | skills.py `approach_microwave_button` | 按键的写死 park 偏移 |
 | skills.py `clear_microwave_door_sweep` 等 | 给门让路的写死位姿 `(5.1, 1.6, 150)` |
 | skills.py `place_flat` | 书架：中段加分、短边 +0.4（6.2 删） |

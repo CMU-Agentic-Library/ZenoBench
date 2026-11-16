@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from zeno_skills.motion_state import State
+from zeno_skills.motion_state import State, chains
 import pytest
 
 from zeno_skills import skills
@@ -58,14 +58,15 @@ def test_joint_motion_rejects_limits_and_unsettled_result():
 
 def test_explicit_contact_policy_fixes_mode(monkeypatch):
     modes = []
-    monkeypatch.setattr(skills, "push", lambda *a, **kw: modes.append(kw["mode"]) or 0.12)
+    monkeypatch.setattr("zeno_skills.skill_jobs.slide.push_object",
+                        lambda *a, **kw: modes.append(kw["modes"]) or (a[3][0][0], 0.12))
     support = {"name": "table", "z": 0.7}
     rig = SimpleNamespace(held=None, ann=SimpleNamespace(objects={"book": {}}),
                           geo=SimpleNamespace(support_under=lambda name, state: support),
                           state=lambda: {})
     assert PushFromBehindPolicy(rig).execute("book", support, [1, 0], 0.12) == 0.12
     assert TopDragPolicy(rig).execute("book", support, [1, 0], 0.12) == 0.12
-    assert modes == ["push", "drag"]
+    assert modes == [("push",), ("drag",)]
     with pytest.raises(ValueError, match="unit vector"):
         TopDragPolicy(rig).execute("book", support, [2, 0], 0.12)
 
@@ -92,7 +93,7 @@ def test_local_base_motion_checks_sweep_and_measured_pose():
                           world=SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),
                           base_pose=lambda: tuple(pose), drive_base=drive, log=lambda *a, **k: None,
                           # motion_state.Actuator: the straight base move runs as a drive segment (run.execute)
-                          snapshot=lambda: State(base=tuple(pose), q_right=np.zeros(9), q_left=np.zeros(7)))
+                          snapshot=lambda: State(base=tuple(pose), **chains(np.zeros(9), np.zeros(7))))
     assert BaseRotateInPlacePolicy(rig).execute(15) == 15
     assert len(checked) >= 4 and np.isclose(checked[-1][2], np.radians(15))
     checked.clear()

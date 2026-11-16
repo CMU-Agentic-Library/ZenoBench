@@ -23,8 +23,8 @@ def _require_grasp(rig, name, kind):
 class PickPolicy(AtomicPolicy):
     """Choose pinch or push-then-edge grasp from the concrete object's annotation."""
 
-    def execute(self, name, *, max_candidates=12):
-        return skills.pick(self.rig, name, max_candidates=max_candidates)
+    def execute(self, name, *, max_candidates=12, grasp=None):
+        return skills.pick(self.rig, name, max_candidates=max_candidates, grasp=grasp)
 
 
 class TopPinchPickPolicy(AtomicPolicy):
@@ -111,7 +111,7 @@ class EdgePlacePolicy(AtomicPolicy):
         held = self.rig.held
         if held is None or held["name"] != name or held["kind"] != "edge":
             raise SkillFailure(f"edge place {name}: object is not edge-held")
-        return skills.place_flat(self.rig, name, support, hint)
+        return skills.place(self.rig, name, support, hint)
 
 
 class MicrowavePlacePolicy(AtomicPolicy):
@@ -164,7 +164,8 @@ class PushPolicy(AtomicPolicy):
             raise ValueError("push direction must be a horizontal unit vector")
         if not np.isfinite(distance) or distance <= 0:
             raise ValueError("push distance must be positive")
-        return skills.push(self.rig, name, surface, n, float(distance), label=label, enough=enough)
+        from ..skill_jobs.slide import push_object
+        return push_object(self.rig, name, surface, [(n, float(distance), enough)], label=label)[1]
 
 
 def _contact_direction(rig, name, support, direction, distance):
@@ -191,8 +192,9 @@ class PushFromBehindPolicy(AtomicPolicy):
 
     def execute(self, name, support, direction, distance, *, enough=None):
         surface, n = _contact_direction(self.rig, name, support, direction, distance)
-        return skills.push(self.rig, name, surface, n, distance, label="PUSH_FROM_BEHIND",
-                           enough=enough, mode="push")
+        from ..skill_jobs.slide import push_object
+        return push_object(self.rig, name, surface, [(n, distance, enough)], label="PUSH_FROM_BEHIND",
+                           modes=("push",))[1]
 
 
 class TopDragPolicy(AtomicPolicy):
@@ -204,5 +206,6 @@ class TopDragPolicy(AtomicPolicy):
         # Stop after that measured progress: extra contact legs can slip an
         # already moved object while re-parking the base.
         minimum = enough if enough is not None else max(0.01, float(distance) * 0.5)
-        return skills.push(self.rig, name, surface, n, distance, label="TOP_DRAG",
-                           enough=minimum, mode="drag")
+        from ..skill_jobs.slide import push_object
+        return push_object(self.rig, name, surface, [(n, distance, minimum)], label="TOP_DRAG",
+                           modes=("drag",))[1]

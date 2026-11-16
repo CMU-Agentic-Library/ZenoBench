@@ -12,7 +12,7 @@ from tests.test_primitives import FakeKin, _q
 from zeno_skills import motion_skills as MS
 from zeno_skills import primitives as P
 from zeno_skills import run as RUN
-from zeno_skills.motion_state import Failure, Hand, Held, Plan, State
+from zeno_skills.motion_state import Failure, Hand, Held, Plan, Posture, State, chains
 from zeno_skills.primitives import PoseSet
 from zeno_skills.skill_plans import Carry, plan_navigate, travel_chain
 
@@ -38,9 +38,9 @@ class Base:
         if self.blocked:
             return None, f"{label}: {self.blocked}"
         steps = [("drive", [tuple(goal)], "start")]
-        for name, (qr, ql) in chain:
-            if np.max(np.abs(qr - state.q_right)) > 0.02:
-                steps.append(("swing", name, qr, ql))
+        for name, p in chain:
+            if np.max(np.abs(p.q("right") - state.q("right"))) > 0.02:
+                steps.append(("swing", name, p))
         return steps, None
 
     def straight(self, state, target, label):
@@ -48,7 +48,7 @@ class Base:
 
 
 def _state(q=REST, ql=np.full(7, 0.5), held=None):
-    return State(base=(0.0, 0.0, 0.0), q_right=np.asarray(q, float), q_left=np.asarray(ql, float),
+    return State(base=(0.0, 0.0, 0.0), **chains(np.asarray(q, float), np.asarray(ql, float)),
                  hands={"right": Hand(0.0, held), "left": Hand(0.0)})
 
 
@@ -66,7 +66,7 @@ def test_an_empty_arm_out_tucks_first_to_the_first_free_of_fold_and_hanging():
     plan = _nav(_state(q=_q(0.5, 0.0, 0.5)))
     tuck = plan.segments[0]
     assert tuck.name == "tuck" and np.allclose(tuck.q_end, REST) and tuck.info["chosen"] == 0
-    assert plan.segments[1].kind == "drive" and np.allclose(plan.segments[1].q_from, REST)
+    assert plan.segments[1].kind == "drive" and np.allclose(Posture.from_vec(plan.segments[1].q_from).q("right"), REST)
     # the fold collides where it stands: hanging at the side
     k = Kin(wall=lambda p: np.allclose(p, REST[:3]))
     plan = plan_navigate(k, Kin("left"), _state(q=_q(0.5, 0.0, 0.5)), (1.0, 2.0, 90.0), Base())
@@ -103,7 +103,7 @@ def test_a_load_that_does_not_meet_them_is_planned_to_the_carry_goal_set_or_the_
     k.ik = [_q(0.4, -0.2, 1.0)]
     plan = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
     assert plan.segments[0].name == "carry_in" and plan.segments[0].info["smooth"]
-    assert np.allclose(plan.segments[1].q_from, plan.segments[0].q_end)
+    assert np.allclose(Posture.from_vec(plan.segments[1].q_from).q("right"), plan.segments[0].q_end)
     k.ik = [None]
     out = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
     assert isinstance(out, Failure) and out.segment == "carry_in" and "too low" in out.why
@@ -117,23 +117,25 @@ def test_a_blocked_drive_fails_the_plan():
 def test_the_travel_chain_hangs_only_empty_handed_and_keeps_a_load_as_it_is():
     chain = travel_chain(Kin(), Kin("left"), _state(q=_q(0.5, 0.0, 0.5)))
     assert [n for n, _ in chain] == ["fold", "hang", "arrive"]
-    assert np.allclose(chain[0][1][0], REST) and np.allclose(chain[1][1][0], DRIVE) and np.allclose(chain[1][1][1], LDRIVE[2:])
+    assert np.allclose(chain[0][1].q("right"), REST) and np.allclose(chain[1][1].q("right"), DRIVE) and \
+        np.allclose(chain[1][1].arms["left"], LDRIVE[2:])
     q = _q(0.4, -0.2, 0.9)
     chain = travel_chain(Kin(), Kin("left"), _state(q=q, held=Held("cup", np.eye(4))))
-    assert all(np.allclose(p[0], q) for _, p in chain)
+    assert all(np.allclose(p.q("right"), q) for _, p in chain)
 
 
 def test_a_drive_segment_runs_its_drives_and_swings_through_the_actuator(monkeypatch):
     seg = P.drive(Base(), _state(q=_q(0.5, 0.0, 0.5)), (1.0, 2.0, 90.0), travel_chain(Kin(), Kin("left"), _state()),
                   "navigate", speed=0.1)
-    assert seg.kind == "drive" and np.allclose(seg.q_end, REST)
+    assert seg.kind == "drive" and np.allclose(Posture.from_vec(seg.q_end).q("right"), REST)
     ran = []
     act = SimpleNamespace(log=lambda *a, **k: None, drive_base=lambda path, **kw: ran.append(("drive", path, kw)),
-                          swing=lambda qr, ql, label: ran.append(("swing", label)))
+                          swing=lambda posture, label: ran.append(("swing", label)))
     RUN.execute(act, seg)
     assert ran[0][0] == "drive" and ran[0][2]["speed"] == 0.1 and ("swing", "navigate_fold") in ran
-    assert RUN.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5)), seg) is None
-    assert RUN.holds(Kin(), _state(q=_q(0.9, 0.0, 0.5)), seg) is not None       # the arm is not where it starts
+    assert P.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5)), seg) is None
+    assert P.holds(Kin(), _state(q=_q(0.9, 0.0, 0.5)), seg) is not None       # the arm is not where it starts
+    assert P.holds(Kin(), _state(q=_q(0.5, 0.0, 0.5), ql=np.full(7, 0.9)), seg) is not None   # nor the left
 
 
 def test_the_catalog_names_each_skill_once_with_a_builder_and_a_job(tmp_path):
@@ -165,3 +167,17 @@ def test_a_higher_ride_asked_is_taken_when_reachable_else_the_load_rides_as_it_i
     k.ik = [None]                                            # out of reach: no failure, no motion
     plan = plan_navigate(k, Kin("left"), _state(q=_q(0.4, -0.2, 0.9), held=held), (1.0, 2.0, 90.0), Base(), carry=carry)
     assert [s.kind for s in plan.segments] == ["drive", "anchor"] and plan.info["carry"].startswith("kept: below")
+
+
+def test_navigates_rebuild_takes_the_prior_run_hands_it():
+    # run.run calls rebuild(state, segment name, prior) (docs 8): navigate's must take it too
+    from zeno_skills.skill_jobs.navigate import navigate_job
+    built = []
+
+    def plan_nav(kin, left_kin, st, pose, base, carry=None, arrive=None, label=None, start="arm"):
+        built.append(start)
+        return Plan(())
+    rig = SimpleNamespace(held=None, left_held=None, kin=None, left_kin=None, log=lambda *a, **k: None)
+    job = navigate_job(rig, {"pose": (1.0, 2.0, 90.0)}, _state(), SimpleNamespace(build=plan_nav))
+    plan, rebuild, hooks = job.ready(None)
+    assert isinstance(rebuild(_state(), "tuck", plan), Plan) and built == ["arm", "arm"]

@@ -5,7 +5,18 @@ from __future__ import annotations
 import math
 import numpy as np
 
+from ..motion_state import Posture
 from ..skills import _base_steps, _reachable
+
+
+def _pair(p):
+    """A posture as the base planner takes it, (right chain, left arm): a Posture, or that pair."""
+    return p.pair() if isinstance(p, Posture) else p
+
+
+def _posture(pair):
+    qr, ql = (np.asarray(v, float) for v in pair)
+    return Posture(qr[:2].copy(), {"right": qr[2:].copy(), "left": ql[-7:].copy()})
 
 
 class RigBase:
@@ -16,7 +27,8 @@ class RigBase:
         self.rig = rig
 
     def plan(self, state, goal, chain, label, quiet=False):
-        steps, used, why = _base_steps(self.rig, goal, chain, label, state=state, quiet=quiet)
+        steps, used, why = _base_steps(self.rig, goal, [(n, _pair(p)) for n, p in chain], label, state=state,
+                                       quiet=quiet)
         if steps is None:
             return None, why
         out = []
@@ -24,8 +36,8 @@ class RigBase:
             if st.kind == "drive":
                 out.append(("drive", [tuple(float(v) for v in w) for w in st.path[1:]], used[st.mode][0]))
             else:
-                name, (qr, ql) = used[st.mode + 1]
-                out.append(("swing", name, np.asarray(qr, float), np.asarray(ql, float)))
+                name, pair = used[st.mode + 1]
+                out.append(("swing", name, _posture(pair)))
         return out, None
 
     def straight(self, state, target, label):
@@ -39,17 +51,30 @@ class RigBase:
             return [0.0] * len(poses)
         posture = travel_chain(rig.kin, rig.left_kin, state)[0][1]
         return list(motion.base_depths(rig, np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses]),
-                                       motion.body_spheres(rig, [posture]))[0])
+                                       motion.body_spheres(rig, [posture.pair()]))[0])
+
+    def clear(self, state, poses):
+        """The base (chassis and column, collision.WorldModel.footprints_clear) clear of the static
+        world and of the parts where ``state`` has them, at each (x, y, yaw_deg) of ``poses``."""
+        world = self.rig.world
+        saved = {k: world.joint_q[k] for k in state.parts if k in world.joint_q}
+        try:
+            for k in saved:
+                world.set_joint(k, state.parts[k])
+            return [bool(v) for v in world.footprints_clear(
+                np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses], float))]
+        finally:
+            for k, v in saved.items():
+                world.set_joint(k, v)
 
     def reachable(self, state, poses):
         return _reachable(self.rig.world, state.base, poses)
 
     def drivable(self, state, goal):
-        from ..planner import plan_path
         from ..skill_plans import travel_chain
         rig = self.rig
         if rig.kin.motion is None:
-            return plan_path(rig.world, tuple(state.base), goal) is not None
+            return True            # no whole-body model to plan the drive with: the drive decides
         return self.plan(state, goal, travel_chain(rig.kin, rig.left_kin, state), "drivable", quiet=True)[0] is not None
 
 
@@ -61,7 +86,7 @@ def _straight_base_check(rig, state, target, label):
     tx, ty, tyaw = target
     tyaw = yaw + (tyaw - yaw + 180.0) % 360.0 - 180.0
     if motion is not None:
-        sph = motion.body_spheres(rig, [(state.q_right, state.q_left)])
+        sph = motion.body_spheres(rig, [state.posture().pair()])
         poses = base_planner.segment((x, y, math.radians(yaw)), (tx, ty, math.radians(tyaw)),
                                      float(np.max(np.hypot(sph[0][:, 0], sph[0][:, 1]))))
         us = np.linspace(0, 1, len(poses))

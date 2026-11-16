@@ -526,6 +526,56 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.place:place_job",
     "skill_id": "skill_018"
+   },
+   {
+    "name": "drop",
+    "shape": "pick_place",
+    "template": "plan_drop",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.drop:drop_job",
+    "skill_id": "skill_019"
+   },
+   {
+    "name": "open",
+    "shape": "part",
+    "template": "plan_door",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.door:open_job",
+    "skill_id": "skill_040"
+   },
+   {
+    "name": "close",
+    "shape": "part",
+    "template": "plan_push",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.door:close_job",
+    "skill_id": "skill_041"
+   },
+   {
+    "name": "push",
+    "shape": "contact",
+    "template": "plan_slide",
+    "park": true,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.slide:slide_job",
+    "skill_id": "skill_029"
+   },
+   {
+    "name": "stir",
+    "shape": "contact",
+    "template": "plan_stir",
+    "park": true,
+    "arrive": "carry",
+    "travel": "carry",
+    "job": "zeno_skills.skill_jobs.stir:stir_job",
+    "skill_id": "skill_038"
    }
   ]
  }

@@ -14,7 +14,6 @@ HERE = (0.5, 0.0, 0.0)          # 0.5 m from the target, facing it
 @pytest.fixture
 def fake(monkeypatch):
     monkeypatch.setattr(planner, "_ik_sequence", lambda kin, targets, q0=None: [np.zeros(9)])
-    monkeypatch.setattr(planner, "plan_path", lambda world, a, b: [a, b])
     kin = SimpleNamespace(set_base=lambda *a: None, coll_kw={})
     world = SimpleNamespace(footprint_clear=lambda x, y, yaw, **k: True)
     return kin, world

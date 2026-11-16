@@ -281,7 +281,7 @@ def test_lifts_is_only_for_a_motion_out_of_a_contact():
 
 def _physx_rig(logged, poses=None):
     motion = SimpleNamespace(held={"right": set(), "left": set()},
-                             entity_of_path=lambda path: path.strip("/").split("/")[2])
+                             entity_of_contact=lambda path, at=None: path.strip("/").split("/")[2])
     upright = np.array([1.0, 0.0, 0.0, 0.0])
     return SimpleNamespace(kin=SimpleNamespace(motion=motion, coll_kw={}), tick=0, held=None, left_held=None,
                            ann=SimpleNamespace(objects={n: {} for n in (poses or {})}),
@@ -299,9 +299,9 @@ def test_physx_contacts_log_each_new_touch_the_motion_does_not_permit():
     clear.skills = ["pick"]
     clear.motion("pick_close", Allow(checked=False, hand="right", touch=("mug",), reason="closing"))
     pad = "right_gripper_left_finger_link"
-    report.update({(pad, "/World/Tasks/mug/Asset/wall_88"): (0.0, 0.2),
-                   (pad, "/World/Tasks/mug/Asset/wall_89"): (0.001, 0.0),
-                   ("right_gripper_link", "/World/Appliances/kitchen_island/top"): (-0.001, 0.5)})
+    report.update({(pad, "/World/Tasks/mug/Asset/wall_88"): (0.0, 0.2, None),
+                   (pad, "/World/Tasks/mug/Asset/wall_89"): (0.001, 0.0, None),
+                   ("right_gripper_link", "/World/Appliances/kitchen_island/top"): (-0.001, 0.5, None)})
     for _ in range(3):
         rig.tick += 1
         clear.every_tick()
@@ -313,12 +313,42 @@ def test_physx_contacts_log_each_new_touch_the_motion_does_not_permit():
     report.clear()
     rig.tick += 1
     clear.every_tick()                                       # let go: a later touch is a new onset
-    report[("right_gripper_link", "/World/Appliances/kitchen_island/top")] = (0.0, 0.1)
+    report[("right_gripper_link", "/World/Appliances/kitchen_island/top")] = (0.0, 0.1, None)
     rig.held = {"name": "kitchen_island"}                    # (what a hand holds is never a contact)
     clear.every_tick()
     rig.held = None
     clear.every_tick()
     assert clear.counts["physx_unexpected"] == 2 and clear.counts["physx_by_leg"] == {"pick_close": 2}
+
+
+def test_what_the_hand_holds_touching_the_world_is_a_contact_of_held_object():
+    # a lid scraping a pot's rim (T17), a carried mug knocking a cup over (T04): the held object's
+    # own PhysX contacts, judged by Allow.held_on like the sphere check's held:<object>
+    logged = []
+    rig = _physx_rig(logged, {"pot_lid": [0.0, 0.0, 0.9]})
+    rig.ann.objects["pot_lid"]["body"] = "/World/Tasks/pot_lid/Asset"
+    held = {}
+    clear = Clearance(rig)
+    clear.monitor = True
+    clear.physx = SimpleNamespace(touching=lambda: {}, held_touching=lambda bodies: {k: v for k, v in held.items()
+                                                                                    if k[0] in bodies})
+    clear.skills = ["place"]
+    rig.held = {"name": "pot_lid"}
+    rim = ("/World/Tasks/pot_lid/Asset", "/World/Tasks/handled_cooking_pot/Asset/wall_22")
+    clear.motion("place_reach", FREE)
+    held[rim] = (0.0, 0.05, None)
+    rig.tick += 1
+    clear.every_tick()
+    (r,) = clear.summary()["physx_records"]
+    assert (r["link"], r["entity"], r["leg"]) == ("held:pot_lid", "handled_cooking_pot", "place_reach")
+    held.clear()
+    rig.tick += 1
+    clear.every_tick()
+    clear.motion("place_release", Allow(checked=False, held_on=("handled_cooking_pot",), reason="let go onto it"))
+    held[rim] = (0.0, 0.05, None)
+    rig.tick += 1
+    clear.every_tick()
+    assert clear.counts["physx_unexpected"] == 1 and clear.counts["physx_allowed"] == 1
 
 
 def test_watch_reports_how_far_the_object_moved_on_the_way():

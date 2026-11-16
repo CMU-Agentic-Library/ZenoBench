@@ -59,3 +59,21 @@ def test_carry_navigation_requires_the_correct_held_object(monkeypatch):
     monkeypatch.setattr(skills, "check_held", lambda rig, label: calls.append(label))
     policy.execute((1, 2, 0), name="cup")
     assert calls == [((1, 2, 0), "carry_navigate"), "carry_navigate_result"]
+
+
+def test_pick_grasp_request_keeps_only_that_pinch_and_never_falls_back(monkeypatch):
+    from zeno_skills.policies import PickPolicy
+    assets = {"block": {"grasps": [{"type": "top_pinch"}, {"type": "side_pinch"}]},
+              "toy": {"grasps": [{"type": "top_pinch"}]}}
+    ann = SimpleNamespace(objects={k: {"asset": k} for k in assets}, asset_of=lambda obj: assets[obj["asset"]])
+    rig = SimpleNamespace(ann=ann, held=None)
+    calls = []
+    monkeypatch.setattr(skills, "_pick_pinch", lambda rig, name, n, kinds: calls.append((name, kinds)))
+
+    PickPolicy(rig).execute("block", grasp="side")
+    PickPolicy(rig).execute("block", grasp="top")
+    PickPolicy(rig).execute("block")
+    assert calls == [("block", ("side_pinch",)), ("block", ("top_pinch",)), ("block", skills.PINCH_KINDS)]
+    with pytest.raises(SkillFailure, match="no side pinch"):
+        PickPolicy(rig).execute("toy", grasp="side")
+

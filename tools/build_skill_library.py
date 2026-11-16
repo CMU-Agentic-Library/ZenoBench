@@ -217,6 +217,11 @@ MOTION_SKILLS = [
     {"name": "navigate", "shape": "drive", "template": "plan_navigate", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.navigate:navigate_job"},
     {"name": "pick", "shape": "pick_place", "template": "plan_pick", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.pick:pick_job"},
     {"name": "place", "shape": "pick_place", "template": "plan_place", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.place:place_job"},
+    {"name": "drop", "shape": "pick_place", "template": "plan_drop", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.drop:drop_job"},
+    {"name": "open", "shape": "part", "template": "plan_door", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:open_job"},
+    {"name": "close", "shape": "part", "template": "plan_push", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:close_job"},
+    {"name": "push", "shape": "contact", "template": "plan_slide", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.slide:slide_job"},
+    {"name": "stir", "shape": "contact", "template": "plan_stir", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.stir:stir_job"},
 ]
 
 COMPOSITE_NOTES = [
