@@ -167,6 +167,7 @@ Actuator:
   declare(name, allow, side, follows)  # 向接触监视声明这一段（rig.clear.motion）
   contact_allow(kin, allow)            # 从接触出发时，按现在碰着什么收紧 Allow
   wait(ticks)                          # 什么都不动，让世界停稳若干物理步
+  aim_head(yaw, pitch, steps)          # 头的两个关节到 (yaw, pitch)，最多 steps 个物理步（不叫 head：Rig.head 是关节下标）
   # 读：observe 用，拼出一个 State（4.1）
   snapshot() -> State                  # sync_world + 底盘 + 指令关节角 + 头 + 手指宽度 + 握法
                                        # （实测关节角下的 TCP，4.1）+ 物体框 + 部件值
@@ -468,10 +469,11 @@ Script(coupling, s0, s1, step, tcp=None, carry="base" | "arm")      # primitives
 不动手臂、推进 `State` 的段：
 - `grip(width)`：合爪 → `holding`，松手 → `released`；
 - `wait(ticks)`：物体停稳，什么都不动（`place_settle`）；
+- `head(yaw, pitch, steps)`：转头（`perceive.head_segment`，感知类和 `run_skill` 开头的头摆正都经它，11-16）；手臂、底盘、手里的东西都不动，所以不向接触监视声明，前一段的 `Allow` 照旧；
 - `drive_part(部件, 值)`：电机开关门〔待加，第 8 步〕；
 - `toggle(电器, on/off)`〔待加，第 8 步〕。
 
-现在有 `grip` 和 `wait`；`run.execute` 遇到别的动作抛 `ValueError`。
+现在有 `grip`、`wait`、`head`；`run.execute` 遇到别的动作抛 `ValueError`。
 
 锚点不是动作，是单独的段种类（4.3、8.2）。
 

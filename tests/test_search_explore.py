@@ -162,3 +162,15 @@ def test_explore_furniture_drives_only_to_reachable_stand_offs_it_is_in_view_fro
     out = PC.ExploreFurniturePolicy(_furniture_rig()).execute("shelf")
     assert went == [(2.0, 0.0, 0.0)]
     assert out["layers"] == ["shelf/shelf_0", "shelf/top"]
+
+
+def test_the_head_moves_through_the_actuator_as_a_segment():
+    """drive_head is a head action segment run by run.execute (Actuator.aim_head), not a write to the rig; it
+    declares nothing to the contact monitor (the arms, base and hands do not move)."""
+    calls = []
+    act = SimpleNamespace(q=lambda: np.zeros(9), aim_head=lambda *a: calls.append(("head", *a)),
+                          declare=lambda *a, **k: calls.append(("declare",)))
+    seg = PC.head_segment(act, 0.3, -0.1, steps=60)
+    assert seg.kind == "action" and seg.action == ("head", 0.3, -0.1, 60)
+    PC.drive_head(act, 0.3, -0.1, steps=60)
+    assert calls == [("head", 0.3, -0.1, 60)]

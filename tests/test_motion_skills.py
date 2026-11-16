@@ -87,9 +87,9 @@ def test_a_skill_plans_with_the_head_straight_ahead(monkeypatch):
     head already there as it is."""
     rig, head, logs, seen = _rig(), {"head_yaw_joint": 0.3, "head_pitch_joint": 0.314}, [], []
 
-    def step(n=1):                                                     # the head reaches its command at once
-        head["head_yaw_joint"], head["head_pitch_joint"] = (float(v) for v in rig.head_cmd)
-    rig.head_cmd, rig.step, rig.head_q = np.zeros(2), step, lambda: dict(head)
+    def aim_head(yaw, pitch, steps=90):                                # the head reaches its command at once
+        head["head_yaw_joint"], head["head_pitch_joint"] = float(yaw), float(pitch)
+    rig.aim_head, rig.head_q, rig.q = aim_head, lambda: dict(head), lambda: rig.q_cmd
     rig.log = lambda label, **k: logs.append((label, k))
     plan = Plan((Segment("a", Spec(), rig.q_cmd, kind="anchor"),))
     monkeypatch.setattr(MS, "observe", lambda rig_: seen.append(rig_.head_q()) or _state(rig_))

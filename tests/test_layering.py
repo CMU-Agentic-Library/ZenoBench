@@ -67,7 +67,7 @@ def test_the_execution_reads_and_writes_the_simulator_only_through_the_actuator(
     calls = {n.func.value.id + "." + n.func.attr for n in ast.walk(ast.parse(src))
              if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and isinstance(n.func.value, ast.Name)
              and n.func.value.id == "act"}
-    actuator = {"act." + m for m in ("follow", "ride", "grip", "wait", "drive_base", "swing", "declare", "contact_allow",
+    actuator = {"act." + m for m in ("follow", "ride", "grip", "wait", "aim_head", "drive_base", "swing", "declare", "contact_allow",
                                      "snapshot", "arm_kin", "log")}
     assert calls and calls <= actuator, calls - actuator
     assert "rig." not in src

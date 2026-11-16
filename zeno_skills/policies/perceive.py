@@ -29,7 +29,6 @@ from ..perception import (HEAD_LIMITS, look_angles, project_to_head_camera,
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
 from ..rig import SkillFailure
-from ..tolerances import HEAD_AT
 
 # Exploration (ExploreRoomPolicy, ExploreFurniturePolicy); inherited, unmeasured: docs/COLLISION_PLAN.md §8.
 COVER_MIN_AREA = 0.05           # m^2: a support smaller than this is not a room-coverage target
@@ -45,13 +44,18 @@ SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a lo
                                 # centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
 
 
+def head_segment(rig, yaw, pitch, steps=90, name="head"):
+    """The head aimed at (yaw, pitch) rad as a plan segment: an action, nothing else moves
+    (run.execute -> Actuator.aim_head)."""
+    from ..motion_state import Segment, Spec
+    return Segment(name, Spec(), np.asarray(rig.q(), float), kind="action",
+                   action=("head", float(yaw), float(pitch), int(steps)))
+
+
 def drive_head(rig, yaw, pitch, steps=90):
-    rig.head_cmd = np.array([float(yaw), float(pitch)])
-    for _ in range(steps // 10):
-        rig.step(10)
-        hq = rig.head_q()
-        if abs(hq["head_yaw_joint"] - yaw) < HEAD_AT and abs(hq["head_pitch_joint"] - pitch) < HEAD_AT:
-            break
+    """Aim the head (head_segment, executed by run.execute like every other motion of a skill)."""
+    from ..run import execute
+    execute(rig, head_segment(rig, yaw, pitch, steps))
 
 
 def record_view(rig):

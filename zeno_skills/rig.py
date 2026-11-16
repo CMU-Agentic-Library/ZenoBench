@@ -17,7 +17,7 @@ from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
-from .tolerances import RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
+from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
@@ -977,6 +977,16 @@ class Rig:
     def wait(self, ticks):
         """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""
         self.step(int(ticks))
+
+    def aim_head(self, yaw, pitch, steps=90):
+        """The head to (yaw, pitch) rad (a head action segment): the command set, then at most ``steps``
+        physics ticks, in tens, until both head joints are within HEAD_AT of it."""
+        self.head_cmd = np.array([float(yaw), float(pitch)])
+        for _ in range(int(steps) // 10):
+            self.step(10)
+            hq = self.head_q()
+            if abs(hq["head_yaw_joint"] - yaw) < HEAD_AT and abs(hq["head_pitch_joint"] - pitch) < HEAD_AT:
+                break
 
     def declare(self, name, allow, side="right", follows=True):
         """The next motion to the contact monitor (Clearance.motion)."""
