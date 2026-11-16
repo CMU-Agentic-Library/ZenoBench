@@ -27,7 +27,6 @@
 
 | # | episode | 失败步骤 | 物体与几何 | 历史 |
 |---|---|---|---|---|
-| B4 | `T27_leftovers_to_fridge/s10_fridge_out_of_view_v6_fridge_out_of_view` | pick leftover_rice：no base pose reaches a push or a drag clear of its neighbours | leftover_rice（16 × 11 × 7 cm，长边沿 x）离 dining_table_2 的 -x 边只有 3 cm，只有这条边可行（需要推 8.5 cm）；机器人站在这一侧，得把手伸过饭盒、往自己身前拉。候选（11-15 dump，pushviz_1115）：footprint 拒 2074，IK 拒 465，构建 44 个全部失败——22 个 slide_down 下落时夹爪擦到饭盒 2–3 mm 或躯干贴到桌沿，19 个 slide_push 推的段一开始（s=0.02）就碰撞。**不像物理极限，更像 policy/摆放问题**：饭盒挪离桌边几厘米，或者让拉的动作留出余量，都可能解决 | xxxxx |
 | B6 | `T07_heat_oatmeal/s10_two_portions__counter_v6_two_portions__counter` | pick soup_pot：no pinch annotated (has ['handle_pinch']) | soup_pot（宽 26 cm）在 kitchen_counter_2/top，头顶有吊柜（净空 0.39 m）。只标了把手抓取点，而 pick 现在不支持抓把手 | xxxxx |
 
 ## 可修、已移出排除（2026-11-15）
@@ -36,15 +35,15 @@
 |---|---|---|
 | `T09_tomato_soup/s10_tomato_in_fridge__in_fridge_v6_tomato_in_fridge__in_fridge` | A7 | **已修**（88197712）：番茄从 y 3.30（冰箱正面往里 29 cm）挪到 y 3.14（离层板前沿 10 cm），pick 成功（sim 检查 fridgetomato_1115）。门开到 80° 或 92° 都没用 |
 | `T22_put_away_shopping/s10_juice_on_table_nominal` | A8 | 和番茄同一个原因：冰箱门开度有限，放置位置太靠里。改法同番茄，把冰箱里的目标位置往前挪（待改） |
-| `T26_kids_things_to_room/s10_where_in_room_v6_where_in_room` | B5 | **已修（未提交）**：书沿 14 cm 那边只能伸出 5.495 cm，比要求的 5.5 cm 差 0.05 mm；-x 端要推 46.5 cm，超过 45 cm 上限。在 new_tasks_v6.py 里把书转 90°（长边朝前沿）后，前沿只需推 6.9 cm，sim 检查 bookrot_1115 整条 episode 成功（11 步，700 s） |
-| `T27_leftovers_to_fridge/s10_rice_on_table_nominal`、`s10_which_is_leftover…`、`s10_two_leftovers__soup_on_table…` | B1–B3 | 检查了一条 episode：饭盒的长边没有朝向离它最近的桌边，所以推到桌边后伸出量不够。在 scene 里把饭盒转 90° 应该能解决（待改） |
+| `T26_kids_things_to_room/s10_where_in_room_v6_where_in_room` | B5 | **已修**（e3dcbb8）：书沿 14 cm 那边只能伸出 5.495 cm，比要求的 5.5 cm 差 0.05 mm；-x 端要推 46.5 cm，超过 45 cm 上限。在 new_tasks_v6.py 里把书转 90°（长边朝前沿）后，前沿只需推 6.9 cm，sim 检查 bookrot_1115 整条 episode 成功（11 步，700 s） |
+| `T27_leftovers_to_fridge/s10_rice_on_table_nominal`、`s10_which_is_leftover…`、`s10_fridge_out_of_view…` | B1、B2、B4 | **已修**（bf9c598）：饭盒 16 × 11 × 7 → 18 × 16 × 5 cm。边缘抓取要伸出 ≥ 5.5 cm 且重心留在桌面内 1.5 cm，所以朝桌边那条边至少 14 cm；原来 11 cm 的一边永远不行，7 cm 高时夹爪上下只剩约 5 mm。sim 检查 ricebox_1115：rice_on_table、which_is_leftover、fridge_out_of_view、fruit_stays_out 整条成功 |
+| `T27_leftovers_to_fridge/s10_two_leftovers__soup_on_table…` | B3 | 改尺寸后仍失败：slide_push 停在目标前 7 mm（1113/1115 是 6/12 mm），同 T27 still_eating、T07 in_glass_box（7–9 mm）。不是物理极限，是 slide_push 的到位问题（待查） |
 
 ## 放回统计的条件
 
 - A1–A3：杯子类容器需要从侧面斜着捏杯沿，或者支持侧捏；纸巾需要在 0.30 m 净空里能伸进去的预抓取姿态。
 - A4、A5：高处取物要能从侧面抓，或者把底盘位置和躯干高度一起搜索。
 - A6：在柜内层板上放置，要能找到可用的空位。
-- B4：见下方"可修、移出"里的 T27 说明；B4 另有邻近物体挡路的问题，待看候选可视化后再定。
 - B6：pick 支持 `handle_pinch`。
 
 每补上一项能力，就把对应条目移出本文档，并对这些 episode 做一次定向重跑。
