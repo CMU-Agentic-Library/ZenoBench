@@ -909,7 +909,7 @@ def T05(t):
     # fault.  Levels by cost_tiers: the seed's best total is 好, the next 次好, the rest 最不好
     LIST = "grandma_list"
     LIST_XY = (3.55, 6.45)
-    on_list = lambda x, dx=0.0: {"support": None, "z": 0.848 + 0.030, "xy": [LIST_XY[0] + dx, LIST_XY[1]],  # noqa: E731
+    on_list = lambda x, dx=0.0: {"support": None, "z": 0.848 + 0.035, "xy": [LIST_XY[0] + dx, LIST_XY[1]],  # noqa: E731
                                  "yaw_deg": 0.0}
     list_add = {LIST: {"asset": "notebook", **P(DT, *LIST_XY)}}
     on_desk = lambda x: [["on", x, DESK]]  # noqa: E731
@@ -979,7 +979,7 @@ def T05(t):
         # brother's pencil on it -- he is writing in it; the red book beside it is no notebook
         "notebook_in_use": ({**put("pen", BOOK, 1.15, -0.40)},
                             {**put("notebook_1", DT, 3.6, 6.5, asset="notebook"),
-                             "bro_pencil": {"asset": "pencil", "support": None, "z": 0.848 + 0.030, "xy": [3.6, 6.5],
+                             "bro_pencil": {"asset": "pencil", "support": None, "z": 0.848 + 0.035, "xy": [3.6, 6.5],
                                             "yaw_deg": 0.0},
                              **put("teddy_bear", TV, 7.35, 0.36, asset="teddy_bear"),
                              **put("book_red", DT, 3.65, 6.85, asset="book_red")},
@@ -1066,7 +1066,7 @@ def T05(t):
     return {
         "no_pen_pencil_in_use": dict(
             base="no_pen_pencil_away", control="e1_pencil_asked", conditions=["resource_in_use", "not_in_view"],
-            move={"pencil": on_list("pencil")}, add={**copy.deepcopy(list_add), SPARE: {"asset": "pen", **P(BOOK, 1.15, -0.40)}},
+            remove=["pen"], move={"pencil": on_list("pencil")}, add={**copy.deepcopy(list_add), SPARE: {"asset": "pen", **P(BOOK, 1.15, -0.40)}},
             goal={"all": [*on_desk(SPARE), *stays("pencil", LIST), ["hand_empty", "right"]]},
             watch=["pencil", SPARE, LIST],
             challenge="the only pencil lies on grandma's open list at the dining table (she is using it); a pen is "
