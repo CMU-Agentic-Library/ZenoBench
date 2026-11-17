@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1560 episodes remain (1160 of the 116 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1430 episodes remain (1070 of the 107 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -67,6 +67,7 @@
 | T10 | after_dinner_clear | task | 0/0 of 10 | - |
 | T10 | guests_coming | task | 0/0 of 10 | - |
 | T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
+| T10 | clear_table_for_dinner | task | 0/0 of 10 | - |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
 | T11 | no_apple_for_kid | task | 0/0 of 10 | - |
@@ -76,6 +77,11 @@
 | T12 | bins_capacity | task | 0/0 of 10 | - |
 | T12 | find_all_toys | task | 0/0 of 10 | - |
 | T12 | castle_stays | task | 0/0 of 10 | - |
+| T12 | his_things_whose | task | 0/0 of 10 | - |
+| T12 | his_things_by_kind | task | 0/0 of 10 | - |
+| T12 | his_room | task | 0/0 of 10 | - |
+| T12 | cup_to_bedside | task | 0/0 of 10 | - |
+| T12 | where_his_cup_is | task | 0/0 of 10 | low cabinet doors |
 | T13 | dishes_on_tv_stand | control | 0/0 of 10 | - |
 | T13 | no_cup | task | 0/0 of 10 | - |
 | T13 | copy_the_setting | task | 0/0 of 10 | - |
@@ -96,6 +102,8 @@
 | T18 | bowls_apart | task | 0/0 of 10 | low cabinet doors |
 | T18 | one_bowl | task | 0/0 of 10 | low cabinet doors |
 | T18 | bowl_in_use | task | 0/0 of 10 | low cabinet doors |
+| T18 | no_bowl | task | 0/0 of 10 | low cabinet doors |
+| T18 | plate_not_bowl | task | 0/0 of 10 | low cabinet doors |
 | T18 | door_stuck | task | 0/0 of 10 | low cabinet doors |
 | T19 | bin_on_bookcase | control | 0/0 of 10 | - |
 | T19 | lookalike_bin | task | 0/0 of 10 | - |
@@ -142,24 +150,3 @@
 | T25 | cold_one | task | 0/0 of 10 | - |
 | T25 | cups_for_two | task | 0/0 of 10 | low cabinet doors |
 | T25 | little_guest | task | 0/0 of 10 | - |
-| T26 | car_in_living_room | control | 0/0 of 10 | - |
-| T26 | whose | task | 0/0 of 10 | - |
-| T26 | where_in_room | task | 0/0 of 10 | - |
-| T26 | bear_to_bed | task | 0/0 of 10 | - |
-| T26 | two_bedrooms | task | 0/0 of 10 | - |
-| T28 | cup_on_counter | control | 0/0 of 10 | - |
-| T28 | which_bed | task | 0/0 of 10 | - |
-| T28 | where_his_cup_is | task | 0/0 of 10 | low cabinet doors |
-| T28 | cup_out_of_view | task | 0/0 of 10 | - |
-| T28 | already_there | task | 0/0 of 10 | - |
-| T29 | car_on_table | control | 0/0 of 10 | - |
-| T29 | belongs_on_table | task | 0/0 of 10 | - |
-| T29 | homework_on_table | task | 0/0 of 10 | - |
-| T29 | several | task | 0/0 of 10 | - |
-| T29 | which_table | task | 0/0 of 10 | - |
-| T30 | bowl_on_cabinet | control | 0/0 of 10 | - |
-| T30 | how_many | task | 0/0 of 10 | - |
-| T30 | bowls_in_cabinet | task | 0/0 of 10 | low cabinet doors |
-| T30 | bowl_put_away | task | 0/0 of 10 | low cabinet doors |
-| T30 | no_bowl | task | 0/0 of 10 | - |
-| T30 | bowl_not_plate | task | 0/0 of 10 | - |

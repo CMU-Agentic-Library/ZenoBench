@@ -1,7 +1,7 @@
 {
- "variants": 156,
- "episodes": 1560,
- "static_ok": 1560,
+ "variants": 143,
+ "episodes": 1430,
+ "static_ok": 1430,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -41,16 +41,16 @@
    "static_ok": 60
   },
   "T10_trash_the_can": {
-   "episodes": 80,
-   "static_ok": 80
+   "episodes": 90,
+   "static_ok": 90
   },
   "T11_collect_fruits": {
    "episodes": 40,
    "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 100,
+   "static_ok": 100
   },
   "T13_breakfast_setup": {
    "episodes": 40,
@@ -69,8 +69,8 @@
    "static_ok": 40
   },
   "T18_set_out_bowls": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 70,
+   "static_ok": 70
   },
   "T19_recycling": {
    "episodes": 40,
@@ -103,28 +103,12 @@
   "T25_drink_for_guest": {
    "episodes": 40,
    "static_ok": 40
-  },
-  "T26_kids_things_to_room": {
-   "episodes": 50,
-   "static_ok": 50
-  },
-  "T28_cup_to_bedside": {
-   "episodes": 50,
-   "static_ok": 50
-  },
-  "T29_clear_table_for_dinner": {
-   "episodes": 50,
-   "static_ok": 50
-  },
-  "T30_bowls_for_soup": {
-   "episodes": 60,
-   "static_ok": 60
   }
  },
  "categories": {
-  "control": 29,
+  "control": 25,
   "action_task": 8,
-  "task": 119
+  "task": 110
  },
- "tasks_sha1": "d78cf058dfa03ff46ee825c9f346d640bac6a38c"
+ "tasks_sha1": "258d2074a44017d4009781da20cd0d02e8391f4a"
 }

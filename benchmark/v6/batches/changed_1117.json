@@ -592,5 +592,185 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "his_things_whose",
+  "route": "v6_his_things_whose",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "his_things_by_kind",
+  "route": "v6_his_things_by_kind",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "his_room",
+  "route": "v6_his_room__room_south",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "variant": "his_room",
+  "route": "v6_his_room__room_east",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "cup_to_bedside",
+  "route": "v6_cup_to_bedside__bed_east",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "variant": "cup_to_bedside",
+  "route": "v6_cup_to_bedside__bed_south",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "variant": "cup_to_bedside",
+  "route": "v6_cup_to_bedside__already_there",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "where_his_cup_is",
+  "route": "v6_where_his_cup_is__in_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "variant": "where_his_cup_is",
+  "route": "v6_where_his_cup_is__on_counter",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "clear_table_for_dinner",
+  "route": "v6_clear_table_for_dinner__several",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "variant": "clear_table_for_dinner",
+  "route": "v6_clear_table_for_dinner__car",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "variant": "clear_table_for_dinner",
+  "route": "v6_clear_table_for_dinner__setting_only",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "variant": "clear_table_for_dinner",
+  "route": "v6_clear_table_for_dinner__homework",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "variant": "clear_table_for_dinner",
+  "route": "v6_clear_table_for_dinner__car_and_setting",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "no_bowl",
+  "route": "v6_no_bowl",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "plate_not_bowl",
+  "route": "v6_plate_not_bowl",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "one_bowl",
+  "route": "v6_one_bowl__mug",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 11,
+  "variant": "one_bowl",
+  "route": "v6_one_bowl__glass_box",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "bowl_in_use",
+  "route": "v6_bowl_in_use__oatmeal",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 11,
+  "variant": "bowl_in_use",
+  "route": "v6_bowl_in_use__tomatoes",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

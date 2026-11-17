@@ -3035,6 +3035,8 @@ def make_variant(t, fam, spec, case, cspec):
     placed = set(spec.get("move", {})) | set(cspec.get("move", {})) | set(spec.get("add", {})) | set(cspec.get("add", {}))
     if v.get("remove") and placed & set(v["remove"]):
         v["remove"] = sorted(set(v["remove"]) - placed)      # an object the base removes but this variant places
+    if v.get("remove") and v.get("move"):                # the base moves an object this variant takes out (11-17)
+        v["move"] = {k: m for k, m in v["move"].items() if k not in v["remove"]}
     for k in ("goal", "instruction", "instruction_zh", "watch", "handle_objects"):
         if k in base and k not in v:
             v[k] = copy.deepcopy(base[k])
@@ -3365,9 +3367,13 @@ def gt_sequence_fixes(task: dict) -> list:
 def build() -> dict:
     doc = json.loads(V5.read_text())
     from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
+    from benchmark.v6.new_tasks_v6 import MERGED, merged_families_for
     new = [t for t, _ in new_base_tasks()]       # T21-T30: base tasks of v6's own, built like the v5 ones
     for t in new:
         FAMILIES.setdefault(t["task_id"], lambda t, tid=t["task_id"]: families_for(tid))
+    for tid in MERGED:                           # 11-17: T26/T28 folded into T12, T29 into T10 (user)
+        own = FAMILIES[tid]
+        FAMILIES[tid] = lambda t, tid=tid, own=own: {**own(t), **merged_families_for(tid)}
     # 11-17: T15 book_face_up (turning a book over) is replaced by the new T15 cover_the_pot, in its place
     by_id = {t["task_id"]: t for t in new}
     swap = {"T15_book_face_up": "T15_cover_the_pot", "T16_rolling_pin_at_edge": "T16_pack_snack_box",  # 11-17

@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，66 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，86 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -84,7 +84,11 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T24 | 删掉 no_apples_for_him、fruit_out_of_view、two_kids（用户要求） | | | | 不用跑 |
 | T25 | 删掉 cup_elsewhere、drink_in_fridge、two_guests（用户要求，不是替换）；其余不变 | | | | 不用跑 |
 | T26 | 删掉 scattered（用户要求）；其余不变 | | | | 不用跑 |
-| T27 | **整个任务删掉**（剩菜进冰箱：没有替换，用户要求）；现在 29 个任务 | | | | 不用跑 |
+| T27 | **整个任务删掉**（剩菜进冰箱：没有替换，用户要求） | | | | 不用跑 |
+| T12 | 新变体 `his_things_whose`、`his_things_by_kind`、`his_room`（原 T26）、`cup_to_bedside`、`where_his_cup_is`（原 T28） | 布局照搬原任务（tidy_toys 场景，去掉 T12 自己的小车、鸭子、篮子） | 同原任务 | **场景换了**（kitchen_skills → tidy_toys，同一栋房子，没有岛台/冰箱/灶） | 未跑 |
+| T10 | 新变体 `clear_table_for_dinner`（原 T29 的 car_on_table / belongs_on_table / nothing_to_clear / several / homework_on_table 做 seed） | 布局照搬 T29 | 同原任务 | 低 | 未跑 |
+| T18 | 新变体 `no_bowl`、`plate_not_bowl`；one_bowl 加 mug、bowl_in_use 加 oatmeal 两个 seed（原 T30） | 马克杯在台面 (0.15, 7.85) 或矮柜里 (3.32, 0.40)；燕麦碗在矮柜 (3.60, 0.40) | 同 T18 | 低 | 未跑 |
+| T26/T28/T29/T30 | 并进 T12/T10/T18 后删掉；T26 car_in_living_room（= T12 对照）、bear_to_bed（= T12 bedtime_toy）、T28 cup_out_of_view、T29 which_table、T30 bowl_on_cabinet/bowl_put_away/how_many 没带过去。现在 25 个任务 | | | | 不用跑 |
 
 ## 我这边的约定
 

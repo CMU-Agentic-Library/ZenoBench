@@ -71,16 +71,15 @@ def test_cup_on_the_desk_beside_the_bed_passes():
         return [dict(s, args={**s["args"], **({"destination": "desk_1/top"} if s["args"].get("destination") == "bookcase_3/top" else {}),
                               **({"receptacle": "desk_1/top", "hint_xy": [0.20, -2.95]}
                                  if s["args"].get("receptacle") == "bookcase_3/top" else {})}) for s in st]
-    assert edited("T28", "cup_on_counter", to_desk) == []
+    assert edited("T12", "cup_to_bedside__bed_east", to_desk) == []   # was T28 (folded into T12, 11-17)
 
 
 DEPENDENT = [("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
-             pytest.param("T28", "where_his_cup_is", marks=pytest.mark.xfail(
+             pytest.param("T12", "where_his_cup_is", marks=pytest.mark.xfail(
                  strict=True, reason="11-10: once the cabinet closes with the hand free (navigate back, close), the "
                                      "in_cabinet route also solves on_counter (open, look, take the cup from the counter): "
                                      "it failed there only for closing away from the cabinet. User 11-10: keep it, "
-                                     "the route is the GT.")),
-             ("T30", "bowls_in_cabinet")]
+                                     "the route is the GT."))]
 
 
 @pytest.mark.parametrize("tid,vid", DEPENDENT)
@@ -113,9 +112,7 @@ def test_reference_routes_pass_the_gate():
     assert bad == []
 
 
-@pytest.mark.parametrize("tid,vid,kinds", [("T25", "cups_for_two", ("breakfast_cup", "breakfast_mug", "plastic_cup")),
-                                           ("T30", "bowls_in_cabinet", ("breakfast_bowl", "breakfast_cup",
-                                                                         "breakfast_mug", "plastic_cup"))])
+@pytest.mark.parametrize("tid,vid,kinds", [("T25", "cups_for_two", ("breakfast_cup", "breakfast_mug", "plastic_cup"))])
 def test_every_vessel_in_the_house_counts(tid, vid, kinds):
     """no hidden whitelist: every cup / mug (/ bowl) in the layout is one the goal's counts accept, so another
     reasonable vessel the robot finds does not fail it (the first kind always; the others where the layout falls
