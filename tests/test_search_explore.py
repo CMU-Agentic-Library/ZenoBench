@@ -345,8 +345,8 @@ def test_a_crouch_that_fails_fails_explore_furniture(monkeypatch):
     w = World(sees=lambda pose, p: p[2] > 0.9)                 # the top only, standing
     moves = []
 
-    def torso(rig, skill, target):
-        moves.append((skill, round(float(target), 2)))
+    def torso(rig, skill, target, as_far=False):
+        moves.append((skill, round(float(target), 2), as_far))
         if skill == "crouch":
             raise SkillFailure("torso_lift_joint: no collision-free trajectory to the joint goal (GRAPH_FAIL)")
     monkeypatch.setattr(PC, "torso", torso)
@@ -360,4 +360,4 @@ def test_a_crouch_that_fails_fails_explore_furniture(monkeypatch):
     rig.q = lambda: np.zeros(9)
     with pytest.raises(SkillFailure, match="torso_lift_joint"):
         PC.ExploreFurniturePolicy(rig).execute("shelf")
-    assert moves == [("crouch", -0.54), ("stand", 0.0)]         # down by the crouch skill, back up by stand
+    assert moves == [("crouch", -0.54, True), ("stand", 0.0, False)]     # as low as it goes, back up to where it was

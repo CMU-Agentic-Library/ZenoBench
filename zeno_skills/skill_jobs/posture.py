@@ -35,29 +35,37 @@ def body_job(rig, args, state, skill=None):
     """motion_skills.Job of crouch / stand / bend / straighten: the body joint ``args["joint"]``
     (torso_lift_joint, waist_pitch_joint) to ``args["target"]`` (m / rad, within its limits: ValueError
     otherwise), nothing else moving (Spec.joints, docs 4.2) -- the arms ride the body as they are and what
-    either hand holds with them, both arms' chains checked (plan_posture).  done(): the measured joint within
-    TORSO_AT / WAIST_AT of the target (SkillFailure otherwise), logged as posture_joint."""
+    either hand holds with them, both arms' chains checked (plan_posture).  ``args["as_far"]``: the target
+    is how far to go (a limit: the torso to its bottom, the waist bent fully) -- the posture ends where the
+    straight joint line toward it first meets the robot or the world (plan_posture's reach).  done(): the
+    measured joint within TORSO_AT / WAIST_AT of where the plan sent it (SkillFailure otherwise), logged as
+    posture_joint."""
     from ..skill_plans import plan_posture as _default
     plan_posture = skill.build if skill is not None else _default
-    joint = args["joint"]
+    joint, as_far = args["joint"], bool(args.get("as_far"))
     kin = rig.kin
     idx = kin.names.index(joint)
     target, lo, hi = float(args["target"]), float(kin.lo[idx]), float(kin.hi[idx])
     if not lo <= target <= hi:
         raise ValueError(f"{joint} target {target:.3f} outside [{lo:.3f}, {hi:.3f}]")
+    sent = {"to": target}          # where the plan (the last one built) takes the joint
 
     def build(st, frm):
         q = np.asarray(st.q(kin.side), float).copy()
         q[idx] = target
-        return plan_posture(kin, st, Joint(q), joints=(joint,), other=getattr(rig, "left_kin", None), name=joint,
-                            start=frm)
+        plan = plan_posture(kin, st, Joint(q), joints=(joint,), other=getattr(rig, "left_kin", None), name=joint,
+                            start=frm, reach=as_far)
+        if as_far and not isinstance(plan, Failure):
+            legs = [sg for sg in plan.segments if sg.kind == "move"]
+            sent["to"] = float(np.asarray(legs[-1].q_end if legs else st.q(kin.side), float)[idx])
+        return plan
 
     def done():
-        actual = float(rig.q()[idx])
-        if abs(actual - target) > AT[joint]:
-            raise SkillFailure(f"{joint}: actual {actual:.3f}, target {target:.3f}")
-        rig.log("posture_joint", joint=joint, target=round(target, 3), actual=round(actual, 3),
-                held=(rig.held or {}).get("name"))
+        actual, to = float(rig.q()[idx]), sent["to"]
+        if abs(actual - to) > AT[joint]:
+            raise SkillFailure(f"{joint}: actual {actual:.3f}, target {to:.3f}")
+        rig.log("posture_joint", joint=joint, target=round(target, 3), reached=round(to, 3) if as_far else None,
+                actual=round(actual, 3), held=(rig.held or {}).get("name"))
         return actual
     return _job(rig, state, build, joint, done)
 

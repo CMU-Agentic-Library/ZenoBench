@@ -88,3 +88,17 @@ def test_a_right_tuck_folds_the_body_too_a_left_one_the_arm_alone():
     grip, leg = plan.segments
     assert grip.kind == "action" and grip.action[:2] == ("grip", 0.04) and grip.info["side"] == "left"
     assert np.allclose(leg.q_end, np.r_[-0.3, 0.2, np.full(7, -0.7)])  # the body where it is
+
+
+def test_as_far_as_it_goes_ends_where_the_other_arm_first_meets_the_robot():
+    s = _state()
+    low = Left(wall=lambda p: p[0] < -0.3)                            # the left fold meets the chassis at -0.3
+    leg = plan_posture(Right(), s, _crouch(s, -0.54), joints=("torso_lift_joint",), other=low, name="crouch",
+                       reach=True).segments[0]
+    assert -0.31 < leg.q_end[0] <= -0.29 and np.allclose(leg.q_end[1:], np.r_[0.0, np.full(7, 0.3)])
+    out = plan_posture(Right(), s, _crouch(s, -0.54), joints=("torso_lift_joint",), other=low, name="crouch")
+    assert isinstance(out, Failure) and "collides at torso_lift_joint -0.3" in out.why       # asked exactly: fails
+    stuck = Left(wall=lambda p: True)
+    out = plan_posture(Right(), s, _crouch(s, -0.54), joints=("torso_lift_joint",), other=stuck, name="crouch",
+                       reach=True)
+    assert isinstance(out, Failure) and "cannot ride the body" in out.why

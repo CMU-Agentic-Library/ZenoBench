@@ -44,11 +44,12 @@ def look(rig, aims, face=None, label="look", on_view=None):
     return run_skill(rig, SKILLS["look"], {"aims": list(aims), "face": face, "label": label, "on_view": on_view})
 
 
-def torso(rig, skill, target):
+def torso(rig, skill, target, as_far=False):
     """Run a posture skill on the torso lift (crouch down, stand back up: motion_skills.run_skill) to ``target``
-    m, the arms riding the body as they are; SkillFailure where it cannot be made."""
+    m -- or (``as_far``) as far toward it as both arms ride the body free -- the arms riding the body as they
+    are; SkillFailure where it cannot be made."""
     from ..motion_skills import SKILLS, run_skill
-    return run_skill(rig, SKILLS[skill], {"joint": "torso_lift_joint", "target": float(target)})
+    return run_skill(rig, SKILLS[skill], {"joint": "torso_lift_joint", "target": float(target), "as_far": as_far})
 
 
 def aim_at(name, p, steps=LOOK_STEPS):
@@ -224,13 +225,14 @@ class ExploreFurniturePolicy(AtomicPolicy):
             look_once(label)
             if len(seen) == len(targets) or rig.held is not None:
                 return
-            # the crouch: the posture skills (9.3 step 5), the torso down to its limit and back to where it was.  A
-            # crouch that cannot be made here fails the exploration (docs rule 3; it used to be logged as
+            # the crouch: the posture skills (9.3 step 5), the torso as low as it goes -- toward its limit, as far as
+            # both arms ride the body free (the left arm's fold meets the chassis first) -- and back to where it
+            # was.  A crouch that cannot be made here fails the exploration (docs rule 3; it used to be logged as
             # explore_crouch_skip and the layers left unseen)
             idx = rig.kin.names.index("torso_lift_joint")
             q0 = min(max(float(rig.q()[idx]), float(rig.kin.lo[idx])), float(rig.kin.hi[idx]))   # measured: may sit past a limit
             try:
-                torso(rig, "crouch", rig.kin.lo[idx])
+                torso(rig, "crouch", rig.kin.lo[idx], as_far=True)
                 look_once(label + "_low")
             finally:
                 look(rig, HEAD_HOME, label=label + "_home")

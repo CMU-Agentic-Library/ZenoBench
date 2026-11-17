@@ -15,8 +15,8 @@ LO = np.r_[-0.54, 0.0, np.full(7, -3.0)]
 HI = np.r_[0.0, 0.69, np.full(7, 3.0)]
 
 
-def _rig(q=None, held=None, left_held=None, **kin):
-    r, l = Right(**kin), Left()
+def _rig(q=None, held=None, left_held=None, left_wall=None, **kin):
+    r, l = Right(**kin), (Left() if left_wall is None else Left(wall=left_wall))
     for k_, rest in ((r, np.r_[0.0, 0.0, np.full(7, -0.4)]), (l, np.r_[0.0, 0.0, np.full(7, -0.7)])):
         k_.lo, k_.hi, k_.rest = LO.copy(), HI.copy(), rest
     q = np.r_[0.0, 0.0, np.full(7, 0.3)] if q is None else np.asarray(q, float)
@@ -58,3 +58,12 @@ def test_a_tuck_of_a_loaded_hand_is_refused_and_a_left_tuck_opens_its_fingers_fi
     plan, _, hooks = tuck_job(rig, {"hand": "left"}, _state()).ready(None)
     assert [sg.name for sg in plan.segments] == ["left_fold_open", "left_fold"] and set(hooks) == {"left_fold"}
     assert tuck_job(rig, {"hand": "left"}, _state()).done() == pytest.approx(0.0)
+
+
+def test_a_crouch_as_low_as_it_goes_is_judged_against_where_its_plan_sent_it():
+    rig = _rig(q=np.r_[-0.30, 0.0, np.full(7, 0.3)], left_wall=lambda p: p[0] < -0.3)
+    job = body_job(rig, {"joint": "torso_lift_joint", "target": -0.54, "as_far": True}, _state())
+    plan, _, _ = job.ready(None)
+    assert -0.31 < plan.segments[0].q_end[0] <= -0.29
+    assert job.done() == pytest.approx(-0.30)                          # not -0.54: as far as both arms ride free
+    assert rig.logs[-1][1]["reached"] == pytest.approx(plan.segments[0].q_end[0], abs=1e-3)
