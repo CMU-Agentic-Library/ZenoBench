@@ -835,6 +835,7 @@ def T04(t):
                   "all": [["on_any", "oatmeal", KITCHEN], ["on_any", "pot_lid", KITCHEN], ["upright", "oatmeal"],
                           ["hand_empty", "right"]]},
             watch=[C, *MUGS, "oatmeal", "pot_lid"],
+            keep_design=[SPOT],                  # the seed leaves what fills the drinks spot as it is (checked full)
             factor="what fills the drinks spot (seed: the used bowl and lid, to clear; or the kid's play things, to "
                    "leave)",
             challenge="the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the "

@@ -69785,6 +69785,9 @@
       "pot_lid"
      ],
      "since": "v6",
+     "keep_design": [
+      "kitchen_cabinet_6/top"
+     ],
      "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
      "v6": {
       "family": "clear_the_drinks_spot",
@@ -69897,20 +69900,6 @@
          1.725,
          7.225,
          1.975
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.235,
-         3.46,
-         0.485
-        ],
-        [
-         3.54,
-         0.2722,
-         3.718,
-         0.4478
         ]
        ]
       },
@@ -75052,6 +75041,9 @@
       }
      },
      "since": "v6",
+     "keep_design": [
+      "kitchen_cabinet_6/top"
+     ],
      "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
      "v6": {
       "family": "clear_the_drinks_spot",
@@ -75169,44 +75161,6 @@
          1.6119,
          8.213,
          1.678
-        ]
-       ],
-       "kitchen_cabinet_6/top": [
-        [
-         3.21,
-         0.225,
-         3.41,
-         0.495
-        ],
-        [
-         3.4672,
-         0.22,
-         3.5728,
-         0.38
-        ],
-        [
-         3.48,
-         0.43,
-         3.52,
-         0.47
-        ],
-        [
-         3.54,
-         0.43,
-         3.58,
-         0.47
-        ],
-        [
-         3.6671,
-         0.215,
-         3.7329,
-         0.305
-        ],
-        [
-         3.6734,
-         0.37,
-         3.7266,
-         0.49
         ]
        ]
       },
