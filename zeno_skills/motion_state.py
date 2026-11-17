@@ -20,6 +20,7 @@ from .tolerances import MOVED_MM
 SIDES = ("right", "left")
 BODY_JOINTS = ("torso_lift_joint", "waist_pitch_joint")   # the joints both arms ride on (q_body)
 N_BODY = len(BODY_JOINTS)
+ARM = "arm"     # in Spec.joints: every arm joint of the segment's chain (kept)
 
 
 def other_side(side):
@@ -149,8 +150,9 @@ class Spec:
     """The collision rules of one segment.  ``fingers``: the hand's fingers in the collision model.
     ``exempt``: what the TCP target touches may be touched (the backend exempts by the target's
     position; never with a load in the hand).  ``hold_tilt``: a load in the hand keeps its tilt.
-    ``joints``: the planning-chain joints that may move, the rest kept where the segment starts;
-    None the rule of body_locked (the body kept while the other hand holds something).
+    ``joints``: the planning-chain joints that may move, by name (ARM: the arm's), every other joint of the
+    chain kept where the segment starts (kept); None the rule of body_locked (the body kept while the other
+    hand holds something, the arm free).
     ``arms_still``: both arms stay as they are relative to the base all along (a task segment that
     carries the base): the other hand's load rides on its held link in this arm's model rather than
     standing as an obstacle (Motion.query, docs 4.4).
@@ -170,16 +172,23 @@ class Spec:
     arms_still: bool = False
 
 
-def locked_body(state, spec, side):
-    """Per body joint (BODY_JOINTS): whether ``side``'s queries under ``spec`` keep it where ``state`` has it
-    (docs/MOTION_ARCHITECTURE.md 4.1, 4.2): Spec.joints names what may move (only the body joints in it
-    are read so far: a body joint not named is locked); None, the rule -- both locked while the other hand
-    holds something, which would ride the body along (a waist bowed 39 degrees to a cabinet door knocked
-    the load in the other hand out: skills._move_with_retry)."""
+def kept(state, spec, side, names=BODY_JOINTS):
+    """Per joint of ``names`` (a planning chain's joint names, the body's first: kin.names): whether
+    ``side``'s queries under ``spec`` keep it where ``state`` has it (docs/MOTION_ARCHITECTURE.md 4.1,
+    4.2).  Spec.joints names what may move, by joint name (ARM: every arm joint of the chain), and every
+    other joint of the chain is kept -- a posture segment moves one body joint, the arms riding it as they
+    are.  None, the rule: the body kept while the other hand holds something, which would ride the body
+    along (a waist bowed 39 degrees to a cabinet door knocked the load in the other hand out:
+    skills._move_with_retry); the arm free."""
     if spec is not None and spec.joints is not None:
-        return np.array([j not in spec.joints for j in BODY_JOINTS])
+        return np.array([not (n in spec.joints or (ARM in spec.joints and n not in BODY_JOINTS)) for n in names])
     held = state is not None and state.held(other_side(side)) is not None
-    return np.array([held] * N_BODY)
+    return np.array([held and n in BODY_JOINTS for n in names])
+
+
+def locked_body(state, spec, side):
+    """Per body joint (BODY_JOINTS): whether ``side``'s queries under ``spec`` keep it (kept)."""
+    return kept(state, spec, side)
 
 
 def body_locked(state, spec, side):

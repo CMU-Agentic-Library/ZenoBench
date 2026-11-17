@@ -10,7 +10,8 @@ from tests.test_park_search import Base, Kin as ParkKin
 from tests.test_primitives import FakeKin
 from zeno_skills import park_search as PS
 from zeno_skills import primitives as P
-from zeno_skills.motion_state import Hand, Held, Plan, Posture, Spec, State, body_locked, chains, with_arm, with_posture
+from zeno_skills.motion_state import (ARM, Hand, Held, Plan, Posture, Spec, State, body_locked, chains, kept,
+                                     with_arm, with_posture)
 from zeno_skills.primitives import Joint, JointSet
 
 
@@ -47,6 +48,37 @@ def test_the_body_is_locked_while_the_other_hand_holds_something_unless_the_spec
     assert not body_locked(_state(), Spec(), "left")
     assert not body_locked(s, Spec(joints=("torso_lift_joint", "waist_pitch_joint")), "left")
     assert body_locked(_state(), Spec(joints=()), "right")
+
+
+NAMES = ("torso_lift_joint", "waist_pitch_joint") + tuple(f"right_arm_joint{i}" for i in range(1, 8))
+
+
+class NamedKin(FakeKin):
+    names = list(NAMES)
+
+
+def test_spec_joints_names_what_moves_every_other_joint_of_the_chain_kept():
+    s = _state(right=Held("can", np.eye(4)))
+    assert list(kept(s, Spec(), "left", NAMES)) == [True, True] + [False] * 7          # the rule: the body
+    assert not kept(_state(), Spec(), "right", NAMES).any()
+    torso = kept(_state(), Spec(joints=("torso_lift_joint",)), "right", NAMES)
+    assert list(torso) == [False] + [True] * 8                                         # a posture segment
+    assert list(kept(_state(), Spec(joints=("torso_lift_joint", ARM)), "right", NAMES)) == [False, True] + [False] * 7
+    assert kept(_state(), Spec(joints=()), "right", NAMES).all()
+    assert list(kept(_state(), Spec(joints=("torso_lift_joint",)), "right")) == [False, True]   # locked_body's
+
+
+def test_a_joint_goal_keeps_the_joints_the_spec_leaves_out_and_so_does_decide_ik():
+    s = _state()
+    goal = np.r_[-0.5, 0.6, np.full(7, 0.9)]
+    seg = P.free_leg(NamedKin(), s, Spec(joints=("torso_lift_joint",)), Joint(goal), "crouch")
+    assert np.allclose(seg.q_end, np.r_[-0.5, 0.2, np.full(7, 0.3)])                  # only the torso went
+    assert all(np.allclose(q[1:], np.r_[0.2, np.full(7, 0.3)]) for q in seg.qs)
+    both = P.free_leg(NamedKin(), s, Spec(joints=("torso_lift_joint", ARM)), Joint(goal), "reach")
+    assert np.allclose(both.q_end, np.r_[-0.5, 0.2, np.full(7, 0.9)])                 # the waist kept
+    q, how = P.decide_ik(NamedKin(), s, Spec(joints=("torso_lift_joint", ARM)), np.r_[0.4, 0.2, 0.3], np.eye(3),
+                         prior=np.r_[0.4, 0.9, 0.3, np.full(6, 0.7)])
+    assert how == "prior" and np.isclose(q[1], 0.2) and np.allclose(q[3:], 0.7)        # its waist the state's
 
 
 def test_a_fold_of_one_arm_keeps_the_body_where_the_other_holds_something():

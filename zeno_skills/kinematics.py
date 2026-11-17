@@ -66,8 +66,9 @@ FINGER_JOINT_DEPTH = 0.12985   # finger joints below the gripper link (the finge
 def kept_joints(kin, keep, values):
     """Inside: ``kin``'s first len(keep) joints where ``keep`` is set pinned at ``values`` (lo = hi; the
     collision backend gives a pinned joint a +-PIN band), every limit put back after -- the one place a
-    kept joint (motion_state.locked_body: the body while the other hand holds something) reaches the
-    kinematics, for the queries of a State (Motion.query) and the park search's ranking IK alike."""
+    kept joint (motion_state.kept: the body while the other hand holds something, a joint Spec.joints
+    leaves out) reaches the kinematics, for the queries of a State (Motion.query) and the park search's
+    ranking IK alike."""
     keep = np.asarray(keep, bool)
     if not keep.any():
         yield

@@ -14,8 +14,8 @@ import time
 import numpy as np
 
 from ..clearance import Allow, closing
-from ..motion_state import (Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding, other_side,
-                            released, with_arm, with_part, with_width)
+from ..motion_state import (ARM, Aim, Failure, Held, Plan, Segment, Spec, aim_pose, at_base, decisions_of, holding,
+                            other_side, released, with_arm, with_part, with_width)
 from ..tolerances import BODY_SAME, DOOR_LEAVE, DOOR_TOL
 from ..primitives import (sided, Joint, JointSet, PartAt, Script, decide_ik, free_leg, ik_why, query, ride_base, scripted,
                           straight)
@@ -203,7 +203,7 @@ def _plan_push(kin, state, push, rest_goals, base, start, prior_plan, step):
         elif stage == "push_body":
             if s.held(other_side(side)) is None:
                 continue
-            free_torso = Spec(fingers=True, joints=TORSO)
+            free_torso = Spec(fingers=True, joints=TORSO + (ARM,))     # the waist kept, the torso and the arm free
             # the park search's ranking solved this very pose under the same locks (Problem.body_free): its
             # solution first (the prior), then a solve
             d = decide_ik(kin, s, free_torso, p + float(push["pre"]) * n_world, R,

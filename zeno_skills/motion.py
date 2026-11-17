@@ -48,7 +48,7 @@ from scipy.spatial.transform import Rotation
 from . import body_collision
 from . import scene_geometry as G
 from .kinematics import carry_tilt_allowed, holds_level, kept_joints, manipulability, max_tilt, tilts_too_far, tips_over
-from .motion_state import locked_body, other_side, touch_entries, touches
+from .motion_state import kept, other_side, touch_entries, touches
 from .tolerances import ACTIVATION, POS_TOL, ROT_TOL
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -935,8 +935,8 @@ class Motion:
         the collision rules of ``spec`` (docs/MOTION_ARCHITECTURE.md 4.4): the base, the other
         arm, the head and finger locks, what each hand holds (on its held link, not an obstacle to
         it), objects and parts where the state puts them, and kin.coll_kw from the spec.  The body
-        (torso, waist) is pinned where the state has it when it may not move (motion_state.body_locked:
-        the other hand holds something, docs 4.1).  What the other hand holds is an obstacle where
+        (torso, waist) is pinned where the state has it when it may not move (motion_state.kept: the other
+        hand holds something, docs 4.1), and so is every chain joint spec.joints leaves out (4.2).  What the other hand holds is an obstacle where
         the state puts it -- its TCP there times its hold -- or, under spec.arms_still (both arms ride
         rigidly with the base), on that hand's held link in this arm's model: a held link checks
         against the world but never against the arms (no self-collision pairs left), and the
@@ -955,7 +955,10 @@ class Motion:
                  "sph": dict(self._held_sph), "hand_off": dict(getattr(self, "other_hand_off", {}))}
         moved = {}
         cross = False
-        pin = kept_joints(kin, locked_body(state, spec, side), state.body) if hasattr(kin, "lo") else nullcontext()
+        # the chain's joints a segment may not move pinned where the state has them (motion_state.kept: the
+        # body while the other hand holds something; Spec.joints names what may move)
+        pin = (kept_joints(kin, kept(state, spec, side, kin.names), state.q(side)) if hasattr(kin, "lo")
+               else nullcontext())
         pin.__enter__()
         try:
             x, y, yaw = state.base
