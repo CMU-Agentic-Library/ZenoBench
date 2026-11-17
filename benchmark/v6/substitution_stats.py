@@ -1,8 +1,9 @@
 """Substitution statistics (11-17, user: keep the kinds of substitution balanced).
 
 Every seed (layout) of a reviewed design gets the kind of substitution it asks for (``KIND``, by the meeting's
-categories) and the best level it can offer (``top_by_layout`` from tasks.json: ideal / moderate / bad).  Writes
-SUBSTITUTION_STATS_zh.md: the counts per kind, per top level, per kind x level, and the list per task.
+categories) and whether the ideal thing is in the scene (``top_by_layout`` from tasks.json; 11-17, user: without
+it the best substitute scores 1.0 all the same).  Writes SUBSTITUTION_STATS_zh.md: the counts per kind, ideal
+present or not, kind x that, and the list per task.
 
     python benchmark/v6/substitution_stats.py
 """
@@ -35,7 +36,7 @@ KIND = {
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }
-LEVEL_ZH = {"ideal": "好", "moderate": "次好", "bad": "最不好"}
+IDEAL_ZH = {"ideal": "在", "moderate": "不在", "bad": "不在"}
 
 
 def main():
@@ -65,12 +66,13 @@ def main():
            f"{mean:.1f} 个。由 `python benchmark/v6/substitution_stats.py` 生成。", "",
            "## 每类替换的摆法数", "", "| 类别 | 摆法数 | 和平均的差 |", "|---|---|---|"]
     out += [f"| {k} | {by_kind[k]} | {by_kind[k] - mean:+.1f} |" for k in KINDS]
-    out += ["", "## 最高能拿到哪一档", "", "| 最高档 | 摆法数 |", "|---|---|"]
-    out += [f"| {LEVEL_ZH[lv]} | {by_top[lv]} |" for lv in ("ideal", "moderate", "bad")]
-    out += ["", "## 类别 × 最高档", "", "| 类别 | 好 | 次好 | 最不好 |", "|---|---|---|---|"]
-    out += [f"| {k} | " + " | ".join(str(by_both[(k, lv)]) for lv in ("ideal", "moderate", "bad")) + " |" for k in KINDS]
-    out += ["", "## 每个摆法", "", "| 任务 | 变体 | 摆法 | 类别 | 最高档 | D |", "|---|---|---|---|---|---|"]
-    out += [f"| {a} | {b} | {c or '—'} | {k or '不用替换'} | {LEVEL_ZH[top]} | {d} |" for a, b, c, k, top, d in rows]
+    present = Counter("在" if r[4] == "ideal" else "不在" for r in sub)
+    out += ["", "## 理想物在不在（不在时，最好的替代算好）", "", "| 理想物 | 摆法数 |", "|---|---|"]
+    out += [f"| {k} | {present[k]} |" for k in ("在", "不在")]
+    out += ["", "## 类别 × 理想物在不在", "", "| 类别 | 在 | 不在 |", "|---|---|---|"]
+    out += [f"| {k} | {by_both[(k, 'ideal')]} | {by_both[(k, 'moderate')] + by_both[(k, 'bad')]} |" for k in KINDS]
+    out += ["", "## 每个摆法", "", "| 任务 | 变体 | 摆法 | 类别 | 理想物 | D |", "|---|---|---|---|---|---|"]
+    out += [f"| {a} | {b} | {c or '—'} | {k or '不用替换'} | {IDEAL_ZH[top]} | {d} |" for a, b, c, k, top, d in rows]
     (HERE / "SUBSTITUTION_STATS_zh.md").write_text("\n".join(out) + "\n")
     print(f"wrote SUBSTITUTION_STATS_zh.md: {len(rows)} seeds, {len(sub)} with a substitution; "
           + ", ".join(f"{k} {by_kind[k]}" for k in KINDS))

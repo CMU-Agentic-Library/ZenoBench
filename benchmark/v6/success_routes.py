@@ -144,9 +144,10 @@ def main():
             sc = info.get("scoring")
             if sc:                                    # graded: every tier is success, the score differs
                 dl = sc.get("D_by_layout")
-                d_txt = (f"D 按摆法：" + "，".join(f"`{k.split('__', 1)[-1]}` D = {v}、最高档 "
-                                                 f"{ {'ideal': '好', 'moderate': '次好', 'bad': '最不好'}[sc['top_by_layout'][k]]}"
-                                                 for k, v in dl.items())) if dl else f"D = {sc['D']}"
+                d_txt = (f"D 按摆法：" + "，".join(f"`{k.split('__', 1)[-1]}` D = {v}、"
+                                                 + ("理想物在" if sc['top_by_layout'][k] == "ideal" else "理想物不在")
+                                                 for k, v in dl.items())
+                         + "；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好") if dl else f"D = {sc['D']}"
                 lines += [f"**成功条件**（{d_txt}；以下各档都算成功，分数不同）：", ""]
                 for tier in sc["tiers"]:
                     lines += [f"- **{TIER_ZH[tier['name']]}（{tier['score']}）**：", ""]

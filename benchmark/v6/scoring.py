@@ -228,10 +228,12 @@ def _layout_tiers(design: str, whys: dict, not_ok: str):
             import copy
             out = copy.deepcopy(task["v6_variants"][design]["scoring"])
             out.pop("D_by_layout", None), out.pop("top_by_layout", None)
+            out.pop("_seed_summary", None)
             return out
         lays = task["v6_variants"][design]["layouts"]
         case = lambda lid: lid.split("__", 1)[1] if "__" in lid else ""  # noqa: E731
-        return {"D": 1, "tiers": [
+        ideal = {lid: (per.get(lid) or per[case(lid)]).get("_ideal") for lid in lays}
+        return {"D": 1, **({"ideal_by_layout": ideal} if any(v is not None for v in ideal.values()) else {}), "tiers": [
             {"name": n, "score": sc, "goal": {"by_layout": {lid: (per.get(lid) or per[case(lid)])[n] for lid in lays}},
              "why": whys[n]}
             for n, sc in (("best", 1.0), ("second", 0.6), ("worst", 0.3))], "not_ok": not_ok}
@@ -682,17 +684,28 @@ def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | N
     return s
 
 
+SCORES = (1.0, 0.6, 0.3)
+
+
 def per_layout(s: dict, lid: str) -> dict:
-    """The design's scoring as one layout (seed) sees it (11-17): the levels that layout cannot offer (by_layout
-    goal NA) left out, ``D`` = 1 when more than one level is open there (a choice between substitutes), else 0;
-    ``top`` the best level open (with the ideal missing: moderate or bad, never promoted)."""
+    """The design's scoring as one layout (seed) sees it: the levels that layout cannot offer (by_layout goal NA)
+    left out, ``D`` = 1 when more than one level is open there, else 0.  11-17 (user, over the meeting's "no
+    promotion"): the best a seed offers is always the best tier -- with only substitutes there, the best substitute
+    scores 1.0 and the rest follow in order (0.6, 0.3); ``raw`` keeps each tier's level by the design, ``top`` the
+    raw level of the best one (ideal: the ideal thing is in the scene)."""
     import copy
     tiers = [copy.deepcopy(t) for t in s["tiers"]
              if not (isinstance(t.get("goal"), dict) and t["goal"].get("by_layout", {}).get(lid) == NA)]
-    out = {**copy.deepcopy(s), "tiers": tiers, "D": 1 if len(tiers) > 1 else 0,
-           "top": LEVEL[tiers[0]["name"]] if tiers else None}
+    top = LEVEL[tiers[0]["name"]] if tiers else None
+    if (s.get("ideal_by_layout") or {}).get(lid) is not None:  # cost_tiers ranks the seed's own totals
+        top = "ideal" if s["ideal_by_layout"][lid] else "moderate"
+    for i, t in enumerate(tiers):
+        t["raw"] = t["name"]
+        t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
+    out = {**copy.deepcopy(s), "tiers": tiers, "D": 1 if len(tiers) > 1 else 0, "top": top}
     out.pop("D_by_layout", None)
     out.pop("top_by_layout", None)
+    out.pop("ideal_by_layout", None)
     return out
 
 
