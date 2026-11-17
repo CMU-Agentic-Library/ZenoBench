@@ -150083,6 +150083,739 @@
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
      }
+    },
+    "basket_in_use": {
+     "conditions": [
+      "resource_in_use",
+      "storage_place"
+     ],
+     "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+     "instruction_zh": "我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。",
+     "add": {
+      "bought_juice": {
+       "asset": "juice_bottle",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "bought_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.995
+       ],
+       "yaw_deg": 0.0
+      },
+      "home_basket": {
+       "asset": "fruit_basket",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.78
+       ],
+       "yaw_deg": 0.0
+      },
+      "fruit_tray": {
+       "asset": "serving_tray",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.6,
+        1.75
+       ],
+       "yaw_deg": 0.0
+      },
+      "basket_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.874,
+       "xy": [
+        7.04,
+        1.74
+       ],
+       "yaw_deg": 0.0
+      },
+      "basket_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.874,
+       "xy": [
+        7.04,
+        1.82
+       ],
+       "yaw_deg": 0.0
+      },
+      "basket_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.874,
+       "xy": [
+        7.16,
+        1.74
+       ],
+       "yaw_deg": 0.0
+      },
+      "basket_toy": {
+       "asset": "toy_block",
+       "support": null,
+       "z": 0.874,
+       "xy": [
+        7.16,
+        1.82
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "bought_juice",
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
+       ],
+       [
+        "upright",
+        "bought_juice"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "inside",
+        "bought_apple",
+        "fruit_tray"
+       ],
+       [
+        "inside",
+        "basket_block_1",
+        "home_basket"
+       ],
+       [
+        "inside",
+        "basket_block_2",
+        "home_basket"
+       ],
+       [
+        "inside",
+        "basket_block_3",
+        "home_basket"
+       ],
+       [
+        "inside",
+        "basket_toy",
+        "home_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bought_juice",
+      "bought_apple",
+      "home_basket",
+      "fruit_tray",
+      "basket_block_1",
+      "basket_block_2",
+      "basket_block_3",
+      "basket_toy"
+     ],
+     "since": "v6",
+     "note": "juice and an apple on the dining table; the fruit basket on the island holds the kid's toy blocks (he uses it as his toy box), an empty serving tray stands beside it",
+     "v6": {
+      "family": "basket_in_use",
+      "case": null,
+      "challenge": "juice and an apple on the dining table; the fruit basket on the island holds the kid's toy blocks (he uses it as his toy box), an empty serving tray stands beside it",
+      "rationale": "the basket is in use for the kid's toys: leave his blocks in it and put the apple in the tray; the juice into the fridge",
+      "control": "juice_on_table",
+      "contrast": null,
+      "factor": "the seed's layout only",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "bought_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.9171,
+         6.963,
+         2.9789,
+         7.027
+        ],
+        "dx": [
+         -0.11,
+         0.85
+        ],
+        "dy": [
+         -1.45,
+         0.91
+        ],
+        "pick": [
+         "bought_apple"
+        ]
+       },
+       {
+        "names": [
+         "bought_juice"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.919,
+         6.666,
+         2.977,
+         6.724
+        ],
+        "dx": [
+         -0.12,
+         0.85
+        ],
+        "dy": [
+         -1.16,
+         1.22
+        ],
+        "pick": [
+         "bought_juice"
+        ]
+       },
+       {
+        "names": [
+         "basket_block_1",
+         "basket_block_2",
+         "basket_block_3",
+         "basket_toy",
+         "fruit_tray",
+         "home_basket"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.9544,
+         1.5709,
+         7.81,
+         1.9291
+        ],
+        "dx": [
+         -0.4,
+         0.44
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice away, the apple in the tray, the kid's blocks left in the basket, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "basket_in_use": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "fruit_tray"
+            ],
+            [
+             "inside",
+             "basket_block_1",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_2",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_3",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_toy",
+             "home_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the same, a door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "basket_in_use": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "basket_block_1",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_2",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_3",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_toy",
+             "home_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "home_basket"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the apple put in the basket among the kid's toys"
+       }
+      ],
+      "not_ok": "the kid's blocks taken out of the basket; an item left on the table or not put away; the juice lying; still held or dropped"
+     }
+    },
+    "basket_out_of_reach": {
+     "conditions": [
+      "agent_ability",
+      "storage_place"
+     ],
+     "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+     "instruction_zh": "我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。",
+     "add": {
+      "bought_juice": {
+       "asset": "juice_bottle",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "bought_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.995
+       ],
+       "yaw_deg": 0.0
+      },
+      "home_basket": {
+       "asset": "fruit_basket",
+       "support": "large_shelf_6/top",
+       "xy": [
+        5.12,
+        8.42
+       ],
+       "yaw_deg": 90.0
+      },
+      "fruit_tray": {
+       "asset": "serving_tray",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.2,
+        1.75
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "bought_juice",
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
+       ],
+       [
+        "upright",
+        "bought_juice"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "inside",
+        "bought_apple",
+        "fruit_tray"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bought_juice",
+      "bought_apple",
+      "home_basket",
+      "fruit_tray"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "large_shelf_6/top"
+     ],
+     "note": "juice and an apple on the dining table; the fruit basket stands on top of the tall kitchen shelf (1.41 m), out of reach; a serving tray on the island",
+     "v6": {
+      "family": "basket_out_of_reach",
+      "case": null,
+      "challenge": "juice and an apple on the dining table; the fruit basket stands on top of the tall kitchen shelf (1.41 m), out of reach; a serving tray on the island",
+      "rationale": "the basket cannot be reached: put the apple in the tray instead; the juice into the fridge",
+      "control": "juice_on_table",
+      "contrast": null,
+      "factor": "the seed's layout only",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "bought_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.9171,
+         6.963,
+         2.9789,
+         7.027
+        ],
+        "dx": [
+         -0.11,
+         0.85
+        ],
+        "dy": [
+         -1.45,
+         0.91
+        ],
+        "pick": [
+         "bought_apple"
+        ]
+       },
+       {
+        "names": [
+         "bought_juice"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.919,
+         6.666,
+         2.977,
+         6.724
+        ],
+        "dx": [
+         -0.12,
+         0.85
+        ],
+        "dy": [
+         -1.16,
+         1.22
+        ],
+        "pick": [
+         "bought_juice"
+        ]
+       },
+       {
+        "names": [
+         "fruit_tray"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.99,
+         1.5709,
+         7.41,
+         1.9291
+        ],
+        "dx": [
+         -0.44,
+         0.83
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the basket out of reach: the apple in the tray on the island, the juice away, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "basket_out_of_reach": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "fruit_tray"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the task done, but a door left open"
+       }
+      ],
+      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
+     }
     }
    },
    "watch": [
@@ -150132,7 +150865,9 @@
     "not_shopping": "v6_not_shopping",
     "two_spots": "v6_two_spots",
     "tray_elsewhere__orange_in_it": "v6_tray_elsewhere__orange_in_it",
-    "tray_elsewhere__books_on_it": "v6_tray_elsewhere__books_on_it"
+    "tray_elsewhere__books_on_it": "v6_tray_elsewhere__books_on_it",
+    "basket_in_use": "v6_basket_in_use",
+    "basket_out_of_reach": "v6_basket_out_of_reach"
    },
    "routes": {
     "nominal": {
@@ -151070,6 +151805,222 @@
      ],
      "kind": "v6_oracle",
      "variant": "tray_elsewhere__books_on_it"
+    },
+    "v6_basket_in_use": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_juice",
+        "receptacle": "breakfast_fridge/inside_shelf",
+        "hint_xy": [
+         5.9,
+         3.12
+        ]
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_apple",
+        "receptacle": "fruit_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "basket_in_use"
+    },
+    "v6_basket_out_of_reach": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_juice",
+        "receptacle": "breakfast_fridge/inside_shelf",
+        "hint_xy": [
+         5.9,
+         3.12
+        ]
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "large_shelf_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "large_shelf_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "home_basket"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "large_shelf_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_apple",
+        "receptacle": "fruit_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "basket_out_of_reach"
     }
    },
    "vary": {},
@@ -152911,6 +153862,221 @@
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
      }
+    },
+    "basket_in_use": {
+     "origin": "v6",
+     "control": "juice_on_table",
+     "layouts": [
+      "basket_in_use"
+     ],
+     "factor": "the seed's layout only",
+     "seeds": {
+      "10": "basket_in_use",
+      "11": "basket_in_use",
+      "12": "basket_in_use",
+      "13": "basket_in_use",
+      "14": "basket_in_use",
+      "15": "basket_in_use",
+      "16": "basket_in_use",
+      "17": "basket_in_use",
+      "18": "basket_in_use",
+      "19": "basket_in_use"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice away, the apple in the tray, the kid's blocks left in the basket, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "basket_in_use": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "fruit_tray"
+            ],
+            [
+             "inside",
+             "basket_block_1",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_2",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_3",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_toy",
+             "home_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the same, a door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "basket_in_use": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "basket_block_1",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_2",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_block_3",
+             "home_basket"
+            ],
+            [
+             "inside",
+             "basket_toy",
+             "home_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "home_basket"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the apple put in the basket among the kid's toys"
+       }
+      ],
+      "not_ok": "the kid's blocks taken out of the basket; an item left on the table or not put away; the juice lying; still held or dropped"
+     }
+    },
+    "basket_out_of_reach": {
+     "origin": "v6",
+     "control": "juice_on_table",
+     "layouts": [
+      "basket_out_of_reach"
+     ],
+     "factor": "the seed's layout only",
+     "seeds": {
+      "10": "basket_out_of_reach",
+      "11": "basket_out_of_reach",
+      "12": "basket_out_of_reach",
+      "13": "basket_out_of_reach",
+      "14": "basket_out_of_reach",
+      "15": "basket_out_of_reach",
+      "16": "basket_out_of_reach",
+      "17": "basket_out_of_reach",
+      "18": "basket_out_of_reach",
+      "19": "basket_out_of_reach"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the basket out of reach: the apple in the tray on the island, the juice away, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "basket_out_of_reach": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "inside",
+             "bought_apple",
+             "fruit_tray"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the task done, but a door left open"
+       }
+      ],
+      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
+     }
     }
    },
    "v6_replaced": {},
@@ -152960,6 +154126,22 @@
       "container_absent",
       "dependent_decisions",
       "not_in_view",
+      "storage_place"
+     ]
+    },
+    "basket_in_use": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "resource_in_use",
+      "storage_place"
+     ]
+    },
+    "basket_out_of_reach": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "agent_ability",
       "storage_place"
      ]
     }

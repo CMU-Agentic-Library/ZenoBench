@@ -320,6 +320,44 @@ def t22():
                                                                                (-0.10, 0.075), (0.10, 0.075)))}))},
             instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
             instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
+        # basket_in_use (11-17, substitution: in use): the kid keeps his blocks in the fruit basket on the island
+        # today; the serving tray beside it takes the apple.  Basket floor 1.2 cm up, inner ~0.25 x 0.21 m
+        "basket_in_use": fam(
+            "juice_on_table", ["resource_in_use", "storage_place"], "the seed's layout only",
+            "juice and an apple on the dining table; the fruit basket on the island holds the kid's toy blocks "
+            "(he uses it as his toy box), an empty serving tray stands beside it",
+            "the basket is in use for the kid's toys: leave his blocks in it and put the apple in the tray; the "
+            "juice into the fridge",
+            {"": dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
+                           BASKET: on("fruit_basket", ISL, 7.10, 1.78), "fruit_tray": on("serving_tray", ISL, 7.60, 1.75),
+                           **{n: {"asset": a, "support": None, "z": 0.874, "xy": [x, y], "yaw_deg": 0.0}
+                              for n, a, x, y in (("basket_block_1", "wooden_block", 7.04, 1.74),
+                                                 ("basket_block_2", "wooden_block", 7.04, 1.82),
+                                                 ("basket_block_3", "wooden_block", 7.16, 1.74),
+                                                 ("basket_toy", "toy_block", 7.16, 1.82))}},
+                      watch=[J, A, BASKET, "fruit_tray", "basket_block_1", "basket_block_2", "basket_block_3", "basket_toy"],
+                      goal={"all": jgoal + [["inside", A, "fruit_tray"]]
+                            + [["inside", n, BASKET] for n in ("basket_block_1", "basket_block_2", "basket_block_3",
+                                                               "basket_toy")] + [H]},
+                      route=fridge([J], JY, JX) + [nav(ISL), look(ISL)] + into(A, "fruit_tray"))},
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
+        # basket_out_of_reach (11-17, substitution: not enough): the fruit basket was put up on top of the tall
+        # kitchen shelf (1.41 m), above the robot's reach; the serving tray on the island takes the apple
+        "basket_out_of_reach": fam(
+            "juice_on_table", ["agent_ability", "storage_place"], "the seed's layout only",
+            "juice and an apple on the dining table; the fruit basket stands on top of the tall kitchen shelf "
+            "(1.41 m), out of reach; a serving tray on the island",
+            "the basket cannot be reached: put the apple in the tray instead; the juice into the fridge",
+            {"": dict(add={J: on("juice_bottle", T2, 3.30, 6.70), A: on("apple", T2, 3.30, 7.00),
+                           BASKET: on("fruit_basket", "large_shelf_6/top", 5.12, 8.42, 90.0),
+                           "fruit_tray": on("serving_tray", ISL, 7.20, 1.75)},
+                      watch=[J, A, BASKET, "fruit_tray"],
+                      goal={"all": jgoal + [["inside", A, "fruit_tray"], H]},
+                      route=fridge([J], JY, JX) + [nav(BASKET), look("large_shelf_6/top")] + into(A, "fruit_tray"))},
+            keep_design=["large_shelf_6/top"],
+            instruction="I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+            instruction_zh="我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。"),
     }
     return t, fams
 

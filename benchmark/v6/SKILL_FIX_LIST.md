@@ -7,7 +7,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
-| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 49 | carry: paperback_book slipped out of the hand while carrying it |
+| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 51 | carry: paperback_book slipped out of the hand while carrying it |
 | navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 18 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
@@ -58,7 +58,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 
 | skill | object | variants |
 |---|---|---|
-| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
 | close | kitchen_cabinet_4 | T02/block_put_away, T04/no_cup_in_cabinets, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/no_pot, T18/bowls_apart, T18/door_stuck, T20/x6_gd_bottle_put_away, T21/tissue_put_away, T25/cups_for_two, T28/where_his_cup_is, T30/bowl_put_away |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | empty_can | T29/several |
@@ -74,10 +74,10 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | lift | takeout_tray | T10/after_dinner_clear |
 | measure | example_spoon | T13/copy_the_setting |
 | measure | toy_bin_small_2 | T12/bins_capacity |
-| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
 | pick | blue_book | T14/whose_book |
-| pick | bought_apple | T22/by_kind, T22/tray_elsewhere, T22/two_spots |
-| pick | bought_juice | T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
+| pick | bought_apple | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/tray_elsewhere, T22/two_spots |
+| pick | bought_juice | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
 | pick | bowl_2 | T13/finish_the_table |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
@@ -159,8 +159,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | tray_book_4 | T22/tray_elsewhere |
 | pick | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
 | place | blue_book | T14/whose_book |
-| place | bought_apple | T22/by_kind, T22/tray_elsewhere, T22/two_spots |
-| place | bought_juice | T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
+| place | bought_apple | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/tray_elsewhere, T22/two_spots |
+| place | bought_juice | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | place | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
 | place | bowl_2 | T13/finish_the_table |
 | place | cold_juice | T25/cold_one, T25/drink_in_fridge |

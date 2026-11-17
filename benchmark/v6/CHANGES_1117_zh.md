@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，59 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，61 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -73,6 +73,8 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T20 | `juice_finished`（新加） | 果汁瓶放进厨房旁新加的垃圾桶 (9.05, 1.12)，z 0.037；汽水罐在电视柜 (7.30, 0.36)。T20 指令改成“早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放” | 看垃圾桶 → 汽水 → 早餐桌 | 瓶子在垃圾桶里开局是否稳定 | 未跑 |
 | T20 | `juice_in_use`（新加） | 果汁瓶在西边餐桌 (-7.70, 8.05)，爷爷的杯子和碗旁；汽水在电视柜 | 看西边餐桌 → 汽水 → 早餐桌 | 低 | 未跑 |
 | T21 | `tissue_in_use`（新加） | 纸巾盒在西边餐桌 (-7.68, 7.95) 爷爷座位旁；干海绵在岛台 (8.00, 1.80)；汤在东边餐桌 | 看西边餐桌 → 岛台海绵 → 东边餐桌 | 低 | 未跑 |
+| T22 | `basket_in_use`（新加） | 果篮在岛台 (7.10, 1.78)，篮里三块 wooden_block + 一个 toy_block，z 0.874（篮底 1.2 cm）；空托盘在岛台 (7.60, 1.75) | 果汁进冰箱 → 看岛台 → 苹果进托盘 | **篮里积木开局是否稳定**；托盘和果篮挨着时放苹果是否碰到果篮 | 未跑 |
+| T22 | `basket_out_of_reach`（新加） | 果篮在 large_shelf_6 顶 (5.12, 8.42)，转 90°（架顶宽 0.34 m，篮宽 0.30 m）；托盘在岛台 (7.20, 1.75) | 果汁进冰箱 → 看高架 → 苹果进托盘 | 果篮在架顶开局是否稳定 | 未跑 |
 
 ## 我这边的约定
 

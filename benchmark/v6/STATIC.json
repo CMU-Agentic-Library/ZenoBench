@@ -1,7 +1,7 @@
 {
- "variants": 164,
- "episodes": 1640,
- "static_ok": 1640,
+ "variants": 166,
+ "episodes": 1660,
+ "static_ok": 1660,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -89,8 +89,8 @@
    "static_ok": 70
   },
   "T22_put_away_shopping": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 80,
+   "static_ok": 80
   },
   "T23_pick_up_dropped": {
    "episodes": 60,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 126
+  "task": 128
  },
- "tasks_sha1": "16e2a7bd2f09fb2998d5286c7250985b6f7341c5"
+ "tasks_sha1": "0de267e4ef2b03387c50b105da650bed7e731a90"
 }

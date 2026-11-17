@@ -683,6 +683,23 @@ _tray = tiers(
     zh=dict(sit="没有果篮，托盘代替（在岛台，或在西餐厅：装着橙子或压着四本书）", good="苹果放进托盘，果汁收好，门关好",
             second="做到了但门没关", worst="苹果进了托盘，但从托盘上拿下的书没放回书架", no="有东西没收；果汁躺着；还拿着或掉了"))
 R[("T22", "tray_elsewhere")] = _tray
+# T22 basket_in_use (11-17, substitution: in use): the kid's blocks in the fruit basket; the apple into the tray.
+# The apple put in among his toys is the worst
+R[("T22", "basket_in_use")] = tiers(
+    second=lambda g, lid: drop(g, "is_closed"),
+    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[0] == "is_closed" or a[:2] == ["inside", "bought_apple"]),
+                              ["inside", "bought_apple", "home_basket"]),
+    why=("the juice away, the apple in the tray, the kid's blocks left in the basket, doors closed",
+         "the same, a door left open", "the apple put in the basket among the kid's toys"),
+    not_ok="the kid's blocks taken out of the basket; " + _T22_NO,
+    zh=dict(sit="岛台上的果篮里装着孩子的积木（他拿来当玩具筐），旁边有个空托盘（11-17 新加）",
+            good="苹果放进托盘，积木留在果篮里，果汁收好，门关好（替换：被占用）", second="做到了但门没关",
+            worst="苹果放进果篮和玩具混在一起", no="把积木从果篮里拿出来；有东西没收；果汁躺着；还拿着或掉了"))
+# T22 basket_out_of_reach (11-17, substitution: not enough): the basket on top of the tall kitchen shelf
+R[("T22", "basket_out_of_reach")] = doors_second(
+    "the basket out of reach: the apple in the tray on the island, the juice away, doors closed", _T22_NO, dict(
+        sit="果篮放在厨房高架子顶上（1.41 m），够不着；岛台上有个托盘（11-17 新加）",
+        good="苹果放进托盘，果汁收好，门关好（替换：能力不足）", second="做到了但门没关", no="有东西没收；果汁躺着；还拿着或掉了"))
 
 # ================================================================================================ T23 pick up what dropped
 _T23_NO = "a dropped thing left on the floor or put in a wrong kind of place; still held"

@@ -8900,6 +8900,206 @@
 "v6_variant": "two_spots"
 },
 {
+"task": "T22_put_away_shopping",
+"seed": 10,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 11,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 12,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 13,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 14,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 15,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 16,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 17,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 18,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 19,
+"variant": "basket_in_use",
+"route": "v6_basket_in_use",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_in_use"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 10,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 11,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 12,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 13,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 14,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 15,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 16,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 17,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 18,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
+"task": "T22_put_away_shopping",
+"seed": 19,
+"variant": "basket_out_of_reach",
+"route": "v6_basket_out_of_reach",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "basket_out_of_reach"
+},
+{
 "task": "T23_pick_up_dropped",
 "seed": 10,
 "variant": "by_kind",

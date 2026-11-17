@@ -21670,6 +21670,190 @@
   "rationale": "the apple has no basket to go to: the tray stands in for it; the juice into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T22_put_away_shopping/basket_in_use": {
+  "variant": "basket_in_use",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "basket_block_1",
+    "basket_block_2",
+    "basket_block_3",
+    "basket_toy",
+    "bought_apple",
+    "bought_juice",
+    "fruit_tray",
+    "home_basket"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "bought_juice",
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "inside",
+     "bought_apple",
+     "fruit_tray"
+    ],
+    [
+     "inside",
+     "basket_block_1",
+     "home_basket"
+    ],
+    [
+     "inside",
+     "basket_block_2",
+     "home_basket"
+    ],
+    [
+     "inside",
+     "basket_block_3",
+     "home_basket"
+    ],
+    [
+     "inside",
+     "basket_toy",
+     "home_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_basket_in_use",
+  "challenge": "juice and an apple on the dining table; the fruit basket on the island holds the kid's toy blocks (he uses it as his toy box), an empty serving tray stands beside it",
+  "rationale": "the basket is in use for the kid's toys: leave his blocks in it and put the apple in the tray; the juice into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/basket_out_of_reach": {
+  "variant": "basket_out_of_reach",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "I just got back from the shop and left the juice and an apple on the dining table. Put them away; fruit usually goes in the fruit basket.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "fruit_tray",
+    "home_basket"
+   ],
+   "removed": [],
+   "conditions": [
+    "agent_ability",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "bought_juice",
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "inside",
+     "bought_apple",
+     "fruit_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_basket_out_of_reach",
+  "challenge": "juice and an apple on the dining table; the fruit basket stands on top of the tall kitchen shelf (1.41 m), out of reach; a serving tray on the island",
+  "rationale": "the basket cannot be reached: put the apple in the tray instead; the juice into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T23_pick_up_dropped/spoon_on_floor": {
   "variant": "spoon_on_floor",
   "category": "control",

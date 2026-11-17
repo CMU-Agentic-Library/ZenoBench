@@ -1,6 +1,6 @@
 {
- "routes": 286,
- "ok": 286,
+ "routes": 288,
+ "ok": 288,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2713,6 +2713,30 @@
    ],
    "problems": [],
    "variant": "tray_elsewhere"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "basket_in_use",
+   "steps": 15,
+   "atoms_checked": 10,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "basket_in_use"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "basket_out_of_reach",
+   "steps": 17,
+   "atoms_checked": 6,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "basket_out_of_reach"
   },
   {
    "task": "T23_pick_up_dropped",

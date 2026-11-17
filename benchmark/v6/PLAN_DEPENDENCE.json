@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 256,
-   "variants": 134,
+   "layouts": 258,
+   "variants": 136,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 54,
-   "goal_not_met": 93,
+   "goal_not_met": 95,
    "not_observed": 64,
    "resource_missing": 41,
    "argument_mismatch": 4
@@ -115,7 +115,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 343,
+  "geometric_atoms_unchecked": 345,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -277,6 +277,14 @@
    ],
    "T21 tissue_in_use": [
     "spare_sponge"
+   ],
+   "T22 basket_in_use": [
+    "bought_apple",
+    "bought_juice"
+   ],
+   "T22 basket_out_of_reach": [
+    "bought_apple",
+    "bought_juice"
    ],
    "T22 by_kind": [
     "bought_apple",
@@ -4073,7 +4081,41 @@
     "tray_elsewhere__orange_in_it": "resource_missing",
     "tray_elsewhere__books_on_it": "resource_missing"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "basket_in_use"
+   ]
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "variant": "basket_in_use",
+   "layout": "basket_in_use",
+   "steps": 15,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {},
+   "other_variants_passing": [
+    "basket_missing",
+    "basket_out_of_reach"
+   ]
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "variant": "basket_out_of_reach",
+   "layout": "basket_out_of_reach",
+   "steps": 17,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright bought_juice"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {},
+   "other_variants_passing": [
+    "basket_missing",
+    "basket_in_use"
+   ]
   },
   {
    "task": "T23_pick_up_dropped",

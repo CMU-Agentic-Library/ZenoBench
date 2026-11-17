@@ -38,6 +38,12 @@
 | T20 | juice_finished（新加） | 缺失 | 果汁喝完了 → 汽水（拿空瓶最差） |
 | T20 | juice_in_use（新加） | 被占用 | 果汁在爷爷座位旁正在喝 → 汽水 |
 | T21 | tissue_in_use（新加） | 被占用 | 纸巾在爷爷座位旁正在用 → 岛台上的干海绵 |
+| T22 | by_kind | 可互换（不属四类） | 苹果、零食放果篮或矮柜都算，同一件东西有几个都对的去处 |
+| T22 | two_spots | 可互换（不属四类） | 同 by_kind，东西分在两处 |
+| T22 | basket_missing | 缺失 | 家里没有果篮 → 岛台上的托盘 |
+| T22 | tray_elsewhere | 缺失 | 没有果篮 → 西边餐厅的托盘（有橙子直接放；被书占满先把书放回书架） |
+| T22 | basket_in_use（新加） | 被占用 | 果篮里装着孩子的积木 → 托盘（苹果混进玩具最差） |
+| T22 | basket_out_of_reach（新加） | 能力不足 | 果篮在 1.41 m 高架子顶上够不着 → 岛台上的托盘 |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 

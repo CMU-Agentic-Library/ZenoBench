@@ -529,5 +529,23 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "seed": 10,
+  "variant": "basket_in_use",
+  "route": "v6_basket_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T22_put_away_shopping",
+  "seed": 10,
+  "variant": "basket_out_of_reach",
+  "route": "v6_basket_out_of_reach",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

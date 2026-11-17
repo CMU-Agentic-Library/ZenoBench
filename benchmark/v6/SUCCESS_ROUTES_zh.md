@@ -5357,6 +5357,84 @@
 - 摆法 `books_on_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.569, 6.528])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
 - 摆法 `basket_missing`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_apple)` → 11. `pick(object=bought_apple)` → 12. `navigate(destination=fruit_tray)` → 13. `place(object=bought_apple, receptacle=fruit_tray)`
 
+### basket_in_use（Task）
+
+**情况**：果篮在岛台上，里面装着孩子的三块木积木和一个玩具块（当玩具筐用），旁边有空托盘 → 积木不动，苹果放托盘（替换：被占用）；苹果放进果篮混在玩具里算最不好
+
+**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `bought_juice` 立着
+  - `breakfast_fridge` 关着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
+  - `bought_apple` 在 `fruit_tray` 里
+  - `basket_block_1` 在 `home_basket` 里
+  - `basket_block_2` 在 `home_basket` 里
+  - `basket_block_3` 在 `home_basket` 里
+  - `basket_toy` 在 `home_basket` 里
+  - 手里空着
+- **次好（0.6）**：
+
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `bought_juice` 立着
+  - `bought_apple` 在 `fruit_tray` 里
+  - `basket_block_1` 在 `home_basket` 里
+  - `basket_block_2` 在 `home_basket` 里
+  - `basket_block_3` 在 `home_basket` 里
+  - `basket_toy` 在 `home_basket` 里
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `bought_juice` 立着
+  - `basket_block_1` 在 `home_basket` 里
+  - `basket_block_2` 在 `home_basket` 里
+  - `basket_block_3` 在 `home_basket` 里
+  - `basket_toy` 在 `home_basket` 里
+  - 手里空着
+  - `bought_apple` 在 `home_basket` 里
+- **不行（0）**：把积木从果篮里拿出来；有东西没收；果汁躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=kitchen_island/top)` → 11. `look(target=kitchen_island/top)` → 12. `navigate(destination=bought_apple)` → 13. `pick(object=bought_apple)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=bought_apple, receptacle=fruit_tray)`
+
+### basket_out_of_reach（Task）
+
+**情况**：果篮放在厨房高架子顶上（1.41 m），够不着 → 苹果放岛台上的托盘（替换：能力不足）
+
+**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `bought_juice` 立着
+  - `breakfast_fridge` 关着
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
+  - `bought_apple` 在 `fruit_tray` 里
+  - 手里空着
+- **次好（0.6）**：
+
+  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `bought_juice` 立着
+  - `bought_apple` 在 `fruit_tray` 里
+  - 手里空着
+- **不行（0）**：有东西没收；果汁躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=large_shelf_6/top)` → 11. `look(target=large_shelf_6/top)` → 12. `navigate(destination=home_basket)` → 13. `look(target=large_shelf_6/top)` → 14. `navigate(destination=bought_apple)` → 15. `pick(object=bought_apple)` → 16. `navigate(destination=fruit_tray)` → 17. `place(object=bought_apple, receptacle=fruit_tray)`
+
 ---
 
 ## T23_pick_up_dropped
