@@ -122,7 +122,7 @@ class WaveHandPolicy(AtomicPolicy):
 
 class NodHeadPolicy(AtomicPolicy):
     def execute(self, *, times=2, depth=0.35):
-        from .perceive import drive_head
+        from ..skill_jobs.look import drive_head
         rig = self.rig
         yaw0 = rig.head_q()["head_yaw_joint"]
         n = 0

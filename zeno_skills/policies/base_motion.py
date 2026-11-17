@@ -16,7 +16,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .. import skills
 from ..skill_jobs.carry import carry_posture
-from ..perception import in_view_from
+from .. import viewpoints
 from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
@@ -38,7 +38,6 @@ ROOM_SPOT_DEG = 30.0                            # deg between spots on a ring
 FACE_ERR_DEG = 5.0          # deg of heading a turn in place may still miss by before face fails
 RETREAT_PAST = 0.03         # m a retreat goes past the distance asked for
 RETREAT_MIN = 0.01          # m: a retreat shorter than this is not driven
-IN_VIEW_KINDS = ("object", "support", "furniture")   # navigate prefers stand-offs these are in view from
 
 
 def _park_diag():
@@ -97,36 +96,9 @@ def standoff_poses(rig, place, ring=STANDOFF_RING):
     return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
 
 
-def view_points(rig, place):
-    """The points a stand-off must see for ``place`` to be in view: an object or a support -- the point look
-    aims at (entity_point); a piece of furniture -- that point (its top) or the space above any of its support
-    layers (perceive._layer_point, what explore_furniture and search look at).  None for anything else (a
-    room: being in it is the point; articulated parts and appliances: not measured yet)."""
-    kind, rec = entity_kind(rig.ann, place)
-    if kind not in IN_VIEW_KINDS:
-        return None
-    pts = [entity_point(rig, place)]
-    if kind == "furniture":
-        from .perceive import _layer_point
-        pts += [_layer_point(s) for s in rec]
-    return pts
-
-
-def _in_view_poses(rig, place, poses):
-    """The poses of ``poses`` (in their order) from which the head camera sees ``place`` (any of its
-    view_points), with the base there in the posture navigate arrives in (skills._rest_posture: its torso and
-    waist place the camera) and the head aimed as look aims it (perception.in_view_from: look_target's frustum
-    and the static boxes, walls and furniture)."""
-    pts = view_points(rig, place)
-    if pts is None or not poses:
-        return list(poses)
-    tw = dict(zip(rig.kin.names[:2], (float(q) for q in skills._rest_posture(rig)[0][:2])))
-    return [pose for pose in poses if any(in_view_from(rig, pose, p, tw)[0] for p in pts)]
-
-
 class NavigateToPlacePolicy(AtomicPolicy):
     """Drive to a collision-free stand-off pose near a room, furniture, support or object; near furniture, a
-    support or an object, one it is in view from when the base can get to any (_in_view_poses)."""
+    support or an object, one it is in view from when the base can get to any (viewpoints.in_view_poses)."""
 
     def execute(self, place):
         rig = self.rig
@@ -144,17 +116,17 @@ class NavigateToPlacePolicy(AtomicPolicy):
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")
         # the stand-off poses are one goal set: the nearest one the base can get to from here (one
-        # field over all of them, skills.base_reachable), then one navigate -- not tried in turn
-        ok = skills.base_reachable(rig, poses)
-        reach = [p for p, o in zip(poses, ok) if o]
-        # the stand-offs the place is in view from come first: look, search and the benchmark's gate want it
-        # in view next; a floor object is below the frustum within ~0.6 m of the base (the head pitches 18 deg
-        # down at most), and a stand-off within reach of a support can be behind a wall (bookcase_2 from the
-        # living room, 1116: 8 searches / looks failed there).  None of them: the nearest, and look says what
-        # it does not see.
-        seen = _in_view_poses(rig, place, reach) if kind in IN_VIEW_KINDS else []
+        # field over all of them, skills.base_reachable), then one navigate -- not tried in turn.
+        # The stand-offs the place is in view from come first (viewpoints): look, search and the benchmark's
+        # gate want it in view next; a floor object is below the frustum within ~0.6 m of the base (the head
+        # pitches 18 deg down at most), and a stand-off within reach of a support can be behind a wall
+        # (bookcase_2 from the living room, 1116: 8 searches / looks failed there).  None of them: the
+        # nearest, and look says what it does not see.
+        reach, seen = viewpoints.reachable_in_view(rig, {place: poses})[place]
+        in_view = kind in viewpoints.IN_VIEW_KINDS
+        seen = seen if in_view else []
         rig.log("navigate_place_goals", place=place, goals=len(poses), reachable=len(reach),
-                **({"in_view": len(seen)} if kind in IN_VIEW_KINDS else {}))
+                **({"in_view": len(seen)} if in_view else {}))
         if not reach:
             raise SkillFailure(f"navigate to {place}: no base path to any of {len(poses)} stand-off poses "
                                "(even the column's inscribed circle cannot get there)")

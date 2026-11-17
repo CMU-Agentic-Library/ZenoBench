@@ -17,6 +17,19 @@ from .base import RigBase
 from .carry import _carry
 
 
+def head_segment(rig, yaw, pitch, steps=LOOK_STEPS, name="head"):
+    """The head aimed at (yaw, pitch) rad as a plan segment (skill_plans.look.head_segment)."""
+    from ..skill_plans.look import head_segment as seg
+    return seg(rig.q(), yaw, pitch, steps, name)
+
+
+def drive_head(rig, yaw, pitch, steps=LOOK_STEPS):
+    """One head segment run by run.execute, outside any skill's plan: for the skills not migrated yet that
+    still turn the head on their own (present, nod) and run_skill's head-straight step."""
+    from ..run import execute
+    execute(rig, head_segment(rig, yaw, pitch, steps))
+
+
 def head_aims(state, aims):
     """[(yaw, pitch, steps, what)] for ``aims`` from the base and body of ``state``: ("point", name, xyz,
     steps) -> the angles that centre xyz in the image (perception.look_angles, clipped to the head's

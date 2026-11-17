@@ -245,7 +245,7 @@ RIDE_SLIP_LEADS = _t("RIDE_SLIP_LEADS", 2.0, "leads", "not measured: a part this
 EDGE_PAD_CLEAR = _t("EDGE_PAD_CLEAR", 0.005, "m", "chosen: an edge hold's open pads keep this from the load once "
                     "it landed, before they pull out (skill_plans.place_clear) -- a straight's check itself has no "
                     "margin (cuRobo's collision constraint: activation distance 0)")
-HEAD_AT = _t("HEAD_AT", 0.02, "rad", "inherited (policies.perceive.drive_head's, now Rig.aim_head): a head joint this close to its "
+HEAD_AT = _t("HEAD_AT", 0.02, "rad", "inherited (the old policies.perceive.drive_head's, now Rig.aim_head): a head joint this close to its "
              "command has arrived; run_skill leaves a head this close to straight ahead where it is")
 
 # --------------------------------------------------------------- what an exploration counts (policies.perceive, 9.3 step 3)

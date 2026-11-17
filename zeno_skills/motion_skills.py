@@ -124,7 +124,7 @@ def _head_straight(rig, skill):
     counts.  A rig without a head (the tests' stand-ins) is left as it is."""
     if not hasattr(rig, "head_q"):
         return
-    from .policies.perceive import drive_head
+    from .skill_jobs.look import drive_head
     q = rig.head_q()
     was = (q["head_yaw_joint"], q["head_pitch_joint"])
     if all(abs(v - s) < HEAD_AT for v, s in zip(was, HEAD_STRAIGHT)):

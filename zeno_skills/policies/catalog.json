@@ -991,7 +991,7 @@
    "kind": "low_level_policy",
    "policy_id": "policy_071",
    "legacy_id": "point_at",
-   "class": "perceive.PointAtPolicy"
+   "class": "gestures.PointAtPolicy"
   },
   {
    "id": "present_held",
@@ -1006,7 +1006,7 @@
    "kind": "low_level_policy",
    "policy_id": "policy_072",
    "legacy_id": "present_held",
-   "class": "perceive.PresentHeldPolicy"
+   "class": "gestures.PresentHeldPolicy"
   },
   {
    "id": "drop_into",

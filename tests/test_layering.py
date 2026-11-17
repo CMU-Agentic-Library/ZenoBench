@@ -113,3 +113,17 @@ def test_run_passes_the_actuator_only_what_the_protocol_names():
             varkw = any(p.kind == p.VAR_KEYWORD for p in params.values())
             for k in n.keywords:
                 assert k.arg in params or varkw, (n.func.attr, k.arg)
+
+
+# the task layer over the perception skills moves the robot only through run_skill (navigate, look): no
+# motion entry of the rig, no head command of its own (docs 9.3 step 3)
+MOTION_ENTRIES = ("move_to", "move_left_to", "joint_path", "follow", "follow_smooth", "left_follow", "leave",
+                  "tuck", "drive_head", "straight_base_move", "aim_head", "drive_base", "swing", "grip")
+
+
+def test_the_perception_task_layer_moves_the_robot_only_through_run_skill():
+    src = (PKG / "policies" / "perceive.py").read_text()
+    called = {n.func.attr if isinstance(n.func, ast.Attribute) else n.func.id for n in ast.walk(ast.parse(src))
+              if isinstance(n, ast.Call) and isinstance(n.func, (ast.Attribute, ast.Name))}
+    assert not called & set(MOTION_ENTRIES), sorted(called & set(MOTION_ENTRIES))
+    assert "head_cmd" not in src

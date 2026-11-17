@@ -45,8 +45,8 @@ from .perceive import ExploreFurniturePolicy
 from .perceive import ViewSupportPolicy
 from .perceive import MarkSpotsPolicy
 from .perceive import SearchObjectPolicy
-from .perceive import PointAtPolicy
-from .perceive import PresentHeldPolicy
+from .gestures import PointAtPolicy
+from .gestures import PresentHeldPolicy
 from .hand import DropIntoPolicy
 from .hand import StackOnPolicy
 from .hand import RotateHeldPolicy

@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 from zeno_skills import evaluator, perception
+from zeno_skills import viewpoints as VW
 from zeno_skills.motion_state import Failure, Plan, Segment, Spec
 from zeno_skills.policies import base_motion as BM
 from zeno_skills.policies import perceive as PC
@@ -47,7 +48,7 @@ def _patch(monkeypatch, w, poses, reachable=lambda p: True, in_view=lambda place
     monkeypatch.setattr(evaluator, "room_of", lambda rooms, xy: "room")
     monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: list(poses.get(place, [])))
     monkeypatch.setattr(BM.skills, "base_reachable", lambda rig, ps: [reachable(p) for p in ps])
-    monkeypatch.setattr(BM, "_in_view_poses", lambda rig, place, ps: [p for p in ps if in_view(place, p)])
+    monkeypatch.setattr(VW, "in_view_poses", lambda rig, place, ps: [p for p in ps if in_view(place, p)])
     monkeypatch.setattr(BM.skills, "navigate", w.navigate)
     monkeypatch.setattr(PC, "look", w.look)
     monkeypatch.setattr(PC, "record_view", lambda rig: [])
@@ -118,8 +119,8 @@ def test_a_drive_that_fails_fails_the_search(monkeypatch):
 def _explore(monkeypatch, w, rig, poses, predicted, **kw):
     _patch(monkeypatch, w, poses, **kw)
     rig.base_pose = lambda: w.pose
-    monkeypatch.setattr(PC, "_travel_tw", lambda rig: {})
-    monkeypatch.setattr(PC, "_predicted", lambda rig, pose, targets, tw:
+    monkeypatch.setattr(VW, "travel_tw", lambda rig: {})
+    monkeypatch.setattr(VW, "predicted", lambda rig, pose, targets, tw:
                         {k: targets[k][0][0] for k in predicted.get(pose, ()) if k in targets})
     return PC.ExploreRoomPolicy(rig).execute("room")
 
@@ -183,8 +184,8 @@ def test_explore_carrying_takes_the_carry_posture_before_the_viewpoints(monkeypa
     monkeypatch.setattr(carry, "carry_posture", lambda rig, min_bottom_z=None: order.append("carry"))
     _patch(monkeypatch, w, {})
     monkeypatch.setattr(BM, "standoff_poses", lambda rig, place: order.append(place) or ([spot] if place == "room" else []))
-    monkeypatch.setattr(PC, "_travel_tw", lambda rig: {})
-    monkeypatch.setattr(PC, "_predicted", lambda rig, pose, targets, tw: {k: v[0][0] for k, v in targets.items()})
+    monkeypatch.setattr(VW, "travel_tw", lambda rig: {})
+    monkeypatch.setattr(VW, "predicted", lambda rig, pose, targets, tw: {k: v[0][0] for k, v in targets.items()})
     rig = _rig(ROOM_SUPPORTS, held={"name": "living_car"})
     rig.base_pose = lambda: w.pose
     PC.ExploreRoomPolicy(rig).execute("room")
@@ -269,9 +270,10 @@ def test_the_head_moves_through_the_actuator_as_a_segment():
     calls = []
     act = SimpleNamespace(q=lambda: np.zeros(9), aim_head=lambda *a: calls.append(("head", *a)),
                           declare=lambda name, allow, side="right", follows=True: calls.append(("declare", follows)))
-    seg = PC.head_segment(act, 0.3, -0.1, steps=60)
+    from zeno_skills.skill_jobs import look as LJ
+    seg = LJ.head_segment(act, 0.3, -0.1, steps=60)
     assert seg.kind == "action" and seg.action == ("head", 0.3, -0.1, 60)
-    PC.drive_head(act, 0.3, -0.1, steps=60)
+    LJ.drive_head(act, 0.3, -0.1, steps=60)
     assert calls == [("declare", False), ("head", 0.3, -0.1, 60)]
 
 
