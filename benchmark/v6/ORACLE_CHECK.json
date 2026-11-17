@@ -751,7 +751,7 @@
    "task": "T03_utensils_one_container",
    "layout": "which_bin_by_contents__kitchen_bin_full",
    "steps": 18,
-   "atoms_checked": 11,
+   "atoms_checked": 9,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

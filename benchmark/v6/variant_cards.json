@@ -7298,14 +7298,12 @@
    "moved": [
     "breakfast_spoon",
     "rolling_pin",
-    "spoon_counter",
-    "spoon_side_table",
     "wide_storage_bin"
    ],
    "added": [
-    "bin_cup",
+    "bin_cup_1",
     "bin_cup_2",
-    "bin_foil_tray",
+    "bin_cup_3",
     "bin_plastic_cup",
     "spare_tray",
     "toy_bin_block_1",
@@ -7313,7 +7311,9 @@
     "toy_storage_bin"
    ],
    "removed": [
-    "mug"
+    "mug",
+    "spoon_counter",
+    "spoon_side_table"
    ],
    "conditions": [
     "decoy_destination",
@@ -7346,22 +7346,12 @@
     ],
     [
      "inside",
-     "spoon_counter",
+     "bin_cup_1",
      "wide_storage_bin"
     ],
     [
      "inside",
-     "spoon_side_table",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "bin_foil_tray",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "bin_cup",
+     "bin_cup_2",
      "wide_storage_bin"
     ],
     [
@@ -7371,7 +7361,7 @@
     ],
     [
      "inside",
-     "bin_cup_2",
+     "bin_cup_3",
      "wide_storage_bin"
     ],
     [

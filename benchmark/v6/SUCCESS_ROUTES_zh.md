@@ -1221,12 +1221,10 @@
         - `breakfast_spoon` 在 `spare_tray` 里
         - `toy_bin_block_1` 在 `toy_storage_bin` 里
         - `toy_bin_block_2` 在 `toy_storage_bin` 里
-        - `spoon_counter` 在 `wide_storage_bin` 里
-        - `spoon_side_table` 在 `wide_storage_bin` 里
-        - `bin_foil_tray` 在 `wide_storage_bin` 里
-        - `bin_cup` 在 `wide_storage_bin` 里
-        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_1` 在 `wide_storage_bin` 里
         - `bin_cup_2` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_3` 在 `wide_storage_bin` 里
   - 摆法 `toys_near`：
     - 手里空着
     - 满足下面任意一组：
@@ -1246,23 +1244,19 @@
         - `breakfast_spoon` 在 `wide_storage_bin` 里
         - `toy_bin_block_1` 在 `toy_storage_bin` 里
         - `toy_bin_block_2` 在 `toy_storage_bin` 里
-        - `spoon_counter` 在 `wide_storage_bin` 里
-        - `spoon_side_table` 在 `wide_storage_bin` 里
-        - `bin_foil_tray` 在 `wide_storage_bin` 里
-        - `bin_cup` 在 `wide_storage_bin` 里
-        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_1` 在 `wide_storage_bin` 里
         - `bin_cup_2` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_3` 在 `wide_storage_bin` 里
       - 第 3 组：
         - `rolling_pin` 在 `toy_storage_bin` 里
         - `breakfast_spoon` 在 `toy_storage_bin` 里
         - `toy_bin_block_1` 在 `toy_storage_bin` 里
         - `toy_bin_block_2` 在 `toy_storage_bin` 里
-        - `spoon_counter` 在 `wide_storage_bin` 里
-        - `spoon_side_table` 在 `wide_storage_bin` 里
-        - `bin_foil_tray` 在 `wide_storage_bin` 里
-        - `bin_cup` 在 `wide_storage_bin` 里
-        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_1` 在 `wide_storage_bin` 里
         - `bin_cup_2` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_3` 在 `wide_storage_bin` 里
   - 摆法 `toys_near`：
     - 手里空着
     - 满足下面任意一组：

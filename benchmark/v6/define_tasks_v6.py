@@ -2503,9 +2503,10 @@ def T03_more(t):
     # bin near, the kitchen bin (empty but for two spoons) in the bedroom (ideal); kitchen_bin_full: the kitchen bin
     # is packed with kitchen things, no room for the pin, a tray on the study desk (moderate); the toy bin is bad
     packed = [("spoon_counter", 0.0, 0.10, 0.0), ("spoon_side_table", 0.0, 0.05, 0.0)]
-    # inside the bin's floor (about 31 x 27 cm): the foil tray in one half, three cups in the other corners
-    packed_add = [("foil_takeout_tray", "bin_foil_tray", -0.055, -0.06, 0.0), ("breakfast_cup", "bin_cup", 0.10, 0.065, 0.0),
-                  ("plastic_cup", "bin_plastic_cup", -0.095, 0.075, 0.0), ("breakfast_cup", "bin_cup_2", 0.10, -0.065, 0.0)]
+    # four cups on the bin's floor, one per corner (the bin narrows to its floor: a 20 cm foil tray stuck out
+    # through the wall); the two spoons are left out of this seed (they would sit inside the cups)
+    packed_add = [("breakfast_cup", "bin_cup_1", -0.07, -0.065, 0.0), ("breakfast_cup", "bin_cup_2", 0.07, -0.065, 0.0),
+                  ("plastic_cup", "bin_plastic_cup", -0.07, 0.065, 0.0), ("breakfast_cup", "bin_cup_3", 0.07, 0.065, 0.0)]
     look_far = [S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"), look("bookcase_2/top")]
     which, which_tiers = {}, {}
     toy_add = {TOY: {"asset": "wide_storage_bin", **copy.deepcopy(TV_BIN)},
@@ -2518,13 +2519,13 @@ def T03_more(t):
         route=[look("kitchen_island/top"), look("tv_stand_2/top")] + look_far + put_both(bin_))
     which_tiers["toys_near"] = container_tiers(both_in, {bin_: "best", TOY: "worst"}, toys_keep + tools_keep)
     full_in = inside_bin(BEDROOM_BIN, [(n, dx, dy, yaw) for _, n, dx, dy, yaw in packed_add])
-    full_keep = tools_keep + [["inside", n, bin_] for _, n, *_ in packed_add]
+    full_keep = [["inside", n, bin_] for _, n, *_ in packed_add]
     which["kitchen_bin_full"] = dict(
-        move={bin_: copy.deepcopy(BEDROOM_BIN), **inside_bin(BEDROOM_BIN, packed)},
+        move={bin_: copy.deepcopy(BEDROOM_BIN)}, remove=["mug", *[n for n, *_ in packed]],
         add={**copy.deepcopy(toy_add), **{n: {"asset": a, **full_in[n]} for a, n, *_ in packed_add},
              **copy.deepcopy(desk_tray)},
         goal={"all": both_in(DESK_TRAY) + toys_keep + full_keep + [["hand_empty", "right"]]},
-        watch=[pin, spoon, bin_, TOY, DESK_TRAY, *[n for n, *_ in toys + tools], *[n for _, n, *_ in packed_add]],
+        watch=[pin, spoon, bin_, TOY, DESK_TRAY, *[n for n, *_ in toys], *[n for _, n, *_ in packed_add]],
         route=to_tray([look("kitchen_island/top"), look("tv_stand_2/top")] + look_far))
     which_tiers["kitchen_bin_full"] = container_tiers(both_in, {DESK_TRAY: "second", bin_: "worst", TOY: "worst"},
                                                       toys_keep + full_keep)

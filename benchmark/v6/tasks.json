@@ -60909,22 +60909,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -60934,7 +60924,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
@@ -61034,22 +61024,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -61059,7 +61039,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ],
@@ -61086,22 +61066,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -61111,7 +61081,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
@@ -61142,24 +61112,6 @@
        ],
        "yaw_deg": 0.0
       },
-      "spoon_counter": {
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.089,
-        -0.328
-       ],
-       "yaw_deg": 0.0
-      },
-      "spoon_side_table": {
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.089,
-        -0.378
-       ],
-       "yaw_deg": 0.0
-      },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
@@ -61178,7 +61130,9 @@
       }
      },
      "remove": [
-      "mug"
+      "mug",
+      "spoon_counter",
+      "spoon_side_table"
      ],
      "conditions": [
       "decoy_destination",
@@ -61208,22 +61162,12 @@
        ],
        [
         "inside",
-        "spoon_counter",
+        "bin_cup_1",
         "wide_storage_bin"
        ],
        [
         "inside",
-        "spoon_side_table",
-        "wide_storage_bin"
-       ],
-       [
-        "inside",
-        "bin_foil_tray",
-        "wide_storage_bin"
-       ],
-       [
-        "inside",
-        "bin_cup",
+        "bin_cup_2",
         "wide_storage_bin"
        ],
        [
@@ -61233,7 +61177,7 @@
        ],
        [
         "inside",
-        "bin_cup_2",
+        "bin_cup_3",
         "wide_storage_bin"
        ],
        [
@@ -61252,12 +61196,10 @@
       "spare_tray",
       "toy_bin_block_1",
       "toy_bin_block_2",
-      "spoon_counter",
-      "spoon_side_table",
-      "bin_foil_tray",
-      "bin_cup",
+      "bin_cup_1",
+      "bin_cup_2",
       "bin_plastic_cup",
-      "bin_cup_2"
+      "bin_cup_3"
      ],
      "add": {
       "toy_storage_bin": {
@@ -61289,33 +61231,13 @@
        ],
        "yaw_deg": -20.0
       },
-      "bin_foil_tray": {
-       "asset": "foil_takeout_tray",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        1.034,
-        -0.488
-       ],
-       "yaw_deg": 0.0
-      },
-      "bin_cup": {
+      "bin_cup_1": {
        "asset": "breakfast_cup",
        "support": null,
        "z": 0.718,
        "xy": [
-        1.189,
-        -0.363
-       ],
-       "yaw_deg": 0.0
-      },
-      "bin_plastic_cup": {
-       "asset": "plastic_cup",
-       "support": null,
-       "z": 0.718,
-       "xy": [
-        0.994,
-        -0.353
+        1.019,
+        -0.493
        ],
        "yaw_deg": 0.0
       },
@@ -61324,8 +61246,28 @@
        "support": null,
        "z": 0.718,
        "xy": [
-        1.189,
+        1.159,
         -0.493
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_plastic_cup": {
+       "asset": "plastic_cup",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.019,
+        -0.363
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_cup_3": {
+       "asset": "breakfast_cup",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.159,
+        -0.363
        ],
        "yaw_deg": 0.0
       },
@@ -61472,40 +61414,28 @@
          -0.2777
         ],
         [
-         0.9983,
-         -0.3485,
-         1.1797,
-         -0.3075
-        ],
-        [
-         0.9983,
-         -0.3985,
-         1.1797,
-         -0.3575
-        ],
-        [
-         0.934,
-         -0.558,
-         1.134,
-         -0.418
-        ],
-        [
-         1.1352,
-         -0.4178,
-         1.2428,
-         -0.3082
-        ],
-        [
-         0.954,
-         -0.393,
-         1.034,
-         -0.313
-        ],
-        [
-         1.1352,
+         0.9652,
          -0.5478,
-         1.2428,
+         1.0728,
          -0.4382
+        ],
+        [
+         1.1052,
+         -0.5478,
+         1.2128,
+         -0.4382
+        ],
+        [
+         0.979,
+         -0.403,
+         1.059,
+         -0.323
+        ],
+        [
+         1.1052,
+         -0.4178,
+         1.2128,
+         -0.3082
         ]
        ]
       },
@@ -61653,22 +61583,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -61678,7 +61598,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
@@ -61778,22 +61698,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -61803,7 +61713,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ],
@@ -61830,22 +61740,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -61855,7 +61755,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
@@ -67304,22 +67204,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -67329,7 +67219,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
@@ -67429,22 +67319,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -67454,7 +67334,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ],
@@ -67481,22 +67361,12 @@
              ],
              [
               "inside",
-              "spoon_counter",
+              "bin_cup_1",
               "wide_storage_bin"
              ],
              [
               "inside",
-              "spoon_side_table",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_foil_tray",
-              "wide_storage_bin"
-             ],
-             [
-              "inside",
-              "bin_cup",
+              "bin_cup_2",
               "wide_storage_bin"
              ],
              [
@@ -67506,7 +67376,7 @@
              ],
              [
               "inside",
-              "bin_cup_2",
+              "bin_cup_3",
               "wide_storage_bin"
              ]
             ]
