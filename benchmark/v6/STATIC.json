@@ -1,7 +1,7 @@
 {
- "variants": 153,
- "episodes": 1530,
- "static_ok": 1530,
+ "variants": 156,
+ "episodes": 1560,
+ "static_ok": 1560,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -60,17 +60,17 @@
    "episodes": 40,
    "static_ok": 40
   },
-  "T16_rolling_pin_at_edge": {
-   "episodes": 30,
-   "static_ok": 30
+  "T16_pack_snack_box": {
+   "episodes": 40,
+   "static_ok": 40
   },
   "T17_hide_and_seek_block": {
    "episodes": 40,
    "static_ok": 40
   },
-  "T18_check_cabinet_dishes": {
-   "episodes": 30,
-   "static_ok": 30
+  "T18_set_out_bowls": {
+   "episodes": 50,
+   "static_ok": 50
   },
   "T19_recycling": {
    "episodes": 40,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 115
+  "task": 118
  },
- "tasks_sha1": "9bbfb31b9b43697a132142cc2dbd5a4407aa9641"
+ "tasks_sha1": "5525acb0b76bc7ee27abcd6a152848b12d3148c6"
 }

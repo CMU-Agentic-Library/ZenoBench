@@ -26,7 +26,16 @@
 | T14 | whose_book | 能力不足 | 平装书的书架只有最高一层有空，够不着 → 放到别的书架（不放进精装书那个） |
 | T15 | no_lid（新任务：盖锅盖，替换翻书） | 缺失 | 家里没有锅盖 → 用盘子盖（用书最差） |
 | T15 | lid_in_use（新任务） | 被占用 | 锅盖盖在另一锅炖菜上 → 用盘子盖汤锅，不拿炖菜的盖子 |
+| T16 | no_box（新任务：装零食盒，替换滚擀面杖） | 缺失 | 家里没有零食盒 → 用碗装（大收纳箱最差） |
+| T16 | box_in_use（新任务） | 被占用 | 零食盒里装着孩子的蜡笔和积木 → 用碗装 |
+| T17 | pot_in_use（原 hide_both） | 被占用 | 灶上的锅装着汤 → 积木藏进餐桌那口空锅 |
+| T17 | no_pot（原 hide_somewhere） | 缺失 | 家里没有锅 → 藏进厨房矮柜关上门 |
+| T18 | one_bowl（新任务：摆碗勺，替换只看一眼） | 缺失 | 只有一只碗 → 玻璃保鲜盒（盘子最差） |
+| T18 | bowl_in_use（新任务） | 被占用 | 一只碗装着剩菜 → 保鲜盒 |
+| T18 | door_stuck（新任务） | 损坏 | 靠墙矮柜门卡住打不开 → 去 4 号矮柜拿碗（sim 要支持锁住的门） |
+| T19 | recycle_bin_full（原 m_can_in_dining_room） | 被占用 | 回收箱塞满了 → 电视柜上的空收纳箱 |
+| T19 | bin_out_of_reach（原 x6_gd_can_put_away） | 能力不足 | 回收箱在 1.42 m 高架子顶上够不着 → 餐桌上的小收纳箱 |
 
-T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。
+T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 
-目前“损坏”只有原有的 T07 microwave_broken，后面的任务里可以有意识地补几个（比如一个灶眼打不着火）。
+目前“损坏”有 T07 microwave_broken 和 T18 door_stuck，后面的任务里可以有意识地补几个（比如一个灶眼打不着火）。

@@ -945,7 +945,137 @@ def t15():
     return t, fams
 
 
-MAKERS = [t15, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30]
+# ================================================================== T16 pack the kid's snack box (11-17: replaces T16
+# rolling_pin_at_edge).  The snack box is the small storage bin (an open container); the instruction names it.  The
+# empty box goes to the desk first, then the apple into it (a loaded box is not carried)
+def t16():
+    BOX, APPLE, BOWL, BIG = "snack_box", "school_apple", "spare_bowl", "big_bin"
+    box_on = lambda sup, x, y: {BOX: on("small_storage_bin", sup, x, y)}  # noqa: E731
+    apple = {APPLE: on("apple", T2, 3.70, 6.30)}
+    pack = lambda c: [nav(c), pick(c), nav(DESK), place(c, DESK, [-0.70, -6.20]), nav(APPLE), pick(APPLE),  # noqa: E731
+                      nav(c), place(APPLE, c)]
+    goal = lambda c: {"all": [["inside", APPLE, c], ["on", c, DESK], H]}  # noqa: E731
+    ctl = {"note": "the snack box on the kitchen counter, the apple on the dining table",
+           "add": {**box_on(COUNTER, -0.10, 7.30), **apple}}
+    t = base_task("T16_pack_snack_box", "ZB-T16", "The kid takes some fruit to school tomorrow. Put an apple into "
+                  "his snack box and leave it on his desk.", "孩子明天上学要带水果，把一个苹果装进他的零食盒，放到他书桌上。",
+                  "box_on_counter", ctl, goal(BOX), [look(COUNTER)] + pack(BOX), [BOX, APPLE])
+    spares = {BOWL: on("breakfast_bowl", COUNTER, -0.10, 7.70), BIG: on("wide_storage_bin", TV, 7.30, 0.40)}
+    fams = {
+        "box_in_cabinet": fam(
+            "box_on_counter", ["item_put_away", "not_in_view"], "the layout only",
+            "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
+            "the named box is in the house: open the cabinet, take it, close the door, then pack",
+            {"": dict(add={**box_on("kitchen_cabinet_6/inside_shelf", 3.50, 0.40), **apple},
+                      remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
+                      goal={"all": [*goal(BOX)["all"], ["is_closed", C6]]}, watch=[BOX, APPLE],
+                      route=explore(C6) + from_closed(BOX, C6) + [nav(DESK), place(BOX, DESK, [-0.70, -6.20]),
+                                                                  nav(APPLE), pick(APPLE), nav(BOX), place(APPLE, BOX)])}),
+        "no_box": fam(
+            "box_on_counter", ["resource_absent", "not_in_view"], "the layout only",
+            "there is no snack box in the house; a bowl on the kitchen counter, a big storage bin on the TV stand",
+            "the box does not exist: a bowl carries an apple as well (moderate); the big storage bin is no box to "
+            "take to school (bad)",
+            {"": dict(add={**apple, **spares}, goal=goal(BOWL), watch=[APPLE, BOWL, BIG],
+                      route=[look(COUNTER)] + pack(BOWL))}),
+        "box_in_use": fam(
+            "box_on_counter", ["resource_in_use"], "the layout only",
+            "the snack box on the counter holds the kid's crayons (two pencils) and a toy block; a bowl stands "
+            "next to it",
+            "the box is in use: leave his things in it and carry the apple in the bowl instead",
+            {"": dict(add={**box_on(COUNTER, -0.10, 7.30), **apple, BOWL: spares[BOWL],
+                           "box_crayon_1": {"asset": "pencil", "support": None, "z": 1.009, "xy": [-0.13, 7.27],
+                                            "yaw_deg": 0.0},
+                           "box_crayon_2": {"asset": "pencil", "support": None, "z": 1.009, "xy": [-0.13, 7.33],
+                                            "yaw_deg": 0.0},
+                           "box_block": {"asset": "toy_block", "support": None, "z": 1.009, "xy": [-0.02, 7.30],
+                                         "yaw_deg": 0.0}},
+                      goal={"all": [*goal(BOWL)["all"], *[["inside", n, BOX] for n in ("box_crayon_1", "box_crayon_2",
+                                                                                       "box_block")]]},
+                      watch=[BOX, APPLE, BOWL, "box_crayon_1", "box_crayon_2", "box_block"],
+                      route=[look(COUNTER)] + pack(BOWL))}),
+    }
+    return t, fams
+
+
+# ================================================================== T18 set out bowls and spoons (11-17: replaces T18
+# check_cabinet_dishes, which only looked).  Two clean bowls from the low wall cabinet (kitchen cabinet 6), a spoon by
+# each, on the dining table; the cabinet closed again
+def t18():
+    B1, B2, S1, S2 = "dinner_bowl_1", "dinner_bowl_2", "dinner_spoon_1", "dinner_spoon_2"
+    GBOX, CAB6, CAB4 = "glass_box", "kitchen_cabinet_6/inside_shelf", "kitchen_cabinet_4/inside_shelf"
+    bowl = lambda sup, x, y: on("breakfast_bowl", sup, x, y)  # noqa: E731
+    spoons = {S1: on("breakfast_spoon", COUNTER, 0.10, 7.30, 90.0), S2: on("breakfast_spoon", COUNTER, 0.10, 7.55, 90.0)}
+    SPOTS = [(3.66, 6.20), (3.66, 6.75)]                  # the dining table's east edge, two places
+    SPOON_AT = [(3.66, 6.42), (3.66, 6.97)]
+    to_table = lambda x, k: [nav(T2), place(x, T2, SPOTS[k])]  # noqa: E731
+    spoon_route = [st for k, sp in enumerate((S1, S2)) for st in [nav(sp), pick(sp), nav(T2), place(sp, T2, SPOON_AT[k])]]
+    remove = ["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"]
+
+    def goal(vessels, closed=(C6,)):
+        return {"all": [*[["on", v, T2] for v in vessels], ["on", S1, T2], ["on", S2, T2],
+                        *[["is_closed", c] for c in closed], H]}
+
+    def two_from(cab, a, b):
+        """open the cabinet, take one bowl to the table, come back for the other, close"""
+        return [nav(cab), S("open", articulated=cab), S("bend"), S("explore_furniture", furniture=cab), S("straighten"),
+                nav(a), pick(a), S("retreat", obstacle=cab, distance_m=0.3)] + to_table(a, 0) + \
+               [nav(b), pick(b), S("retreat", obstacle=cab, distance_m=0.3), S("close", articulated=cab)] + to_table(b, 1)
+    ctl = {"note": "two clean bowls in the low wall cabinet, two spoons on the kitchen counter",
+           "add": {B1: bowl(CAB6, 3.32, 0.40), B2: bowl(CAB6, 3.60, 0.40), **spoons}, "remove": remove}
+    t = base_task("T18_set_out_bowls", "ZB-T18", "Dinner is soon. Take two clean bowls from the low wall cabinet to "
+                  "the dining table, with a spoon by each.", "快吃晚饭了，从靠墙矮柜里拿两只干净的碗摆到餐桌上，每只碗配一把勺子。",
+                  "bowls_in_cabinet", ctl, goal([B1, B2]), two_from(C6, B1, B2) + spoon_route, [B1, B2, S1, S2])
+    gbox = {GBOX: on("glass_food_container", COUNTER, 0.19, 7.85, 90.0)}     # over the counter's front edge (pinch)
+    one_and_box = lambda b: [nav(C6), S("open", articulated=C6), S("bend"), S("explore_furniture", furniture=C6),  # noqa: E731
+                             S("straighten"), nav(b), pick(b), S("retreat", obstacle=C6, distance_m=0.3),
+                             S("close", articulated=C6)] + to_table(b, 0) + [nav(GBOX), pick(GBOX)] + to_table(GBOX, 1)
+    fams = {
+        "bowls_apart": fam(
+            "bowls_in_cabinet", ["item_put_away", "not_in_view"], "the layout only",
+            "one clean bowl in the low wall cabinet, the other in the other low cabinet (kitchen cabinet 4)",
+            "the named bowls are in the house: find the second one in the other cabinet, close both doors",
+            {"": dict(add={B1: bowl(CAB6, 3.32, 0.40), B2: bowl(CAB4, 1.40, 0.42), **spoons}, remove=remove,
+                      goal=goal([B1, B2], (C6, C4)), watch=[B1, B2, S1, S2],
+                      route=[nav(C6), S("open", articulated=C6), S("bend"), S("explore_furniture", furniture=C6),
+                             S("straighten"), nav(B1), pick(B1), S("retreat", obstacle=C6, distance_m=0.3),
+                             S("close", articulated=C6)] + to_table(B1, 0)
+                      + [nav(C4), S("open", articulated=C4), S("bend"), S("explore_furniture", furniture=C4),
+                         S("straighten"), nav(B2), pick(B2), S("retreat", obstacle=C4, distance_m=0.3),
+                         S("close", articulated=C4)] + to_table(B2, 1) + spoon_route)}),
+        "one_bowl": fam(
+            "bowls_in_cabinet", ["resource_absent"], "the layout only",
+            "only one clean bowl in the cabinet; a glass food box and the plates on the kitchen counter",
+            "the second bowl does not exist: the glass box holds soup as well (moderate); a plate does not (bad)",
+            {"": dict(add={B1: bowl(CAB6, 3.32, 0.40), **spoons, **gbox}, remove=remove,
+                      goal=goal([B1, GBOX]), watch=[B1, GBOX, S1, S2, "plate_counter_a", "plate_counter_b"],
+                      route=one_and_box(B1) + spoon_route)}),
+        "bowl_in_use": fam(
+            "bowls_in_cabinet", ["resource_in_use"], "the layout only",
+            "two bowls in the cabinet, but one holds leftover cherry tomatoes; a glass food box on the counter",
+            "one bowl is in use (leftovers in it): leave it, take the clean one and the glass box instead",
+            {"": dict(add={B1: bowl(CAB6, 3.32, 0.40), B2: bowl(CAB6, 3.60, 0.40), **spoons, **gbox,
+                           "left_tomato_1": {"asset": "cherry_tomato", "support": None, "z": 0.425, "xy": [3.58, 0.40],
+                                             "yaw_deg": 0.0},
+                           "left_tomato_2": {"asset": "cherry_tomato", "support": None, "z": 0.425, "xy": [3.62, 0.40],
+                                             "yaw_deg": 0.0}}, remove=remove,
+                      goal={"all": [*goal([B1, GBOX])["all"], ["on", B2, CAB6], ["inside", "left_tomato_1", B2],
+                                    ["inside", "left_tomato_2", B2]]},
+                      watch=[B1, B2, GBOX, S1, S2, "left_tomato_1", "left_tomato_2"],
+                      route=one_and_box(B1) + spoon_route)}),
+        "door_stuck": fam(
+            "bowls_in_cabinet", ["appliance_failure"], "the layout only",
+            "the low wall cabinet's door is stuck and does not open (locked_articulated, to be supported in sim); "
+            "the other low cabinet also holds two clean bowls",
+            "the named cabinet cannot be opened: take the bowls from the other low cabinet instead",
+            {"": dict(add={B1: bowl(CAB4, 1.25, 0.42), B2: bowl(CAB4, 1.55, 0.42), **spoons}, remove=remove,
+                      locked_articulated=[C6], goal=goal([B1, B2], (C4,)), watch=[B1, B2, S1, S2],
+                      route=[nav(C6), look(C6)] + two_from(C4, B1, B2) + spoon_route)}),
+    }
+    return t, fams
+
+
+MAKERS = [t15, t16, t18, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30]
 NEW_CONDITIONS = {
     "resource_absent": {"type": "resource_identity", "decision": "alternative",
                         "meaning": "the usual thing is not in the house; the closest thing that serves the purpose "

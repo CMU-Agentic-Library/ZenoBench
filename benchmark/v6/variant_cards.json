@@ -16150,8 +16150,8 @@
   "rationale": "the lid is in use on the stew: leave it there and cover the soup with a plate instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T16_rolling_pin_at_edge/pin_free": {
-  "variant": "pin_free",
+ "T16_pack_snack_box/box_on_counter": {
+  "variant": "box_on_counter",
   "category": "control",
   "seeds": [
    10,
@@ -16165,14 +16165,15 @@
    18,
    19
   ],
-  "instruction": "We are about to make dumplings, and the rolling pin has rolled to the front edge of the island. Roll it back in so it does not fall off.",
+  "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "rolling_pin"
+   "moved": [],
+   "added": [
+    "school_apple",
+    "snack_box"
    ],
-   "added": [],
    "removed": [],
    "conditions": [],
    "initial_checks": []
@@ -16181,18 +16182,14 @@
   "goal_constraints": {
    "all": [
     [
-     "object_rolled",
-     "rolling_pin"
+     "inside",
+     "school_apple",
+     "snack_box"
     ],
     [
      "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
+     "snack_box",
+     "desk_1/top"
     ],
     [
      "hand_empty",
@@ -16202,12 +16199,12 @@
   },
   "control": null,
   "oracle_route": "nominal",
-  "challenge": "the pin lies 3 mm from the island's front edge with room behind it",
+  "challenge": "the snack box on the kitchen counter, the apple on the dining table",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T16_rolling_pin_at_edge/pin_out_of_view": {
-  "variant": "pin_out_of_view",
+ "T16_pack_snack_box/box_in_cabinet": {
+  "variant": "box_in_cabinet",
   "category": "task",
   "seeds": [
    10,
@@ -16221,77 +16218,22 @@
    18,
    19
   ],
-  "instruction": "We are about to make dumplings, and the rolling pin has rolled to the front edge of the island. Roll it back in so it does not fall off.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": [
-    4.764,
-    0.699,
-    195.0
-   ],
-   "moved": [
-    "rolling_pin"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "start_elsewhere"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "object_rolled",
-     "rolling_pin"
-    ],
-    [
-     "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "pin_free",
-  "oracle_route": "explore_search_pin",
-  "challenge": "the robot starts at the wall cabinet facing away",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T16_rolling_pin_at_edge/everything_near_the_edge__pin_and_mug": {
-  "variant": "everything_near_the_edge",
-  "category": "task",
-  "seeds": [
-   11,
-   13,
-   14,
-   16
-  ],
-  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
+  "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "oatmeal",
-    "rolling_pin"
-   ],
+   "moved": [],
    "added": [
-    "edge_mug"
+    "school_apple",
+    "snack_box"
    ],
-   "removed": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
    "conditions": [
-    "goal_items_unstated",
-    "multi_object_goal"
+    "item_put_away",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -16299,139 +16241,60 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
+     "inside",
+     "school_apple",
+     "snack_box"
     ],
     [
      "on",
-     "edge_mug",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "edge_mug",
-     0.06
-    ],
-    [
-     "upright",
-     "edge_mug"
-    ],
-    [
-     "near_start",
-     "oatmeal",
-     0.03
+     "snack_box",
+     "desk_1/top"
     ],
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ]
    ]
   },
-  "control": "pin_free",
-  "oracle_route": "v6_everything_near_the_edge__pin_and_mug",
-  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
-  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
+  "control": "box_on_counter",
+  "oracle_route": "v6_box_in_cabinet",
+  "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
+  "rationale": "the named box is in the house: open the cabinet, take it, close the door, then pack",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T16_rolling_pin_at_edge/everything_near_the_edge__pin_and_bowl": {
-  "variant": "everything_near_the_edge",
-  "category": "task",
-  "seeds": [
-   12,
-   15,
-   19
-  ],
-  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal",
-    "rolling_pin"
-   ],
-   "added": [
-    "edge_mug"
-   ],
-   "removed": [],
-   "conditions": [
-    "goal_items_unstated",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
-    ],
-    [
-     "on",
-     "oatmeal",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "oatmeal",
-     0.06
-    ],
-    [
-     "upright",
-     "oatmeal"
-    ],
-    [
-     "near_start",
-     "edge_mug",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "pin_free",
-  "oracle_route": "v6_everything_near_the_edge__pin_and_bowl",
-  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
-  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T16_rolling_pin_at_edge/everything_near_the_edge__pin_only": {
-  "variant": "everything_near_the_edge",
+ "T16_pack_snack_box/no_box": {
+  "variant": "no_box",
   "category": "task",
   "seeds": [
    10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
    17,
-   18
+   18,
+   19
   ],
-  "instruction": "Things on the kitchen island are close to falling off its edge. Please take care of it.",
+  "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "oatmeal",
-    "rolling_pin"
-   ],
+   "moved": [],
    "added": [
-    "edge_mug"
+    "big_bin",
+    "school_apple",
+    "spare_bowl"
    ],
    "removed": [],
    "conditions": [
-    "goal_items_unstated",
-    "multi_object_goal"
+    "resource_absent",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -16439,24 +16302,14 @@
   "goal_constraints": {
    "all": [
     [
+     "inside",
+     "school_apple",
+     "spare_bowl"
+    ],
+    [
      "on",
-     "rolling_pin",
-     "kitchen_island/top"
-    ],
-    [
-     "away_from_edge",
-     "rolling_pin",
-     0.06
-    ],
-    [
-     "near_start",
-     "edge_mug",
-     0.03
-    ],
-    [
-     "near_start",
-     "oatmeal",
-     0.03
+     "spare_bowl",
+     "desk_1/top"
     ],
     [
      "hand_empty",
@@ -16464,10 +16317,84 @@
     ]
    ]
   },
-  "control": "pin_free",
-  "oracle_route": "v6_everything_near_the_edge__pin_only",
-  "challenge": "the rolling pin at the front edge, and sometimes a mug or the full oatmeal bowl too; other things on the island stand safely",
-  "rationale": "find every object at risk, not only the pin, and secure each in its own way (roll the pin, set the mug or bowl back); leave what is safe",
+  "control": "box_on_counter",
+  "oracle_route": "v6_no_box",
+  "challenge": "there is no snack box in the house; a bowl on the kitchen counter, a big storage bin on the TV stand",
+  "rationale": "the box does not exist: a bowl carries an apple as well (moderate); the big storage bin is no box to take to school (bad)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T16_pack_snack_box/box_in_use": {
+  "variant": "box_in_use",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "box_block",
+    "box_crayon_1",
+    "box_crayon_2",
+    "school_apple",
+    "snack_box",
+    "spare_bowl"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "school_apple",
+     "spare_bowl"
+    ],
+    [
+     "on",
+     "spare_bowl",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "inside",
+     "box_crayon_1",
+     "snack_box"
+    ],
+    [
+     "inside",
+     "box_crayon_2",
+     "snack_box"
+    ],
+    [
+     "inside",
+     "box_block",
+     "snack_box"
+    ]
+   ]
+  },
+  "control": "box_on_counter",
+  "oracle_route": "v6_box_in_use",
+  "challenge": "the snack box on the counter holds the kid's crayons (two pencils) and a toy block; a bowl stands next to it",
+  "rationale": "the box is in use: leave his things in it and carry the apple in the bowl instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T17_hide_and_seek_block/lid_off": {
@@ -16597,90 +16524,38 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/hide_both__tv_stand": {
-  "variant": "hide_both",
-  "category": "task",
-  "seeds": [
-   11,
-   14,
-   17,
-   18,
-   19
-  ],
-  "instruction": "We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "floor_block",
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "multi_object_goal",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "hidden",
-     "floor_block"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_hide_both__tv_stand",
-  "challenge": "one block on the island, the other in another room; one pot, one lid",
-  "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T17_hide_and_seek_block/hide_both__dining": {
-  "variant": "hide_both",
+ "T17_hide_and_seek_block/pot_in_use": {
+  "variant": "pot_in_use",
   "category": "task",
   "seeds": [
    10,
+   11,
    12,
    13,
+   14,
    15,
-   16
+   16,
+   17,
+   18,
+   19
   ],
-  "instruction": "We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.",
+  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "floor_block",
     "handled_cooking_pot",
     "oatmeal",
     "pot_lid",
     "rolling_pin",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "soup_pot"
+   ],
    "removed": [],
    "conditions": [
-    "multi_object_goal",
+    "resource_in_use",
     "not_in_view"
    ],
    "initial_checks": []
@@ -16693,13 +16568,23 @@
      "wooden_block_b"
     ],
     [
-     "hidden",
-     "floor_block"
+     "inside",
+     "wooden_block_b",
+     "handled_cooking_pot"
     ],
     [
      "covered",
      "handled_cooking_pot",
      "pot_lid"
+    ],
+    [
+     "near_start",
+     "soup_pot",
+     0.03
+    ],
+    [
+     "upright",
+     "soup_pot"
     ],
     [
      "hand_empty",
@@ -16708,22 +16593,27 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_hide_both__dining",
-  "challenge": "one block on the island, the other in another room; one pot, one lid",
-  "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
+  "oracle_route": "v6_pot_in_use",
+  "challenge": "the pot on the stove is full of yesterday's soup; the empty pot is on the dining table, its lid on the island",
+  "rationale": "the pot named is in use (soup in it): hide the block in the empty pot instead and cover it; never in the soup",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/hide_somewhere__pot_ready": {
-  "variant": "hide_somewhere",
+ "T17_hide_and_seek_block/no_pot": {
+  "variant": "no_pot",
   "category": "task",
   "seeds": [
+   10,
    11,
+   12,
    13,
+   14,
+   15,
+   16,
    17,
    18,
    19
   ],
-  "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
+  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -16737,9 +16627,12 @@
    "added": [],
    "removed": [
     "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
+    "handled_cooking_pot",
+    "plate_inside_kitchen_cabinet",
+    "pot_lid"
    ],
    "conditions": [
+    "resource_absent",
     "storage_place"
    ],
    "initial_checks": []
@@ -16768,73 +16661,13 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_hide_somewhere__pot_ready",
-  "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
-  "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
+  "oracle_route": "v6_no_pot",
+  "challenge": "there is no pot in the house (both away); the low kitchen cabinets close with a door",
+  "rationale": "the pot does not exist: hide the block in a low cabinet and close it (not in the microwave or the fridge)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/hide_somewhere__lid_away": {
-  "variant": "hide_somewhere",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   14,
-   15,
-   16
-  ],
-  "instruction": "We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it at a glance. Not inside an appliance, that is dangerous.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid",
-    "rolling_pin",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "storage_place"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ],
-    [
-     "not on",
-     "wooden_block_b",
-     "kitchen_microwave/inside_floor"
-    ],
-    [
-     "not on",
-     "wooden_block_b",
-     "breakfast_fridge/inside_shelf"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_hide_somewhere__lid_away",
-  "challenge": "the instruction names no hiding place, only rules out appliances (the microwave and the fridge would hide the block too); the pot on the stove hides it when its lid is at hand",
-  "rationale": "pick a place that hides the block and is not an appliance: the pot under its lid when the lid is there, else a low cabinet (open it with the free hand, put the block in, close it)",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/at_island": {
-  "variant": "at_island",
+ "T18_set_out_bowls/bowls_in_cabinet": {
+  "variant": "bowls_in_cabinet",
   "category": "control",
   "seeds": [
    10,
@@ -16848,16 +16681,21 @@
    18,
    19
   ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for dinner. Have a look inside and close the cabinet door properly afterwards.",
+  "instruction": "Dinner is soon. Take two clean bowls from the low wall cabinet to the dining table, with a spoon by each.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
+   "moved": [],
+   "added": [
+    "dinner_bowl_1",
+    "dinner_bowl_2",
+    "dinner_spoon_1",
+    "dinner_spoon_2"
    ],
-   "added": [],
-   "removed": [],
+   "removed": [
+    "plate_inside_kitchen_cabinet",
+    "bowl_inside_kitchen_cabinet"
+   ],
    "conditions": [],
    "initial_checks": []
   },
@@ -16865,12 +16703,24 @@
   "goal_constraints": {
    "all": [
     [
-     "observed",
-     "plate_inside_kitchen_cabinet"
+     "on",
+     "dinner_bowl_1",
+     "dining_table_2/top"
     ],
     [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
+     "on",
+     "dinner_bowl_2",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_2",
+     "dining_table_2/top"
     ],
     [
      "is_closed",
@@ -16884,316 +16734,121 @@
   },
   "control": null,
   "oracle_route": "nominal",
-  "challenge": "the robot starts at its default spot in front of the island",
+  "challenge": "two clean bowls in the low wall cabinet, two spoons on the kitchen counter",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T18_check_cabinet_dishes/dishes_spread__in_cabinet_4": {
-  "variant": "dishes_spread",
+ "T18_set_out_bowls/bowls_apart": {
+  "variant": "bowls_apart",
   "category": "task",
   "seeds": [
+   10,
+   11,
    12,
    13,
    14,
    15,
-   16
-  ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner. Have a look behind the kitchen doors and close every door properly afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "item_put_away"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "bowl_inside_kitchen_cabinet",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_bowl_elsewhere",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "observed",
-     "plate_inside_kitchen_cabinet"
-    ],
-    [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v6_dishes_spread__in_cabinet_4",
-  "challenge": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
-  "rationale": "the first place answers only half of the question: keep looking behind the other doors until both dishes are seen, closing each door again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/dishes_spread__in_microwave": {
-  "variant": "dishes_spread",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
+   16,
    17,
    18,
    19
   ],
-  "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner. Have a look behind the kitchen doors and close every door properly afterwards.",
+  "instruction": "Dinner is soon. Take two clean bowls from the low wall cabinet to the dining table, with a spoon by each.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
+   "moved": [],
+   "added": [
+    "dinner_bowl_1",
+    "dinner_bowl_2",
+    "dinner_spoon_1",
+    "dinner_spoon_2"
+   ],
+   "removed": [
     "bowl_inside_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
-   "added": [],
-   "removed": [],
    "conditions": [
-    "item_put_away"
+    "item_put_away",
+    "not_in_view"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "bowl_inside_kitchen_cabinet",
-     "kitchen_microwave/inside_floor"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_bowl_elsewhere",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
-     "observed",
-     "plate_inside_kitchen_cabinet"
+     "on",
+     "dinner_bowl_1",
+     "dining_table_2/top"
     ],
     [
-     "observed",
-     "bowl_inside_kitchen_cabinet"
+     "on",
+     "dinner_bowl_2",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_2",
+     "dining_table_2/top"
     ],
     [
      "is_closed",
      "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "hand_empty",
-     "right"
     ],
     [
      "is_closed",
      "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v6_dishes_spread__in_microwave",
-  "challenge": "the plate is in the wall cabinet, the bowl is not: it is in the other low cabinet or was left in the microwave; the instruction names neither",
-  "rationale": "the first place answers only half of the question: keep looking behind the other doors until both dishes are seen, closing each door again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/enough_for_dinner__enough": {
-  "variant": "enough_for_dinner",
-  "category": "task",
-  "seeds": [
-   11,
-   14,
-   16,
-   17
-  ],
-  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "bowl_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [
-    "clean_bowl_2"
-   ],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "count_against_need"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "count_on_at_least",
-     [
-      "bowl_inside_kitchen_cabinet",
-      "clean_bowl_2",
-      "bowl_kitchen_cabinet",
-      "bowl_side_table"
-     ],
-     "kitchen_cabinet_6/inside_shelf",
-     2
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
     ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "near_start",
-     "bowl_kitchen_cabinet",
-     0.03
-    ],
-    [
-     "near_start",
-     "bowl_side_table",
-     0.03
     ]
    ]
   },
-  "control": "at_island",
-  "oracle_route": "v6_enough_for_dinner__enough",
-  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
+  "control": "bowls_in_cabinet",
+  "oracle_route": "v6_bowls_apart",
+  "challenge": "one clean bowl in the low wall cabinet, the other in the other low cabinet (kitchen cabinet 4)",
+  "rationale": "the named bowls are in the house: find the second one in the other cabinet, close both doors",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T18_check_cabinet_dishes/enough_for_dinner__one_short": {
-  "variant": "enough_for_dinner",
-  "category": "task",
-  "seeds": [
-   12,
-   18,
-   19
-  ],
-  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "bowl_kitchen_cabinet",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "added": [],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "count_against_need"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "count_on_at_least",
-     [
-      "bowl_inside_kitchen_cabinet",
-      "bowl_kitchen_cabinet",
-      "bowl_side_table"
-     ],
-     "kitchen_cabinet_6/inside_shelf",
-     2
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "near_start",
-     "bowl_side_table",
-     0.03
-    ]
-   ]
-  },
-  "control": "at_island",
-  "oracle_route": "v6_enough_for_dinner__one_short",
-  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T18_check_cabinet_dishes/enough_for_dinner__two_short": {
-  "variant": "enough_for_dinner",
+ "T18_set_out_bowls/one_bowl": {
+  "variant": "one_bowl",
   "category": "task",
   "seeds": [
    10,
+   11,
+   12,
    13,
-   15
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
   ],
-  "instruction": "Two of us are having dinner tonight; there should be enough clean bowls in the low wall cabinet. Close its door when you are done.",
+  "instruction": "Dinner is soon. Take two clean bowls from the low wall cabinet to the dining table, with a spoon by each.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "bowl_inside_kitchen_cabinet",
-    "bowl_kitchen_cabinet",
-    "bowl_side_table",
-    "plate_inside_kitchen_cabinet"
+   "moved": [],
+   "added": [
+    "dinner_bowl_1",
+    "dinner_spoon_1",
+    "dinner_spoon_2",
+    "glass_box"
    ],
-   "added": [],
    "removed": [
     "bowl_inside_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [
-    "count_against_need"
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -17201,13 +16856,24 @@
   "goal_constraints": {
    "all": [
     [
-     "count_on_at_least",
-     [
-      "bowl_kitchen_cabinet",
-      "bowl_side_table"
-     ],
-     "kitchen_cabinet_6/inside_shelf",
-     2
+     "on",
+     "dinner_bowl_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "glass_box",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_2",
+     "dining_table_2/top"
     ],
     [
      "is_closed",
@@ -17219,10 +16885,176 @@
     ]
    ]
   },
-  "control": "at_island",
-  "oracle_route": "v6_enough_for_dinner__two_short",
-  "challenge": "the cabinet holds two, one or no bowls; spare clean bowls stand on the kitchen cabinet top and the side table in the west dining room",
-  "rationale": "count what is there against what is needed and act only on the difference: nothing to bring when there are two, one or two bowls fetched otherwise",
+  "control": "bowls_in_cabinet",
+  "oracle_route": "v6_one_bowl",
+  "challenge": "only one clean bowl in the cabinet; a glass food box and the plates on the kitchen counter",
+  "rationale": "the second bowl does not exist: the glass box holds soup as well (moderate); a plate does not (bad)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T18_set_out_bowls/bowl_in_use": {
+  "variant": "bowl_in_use",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is soon. Take two clean bowls from the low wall cabinet to the dining table, with a spoon by each.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "dinner_bowl_1",
+    "dinner_bowl_2",
+    "dinner_spoon_1",
+    "dinner_spoon_2",
+    "glass_box",
+    "left_tomato_1",
+    "left_tomato_2"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "resource_in_use"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dinner_bowl_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "glass_box",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_2",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "on",
+     "dinner_bowl_2",
+     "kitchen_cabinet_6/inside_shelf"
+    ],
+    [
+     "inside",
+     "left_tomato_1",
+     "dinner_bowl_2"
+    ],
+    [
+     "inside",
+     "left_tomato_2",
+     "dinner_bowl_2"
+    ]
+   ]
+  },
+  "control": "bowls_in_cabinet",
+  "oracle_route": "v6_bowl_in_use",
+  "challenge": "two bowls in the cabinet, but one holds leftover cherry tomatoes; a glass food box on the counter",
+  "rationale": "one bowl is in use (leftovers in it): leave it, take the clean one and the glass box instead",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T18_set_out_bowls/door_stuck": {
+  "variant": "door_stuck",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is soon. Take two clean bowls from the low wall cabinet to the dining table, with a spoon by each.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "dinner_bowl_1",
+    "dinner_bowl_2",
+    "dinner_spoon_1",
+    "dinner_spoon_2"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "appliance_failure"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dinner_bowl_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_bowl_2",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_1",
+     "dining_table_2/top"
+    ],
+    [
+     "on",
+     "dinner_spoon_2",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowls_in_cabinet",
+  "oracle_route": "v6_door_stuck",
+  "challenge": "the low wall cabinet's door is stuck and does not open (locked_articulated, to be supported in sim); the other low cabinet also holds two clean bowls",
+  "rationale": "the named cabinet cannot be opened: take the bowls from the other low cabinet instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/bin_on_bookcase": {
@@ -17276,106 +17108,6 @@
   "oracle_route": "nominal",
   "challenge": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
   "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T19_recycling/m_can_in_dining_room": {
-  "variant": "m_can_in_dining_room",
-  "category": "task",
-  "seeds": [
-   11,
-   12,
-   14,
-   15,
-   16
-  ],
-  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
-  "initial_conditions": {
-   "scene": "tasks/recycle_and_store",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "wide_storage_bin"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "bin_on_bookcase",
-  "oracle_route": "v5_m_can_in_dining_room",
-  "challenge": "the can was left on the dining table, out of view: search it",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T19_recycling/m_can_in_dining_room__alt_tv_stand_2": {
-  "variant": "m_can_in_dining_room",
-  "category": "task",
-  "seeds": [
-   10,
-   13,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
-  "initial_conditions": {
-   "scene": "tasks/recycle_and_store",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "wide_storage_bin"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "bin_on_bookcase",
-  "oracle_route": "v6_m_can_in_dining_room__alt_tv_stand_2",
-  "challenge": "the can was left on the dining table, out of view: search it (here the soda_can is on tv_stand_2/top)",
-  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/lookalike_bin": {
@@ -17490,91 +17222,22 @@
   "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T19_recycling/x6_gd_can_put_away__in_4": {
-  "variant": "x6_gd_can_put_away",
+ "T19_recycling/recycle_bin_full": {
+  "variant": "recycle_bin_full",
   "category": "task",
   "seeds": [
    10,
+   11,
    12,
    13,
-   17,
-   18
-  ],
-  "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/recycle_and_store",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "wide_storage_bin"
-   ],
-   "added": [],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_can_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "m_can_in_dining_room",
-  "oracle_route": "v6_x6_gd_can_put_away__in_4",
-  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
-  "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T19_recycling/x6_gd_can_put_away__in_6": {
-  "variant": "x6_gd_can_put_away",
-  "category": "task",
-  "seeds": [
-   11,
    14,
    15,
    16,
+   17,
+   18,
    19
   ],
-  "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -17582,60 +17245,133 @@
     "soda_can",
     "wide_storage_bin"
    ],
-   "added": [],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
+   "added": [
+    "rec_can_1",
+    "rec_can_2",
+    "rec_cereal_1",
+    "rec_cereal_2",
+    "rec_cup_1",
+    "rec_cup_2",
+    "spare_bin"
    ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
+   "removed": [],
+   "conditions": [
+    "destination_occupied",
+    "not_in_view"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_can_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "inside",
      "soda_can",
-     "wide_storage_bin"
+     "spare_bin"
     ],
     [
      "inside",
      "foam_cube",
+     "spare_bin"
+    ],
+    [
+     "inside",
+     "rec_cereal_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "rec_cereal_2",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "rec_cup_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "rec_cup_2",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "rec_can_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "rec_can_2",
      "wide_storage_bin"
     ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
     ]
    ]
   },
-  "control": "m_can_in_dining_room",
-  "oracle_route": "v6_x6_gd_can_put_away__in_6",
-  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
-  "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_recycle_bin_full",
+  "challenge": "the recycling bin on the bedroom bookcase is packed (cereal boxes, plastic cups, cans): the can and the cube do not go in; an empty storage bin stands on the TV stand",
+  "rationale": "the bin is full: leave what is in it and collect the two in the empty bin instead",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T19_recycling/bin_out_of_reach": {
+  "variant": "bin_out_of_reach",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "spare_small_bin"
+   ],
+   "removed": [],
+   "conditions": [
+    "agent_ability",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "spare_small_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "spare_small_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_bin_out_of_reach",
+  "challenge": "the recycling bin stands on top of the tall kitchen shelf (1.42 m), above what the robot can reach; an empty small storage bin is on the dining table",
+  "rationale": "the bin cannot be reached: collect the two in the small bin instead (for someone to empty into the recycling bin later)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/bottle_on_cabinet": {

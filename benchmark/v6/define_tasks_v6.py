@@ -2117,49 +2117,42 @@ def T16(t):
 
 
 def T17(t):
-    B, POT, LID, F = "wooden_block_b", "handled_cooking_pot", "pot_lid", "floor_block"
-    base = OR(t, "lid_off")                     # nav stove, look stove, nav island, look island, hide
-    lifted = lambda *sr: base + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr)), nav(LID), pick(LID),  # noqa: E731
-                                     nav(POT), S("cover", container=POT, lid=LID))
-    both_goal = {"all": [["hidden", B], ["hidden", F], ["covered", POT, LID], ["hand_empty", "right"]]}
-    both = lambda region: base + recs(S("search", object=F, region=region), nav(POT), S("uncover", container=POT),  # noqa: E731
-                                      nav(F), look(F), S("hide", object=F, receptacle=POT, lid=LID))
+    B, POT, LID = "wooden_block_b", "handled_cooking_pot", "pot_lid"
+    SOUP, ISL, STOVE = "soup_pot", "kitchen_island/top", "kitchen_stove/top"
+    # 11-17 (substitution): hide_both / hide_somewhere replaced.
+    # pot_in_use: the pot on the stove holds yesterday's soup (in use); the empty pot is on the dining table (as in
+    # T09 pot_in_use), its lid on the island -> hide the block in the empty pot and cover it
+    in_use_route = [look(STOVE), S("search", object=POT, region="dining_room_0_1"), nav(ISL), look(ISL),
+                    S("hide", object=B, receptacle=POT, lid=LID)]
+    # no_pot: no pot in the house (both away being washed) -> a low kitchen cabinet hides it (not an appliance)
+    no_pot_route = [look(ISL), nav(STOVE), look(STOVE), nav("kitchen_cabinet_4"),
+                    S("open", articulated="kitchen_cabinet_4"), nav(B), pick(B, grasp="side"), nav("kitchen_cabinet_4"),
+                    place(B, "kitchen_cabinet_4/inside_shelf", [1.40, 0.42]), S("close", articulated="kitchen_cabinet_4")]
     return {
-        "hide_both": dict(
-            base="lid_off", control="lid_off", conditions=["multi_object_goal", "not_in_view"],
-            goal=both_goal, watch=[B, F, LID, POT, "oatmeal", "rolling_pin"],
-            instruction="We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty "
-                        "pot on the stove and put the lid on so they cannot see them.",
-            instruction_zh="我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。",
-            factor="where the second block is (seed: the TV stand or the dining table)",
-            challenge="one block on the island, the other in another room; one pot, one lid",
-            rationale="two hides share the lid: find the second block, take the lid off again between the hides, "
-                      "cover at the end",
-            cases={c: dict(move={F: to}, route=both(region))
-                   for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
-                                         ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))}),
-        "hide_somewhere": dict(
-            base="lid_off", control="lid_off", conditions=["storage_place"],
-            remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
-            instruction="We are playing hide-and-seek with the kid: hide the wooden block where the kid cannot see it "
-                        "at a glance. Not inside an appliance, that is dangerous.",
-            instruction_zh="陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。",
+        "pot_in_use": dict(
+            base="lid_off", control="lid_off", conditions=["resource_in_use", "not_in_view"],
+            add={SOUP: {"asset": "soup_pot", "support": STOVE, "xy": [8.41, 1.725], "yaw_deg": 0.0}},
+            move={POT: P("dining_table_2/top", 3.548, 5.715), LID: P(ISL, 7.25, 1.85)},
+            goal={"all": [["hidden", B], ["inside", B, POT], ["covered", POT, LID], ["near_start", SOUP, 0.03],
+                          ["upright", SOUP], ["hand_empty", "right"]]},
+            watch=[B, POT, LID, SOUP],
+            factor="the layout only",
+            challenge="the pot on the stove is full of yesterday's soup; the empty pot is on the dining table, its "
+                      "lid on the island",
+            rationale="the pot named is in use (soup in it): hide the block in the empty pot instead and cover it; "
+                      "never in the soup",
+            cases={"": dict(route=in_use_route)}),
+        "no_pot": dict(
+            base="lid_off", control="lid_off", conditions=["resource_absent", "storage_place"],
+            remove=[POT, LID, "plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             goal={"all": [["hidden", B], ["not on", B, "kitchen_microwave/inside_floor"],
                           ["not on", B, "breakfast_fridge/inside_shelf"], ["hand_empty", "right"]]},
-            watch=[B, POT, LID],
-            factor="what is at hand for hiding (seed: the empty pot with its lid beside it on the stove; or the lid "
-                   "put away on the wall cabinet, so a low cabinet serves)",
-            challenge="the instruction names no hiding place, only rules out appliances (the microwave and the fridge "
-                      "would hide the block too); the pot on the stove hides it when its lid is at hand",
-            rationale="pick a place that hides the block and is not an appliance: the pot under its lid when the lid "
-                      "is there, else a low cabinet (open it with the free hand, put the block in, close it)",
-            cases={"pot_ready": dict(route=base),
-                   "lid_away": dict(move={LID: P("kitchen_cabinet_6/top", 3.335, 0.36)},
-                                    route=[look("kitchen_island/top"), nav("kitchen_stove/top"), look("kitchen_stove/top"),
-                                           nav("kitchen_cabinet_4"), S("open", articulated="kitchen_cabinet_4"), nav(B),
-                                           pick(B, grasp="side"), nav("kitchen_cabinet_4"),
-                                           place(B, "kitchen_cabinet_4/inside_shelf", [1.40, 0.42]),
-                                           S("close", articulated="kitchen_cabinet_4")])}),
+            watch=[B],
+            factor="the layout only",
+            challenge="there is no pot in the house (both away); the low kitchen cabinets close with a door",
+            rationale="the pot does not exist: hide the block in a low cabinet and close it (not in the microwave or "
+                      "the fridge)",
+            cases={"": dict(route=no_pot_route)}),
     }
 
 
@@ -2233,28 +2226,51 @@ def T18(t):
 
 
 def T19(t):
-    CAN = "soda_can"
-    base = OR(t, "bin_on_bookcase")             # ... approach bin, drop can, nav cube, pick cube, nav bin, drop cube
-    shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
-             "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}}
-    take = lambda art: [nav(CAN), pick(CAN), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
-    i_can = at(base, "pick", object=CAN)
-    rest = base[i_can + 1:]
-    can_goal = copy.deepcopy(t["goal"])
-    can_goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    CAN, CUBE, BIN = "soda_can", "foam_cube", "wide_storage_bin"
+    # 11-17 (substitution): every variant but the control redesigned around the recycling bin being unusable
+    # recycle_bin_full (in use): the bin on the bedroom bookcase is packed (two cereal boxes standing, two plastic
+    # cups, two cans): the spare storage bin on the TV stand takes the two instead
+    z0 = 0.709 + 0.009
+    packed = {n: {"asset": a, "support": None, "z": z0, "xy": [round(1.0889 + dx, 3), round(-0.4277 + dy, 3)],
+                  "yaw_deg": 0.0}
+              for n, a, dx, dy in (("rec_cereal_1", "cereal_box", -0.11, 0.07), ("rec_cereal_2", "cereal_box", -0.11, -0.07),
+                                   ("rec_cup_1", "plastic_cup", 0.0, 0.07), ("rec_cup_2", "plastic_cup", 0.0, -0.07),
+                                   ("rec_can_1", "soda_can", 0.11, 0.07), ("rec_can_2", "soda_can", 0.11, -0.07))}
+    SPARE = "spare_bin"
+
+    def into(c, look_first=()):
+        return [S("explore_room", room="living_room_0_0"), nav("tv_stand_2/top"), look("tv_stand_2/top"), nav(CAN),
+                pick(CAN), *look_first, nav(c), S("approach", target=c), S("drop", object=CAN, container=c),
+                nav(CUBE), look(CUBE), pick(CUBE), nav(c), S("approach", target=c), S("drop", object=CUBE, container=c)]
+    stay = [["inside", n, BIN] for n in packed]
+    SMALL = "spare_small_bin"
+    # bin_out_of_reach (not enough): the recycling bin stands on top of the tall kitchen shelf (1.42 m), out of
+    # reach; an empty small storage bin on the dining table takes the two instead
     return {
-        "x6_gd_can_put_away": dict(
-            base="bin_on_bookcase", control="m_can_in_dining_room", goal=can_goal,
-            remove=["plate_inside_kitchen_cabinet"],
-            instruction="Movie night is over; put what goes to recycling into the recycling bin. Someone put the "
-                        "empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
-            instruction_zh="电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
-            factor="which closed place holds the item",
-            challenge="the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
-            rationale="inspect the closed places for the can (reference route: the worse order), then recycle both",
-            cases={f"in_{w[-1]}": dict(move={CAN: shelf[w]}, route=put_away([], o, w, take, rest),
-                                       failures=[f_initial("resource", [["on", CAN, f"{w}/inside_shelf"]], fid="resource_can_put_away")])
-                   for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
+        "recycle_bin_full": dict(
+            base="bin_on_bookcase", control="bin_on_bookcase", conditions=["destination_occupied", "not_in_view"],
+            add={**packed, SPARE: {"asset": "wide_storage_bin", "support": "tv_stand_2/top", "xy": [7.30, 0.40],
+                                   "yaw_deg": 0.0}},
+            goal={"all": [["inside", CAN, SPARE], ["inside", CUBE, SPARE], *stay, ["hand_empty", "right"]]},
+            watch=[CAN, CUBE, BIN, SPARE, *packed], keep_design=["bookcase_2/top"],
+            factor="the layout only",
+            challenge="the recycling bin on the bedroom bookcase is packed (cereal boxes, plastic cups, cans): the "
+                      "can and the cube do not go in; an empty storage bin stands on the TV stand",
+            rationale="the bin is full: leave what is in it and collect the two in the empty bin instead",
+            cases={"": dict(route=into(SPARE, [nav("bookcase_2/top"), look("bookcase_2/top")]))}),
+        "bin_out_of_reach": dict(
+            base="bin_on_bookcase", control="bin_on_bookcase", conditions=["agent_ability", "not_in_view"],
+            move={BIN: {"support": "large_shelf_6/top", "xy": [5.12, 8.42], "yaw_deg": 90.0}},
+            add={SMALL: {"asset": "small_storage_bin", "support": "dining_table_2/top", "xy": [3.62, 6.30],
+                         "yaw_deg": 0.0}},
+            goal={"all": [["inside", CAN, SMALL], ["inside", CUBE, SMALL], ["hand_empty", "right"]]},
+            watch=[CAN, CUBE, BIN, SMALL], keep_design=["large_shelf_6/top"],
+            factor="the layout only",
+            challenge="the recycling bin stands on top of the tall kitchen shelf (1.42 m), above what the robot can "
+                      "reach; an empty small storage bin is on the dining table",
+            rationale="the bin cannot be reached: collect the two in the small bin instead (for someone to empty "
+                      "into the recycling bin later)",
+            cases={"": dict(route=into(SMALL, [nav(BIN), look("large_shelf_6/top")]))}),
     }
 
 
@@ -2637,6 +2653,7 @@ REPLACED = {
                                               "local step; the toys among it go to the toy box by kind)",
     ("T08_wipe_island", "h_dynamic_sponge_taken"): "removed: no dynamic events in T08 (someone takes the sponge)",
     ("T08_wipe_island", "sponge_on_tv_stand"): "removed: far_sponge_tv is the same search over a longer way",
+    ("T19_recycling", "m_can_in_dining_room"): "replaced by recycle_bin_full (11-17: substitution, the bin packed)",
     ("T12_tidy_toys", "duck_in_study"): "replaced by bedtime_toy (11-17: a cuddly toy for bed, the teddy or, without "
                                         "it, the duck instead; the old one was a plain search)",
     ("T02_stack_blocks", "crowded"): "replaced by crowded_use_another (prying the wedged block out is ruled out; "
@@ -2929,6 +2946,8 @@ def make_variant(t, fam, spec, case, cspec):
     v["since"] = "v6"
     if spec.get("keep_design"):
         v["keep_design"] = list(spec["keep_design"])     # the seed leaves the design on these supports as it is
+    if cspec.get("locked_articulated"):                  # 11-17: a door that does not open (a broken one); the sim
+        v["locked_articulated"] = list(cspec["locked_articulated"])   # side (open fails) is still to be built
     v["note"] = spec["challenge"]
     v["v6"] = {"family": fam, "case": case or None, "challenge": spec["challenge"], "rationale": spec["rationale"], "control": spec["control"],
                "contrast": spec.get("contrast"), "factor": spec.get("factor"),
@@ -3251,7 +3270,9 @@ def build() -> dict:
         FAMILIES.setdefault(t["task_id"], lambda t, tid=t["task_id"]: families_for(tid))
     # 11-17: T15 book_face_up (turning a book over) is replaced by the new T15 cover_the_pot, in its place
     by_id = {t["task_id"]: t for t in new}
-    old = [by_id.pop("T15_cover_the_pot") if t["task_id"] == "T15_book_face_up" else t for t in doc["tasks"]]
+    swap = {"T15_book_face_up": "T15_cover_the_pot", "T16_rolling_pin_at_edge": "T16_pack_snack_box",  # 11-17
+            "T18_check_cabinet_dishes": "T18_set_out_bowls"}
+    old = [by_id.pop(swap[t["task_id"]]) if t["task_id"] in swap else t for t in doc["tasks"]]
     tasks = [build_task(t) for t in old + [t for t in new if t["task_id"] in by_id]]
     reg = dict(doc["condition_registry"], **NEW_CONDITIONS, **NEW_TASK_CONDITIONS)
     out = {"schema_version": 6, "benchmark_version": "v6", "kind": "zenobench_benchmark_tasks",

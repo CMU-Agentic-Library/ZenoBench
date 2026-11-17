@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，43 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，56 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -16,7 +16,9 @@
 |---|---|
 | T12 | `castle_stays` 删掉 |
 | T15 | 整个任务换掉：`T15_book_face_up`（翻书）→ `T15_cover_the_pot`（盖锅盖），4 个 variant 都是新的 |
-| T16 | 用户决定删掉滚擀面杖，新任务还在设计（暂时仍是旧 T16） |
+| T16 | 整个任务换掉：`T16_rolling_pin_at_edge`（滚擀面杖）→ `T16_pack_snack_box`（装零食盒），4 个 variant 都是新的 |
+| T17 | `hide_both` → `pot_in_use`，`hide_somewhere` → `no_pot` |
+| T18 | 整个任务换掉：`T18_check_cabinet_dishes`（看一眼）→ `T18_set_out_bowls`（摆碗勺），5 个 variant 都是新的 |
 
 ## 改过的 variant
 
@@ -48,6 +50,22 @@
 | T15 | `lid_elsewhere`<br>counter: 10,12,15-17<br>dining: 11,13,14,18,19 | 锅盖在餐桌 / 厨房台面 | 找锅盖 → cover | 低 | 未跑 |
 | T15 | `no_lid`<br>全部 seed | 没有锅盖，用台面上的盘子 `plate_counter_a` 盖；岛台上有书 | 拿盘子 → cover（cover 接受任何拿在手里的东西） | **用盘子 cover**：盘子 thickness_pinch 拿起、盖到锅沿上居中 | 未跑 |
 | T15 | `lid_in_use`<br>全部 seed | 右灶眼加一口汤锅（soup_pot），锅盖盖在它上面（z 0.8591）；用盘子盖左边的锅 | 同 no_lid | 两口锅并排、锅盖叠在右锅上开局是否稳定；用盘子 cover | 未跑 |
+
+| T16 | `box_on_counter`（对照，新任务）<br>全部 seed | 零食盒 = 小收纳盒，在厨房台面 (-0.10, 7.30)；苹果在餐桌 (3.70, 6.30) | 空盒先放书桌 (-0.70, -6.20)，再把苹果放进盒 | **往小收纳盒里放苹果**（第一次） | 未跑 |
+| T16 | `box_in_cabinet`<br>全部 seed | 零食盒在靠墙矮柜 6 号内层板 (3.50, 0.40) | 开柜 → 取盒 → 关柜 → 书桌 → 装苹果 | 从柜内层板取盒（之前柜内取杯子有问题） | 未跑 |
+| T16 | `no_box`<br>全部 seed | 没有零食盒；碗在台面 (-0.10, 7.70)，大收纳箱在电视柜 | 碗 → 书桌 → 苹果放进碗 | **往碗里放苹果**（第一次）；拿碗 | 未跑 |
+| T16 | `box_in_use`<br>全部 seed | 零食盒里叠放两支铅笔和一块积木（z 1.009）；碗在旁边 | 同 no_box | 盒里东西开局是否稳定 | 未跑 |
+| T17 | `pot_in_use`（原 hide_both）<br>全部 seed | 灶上加一口装汤的锅（soup_pot）；空锅在餐桌 (3.548, 5.715)，锅盖在岛台 (7.25, 1.85)（同 T09 pot_in_use） | 找空锅 → hide（积木进锅、拿锅盖、盖上） | 在餐桌上 hide | 未跑 |
+| T17 | `no_pot`（原 hide_somewhere）<br>全部 seed | 锅和锅盖都拿掉 | 开 4 号矮柜 → 积木（侧抓）放内层板 (1.40, 0.42) → 关柜 | 往柜内层板放（原 hide_somewhere 的 lid_away 布局同路线） | 未跑 |
+
+| T18 | `bowls_in_cabinet`（对照，新任务）<br>全部 seed | 靠墙矮柜 6 号内层板两只碗 (3.32/3.60, 0.40)；台面两把勺子 (0.10, 7.30/7.55) | 开柜 → 碗 1 → 餐桌 (3.66, 6.20) → 碗 2 → 关柜 → 餐桌 (3.66, 6.75) → 勺子 ×2 | 从柜内层板取碗；柜门开着时来回 | 未跑 |
+| T18 | `bowls_apart`<br>全部 seed | 第二只碗在 4 号矮柜内层板 (1.40, 0.42) | 两个柜子各开一次 | **4 号柜内层板净空 0.30 m**（之前那里取杯子失败过） | 未跑 |
+| T18 | `one_bowl`<br>全部 seed | 只有一只碗；玻璃保鲜盒在台面 (0.19, 7.85)，探出台面前沿（thickness_pinch 要探出） | 碗 → 餐桌 → 保鲜盒 → 餐桌 | 保鲜盒捏取 | 未跑 |
+| T18 | `bowl_in_use`<br>全部 seed | 碗 2 里有两颗小番茄（z 0.425） | 同 one_bowl | 柜里碗里番茄开局是否稳定 | 未跑 |
+| T18 | `door_stuck`<br>全部 seed | **新字段 `locked_articulated: ["kitchen_cabinet_6"]`：需要你在 sim 里支持（open 这个门时失败/反馈“卡住了”）**；碗在 4 号矮柜 (1.25/1.55, 0.42) | 看 6 号柜 → 开 4 号柜拿两只碗 | 锁门还没实现；4 号柜内层板取碗 | 未跑（锁门未实现前不计入统计） |
+
+| T19 | `recycle_bin_full`（原 m_can_in_dining_room） | 回收箱里竖着两盒麦片、两个塑料杯、两个罐（z 0.718）；空收纳箱在电视柜 (7.30, 0.40) | 罐、泡沫块丢进空收纳箱 | 回收箱内物品开局是否稳定 | 未跑 |
+| T19 | `bin_out_of_reach`（原 x6_gd_can_put_away） | 回收箱在 large_shelf_6 顶 (5.12, 8.42)，1.42 m；小收纳箱在餐桌 (3.62, 6.30) | 看高架子 → 丢进小收纳箱 | 低 | 未跑 |
 
 ## 我这边的约定
 

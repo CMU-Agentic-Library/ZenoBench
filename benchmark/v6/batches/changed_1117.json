@@ -385,5 +385,122 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "box_on_counter",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "box_in_cabinet",
+  "route": "v6_box_in_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "no_box",
+  "route": "v6_no_box",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T16_pack_snack_box",
+  "seed": 10,
+  "variant": "box_in_use",
+  "route": "v6_box_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "variant": "pot_in_use",
+  "route": "v6_pot_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "variant": "no_pot",
+  "route": "v6_no_pot",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "bowls_in_cabinet",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "bowls_apart",
+  "route": "v6_bowls_apart",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "one_bowl",
+  "route": "v6_one_bowl",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "bowl_in_use",
+  "route": "v6_bowl_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T18_set_out_bowls",
+  "seed": 10,
+  "variant": "door_stuck",
+  "route": "v6_door_stuck",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "variant": "recycle_bin_full",
+  "route": "v6_recycle_bin_full",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "variant": "bin_out_of_reach",
+  "route": "v6_bin_out_of_reach",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]
