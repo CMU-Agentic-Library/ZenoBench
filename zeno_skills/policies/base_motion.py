@@ -17,7 +17,6 @@ from .base import AtomicPolicy
 from .. import skills
 from ..skill_jobs.carry import carry_posture
 from .. import viewpoints
-from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
                           reach_targets)
@@ -225,21 +224,9 @@ class RetreatFromPolicy(AtomicPolicy):
 
 
 class LeftArmFoldPolicy(AtomicPolicy):
-    """Fold the empty left arm to its travel posture."""
+    """Fold the empty left arm to its travel posture: the tuck skill for the left hand (its fingers opened, the arm
+    alone moving -- skill_jobs.posture.tuck_job).  The joint error left (rad)."""
 
     def execute(self):
-        rig = self.rig
-        if rig.left_held is not None:
-            raise SkillFailure("fold left arm: the left hand holds an object")
-        rig.left_grip(0.04, 30)
-        goal = np.r_[rig.q_cmd[:2], rig.left_kin.rest[2:]]
-        start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-        rig.left_follow(rig._dense(start, goal))
-        err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
-        if err > 0.08:
-            rig.step(PHYSICS_HZ)          # let the slow wrist joints settle
-            err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
-        rig.log("left_fold", error_rad=round(err, 4))
-        if err > 0.15:
-            raise SkillFailure(f"fold left arm: joint error {err:.3f} rad")
-        return err
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["tuck"], {"hand": "left"})

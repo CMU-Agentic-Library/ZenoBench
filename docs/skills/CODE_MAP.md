@@ -98,7 +98,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 | 行（90a2a31） | 块 | 主要函数 |
 |---|---|---|
-| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`fold_where_possible`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
+| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
 | 498–796 | 开关门（铰链 / 抽屉）| `open_articulated`、`close_articulated`（转到 `run_skill`；微波炉——close 还有没把手的部件——转 `_move_with_retry`）、`_move_articulated`、`_ride`、`_ride_check`（只剩微波炉用） |
 | 797–910 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_half_along`、`_edge_coord` |
 | 911–1110 | pick | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`_grasp_approach` / `pick_approach`、`_pinch_candidates`、`_pads_clear_of`、`contact_obstacles`、`edge_held`（`push` 11-12 删了：`skill_jobs/slide.py` 的 `push_object`） |

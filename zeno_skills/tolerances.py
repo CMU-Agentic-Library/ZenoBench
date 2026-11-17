@@ -231,6 +231,11 @@ PUSH_MOVED_MIN = _t("PUSH_MOVED_MIN", (0.01, 0.3), "m, 1", "inherited (skills' o
                     "object less than min(0.01, 0.3 of the leg) did not move it (a short top-up leg is mostly "
                     "approach: judged against its own length)")
 
+TORSO_AT = _t("TORSO_AT", 0.02, "m", "inherited (policies/posture.py SetTorsoHeightPolicy), unmeasured: a torso lift "
+               "this close to where a posture sent it got there (skill_jobs.posture body_job)")
+WAIST_AT = _t("WAIST_AT", 0.035, "rad", "inherited (policies/posture.py SetWaistPitchPolicy), unmeasured: a waist "
+               "pitch this close to where a posture sent it got there (skill_jobs.posture body_job)")
+
 # --------------------------------------------------------------- the execution's arrived / stalled (rig)
 SETTLE_TCP = _t("SETTLE_TCP", 0.001, "m", "measured: a follow has arrived with the TCP this close to where q_cmd "
                 "puts it -- a fifth of TARGET_TOL; settled reaches err 0.1-0.4 mm (pick612_verify)")

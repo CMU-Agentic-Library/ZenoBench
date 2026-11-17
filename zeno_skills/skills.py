@@ -414,19 +414,6 @@ def drive_to(rig, goal, label="drive_to", **drive):
     relocate(rig, goal, (), label=label, **drive)
 
 
-def fold_where_possible(rig, label="fold"):
-    """Fold the right arm: where it stands when the arm planner finds a way (Rig.tuck), else after
-    the least base move that lets it fold straight (relocate without a goal).  Whether it is folded."""
-    if rig.tuck(hang=False):
-        return True
-    try:
-        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label)
-    except SkillFailure as exc:
-        rig.log("fold_blocked", reason=str(exc)[:200])
-        return False
-    return True
-
-
 def _swing_arm(rig, side, arm_q, label):
     """Move one arm's joints (torso and waist kept) to ``arm_q``: straight in joint space when
     that is clear, else a cuRobo trajectory.  False (logged) when neither exists."""

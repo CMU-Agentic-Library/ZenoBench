@@ -225,6 +225,11 @@ MOTION_SKILLS = [
     {"name": "close", "shape": "part", "template": "plan_push", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:close_job"},
     {"name": "push", "shape": "contact", "template": "plan_slide", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.slide:slide_job"},
     {"name": "stir", "shape": "contact", "template": "plan_stir", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.stir:stir_job"},
+    {"name": "crouch", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "stand", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "bend", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "straighten", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "tuck", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.posture:tuck_job"},
 ]
 
 COMPOSITE_NOTES = [

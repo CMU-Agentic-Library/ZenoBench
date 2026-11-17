@@ -603,6 +603,56 @@
     "travel": "carry",
     "job": "zeno_skills.skill_jobs.stir:stir_job",
     "skill_id": "skill_038"
+   },
+   {
+    "name": "crouch",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.posture:body_job",
+    "skill_id": "skill_005"
+   },
+   {
+    "name": "stand",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.posture:body_job",
+    "skill_id": "skill_006"
+   },
+   {
+    "name": "bend",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.posture:body_job",
+    "skill_id": "skill_007"
+   },
+   {
+    "name": "straighten",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.posture:body_job",
+    "skill_id": "skill_008"
+   },
+   {
+    "name": "tuck",
+    "shape": "posture",
+    "template": "plan_posture",
+    "park": false,
+    "arrive": "fold",
+    "travel": "fold",
+    "job": "zeno_skills.skill_jobs.posture:tuck_job",
+    "skill_id": "skill_009"
    }
   ]
  }
