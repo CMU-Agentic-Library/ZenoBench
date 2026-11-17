@@ -3081,20 +3081,6 @@
       ],
       "steps": [
        {
-        "policy": "policy_065",
-        "args": [
-         "$object"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_042",
-        "args": [
-         "$object"
-        ],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_010",
         "args": [
          "$object"
@@ -3111,7 +3097,7 @@
        }
       ],
       "ensures": [],
-      "note": "Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
+      "note": "Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
      },
      {
       "path_id": "flat_overhang_ready",
@@ -15404,6 +15390,8 @@
   "policy_036": "Rotate the tucked, empty base in place: face's paths are one (policy_066), the turn checked over the whole robot whatever the arms hold (2026-11-04).",
   "policy_037": "Translate the tucked, empty base: retreat (policy_067) and sidestep (policy_114) have one path each, checked over the whole robot whatever the arms hold (2026-11-04).",
   "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
-  "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04)."
+  "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04).",
+  "policy_042": "Lower the torso, lean and reach a pre-grasp over a floor item, picked from a hand-written list of distances, heights and pitches: pick's floor_top path is the pick alone (policy_010), whose plan lowers the torso and leans itself from a park it chooses (docs 9.3 step 5, 2026-11-16).",
+  "policy_065": "Approach a floor item before policy_042: pick chooses its own park (see policy_042)."
  }
 }

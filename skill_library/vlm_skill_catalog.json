@@ -4769,16 +4769,12 @@
      ],
      "extra_postconditions": [],
      "chain": [
-      "policy_065($object)",
-      "policy_042($object)",
       "policy_010($object)"
      ],
      "policies": [
-      "policy_010",
-      "policy_042",
-      "policy_065"
+      "policy_010"
      ],
-     "note": "Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
+     "note": "Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
     },
     {
      "path_id": "flat_overhang_ready",

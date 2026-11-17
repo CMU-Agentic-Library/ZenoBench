@@ -101,11 +101,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `floor_top` — when object.on_floor and 'top_pinch' in object.grasp_types
 
-1. `policy_065($object)`
-2. `policy_042($object)`
-3. `policy_010($object)`
+1. `policy_010($object)`
 - extra precondition `on_floor(object=$object)`
-- Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them.
+- Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them.
 
 ### `flat_overhang_ready` — when object.flat and object.edge_ready
 

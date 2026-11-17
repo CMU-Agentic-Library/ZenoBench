@@ -442,11 +442,11 @@ skill("pick", "object", "Pick an object",
                requires=[P("hand_empty", hand="left")],
                ensures=[P("holding", hand="left", object="$object")]),
           Path("floor_top", [W("object", "on_floor", "truthy"), W("object", "grasp_types", "contains", "top_pinch")],
-               [St("policy_065", "$object"), St("policy_042", "$object"), St("policy_010", "$object")],
+               [St("policy_010", "$object")],
                requires=[P("on_floor", object="$object")],
-               note="Approach, lower the torso and lean over the item, then pinch it from above. Flat objects "
-                    "lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get "
-                    "a pad under or across them."),
+               note="Pinch it from above; the pick lowers the torso and leans over the item itself, from a base "
+                    "park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the "
+                    "parallel gripper cannot get a pad under or across them."),
           Path("flat_overhang_ready", [W("object", "flat", "truthy"), W("object", "edge_ready", "truthy")],
                [St("policy_013", "$object")], requires=[P("edge_overhang", object="$object")],
                note="The overhang already exists (e.g. after expose): pinch it directly."),

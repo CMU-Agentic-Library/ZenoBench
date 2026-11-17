@@ -130,6 +130,10 @@ RETIRED_POLICIES = {
                   "each, checked over the whole robot whatever the arms hold (2026-11-04).",
     "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
     "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04).",
+    "policy_042": "Lower the torso, lean and reach a pre-grasp over a floor item, picked from a hand-written list of "
+                  "distances, heights and pitches: pick's floor_top path is the pick alone (policy_010), whose plan "
+                  "lowers the torso and leans itself from a park it chooses (docs 9.3 step 5, 2026-11-16).",
+    "policy_065": "Approach a floor item before policy_042: pick chooses its own park (see policy_042).",
 }
 
 NOUN_FIELDS = {

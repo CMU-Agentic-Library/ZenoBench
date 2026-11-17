@@ -34,7 +34,7 @@ Paired SkillNode: `skill_017` (`pick-object`).
 - `on_the_move` when args.pass_by and 'top_pinch' in object.grasp_types: `policy_052($object, $pass_by)`
 - `two_hand_box` when args.hands == 'both' and object.wide_box: `policy_057($object)`
 - `two_hand_flat` when args.hands == 'both' and object.flat: `policy_045($object)` -> `policy_056($object)`
-- `floor_top` when object.on_floor and 'top_pinch' in object.grasp_types: `policy_065($object)` -> `policy_042($object)` -> `policy_010($object)`
+- `floor_top` when object.on_floor and 'top_pinch' in object.grasp_types: `policy_010($object)`
 - `flat_overhang_ready` when object.flat and object.edge_ready: `policy_013($object)`
 - `flat_edge` when object.flat: `policy_045($object)` -> `policy_013($object)`
 - `rect_rim` when 'rim_pinch_rect' in object.grasp_types: `policy_012($object)`
