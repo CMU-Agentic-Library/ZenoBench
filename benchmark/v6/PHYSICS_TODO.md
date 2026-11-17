@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1530 episodes remain (1070 of the 107 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1570 episodes remain (1130 of the 113 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -77,19 +77,23 @@
 | T13 | no_cup | task | 0/0 of 10 | - |
 | T13 | copy_the_setting | task | 0/0 of 10 | - |
 | T13 | finish_the_table | task | 0/0 of 10 | - |
-| T15 | book_free | control | 0/0 of 10 | - |
-| T15 | book_out_of_view | task | 0/0 of 10 | - |
-| T15 | flip_on_the_shelf | task | 0/0 of 10 | - |
-| T16 | pin_free | control | 0/0 of 10 | - |
-| T16 | pin_out_of_view | task | 0/0 of 10 | - |
-| T16 | everything_near_the_edge | task | 0/0 of 10 | - |
+| T15 | lid_by_pot | control | 0/0 of 10 | - |
+| T15 | lid_elsewhere | task | 0/0 of 10 | search of the pot lid |
+| T15 | no_lid | task | 0/0 of 10 | - |
+| T15 | lid_in_use | task | 0/0 of 10 | - |
+| T16 | box_on_counter | control | 0/0 of 10 | - |
+| T16 | box_in_cabinet | task | 0/0 of 10 | low cabinet doors |
+| T16 | no_box | task | 0/0 of 10 | - |
+| T16 | box_in_use | task | 0/0 of 10 | - |
 | T17 | lid_off | control | 0/0 of 10 | - |
 | T17 | h_task_lid_elsewhere | task | 0/0 of 10 | - |
 | T17 | hide_both | task | 0/0 of 10 | - |
 | T17 | hide_somewhere | task | 0/0 of 10 | low cabinet doors |
-| T18 | at_island | control | 0/0 of 10 | low cabinet doors |
-| T18 | dishes_spread | task | 0/0 of 10 | low cabinet doors |
-| T18 | enough_for_dinner | task | 0/0 of 10 | low cabinet doors |
+| T18 | bowls_in_cabinet | control | 0/0 of 10 | low cabinet doors |
+| T18 | bowls_apart | task | 0/0 of 10 | low cabinet doors |
+| T18 | one_bowl | task | 0/0 of 10 | low cabinet doors |
+| T18 | bowl_in_use | task | 0/0 of 10 | low cabinet doors |
+| T18 | door_stuck | task | 0/0 of 10 | low cabinet doors |
 | T19 | bin_on_bookcase | control | 0/0 of 10 | - |
 | T19 | m_can_in_dining_room | task | 0/0 of 10 | - |
 | T19 | lookalike_bin | task | 0/0 of 10 | - |

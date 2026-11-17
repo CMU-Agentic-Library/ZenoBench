@@ -207,8 +207,6 @@ def test_in_place_choices_are_redesigned_at_a_longer_horizon():
 def test_injected_only_variants_are_dropped():
     t = TASKS["T01_book_to_dining_table"]
     assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"
-    t = TASKS["T15_book_face_up"]
-    assert t["v6_dropped"]["h_mixed_block_on_book_ik"].startswith("same as h_task_block_on_book")
     for tid, t in TASKS.items():
         for info in t["v6_variants"].values():
             assert info["control"] is None or info["control"] in t["variants"], tid

@@ -2401,6 +2401,13 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "unsuitable_at_hand": {"type": "object_unsuitable", "decision": "alternative",
+                           "meaning": "what lies where the item usually is looks like it but does not serve (the "
+                                      "kid's homework notebook for a book to read): leave it, take a real one "
+                                      "from elsewhere"},
+    "resource_broken": {"type": "resource_state", "decision": "alternative",
+                        "meaning": "the resource the instruction names is there but spoiled for its use (an apple "
+                                   "off the floor): it is not used; another one is fetched"},
     "workspace_choice": {"type": "feasibility", "decision": "decompose",
                          "meaning": "the action cannot be done where the object is (no room to turn the book "
                                     "over inside the shelf): move it to a place where it can, then back"},
@@ -2634,6 +2641,8 @@ def make_variant(t, fam, spec, case, cspec):
     placed = set(spec.get("move", {})) | set(cspec.get("move", {})) | set(spec.get("add", {})) | set(cspec.get("add", {}))
     if v.get("remove") and placed & set(v["remove"]):
         v["remove"] = sorted(set(v["remove"]) - placed)      # an object the base removes but this variant places
+    if v.get("remove") and v.get("move"):                # the base moves an object this variant takes out (11-17)
+        v["move"] = {k: m for k, m in v["move"].items() if k not in v["remove"]}
     for k in ("goal", "instruction", "instruction_zh", "watch", "handle_objects"):
         if k in base and k not in v:
             v[k] = copy.deepcopy(base[k])
@@ -2645,6 +2654,8 @@ def make_variant(t, fam, spec, case, cspec):
     v["since"] = "v6"
     if spec.get("keep_design"):
         v["keep_design"] = list(spec["keep_design"])     # the seed leaves the design on these supports as it is
+    if cspec.get("locked_articulated"):                  # 11-17: a door that does not open (a broken one); the sim
+        v["locked_articulated"] = list(cspec["locked_articulated"])   # side (open fails) is still to be built
     v["note"] = spec["challenge"]
     v["v6"] = {"family": fam, "case": case or None, "challenge": spec["challenge"], "rationale": spec["rationale"], "control": spec["control"],
                "contrast": spec.get("contrast"), "factor": spec.get("factor"),
@@ -2965,7 +2976,12 @@ def build() -> dict:
     new = [t for t, _ in new_base_tasks()]       # T21-T30: base tasks of v6's own, built like the v5 ones
     for t in new:
         FAMILIES.setdefault(t["task_id"], lambda t, tid=t["task_id"]: families_for(tid))
-    tasks = [build_task(t) for t in doc["tasks"] + new]
+    # 11-17 (kept through the revert to 73fd0722, user): T15/T16/T18 replaced by the new tasks, in their place
+    by_id = {t["task_id"]: t for t in new}
+    swap = {"T15_book_face_up": "T15_cover_the_pot", "T16_rolling_pin_at_edge": "T16_pack_snack_box",
+            "T18_check_cabinet_dishes": "T18_set_out_bowls"}
+    old = [by_id.pop(swap[t["task_id"]]) if t["task_id"] in swap else t for t in doc["tasks"]]
+    tasks = [build_task(t) for t in old + [t for t in new if t["task_id"] in by_id]]
     reg = dict(doc["condition_registry"], **NEW_CONDITIONS, **NEW_TASK_CONDITIONS)
     out = {"schema_version": 6, "benchmark_version": "v6", "kind": "zenobench_benchmark_tasks",
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
