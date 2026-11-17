@@ -1,6 +1,6 @@
 {
- "routes": 282,
- "ok": 282,
+ "routes": 275,
+ "ok": 275,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2991,80 +2991,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "two_bedrooms"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "rice_on_table",
-   "steps": 9,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "rice_on_table"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "which_is_leftover",
-   "steps": 9,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "which_is_leftover"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "fruit_stays_out",
-   "steps": 9,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "which_is_leftover"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "still_eating",
-   "steps": 9,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "which_is_leftover"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "two_leftovers__soup_on_table",
-   "steps": 13,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright leftover_soup"
-   ],
-   "problems": [],
-   "variant": "two_leftovers"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "two_leftovers__soup_on_stove",
-   "steps": 15,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright leftover_soup"
-   ],
-   "problems": [],
-   "variant": "two_leftovers"
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "layout": "fridge_out_of_view",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "fridge_out_of_view"
   },
   {
    "task": "T28_cup_to_bedside",

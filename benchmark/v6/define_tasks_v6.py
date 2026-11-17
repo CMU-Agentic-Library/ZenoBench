@@ -2923,7 +2923,6 @@ MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
-         ("T27_leftovers_to_fridge", "which_is_leftover"): ["fruit_stays_out", "still_eating"],
          ("T29_clear_table_for_dinner", "belongs_on_table"): ["nothing_to_clear"],
          ("T30_bowls_for_soup", "bowl_not_plate"): ["clean_one"]}
 MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed: on the island in view, on the TV "
@@ -2938,9 +2937,6 @@ MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed
                 ("T22_put_away_shopping", "tray_elsewhere"): "where the stand-in for the basket is and what lies on "
                                                              "it (seed: a tray on the island; the tray in the west "
                                                              "dining room with an orange, or covered with books)",
-                ("T27_leftovers_to_fridge", "which_is_leftover"): "what else is on the table that is not leftovers "
-                                                                  "(seed: an empty takeout tray; the fruit basket "
-                                                                  "and cereal; a bowl someone is still eating from)",
                 ("T29_clear_table_for_dinner", "belongs_on_table"): "what is on the table besides the place setting "
                                                                     "(seed: a toy car, or nothing)",
                 ("T30_bowls_for_soup", "bowl_not_plate"): "what stands next to the clean bowl (seed: a plate, or a "

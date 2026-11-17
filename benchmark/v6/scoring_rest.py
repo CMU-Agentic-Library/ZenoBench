@@ -853,22 +853,6 @@ R[("T26", "bear_to_bed")] = tiers(
     not_ok=_T26_NO,
     zh=dict(sit="要睡觉了，泰迪熊在电视柜", good="熊放到床上或床头", second="熊放进了玩具篮", no="熊没拿回；还拿着或掉了"))
 
-# ================================================================================================ T27 leftovers to the fridge
-_T27_NO = "a leftover not in the fridge; a dish tipped; still held or dropped"
-for _d, _sit in (("rice_on_table", "餐桌上一盒剩饭（对照）"), ("fridge_out_of_view", "机器人从餐厅出发，冰箱看不到"),
-                 ("two_leftovers", "剩饭在桌上，剩汤在桌上或还在灶上的锅里")):
-    R[("T27", _d)] = doors_second("every leftover in the fridge, the fridge closed", _T27_NO, dict(
-        sit=_sit, good="剩菜都进冰箱，门关好", second="进了冰箱但门没关", no="有剩菜没进冰箱；倒了；还拿着或掉了"))
-R[("T27", "which_is_leftover")] = tiers(
-    second=lambda g, lid: drop(g, "is_closed"),
-    worst=lambda g, lid: drop_atoms(g, lambda a: a[0] in ("is_closed", "near_start", "never_picked", "not on")),
-    why=("only the rice in the fridge, the fridge closed, the rest left (empty tray, fruit and cereal, the bowl someone "
-         "eats from)", "the same, the fridge left open",
-         "the rice in the fridge, but something that is not a leftover moved or put in too"),
-    not_ok=_T27_NO + "; the bowl someone eats from tipped",
-    zh=dict(sit="剩饭旁边还有不是剩菜的：空锡纸盒；或果篮和麦片；或有人正在吃的一碗燕麦", good="只把剩饭放进冰箱，门关好",
-            second="冰箱门没关", worst="剩饭进了，但把不是剩菜的也挪了或放进冰箱（包括别人正吃的碗）", no="剩饭没进冰箱；倒了；还拿着或掉了"))
-
 # ================================================================================================ T28 his cup to the bedside
 _T28_NO = "the cup not by his bed; the cup lying; still held or dropped"
 R[("T28", "cup_on_counter")] = d0("his cup standing by his bed", _T28_NO, dict(

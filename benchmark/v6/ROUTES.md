@@ -475,21 +475,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `two_bedrooms__room_east` (v6_two_bedrooms__room_east, 7 steps): explore_room(living_room_0_0) navigate(living_car) look(living_car) pick(living_car) explore_room(bedroom_0_1) navigate(kids_basket) place(living_car,kids_basket)
 * `two_bedrooms__room_south` (v6_two_bedrooms__room_south, 7 steps): explore_room(living_room_0_0) navigate(living_car) look(living_car) pick(living_car) explore_room(bedroom_0_0) navigate(kids_basket) place(living_car,kids_basket)
 
-## T27_leftovers_to_fridge
-
-### Control
-
-* `rice_on_table` (nominal, 9 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(dining_table_2/top) look(dining_table_2/top) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
-
-### Task-Level
-
-* `which_is_leftover` (v6_which_is_leftover, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
-* `fruit_stays_out` (v6_fruit_stays_out, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
-* `still_eating` (v6_still_eating, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
-* `two_leftovers__soup_on_table` (v6_two_leftovers__soup_on_table, 13 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.9, 3.46]) navigate(leftover_soup) pick(leftover_soup) navigate(breakfast_fridge) place(leftover_soup,breakfast_fridge/inside_shelf,[5.9, 3.2]) close(breakfast_fridge)
-* `two_leftovers__soup_on_stove` (v6_two_leftovers__soup_on_stove, 15 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.9, 3.46]) navigate(leftover_soup) pick(leftover_soup) navigate(breakfast_fridge) place(leftover_soup,breakfast_fridge/inside_shelf,[5.9, 3.2]) close(breakfast_fridge)
-* `fridge_out_of_view` (v6_fridge_out_of_view, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) explore_room(living_room_0_0) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
-
 ## T28_cup_to_bedside
 
 ### Control

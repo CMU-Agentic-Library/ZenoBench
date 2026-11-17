@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 252,
-   "variants": 130,
+   "layouts": 246,
+   "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 52,
-   "goal_not_met": 93,
+   "passes": 48,
+   "goal_not_met": 91,
    "not_observed": 64,
    "resource_missing": 39,
    "argument_mismatch": 4
@@ -42,15 +42,13 @@
    "T24 dinner_soon",
    "T24 where_is_he",
    "T26 two_bedrooms",
-   "T27 fridge_out_of_view",
-   "T27 which_is_leftover",
    "T28 where_his_cup_is",
    "T28 which_bed",
    "T29 belongs_on_table",
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 105,
+   "passes": 97,
    "goal_not_met": 129,
    "not_observed": 22,
    "argument_mismatch": 94,
@@ -69,12 +67,10 @@
    "T14 next_in_series",
    "T14 no_second_red_book",
    "T14 within_kids_reach",
-   "T27 two_leftovers",
-   "T27 which_is_leftover",
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 78,
+  "multi_layout_variants": 76,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -113,7 +109,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 342,
+  "geometric_atoms_unchecked": 340,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -397,23 +393,6 @@
     "kid_book",
     "kids_basket",
     "kids_shelf_book"
-   ],
-   "T27 fridge_out_of_view": [
-    "leftover_rice"
-   ],
-   "T27 rice_on_table": [
-    "leftover_rice"
-   ],
-   "T27 two_leftovers": [
-    "leftover_rice",
-    "leftover_soup"
-   ],
-   "T27 which_is_leftover": [
-    "eating_bowl",
-    "eating_spoon",
-    "empty_tray",
-    "leftover_rice",
-    "table_cereal"
    ],
    "T28 already_there": [
     "kid_cup"
@@ -4365,99 +4344,6 @@
    "other_variants_passing": []
   },
   {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layout": "which_is_leftover",
-   "steps": 9,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {
-    "fruit_stays_out": "passes",
-    "still_eating": "passes"
-   },
-   "other_variants_passing": [
-    "fridge_out_of_view"
-   ]
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layout": "fruit_stays_out",
-   "steps": 9,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {
-    "which_is_leftover": "passes",
-    "still_eating": "passes"
-   },
-   "other_variants_passing": [
-    "fridge_out_of_view"
-   ]
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layout": "still_eating",
-   "steps": 9,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {
-    "which_is_leftover": "passes",
-    "fruit_stays_out": "passes"
-   },
-   "other_variants_passing": [
-    "fridge_out_of_view"
-   ]
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "two_leftovers",
-   "layout": "two_leftovers__soup_on_table",
-   "steps": 13,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright leftover_soup"
-   ],
-   "control_route": "goal_not_met",
-   "other_layouts": {
-    "two_leftovers__soup_on_stove": "passes"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "two_leftovers",
-   "layout": "two_leftovers__soup_on_stove",
-   "steps": 15,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright leftover_soup"
-   ],
-   "control_route": "goal_not_met",
-   "other_layouts": {
-    "two_leftovers__soup_on_table": "passes"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "fridge_out_of_view",
-   "layout": "fridge_out_of_view",
-   "steps": 10,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "which_is_leftover",
-    "fruit_stays_out",
-    "still_eating"
-   ]
-  },
-  {
    "task": "T28_cup_to_bedside",
    "variant": "which_bed",
    "layout": "which_bed__east",
@@ -5489,35 +5375,6 @@
     "car_in_living_room"
    ],
    "passes_all": []
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "candidates": [
-    "which_is_leftover",
-    "fruit_stays_out",
-    "still_eating",
-    "rice_on_table"
-   ],
-   "passes_all": [
-    "which_is_leftover",
-    "fruit_stays_out",
-    "still_eating",
-    "rice_on_table"
-   ]
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "two_leftovers",
-   "candidates": [
-    "two_leftovers__soup_on_table",
-    "two_leftovers__soup_on_stove",
-    "rice_on_table"
-   ],
-   "passes_all": [
-    "two_leftovers__soup_on_table",
-    "two_leftovers__soup_on_stove"
-   ]
   },
   {
    "task": "T28_cup_to_bedside",
@@ -8186,58 +8043,6 @@
    "route_a_on_b": "not_observed",
    "route_b_on_a": "not_observed",
    "hidden_state_branch": true
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layouts": [
-    "which_is_leftover",
-    "fruit_stays_out"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "passes",
-   "route_b_on_a": "passes",
-   "hidden_state_branch": false
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layouts": [
-    "which_is_leftover",
-    "still_eating"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "passes",
-   "route_b_on_a": "passes",
-   "hidden_state_branch": false
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "which_is_leftover",
-   "layouts": [
-    "fruit_stays_out",
-    "still_eating"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "passes",
-   "route_b_on_a": "passes",
-   "hidden_state_branch": false
-  },
-  {
-   "task": "T27_leftovers_to_fridge",
-   "variant": "two_leftovers",
-   "layouts": [
-    "two_leftovers__soup_on_table",
-    "two_leftovers__soup_on_stove"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": false,
-   "route_a_on_b": "passes",
-   "route_b_on_a": "passes",
-   "hidden_state_branch": false
   },
   {
    "task": "T28_cup_to_bedside",

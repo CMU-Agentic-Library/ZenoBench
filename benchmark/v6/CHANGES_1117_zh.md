@@ -84,6 +84,7 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T24 | 删掉 no_apples_for_him、fruit_out_of_view、two_kids（用户要求） | | | | 不用跑 |
 | T25 | 删掉 cup_elsewhere、drink_in_fridge、two_guests（用户要求，不是替换）；其余不变 | | | | 不用跑 |
 | T26 | 删掉 scattered（用户要求）；其余不变 | | | | 不用跑 |
+| T27 | **整个任务删掉**（剩菜进冰箱：没有替换，用户要求）；现在 29 个任务 | | | | 不用跑 |
 
 ## 我这边的约定
 

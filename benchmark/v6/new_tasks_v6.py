@@ -655,61 +655,6 @@ def t26():
     return t, fams
 
 
-# ================================================================== T27 leftovers into the fridge
-def t27():
-    R = "leftover_rice"
-    ctl = {"note": "a glass box of leftover rice on the dining table", "add": {R: on("glass_food_container", T2, 3.30, 6.70)}}
-    rg = [["on", R, FS], ["is_closed", FR]]
-    t = base_task("T27_leftovers_to_fridge", "ZB-T27", "Dinner is over. Put the leftovers in the fridge.",
-                  "晚饭吃完了，把剩菜收进冰箱。", "rice_on_table", ctl, {"all": rg + [H]}, fridge([R]), [R],
-                  remove=["clutter_cereal_a", "clutter_cereal_b", "handled_cooking_pot", "pot_lid"])
-    rice = {R: on("glass_food_container", T2, 3.30, 6.70)}
-    # with a second thing on the table the edge search pushed the box 0.5 m west and the hand jammed on its rim;
-    # 15 cm east the east edge is the short push (the one that works in rice_on_table)
-    rice_east = {R: on("glass_food_container", T2, 3.45, 6.70)}
-    fams = {
-        "which_is_leftover": fam(
-            "rice_on_table", ["disposal_by_state"], "the seed's layout only",
-            "the box of rice and an empty takeout tray on the table",
-            "only food goes into the fridge: the empty tray does not",
-            {"": dict(add={**rice, "empty_tray": on("foil_takeout_tray", T2, 3.25, 7.30)}, watch=[R, "empty_tray"],
-                      goal={"all": rg + [["not on", "empty_tray", FS], H]}, route=[look(T2)] + fridge([R]))}),
-        "two_leftovers": fam(
-            "rice_on_table", ["goal_items_unstated", "multi_object_goal"],
-            "where the leftover soup is (seed: on the table, or still in its pot on the stove)",
-            "the box of rice on the table, and a pot of leftover soup, on the table or still on the stove",
-            "all the leftovers, not only the first one seen: both into the fridge",
-            {c: dict(add={**(rice_east if "table" in c else rice), "leftover_soup": on("soup_pot", sup, *xy)}, watch=[R, "leftover_soup"],
-                     goal={"all": rg + [["on", "leftover_soup", FS], ["upright", "leftover_soup"], H]},
-                     route=[look(T2)] + ([look("kitchen_stove/top")] if "stove" in sup else []) + fridge([R, "leftover_soup"], spots=((5.90, 3.46), (5.90, 3.20))))   # the pot (30 cm with handles) does not fit beside the box: the flat box at the back, the pot in front
-             for c, sup, xy in (("soup_on_table", T2, (3.35, 6.05)), ("soup_on_stove", "kitchen_stove/top", (8.41, 1.725)))}),
-        "still_eating": fam(
-            "rice_on_table", ["referent_clue"], "the seed's layout only",
-            "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
-            "a portion someone is still eating is not a leftover: only the rice",
-            {"": dict(add={**rice_east, "eating_bowl": on("oatmeal_bowl", T2, 3.05, 7.30),
-                           "eating_spoon": on("breakfast_spoon", T2, 3.05, 7.49)},
-                      watch=[R, "eating_bowl"], goal={"all": rg + [["near_start", "eating_bowl", 0.03], ["never_picked", ["eating_bowl"]], H]},
-                      route=[look(T2)] + fridge([R]))}),
-        "fridge_out_of_view": fam(
-            "rice_on_table", ["not_in_view"], "the seed's layout only",
-            "the robot starts in the dining room; the fridge stands in the open kitchen, out of view",
-            "find the fridge first, then put the rice in",
-            {"": dict(add=rice, start=[3.80, 4.90, 180.0],
-                      route=[look(T2), S("explore_room", room="living_room_0_0")] + fridge([R]))}),
-        "fruit_stays_out": fam(
-            "rice_on_table", ["category_rule"], "the seed's layout only",
-            "the box of rice, the fruit basket with an apple and a box of cereal on the table",
-            "only leftovers go into the fridge: the fruit and the cereal stay where they are",
-            {"": dict(add={**rice, "table_basket": on("fruit_basket", T2, 3.35, 7.30),
-                           "table_cereal": on("cereal_box", T2, 3.35, 6.00)},
-                      watch=[R, "table_basket", "table_cereal"],
-                      goal={"all": rg + [["near_start", "table_basket", 0.03], ["near_start", "table_cereal", 0.03], H]},
-                      route=[look(T2)] + fridge([R]))}),
-    }
-    return t, fams
-
-
 # ================================================================== T28 the kid's cup to his bedside
 def t28():
     KC = "kid_cup"
@@ -1102,7 +1047,7 @@ def t18():
     return t, fams
 
 
-MAKERS = [t15, t16, t18, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30]
+MAKERS = [t15, t16, t18, t21, t22, t23, t24, t25, t26, t28, t29, t30]
 NEW_CONDITIONS = {
     "resource_absent": {"type": "resource_identity", "decision": "alternative",
                         "meaning": "the usual thing is not in the house; the closest thing that serves the purpose "

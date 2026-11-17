@@ -305,6 +305,8 @@ def test_new_base_tasks():
     """T21-T30: a control and at least three Task-Level variants each (five before same-design merges), plus a dependent-decisions one in some (Action + Task
     when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
     for k in range(21, 31):
+        if k == 27:          # T27 (leftovers to the fridge) dropped 11-17: no substitution in it (user)
+            continue
         tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
         tr = TASKS[tid]["v6_tracks"]
         chained = sum("dependent_decisions" in (TASKS[tid]["variants"][i["layouts"][0]].get("conditions") or [])
