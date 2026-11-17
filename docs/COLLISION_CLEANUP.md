@@ -148,7 +148,7 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | policies/bimanual.py `_present_for_horizontal_left` | 先把躯干升顶、腰放直，让写死的展示位姿可达；3 个轴角 × 4 个位置共 12 个候选依次执行 | W/F |
 | sticky.py `StickyHands.drop_caught` / `StickyHands.place` | `sticky_clear` 上抬 3 档 / 2 档 | F |
 | sticky.py `StickyHands._reach` | pre → above → 6 个机身系写死候选 | F |
-| policies/embedded.py `PrepareFloorReachPolicy.execute` | 48 个预抓取候选 | F |
+| policies/embedded.py `PrepareFloorReachPolicy.execute` | 48 个预抓取候选（policy_042 11-16 退役：floor_top 只走 pick，合约里没有路径到它，类还在） | F |
 | policies/embedded.py `GraspArticulatedHandlePolicy.execute` | `handle_pre_high` +8 cm；`joint_path` 失败 → `move_to(q_hint)`；把手抓法候选（侧钩、翻转、front pinch） | W/F |
 | policies/embedded.py `SlideToEdgePolicy.execute` | 失败换方向 | F |
 | policies/contact.py 拉取 policy（`PULL`） | drag 不动 → 改 push | F |
@@ -165,7 +165,6 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | policies/extra.py `KnockPanelPolicy.execute` | 敲击点 5 个位置 × 2 种合指方向依次试 | F | 6.3（目标采样，按任务几何） |
 | policies/extra.py `TouchObjectPolicy.execute` | 4 个腕部朝向依次试 park | F | 6.3（目标集合） |
 | policies/orientation.py `_turn_in_air` | 手写 staging 点网格（手边 12 个 + 胸前 80 个，取最近 30 个）× 48 个 (phi, dyaw) 组合，外加 1.2 / 3.5 rad 阈值 | W/F | 6.3 |
-| policies/posture.py `_move_posture_joint` | 躯干 / 腰运动失败 → tuck → 再试 → `relocate`，三级 | F | 6.3 |
 | policies/hand.py `LeftSteadyPolicy.execute` | 左手 IK 不行 → 8 个候选逐个找 park + tuck + 重新导航 | F | 6.4 或步骤 5 |
 | policies/bimanual.py `_grasp_both` / `_park_for_pair` | 4 种躯干 / 腰姿态 × 4–8 对接触，150 s 预算；park 用手写的半径 × 角度 × yaw ±20° 网格 | F | 6.4 |
 | policies/navigation.py `BackOffWithLoadPolicy.execute` | `distance` 不通就退 `min_distance` | F | 6.4（任务级原语保留，两档改成一档） |
@@ -234,7 +233,6 @@ pick 里的微波炉取物在 3.8，冰箱层板、微波炉的停车点种子�
 | 内容 | 位置 |
 |---|---|
 | `coll_kw = {"ignore_fingers": True}` 在技能入口整体设置，不恢复 | skills.py（place、place_flat、push、open/close、微波炉）；hand.py；extra.py；tooluse.py；orientation.py；sticky.py；embedded.py；contact.py；appliance_generic.py；rig.py |
-| `coll_kw = {}` 清空，会冲掉正在生效的 `hand_touches_part` | posture.py（skills.py `_carry_pose` 那一处 11-08 随它删了：搬运段的手指改由 `Spec` 经 `Motion.query` 设置） |
 | 选 park 时临时改 `coll_kw` | skills.py；planner.py；base_motion.py；mobile.py |
 | 临时改腰的上限避障 | skills.py（open/close、stir 等） |
 | 只为检查临时 `kin.set_base` | skills.py |
