@@ -644,20 +644,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_065",
-      "args": [
-       "$object"
-      ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_042",
-      "args": [
-       "$object"
-      ],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_010",
       "args": [
        "$object"
@@ -674,7 +660,7 @@
      }
     ],
     "ensures": [],
-    "note": "Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
+    "note": "Pinch it from above; the pick lowers the torso and leans over the item itself, from a base park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
    },
    {
     "path_id": "flat_overhang_ready",

@@ -691,6 +691,18 @@
       "name": "explore_furniture",
       "legacy_id": "explore_furniture",
       "definition": "policies/policy_116/policy.json"
+    },
+    {
+      "policy_id": "policy_117",
+      "name": "view_support",
+      "legacy_id": "view_support",
+      "definition": "policies/policy_117/policy.json"
+    },
+    {
+      "policy_id": "policy_118",
+      "name": "mark_spots",
+      "legacy_id": "mark_spots",
+      "definition": "policies/policy_118/policy.json"
     }
   ]
 }

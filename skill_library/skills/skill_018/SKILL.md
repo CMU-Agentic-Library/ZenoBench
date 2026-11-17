@@ -127,6 +127,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `wipe` (`skill_037`) (enables) — the sponge is put back
 - Previous step: `pour` (`skill_039`) (enables) — the empty cup is put down
 - Previous step: `open` (`skill_040`) (enables) — an object must go inside
+- Previous step: `mark_spots` (`skill_072`) (then) — the object goes to the chosen spot
 - Next step: `close` (`skill_041`) (enables) — the object went into a cabinet or appliance whose door must be shut
 - Next step: `heat` (`skill_043`) (enables) — the food went into the microwave or onto the stove
 - Next step: `tuck` (`skill_009`) (enables) — the hand is empty and the robot drives next

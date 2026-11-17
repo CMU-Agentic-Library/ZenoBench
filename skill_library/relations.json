@@ -2378,6 +2378,34 @@
     "target": "$furniture"
    },
    "automatic": false
+  },
+  {
+   "id": "relation_183",
+   "from": "skill_072",
+   "from_verb": "mark_spots",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object goes to the chosen spot",
+   "bind": {
+    "object": "$object",
+    "receptacle": "$support"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_184",
+   "from": "skill_072",
+   "from_verb": "mark_spots",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "alternative",
+   "when": "the surface only has to be seen, not marked",
+   "bind": {
+    "target": "$support"
+   },
+   "automatic": false
   }
  ]
 }

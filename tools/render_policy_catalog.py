@@ -55,7 +55,7 @@ def render(catalog):
         "`bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。",
         "",
         "机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。",
-        f"稳定公开 ID 为 `policy_001`–`policy_{len(rows):03d}`；原描述性名称保留为兼容别名。",
+        f"稳定公开 ID 为 `policy_001`–`{max(r['policy_id'] for r in rows)}`；原描述性名称保留为兼容别名。",
         "每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。",
         "`input` 和 `effect` 是能力摘要；每个 policy 被哪些 Skill Contract 路径调用、在路径前后检查哪些 GT 谓词，",
         "见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../contract_library/README.md)。",

@@ -1,0 +1,209 @@
+{
+ "schema_version": 2,
+ "kind": "skill_node",
+ "skill_id": "skill_072",
+ "name": "mark-spots-support",
+ "verb": "mark_spots",
+ "noun": "support",
+ "title": "Mark free spots on a support",
+ "group": "perception_and_gesture",
+ "signature": "mark_spots(object: object_ref, support: support_ref)",
+ "action_predicate": {
+  "name": "mark_spots_support",
+  "verb": "mark_spots",
+  "noun": "support",
+  "arguments": [
+   "object",
+   "support"
+  ]
+ },
+ "description": "Show where the held object can go on a support surface: see the surface clearly from one or two stand-off poses (one where the robot stands when it does about as well; a long table: one view per half), standing up with the head aimed at it, and number up to twelve free spots on those head images, one set of numbers over all of them: one beside each object on the surface first, then another side of each, then open space. Every spot fits the object at any turn with room left to its neighbours and is in view. The numbered images come with the next observation (one images entry per view, overlay \"place_spots\" and view k); disc n is spots[n-1] on every image it is drawn on. Nothing is placed: place the object with place(object, receptacle=support, hint_xy=<the chosen spot's xy>).",
+ "use_when": "A held object must go on a large surface and where on it matters (next to something, away from something, a free corner): choose a numbered spot on the image instead of guessing coordinates.",
+ "not_to_be_confused_with": {
+  "place": "place puts the object down; mark_spots only shows where it could go.",
+  "look": "look aims the camera at a target; mark_spots frames a whole surface and numbers free spots on it."
+ },
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The right-held object the spots are for (its footprint)."
+  },
+  "support": {
+   "type": "support_ref",
+   "required": true,
+   "description": "The table, desk, counter or shelf surface to mark."
+  }
+ },
+ "required_inputs": [
+  "object",
+  "support"
+ ],
+ "outputs": {
+  "spots": {
+   "type": "xy_list",
+   "description": "Free spots [x, y] in metres; spot n is the disc numbered n on the image."
+  },
+  "coverage": {
+   "type": "number",
+   "description": "Fraction of the surface seen clearly in the views (1 = all of it)."
+  }
+ },
+ "applicability": {
+  "always": false,
+  "summary": "Requires holding(hand=right, object=$object)."
+ },
+ "preconditions": [
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false"
+  }
+ ],
+ "postconditions": [
+  {
+   "predicate": "in_view(target=$support)",
+   "name": "in_view",
+   "args": {
+    "target": "$support"
+   },
+   "negated": false,
+   "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes.",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "head_joints",
+    "head_fk",
+    "collision_model"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true"
+  }
+ ],
+ "verifier": {
+  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
+  "checks": [
+   {
+    "predicate": "in_view(target=$support)",
+    "name": "in_view",
+    "args": {
+     "target": "$support"
+    },
+    "negated": false,
+    "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes.",
+    "kind": "fluent",
+    "gt_sources": [
+     "base_pose",
+     "head_joints",
+     "head_fk",
+     "collision_model"
+    ],
+    "checked": "after the policy chain on live GT state; the action is reported only if true",
+    "scope": "all paths"
+   }
+  ]
+ },
+ "invalidates": [
+  "base_near(*)",
+  "reachable(*)",
+  "facing(*)",
+  "in_view(*)"
+ ],
+ "policy_paths": [
+  {
+   "path_id": "view_and_mark",
+   "when": [
+    "always (default path)"
+   ],
+   "extra_preconditions": [],
+   "extra_postconditions": [],
+   "chain": [
+    "policy_117($support)",
+    "policy_118($object, $support)"
+   ],
+   "policies": [
+    "policy_117",
+    "policy_118"
+   ],
+   "note": ""
+  }
+ ],
+ "relations": {
+  "previous": [],
+  "next": [
+   {
+    "skill_id": "skill_018",
+    "verb": "place",
+    "when": "the object goes to the chosen spot",
+    "bind": {
+     "object": "$object",
+     "receptacle": "$support"
+    },
+    "reason": "one of the spots output becomes place's hint_xy",
+    "type": "then"
+   }
+  ],
+  "fallback": [],
+  "fallback_for": [],
+  "alternative": [
+   {
+    "skill_id": "skill_011",
+    "verb": "look",
+    "when": "the surface only has to be seen, not marked",
+    "bind": {
+     "target": "$support"
+    }
+   }
+  ]
+ },
+ "failure": {
+  "codes": [
+   "INPUT_MISSING",
+   "NOUN_INVALID",
+   "PRECONDITION_FAILED",
+   "NO_PATH",
+   "POLICY_FAILED",
+   "SUBSKILL_FAILED",
+   "POSTCONDITION_FAILED"
+  ],
+  "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
+  "typical": [
+   "no stand-off pose within reach sees the whole surface: the spots cover the part in view (coverage < 1)",
+   "no free spot for the object is in view",
+   "a spot may be drawn over the arm or the held object (the robot's own body is not checked)"
+  ]
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ },
+ "contract_id": "contract_080",
+ "invocation": {
+  "skill_subgraph_node": {
+   "id": "n1",
+   "skill_id": "skill_072",
+   "args": {
+    "object": {
+     "ref": "<object>"
+    },
+    "support": {
+     "ref": "<support>"
+    }
+   },
+   "depends_on": []
+  },
+  "python": "SkillContractRunner(rig).run(\"mark_spots\", {'object': ..., 'support': ...})"
+ }
+}

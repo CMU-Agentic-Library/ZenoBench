@@ -190,11 +190,9 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_003()",
     "policy_023($articulated)"
    ],
    "policies": [
-    "policy_003",
     "policy_023"
    ],
    "note": "Every empty hand x {push the outer face, ride the handle (right)} in one park search."

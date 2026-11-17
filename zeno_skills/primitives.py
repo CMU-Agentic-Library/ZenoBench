@@ -24,7 +24,7 @@ from typing import Callable
 import numpy as np
 
 from .kinematics import tips_over
-from .motion_state import (N_BODY, Failure, Segment, Spec, aim_pose, at_base, locked_body, touches, with_object,
+from .motion_state import (BODY_JOINTS, Failure, Segment, Spec, aim_pose, at_base, kept, touches, with_object,
                            with_part)
 
 # the contact geometry and the checks' thresholds: one source with their units and where their values
@@ -129,12 +129,18 @@ def query(kin, state, spec):
         yield
 
 
-def _keep_body(state, spec, side, q0, q1):
-    """A joint goal q1 with the body kept at q0's where it may not move (body_locked: the other hand
-    holds something, docs 4.1) -- a fold names the arm, not where the torso goes."""
+def chain(kin):
+    """The joint names of kin's planning chain (the body's first); a backend without names: the body's."""
+    return tuple(getattr(kin, "names", None) or BODY_JOINTS)
+
+
+def _keep_body(kin, state, spec, q0, q1):
+    """A joint goal q1 with each joint kept at q0's where it may not move (motion_state.kept: the body
+    while the other hand holds something, docs 4.1 -- a fold names the arm, not where the torso goes;
+    every joint Spec.joints leaves out, 4.2)."""
     q1 = np.asarray(q1, float).copy()
-    keep = locked_body(state, spec, side)
-    q1[:N_BODY][keep] = np.asarray(q0, float)[:N_BODY][keep]
+    keep = kept(state, spec, kin.side, chain(kin))
+    q1[:len(keep)][keep] = np.asarray(q0, float)[:len(keep)][keep]
     return q1
 
 
@@ -284,11 +290,11 @@ def decide_ik(kin, state, spec, p, R, prior, seeds=()):
     which pose in its Failure)."""
     p, R = np.asarray(p, float), np.asarray(R, float)
     prior = None if prior is None else np.asarray(prior, float).copy()
-    keep = locked_body(state, spec, kin.side)
+    keep = kept(state, spec, kin.side, chain(kin))
     if prior is not None and keep.any():
-        # a body joint kept where the state has it (docs 4.1): the prior with it there (then only a seed if
+        # a joint kept where the state has it (docs 4.1, 4.2): the prior with it there (then only a seed if
         # its TCP moved off the pose)
-        prior[:N_BODY][keep] = np.asarray(state.body, float)[keep]
+        prior[:len(keep)][keep] = np.asarray(state.q(kin.side), float)[:len(keep)][keep]
     with query(kin, state, spec):
         if prior is not None and near_pose(*kin.tcp(prior), p, R) and kin.free(prior):
             return prior.copy(), "prior"
@@ -316,7 +322,7 @@ def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
         if isinstance(goal, JointSet):
             f = _first(first, len(goal.goals))
             order = sorted(range(len(goal.goals)), key=lambda j: j != f)
-            goals = [_keep_body(state, spec, kin.side, q0, g) for g in goal.goals]
+            goals = [_keep_body(kin, state, spec, q0, g) for g in goal.goals]
             i = next((i for i in order if kin.free(goals[i])), None)
             if i is None:
                 return Failure(f"every goal of {len(goal.goals)} collides", name)
@@ -346,7 +352,7 @@ def _free_leg(kin, state, spec, goal, name, step=0.01, q_from=None, first=None):
                               info={**seg.info, "chosen": i, "goals": len(goal.goals)})
             return seg
         if isinstance(goal, Joint):
-            q1 = _keep_body(state, spec, kin.side, q0, goal.q)
+            q1 = _keep_body(kin, state, spec, q0, goal.q)
             if kin.segment_free(q0, q1) and not (spec.hold_tilt and tips_over(kin, q0, q1)):
                 return Segment(name, spec, q0, tuple(dense(q0, q1)), target=("q", q1), info={"how": "joint"})
             qs, status = kin.plan(q0, q1, carry=spec.hold_tilt)

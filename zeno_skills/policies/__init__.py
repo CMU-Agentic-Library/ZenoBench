@@ -42,9 +42,11 @@ from .base_motion import RetreatFromPolicy
 from .perceive import LookAtPolicy
 from .perceive import ExploreRoomPolicy
 from .perceive import ExploreFurniturePolicy
+from .perceive import ViewSupportPolicy
+from .perceive import MarkSpotsPolicy
 from .perceive import SearchObjectPolicy
-from .perceive import PointAtPolicy
-from .perceive import PresentHeldPolicy
+from .gestures import PointAtPolicy
+from .gestures import PresentHeldPolicy
 from .hand import DropIntoPolicy
 from .hand import StackOnPolicy
 from .hand import RotateHeldPolicy
@@ -152,6 +154,8 @@ class PolicySuite:
         self.look_at = LookAtPolicy(rig)
         self.explore_room = ExploreRoomPolicy(rig)
         self.explore_furniture = ExploreFurniturePolicy(rig)
+        self.view_support = ViewSupportPolicy(rig)
+        self.mark_spots = MarkSpotsPolicy(rig)
         self.search_object = SearchObjectPolicy(rig)
         self.point_at = PointAtPolicy(rig)
         self.present_held = PresentHeldPolicy(rig)

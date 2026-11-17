@@ -68,22 +68,19 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `refrigerator` — when articulated.category == 'refrigerator'
 
-1. `policy_003()`
-2. `policy_022($articulated, goal=@articulated.wide_open_q)`
+1. `policy_022($articulated, goal=@articulated.wide_open_q)`
 - extra precondition `hand_empty(hand=right)`
 - Rides the door to 90 % of its annotated range (72 deg): at 75 % (60 deg) the open door's edge stood in front of the shelf's hinge half, over a bottle at the shelf's middle; farther the base, riding the handle round the hinge, meets the microwave stand.
 
 ### `drawer` — when articulated.type == 'prismatic'
 
-1. `policy_003()`
-2. `policy_022($articulated)`
+1. `policy_022($articulated)`
 - extra precondition `hand_empty(hand=right)`
 - One grasp: the handle pulled and the base riding the drawer, then let go.
 
 ### `hinged_door` — when articulated.type == 'revolute'
 
-1. `policy_003()`
-2. `policy_022($articulated)`
+1. `policy_022($articulated)`
 - extra precondition `hand_empty(hand=right)`
 - One grasp: the side hook on the handle and the base riding the door, then let go.
 

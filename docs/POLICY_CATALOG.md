@@ -1,11 +1,11 @@
 # Zeno House policy 能力目录
 
-本目录列出 **115 个目标能力**。状态记录的是当前代码与物理验证程度，
+本目录列出 **117 个目标能力**。状态记录的是当前代码与物理验证程度，
 独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`
 以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。
 
 - `verified`（57）：可调用，且对应物理动作通过过 Isaac Sim smoke run。
-- `callable`（58）：有独立 OOP 入口，但尚无该入口成功通过 Isaac Sim 的物理验证；部分路线正在调试。
+- `callable`（60）：有独立 OOP 入口，但尚无该入口成功通过 Isaac Sim 的物理验证；部分路线正在调试。
 - `embedded`（0）：动作片段已在较大 policy 内执行，尚无独立入口和结果检查。
 - `planned`（0）：当前没有完成该动作的控制器。
 
@@ -14,7 +14,7 @@
 `bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。
 
 机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。
-稳定公开 ID 为 `policy_001`–`policy_115`；原描述性名称保留为兼容别名。
+稳定公开 ID 为 `policy_001`–`policy_118`；原描述性名称保留为兼容别名。
 每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。
 `input` 和 `effect` 是能力摘要；每个 policy 被哪些 Skill Contract 路径调用、在路径前后检查哪些 GT 谓词，
 见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../contract_library/README.md)。
@@ -182,6 +182,8 @@
 | `policy_111` | `measure_object` | Look at an object and record its size. | `name` | `measured(name)` | `callable` | measure_object |
 | `policy_112` | `count_category` | Sweep the head and count visible objects of a category. | `category` | `counted(category)` | `callable` | count_category |
 | `policy_116` | `explore_furniture` | Aim the head at every support layer (shelf, top) of one piece of furniture from stand-off poses in front of it, crouching for low shelves; a layer counts when no board of the piece hides it. | `furniture` | `furniture_explored(furniture)` | `callable` | explore_furniture |
+| `policy_117` | `view_support` | Drive to the stand-off pose (within base_near) from which one head camera frame holds the whole support surface, else the one that sees most of it, and aim the head at it. | `support` | `in_view(support)` | `callable` | view_support |
+| `policy_118` | `mark_spots` | Number up to six spread-out free spots for the held object on the support in the head camera view and draw them on the head image (visual prompting for place hint_xy). | `object, support` | `spots(object, support)` | `callable` | mark_spots |
 
 ## 手势
 
@@ -332,3 +334,5 @@
 - `sidestep_base`：pending Isaac Sim check (skill library v2)
 - `hover_over`：pending Isaac Sim check (skill library v2)
 - `explore_furniture`：pending Isaac Sim check (skill library v2)
+- `view_support`：pending Isaac Sim check (visual prompting, 2026-11-15)
+- `mark_spots`：pending Isaac Sim check (visual prompting, 2026-11-15)

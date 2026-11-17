@@ -8,6 +8,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from zeno_skills import perception as P
+from zeno_skills import viewpoints as VW
 from zeno_skills.policies import base_motion as BM
 from zeno_skills.predicates import head_fov_deg
 
@@ -26,7 +27,7 @@ def _facing(d):
 def _rig(boxes=(), fov=GT, held=None, torso=0.0):
     names = ["torso_lift_joint", "waist_pitch_joint"] + [f"right_arm_joint_{i}" for i in range(1, 8)]
     rest = np.r_[0.0, 0.0, np.zeros(7)]
-    ann = SimpleNamespace(objects={"spoon": {}}, articulated=[], appliances=[], rooms={},
+    ann = SimpleNamespace(objects={"spoon": {}}, articulated=[], appliances=[], rooms={"kitchen": {}},
                           supports=[{"name": "counter/top", "furniture": "counter", "aabb_xy": [0, 0, 1, 1], "z": 0.9}])
     return SimpleNamespace(head_fov_deg=fov, world=SimpleNamespace(B=np.array([*boxes, FLOOR], float)), ann=ann,
                            held=held, left_held=None, kin=SimpleNamespace(names=names, rest=rest),
@@ -64,7 +65,7 @@ def _navigate(monkeypatch, rig, place, poses, reachable=None):
     monkeypatch.setattr(BM, "standoff_poses", lambda r, p: list(poses))
     monkeypatch.setattr(BM.skills, "base_reachable", lambda r, ps: reachable or [True] * len(ps))
     monkeypatch.setattr(BM.skills, "navigate", lambda r, pose, **kw: went.append(pose))
-    monkeypatch.setattr(BM, "entity_point", lambda r, name, st=None: SPOON)
+    monkeypatch.setattr(VW, "entity_point", lambda r, name, st=None: SPOON)
     BM.NavigateToPlacePolicy(rig).execute(place)
     return went
 
@@ -84,15 +85,57 @@ def test_seen_from_none_the_nearest_as_before(monkeypatch):
     assert _navigate(monkeypatch, _rig([POT]), "spoon", [near, far]) == [near]
 
 
-def test_other_places_keep_the_nearest(monkeypatch):
+def test_a_room_keeps_the_nearest(monkeypatch):
     near, far = _facing(0.54), _facing(1.05)
-    assert _navigate(monkeypatch, _rig(), "counter/top", [near, far]) == [near]
+    assert _navigate(monkeypatch, _rig(), "kitchen", [near, far]) == [near]
+
+
+def test_a_support_stops_where_it_is_in_view(monkeypatch):
+    """entity_point is patched to the spoon's point: the support is judged at the point look aims at."""
+    near, far = _facing(0.54), _facing(1.05)
+    assert _navigate(monkeypatch, _rig(), "counter/top", [near, far]) == [far]
+
+
+WALL = [-0.80, -1.0, 0.0, -0.75, 1.0, 2.5]     # a wall between a base 1.05 m away and the point; 0.70 m is in front
+
+
+def test_a_stand_off_behind_a_wall_is_passed_over(monkeypatch):
+    """1116: navigate to bookcase_2 stopped in the living room, 1 m from the bookcase behind the wall
+    (wall_274), and search / look saw nothing; a stand-off the place is in view from comes first."""
+    behind, front = _facing(1.05), _facing(0.70)
+    assert P.in_view_from(_rig([WALL]), front, SPOON, UP)[0]
+    assert not P.in_view_from(_rig([WALL]), behind, SPOON, UP)[0]
+    assert _navigate(monkeypatch, _rig([WALL]), "counter/top", [behind, front]) == [front]
+    assert _navigate(monkeypatch, _rig([WALL]), "counter", [behind, front]) == [front]
+
+
+def test_furniture_counts_as_in_view_when_any_layer_is(monkeypatch):
+    """A piece of furniture: its top (entity_point) or the space above any support layer (viewpoints.layer_point)."""
+    rig = _rig([WALL])
+    monkeypatch.setattr(VW, "entity_point", lambda r, name, st=None: np.array([5.0, 5.0, 0.9]))   # out of view
+    behind, front = _facing(1.05), _facing(0.70)
+    monkeypatch.setattr(VW, "layer_point", lambda layer: SPOON)
+    assert VW.in_view_poses(rig, "counter", [behind, front]) == [front]
+    monkeypatch.setattr(VW, "layer_point", lambda layer: np.array([5.0, 5.0, 0.9]))
+    assert VW.in_view_poses(rig, "counter", [behind, front]) == []
 
 
 def test_a_loaded_arrival_keeps_its_torso_height(monkeypatch):
     """Carrying, navigate arrives with the body as it is (skills._rest_posture): a torso lowered to its limit
     puts the camera 0.54 m lower, and the spoon 0.54 m away comes into view."""
-    monkeypatch.setattr(BM, "entity_point", lambda r, name, st=None: SPOON)
+    monkeypatch.setattr(VW, "entity_point", lambda r, name, st=None: SPOON)
     near = _facing(0.54)
-    assert BM._in_view_poses(_rig(), "spoon", [near]) == []
-    assert BM._in_view_poses(_rig(held={"name": "cup"}, torso=-0.54), "spoon", [near]) == [near]
+    assert VW.in_view_poses(_rig(), "spoon", [near]) == []
+    assert VW.in_view_poses(_rig(held={"name": "cup"}, torso=-0.54), "spoon", [near]) == [near]
+
+
+def test_several_places_share_one_reachability_field(monkeypatch):
+    """viewpoints.reachable_in_view: one base_reachable field over every place's stand-offs (search asks for
+    all the furniture of a room at once), then each place's own in-view poses."""
+    calls = []
+    monkeypatch.setattr(VW.skills if hasattr(VW, "skills") else BM.skills, "base_reachable",
+                        lambda r, ps: calls.append(len(ps)) or [p[0] > -1.0 for p in ps])
+    monkeypatch.setattr(VW, "in_view_poses", lambda r, place, ps: ps[:1])
+    out = VW.reachable_in_view(_rig(), {"a": [_facing(0.54), _facing(1.05)], "b": [_facing(0.70)]})
+    assert calls == [3]
+    assert out == {"a": ([_facing(0.54)], [_facing(0.54)]), "b": ([_facing(0.70)], [_facing(0.70)])}

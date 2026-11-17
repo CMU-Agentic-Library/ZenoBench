@@ -310,8 +310,7 @@ skill("inspect", "receptacle", "Inspect a receptacle",
       ensures=[P("observed", target="$receptacle")],
       paths=[Path("closed_cabinet", [W("receptacle", "kind", "equals", "articulated"),
                                      W("receptacle", "is_open", "falsy")],
-                  [St("policy_003"), St("policy_062", "$receptacle"), St("policy_088", "$receptacle"),
-                   St("policy_003"), St("policy_063", "$receptacle")],
+                  [St("policy_062", "$receptacle"), St("policy_088", "$receptacle"), St("policy_063", "$receptacle")],
                   requires=[P("hand_empty", hand="right")],
                   note="Open with the annotation-selected route, look, close again."),
              Path("open_view", [], [St("policy_088", "$receptacle")])],
@@ -442,11 +441,11 @@ skill("pick", "object", "Pick an object",
                requires=[P("hand_empty", hand="left")],
                ensures=[P("holding", hand="left", object="$object")]),
           Path("floor_top", [W("object", "on_floor", "truthy"), W("object", "grasp_types", "contains", "top_pinch")],
-               [St("policy_065", "$object"), St("policy_042", "$object"), St("policy_010", "$object")],
+               [St("policy_010", "$object")],
                requires=[P("on_floor", object="$object")],
-               note="Approach, lower the torso and lean over the item, then pinch it from above. Flat objects "
-                    "lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get "
-                    "a pad under or across them."),
+               note="Pinch it from above; the pick lowers the torso and leans over the item itself, from a base "
+                    "park it chooses. Flat objects lying on the floor (books, notebooks) have no pick path: the "
+                    "parallel gripper cannot get a pad under or across them."),
           Path("flat_overhang_ready", [W("object", "flat", "truthy"), W("object", "edge_ready", "truthy")],
                [St("policy_013", "$object")], requires=[P("edge_overhang", object="$object")],
                note="The overhang already exists (e.g. after expose): pinch it directly."),
@@ -920,17 +919,17 @@ skill("open", "articulated", "Open a door or drawer",
                requires=[P("hand_empty", hand="left")],
                note="The right hand holds a load: the left hand opens (the body kept still under the load)."),
           Path("refrigerator", [W("articulated", "category", "equals", "refrigerator")],
-               [St("policy_003"), St("policy_022", "$articulated", goal="@articulated.wide_open_q")],
+               [St("policy_022", "$articulated", goal="@articulated.wide_open_q")],
                requires=[P("hand_empty", hand="right")],
                note="Rides the door to 90 % of its annotated range (72 deg): at 75 % (60 deg) the open door's edge stood in "
                     "front of the shelf's hinge half, over a bottle at the shelf's middle; farther the base, riding "
                     "the handle round the hinge, meets the microwave stand."),
           Path("drawer", [W("articulated", "type", "equals", "prismatic")],
-               [St("policy_003"), St("policy_022", "$articulated")],
+               [St("policy_022", "$articulated")],
                requires=[P("hand_empty", hand="right")],
                note="One grasp: the handle pulled and the base riding the drawer, then let go."),
           Path("hinged_door", [W("articulated", "type", "equals", "revolute")],
-               [St("policy_003"), St("policy_022", "$articulated")],
+               [St("policy_022", "$articulated")],
                requires=[P("hand_empty", hand="right")],
                note="One grasp: the side hook on the handle and the base riding the door, then let go."),
       ],
@@ -960,7 +959,7 @@ skill("close", "articulated", "Close a door or drawer",
           Path("loaded", [W("articulated", "has_handle", "truthy"), HELD_R], [St("policy_023", "$articulated")],
                requires=[P("hand_empty", hand="left")],
                note="The right hand holds a load: the left hand pushes the door shut (the body kept still)."),
-          Path("handle_push", [W("articulated", "has_handle", "truthy")], [St("policy_003"), St("policy_023", "$articulated")],
+          Path("handle_push", [W("articulated", "has_handle", "truthy")], [St("policy_023", "$articulated")],
                requires=[P("hand_empty", hand="right")],
                note="Every empty hand x {push the outer face, ride the handle (right)} in one park search."),
           Path("dispatch", [], [St("policy_063", "$articulated")], requires=[P("hand_empty", hand="right")]),
@@ -1464,6 +1463,44 @@ skill("explore_furniture", "furniture", "Explore a piece of furniture",
       failure_modes=["a layer stays hidden from every stand-off pose, standing and crouched",
                      "a closed door hides a cabinet's inside layers",
                      "holding an object: the torso is not lowered, so low shelves may stay hidden"])
+
+
+# ================================================================= visual prompting for place (to 72)
+G = "perception_and_gesture"
+
+skill("mark_spots", "support", "Mark free spots on a support",
+      "Show where the held object can go on a support surface: see the surface clearly from one or two stand-off "
+      "poses (one where the robot stands when it does about as well; a long table: one view per half), standing "
+      "up with the head aimed at it, and number up to twelve free spots on those head images, one set of numbers "
+      "over all of them: one beside each object on the surface first, then another side of each, then open "
+      "space. Every spot fits the object at any "
+      "turn with room left to its neighbours and is in view. The numbered images come with the next observation "
+      "(one images entry per view, overlay \"place_spots\" and view k); disc n is spots[n-1] on every image it is "
+      "drawn on. Nothing is placed: place the object "
+      "with place(object, receptacle=support, hint_xy=<the chosen spot's xy>).",
+      group=G,
+      inputs={"object": I("object_ref", "The right-held object the spots are for (its footprint)."),
+              "support": I("support_ref", "The table, desk, counter or shelf surface to mark.")},
+      outputs={"spots": O("xy_list", "Free spots [x, y] in metres; spot n is the disc numbered n on the image."),
+               "coverage": O("number", "Fraction of the surface seen clearly in the views (1 = all of it).")},
+      requires=[P("holding", hand="right", object="$object")],
+      ensures=[P("in_view", target="$support")],
+      invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
+      paths=[Path("view_and_mark", [], [St("policy_117", "$support"), St("policy_118", "$object", "$support")])],
+      relations=[R("sequence", "place", "the object goes to the chosen spot",
+                   bind={"object": "$object", "receptacle": "$support"},
+                   reason="one of the spots output becomes place's hint_xy"),
+                 R("alternative", "look", "the surface only has to be seen, not marked",
+                   bind={"target": "$support"})],
+      use_when="A held object must go on a large surface and where on it matters (next to something, away from "
+               "something, a free corner): choose a numbered spot on the image instead of guessing coordinates.",
+      distinct_from={"place": "place puts the object down; mark_spots only shows where it could go.",
+                     "look": "look aims the camera at a target; mark_spots frames a whole surface and numbers free "
+                             "spots on it."},
+      failure_modes=["no stand-off pose within reach sees the whole surface: the spots cover the part in view "
+                     "(coverage < 1)",
+                     "no free spot for the object is in view",
+                     "a spot may be drawn over the arm or the held object (the robot's own body is not checked)"])
 
 
 # ================================================================ planner hints

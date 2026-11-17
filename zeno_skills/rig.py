@@ -17,7 +17,7 @@ from .motion_state import Dropped, SkillFailure     # noqa: F401  (defined below
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
 from .primitives import HINT_REACH, HINT_TURN, LEAVE_GAP, LEAVE_MARGIN, LEAVE_MAX, ON_LINE, exit_length, near_pose  # noqa: F401
-from .tolerances import RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
+from .tolerances import HEAD_AT, RIDE_SLIP_LEADS, RIDE_STALL, SETTLE_STILL, SETTLE_TCP
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
@@ -341,6 +341,18 @@ class Rig:
         from isaacsim.core.utils.types import ArticulationAction
         t = self.torch
         for _ in range(n):
+            # the yaw reading kept in [-pi, pi): PhysX refuses targets of the unlimited yaw joint
+            # (eREVOLUTE) beyond +-2 pi, which left the base turned away from where the planner put
+            # it, but lets the reading itself run on.  A reading past pi is set back by a turn (the
+            # same pose) -- before any drive target of this tick: Isaac's set_joint_positions also
+            # sets every joint's drive target to where the joint is now, and after the targets it
+            # held whatever was moving that tick.  Parked at 180 deg the reading crosses pi back and
+            # forth, so a torso lowering there stalled at -0.35..-0.38 of -0.54 (all 10 lowerings at
+            # +-180 deg since this wrap came in, T26 / T05 / T02; none at other yaws, 11-16).
+            yaw = float(self.robot.get_joint_positions()[self.base.long()][2])
+            if abs(yaw) > math.pi:
+                yaw = (yaw + math.pi) % (2 * math.pi) - math.pi
+                self.robot.set_joint_positions(t.tensor([yaw], dtype=t.float32), joint_indices=self.base[2:])
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.q_cmd, dtype=t.float32),
                                                        joint_indices=self.arm))
             self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.grip_cmd)),
@@ -351,15 +363,8 @@ class Rig:
                                                        joint_indices=self.left_fing))
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
                                                        joint_indices=self.head))
-            # the yaw target within half a turn of the joint's reading, the reading kept in
-            # [-pi, pi): PhysX refuses targets of the unlimited yaw joint (eREVOLUTE) beyond
-            # +-2 pi, which left the base turned away from where the planner put it, but lets the
-            # reading itself run on.  A reading past pi is set back by a turn (the same pose).
+            # the yaw target within half a turn of the joint's reading
             base_q = self.base_cmd.copy()
-            yaw = float(self.robot.get_joint_positions()[self.base.long()][2])
-            if abs(yaw) > math.pi:
-                yaw = (yaw + math.pi) % (2 * math.pi) - math.pi
-                self.robot.set_joint_positions(t.tensor([yaw], dtype=t.float32), joint_indices=self.base[2:])
             base_q[2] = yaw + (base_q[2] - yaw + math.pi) % (2 * math.pi) - math.pi
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(base_q, dtype=t.float32),
                                                        joint_velocities=t.tensor(self.base_vel, dtype=t.float32),
@@ -977,6 +982,16 @@ class Rig:
     def wait(self, ticks):
         """The world settles ``ticks`` physics ticks, the drives holding their commands (a wait segment)."""
         self.step(int(ticks))
+
+    def aim_head(self, yaw, pitch, steps=90):
+        """The head to (yaw, pitch) rad (a head action segment): the command set, then at most ``steps``
+        physics ticks, in tens, until both head joints are within HEAD_AT of it."""
+        self.head_cmd = np.array([float(yaw), float(pitch)])
+        for _ in range(int(steps) // 10):
+            self.step(10)
+            hq = self.head_q()
+            if abs(hq["head_yaw_joint"] - yaw) < HEAD_AT and abs(hq["head_pitch_joint"] - pitch) < HEAD_AT:
+                break
 
     def declare(self, name, allow, side="right", follows=True):
         """The next motion to the contact monitor (Clearance.motion)."""

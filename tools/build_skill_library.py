@@ -67,10 +67,11 @@ def cond_text(c):
 
 
 def node_name(rec, sep):
-    """verb<sep>noun; a verb that already names its noun (explore_room) is not repeated."""
+    """verb<sep>noun, the verb's own words joined by <sep> too (mark_spots support: mark-spots-support); a verb
+    that already names its noun (explore_room) is not repeated."""
     if rec["verb"].endswith("_" + rec["noun"]):
         return rec["verb"].replace("_", sep)
-    return f"{rec['verb']}{sep}{rec['noun']}"
+    return f"{rec['verb'].replace('_', sep)}{sep}{rec['noun']}"
 
 
 def step_text(step):
@@ -215,6 +216,8 @@ def nested_skills(rec, by_verb):
 # by zeno_skills.motion_skills.load.
 MOTION_SKILLS = [
     {"name": "navigate", "shape": "drive", "template": "plan_navigate", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.navigate:navigate_job"},
+    {"name": "look", "shape": "perceive", "template": "plan_look", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.look:look_job"},
+    {"name": "inspect", "shape": "perceive", "template": "plan_look", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.look:inspect_job"},
     {"name": "pick", "shape": "pick_place", "template": "plan_pick", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.pick:pick_job"},
     {"name": "place", "shape": "pick_place", "template": "plan_place", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.place:place_job"},
     {"name": "drop", "shape": "pick_place", "template": "plan_drop", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.drop:drop_job"},
@@ -222,6 +225,11 @@ MOTION_SKILLS = [
     {"name": "close", "shape": "part", "template": "plan_push", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.door:close_job"},
     {"name": "push", "shape": "contact", "template": "plan_slide", "park": True, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.slide:slide_job"},
     {"name": "stir", "shape": "contact", "template": "plan_stir", "park": True, "arrive": "carry", "travel": "carry", "job": "zeno_skills.skill_jobs.stir:stir_job"},
+    {"name": "crouch", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "stand", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "bend", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "straighten", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold_or_carry", "travel": "fold_or_carry", "job": "zeno_skills.skill_jobs.posture:body_job"},
+    {"name": "tuck", "shape": "posture", "template": "plan_posture", "park": False, "arrive": "fold", "travel": "fold", "job": "zeno_skills.skill_jobs.posture:tuck_job"},
 ]
 
 COMPOSITE_NOTES = [
@@ -492,6 +500,7 @@ def build():
     lib += [f"| {gtitle.get(g, g)} | {', '.join(f'`{v}`' for v in vs)} |" for g, vs in groups.items()]
     files[Path("README.md")] = _inject((ROOT / "README.md").read_text(), "library", "\n".join(lib))
     n_policy = len(names)
+    last_policy = max(names)                 # policy_NNN; numbers are not contiguous (policy_014 unused)
     n_planner = sum(1 for leg in names.values() if leg.startswith("plan_"))
     files[Path("contract_library/README.md")] = _inject(
         (ROOT / "contract_library/README.md").read_text(), "counts",
@@ -499,7 +508,7 @@ def build():
         f"共 {n_paths} 条 policy 路径。")
     files[Path("policy_library/README.md")] = _inject(
         (ROOT / "policy_library/README.md").read_text(), "counts",
-        f"当前有 **{n_policy} 个公开 policy**（`policy_001`–`policy_{n_policy:03d}`），其中 {n_planner} 个是只计算目标、"
+        f"当前有 **{n_policy} 个公开 policy**（`policy_001`–`{last_policy}`），其中 {n_planner} 个是只计算目标、"
         f"不运动的规划 policy；除 {len(RETIRED_POLICIES)} 个退役的以外，全部被 {len(records)} 个 Skill Contract 的路径覆盖。")
     return files, errors, records
 

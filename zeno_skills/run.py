@@ -46,6 +46,11 @@ def execute(act, seg):
             act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
             act.wait(seg.action[1])
             return
+        if what == "head":                      # aim the head camera; the arms, base and hands stay
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
+            _, yaw, pitch, steps = seg.action
+            act.aim_head(yaw, pitch, steps)
+            return
         raise ValueError(f"unknown action {what}")
     if seg.kind == "drive":
         kw = dict(seg.info.get("drive_kw") or {})

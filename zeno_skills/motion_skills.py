@@ -124,7 +124,7 @@ def _head_straight(rig, skill):
     counts.  A rig without a head (the tests' stand-ins) is left as it is."""
     if not hasattr(rig, "head_q"):
         return
-    from .policies.perceive import drive_head
+    from .skill_jobs.look import drive_head
     q = rig.head_q()
     was = (q["head_yaw_joint"], q["head_pitch_joint"])
     if all(abs(v - s) < HEAD_AT for v, s in zip(was, HEAD_STRAIGHT)):
@@ -138,7 +138,8 @@ def run_skill(rig, skill, args):
     from .rig import SkillFailure
     from .skill_jobs.base import RigBase
     from .skills import _at_park
-    _head_straight(rig, skill)
+    if skill.shape != "perceive":         # a look plans no arm motion: its head goes where it aims
+        _head_straight(rig, skill)
     state = observe(rig)
     job = skill.job(rig, args, state, skill)
     if skill.park != (job.problem is not None):

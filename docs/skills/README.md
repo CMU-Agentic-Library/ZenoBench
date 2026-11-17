@@ -17,6 +17,8 @@
 9. **[close](close.md)**：关门和抽屉（2026-11-12 起走运动分层：空着的手 × {推门板，握把手} 一次停车点搜索）。
 10. **[push](push.md)**：把桌上的东西推一段，推到桌边好捏边（2026-11-12 起走运动分层：方向 × {推，拖} × 手指朝向一次停车点搜索，推到够不着再换停车点）。
 11. **[stir](stir.md)**：拿勺子在锅里搅（2026-11-15 起走运动分层：勺尖是标注 `tool_frame`，画圈是锅坐标系里的任务段，整圈要么全过要么失败；自由段不保持倾角）。
+12. **[mark_spots](mark_spots.md)**：拿着东西时开到能看全一张桌面的位置，在头部图上给几个空位编号，VLM 选号后用 `place(hint_xy=...)` 放（2026-11-15，visual prompting）。
+13. **[姿态](posture.md)**：下蹲、站起、弯腰、直腰、收臂（2026-11-16 起走运动分层：原地一段关节运动，只动身体的段两条手臂都查；"降到最低"这类不给具体值的按碰撞模型量能走多远）。
 
 ## 现在走运动分层的（2026-11-14）
 
@@ -28,9 +30,10 @@
 - drop：扔进容器，包括 `place(name, "in:<容器>")`（托盘除外）（[drop 和 hover](drop_hover.md)，11-14）；
 - open、close 门和抽屉（[open](open.md)、[close](close.md)）；微波炉除外；
 - push：推到桌边和另外 7 个调 `push_object` 的策略（[push](push.md)）；
-- stir 和 dip：拿勺子搅、勺尖伸进去再出来（[stir](stir.md)，11-15）。
+- stir 和 dip：拿勺子搅、勺尖伸进去再出来（[stir](stir.md)，11-15）；
+- 姿态：crouch、stand、bend、straighten、tuck（[姿态](posture.md)，11-16）。
 
-还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类和姿态类还没按第 ⑤ 层的形式迁（`../MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）。
+还是旧代码（直接调 `rig.move_to` 等旧入口）：hover（[drop 和 hover](drop_hover.md)）、wipe（[wipe](wipe.md)）、倒、翻书、扶正、微波炉（开关门、腔体里取放）、双手。感知类（look、inspect 是技能，search / explore 是它上面的任务层）和姿态类（[姿态](posture.md)）11-16 迁了（`../MOTION_ARCHITECTURE.md` 9.3 第 3、5 步）；手势（wave、point_at、present）还走旧入口。
 
 ## 11-04（3b 第 2 项）改了什么
 

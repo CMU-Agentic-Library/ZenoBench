@@ -414,19 +414,6 @@ def drive_to(rig, goal, label="drive_to", **drive):
     relocate(rig, goal, (), label=label, **drive)
 
 
-def fold_where_possible(rig, label="fold"):
-    """Fold the right arm: where it stands when the arm planner finds a way (Rig.tuck), else after
-    the least base move that lets it fold straight (relocate without a goal).  Whether it is folded."""
-    if rig.tuck(hang=False):
-        return True
-    try:
-        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label)
-    except SkillFailure as exc:
-        rig.log("fold_blocked", reason=str(exc)[:200])
-        return False
-    return True
-
-
 def _swing_arm(rig, side, arm_q, label):
     """Move one arm's joints (torso and waist kept) to ``arm_q``: straight in joint space when
     that is clear, else a cuRobo trajectory.  False (logged) when neither exists."""
@@ -1442,6 +1429,20 @@ def drop_into(rig, name, container):
     return run_skill(rig, SKILLS["drop"], {"name": name, "container": container})
 
 
+def hint_spot_free(rig, name, s, hx, hy, st=None, skip=None):
+    """Whether free_spots takes the hint (hx, hy) itself, as its first spot: the object's own half-size (not
+    any-yaw) inside the support (4 cm in from a counter's open edge) and no other object there.  ``s``: the
+    support record; ``skip``: objects not in the way (default: the object itself)."""
+    st = st if st is not None else rig.state()
+    skip = {name} if skip is None else skip
+    size = rig.ann.asset_of(rig.ann.objects[name])["size"]
+    x0, y0, x1, y1 = s["aabb_xy"]
+    re = 0.5 * max(size[0], size[1]) + 0.002          # the object's own half-size, not any-yaw
+    re += 0.04 if s.get("category") == "counter" else 0.0   # (off the counter's open edge)
+    return bool(x0 + re <= hx <= x1 - re and y0 + re <= hy <= y1 - re and not _overlaps_objects(
+        rig, [hx - re, hy - re, hx + re, hy + re, s["z"] + 0.005, s["z"] + size[2]], skip, st, margin=0.005))
+
+
 def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     """Collision-free xy on a support for the object's footprint, near the
     hint (or near an open edge, where the arm reaches; behind a door, near its
@@ -1483,10 +1484,7 @@ def free_spots(rig, name, support, hint=None, k=8, exclude=()):
     if hint is not None:
         # an explicit request is honoured exactly when that point itself is free
         hx, hy = float(hint[0]), float(hint[1])
-        re = 0.5 * max(size[0], size[1]) + 0.002          # the object's own half-size, not any-yaw
-        re += 0.04 if s.get("category") == "counter" else 0.0   # (off the counter's open edge)
-        if x0 + re <= hx <= x1 - re and y0 + re <= hy <= y1 - re and not _overlaps_objects(
-                rig, [hx - re, hy - re, hx + re, hy + re, s["z"] + 0.005, s["z"] + size[2]], skip, st, margin=0.005):
+        if hint_spot_free(rig, name, s, hx, hy, st, skip):
             out.append((-1.0, hx, hy))
     # first keep a finger's clearance to every neighbour (the object stays
     # pickable afterwards), then accept the tight 2 cm margin

@@ -100,7 +100,7 @@ def main():
         # 3 ------------------------------------------------------------------
         fb = s.call("navigate", {"destination": CAB})
         from zeno_skills.perception import dynamic_occluder, rig_head_pose, look_angles
-        from zeno_skills.policies.perceive import drive_head
+        from zeno_skills.skill_jobs.look import drive_head
         c = rig.geo.centre(hidden, rig.state())
         yaw, pitch = look_angles(rig, c)
         drive_head(rig, yaw, pitch)

@@ -220,7 +220,7 @@ class Observer:
 
     def glance_point(self, p, tag=None, image=False):
         from zeno_skills.perception import look_angles
-        from zeno_skills.policies.perceive import drive_head
+        from zeno_skills.skill_jobs.look import drive_head
         yaw, pitch = look_angles(self.rig, p)
         drive_head(self.rig, yaw, pitch, steps=60)
         return self.snapshot(tag, image)

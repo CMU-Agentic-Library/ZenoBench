@@ -16,8 +16,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .. import skills
 from ..skill_jobs.carry import carry_posture
-from ..perception import in_view_from
-from ..physics import PHYSICS_HZ
+from .. import viewpoints
 from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
                           reach_targets)
@@ -96,18 +95,9 @@ def standoff_poses(rig, place, ring=STANDOFF_RING):
     return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
 
 
-def _in_view_poses(rig, obj, poses):
-    """The poses of ``poses`` (in their order) from which the head camera sees object ``obj``, with the base
-    there in the posture navigate arrives in (skills._rest_posture: its torso and waist place the camera)
-    and the head aimed as look aims it (perception.in_view_from: look_target's frustum and furniture boxes)."""
-    tw = dict(zip(rig.kin.names[:2], (float(q) for q in skills._rest_posture(rig)[0][:2])))
-    p = entity_point(rig, obj)
-    return [pose for pose in poses if in_view_from(rig, pose, p, tw)[0]]
-
-
 class NavigateToPlacePolicy(AtomicPolicy):
-    """Drive to a collision-free stand-off pose near a room, furniture, support or object; near an object,
-    one it is in view from when the base can get to any (_in_view_poses)."""
+    """Drive to a collision-free stand-off pose near a room, furniture, support or object; near furniture, a
+    support or an object, one it is in view from when the base can get to any (viewpoints.in_view_poses)."""
 
     def execute(self, place):
         rig = self.rig
@@ -125,16 +115,17 @@ class NavigateToPlacePolicy(AtomicPolicy):
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")
         # the stand-off poses are one goal set: the nearest one the base can get to from here (one
-        # field over all of them, skills.base_reachable), then one navigate -- not tried in turn
-        ok = skills.base_reachable(rig, poses)
-        reach = [p for p, o in zip(poses, ok) if o]
-        # near an object, the stand-offs it is in view from come first: look and the benchmark's gate
-        # want it in view next, and a floor object is below the frustum within ~0.6 m of the base (the head
-        # pitches 18 deg down at most) or behind furniture from some sides.  None of them: the nearest, and
-        # look says what it does not see.
-        seen = _in_view_poses(rig, place, reach) if kind == "object" else []
+        # field over all of them, skills.base_reachable), then one navigate -- not tried in turn.
+        # The stand-offs the place is in view from come first (viewpoints): look, search and the benchmark's
+        # gate want it in view next; a floor object is below the frustum within ~0.6 m of the base (the head
+        # pitches 18 deg down at most), and a stand-off within reach of a support can be behind a wall
+        # (bookcase_2 from the living room, 1116: 8 searches / looks failed there).  None of them: the
+        # nearest, and look says what it does not see.
+        reach, seen = viewpoints.reachable_in_view(rig, {place: poses})[place]
+        in_view = kind in viewpoints.IN_VIEW_KINDS
+        seen = seen if in_view else []
         rig.log("navigate_place_goals", place=place, goals=len(poses), reachable=len(reach),
-                **({"in_view": len(seen)} if kind == "object" else {}))
+                **({"in_view": len(seen)} if in_view else {}))
         if not reach:
             raise SkillFailure(f"navigate to {place}: no base path to any of {len(poses)} stand-off poses "
                                "(even the column's inscribed circle cannot get there)")
@@ -193,10 +184,9 @@ class FaceTargetPolicy(AtomicPolicy):
         delta = (bearing - yaw + 180) % 360 - 180
         if abs(delta) <= tolerance_deg:
             return yaw
-        if rig.held is None and rig.left_held is None:
-            if not rig.tuck():
-                raise SkillFailure(f"face {target}: cannot fold the arm before turning")
-        skills.straight_base_move(rig, (x, y, bearing), f"face {target}")
+        # navigate's plan to the same place at the new heading: an empty arm into its travel posture
+        # (free_leg to {fold, hang}, as rig.tuck did), the drive, the arrival anchor
+        skills.navigate(rig, (x, y, bearing), label=f"face {target}", raise_load=False)
         x2, y2, yaw2 = rig.base_pose()
         err = abs((bearing - yaw2 + 180) % 360 - 180)
         rig.log("face_result", target=target, yaw_deg=round(yaw2, 1), error_deg=round(err, 1))
@@ -234,21 +224,9 @@ class RetreatFromPolicy(AtomicPolicy):
 
 
 class LeftArmFoldPolicy(AtomicPolicy):
-    """Fold the empty left arm to its travel posture."""
+    """Fold the empty left arm to its travel posture: the tuck skill for the left hand (its fingers opened, the arm
+    alone moving -- skill_jobs.posture.tuck_job).  The joint error left (rad)."""
 
     def execute(self):
-        rig = self.rig
-        if rig.left_held is not None:
-            raise SkillFailure("fold left arm: the left hand holds an object")
-        rig.left_grip(0.04, 30)
-        goal = np.r_[rig.q_cmd[:2], rig.left_kin.rest[2:]]
-        start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-        rig.left_follow(rig._dense(start, goal))
-        err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
-        if err > 0.08:
-            rig.step(PHYSICS_HZ)          # let the slow wrist joints settle
-            err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
-        rig.log("left_fold", error_rad=round(err, 4))
-        if err > 0.15:
-            raise SkillFailure(f"fold left arm: joint error {err:.3f} rad")
-        return err
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["tuck"], {"hand": "left"})

@@ -29,11 +29,13 @@ skills.py         技能本体：pick / place / navigate / 开关门 / 微波炉
   │                       SKILLS 读 skill_library/catalog.json 的 "motion_skills"
   │   skill_jobs/       ⑤ 每个技能的 job（目标集合、hooks、结果判断）：navigate / pick / place / drop / door（open、close）/
   │                       slide（push：slide_job，和任务层一段段推的 push_object）；stir（stir_job）；
+  │                       look（look_job、inspect_job）；posture（body_job：crouch / stand / bend / straighten，tuck_job）；
   │                       tool（tool_in_tcp：标注的 tool_frame → T_tcp_tool）；
   │                       base（RigBase：整机底盘模型）、carry（搬运判据、carry_posture）
   │   park_search.py    ③ find_park(kin, world, Problem, state, log, base)：底盘候选、便宜过滤、排序，
   │                       按顺序调技能的 build
-  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_door / plan_push / plan_slide / plan_stir（build）：
+  │   skill_plans/      ② plan_pick / plan_place / plan_navigate / plan_look / plan_posture / plan_door / plan_push /
+  │                       plan_slide / plan_stir（build）：
   │                       原语串成整份计划，State 在段间推进；plan_clear（失败出口：张手、竖直退出接触）
   │   primitives.py     ① free_leg / straight / contact_extent / contact_segment / drive / drive_straight /
   │                       scripted（任务段：Script + 耦合 hinge / slider / still / pushed，ride_base）/ decide_ik；holds（复核一段：run 和 build 复用旧段都用它）
@@ -98,7 +100,7 @@ scene_geometry.py PhysX 碰撞体 → cuRobo 障碍物
 
 | 行（90a2a31） | 块 | 主要函数 |
 |---|---|---|
-| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`fold_where_possible`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
+| 55–496 | 搬运目标、导航、收臂 | `_carry_goals`、`_carry_goal_set`、`_carry_floor`、`check_held`、`held_vertical_move`、`navigate`（→ `run_skill`）、`relocate` / `straight_base_move`（→ `drive` 段 + `run.execute`）、`_base_plan`、`_fold_left`（搬运判据和 `carry_posture` 在 `skill_jobs/carry.py`）|
 | 498–796 | 开关门（铰链 / 抽屉）| `open_articulated`、`close_articulated`（转到 `run_skill`；微波炉——close 还有没把手的部件——转 `_move_with_retry`）、`_move_articulated`、`_ride`、`_ride_check`（只剩微波炉用） |
 | 797–910 | 扁平物体和支撑面的几何工具 | `_open_edges`、`_free_beyond`、`_overlaps_objects`、`_half_along`、`_edge_coord` |
 | 911–1110 | pick | `pick`、`_pick_pinch`、`_pick_pinch_core`（现在只是转到 `run_skill`，pick 的 job 在 `skill_jobs/pick.py`）、`_grasp_approach` / `pick_approach`、`_pinch_candidates`、`_pads_clear_of`、`contact_obstacles`、`edge_held`（`push` 11-12 删了：`skill_jobs/slide.py` 的 `push_object`） |
@@ -328,11 +330,11 @@ _move_with_retry → _move_with_retry_impl → _move_articulated（没把手的�
 | `extra.py` | Touch、Knock、Hover、Shake、Wave | 5 | Hover 已改（`park_over`）；Knock（3 处）、Touch（2 处）是 LEGACY |
 | `contact.py` | `_contact_sweep`（TipOver、Roll）| 3 | |
 | `appliance_generic.py` | PressButton | 3 | |
-| `embedded.py` | GraspArticulatedHandle、PickFromCavity、PrepareFloorReach | 1 | GraspArticulatedHandle（policy_046）已退役：没有合约路径到它，类还在 |
+| `embedded.py` | GraspArticulatedHandle、PickFromCavity、PrepareFloorReach | 1 | GraspArticulatedHandle（policy_046）、PrepareFloorReach（policy_042，11-16：floor_top 只走 pick）已退役：没有合约路径到它们，类还在 |
 | `bimanual.py` | Handover、双手抬 / 搬、OpenDoorWhileLeftHolds | 0 | 用 `follow_both`、`move_left_to`；`drive_base` 不查手臂。OpenDoorWhileLeftHolds（policy_060）已退役：没有合约路径到它，类还在 |
 | `mobile.py` | Pick / Place / ReachWhileMoving | 0 | 自己拼底盘和手臂的轨迹，`drive_base` 不查手臂。ReachWhileMoving（policy_051）已退役：没有合约路径到它，类还在 |
 | `handle_grasp.py` | PickCupHandle | 0 | 三段 `move_to`，最后一段 `lifting` |
-| `perceive.py`、`primitives.py`、`posture.py`、`base_motion.py`、`navigation.py` | — | 0 | 主要是转发或单段运动 |
+| `perceive.py`、`primitives.py`、`posture.py`、`base_motion.py`、`navigation.py` | — | 0 | 主要是转发或单段运动；`posture.py`（policy_003–009）和 `base_motion.LeftArmFoldPolicy`（policy_091）只调 `run_skill`（姿态技能，11-16） |
 
 ---
 

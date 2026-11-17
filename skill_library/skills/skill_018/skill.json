@@ -777,6 +777,12 @@
     "verb": "open",
     "when": "an object must go inside",
     "type": "enables"
+   },
+   {
+    "skill_id": "skill_072",
+    "verb": "mark_spots",
+    "when": "the object goes to the chosen spot",
+    "type": "then"
    }
   ],
   "next": [
