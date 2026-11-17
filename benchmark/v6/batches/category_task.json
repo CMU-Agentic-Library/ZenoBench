@@ -312,8 +312,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 11,
-"variant": "tower_for_kid__counter",
-"route": "v6_tower_for_kid__counter",
+"variant": "tower_for_kid__near_full",
+"route": "v6_tower_for_kid__near_full",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -342,8 +342,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 14,
-"variant": "tower_for_kid__counter",
-"route": "v6_tower_for_kid__counter",
+"variant": "tower_for_kid__near_full",
+"route": "v6_tower_for_kid__near_full",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -372,8 +372,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 17,
-"variant": "tower_for_kid__study",
-"route": "v6_tower_for_kid__study",
+"variant": "tower_for_kid__both_full",
+"route": "v6_tower_for_kid__both_full",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -382,8 +382,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 18,
-"variant": "tower_for_kid__study",
-"route": "v6_tower_for_kid__study",
+"variant": "tower_for_kid__both_full",
+"route": "v6_tower_for_kid__both_full",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",

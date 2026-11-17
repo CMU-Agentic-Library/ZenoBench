@@ -143,7 +143,11 @@ def main():
                 lines += [f"**指令**：{instr}", ""]
             sc = info.get("scoring")
             if sc:                                    # graded: every tier is success, the score differs
-                lines += [f"**成功条件**（D = {sc['D']}；以下各档都算成功，分数不同）：", ""]
+                dl = sc.get("D_by_layout")
+                d_txt = (f"D 按摆法：" + "，".join(f"`{k.split('__', 1)[-1]}` D = {v}、最高档 "
+                                                 f"{ {'ideal': '好', 'moderate': '次好', 'bad': '最不好'}[sc['top_by_layout'][k]]}"
+                                                 for k, v in dl.items())) if dl else f"D = {sc['D']}"
+                lines += [f"**成功条件**（{d_txt}；以下各档都算成功，分数不同）：", ""]
                 for tier in sc["tiers"]:
                     lines += [f"- **{TIER_ZH[tier['name']]}（{tier['score']}）**：", ""]
                     lines += tier_lines(t, info, tier, 1)
@@ -178,6 +182,9 @@ def layout_goal_lines(t, info, tier, depth):
     for g, lids in sorted(goals.items()):
         if len(goals) > 1:
             lines.append("  " * depth + "- 摆法 " + "、".join(f"`{x.split('__', 1)[-1]}`" for x in lids) + "：")
+        if json.loads(g) == "n/a":                # 11-17: the seed cannot offer this level (the ideal is missing)
+            lines.append("  " * (depth + 1) + "- 这个摆法没有这一档（理想的东西 / 位置不在或用不了）")
+            continue
         lines += goal_lines(json.loads(g), depth + (1 if len(goals) > 1 else 0))
     return lines
 

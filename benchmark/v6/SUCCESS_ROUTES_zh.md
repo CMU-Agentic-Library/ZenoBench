@@ -508,89 +508,217 @@
 
 ### tower_for_kid（Task）
 
-**情况**：孩子想在餐桌上看积木塔；三块积木分散在岛台、客厅电视柜和另一间房的桌上（开局看不到）；餐桌上有储物箱、两盒麦片和勺子 → 找全三块，一只手往返三趟、安排先后；第一块放在餐桌上离边缘至少 5 cm、不贴着储物箱和麦片的空处当底座，再叠另外两块；桌上原有东西不动
+**情况**：（11-17 改成换地方的替换）孩子坐在近处餐桌，想看积木塔；三块积木分散在家里（一块开局看不到）→ 找全三块搭塔。搭在哪按位置定档：近处餐桌（孩子那张）好；近处餐桌堆满了就搭到西边餐厅的另一张餐桌，次好；两张餐桌都堆满就只能搭在不是餐桌的台面（如岛台），最不好。离桌边和桌上东西都要 10 cm，桌上东西不能挪
 
 **指令**：孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`counter` D = 1、最高档 好，`study` D = 1、最高档 好，`near_full` D = 1、最高档 次好，`both_full` D = 0、最高档 最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_a` 离台面边缘至少 5 cm
-      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_a` 离台面边缘至少 5 cm
-      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_b` 离台面边缘至少 5 cm
-      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - 第 4 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_b` 离台面边缘至少 5 cm
-      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - 第 5 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `floor_block` 离台面边缘至少 5 cm
-      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
-    - 第 6 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `floor_block` 离台面边缘至少 5 cm
-      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+  - 摆法 `near_full`、`both_full`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `counter`、`study`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_2/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_2/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_2/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_2/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在其中任一处上：`dining_table_2/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在其中任一处上：`dining_table_2/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+- **次好（0.6）**：
+
+  - 摆法 `both_full`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `counter`、`study`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在其中任一处上：`dining_table_1/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在其中任一处上：`dining_table_1/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+  - 摆法 `near_full`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_a` 离台面边缘至少 10 cm
+        - `wooden_block_a` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在其中任一处上：`dining_table_1/top`
+        - `wooden_block_b` 离台面边缘至少 10 cm
+        - `wooden_block_b` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在其中任一处上：`dining_table_1/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在其中任一处上：`dining_table_1/top`
+        - `floor_block` 离台面边缘至少 10 cm
+        - `floor_block` 离这些东西都至少 10 cm：`bowl_side_table`、`cup_side_table`、`spoon_side_table`
 - **最不好（0.3）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 4 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 5 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-    - 第 6 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上
+  - 摆法 `counter`、`study`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+  - 摆法 `near_full`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+  - 摆法 `both_full`：
+    - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`far_wide_storage_bin`、`far_clutter_cereal_a`、`far_clutter_toy_box`、`far_clutter_tray`、`far_clutter_basket`、`far_clutter_fruit_basket`、`far_clutter_bowl`、`far_clutter_plate_1`、`far_clutter_sorting_tray`、`far_clutter_plate_2`、`far_clutter_small_bin`、`far_clutter_cereal_e`、`far_extra_0`、`far_extra_1`、`far_extra_2`、`far_extra_3` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+- **不行（0）**：只有两块；为腾地方挪了桌上的东西；没叠
 
 
 **参考调用顺序**：
 
 - 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=wooden_block_b, region=living_room_0_0)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=floor_block, region=kitchen_0_1)` → 14. `navigate(destination=floor_block)` → 15. `pick(object=floor_block)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=floor_block, base=wooden_block_b)`
 - 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=floor_block, region=living_room_0_0)` → 9. `navigate(destination=floor_block)` → 10. `pick(object=floor_block)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=floor_block, base=wooden_block_a)` → 13. `search(object=wooden_block_b, region=living_room_0_1)` → 14. `navigate(destination=wooden_block_b)` → 15. `pick(object=wooden_block_b)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=wooden_block_b, base=floor_block)`
+- 摆法 `near_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=wooden_block_a, receptacle=dining_table_1/top, hint_xy=[-7.64, 7.8])` → 10. `search(object=wooden_block_b, region=living_room_0_0)` → 11. `navigate(destination=wooden_block_b)` → 12. `pick(object=wooden_block_b)` → 13. `navigate(destination=wooden_block_a)` → 14. `stack(object=wooden_block_b, base=wooden_block_a)` → 15. `search(object=floor_block, region=kitchen_0_1)` → 16. `navigate(destination=floor_block)` → 17. `pick(object=floor_block)` → 18. `navigate(destination=wooden_block_a)` → 19. `stack(object=floor_block, base=wooden_block_b)`
+- 摆法 `both_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `navigate(destination=kitchen_island/top)` → 10. `look(target=kitchen_island/top)` → 11. `place(object=wooden_block_a, receptacle=kitchen_island/top, hint_xy=[7.7, 1.815])` → 12. `search(object=floor_block, region=living_room_0_0)` → 13. `navigate(destination=floor_block)` → 14. `pick(object=floor_block)` → 15. `navigate(destination=wooden_block_a)` → 16. `stack(object=floor_block, base=wooden_block_a)` → 17. `search(object=wooden_block_b, region=living_room_0_1)` → 18. `navigate(destination=wooden_block_b)` → 19. `pick(object=wooden_block_b)` → 20. `navigate(destination=wooden_block_a)` → 21. `stack(object=wooden_block_b, base=floor_block)`
 
 ### tower_for_kid_duck（Task）
 
@@ -640,87 +768,334 @@
 
 ### block_put_away（Action + Task）
 
-**情况**：“把三块积木在岛台上叠成一座塔。有一块我收进客厅靠墙的矮柜里了，找完把柜门关好”：岛台上两块，一块在边上不能当底座 → 原地把边上那块叠到另一块上（Action），再逐个打开矮柜找第三块，叠到最上面（Task），柜门都关好
+**情况**：（11-17 改成替换）“孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好”：岛台上两块积木，一块在边上不能当底座，旁边一块洗碗海绵（不是玩具）；第三块木积木在关着的矮柜里或家里根本没有，眼前有一个替代玩具 → 先找真的第三块（开柜找、关好），找不到才用替代玩具。按毛病数定档：都对好；替代玩具或底座在边上之一次好；两样都有、用海绵或柜门没关最不好
 
-**指令**：把三块积木在岛台上叠成一座塔。有一块我收进客厅靠墙的矮柜里了，找完把柜门关好。
+**指令**：孩子想要一座三层的积木塔，在岛台上给他搭一座。翻过的柜子记得把门关好。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_4` D = 1、最高档 好，`in_6` D = 1、最高档 好，`gone_toy_block` D = 1、最高档 次好，`gone_duck` D = 1、最高档 次好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 手里空着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 离台面边缘至少 5 cm
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 离台面边缘至少 5 cm
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 离台面边缘至少 5 cm
-      - `floor_block` 在 `kitchen_island/top` 上
-    - 第 4 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 离台面边缘至少 5 cm
-      - `floor_block` 在 `kitchen_island/top` 上
+  - 摆法 `gone_toy_block`、`gone_duck`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `in_4`、`in_6`：
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+        - `floor_block` 离台面边缘至少 5 cm
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+        - `floor_block` 离台面边缘至少 5 cm
 - **次好（0.6）**：
 
-  - 手里空着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 在 `kitchen_island/top` 上
-    - 第 4 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 在 `kitchen_island/top` 上
+  - 摆法 `in_4`、`in_6`：
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+      - 第 7 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 8 组：
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 9 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 10 组：
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 11 组：
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+        - `toy_block` 离台面边缘至少 5 cm
+      - 第 12 组：
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+        - `toy_block` 离台面边缘至少 5 cm
+  - 摆法 `gone_duck`：
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `rubber_duck` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 2 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `rubber_duck` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+  - 摆法 `gone_toy_block`：
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 2 组：
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+        - `wooden_block_a` 离台面边缘至少 5 cm
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 4 组：
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+        - `wooden_block_b` 离台面边缘至少 5 cm
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+        - `toy_block` 离台面边缘至少 5 cm
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+        - `toy_block` 离台面边缘至少 5 cm
 - **最不好（0.3）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 叠在 `wooden_block_a` 上
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 2 组：
-      - `floor_block` 叠在 `wooden_block_b` 上
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 在 `kitchen_island/top` 上
-    - 第 3 组：
-      - `wooden_block_a` 叠在 `floor_block` 上
-      - `wooden_block_b` 叠在 `wooden_block_a` 上
-      - `floor_block` 在 `kitchen_island/top` 上
-    - 第 4 组：
-      - `wooden_block_b` 叠在 `floor_block` 上
-      - `wooden_block_a` 叠在 `wooden_block_b` 上
-      - `floor_block` 在 `kitchen_island/top` 上
-- **不行（0）**：只叠了两块（没找到第三块）；没叠上；积木掉了
+  - 摆法 `in_4`、`in_6`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 4 组：
+        - `floor_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `floor_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `floor_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `floor_block` 在 `kitchen_island/top` 上
+      - 第 7 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 8 组：
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 9 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 10 组：
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 11 组：
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+      - 第 12 组：
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+      - 第 13 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 14 组：
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 15 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 16 组：
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 17 组：
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+      - 第 18 组：
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 摆法 `gone_duck`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `rubber_duck` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `rubber_duck` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 3 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 4 组：
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 6 组：
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 7 组：
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+      - 第 8 组：
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 摆法 `gone_toy_block`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 3 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 4 组：
+        - `toy_block` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 5 组：
+        - `wooden_block_a` 叠在 `toy_block` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+      - 第 6 组：
+        - `wooden_block_b` 叠在 `toy_block` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `toy_block` 在 `kitchen_island/top` 上
+      - 第 7 组：
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 8 组：
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 在 `kitchen_island/top` 上
+      - 第 9 组：
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 叠在 `wooden_block_a` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 10 组：
+        - `kitchen_sponge` 叠在 `wooden_block_b` 上
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 在 `kitchen_island/top` 上
+      - 第 11 组：
+        - `wooden_block_a` 叠在 `kitchen_sponge` 上
+        - `wooden_block_b` 叠在 `wooden_block_a` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+      - 第 12 组：
+        - `wooden_block_b` 叠在 `kitchen_sponge` 上
+        - `wooden_block_a` 叠在 `wooden_block_b` 上
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+- **不行（0）**：只有两层（没有第三件）；没叠上；积木掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `open(articulated=kitchen_cabinet_4)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_4)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 21. `navigate(destination=wooden_block_a)` → 22. `stack(object=floor_block, base=wooden_block_a)` → 23. `navigate(destination=kitchen_cabinet_4)` → 24. `close(articulated=kitchen_cabinet_4)`
 - 摆法 `in_6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_4)` → 13. `navigate(destination=kitchen_cabinet_6)` → 14. `open(articulated=kitchen_cabinet_6)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_6)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 21. `navigate(destination=wooden_block_a)` → 22. `stack(object=floor_block, base=wooden_block_a)` → 23. `navigate(destination=kitchen_cabinet_6)` → 24. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `gone_toy_block`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_4)` → 13. `navigate(destination=kitchen_cabinet_6)` → 14. `open(articulated=kitchen_cabinet_6)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_6)` → 17. `straighten()` → 18. `close(articulated=kitchen_cabinet_6)` → 19. `search(object=toy_block, region=kitchen_0_1)` → 20. `navigate(destination=toy_block)` → 21. `pick(object=toy_block)` → 22. `navigate(destination=wooden_block_a)` → 23. `stack(object=toy_block, base=wooden_block_a)`
+- 摆法 `gone_duck`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)`（换做法） → 5. `navigate(destination=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_4)` → 13. `navigate(destination=kitchen_cabinet_6)` → 14. `open(articulated=kitchen_cabinet_6)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_6)` → 17. `straighten()` → 18. `close(articulated=kitchen_cabinet_6)` → 19. `search(object=rubber_duck, region=dining_room_0_1)` → 20. `navigate(destination=rubber_duck)` → 21. `pick(object=rubber_duck)` → 22. `navigate(destination=wooden_block_a)` → 23. `stack(object=rubber_duck, base=wooden_block_a)`
 
 ---
 

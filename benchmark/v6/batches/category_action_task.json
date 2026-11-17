@@ -402,8 +402,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
-"variant": "block_put_away__in_4",
-"route": "v6_block_put_away__in_4",
+"variant": "block_put_away__gone_toy_block",
+"route": "v6_block_put_away__gone_toy_block",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
@@ -442,8 +442,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 14,
-"variant": "block_put_away__in_6",
-"route": "v6_block_put_away__in_6",
+"variant": "block_put_away__gone_duck",
+"route": "v6_block_put_away__gone_duck",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
@@ -452,8 +452,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 15,
-"variant": "block_put_away__in_4",
-"route": "v6_block_put_away__in_4",
+"variant": "block_put_away__gone_toy_block",
+"route": "v6_block_put_away__gone_toy_block",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
@@ -472,8 +472,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 17,
-"variant": "block_put_away__in_6",
-"route": "v6_block_put_away__in_6",
+"variant": "block_put_away__gone_duck",
+"route": "v6_block_put_away__gone_duck",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",

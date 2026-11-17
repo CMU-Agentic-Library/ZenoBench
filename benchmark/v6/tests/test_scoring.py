@@ -26,9 +26,12 @@ def test_spec(key):
 def test_in_tasks_json(key):
     t, spec = _spec(key)
     info = t["v6_variants"][key[1]]
-    assert info.get("scoring") == spec
+    got = dict(info.get("scoring") or {})
+    got.pop("D_by_layout", None), got.pop("top_by_layout", None)     # 11-17: per-seed summaries
+    assert got == spec
+    from benchmark.v6.scoring import per_layout
     for lid in info["layouts"]:
-        assert t["variants"][lid]["scoring"] == spec
+        assert t["variants"][lid]["scoring"] == per_layout(spec, lid)
         for tier in spec["tiers"]:
             g = tier["goal"]
             if g and "by_layout" in g:
@@ -39,7 +42,7 @@ def test_first_tier_that_holds():
     s = {"D": 1, "tiers": [{"name": "best", "score": 1.0, "goal": {"all": ["a"]}},
                            {"name": "worst", "score": 0.3, "goal": {"all": ["b"]}}], "not_ok": "x"}
     task = {"goal": {"all": ["a"]}}
-    assert score(s, task, None, lambda g: g["all"] == ["b"]) == {"tier": "worst", "score": 0.3, "D": 1}
+    assert score(s, task, None, lambda g: g["all"] == ["b"]) == {"tier": "worst", "level": "bad", "score": 0.3, "D": 1}
     assert score(s, task, None, lambda g: False)["tier"] == "not_ok"
     assert score(None, task, None, lambda g: True) is None
 

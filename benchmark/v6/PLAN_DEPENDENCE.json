@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 256,
+   "layouts": 260,
    "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 54,
-   "goal_not_met": 88,
-   "not_observed": 62,
+   "goal_not_met": 90,
+   "not_observed": 64,
    "resource_missing": 46,
    "argument_mismatch": 6
   },
@@ -51,11 +51,11 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 108,
-   "goal_not_met": 137,
+   "passes": 109,
+   "goal_not_met": 142,
    "not_observed": 21,
-   "argument_mismatch": 92,
-   "resource_missing": 84
+   "argument_mismatch": 98,
+   "resource_missing": 92
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -82,6 +82,7 @@
    "T01 which_table",
    "T02 block_put_away",
    "T02 third_toy_elsewhere",
+   "T02 tower_for_kid",
    "T03 no_bin_substitute",
    "T03 utensils_apart",
    "T04 two_guests",
@@ -119,7 +120,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 408,
+  "geometric_atoms_unchecked": 432,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -153,6 +154,10 @@
    "T02 tower_for_kid": [
     "clutter_cereal_a",
     "clutter_cereal_b",
+    "clutter_cereal_c",
+    "clutter_cereal_e",
+    "far_clutter_cereal_a",
+    "far_clutter_cereal_e",
     "spoon_target_table"
    ],
    "T02 tower_for_kid_duck": [
@@ -1424,7 +1429,9 @@
    "other_layouts": {
     "third_toy_elsewhere__toy_block": "resource_missing"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "block_put_away__gone_duck"
+   ]
   },
   {
    "task": "T02_stack_blocks",
@@ -1437,7 +1444,9 @@
    "other_layouts": {
     "third_toy_elsewhere__duck": "resource_missing"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "block_put_away__gone_toy_block"
+   ]
   },
   {
    "task": "T02_stack_blocks",
@@ -1446,22 +1455,24 @@
    "steps": 17,
    "own_route_passes": true,
    "geometric_atoms": [
-    "away_from_edge wooden_block_a 0.05",
-    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_a 0.05",
-    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_b 0.05",
-    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_b 0.05",
-    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge floor_block 0.05",
-    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge floor_block 0.05",
-    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1"
    ],
    "control_route": "not_observed",
    "other_layouts": {
-    "tower_for_kid__study": "argument_mismatch"
+    "tower_for_kid__study": "argument_mismatch",
+    "tower_for_kid__near_full": "goal_not_met",
+    "tower_for_kid__both_full": "argument_mismatch"
    },
    "other_variants_passing": []
   },
@@ -1472,22 +1483,67 @@
    "steps": 17,
    "own_route_passes": true,
    "geometric_atoms": [
-    "away_from_edge wooden_block_a 0.05",
-    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_a 0.05",
-    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_b 0.05",
-    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge wooden_block_b 0.05",
-    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge floor_block 0.05",
-    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05",
-    "away_from_edge floor_block 0.05",
-    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.05"
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['wide_storage_bin', 'clutter_cereal_a', 'clutter_cereal_b', 'spoon_target_table'] 0.1"
    ],
    "control_route": "not_observed",
    "other_layouts": {
-    "tower_for_kid__counter": "argument_mismatch"
+    "tower_for_kid__counter": "argument_mismatch",
+    "tower_for_kid__near_full": "argument_mismatch",
+    "tower_for_kid__both_full": "goal_not_met"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layout": "tower_for_kid__near_full",
+   "steps": 19,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1",
+    "away_from_edge wooden_block_a 0.1",
+    "clear_of wooden_block_a ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1",
+    "away_from_edge wooden_block_b 0.1",
+    "clear_of wooden_block_b ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1",
+    "away_from_edge floor_block 0.1",
+    "clear_of floor_block ['bowl_side_table', 'cup_side_table', 'spoon_side_table'] 0.1"
+   ],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "tower_for_kid__counter": "goal_not_met",
+    "tower_for_kid__study": "argument_mismatch",
+    "tower_for_kid__both_full": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layout": "tower_for_kid__both_full",
+   "steps": 21,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "tower_for_kid__counter": "argument_mismatch",
+    "tower_for_kid__study": "passes",
+    "tower_for_kid__near_full": "argument_mismatch"
    },
    "other_variants_passing": []
   },
@@ -1534,6 +1590,8 @@
    "steps": 24,
    "own_route_passes": true,
    "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "away_from_edge wooden_block_a 0.05",
     "away_from_edge wooden_block_b 0.05",
     "away_from_edge wooden_block_b 0.05",
     "away_from_edge floor_block 0.05",
@@ -1541,7 +1599,9 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "block_put_away__in_6": "argument_mismatch"
+    "block_put_away__in_6": "argument_mismatch",
+    "block_put_away__gone_toy_block": "goal_not_met",
+    "block_put_away__gone_duck": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -1552,6 +1612,8 @@
    "steps": 24,
    "own_route_passes": true,
    "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "away_from_edge wooden_block_a 0.05",
     "away_from_edge wooden_block_b 0.05",
     "away_from_edge wooden_block_b 0.05",
     "away_from_edge floor_block 0.05",
@@ -1559,9 +1621,55 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "block_put_away__in_4": "argument_mismatch"
+    "block_put_away__in_4": "argument_mismatch",
+    "block_put_away__gone_toy_block": "goal_not_met",
+    "block_put_away__gone_duck": "resource_missing"
    },
    "other_variants_passing": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layout": "block_put_away__gone_toy_block",
+   "steps": 23,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "away_from_edge wooden_block_a 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge wooden_block_b 0.05",
+    "away_from_edge toy_block 0.05",
+    "away_from_edge toy_block 0.05"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "block_put_away__in_4": "resource_missing",
+    "block_put_away__in_6": "resource_missing",
+    "block_put_away__gone_duck": "resource_missing"
+   },
+   "other_variants_passing": [
+    "third_toy_elsewhere__toy_block"
+   ]
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layout": "block_put_away__gone_duck",
+   "steps": 23,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "away_from_edge wooden_block_a 0.05",
+    "away_from_edge wooden_block_b 0.05"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "block_put_away__in_4": "resource_missing",
+    "block_put_away__in_6": "resource_missing",
+    "block_put_away__gone_toy_block": "resource_missing"
+   },
+   "other_variants_passing": [
+    "third_toy_elsewhere__duck"
+   ]
   },
   {
    "task": "T03_utensils_one_container",
@@ -4930,6 +5038,8 @@
    "candidates": [
     "tower_for_kid__counter",
     "tower_for_kid__study",
+    "tower_for_kid__near_full",
+    "tower_for_kid__both_full",
     "clear"
    ],
    "passes_all": []
@@ -4950,6 +5060,8 @@
    "candidates": [
     "block_put_away__in_4",
     "block_put_away__in_6",
+    "block_put_away__gone_toy_block",
+    "block_put_away__gone_duck",
     "clear"
    ],
    "passes_all": []
@@ -6767,6 +6879,71 @@
   },
   {
    "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layouts": [
+    "tower_for_kid__counter",
+    "tower_for_kid__near_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layouts": [
+    "tower_for_kid__counter",
+    "tower_for_kid__both_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layouts": [
+    "tower_for_kid__study",
+    "tower_for_kid__near_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layouts": [
+    "tower_for_kid__study",
+    "tower_for_kid__both_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "tower_for_kid",
+   "layouts": [
+    "tower_for_kid__near_full",
+    "tower_for_kid__both_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T02_stack_blocks",
    "variant": "tower_for_kid_duck",
    "layouts": [
     "tower_for_kid_duck__counter",
@@ -6789,6 +6966,71 @@
    "same_before_key_observation": true,
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layouts": [
+    "block_put_away__in_4",
+    "block_put_away__gone_toy_block"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layouts": [
+    "block_put_away__in_4",
+    "block_put_away__gone_duck"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layouts": [
+    "block_put_away__in_6",
+    "block_put_away__gone_toy_block"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layouts": [
+    "block_put_away__in_6",
+    "block_put_away__gone_duck"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "block_put_away",
+   "layouts": [
+    "block_put_away__gone_toy_block",
+    "block_put_away__gone_duck"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {

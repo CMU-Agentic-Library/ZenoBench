@@ -499,8 +499,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 11,
-"variant": "tower_for_kid__counter",
-"route": "v6_tower_for_kid__counter",
+"variant": "tower_for_kid__near_full",
+"route": "v6_tower_for_kid__near_full",
 "family": "tower_for_kid"
 },
 {
@@ -520,8 +520,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 14,
-"variant": "tower_for_kid__counter",
-"route": "v6_tower_for_kid__counter",
+"variant": "tower_for_kid__near_full",
+"route": "v6_tower_for_kid__near_full",
 "family": "tower_for_kid"
 },
 {
@@ -541,15 +541,15 @@
 {
 "task": "T02_stack_blocks",
 "seed": 17,
-"variant": "tower_for_kid__study",
-"route": "v6_tower_for_kid__study",
+"variant": "tower_for_kid__both_full",
+"route": "v6_tower_for_kid__both_full",
 "family": "tower_for_kid"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 18,
-"variant": "tower_for_kid__study",
-"route": "v6_tower_for_kid__study",
+"variant": "tower_for_kid__both_full",
+"route": "v6_tower_for_kid__both_full",
 "family": "tower_for_kid"
 },
 {
@@ -632,8 +632,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
-"variant": "block_put_away__in_4",
-"route": "v6_block_put_away__in_4",
+"variant": "block_put_away__gone_toy_block",
+"route": "v6_block_put_away__gone_toy_block",
 "family": "block_put_away"
 },
 {
@@ -660,15 +660,15 @@
 {
 "task": "T02_stack_blocks",
 "seed": 14,
-"variant": "block_put_away__in_6",
-"route": "v6_block_put_away__in_6",
+"variant": "block_put_away__gone_duck",
+"route": "v6_block_put_away__gone_duck",
 "family": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 15,
-"variant": "block_put_away__in_4",
-"route": "v6_block_put_away__in_4",
+"variant": "block_put_away__gone_toy_block",
+"route": "v6_block_put_away__gone_toy_block",
 "family": "block_put_away"
 },
 {
@@ -681,8 +681,8 @@
 {
 "task": "T02_stack_blocks",
 "seed": 17,
-"variant": "block_put_away__in_6",
-"route": "v6_block_put_away__in_6",
+"variant": "block_put_away__gone_duck",
+"route": "v6_block_put_away__gone_duck",
 "family": "block_put_away"
 },
 {

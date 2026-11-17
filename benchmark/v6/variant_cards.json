@@ -4714,10 +4714,8 @@
   "variant": "tower_for_kid",
   "category": "task",
   "seeds": [
-   11,
    12,
    13,
-   14,
    15
   ],
   "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
@@ -4736,7 +4734,8 @@
    "removed": [],
    "conditions": [
     "item_out_of_view",
-    "spot_quality"
+    "spot_quality",
+    "destination_occupied"
    ],
    "initial_checks": []
   },
@@ -4758,14 +4757,13 @@
       "on_any",
       "wooden_block_a",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4776,7 +4774,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4794,14 +4792,13 @@
       "on_any",
       "wooden_block_a",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4812,7 +4809,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4830,14 +4827,13 @@
       "on_any",
       "wooden_block_b",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4848,7 +4844,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4866,14 +4862,13 @@
       "on_any",
       "wooden_block_b",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4884,7 +4879,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4902,14 +4897,13 @@
       "on_any",
       "floor_block",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4920,7 +4914,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4938,14 +4932,13 @@
       "on_any",
       "floor_block",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4956,7 +4949,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ]
    ],
@@ -4982,6 +4975,21 @@
      0.03
     ],
     [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_side_table",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -4989,8 +4997,8 @@
   },
   "control": "clear",
   "oracle_route": "v6_tower_for_kid__counter",
-  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
-  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "challenge": "the three blocks are spread over the house (one out of view); the kid sits at the near dining table; in some seeds it is piled full (no spot 10 cm from its edge and its things), in one the west dining room's table is piled full too",
+  "rationale": "the place is substituted: the near dining table (ideal); full -> the other dining table (moderate); both full -> a top that is no dining table, e.g. the island (bad).  Nothing on a table is moved to make room",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/tower_for_kid__study": {
@@ -4999,8 +5007,6 @@
   "seeds": [
    10,
    16,
-   17,
-   18,
    19
   ],
   "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
@@ -5019,7 +5025,8 @@
    "removed": [],
    "conditions": [
     "item_out_of_view",
-    "spot_quality"
+    "spot_quality",
+    "destination_occupied"
    ],
    "initial_checks": []
   },
@@ -5041,14 +5048,13 @@
       "on_any",
       "wooden_block_a",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5059,7 +5065,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5077,14 +5083,13 @@
       "on_any",
       "wooden_block_a",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5095,7 +5100,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5113,14 +5118,13 @@
       "on_any",
       "wooden_block_b",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5131,7 +5135,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5149,14 +5153,13 @@
       "on_any",
       "wooden_block_b",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5167,7 +5170,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5185,14 +5188,13 @@
       "on_any",
       "floor_block",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5203,7 +5205,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5221,14 +5223,13 @@
       "on_any",
       "floor_block",
       [
-       "dining_table_2/top",
-       "dining_table_1/top"
+       "dining_table_2/top"
       ]
      ],
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5239,7 +5240,7 @@
        "clutter_cereal_b",
        "spoon_target_table"
       ],
-      0.05
+      0.1
      ]
     ]
    ],
@@ -5265,6 +5266,21 @@
      0.03
     ],
     [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_side_table",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -5272,8 +5288,717 @@
   },
   "control": "clear",
   "oracle_route": "v6_tower_for_kid__study",
-  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
-  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "challenge": "the three blocks are spread over the house (one out of view); the kid sits at the near dining table; in some seeds it is piled full (no spot 10 cm from its edge and its things), in one the west dining room's table is piled full too",
+  "rationale": "the place is substituted: the near dining table (ideal); full -> the other dining table (moderate); both full -> a top that is no dining table, e.g. the island (bad).  Nothing on a table is moved to make room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/tower_for_kid__near_full": {
+  "variant": "tower_for_kid",
+  "category": "task",
+  "seeds": [
+   11,
+   14
+  ],
+  "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "floor_block",
+    "oatmeal",
+    "rolling_pin",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "clutter_basket",
+    "clutter_book_green",
+    "clutter_book_red",
+    "clutter_bowl",
+    "clutter_cereal_c",
+    "clutter_cereal_e",
+    "clutter_fruit_basket",
+    "clutter_notebook",
+    "clutter_paperback",
+    "clutter_plate_1",
+    "clutter_plate_2",
+    "clutter_small_bin",
+    "clutter_sorting_tray",
+    "clutter_toy_box",
+    "clutter_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "item_out_of_view",
+    "spot_quality",
+    "destination_occupied"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_any",
+      "wooden_block_a",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.1
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_any",
+      "wooden_block_a",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.1
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_any",
+      "wooden_block_b",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.1
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_any",
+      "wooden_block_b",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.1
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_any",
+      "floor_block",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.1
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_any",
+      "floor_block",
+      [
+       "dining_table_1/top"
+      ]
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.1
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
+      ],
+      0.1
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_toy_box",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_sorting_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_small_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_green",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_red",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_paperback",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_e",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_side_table",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid__near_full",
+  "challenge": "the three blocks are spread over the house (one out of view); the kid sits at the near dining table; in some seeds it is piled full (no spot 10 cm from its edge and its things), in one the west dining room's table is piled full too",
+  "rationale": "the place is substituted: the near dining table (ideal); full -> the other dining table (moderate); both full -> a top that is no dining table, e.g. the island (bad).  Nothing on a table is moved to make room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/tower_for_kid__both_full": {
+  "variant": "tower_for_kid",
+  "category": "task",
+  "seeds": [
+   17,
+   18
+  ],
+  "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "floor_block",
+    "oatmeal",
+    "rolling_pin",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "clutter_basket",
+    "clutter_book_green",
+    "clutter_book_red",
+    "clutter_bowl",
+    "clutter_cereal_c",
+    "clutter_cereal_e",
+    "clutter_fruit_basket",
+    "clutter_notebook",
+    "clutter_paperback",
+    "clutter_plate_1",
+    "clutter_plate_2",
+    "clutter_small_bin",
+    "clutter_sorting_tray",
+    "clutter_toy_box",
+    "clutter_tray",
+    "far_clutter_basket",
+    "far_clutter_bowl",
+    "far_clutter_cereal_a",
+    "far_clutter_cereal_e",
+    "far_clutter_fruit_basket",
+    "far_clutter_plate_1",
+    "far_clutter_plate_2",
+    "far_clutter_small_bin",
+    "far_clutter_sorting_tray",
+    "far_clutter_toy_box",
+    "far_clutter_tray",
+    "far_extra_0",
+    "far_extra_1",
+    "far_extra_2",
+    "far_extra_3",
+    "far_wide_storage_bin"
+   ],
+   "removed": [
+    "bowl_side_table",
+    "cup_side_table",
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "item_out_of_view",
+    "spot_quality",
+    "destination_occupied"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_toy_box",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_sorting_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_small_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_green",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_red",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_paperback",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_e",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_toy_box",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_plate_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_sorting_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_plate_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_small_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_clutter_cereal_e",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_extra_0",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_extra_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_extra_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "far_extra_3",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid__both_full",
+  "challenge": "the three blocks are spread over the house (one out of view); the kid sits at the near dining table; in some seeds it is piled full (no spot 10 cm from its edge and its things), in one the west dining room's table is piled full too",
+  "rationale": "the place is substituted: the near dining table (ideal); full -> the other dining table (moderate); both full -> a top that is no dining table, e.g. the island (bad).  Nothing on a table is moved to make room",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/tower_for_kid_duck__counter": {
@@ -5566,31 +6291,33 @@
   "variant": "block_put_away",
   "category": "action_task",
   "seeds": [
-   10,
    12,
    13,
-   15,
    18
   ],
-  "instruction": "Stack the three toy blocks into one tower on the kitchen island. I put one of them away in a low cabinet along the living-room wall; close the cabinet doors again afterwards.",
+  "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "floor_block",
+    "kitchen_sponge",
     "oatmeal",
     "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "toy_block"
+   ],
    "removed": [
     "bowl_inside_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [
     "unstable_base",
-    "not_in_view"
+    "not_in_view",
+    "missing_piece"
    ],
    "initial_checks": [
     [
@@ -5616,6 +6343,50 @@
     [
      [
       "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
       "wooden_block_a",
       "wooden_block_b"
      ],
@@ -5625,14 +6396,14 @@
       "wooden_block_a"
      ],
      [
-      "away_from_edge",
-      "wooden_block_b",
-      0.05
-     ],
-     [
       "on",
       "wooden_block_b",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
      ]
     ],
     [
@@ -5647,14 +6418,14 @@
       "floor_block"
      ],
      [
-      "away_from_edge",
-      "wooden_block_b",
-      0.05
-     ],
-     [
       "on",
       "wooden_block_b",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
      ]
     ],
     [
@@ -5669,14 +6440,14 @@
       "wooden_block_a"
      ],
      [
-      "away_from_edge",
-      "floor_block",
-      0.05
-     ],
-     [
       "on",
       "floor_block",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
      ]
     ],
     [
@@ -5691,22 +6462,18 @@
       "wooden_block_b"
      ],
      [
-      "away_from_edge",
-      "floor_block",
-      0.05
-     ],
-     [
       "on",
       "floor_block",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
      ]
     ]
    ],
    "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
     [
      "is_closed",
      "kitchen_cabinet_4"
@@ -5714,13 +6481,17 @@
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "clear",
   "oracle_route": "v6_block_put_away__in_4",
-  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
-  "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base), the dish sponge beside them; the third wooden block is in a closed low cabinet or not in the house; a substitute toy is in plain view",
+  "rationale": "stack A on B, not B on A (Action); look for the third wooden block before taking the toy in view (open the cabinets, close each again); only when it is not in the house the substitute goes on top (moderate); the sponge is no toy (bad)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/block_put_away__in_6": {
@@ -5728,30 +6499,32 @@
   "category": "action_task",
   "seeds": [
    11,
-   14,
    16,
-   17,
    19
   ],
-  "instruction": "Stack the three toy blocks into one tower on the kitchen island. I put one of them away in a low cabinet along the living-room wall; close the cabinet doors again afterwards.",
+  "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "floor_block",
+    "kitchen_sponge",
     "oatmeal",
     "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "toy_block"
+   ],
    "removed": [
     "bowl_inside_kitchen_cabinet",
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [
     "unstable_base",
-    "not_in_view"
+    "not_in_view",
+    "missing_piece"
    ],
    "initial_checks": [
     [
@@ -5777,6 +6550,50 @@
     [
      [
       "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
       "wooden_block_a",
       "wooden_block_b"
      ],
@@ -5786,14 +6603,14 @@
       "wooden_block_a"
      ],
      [
-      "away_from_edge",
-      "wooden_block_b",
-      0.05
-     ],
-     [
       "on",
       "wooden_block_b",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
      ]
     ],
     [
@@ -5808,14 +6625,14 @@
       "floor_block"
      ],
      [
-      "away_from_edge",
-      "wooden_block_b",
-      0.05
-     ],
-     [
       "on",
       "wooden_block_b",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
      ]
     ],
     [
@@ -5830,14 +6647,14 @@
       "wooden_block_a"
      ],
      [
-      "away_from_edge",
-      "floor_block",
-      0.05
-     ],
-     [
       "on",
       "floor_block",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
      ]
     ],
     [
@@ -5852,22 +6669,18 @@
       "wooden_block_b"
      ],
      [
-      "away_from_edge",
-      "floor_block",
-      0.05
-     ],
-     [
       "on",
       "floor_block",
       "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
      ]
     ]
    ],
    "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
     [
      "is_closed",
      "kitchen_cabinet_4"
@@ -5875,13 +6688,309 @@
     [
      "is_closed",
      "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "clear",
   "oracle_route": "v6_block_put_away__in_6",
-  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
-  "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base), the dish sponge beside them; the third wooden block is in a closed low cabinet or not in the house; a substitute toy is in plain view",
+  "rationale": "stack A on B, not B on A (Action); look for the third wooden block before taking the toy in view (open the cabinets, close each again); only when it is not in the house the substitute goes on top (moderate); the sponge is no toy (bad)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/block_put_away__gone_toy_block": {
+  "variant": "block_put_away",
+  "category": "action_task",
+  "seeds": [
+   10,
+   15
+  ],
+  "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "oatmeal",
+    "rolling_pin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "toy_block"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "floor_block",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "unstable_base",
+    "not_in_view",
+    "missing_piece"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "toy_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "toy_block"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "toy_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "toy_block",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "toy_block",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "toy_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "toy_block",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "toy_block",
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_block_put_away__gone_toy_block",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base), the dish sponge beside them; the third wooden block is in a closed low cabinet or not in the house; a substitute toy is in plain view",
+  "rationale": "stack A on B, not B on A (Action); look for the third wooden block before taking the toy in view (open the cabinets, close each again); only when it is not in the house the substitute goes on top (moderate); the sponge is no toy (bad)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/block_put_away__gone_duck": {
+  "variant": "block_put_away",
+  "category": "action_task",
+  "seeds": [
+   14,
+   17
+  ],
+  "instruction": "The kid wants a three-level block tower; build one for him on the kitchen island. Close any cabinet you open.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "oatmeal",
+    "rolling_pin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "rubber_duck"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "floor_block",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "unstable_base",
+    "not_in_view",
+    "missing_piece"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_block_put_away__gone_duck",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base), the dish sponge beside them; the third wooden block is in a closed low cabinet or not in the house; a substitute toy is in plain view",
+  "rationale": "stack A on B, not B on A (Action); look for the third wooden block before taking the toy in view (open the cabinets, close each again); only when it is not in the house the substitute goes on top (moderate); the sponge is no toy (bad)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T03_utensils_one_container/large_only": {

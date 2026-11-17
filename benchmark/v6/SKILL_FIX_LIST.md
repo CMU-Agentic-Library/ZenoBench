@@ -50,7 +50,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | party_bowl_1 | 36 | 4 | 10% | other 3, IK / reach / base pose 1 | T20 | 0 | place party_bowl_1: container shifted 0.067 m before release |
 | collect | handled_cooking_pot | 78 | 3 | 4% | other 2, IK / reach / base pose 1 | T09 | 4 | SUBSKILL_FAILED: fetch_object(object=cherry_tomato_2, receptacle=handled_cooking_pot): SUBSKILL_FAILED: place_object(object=cherry_tomato_2, |
 | hover | soda_can | 26 | 3 | 10% | other 2, carry slip 1 | T10 | 4 | POSTCONDITION_FAILED: hovering_over(object=soda_can, target=trash_can) is false (xy 0.252 m, above by 0.343 m) |
-| pick | rubber_duck | 86 | 3 | 3% | IK / reach / base pose 2, grasp miss 1 | T12 | 6 | pick rubber_duck: no reachable grasp from any base pose |
+| pick | rubber_duck | 86 | 3 | 3% | IK / reach / base pose 2, grasp miss 1 | T12 | 7 | pick rubber_duck: no reachable grasp from any base pose |
 | place | cup | 27 | 3 | 10% | placement result 3 | T13 | 1 | place cup: xy err 0.058 m, on support False (bottom at (3.15, 7.45, 0.933)) |
 | look | book_red | 57 | 3 | 5% | perception / search 3 | T14 | 0 | NOT_FOUND: 'book_red' is not visible at its last observed position |
 
@@ -149,7 +149,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | takeout_tray | T10/after_dinner_clear |
 | pick | teddy_bear | T12/find_all_toys |
 | pick | tissue | T21/the_kids_side, T21/tissue_out_of_view, T21/tissue_put_away, T21/which_table |
-| pick | toy_block | T02/third_toy_elsewhere |
+| pick | toy_block | T02/block_put_away, T02/third_toy_elsewhere |
 | pick | toy_east | T29/which_table |
 | pick | toy_west | T29/which_table |
 | pick | tray_book_1 | T22/tray_elsewhere |
@@ -237,8 +237,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | stack | desk_book_blue | T14/stack_them_stably |
 | stack | desk_paperback_book | T14/stack_them_stably |
 | stack | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid |
-| stack | rubber_duck | T02/third_toy_elsewhere, T02/tower_for_kid_duck |
-| stack | toy_block | T02/third_toy_elsewhere |
+| stack | rubber_duck | T02/block_put_away, T02/third_toy_elsewhere, T02/tower_for_kid_duck |
+| stack | toy_block | T02/block_put_away, T02/third_toy_elsewhere |
 | wipe | dining_table_2/top | T08/which_surface |
 
 ## 3. Priorities

@@ -22,6 +22,11 @@ Decisions are reviewed one design at a time with the user; benchmark/v6/SCORING_
 from __future__ import annotations
 
 TIER_NAMES = ("best", "second", "worst")
+# 11-17 meeting: the four levels.  A level is fixed by what was chosen, never by what the scene offers: with the
+# ideal missing a moderate substitute stays moderate (0.6), it is not promoted
+LEVEL = {"best": "ideal", "second": "moderate", "worst": "bad", "not_ok": "else"}
+NA = "n/a"      # a by_layout tier goal: this level does not exist in the layout (nothing there would earn it)
+LAYOUT_TIERS: dict = {}   # (task prefix, design) -> {case: {tier: goal or NA}}, filled by define_tasks_v6
 
 
 def only(why: str, not_ok: str) -> dict:
@@ -225,17 +230,33 @@ def _tower_for_kid(design: str):
     return build
 
 
-# T02 block_put_away: two blocks on the island (A 5 mm over the edge, no base), the third in one of two closed
-# low cabinets; the instruction asks to close the doors after the search
-BLOCK_PUT_AWAY = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "three blocks in one tower on the island, the base 5 cm from the edge, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["away_from_edge"]},
-     "why": "the tower done and the doors closed, but on the edge (block A used as the base where it lay)"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["away_from_edge", "is_closed"]},
-     "why": "the tower done, but a cabinet door left open (the instruction asks to close them)"}],
-    "not_ok": "two blocks only (the third not found); no stack; a block dropped"}
-SCORING[("T02", "block_put_away")] = BLOCK_PUT_AWAY
+def _layout_tiers(design: str, whys: dict, not_ok: str):
+    """11-17: a design whose seeds change the substitution: each level's goal per layout (define_tasks_v6.LAYOUT_TIERS,
+    NA where the layout cannot offer that level); per_layout leaves those out and sets the seed's D and top."""
+    def build(task: dict) -> dict:
+        per = next((v for (tid, d), v in LAYOUT_TIERS.items() if task["task_id"].startswith(tid) and d == design), None)
+        if per is None:                  # not built in this process (tests read tasks.json): what was written there
+            import copy
+            out = copy.deepcopy(task["v6_variants"][design]["scoring"])
+            out.pop("D_by_layout", None), out.pop("top_by_layout", None)
+            return out
+        lays = task["v6_variants"][design]["layouts"]
+        case = lambda lid: lid.split("__", 1)[1] if "__" in lid else ""  # noqa: E731
+        return {"D": 1, "tiers": [
+            {"name": n, "score": sc, "goal": {"by_layout": {lid: per[case(lid)][n] for lid in lays}}, "why": whys[n]}
+            for n, sc in (("best", 1.0), ("second", 0.6), ("worst", 0.3))], "not_ok": not_ok}
+    return build
+
+
+# T02 block_put_away (11-17, substitution): the third wooden block in a closed low cabinet or not in the house, a
+# substitute toy in view; A at the edge (no base).  Levels count the faults
+_BPA = _layout_tiers("block_put_away", {
+    "best": "three wooden blocks in one tower on the island, the base 5 cm from the edge, every cabinet door closed",
+    "second": "one fault: a substitute toy (toy block or duck) as the third level, or the base at the edge (block A "
+              "used as the base where it lay); doors closed",
+    "worst": "two faults (a substitute and the base at the edge), the dish sponge as the third level, or a cabinet "
+             "door left open"},
+    "two levels only (no third piece); no stack; a block dropped")
 
 # T03 small_bin_or_bedroom_bin: a small bin (two toy blocks in it) that holds the spoon but not the 22 cm rolling
 # pin, near or beside the wide bin in the bedroom.  ``inside`` is lenient (the centre within the rim, at most 3 cm
@@ -701,7 +722,15 @@ def _pot_in_use(task: dict) -> dict:
         "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"}
 
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
+BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
+             "best": "three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its "
+                     "things, nothing moved",
+             "second": "the tower on the other dining table (west dining room), 10 cm clear, nothing moved: a "
+                       "dining table, not the kid's",
+             "worst": "the tower on a top that is no dining table (island, desk), or squeezed among the things on a "
+                      "table or at its edge, nothing moved"},
+             "two blocks only; a thing on a table moved to make room; nothing stacked"),
+         ("T02", "block_put_away"): _BPA,
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
          ("T03", "no_bin_substitute"): _no_bin_substitute,
@@ -744,8 +773,23 @@ def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | N
     return s
 
 
+def per_layout(s: dict, lid: str) -> dict:
+    """The design's scoring as one layout (seed) sees it (11-17): the levels that layout cannot offer (by_layout
+    goal NA) left out, ``D`` = 1 when more than one level is open there (a choice between substitutes), else 0;
+    ``top`` the best level open (with the ideal missing: moderate or bad, never promoted)."""
+    import copy
+    tiers = [copy.deepcopy(t) for t in s["tiers"]
+             if not (isinstance(t.get("goal"), dict) and t["goal"].get("by_layout", {}).get(lid) == NA)]
+    out = {**copy.deepcopy(s), "tiers": tiers, "D": 1 if len(tiers) > 1 else 0,
+           "top": LEVEL[tiers[0]["name"]] if tiers else None}
+    out.pop("D_by_layout", None)
+    out.pop("top_by_layout", None)
+    return out
+
+
 def attach_scoring(out: dict) -> int:
-    """Copy each reviewed design's scoring onto its layouts; returns how many designs are reviewed."""
+    """Copy each reviewed design's scoring onto its layouts (per seed: per_layout); returns how many designs are
+    reviewed."""
     import copy
     n = 0
     for t in out["tasks"]:
@@ -755,8 +799,12 @@ def attach_scoring(out: dict) -> int:
                 continue
             n += 1
             info["scoring"] = copy.deepcopy(s)
+            per = {lid: per_layout(s, lid) for lid in info["layouts"]}
+            if any(p["top"] != "ideal" or p["D"] != s["D"] for p in per.values()):
+                info["scoring"]["D_by_layout"] = {lid: p["D"] for lid, p in per.items()}
+                info["scoring"]["top_by_layout"] = {lid: p["top"] for lid, p in per.items()}
             for lid in info["layouts"]:
-                t["variants"][lid]["scoring"] = copy.deepcopy(s)
+                t["variants"][lid]["scoring"] = per[lid]
     return n
 
 
@@ -780,9 +828,12 @@ def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict |
     if not scoring:
         return None
     for tier in scoring["tiers"]:
-        if holds(tier_goal(tier, task, layout)):
-            return {"tier": tier["name"], "score": tier["score"], "D": scoring["D"]}
-    return {"tier": "not_ok", "score": 0.0, "D": scoring["D"]}
+        g = tier_goal(tier, task, layout)
+        if g == NA:                                   # the level does not exist in this layout
+            continue
+        if holds(g):
+            return {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+    return {"tier": "not_ok", "level": "else", "score": 0.0, "D": scoring["D"]}
 
 
 def check_spec(s: dict) -> list[str]:
@@ -824,9 +875,9 @@ NOT_OK_ZH = {
     ("T02", "clear"): "没叠上，或积木掉了",
     ("T02", "crowded_use_another"): "碗或擀面杖动了、碗倒了；没叠上",
     ("T02", "third_toy_elsewhere"): "只叠了两层（没找到第三件）；没叠上；塔不在岛台上",
-    ("T02", "tower_for_kid"): "只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上",
+    ("T02", "tower_for_kid"): "只有两块；为腾地方挪了桌上的东西；没叠",
     ("T02", "tower_for_kid_duck"): "只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上",
-    ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
+    ("T02", "block_put_away"): "只有两层（没有第三件）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
