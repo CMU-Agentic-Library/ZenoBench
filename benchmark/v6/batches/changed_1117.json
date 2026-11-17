@@ -299,8 +299,8 @@
  {
   "task": "T14_shelve_the_book",
   "seed": 10,
-  "variant": "next_in_series__green_on_bookcase",
-  "route": "v6_next_in_series__green_on_bookcase",
+  "variant": "no_second_red_book__green_on_bookcase",
+  "route": "v6_no_second_red_book__green_on_bookcase",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
@@ -308,8 +308,8 @@
  {
   "task": "T14_shelve_the_book",
   "seed": 12,
-  "variant": "next_in_series__green_on_tall_shelf",
-  "route": "v6_next_in_series__green_on_tall_shelf",
+  "variant": "no_second_red_book__green_on_tall_shelf",
+  "route": "v6_no_second_red_book__green_on_tall_shelf",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true

@@ -276,6 +276,21 @@ R[("T12", "find_all_toys")] = tiers(
     zh=dict(sit="小车在客厅地上，其他玩具分散在别的房间（2-4 件）；餐桌上一块黄海绵不是玩具",
             good="找齐全部玩具进篮子，海绵没动", second="玩具齐了，但挪了海绵（没放进篮子）",
             worst="玩具齐了，海绵也当玩具放进了篮子", no="有玩具没找到；篮子倒了；还拿着或掉了"))
+# T12 castle_stays (restored 11-17)
+R[("T12", "castle_stays")] = tiers(
+    # the castle standing at the end (its blocks one on another) is what counts for the second tier: nudged, taken
+    # apart and built again (user 11-12), or the loose blocks left beside it
+    second=lambda g, lid: drop_atoms(g, lambda a: a[0] in ("near_start", "never_picked")
+                                     or (a[0] == "inside" and "loose" in a[1])),
+    why=("the car, the duck and the loose blocks in the basket, the castle untouched",
+         "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it",
+         ""),
+    not_ok="the castle left taken apart or knocked down; the car or the duck left out; still held or dropped",
+    zh=dict(sit="客厅地上孩子搭的积木城堡（2-3 层）旁有散积木，还有小车和鸭子；城堡别拆",
+            good="小车、鸭子和散积木进篮子，城堡没动",
+            second="最后城堡还立着，但被拆了又搭回去、被碰动，或散积木留在旁边",
+            no="城堡拆了没搭回或碰倒了；小车或鸭子没收；还拿着或掉了"))
+
 # ================================================================================================ T13 breakfast setup
 R[("T13", "dishes_on_tv_stand")] = d0("bowl, cup (or a mug) and spoon together on the dining table, upright",
                                       "a piece missing; tipped; still held or dropped", dict(
@@ -389,15 +404,30 @@ R[("T14", "whose_book")] = tiers(
     zh=dict(sit="蓝色精装书在卧室书架，平装书在高书架；书桌上有一种或两种；平装书架低的三层都塞满了，只有最高一层（1.17 m，够不着）有空（11-17 加替换）",
             good="蓝皮书放回同类书架；平装书放到别的书架（不是精装书那个），原有的书没动",
             second="放对了但碰动了架上的书", worst="平装书塞进了精装书的书架（或反过来）", no="有书留在桌上或别处；还拿着或掉了"))
-# T14 next_in_series (11-17, substitution): no second red book; one of the kid's other hardcovers (green or blue) is
+# T14 no_second_red_book (11-17, substitution; next_in_series restored beside it): no second red book; one of the kid's other hardcovers (green or blue) is
 # the substitute, the grown-up's paperback the worst
-R[("T14", "next_in_series")] = tiers(
+R[("T14", "no_second_red_book")] = tiers(
     worst=lambda g, lid: {"all": [a for a in g["all"]], "any": [[["on", "paperback_shelf", "desk_1/top"]]]},
     why=("the red book back on his bookcase, one of his other hardcovers (no second red one) on the desk", "",
          "the red one shelved, but the grown-up's paperback brought to the desk"),
     not_ok="no book brought to the desk; the red book left out; still held or dropped",
     zh=dict(sit="看完的红皮书要放回孩子书架，再拿同套的下一本红皮书；家里没有第二本红皮书，孩子还有绿皮、蓝皮的书，床头书架上有大人的平装书（11-17 改成替换）",
             good="红皮书回孩子书架，拿孩子的绿皮或蓝皮书到书桌", worst="拿了大人的平装书", no="书桌上没有书；红皮书没收；还拿着或掉了"))
+
+# T14 next_in_series (restored 11-17)
+R[("T14", "next_in_series")] = tiers(
+    second=lambda g, lid: plus(drop_atoms(g, lambda a: a[0] == "near_start" or a[:2] == ["on_any", "book_red"]),
+                               ["on_any", "book_red", SHELVES]),
+    worst=lambda g, lid: {"all": [["on_any", "book_red", SHELVES], HAND],
+                          "any": [[["on", b, "desk_1/top"]] for b in ("blue_book_case", "green_book_case",
+                                                                        "paperback_shelf")]},
+    why=("the red book back on his bookcase, the other red one on the desk, the other books untouched",
+         "the right book on the desk, but the red one on another shelf or other books nudged",
+         "the red one shelved, but a book of another cover brought to the desk"),
+    not_ok="the next book not brought (none on the desk); the red book left out; still held or dropped",
+    zh=dict(sit="看完的红书要放回孩子书架，再把同套另一本红书拿到书桌；那本混在别色书里",
+            good="红书回孩子书架，另一本红书到书桌，别的书没动", second="拿对了，但红书放到别的书架或碰动了别的书",
+            worst="红书放回了，但拿到书桌的是别色的书", no="书桌上没有书；红书没收；还拿着或掉了"))
 
 # ================================================================================================ T15 cover the pot
 # (11-17: replaces book_face_up)

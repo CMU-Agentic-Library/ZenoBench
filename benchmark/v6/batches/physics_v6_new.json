@@ -1190,6 +1190,146 @@
 "family": "no_cup_in_cabinets"
 },
 {
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "x6_gd_cup_in_cabinets__cup_in_4",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 11,
+"variant": "x6_gd_cup_in_cabinets__cup_in_4",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 12,
+"variant": "x6_gd_cup_in_cabinets__cup_in_6",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 13,
+"variant": "x6_gd_cup_in_cabinets__cup_in_6",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 14,
+"variant": "x6_gd_cup_in_cabinets__cup_in_4",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 15,
+"variant": "x6_gd_cup_in_cabinets__cup_in_6",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 16,
+"variant": "x6_gd_cup_in_cabinets__cup_in_4",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 17,
+"variant": "x6_gd_cup_in_cabinets__cup_in_6",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 18,
+"variant": "x6_gd_cup_in_cabinets__cup_in_4",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 19,
+"variant": "x6_gd_cup_in_cabinets__cup_in_6",
+"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"family": "x6_gd_cup_in_cabinets"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
 "variant": "no_pencil__pen_dining",
@@ -3220,6 +3360,76 @@
 "family": "find_all_toys"
 },
 {
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "castle_stays__tall_two_loose",
+"route": "v6_castle_stays__tall_two_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 11,
+"variant": "castle_stays__tall_two_loose",
+"route": "v6_castle_stays__tall_two_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 12,
+"variant": "castle_stays__tall_two_loose",
+"route": "v6_castle_stays__tall_two_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 13,
+"variant": "castle_stays__tall_none_loose",
+"route": "v6_castle_stays__tall_none_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 14,
+"variant": "castle_stays__tall_none_loose",
+"route": "v6_castle_stays__tall_none_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 15,
+"variant": "castle_stays__short_one_loose",
+"route": "v6_castle_stays__short_one_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 16,
+"variant": "castle_stays__short_one_loose",
+"route": "v6_castle_stays__short_one_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 17,
+"variant": "castle_stays__tall_none_loose",
+"route": "v6_castle_stays__tall_none_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 18,
+"variant": "castle_stays__short_one_loose",
+"route": "v6_castle_stays__short_one_loose",
+"family": "castle_stays"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 19,
+"variant": "castle_stays__tall_two_loose",
+"route": "v6_castle_stays__tall_two_loose",
+"family": "castle_stays"
+},
+{
 "task": "T13_breakfast_setup",
 "seed": 10,
 "variant": "copy_the_setting__plate_bowl_mug_left",
@@ -4692,71 +4902,141 @@
 {
 "task": "T14_shelve_the_book",
 "seed": 10,
-"variant": "next_in_series__green_on_bookcase",
-"route": "v6_next_in_series__green_on_bookcase",
+"variant": "no_second_red_book__green_on_bookcase",
+"route": "v6_no_second_red_book__green_on_bookcase",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 11,
+"variant": "no_second_red_book__green_on_tall_shelf",
+"route": "v6_no_second_red_book__green_on_tall_shelf",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 12,
+"variant": "no_second_red_book__green_on_bookcase",
+"route": "v6_no_second_red_book__green_on_bookcase",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 13,
+"variant": "no_second_red_book__green_on_tall_shelf",
+"route": "v6_no_second_red_book__green_on_tall_shelf",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 14,
+"variant": "no_second_red_book__green_on_tall_shelf",
+"route": "v6_no_second_red_book__green_on_tall_shelf",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 15,
+"variant": "no_second_red_book__green_on_tall_shelf",
+"route": "v6_no_second_red_book__green_on_tall_shelf",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 16,
+"variant": "no_second_red_book__green_on_tall_shelf",
+"route": "v6_no_second_red_book__green_on_tall_shelf",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 17,
+"variant": "no_second_red_book__green_on_bookcase",
+"route": "v6_no_second_red_book__green_on_bookcase",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 18,
+"variant": "no_second_red_book__green_on_bookcase",
+"route": "v6_no_second_red_book__green_on_bookcase",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 19,
+"variant": "no_second_red_book__green_on_bookcase",
+"route": "v6_no_second_red_book__green_on_bookcase",
+"family": "no_second_red_book"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "next_in_series__on_bookcase",
+"route": "v6_next_in_series__on_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 11,
-"variant": "next_in_series__green_on_bookcase",
-"route": "v6_next_in_series__green_on_bookcase",
+"variant": "next_in_series__on_tall_shelf",
+"route": "v6_next_in_series__on_tall_shelf",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 12,
-"variant": "next_in_series__green_on_tall_shelf",
-"route": "v6_next_in_series__green_on_tall_shelf",
+"variant": "next_in_series__on_bookcase",
+"route": "v6_next_in_series__on_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 13,
-"variant": "next_in_series__green_on_tall_shelf",
-"route": "v6_next_in_series__green_on_tall_shelf",
+"variant": "next_in_series__on_other_bookcase",
+"route": "v6_next_in_series__on_other_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 14,
-"variant": "next_in_series__green_on_bookcase",
-"route": "v6_next_in_series__green_on_bookcase",
+"variant": "next_in_series__on_tall_shelf",
+"route": "v6_next_in_series__on_tall_shelf",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 15,
-"variant": "next_in_series__green_on_tall_shelf",
-"route": "v6_next_in_series__green_on_tall_shelf",
+"variant": "next_in_series__on_tall_shelf",
+"route": "v6_next_in_series__on_tall_shelf",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 16,
-"variant": "next_in_series__green_on_tall_shelf",
-"route": "v6_next_in_series__green_on_tall_shelf",
+"variant": "next_in_series__on_other_bookcase",
+"route": "v6_next_in_series__on_other_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 17,
-"variant": "next_in_series__green_on_bookcase",
-"route": "v6_next_in_series__green_on_bookcase",
+"variant": "next_in_series__on_other_bookcase",
+"route": "v6_next_in_series__on_other_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 18,
-"variant": "next_in_series__green_on_tall_shelf",
-"route": "v6_next_in_series__green_on_tall_shelf",
+"variant": "next_in_series__on_bookcase",
+"route": "v6_next_in_series__on_bookcase",
 "family": "next_in_series"
 },
 {
 "task": "T14_shelve_the_book",
 "seed": 19,
-"variant": "next_in_series__green_on_bookcase",
-"route": "v6_next_in_series__green_on_bookcase",
+"variant": "next_in_series__on_bookcase",
+"route": "v6_next_in_series__on_bookcase",
 "family": "next_in_series"
 },
 {

@@ -7839,6 +7839,152 @@
   "rationale": "look in both cabinets (close them again), find no cup, and use the closest stand-in that is still a cup: the kid's plastic cup, not the bowl in view (and the bottle is no cup)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_4": {
+  "variant": "x6_gd_cup_in_cabinets",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   14,
+   16,
+   18
+  ],
+  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "no_cup"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_4/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_cup_in_cabinet",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "control": "no_cup",
+  "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_6": {
+  "variant": "x6_gd_cup_in_cabinets",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   15,
+   17,
+   19
+  ],
+  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "no_cup"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_cup_in_cabinet",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "control": "no_cup",
+  "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T05_pen_or_pencil_to_desk/e1_pencil_asked": {
   "variant": "e1_pencil_asked",
   "category": "control",
@@ -7886,6 +8032,111 @@
   "oracle_route": "v5_e1_pencil_asked",
   "challenge": "bring the named pencil from the bedroom bookcase",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/check_desk_first__pen_on_desk": {
+  "variant": "check_desk_first",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "goal_already_met"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "pen",
+     0.1
+    ],
+    [
+     "near_start",
+     "pencil",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_check_desk_first__pen_on_desk",
+  "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+  "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/check_desk_first__pencil_on_desk": {
+  "variant": "check_desk_first",
+  "category": "task",
+  "seeds": [
+   10,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "goal_already_met"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "pencil",
+     0.1
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_check_desk_first__pencil_on_desk",
+  "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+  "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/no_pencil__pen_dining": {
@@ -15075,6 +15326,280 @@
   "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T12_tidy_toys/castle_stays__tall_two_loose": {
+  "variant": "castle_stays",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   19
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "castle_block_1",
+    "castle_block_2",
+    "castle_block_3",
+    "loose_block_1",
+    "loose_block_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "relational_exception",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_car",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "rubber_duck",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "loose_block_1",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "loose_block_2",
+     "storage_basket"
+    ],
+    [
+     "near_start",
+     "castle_block_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "castle_block_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "castle_block_3",
+     0.03
+    ],
+    [
+     "never_picked",
+     [
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3"
+     ]
+    ],
+    [
+     "on_top_of",
+     "castle_block_2",
+     "castle_block_1"
+    ],
+    [
+     "on_top_of",
+     "castle_block_3",
+     "castle_block_2"
+    ],
+    [
+     "upright",
+     "storage_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_castle_stays__tall_two_loose",
+  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/castle_stays__short_one_loose": {
+  "variant": "castle_stays",
+  "category": "task",
+  "seeds": [
+   15,
+   16,
+   18
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "castle_block_1",
+    "castle_block_2",
+    "loose_block_1"
+   ],
+   "removed": [],
+   "conditions": [
+    "relational_exception",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_car",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "rubber_duck",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "loose_block_1",
+     "storage_basket"
+    ],
+    [
+     "near_start",
+     "castle_block_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "castle_block_2",
+     0.03
+    ],
+    [
+     "never_picked",
+     [
+      "castle_block_1",
+      "castle_block_2"
+     ]
+    ],
+    [
+     "on_top_of",
+     "castle_block_2",
+     "castle_block_1"
+    ],
+    [
+     "upright",
+     "storage_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_castle_stays__short_one_loose",
+  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/castle_stays__tall_none_loose": {
+  "variant": "castle_stays",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   17
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "castle_block_1",
+    "castle_block_2",
+    "castle_block_3"
+   ],
+   "removed": [],
+   "conditions": [
+    "relational_exception",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_car",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "rubber_duck",
+     "storage_basket"
+    ],
+    [
+     "near_start",
+     "castle_block_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "castle_block_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "castle_block_3",
+     0.03
+    ],
+    [
+     "never_picked",
+     [
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3"
+     ]
+    ],
+    [
+     "on_top_of",
+     "castle_block_2",
+     "castle_block_1"
+    ],
+    [
+     "on_top_of",
+     "castle_block_3",
+     "castle_block_2"
+    ],
+    [
+     "upright",
+     "storage_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_castle_stays__tall_none_loose",
+  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T13_breakfast_setup/dishes_on_tv_stand": {
   "variant": "dishes_on_tv_stand",
   "category": "control",
@@ -19002,14 +19527,14 @@
   "rationale": "each book to the shelf holding its kind; the paperbacks' shelf cannot be reached where it has room, so the paperback goes on another bookcase instead, not with the hardcovers",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/next_in_series__green_on_bookcase": {
-  "variant": "next_in_series",
+ "T14_shelve_the_book/no_second_red_book__green_on_bookcase": {
+  "variant": "no_second_red_book",
   "category": "task",
   "seeds": [
    10,
-   11,
-   14,
+   12,
    17,
+   18,
    19
   ],
   "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the next book of the same red set to his desk for tomorrow.",
@@ -19026,7 +19551,7 @@
    ],
    "removed": [],
    "conditions": [
-    "referent_clue",
+    "resource_absent",
     "not_in_view"
    ],
    "initial_checks": []
@@ -19066,20 +19591,20 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_next_in_series__green_on_bookcase",
+  "oracle_route": "v6_no_second_red_book__green_on_bookcase",
   "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
   "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/next_in_series__green_on_tall_shelf": {
-  "variant": "next_in_series",
+ "T14_shelve_the_book/no_second_red_book__green_on_tall_shelf": {
+  "variant": "no_second_red_book",
   "category": "task",
   "seeds": [
-   12,
+   11,
    13,
+   14,
    15,
-   16,
-   18
+   16
   ],
   "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the next book of the same red set to his desk for tomorrow.",
   "initial_conditions": {
@@ -19092,6 +19617,75 @@
     "blue_book_case",
     "green_book_case",
     "paperback_shelf"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_absent",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "book_red",
+     [
+      "bookcase_2/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "green_book_case",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "blue_book_case",
+      "desk_1/top"
+     ]
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_no_second_red_book__green_on_tall_shelf",
+  "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
+  "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_bookcase": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   18,
+   19
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
    ],
    "removed": [],
    "conditions": [
@@ -19113,31 +19707,164 @@
      ]
     ],
     [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "green_book_case",
-      "desk_1/top"
-     ]
+     "on",
+     "red_book_2",
+     "desk_1/top"
     ],
     [
-     [
-      "on",
-      "blue_book_case",
-      "desk_1/top"
-     ]
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_next_in_series__green_on_tall_shelf",
-  "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
-  "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
+  "oracle_route": "v6_next_in_series__on_bookcase",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_other_bookcase": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   13,
+   16,
+   17
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "book_red",
+     [
+      "bookcase_2/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     "on",
+     "red_book_2",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__on_other_bookcase",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__on_tall_shelf": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   15
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf",
+    "red_book_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "book_red",
+     [
+      "bookcase_2/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0"
+     ]
+    ],
+    [
+     "on",
+     "red_book_2",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "blue_book_case",
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_shelf",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__on_tall_shelf",
+  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T21_bring_tissues/tissue_on_tv_stand": {

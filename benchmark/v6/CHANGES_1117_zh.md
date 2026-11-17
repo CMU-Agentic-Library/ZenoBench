@@ -10,11 +10,14 @@
 - 渲染图：`~/Pictures/<任务>/<variant>/`（zihan 机器上），旧图在 `~/Pictures/renders_stale_2026-11-16/`。
 - 我在 zihan 机器上只跑了少数几条（这台机器第一步 tuck 和你那边不一样，见 `PHYSICS_EXCLUDED_zh.md` 的“机器差异”），结果写在下面“已跑”一列。
 
+## 11-17 恢复的（原样加回，和替换版并存，物理同 11-16 以前）
+
+T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 `next_in_series`（原版）。它们测“有个像的东西，但用不了或不该用”，场景、路线、打分都和 1d882fa 一样；T04 x6 的 cup_in_4 仍在 PHYSICS_EXCLUDED（A1）。
+
 ## 删掉 / 整个换掉的
 
 | 任务 | 变化 |
 |---|---|
-| T12 | `castle_stays` 删掉 |
 | T15 | 整个任务换掉：`T15_book_face_up`（翻书）→ `T15_cover_the_pot`（盖锅盖），4 个 variant 都是新的 |
 | T16 | 整个任务换掉：`T16_rolling_pin_at_edge`（滚擀面杖）→ `T16_pack_snack_box`（装零食盒），4 个 variant 都是新的 |
 | T17 | `hide_both` → `pot_in_use`，`hide_somewhere` → `no_pot` |
@@ -44,7 +47,7 @@
 | T13 | `finish_the_table`<br>adult_and_kid: 10,13,15,17,19<br>kid_seat: 11,12,14,16,18 | 没有第二个塑料杯，孩子位的杯子用小碗（台面 (-0.30, 8.05)）；“只剩大人位”的布局删掉 | 碗、小碗放到孩子位勺子旁 | 低 | 未跑 |
 | T14 | `kids_shelf_full`（原 stack_them_stably）<br>全部 seed 同一布局 | 孩子书架三层各 6 本书摆满；书放到床头书架 (2.10, -4.85) | 看孩子书架 → 床头书架 | 书架里 18 本书开局是否稳定 | 未跑 |
 | T14 | `homework_stays`<br>全部 seed 同一布局 | 两个厨房台面上各一根擀面杖和一个碗（有人在做饭）；马克杯放厨房矮柜 6 号顶 (3.43, 0.45) | 书上书架 → 马克杯到柜顶 | 低 | 未跑 |
-| T14 | `next_in_series`<br>green_on_bookcase: 10,11,14,17,19<br>green_on_tall_shelf: 12,13,15,16,18 | 没有第二本红皮书，拿孩子的绿皮书 | 红书上书架 → 绿皮书到书桌 | 高书架 shelf_1 取书 | 未跑 |
+| T14 | `no_second_red_book`（next_in_series 的替换版，原版已恢复）<br>green_on_bookcase: 10,11,14,17,19<br>green_on_tall_shelf: 12,13,15,16,18 | 没有第二本红皮书，拿孩子的绿皮书 | 红书上书架 → 绿皮书到书桌 | 高书架 shelf_1 取书 | 未跑 |
 | T14 | `whose_book`<br>blue_book: 10,14,16,18<br>both: 11,15,17<br>paperback: 12,13,19 | 平装书架下三层各 11 本平装书摆满，只有最高层（1.17 m）有空；平装书改放床头书架 | 平装书 → 看平装书架 → 床头书架 | 33 本书开局是否稳定 | 未跑 |
 | T15 | `lid_by_pot`（对照，新任务）<br>全部 seed | 锅在左灶眼，锅盖在岛台 (8.05, 1.80) | 拿锅盖 → cover | 低（T09 同动作） | 未跑 |
 | T15 | `lid_elsewhere`<br>counter: 10,12,15-17<br>dining: 11,13,14,18,19 | 锅盖在餐桌 / 厨房台面 | 找锅盖 → cover | 低 | 未跑 |

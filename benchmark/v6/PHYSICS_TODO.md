@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1560 episodes remain (1150 of the 115 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1600 episodes remain (1190 of the 119 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -29,7 +29,9 @@
 | T04 | clear_the_drinks_spot | task | 0/0 of 10 | - |
 | T04 | two_guests | task | 0/0 of 10 | - |
 | T04 | no_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
+| T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
+| T05 | check_desk_first | task | 0/0 of 10 | - |
 | T05 | no_pencil | task | 0/0 of 10 | - |
 | T05 | pen_in_use | task | 0/0 of 10 | - |
 | T05 | pens_for_two | task | 0/0 of 10 | - |
@@ -72,6 +74,7 @@
 | T12 | bedtime_toy | task | 0/0 of 10 | - |
 | T12 | bins_capacity | task | 0/0 of 10 | - |
 | T12 | find_all_toys | task | 0/0 of 10 | - |
+| T12 | castle_stays | task | 0/0 of 10 | - |
 | T13 | dishes_on_tv_stand | control | 0/0 of 10 | - |
 | T13 | no_cup | task | 0/0 of 10 | - |
 | T13 | copy_the_setting | task | 0/0 of 10 | - |
@@ -105,6 +108,7 @@
 | T14 | kids_shelf_full | task | 0/0 of 10 | - |
 | T14 | homework_stays | task | 0/0 of 10 | - |
 | T14 | whose_book | task | 0/0 of 10 | - |
+| T14 | no_second_red_book | task | 0/0 of 10 | - |
 | T14 | next_in_series | task | 0/0 of 10 | - |
 | T21 | tissue_on_tv_stand | control | 0/0 of 10 | - |
 | T21 | tissue_out_of_view | task | 0/0 of 10 | - |

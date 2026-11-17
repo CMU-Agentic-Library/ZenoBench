@@ -688,6 +688,18 @@ def T04(t):
             rationale="look in both cabinets (close them again), find no cup, and use the closest stand-in that is "
                       "still a cup: the kid's plastic cup, not the bowl in view (and the bottle is no cup)",
             watch=[KIDCUP, BOWL, "juice_bottle"], goal=nocup_goal, cases=nocup_cases),
+        # 11-17: restored next to no_cup_in_cabinets (a look-alike in view, the asked cup behind a door)
+        "x6_gd_cup_in_cabinets": dict(
+            base="no_cup", control="no_cup",
+            factor="which cabinet holds the preferred item",
+            instruction="A guest is coming. Set out a cup without a handle at the drinks spot on the low wall "
+                        "cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+            instruction_zh="有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
+            challenge="the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are "
+                      "kept in closed cabinets: the cup is in one of the two (seed decides which)",
+            rationale="the visible substitute must not end the search: the cabinets are inspected until the cup is "
+                      "found (reference route: the worse order, the cup is in the second cabinet)",
+            goal=cab_goal, cases=cup_cases),
     }
 
 
@@ -861,6 +873,17 @@ def T05(t):
                               route=[x for i, w in enumerate(fetch_list)
                                      for x in fetch_to(w, sup_of[w], [round([-1.15, -0.72, -0.29][i] + 0.15, 3), -6.22])])
     return {
+        # 11-17: restored next to pen_in_use (the pencil on the desk is not the pen asked for; or the pen is there)
+        "check_desk_first": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_already_met"],
+            instruction=PEN_TXT[0], instruction_zh=PEN_TXT[1],
+            factor="what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom "
+                   "bookcase)",
+            challenge="a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a "
+                      "pencil (the pen is then on the bedroom bookcase)",
+            rationale="look before fetching: if the pen is there the goal already holds and the right plan is to stop "
+                      "(fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+            cases=check_cases),
         "no_pencil": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["resource_absent", "not_in_view"],
             goal={"all": [["on", "pen", DESK], ["hand_empty", "right"]]}, watch=["pen"],
@@ -1706,6 +1729,18 @@ def T12(t):
                       "from look-alikes (leave the sponge), put each into the basket; stopping after the first few "
                       "fails",
             cases=all_cases),
+        # 11-17: restored (identical blocks: the castle's stay, the loose ones go away)
+        "castle_stays": dict(
+            base="toys_out", control="toys_out", conditions=["relational_exception", "multi_object_goal"],
+            instruction="It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid "
+                        "built; the kid wants to keep building it tomorrow.",
+            instruction_zh="快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+            factor="how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+            challenge="a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind "
+                      "beside it, the car and the duck",
+            rationale="the same kind of object is treated by its relation: blocks in the tower stay where they are, "
+                      "loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+            cases=castle_cases),
     }
 
 
@@ -1971,6 +2006,19 @@ def T14(t):
     # the desk for tomorrow
     others = {"blue_book_case": book("book_blue", CASE, 0.85, -0.45), "green_book_case": book("book_green", CASE, 1.12, -0.45),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
+    # 11-17: the original next_in_series (the other red book among books of other covers) restored
+    series_old_cases = {}
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.12, -0.45), None)),   # the green book's spot: in reach
+                                 ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
+                                 ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
+        add = {**others, "red_book_2": book("book_red", sup, *xy)}
+        if sup == CASE:
+            add["green_book_case"] = book("book_green", "large_shelf_4/shelf_1", 3.60, -5.15)
+        series_old_cases[c] = dict(
+            add=add, watch=[B, "red_book_2", *others],
+            route=[look(DESK)] + shelve(B, CASE, [1.00, -0.55]) + [look(CASE)]
+            + ([S("search", object="red_book_2", region=region), look(sup)] if region else [])
+            + [nav("red_book_2"), pick("red_book_2"), nav(DESK), place("red_book_2", DESK, [-0.80, -6.05])])
     # 11-17 (substitution): there is no second red book; the kid's other set (green hardcover) does instead, not the
     # grown-up's paperback.  Seed: the green book on the kid's bookcase or on the tall shelf in the bedroom
     series_cases = {}
@@ -2040,8 +2088,8 @@ def T14(t):
             rationale="each book to the shelf holding its kind; the paperbacks' shelf cannot be reached where it "
                       "has room, so the paperback goes on another bookcase instead, not with the hardcovers",
             cases=whose_cases),
-        "next_in_series": dict(
-            base="e1_book_ready", control="e1_book_ready", conditions=["referent_clue", "not_in_view"],
+        "no_second_red_book": dict(
+            base="e1_book_ready", control="e1_book_ready", conditions=["resource_absent", "not_in_view"],
             instruction="The kid finished the red book. Put it back on his bookcase, and bring the next book of the "
                         "same red set to his desk for tomorrow.",
             instruction_zh="孩子看完这本红皮书了，收回他的书架，再把同一套红皮书的下一本拿到书桌上，他明天看。",
@@ -2053,6 +2101,19 @@ def T14(t):
             rationale="the next red book does not exist: bring one of the kid's other hardcovers (the green one) "
                       "instead, not the grown-up's paperback",
             cases=series_cases),
+        "next_in_series": dict(
+            base="e1_book_ready", control="e1_book_ready", conditions=["referent_clue", "not_in_view"],
+            instruction="The kid finished the red book. Put it back on his bookcase, and bring the other book of "
+                        "the same set to his desk for tomorrow.",
+            instruction_zh="孩子看完这本红书了，收回他的书架，再把同一套的另一本拿到书桌上，他明天看。",
+            goal={"all": [["on_any", B, KIDS_CASE], ["on", "red_book_2", DESK], ["near_start", "blue_book_case", 0.03],
+                          ["near_start", "paperback_shelf", 0.03], ["hand_empty", "right"]]},
+            factor="where the other book of the set is (seed: the kid's bookcase, the other bookcase, the tall shelf)",
+            challenge="the set is told by its red cover; the other book stands among books of other covers, on the "
+                      "kid's bookcase or another shelf in the bedroom",
+            rationale="two subgoals in opposite directions; the second item is named only by its relation to the "
+                      "first (same set): look at the covers, search the shelves until the matching one is found",
+            cases=series_old_cases),
     }
 
 

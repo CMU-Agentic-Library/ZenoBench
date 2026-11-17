@@ -388,6 +388,32 @@ def _homework_ready(task: dict) -> dict:
         "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
                   "elsewhere; still held or dropped"}
 
+# 11-17: restored
+# T04 x6_gd_cup_in_cabinets: a cup without a handle asked for, the glass cup in one of two closed low cabinets, the
+# mug in plain view.  A door left open is the second tier, the mug (a handle) the worst (user 11-11)
+SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the glass cup upright on the drinks spot, both cabinet doors closed"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+     "why": "the glass cup upright on the spot, but a cabinet door left open"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["hand_empty", "right"]], "any": [g for g in _CUP_ON_SPOT if g[0][1] != "cup_counter_b"]},
+     "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
+    "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
+
+# 11-17: restored
+# T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
+# Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
+SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only "
+            "the pencil was"},
+    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"]]},
+     "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", "desk_1/top"], ["hand_empty", "right"]]},
+     "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
+    "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
+
 # T05 pens_per_notebook (11-17, substitution): three notebooks, a pen asked for each, too few pens (seed: one or two
 # short).  Every pen used and pencils making up the rest, one beside each notebook, no more: best; the right things
 # not beside each notebook: second; any writing thing beside each (too many, or pencils though a pen was left): worst
@@ -893,6 +919,8 @@ NOT_OK_ZH = {
     ("T04", "no_cup_in_cabinets"): "什么都没摆；拿果汁瓶当杯子；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
+    ("T04", "x6_gd_cup_in_cabinets"): "没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了",
+    ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
     ("T05", "no_pencil"): "书桌上没有能写字的东西；还拿着或掉了",
     ("T05", "pen_in_use"): "书桌上没有能写字的东西；还拿着或掉了",
     ("T05", "pens_for_two"): "有个孩子没拿到笔；还拿着或掉了",

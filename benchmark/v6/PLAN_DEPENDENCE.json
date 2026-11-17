@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 241,
-   "variants": 126,
+   "layouts": 251,
+   "variants": 130,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 53,
-   "goal_not_met": 84,
-   "not_observed": 59,
+   "passes": 54,
+   "goal_not_met": 92,
+   "not_observed": 60,
    "resource_missing": 41,
    "argument_mismatch": 4
   },
@@ -30,6 +30,7 @@
    "T09 x6_gd_tomato_elsewhere",
    "T10 can_in_dining_room",
    "T10 keep_kids_can",
+   "T12 castle_stays",
    "T13 copy_the_setting",
    "T14 within_kids_reach",
    "T17 h_task_lid_elsewhere",
@@ -51,11 +52,11 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 101,
-   "goal_not_met": 125,
-   "not_observed": 18,
-   "argument_mismatch": 91,
-   "resource_missing": 67
+   "passes": 105,
+   "goal_not_met": 129,
+   "not_observed": 20,
+   "argument_mismatch": 94,
+   "resource_missing": 70
   },
   "universal_fixed_sequence": [
    "T01 homework_on_island",
@@ -68,13 +69,14 @@
    "T11 basket_missing",
    "T13 copy_the_setting",
    "T14 next_in_series",
+   "T14 no_second_red_book",
    "T14 within_kids_reach",
    "T27 two_leftovers",
    "T27 which_is_leftover",
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 73,
+  "multi_layout_variants": 77,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -84,6 +86,7 @@
    "T03 bin_full",
    "T03 no_bin_substitute",
    "T04 no_cup_in_cabinets",
+   "T04 x6_gd_cup_in_cabinets",
    "T05 pens_for_two",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
@@ -94,6 +97,7 @@
    "T11 fruit_plate_for_guests",
    "T12 bedtime_toy",
    "T12 bins_capacity",
+   "T12 castle_stays",
    "T12 find_all_toys",
    "T14 whose_book",
    "T15 lid_elsewhere",
@@ -110,7 +114,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 336,
+  "geometric_atoms_unchecked": 341,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -195,6 +199,13 @@
    ],
    "T12 bedtime_toy": [
     "kids_teddy"
+   ],
+   "T12 castle_stays": [
+    "castle_block_1",
+    "castle_block_2",
+    "castle_block_3",
+    "loose_block_1",
+    "loose_block_2"
    ],
    "T12 find_all_toys": [
     "stray_block"
@@ -1850,6 +1861,66 @@
    "other_variants_passing": []
   },
   {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "x6_gd_cup_in_cabinets",
+   "layout": "x6_gd_cup_in_cabinets__cup_in_4",
+   "steps": 20,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright cup_counter_b"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "x6_gd_cup_in_cabinets__cup_in_6": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "x6_gd_cup_in_cabinets",
+   "layout": "x6_gd_cup_in_cabinets__cup_in_6",
+   "steps": 20,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright cup_counter_b"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "x6_gd_cup_in_cabinets__cup_in_4": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layout": "check_desk_first__pen_on_desk",
+   "steps": 3,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "check_desk_first__pencil_on_desk": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layout": "check_desk_first__pencil_on_desk",
+   "steps": 8,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "check_desk_first__pen_on_desk": "goal_not_met"
+   },
+   "other_variants_passing": [
+    "no_pencil__pen_bedroom",
+    "x6_gd_pen_or_pencil_cabinets__pen_in_4",
+    "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+   ]
+  },
+  {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "no_pencil",
    "layout": "no_pencil__pen_dining",
@@ -1873,7 +1944,9 @@
    "other_layouts": {
     "no_pencil__pen_dining": "argument_mismatch"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "check_desk_first__pencil_on_desk"
+   ]
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -3118,6 +3191,54 @@
    "other_variants_passing": []
   },
   {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layout": "castle_stays__tall_two_loose",
+   "steps": 20,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "castle_stays__short_one_loose": "goal_not_met",
+    "castle_stays__tall_none_loose": "goal_not_met"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layout": "castle_stays__short_one_loose",
+   "steps": 15,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "castle_stays__tall_two_loose": "resource_missing",
+    "castle_stays__tall_none_loose": "goal_not_met"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layout": "castle_stays__tall_none_loose",
+   "steps": 10,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright storage_basket"
+   ],
+   "control_route": "passes",
+   "other_layouts": {
+    "castle_stays__tall_two_loose": "resource_missing",
+    "castle_stays__short_one_loose": "resource_missing"
+   },
+   "other_variants_passing": []
+  },
+  {
    "task": "T13_breakfast_setup",
    "variant": "no_cup",
    "layout": "no_cup",
@@ -3606,27 +3727,69 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "variant": "next_in_series",
-   "layout": "next_in_series__green_on_bookcase",
+   "variant": "no_second_red_book",
+   "layout": "no_second_red_book__green_on_bookcase",
    "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "next_in_series__green_on_tall_shelf": "passes"
+    "no_second_red_book__green_on_tall_shelf": "passes"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "no_second_red_book",
+   "layout": "no_second_red_book__green_on_tall_shelf",
+   "steps": 13,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "no_second_red_book__green_on_bookcase": "not_observed"
    },
    "other_variants_passing": []
   },
   {
    "task": "T14_shelve_the_book",
    "variant": "next_in_series",
-   "layout": "next_in_series__green_on_tall_shelf",
+   "layout": "next_in_series__on_bookcase",
+   "steps": 11,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "next_in_series__on_other_bookcase": "passes",
+    "next_in_series__on_tall_shelf": "passes"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "layout": "next_in_series__on_other_bookcase",
    "steps": 13,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "next_in_series__green_on_bookcase": "not_observed"
+    "next_in_series__on_bookcase": "not_observed",
+    "next_in_series__on_tall_shelf": "passes"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "layout": "next_in_series__on_tall_shelf",
+   "steps": 13,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "next_in_series__on_bookcase": "not_observed",
+    "next_in_series__on_other_bookcase": "passes"
    },
    "other_variants_passing": []
   },
@@ -4734,6 +4897,26 @@
    "passes_all": []
   },
   {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "x6_gd_cup_in_cabinets",
+   "candidates": [
+    "x6_gd_cup_in_cabinets__cup_in_4",
+    "x6_gd_cup_in_cabinets__cup_in_6",
+    "no_cup"
+   ],
+   "passes_all": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "candidates": [
+    "check_desk_first__pen_on_desk",
+    "check_desk_first__pencil_on_desk",
+    "e1_pencil_asked"
+   ],
+   "passes_all": []
+  },
+  {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "no_pencil",
    "candidates": [
@@ -5082,6 +5265,17 @@
    "passes_all": []
   },
   {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "candidates": [
+    "castle_stays__tall_two_loose",
+    "castle_stays__short_one_loose",
+    "castle_stays__tall_none_loose",
+    "toys_out"
+   ],
+   "passes_all": []
+  },
+  {
    "task": "T13_breakfast_setup",
    "variant": "copy_the_setting",
    "candidates": [
@@ -5171,14 +5365,28 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "variant": "next_in_series",
+   "variant": "no_second_red_book",
    "candidates": [
-    "next_in_series__green_on_bookcase",
-    "next_in_series__green_on_tall_shelf",
+    "no_second_red_book__green_on_bookcase",
+    "no_second_red_book__green_on_tall_shelf",
     "e1_book_ready"
    ],
    "passes_all": [
-    "next_in_series__green_on_tall_shelf"
+    "no_second_red_book__green_on_tall_shelf"
+   ]
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "candidates": [
+    "next_in_series__on_bookcase",
+    "next_in_series__on_other_bookcase",
+    "next_in_series__on_tall_shelf",
+    "e1_book_ready"
+   ],
+   "passes_all": [
+    "next_in_series__on_other_bookcase",
+    "next_in_series__on_tall_shelf"
    ]
   },
   {
@@ -6522,6 +6730,32 @@
    "hidden_state_branch": true
   },
   {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "x6_gd_cup_in_cabinets",
+   "layouts": [
+    "x6_gd_cup_in_cabinets__cup_in_4",
+    "x6_gd_cup_in_cabinets__cup_in_6"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layouts": [
+    "check_desk_first__pen_on_desk",
+    "check_desk_first__pencil_on_desk"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "no_pencil",
    "layouts": [
@@ -7484,6 +7718,45 @@
    "hidden_state_branch": true
   },
   {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layouts": [
+    "castle_stays__tall_two_loose",
+    "castle_stays__short_one_loose"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layouts": [
+    "castle_stays__tall_two_loose",
+    "castle_stays__tall_none_loose"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "castle_stays",
+   "layouts": [
+    "castle_stays__short_one_loose",
+    "castle_stays__tall_none_loose"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
    "task": "T13_breakfast_setup",
    "variant": "copy_the_setting",
    "layouts": [
@@ -7641,14 +7914,53 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "variant": "next_in_series",
+   "variant": "no_second_red_book",
    "layouts": [
-    "next_in_series__green_on_bookcase",
-    "next_in_series__green_on_tall_shelf"
+    "no_second_red_book__green_on_bookcase",
+    "no_second_red_book__green_on_tall_shelf"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": false,
    "route_a_on_b": "not_observed",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "layouts": [
+    "next_in_series__on_bookcase",
+    "next_in_series__on_other_bookcase"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "layouts": [
+    "next_in_series__on_bookcase",
+    "next_in_series__on_tall_shelf"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "next_in_series",
+   "layouts": [
+    "next_in_series__on_other_bookcase",
+    "next_in_series__on_tall_shelf"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
    "route_b_on_a": "passes",
    "hidden_state_branch": false
   },

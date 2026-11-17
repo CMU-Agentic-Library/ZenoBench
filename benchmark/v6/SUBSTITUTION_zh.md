@@ -8,9 +8,9 @@
 | T02 | tower_for_kid | 被占用 | 近处餐桌堆满杂物，塔放不稳 → 换到西边餐厅那张餐桌搭 |
 | T03 | bin_full（原 utensils_apart） | 被占用 | 宽收纳箱装满玩具，放不下擀面杖 → 改用书桌上的托盘 |
 | T04 | two_guests | 缺失 | 只有一个玻璃杯 → 第二个从替代品里挑：马克杯 > 孩子的塑料杯 > 早餐碗 |
-| T04 | no_cup_in_cabinets（原 x6_gd_cup_in_cabinets） | 缺失 | 柜子里没有杯子，家里也没有马克杯 → 孩子的塑料杯（碗最差） |
+| T04 | no_cup_in_cabinets（新加；x6_gd_cup_in_cabinets 已恢复） | 缺失 | 柜子里没有杯子，家里也没有马克杯 → 孩子的塑料杯（碗最差） |
 | T05 | no_pencil（原 no_pen_pencil_away） | 缺失 | 要铅笔，家里没有 → 钢笔 |
-| T05 | pen_in_use（原 check_desk_first） | 被占用 | 唯一的钢笔压在奶奶正在写的清单上 → 铅笔 |
+| T05 | pen_in_use（新加；check_desk_first 已恢复） | 被占用 | 唯一的钢笔压在奶奶正在写的清单上 → 铅笔 |
 | T05 | pens_for_two（原 all_pens） | 缺失 | 两个孩子各要一支钢笔，只有一支 → 另一个给铅笔 |
 | T05 | pens_per_notebook | 缺失 | 钢笔比本子少一支或两支（seed） → 缺的用铅笔补 |
 | T05 | errand_combined | 缺失 | 要钢笔，家里没有 → 铅笔（顺路带马克杯回厨房不变） |
@@ -22,7 +22,7 @@
 | T13 | finish_the_table | 缺失 | 孩子位要塑料杯，家里没有第二个 → 小碗顶上（马克杯次之） |
 | T14 | kids_shelf_full（原 stack_them_stably） | 被占用 | 孩子书架每层都满了 → 卧室另一个书架 |
 | T14 | homework_stays | 被占用 | 杯子该放的厨房台面有人在做饭 → 厨房矮柜顶 |
-| T14 | next_in_series | 缺失 | 同套的下一本红皮书不在家 → 孩子的另一套（绿皮/蓝皮）书，不拿大人的平装书 |
+| T14 | no_second_red_book（原 next_in_series 的替换版；原版已恢复） | 缺失 | 同套的下一本红皮书不在家 → 孩子的另一套（绿皮/蓝皮）书，不拿大人的平装书 |
 | T14 | whose_book | 能力不足 | 平装书的书架只有最高一层有空，够不着 → 放到别的书架（不放进精装书那个） |
 | T15 | no_lid（新任务：盖锅盖，替换翻书） | 缺失 | 家里没有锅盖 → 用盘子盖（用书最差） |
 | T15 | lid_in_use（新任务） | 被占用 | 锅盖盖在另一锅炖菜上 → 用盘子盖汤锅，不拿炖菜的盖子 |
@@ -39,3 +39,5 @@
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 
 目前“损坏”有 T07 microwave_broken 和 T18 door_stuck，后面的任务里可以有意识地补几个（比如一个灶眼打不着火）。
+
+11-17 恢复（“有个像的东西，但用不了或不该用”，和上面的替换版并存）：T04 x6_gd_cup_in_cabinets、T05 check_desk_first、T12 castle_stays、T14 next_in_series（原版）。T01 which_book 仍是 homework_on_island，T19 lookalike_bin 一直保留。

@@ -47344,6 +47344,552 @@
       ],
       "not_ok": "nothing set out; the juice bottle for a cup; lying or upside down; elsewhere; still held"
      }
+    },
+    "x6_gd_cup_in_cabinets__cup_in_4": {
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [],
+     "conditions": [
+      "no_cup"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "cup_counter_b",
+        "kitchen_cabinet_6/top"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ]
+      ]
+     },
+     "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
+     "failures": [
+      {
+       "id": "resource_cup_in_cabinet",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "cup_counter_b",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      }
+     ],
+     "since": "v6",
+     "note": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+     "v6": {
+      "family": "x6_gd_cup_in_cabinets",
+      "case": "cup_in_4",
+      "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+      "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+      "control": "no_cup",
+      "contrast": null,
+      "factor": "which cabinet holds the preferred item",
+      "derived_from": "no_cup"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "mug"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.9038,
+         1.6017,
+         7.9964,
+         1.7283
+        ],
+        "dx": [
+         -1.35,
+         0.25
+        ],
+        "dy": [
+         -0.07,
+         0.24
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.2,
+         1.605,
+         7.24,
+         1.6451
+        ],
+        [
+         7.05,
+         1.605,
+         7.09,
+         1.6451
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
+     }
+    },
+    "x6_gd_cup_in_cabinets__cup_in_6": {
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.5,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [],
+     "conditions": [
+      "no_cup"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "cup_counter_b",
+        "kitchen_cabinet_6/top"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ]
+      ]
+     },
+     "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+     "instruction_zh": "有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
+     "failures": [
+      {
+       "id": "resource_cup_in_cabinet",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "cup_counter_b",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ]
+      }
+     ],
+     "since": "v6",
+     "note": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+     "v6": {
+      "family": "x6_gd_cup_in_cabinets",
+      "case": "cup_in_6",
+      "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+      "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+      "control": "no_cup",
+      "contrast": null,
+      "factor": "which cabinet holds the preferred item",
+      "derived_from": "no_cup"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "mug"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.9038,
+         1.6017,
+         7.9964,
+         1.7283
+        ],
+        "dx": [
+         -1.35,
+         0.25
+        ],
+        "dy": [
+         -0.07,
+         0.24
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.2,
+         1.605,
+         7.24,
+         1.6451
+        ],
+        [
+         7.05,
+         1.605,
+         7.09,
+         1.6451
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
+     }
     }
    },
    "watch": [
@@ -47430,7 +47976,9 @@
     "two_guests__dining": "v6_two_guests__dining",
     "two_guests__study": "v6_two_guests__study",
     "no_cup_in_cabinets__cup_on_desk": "v6_no_cup_in_cabinets__cup_on_desk",
-    "no_cup_in_cabinets__cup_on_dining": "v6_no_cup_in_cabinets__cup_on_dining"
+    "no_cup_in_cabinets__cup_on_dining": "v6_no_cup_in_cabinets__cup_on_dining",
+    "x6_gd_cup_in_cabinets__cup_in_4": "v6_x6_gd_cup_in_cabinets__cup_in_4",
+    "x6_gd_cup_in_cabinets__cup_in_6": "v6_x6_gd_cup_in_cabinets__cup_in_6"
    },
    "routes": {
     "nominal": {
@@ -48182,6 +48730,246 @@
      ],
      "kind": "v6_oracle",
      "variant": "no_cup_in_cabinets__cup_on_dining"
+    },
+    "v6_x6_gd_cup_in_cabinets__cup_in_4": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_4",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_cup_in_cabinets__cup_in_4"
+    },
+    "v6_x6_gd_cup_in_cabinets__cup_in_6": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_6",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_cup_in_cabinets__cup_in_6"
     }
    },
    "benchmark_version": "v6",
@@ -48690,6 +49478,108 @@
       ],
       "not_ok": "nothing set out; the juice bottle for a cup; lying or upside down; elsewhere; still held"
      }
+    },
+    "x6_gd_cup_in_cabinets": {
+     "origin": "v6",
+     "control": "no_cup",
+     "layouts": [
+      "x6_gd_cup_in_cabinets__cup_in_4",
+      "x6_gd_cup_in_cabinets__cup_in_6"
+     ],
+     "factor": "which cabinet holds the preferred item",
+     "seeds": {
+      "10": "x6_gd_cup_in_cabinets__cup_in_4",
+      "11": "x6_gd_cup_in_cabinets__cup_in_4",
+      "12": "x6_gd_cup_in_cabinets__cup_in_6",
+      "13": "x6_gd_cup_in_cabinets__cup_in_6",
+      "14": "x6_gd_cup_in_cabinets__cup_in_4",
+      "15": "x6_gd_cup_in_cabinets__cup_in_6",
+      "16": "x6_gd_cup_in_cabinets__cup_in_4",
+      "17": "x6_gd_cup_in_cabinets__cup_in_6",
+      "18": "x6_gd_cup_in_cabinets__cup_in_4",
+      "19": "x6_gd_cup_in_cabinets__cup_in_6"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the glass cup upright on the drinks spot, both cabinet doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "drop": [
+          "is_closed"
+         ]
+        },
+        "why": "the glass cup upright on the spot, but a cabinet door left open"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on",
+            "mug",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_dining_cabinet",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_dining_cabinet"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_shelf",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_shelf"
+           ]
+          ],
+          [
+           [
+            "on",
+            "mug_counter",
+            "kitchen_cabinet_6/top"
+           ],
+           [
+            "upright",
+            "mug_counter"
+           ]
+          ]
+         ]
+        },
+        "why": "a mug (with a handle) set out instead: the visible substitute ended the search"
+       }
+      ],
+      "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"
+     }
     }
    },
    "v6_replaced": {
@@ -48741,6 +49631,13 @@
       "item_put_away",
       "not_in_view",
       "resource_absent"
+     ]
+    },
+    "x6_gd_cup_in_cabinets": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "no_cup"
      ]
     }
    }
@@ -48905,6 +49802,446 @@
        }
       ],
       "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped"
+     }
+    },
+    "check_desk_first__pen_on_desk": {
+     "remove": [],
+     "conditions": [
+      "goal_already_met"
+     ],
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
+     "move": {
+      "pen": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.65,
+        -5.95
+       ],
+       "yaw_deg": 90.0
+      },
+      "pencil": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.9646,
+        -0.4948
+       ],
+       "yaw_deg": -72.1
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "pen",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "pen",
+        0.1
+       ],
+       [
+        "near_start",
+        "pencil",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "pen",
+      "pencil"
+     ],
+     "since": "v6",
+     "note": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+     "v6": {
+      "family": "check_desk_first",
+      "case": "pen_on_desk",
+      "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+      "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+      "control": "e1_pencil_asked",
+      "contrast": null,
+      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
+      "derived_from": "e1_pencil_asked"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "pencil"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.9288,
+         -0.5831,
+         1.0004,
+         -0.4065
+        ],
+        "dx": [
+         -0.21,
+         0.28
+        ]
+       },
+       {
+        "names": [
+         "pen"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.6581,
+         -6.02,
+         -0.6419,
+         -5.88
+        ],
+        "dx": [
+         -0.73,
+         0.6
+        ],
+        "dy": [
+         -0.29,
+         0.16
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "bookcase_2/top": [
+        [
+         0,
+         1,
+         1.295,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         0.705,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -0.619,
+         0.705,
+         1.295,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
+     }
+    },
+    "check_desk_first__pencil_on_desk": {
+     "remove": [],
+     "conditions": [
+      "goal_already_met"
+     ],
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
+     "move": {
+      "pencil": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.65,
+        -5.95
+       ],
+       "yaw_deg": 90.0
+      },
+      "pen": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.96,
+        -0.49
+       ],
+       "yaw_deg": -72.1
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "pen",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "pencil",
+        0.1
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "pen",
+      "pencil"
+     ],
+     "since": "v6",
+     "note": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+     "v6": {
+      "family": "check_desk_first",
+      "case": "pencil_on_desk",
+      "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+      "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+      "control": "e1_pencil_asked",
+      "contrast": null,
+      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
+      "derived_from": "e1_pencil_asked"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "pen"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.9308,
+         -0.5591,
+         0.9892,
+         -0.4209
+        ],
+        "dx": [
+         -0.21,
+         0.29
+        ],
+        "dy": [
+         -0.04,
+         0.17
+        ],
+        "pick": [
+         "pen"
+        ],
+        "search": [
+         "pen"
+        ]
+       },
+       {
+        "names": [
+         "pencil"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.6586,
+         -6.04,
+         -0.6414,
+         -5.86
+        ],
+        "dx": [
+         -0.73,
+         0.6
+        ],
+        "dy": [
+         -0.27,
+         0.14
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -0.238,
+         -5.9541,
+         -0.098,
+         -5.9379
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_2/top": [
+        [
+         0,
+         1,
+         1.295,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         0.705,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -0.619,
+         0.705,
+         1.295,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
      }
     },
     "no_pencil__pen_dining": {
@@ -54638,6 +55975,8 @@
    "nominal": "nominal",
    "oracle": {
     "e1_pencil_asked": "v5_e1_pencil_asked",
+    "check_desk_first__pen_on_desk": "v6_check_desk_first__pen_on_desk",
+    "check_desk_first__pencil_on_desk": "v6_check_desk_first__pencil_on_desk",
     "no_pencil__pen_dining": "v6_no_pencil__pen_dining",
     "no_pencil__pen_bedroom": "v6_no_pencil__pen_bedroom",
     "pen_in_use__pencil_bedroom": "v6_pen_in_use__pencil_bedroom",
@@ -54754,6 +56093,90 @@
      "kind": "v5_skill_coverage",
      "variant": "e1_pencil_asked",
      "edited_from": "v5_e1_pencil_asked"
+    },
+    "v6_check_desk_first__pen_on_desk": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "pen"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "check_desk_first__pen_on_desk"
+    },
+    "v6_check_desk_first__pencil_on_desk": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "pencil"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pen",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pen"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pen",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.168,
+         -5.946
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "check_desk_first__pencil_on_desk"
     },
     "v6_no_pencil__pen_dining": {
      "steps": [
@@ -55977,6 +57400,75 @@
       "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped"
      }
     },
+    "check_desk_first": {
+     "origin": "v6",
+     "control": "e1_pencil_asked",
+     "layouts": [
+      "check_desk_first__pen_on_desk",
+      "check_desk_first__pencil_on_desk"
+     ],
+     "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
+     "seeds": {
+      "10": "check_desk_first__pencil_on_desk",
+      "11": "check_desk_first__pen_on_desk",
+      "12": "check_desk_first__pen_on_desk",
+      "13": "check_desk_first__pen_on_desk",
+      "14": "check_desk_first__pen_on_desk",
+      "15": "check_desk_first__pen_on_desk",
+      "16": "check_desk_first__pencil_on_desk",
+      "17": "check_desk_first__pencil_on_desk",
+      "18": "check_desk_first__pencil_on_desk",
+      "19": "check_desk_first__pencil_on_desk"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pen",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "all": [
+          [
+           "on",
+           "pencil",
+           "desk_1/top"
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ]
+        },
+        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+       }
+      ],
+      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
+     }
+    },
     "no_pencil": {
      "origin": "v6",
      "control": "e1_pencil_asked",
@@ -57066,6 +58558,13 @@
      "category": "control",
      "local": [],
      "longer": []
+    },
+    "check_desk_first": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "goal_already_met"
+     ]
     },
     "no_pencil": {
      "category": "task",
@@ -107908,6 +109407,926 @@
       ],
       "not_ok": "a toy not found; the basket tipped; still held or dropped"
      }
+    },
+    "castle_stays__tall_two_loose": {
+     "move": {
+      "rubber_duck": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        6.804,
+        0.371
+       ],
+       "yaw_deg": 128.67
+      }
+     },
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.04,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.08,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        4.7,
+        1.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.35,
+        1.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_1",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_2",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_3",
+        0.03
+       ],
+       [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2",
+         "castle_block_3"
+        ]
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "on_top_of",
+        "castle_block_3",
+        "castle_block_2"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3",
+      "loose_block_1",
+      "loose_block_2",
+      "storage_basket"
+     ],
+     "since": "v6",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+     "v6": {
+      "family": "castle_stays",
+      "case": "tall_two_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         6.7502,
+         0.3153,
+         6.8578,
+         0.4267
+        ],
+        "dx": [
+         -0.09,
+         1.5
+        ],
+        "dy": [
+         -0.09,
+         0.07
+        ],
+        "pick": [
+         "rubber_duck"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the car, the duck and the loose blocks in the basket, the castle untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "castle_stays__tall_two_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__short_one_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__tall_none_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
+       }
+      ],
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
+     }
+    },
+    "castle_stays__short_one_loose": {
+     "move": {
+      "rubber_duck": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        6.804,
+        0.371
+       ],
+       "yaw_deg": 128.67
+      }
+     },
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.04,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "loose_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        4.7,
+        1.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "loose_block_1",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2"
+        ]
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "loose_block_1",
+      "storage_basket"
+     ],
+     "since": "v6",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+     "v6": {
+      "family": "castle_stays",
+      "case": "short_one_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         6.7502,
+         0.3153,
+         6.8578,
+         0.4267
+        ],
+        "dx": [
+         -0.09,
+         1.5
+        ],
+        "dy": [
+         -0.09,
+         0.07
+        ],
+        "pick": [
+         "rubber_duck"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the car, the duck and the loose blocks in the basket, the castle untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "castle_stays__tall_two_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__short_one_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__tall_none_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
+       }
+      ],
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
+     }
+    },
+    "castle_stays__tall_none_loose": {
+     "move": {
+      "rubber_duck": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        6.804,
+        0.371
+       ],
+       "yaw_deg": 128.67
+      }
+     },
+     "conditions": [
+      "relational_exception",
+      "multi_object_goal"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
+     "instruction_zh": "快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。",
+     "add": {
+      "castle_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.04,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "castle_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.08,
+       "xy": [
+        5.0,
+        1.0
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "toy_car",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "storage_basket"
+       ],
+       [
+        "near_start",
+        "castle_block_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "castle_block_3",
+        0.03
+       ],
+       [
+        "never_picked",
+        [
+         "castle_block_1",
+         "castle_block_2",
+         "castle_block_3"
+        ]
+       ],
+       [
+        "on_top_of",
+        "castle_block_2",
+        "castle_block_1"
+       ],
+       [
+        "on_top_of",
+        "castle_block_3",
+        "castle_block_2"
+       ],
+       [
+        "upright",
+        "storage_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "castle_block_1",
+      "castle_block_2",
+      "castle_block_3",
+      "storage_basket"
+     ],
+     "since": "v6",
+     "note": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+     "v6": {
+      "family": "castle_stays",
+      "case": "tall_none_loose",
+      "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
+      "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
+      "control": "toys_out",
+      "contrast": null,
+      "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+      "derived_from": "toys_out"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         6.7502,
+         0.3153,
+         6.8578,
+         0.4267
+        ],
+        "dx": [
+         -0.09,
+         1.5
+        ],
+        "dy": [
+         -0.09,
+         0.07
+        ],
+        "pick": [
+         "rubber_duck"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the car, the duck and the loose blocks in the basket, the castle untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "castle_stays__tall_two_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__short_one_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__tall_none_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
+       }
+      ],
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
+     }
     }
    },
    "watch": [
@@ -107953,7 +110372,10 @@
     "bins_capacity__half_bin_and_tray_duck_dining": "v6_bins_capacity__half_bin_and_tray_duck_dining",
     "find_all_toys__car_duck": "v6_find_all_toys__car_duck",
     "find_all_toys__car_duck_bear": "v6_find_all_toys__car_duck_bear",
-    "find_all_toys__all_four": "v6_find_all_toys__all_four"
+    "find_all_toys__all_four": "v6_find_all_toys__all_four",
+    "castle_stays__tall_two_loose": "v6_castle_stays__tall_two_loose",
+    "castle_stays__short_one_loose": "v6_castle_stays__short_one_loose",
+    "castle_stays__tall_none_loose": "v6_castle_stays__tall_none_loose"
    },
    "routes": {
     "nominal": {
@@ -109132,6 +111554,303 @@
      ],
      "kind": "v6_oracle",
      "variant": "find_all_toys__all_four"
+    },
+    "v6_castle_stays__tall_two_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "loose_block_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_1",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_2"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "loose_block_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_2",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__tall_two_loose"
+    },
+    "v6_castle_stays__short_one_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "loose_block_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "loose_block_1"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "loose_block_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "loose_block_1",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__short_one_loose"
+    },
+    "v6_castle_stays__tall_none_loose": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "castle_stays__tall_none_loose"
     }
    },
    "vary": {
@@ -110939,6 +113658,140 @@
       ],
       "not_ok": "a toy not found; the basket tipped; still held or dropped"
      }
+    },
+    "castle_stays": {
+     "origin": "v6",
+     "control": "toys_out",
+     "layouts": [
+      "castle_stays__tall_two_loose",
+      "castle_stays__short_one_loose",
+      "castle_stays__tall_none_loose"
+     ],
+     "factor": "how tall the castle is and how many loose blocks lie next to it (seed: 3 + 2, 2 + 1, 3 + 0)",
+     "seeds": {
+      "10": "castle_stays__tall_two_loose",
+      "11": "castle_stays__tall_two_loose",
+      "12": "castle_stays__tall_two_loose",
+      "13": "castle_stays__tall_none_loose",
+      "14": "castle_stays__tall_none_loose",
+      "15": "castle_stays__short_one_loose",
+      "16": "castle_stays__short_one_loose",
+      "17": "castle_stays__tall_none_loose",
+      "18": "castle_stays__short_one_loose",
+      "19": "castle_stays__tall_two_loose"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the car, the duck and the loose blocks in the basket, the castle untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "castle_stays__tall_two_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__short_one_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "castle_stays__tall_none_loose": {
+           "all": [
+            [
+             "inside",
+             "toy_car",
+             "storage_basket"
+            ],
+            [
+             "inside",
+             "rubber_duck",
+             "storage_basket"
+            ],
+            [
+             "on_top_of",
+             "castle_block_2",
+             "castle_block_1"
+            ],
+            [
+             "on_top_of",
+             "castle_block_3",
+             "castle_block_2"
+            ],
+            [
+             "upright",
+             "storage_basket"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the castle standing at the end, but taken apart and built again, nudged, or the loose blocks left beside it"
+       }
+      ],
+      "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped"
+     }
     }
    },
    "v6_replaced": {
@@ -110986,6 +113839,14 @@
       "goal_items_unstated",
       "multi_object_goal",
       "not_in_view"
+     ]
+    },
+    "castle_stays": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "multi_object_goal",
+      "relational_exception"
      ]
     }
    }
@@ -132479,7 +135340,7 @@
       "not_ok": "a book left on the desk or elsewhere; still held or dropped"
      }
     },
-    "next_in_series__green_on_bookcase": {
+    "no_second_red_book__green_on_bookcase": {
      "move": {
       "book_red": {
        "support": "desk_1/top",
@@ -132491,7 +135352,7 @@
       }
      },
      "conditions": [
-      "referent_clue",
+      "resource_absent",
       "not_in_view"
      ],
      "goal": {
@@ -132567,7 +135428,7 @@
      "since": "v6",
      "note": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
      "v6": {
-      "family": "next_in_series",
+      "family": "no_second_red_book",
       "case": "green_on_bookcase",
       "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
       "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
@@ -132702,7 +135563,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "next_in_series__green_on_bookcase": {
+          "no_second_red_book__green_on_bookcase": {
            "all": [
             [
              "on_any",
@@ -132728,7 +135589,7 @@
             ]
            ]
           },
-          "next_in_series__green_on_tall_shelf": {
+          "no_second_red_book__green_on_tall_shelf": {
            "all": [
             [
              "on_any",
@@ -132762,7 +135623,7 @@
       "not_ok": "no book brought to the desk; the red book left out; still held or dropped"
      }
     },
-    "next_in_series__green_on_tall_shelf": {
+    "no_second_red_book__green_on_tall_shelf": {
      "move": {
       "book_red": {
        "support": "desk_1/top",
@@ -132774,7 +135635,7 @@
       }
      },
      "conditions": [
-      "referent_clue",
+      "resource_absent",
       "not_in_view"
      ],
      "goal": {
@@ -132850,7 +135711,7 @@
      "since": "v6",
      "note": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
      "v6": {
-      "family": "next_in_series",
+      "family": "no_second_red_book",
       "case": "green_on_tall_shelf",
       "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
       "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
@@ -133009,7 +135870,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "next_in_series__green_on_bookcase": {
+          "no_second_red_book__green_on_bookcase": {
            "all": [
             [
              "on_any",
@@ -133035,7 +135896,7 @@
             ]
            ]
           },
-          "next_in_series__green_on_tall_shelf": {
+          "no_second_red_book__green_on_tall_shelf": {
            "all": [
             [
              "on_any",
@@ -133067,6 +135928,2008 @@
        }
       ],
       "not_ok": "no book brought to the desk; the red book left out; still held or dropped"
+     }
+    },
+    "next_in_series__on_bookcase": {
+     "move": {
+      "book_red": {
+       "support": "desk_1/top",
+       "xy": [
+        -1.241,
+        -6.271
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "book_red",
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        "on",
+        "red_book_2",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "blue_book_case",
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_shelf",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+     "instruction_zh": "孩子看完这本红书了，收回他的书架，再把同一套的另一本拿到书桌上，他明天看。",
+     "add": {
+      "blue_book_case": {
+       "asset": "book_blue",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.85,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "green_book_case": {
+       "asset": "book_green",
+       "support": "large_shelf_4/shelf_1",
+       "xy": [
+        3.6,
+        -5.15
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_shelf": {
+       "asset": "paperback_book",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.05,
+        -4.9
+       ],
+       "yaw_deg": 0.0
+      },
+      "red_book_2": {
+       "asset": "book_red",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.12,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "watch": [
+      "book_red",
+      "red_book_2",
+      "blue_book_case",
+      "green_book_case",
+      "paperback_shelf"
+     ],
+     "since": "v6",
+     "note": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+     "v6": {
+      "family": "next_in_series",
+      "case": "on_bookcase",
+      "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+      "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+      "control": "e1_book_ready",
+      "contrast": null,
+      "factor": "where the other book of the set is (seed: the kid's bookcase, the other bookcase, the tall shelf)",
+      "derived_from": "e1_book_ready"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_shelf"
+        ],
+        "support": "bookcase_3/top",
+        "box": [
+         1.96,
+         -4.96,
+         2.14,
+         -4.84
+        ],
+        "dx": [
+         -0.15,
+         0.25
+        ],
+        "dy": [
+         -0.1,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "book_red"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.3247,
+         -6.391,
+         -1.1573,
+         -6.151
+        ],
+        "dx": [
+         -0.07,
+         1.12
+        ],
+        "pick": [
+         "book_red"
+        ]
+       },
+       {
+        "names": [
+         "green_book_case"
+        ],
+        "support": "large_shelf_4/shelf_1",
+        "box": [
+         3.4899,
+         -5.2415,
+         3.7101,
+         -5.0585
+        ],
+        "dx": [
+         -0.59,
+         0.58
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -0.928,
+         -6.2497,
+         -0.688,
+         -6.0823
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_3/top": [
+        [
+         0,
+         1,
+         2.407,
+         -4.683,
+         -4.683,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.793,
+         -5.077,
+         -4.683,
+         0.2
+        ],
+        [
+         1,
+         1,
+         -4.683,
+         1.793,
+         2.407,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the red book back on his bookcase, the other red one on the desk, the other books untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right book on the desk, but the red one on another shelf or other books nudged"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the red one shelved, but a book of another cover brought to the desk"
+       }
+      ],
+      "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped"
+     }
+    },
+    "next_in_series__on_other_bookcase": {
+     "move": {
+      "book_red": {
+       "support": "desk_1/top",
+       "xy": [
+        -1.241,
+        -6.271
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "book_red",
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        "on",
+        "red_book_2",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "blue_book_case",
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_shelf",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+     "instruction_zh": "孩子看完这本红书了，收回他的书架，再把同一套的另一本拿到书桌上，他明天看。",
+     "add": {
+      "blue_book_case": {
+       "asset": "book_blue",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.85,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "green_book_case": {
+       "asset": "book_green",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.12,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_shelf": {
+       "asset": "paperback_book",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.05,
+        -4.9
+       ],
+       "yaw_deg": 0.0
+      },
+      "red_book_2": {
+       "asset": "book_red",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.25,
+        -4.9
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "watch": [
+      "book_red",
+      "red_book_2",
+      "blue_book_case",
+      "green_book_case",
+      "paperback_shelf"
+     ],
+     "since": "v6",
+     "note": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+     "v6": {
+      "family": "next_in_series",
+      "case": "on_other_bookcase",
+      "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+      "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+      "control": "e1_book_ready",
+      "contrast": null,
+      "factor": "where the other book of the set is (seed: the kid's bookcase, the other bookcase, the tall shelf)",
+      "derived_from": "e1_book_ready"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_shelf",
+         "red_book_2"
+        ],
+        "support": "bookcase_3/top",
+        "box": [
+         1.96,
+         -4.9837,
+         2.37,
+         -4.8163
+        ],
+        "dy": [
+         -0.08,
+         0.12
+        ],
+        "pick": [
+         "red_book_2"
+        ],
+        "search": [
+         "red_book_2"
+        ]
+       },
+       {
+        "names": [
+         "book_red"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.3247,
+         -6.391,
+         -1.1573,
+         -6.151
+        ],
+        "dx": [
+         -0.07,
+         1.12
+        ],
+        "pick": [
+         "book_red"
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -0.928,
+         -6.2497,
+         -0.688,
+         -6.0823
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_3/top": [
+        [
+         0,
+         1,
+         2.407,
+         -4.683,
+         -4.683,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.793,
+         -5.077,
+         -4.683,
+         0.2
+        ],
+        [
+         1,
+         1,
+         -4.683,
+         1.793,
+         2.407,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [
+        "red_book_2"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the red book back on his bookcase, the other red one on the desk, the other books untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right book on the desk, but the red one on another shelf or other books nudged"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the red one shelved, but a book of another cover brought to the desk"
+       }
+      ],
+      "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped"
+     }
+    },
+    "next_in_series__on_tall_shelf": {
+     "move": {
+      "book_red": {
+       "support": "desk_1/top",
+       "xy": [
+        -1.241,
+        -6.271
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "book_red",
+        [
+         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
+        ]
+       ],
+       [
+        "on",
+        "red_book_2",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "blue_book_case",
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_shelf",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+     "instruction_zh": "孩子看完这本红书了，收回他的书架，再把同一套的另一本拿到书桌上，他明天看。",
+     "add": {
+      "blue_book_case": {
+       "asset": "book_blue",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.85,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "green_book_case": {
+       "asset": "book_green",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.12,
+        -0.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_shelf": {
+       "asset": "paperback_book",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.05,
+        -4.9
+       ],
+       "yaw_deg": 0.0
+      },
+      "red_book_2": {
+       "asset": "book_red",
+       "support": "large_shelf_4/shelf_1",
+       "xy": [
+        3.6,
+        -5.15
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "watch": [
+      "book_red",
+      "red_book_2",
+      "blue_book_case",
+      "green_book_case",
+      "paperback_shelf"
+     ],
+     "since": "v6",
+     "note": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+     "v6": {
+      "family": "next_in_series",
+      "case": "on_tall_shelf",
+      "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
+      "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+      "control": "e1_book_ready",
+      "contrast": null,
+      "factor": "where the other book of the set is (seed: the kid's bookcase, the other bookcase, the tall shelf)",
+      "derived_from": "e1_book_ready"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_shelf"
+        ],
+        "support": "bookcase_3/top",
+        "box": [
+         1.96,
+         -4.96,
+         2.14,
+         -4.84
+        ],
+        "dx": [
+         -0.15,
+         0.25
+        ],
+        "dy": [
+         -0.1,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "book_red"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -1.3247,
+         -6.391,
+         -1.1573,
+         -6.151
+        ],
+        "dx": [
+         -0.07,
+         1.12
+        ],
+        "pick": [
+         "book_red"
+        ]
+       },
+       {
+        "names": [
+         "red_book_2"
+        ],
+        "support": "large_shelf_4/shelf_1",
+        "box": [
+         3.48,
+         -5.2337,
+         3.72,
+         -5.0663
+        ],
+        "dx": [
+         -0.59,
+         0.57
+        ],
+        "dy": [
+         -0.03,
+         0.04
+        ],
+        "pick": [
+         "red_book_2"
+        ],
+        "search": [
+         "red_book_2"
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -0.928,
+         -6.2497,
+         -0.688,
+         -6.0823
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_3/top": [
+        [
+         0,
+         1,
+         2.407,
+         -4.683,
+         -4.683,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.793,
+         -5.077,
+         -4.683,
+         0.2
+        ],
+        [
+         1,
+         1,
+         -4.683,
+         1.793,
+         2.407,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [
+        "red_book_2"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the red book back on his bookcase, the other red one on the desk, the other books untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right book on the desk, but the red one on another shelf or other books nudged"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the red one shelved, but a book of another cover brought to the desk"
+       }
+      ],
+      "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped"
      }
     }
    },
@@ -133100,8 +137963,11 @@
     "whose_book__blue_book": "v6_whose_book__blue_book",
     "whose_book__paperback": "v6_whose_book__paperback",
     "whose_book__both": "v6_whose_book__both",
-    "next_in_series__green_on_bookcase": "v6_next_in_series__green_on_bookcase",
-    "next_in_series__green_on_tall_shelf": "v6_next_in_series__green_on_tall_shelf"
+    "no_second_red_book__green_on_bookcase": "v6_no_second_red_book__green_on_bookcase",
+    "no_second_red_book__green_on_tall_shelf": "v6_no_second_red_book__green_on_tall_shelf",
+    "next_in_series__on_bookcase": "v6_next_in_series__on_bookcase",
+    "next_in_series__on_other_bookcase": "v6_next_in_series__on_other_bookcase",
+    "next_in_series__on_tall_shelf": "v6_next_in_series__on_tall_shelf"
    },
    "routes": {
     "nominal": {
@@ -133642,7 +138508,7 @@
      "kind": "v6_oracle",
      "variant": "whose_book__both"
     },
-    "v6_next_in_series__green_on_bookcase": {
+    "v6_no_second_red_book__green_on_bookcase": {
      "steps": [
       {
        "skill": "navigate",
@@ -133722,9 +138588,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "next_in_series__green_on_bookcase"
+     "variant": "no_second_red_book__green_on_bookcase"
     },
-    "v6_next_in_series__green_on_tall_shelf": {
+    "v6_no_second_red_book__green_on_tall_shelf": {
      "steps": [
       {
        "skill": "navigate",
@@ -133817,7 +138683,279 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "next_in_series__green_on_tall_shelf"
+     "variant": "no_second_red_book__green_on_tall_shelf"
+    },
+    "v6_next_in_series__on_bookcase": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.0,
+         -0.55
+        ]
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "red_book_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "red_book_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "red_book_2",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.808,
+         -6.166
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "next_in_series__on_bookcase"
+    },
+    "v6_next_in_series__on_other_bookcase": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.0,
+         -0.55
+        ]
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "red_book_2",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_3/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "red_book_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "red_book_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "red_book_2",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.808,
+         -6.166
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "next_in_series__on_other_bookcase"
+    },
+    "v6_next_in_series__on_tall_shelf": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.0,
+         -0.55
+        ]
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "red_book_2",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "large_shelf_4/shelf_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "red_book_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "red_book_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "red_book_2",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.808,
+         -6.166
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "next_in_series__on_tall_shelf"
     }
    },
    "vary": {
@@ -134794,25 +139932,25 @@
       "not_ok": "a book left on the desk or elsewhere; still held or dropped"
      }
     },
-    "next_in_series": {
+    "no_second_red_book": {
      "origin": "v6",
      "control": "e1_book_ready",
      "layouts": [
-      "next_in_series__green_on_bookcase",
-      "next_in_series__green_on_tall_shelf"
+      "no_second_red_book__green_on_bookcase",
+      "no_second_red_book__green_on_tall_shelf"
      ],
      "factor": "where the kid's green book is (seed: his bookcase, or the tall shelf in the bedroom)",
      "seeds": {
-      "10": "next_in_series__green_on_bookcase",
-      "11": "next_in_series__green_on_bookcase",
-      "12": "next_in_series__green_on_tall_shelf",
-      "13": "next_in_series__green_on_tall_shelf",
-      "14": "next_in_series__green_on_bookcase",
-      "15": "next_in_series__green_on_tall_shelf",
-      "16": "next_in_series__green_on_tall_shelf",
-      "17": "next_in_series__green_on_bookcase",
-      "18": "next_in_series__green_on_tall_shelf",
-      "19": "next_in_series__green_on_bookcase"
+      "10": "no_second_red_book__green_on_bookcase",
+      "11": "no_second_red_book__green_on_tall_shelf",
+      "12": "no_second_red_book__green_on_bookcase",
+      "13": "no_second_red_book__green_on_tall_shelf",
+      "14": "no_second_red_book__green_on_tall_shelf",
+      "15": "no_second_red_book__green_on_tall_shelf",
+      "16": "no_second_red_book__green_on_tall_shelf",
+      "17": "no_second_red_book__green_on_bookcase",
+      "18": "no_second_red_book__green_on_bookcase",
+      "19": "no_second_red_book__green_on_bookcase"
      },
      "scoring": {
       "D": 1,
@@ -134828,7 +139966,7 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "next_in_series__green_on_bookcase": {
+          "no_second_red_book__green_on_bookcase": {
            "all": [
             [
              "on_any",
@@ -134854,7 +139992,7 @@
             ]
            ]
           },
-          "next_in_series__green_on_tall_shelf": {
+          "no_second_red_book__green_on_tall_shelf": {
            "all": [
             [
              "on_any",
@@ -134886,6 +140024,460 @@
        }
       ],
       "not_ok": "no book brought to the desk; the red book left out; still held or dropped"
+     }
+    },
+    "next_in_series": {
+     "origin": "v6",
+     "control": "e1_book_ready",
+     "layouts": [
+      "next_in_series__on_bookcase",
+      "next_in_series__on_other_bookcase",
+      "next_in_series__on_tall_shelf"
+     ],
+     "factor": "where the other book of the set is (seed: the kid's bookcase, the other bookcase, the tall shelf)",
+     "seeds": {
+      "10": "next_in_series__on_bookcase",
+      "11": "next_in_series__on_tall_shelf",
+      "12": "next_in_series__on_bookcase",
+      "13": "next_in_series__on_other_bookcase",
+      "14": "next_in_series__on_tall_shelf",
+      "15": "next_in_series__on_tall_shelf",
+      "16": "next_in_series__on_other_bookcase",
+      "17": "next_in_series__on_other_bookcase",
+      "18": "next_in_series__on_bookcase",
+      "19": "next_in_series__on_bookcase"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the red book back on his bookcase, the other red one on the desk, the other books untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on",
+             "red_book_2",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the right book on the desk, but the red one on another shelf or other books nudged"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "next_in_series__on_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_other_bookcase": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          },
+          "next_in_series__on_tall_shelf": {
+           "all": [
+            [
+             "on_any",
+             "book_red",
+             [
+              "bookcase_1/top",
+              "bookcase_1/shelf_1",
+              "bookcase_1/shelf_0",
+              "bookcase_2/top",
+              "bookcase_2/shelf_1",
+              "bookcase_2/shelf_0",
+              "bookcase_3/top",
+              "bookcase_3/shelf_1",
+              "bookcase_3/shelf_0",
+              "bookcase_4/top",
+              "bookcase_4/shelf_1",
+              "bookcase_4/shelf_0",
+              "large_shelf_1/shelf_0",
+              "large_shelf_1/shelf_1",
+              "large_shelf_1/shelf_2",
+              "large_shelf_1/shelf_3",
+              "large_shelf_1/shelf_4",
+              "large_shelf_2/shelf_0",
+              "large_shelf_2/shelf_1",
+              "large_shelf_2/shelf_2",
+              "large_shelf_2/shelf_3",
+              "large_shelf_3/shelf_0",
+              "large_shelf_3/shelf_1",
+              "large_shelf_3/shelf_2",
+              "large_shelf_3/shelf_3",
+              "large_shelf_4/shelf_0",
+              "large_shelf_4/shelf_1",
+              "large_shelf_4/shelf_2",
+              "large_shelf_4/shelf_3",
+              "large_shelf_4/shelf_4",
+              "large_shelf_5/shelf_0",
+              "large_shelf_5/shelf_1",
+              "large_shelf_5/shelf_2",
+              "large_shelf_5/shelf_3",
+              "large_shelf_6/shelf_0",
+              "large_shelf_6/shelf_1",
+              "large_shelf_6/shelf_2",
+              "large_shelf_6/shelf_3",
+              "large_shelf_6/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "on",
+              "blue_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "green_book_case",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "paperback_shelf",
+              "desk_1/top"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the red one shelved, but a book of another cover brought to the desk"
+       }
+      ],
+      "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped"
      }
     }
    },
@@ -134938,6 +140530,14 @@
      "longer": [
       "referent_clue",
       "storage_place"
+     ]
+    },
+    "no_second_red_book": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "resource_absent"
      ]
     },
     "next_in_series": {
