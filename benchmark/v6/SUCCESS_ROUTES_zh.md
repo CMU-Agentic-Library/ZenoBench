@@ -6237,7 +6237,7 @@
 **参考调用顺序**：
 
 - 摆法 `east`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_2/top)` → 6. `look(target=mattress_2/top)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_1/top)` → 6. `look(target=mattress_1/top)` → 7. `navigate(destination=cell_shelf_2/top)` → 8. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.491, -10.846])`
+- 摆法 `south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_1/top)` → 6. `look(target=mattress_1/top)` → 7. `navigate(destination=cell_shelf_2/top)` → 8. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.333, -11.897])`
 
 ### where_his_cup_is（Task）
 

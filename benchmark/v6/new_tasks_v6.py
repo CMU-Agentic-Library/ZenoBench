@@ -565,6 +565,8 @@ def t25():
 
 
 # ================================================================== T26 the kid's things back to his room
+# 11-17: bed_2 moved 0.6 m east and cell_shelf_2 into bedroom_0_0's south-west corner (tools/relocate_furniture.py,
+# the room was closed off from its west door); the basket, the teddy and the cup spot below follow
 def t26():
     CAR, BASK = "living_car", "kids_basket"
     room = {BASK: floor("storage_basket", 0.89, -1.93), "kids_shelf_book": on("book_blue", "bookcase_2/top", 0.90, -0.43)}
@@ -623,7 +625,7 @@ def t26():
             {c: dict(add={CAR: floor("toy_car", 4.36, 1.68), BASK: floor("storage_basket", *xy)},
                      watch=[CAR, BASK], route=[nav(CAR), pick(CAR), S("search", object=BASK, region=r), nav(BASK),
                                                 place(CAR, BASK)])
-             for c, xy, r in (("room_east", (0.89, -1.93), "bedroom_0_1"), ("room_south", (4.30, -9.80), "bedroom_0_0"))}),
+             for c, xy, r in (("room_east", (0.89, -1.93), "bedroom_0_1"), ("room_south", (5.25, -9.80), "bedroom_0_0"))}),
     }
     return t, fams
 
@@ -703,10 +705,10 @@ def t28():
             {"east": dict(add={KC: on("plastic_cup", COUNTER, -0.20, 7.60), **BEAR},
                           route=[nav(KC), pick(KC), look("mattress_2/top"), nav(side), place(KC, side, [2.10, -4.88])]),
              "south": dict(add={KC: on("plastic_cup", COUNTER, -0.20, 7.60),
-                                "bed_bear": on("teddy_bear", "mattress_2/top", 3.30, -9.80)},
+                                "bed_bear": on("teddy_bear", "mattress_2/top", 3.90, -9.80)},
                            goal={"all": [["on", KC, "cell_shelf_2/top"], ["upright", KC], H]},
                            route=[nav(KC), pick(KC), look("mattress_1/top"), nav("cell_shelf_2/top"),
-                                  place(KC, "cell_shelf_2/top", [1.42, -10.80])])}),
+                                  place(KC, "cell_shelf_2/top", [1.30, -11.90])])}),
         "where_his_cup_is": fam(
             "cup_on_counter", ["referent_clue", "item_put_away", "dependent_decisions"],
             "whether his cup is on the counter among the others or put away in the low cabinet (seed)",
