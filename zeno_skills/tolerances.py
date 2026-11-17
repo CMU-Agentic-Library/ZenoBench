@@ -16,8 +16,8 @@ thresholds, what a skill's hooks judge a pick / place / door by, and the executi
 Not here: execution parameters (speeds, smooth, steps_per_wp: Segment.info), search budgets and
 costs (park_search, skills), the task predicates' thresholds (predicates.py: the evaluation, not the
 motion), and the old code's own thresholds (skills, policies) -- those go with the migration of what
-uses them (the perception skills': 11-16, the last section -- with their sweep's head angles and ticks: a look's
-plan takes them as aims, there is no Segment.info to hold them yet)."""
+uses them (the perception skills': 11-16, the exploration section -- with their sweep's head angles and ticks: a
+look's plan takes them as aims, there is no Segment.info to hold them yet; visual prompting's: the last section)."""
 
 from __future__ import annotations
 
@@ -276,3 +276,39 @@ SEARCH_AIM_SPACING_M = _t("SEARCH_AIM_SPACING_M", 0.6, "m", "chosen (5e962d8f): 
                           "at its end 52 deg off the axis)")
 COUNT_YAWS = _t("COUNT_YAWS", (-0.9, -0.3, 0.3, 0.9), "rad", "inherited (extra.CountCategoryPolicy's), unmeasured: "
                 "the head yaws count looks along, at pitch 0.25 rad")
+
+# --------------------------------------------------------------- visual prompting for place (visual_prompt: mark_spots, view_support)
+SPOT_BESIDE_BAND = _t("SPOT_BESIDE_BAND", 0.04, "m", "chosen (11-16): the spots beside an object are its nearest ring "
+                      "of free spots -- the held object put there (a square of its longer side) leaves at most this "
+                      "much more gap to the object's footprint than the nearest free spot does (free_spots keeps 7 cm "
+                      "and the any-yaw radius: a 20 cm book is >= 10.4 cm off its neighbour, 11-16 T01 had no spot "
+                      "beside anything under a fixed 10 cm)...")
+SPOT_BESIDE_MAX = _t("SPOT_BESIDE_MAX", 0.15, "m", "chosen (11-16): ...and at most this gap (the v6 near_any goals' "
+                     "15 cm: farther is not beside it)")
+MAX_SPOTS = _t("MAX_SPOTS", 12, "1", "chosen (11-16): spots numbered on one image -- one beside each object on the "
+               "support first (a dining table holds about ten), then a second side, then open space (6 before)")
+SPOT_MIN_SEP = _t("SPOT_MIN_SEP", 0.12, "m", "chosen (11-15): two spots at least this far apart -- an open-space spot "
+                  "also the held object's longer side; a spot beside an object not (11-16 T01: with a 20 cm book's "
+                  "20 cm the crowded bowl-and-mug seat had no spot left beside it)")
+SPOT_PX_SEP = _t("SPOT_PX_SEP", 2.4, "disc radii", "chosen (11-16): two discs' centres at least this many radii apart "
+                 "on the image (11-15 T01: two discs drawn one over the other at the far end of the table)")
+SPOT_CELL = _t("SPOT_CELL", 0.06, "m", "chosen (11-15): the open-space spots come from free spots thinned to one per "
+               "cell this wide (free_spots' best sit in the corner nearest the robot: 11-15 T20)")
+SPOT_EDGE_FRAC = _t("SPOT_EDGE_FRAC", 0.04, "image width", "chosen (11-15): a spot this close to the image border is "
+                    "not drawn")
+VIEW_GRID_N = _t("VIEW_GRID_N", 5, "1", "chosen (11-15): samples per side of a support's top a view is judged on "
+                 "(corners included)")
+VIEW_FRUSTUM_MARGIN = _t("VIEW_FRUSTUM_MARGIN", 0.92, "1", "chosen (11-15): a sample is in view inside this fraction "
+                         "of the frustum's half-angle tangents (a corner on the border is half cut off)")
+VIEW_AIM_FRACS = _t("VIEW_AIM_FRACS", (0.5, 0.3, 0.7), "1", "chosen (11-15): the head aims at the support's centre or "
+                    "nearer / farther along the view line by this fraction of its half-diagonal")
+VIEW_RES_MIN = _t("VIEW_RES_MIN", 0.15, "half image widths / m", "chosen (11-16): a sample of a support's top counts "
+                  "as seen when a view resolves it at least this finely (visual_prompt.resolution: with the camera "
+                  "0.3 m above a table, within about 1.9 m; 11-16 T21: a spot 2.9 m off at 0.09 looked next to the "
+                  "kid's cup and was 29 cm from it)")
+VIEW_MAX = _t("VIEW_MAX", 2, "1", "chosen (11-16, the user: two images): view_support takes at most this many views of "
+              "one support (a long table: one per half)")
+VIEW_MIN_GAIN = _t("VIEW_MIN_GAIN", 0.2, "1", "chosen (11-16): a further view is taken only when it sees at least this "
+                   "fraction of the support's samples no view so far has seen")
+VIEW_KEEP_FRAC = _t("VIEW_KEEP_FRAC", 0.8, "1", "chosen (11-16): the first view is taken where the robot stands when "
+                    "that sees at least this fraction of what the best first view would (no drive for a little more)")

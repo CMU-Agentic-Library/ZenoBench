@@ -295,11 +295,12 @@ class Episode:
         out = []
         # (camera, file name suffix, frame, extra fields of the entry)
         shots = [(name, name, frames[name], {}) for name in self.cameras if name in frames]
-        # a visual prompt drawn by the last call (mark_spots: numbered spots on the head frame it was
-        # taken from), once, after the plain frames
-        vp = (getattr(self.rig, "memory", None) or {}).pop("visual_prompt", None)
-        if vp is not None and vp["camera"] in self.cameras:
-            shots.append((vp["camera"], f"{vp['camera']}_{vp['overlay']}", vp["image"], {"overlay": vp["overlay"]}))
+        # the visual prompts drawn by the last call (mark_spots: numbered spots on each head frame its views
+        # took), once, after the plain frames
+        for vp in (getattr(self.rig, "memory", None) or {}).pop("visual_prompt", None) or []:
+            if vp["camera"] in self.cameras:
+                shots.append((vp["camera"], f"{vp['camera']}_{vp['overlay']}{vp['view']}", vp["image"],
+                              {"overlay": vp["overlay"], "view": vp["view"]}))
         for camera, suffix, frame, extra in shots:
             img = Image.fromarray(frame)
             if encode == "path" and self.image_dir is not None:

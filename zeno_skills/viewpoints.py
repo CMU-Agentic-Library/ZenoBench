@@ -13,7 +13,8 @@ observation-limited benchmark has not shown the robot.
   base_reachable field;
 * predicted / cover_views: which targets a viewpoint sees, and the fewest viewpoints that see them all
   (explore_room);
-* view_coverage / best_view: how much of a support's top one frame holds (view_support, mark_spots) --
+* support_views / view_resolution: the one or two views that see a support's top clearly, and how finely
+  one view sees each part of it (view_support, mark_spots) --
   defined in visual_prompt, beside the image geometry they share with the spots, and only re-exported here.
 """
 
@@ -25,7 +26,7 @@ import numpy as np
 
 from .perception import in_view_from
 from .predicates import entity_kind, entity_point
-from .visual_prompt import best_view, view_coverage  # noqa: F401  (re-exported: one module to look in)
+from .visual_prompt import support_views, view_resolution  # noqa: F401  (re-exported: one module to look in)
 
 IN_VIEW_KINDS = ("object", "support", "furniture")   # navigate prefers stand-offs these are in view from
 

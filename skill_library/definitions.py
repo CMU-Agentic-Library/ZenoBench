@@ -1469,17 +1469,20 @@ skill("explore_furniture", "furniture", "Explore a piece of furniture",
 G = "perception_and_gesture"
 
 skill("mark_spots", "support", "Mark free spots on a support",
-      "Show where the held object can go on a support surface: drive to a stand-off pose from which the whole "
-      "surface is in one head camera frame (the pose the robot stands at is kept when it already is), aim the head "
-      "at it, and number up to six spread-out free spots on that head image. Every spot fits the object at any "
-      "turn with room left to its neighbours and is in view. The numbered image comes with the next observation "
-      "(images entry with overlay \"place_spots\"); disc n is spots[n-1]. Nothing is placed: place the object "
+      "Show where the held object can go on a support surface: see the surface clearly from one or two stand-off "
+      "poses (one where the robot stands when it does about as well; a long table: one view per half), standing "
+      "up with the head aimed at it, and number up to twelve free spots on those head images, one set of numbers "
+      "over all of them: one beside each object on the surface first, then another side of each, then open "
+      "space. Every spot fits the object at any "
+      "turn with room left to its neighbours and is in view. The numbered images come with the next observation "
+      "(one images entry per view, overlay \"place_spots\" and view k); disc n is spots[n-1] on every image it is "
+      "drawn on. Nothing is placed: place the object "
       "with place(object, receptacle=support, hint_xy=<the chosen spot's xy>).",
       group=G,
       inputs={"object": I("object_ref", "The right-held object the spots are for (its footprint)."),
               "support": I("support_ref", "The table, desk, counter or shelf surface to mark.")},
       outputs={"spots": O("xy_list", "Free spots [x, y] in metres; spot n is the disc numbered n on the image."),
-               "coverage": O("number", "Fraction of the surface in the head camera frame (1 = all of it).")},
+               "coverage": O("number", "Fraction of the surface seen clearly in the views (1 = all of it).")},
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("in_view", target="$support")],
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
