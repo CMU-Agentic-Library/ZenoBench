@@ -2730,6 +2730,24 @@
 - 摆法 `kid_desk`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kids_can, region=living_room_0_1)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 - 摆法 `kid_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=soda_can, region=living_room_0_1)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
+### trash_moved（Task）
+
+**情况**：罐子在岛台上，但垃圾桶今天不在岛台旁边的老地方 → 拿起罐子去找垃圾桶（找的是目的地，不是东西）
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `soda_can` 在 `trash_can` 里
+  - 手里空着
+- **不行（0）**：没找到垃圾桶；扔进别的箱子；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=dining_room_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `bathroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=bathroom_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+
 ### trash_full（Task）
 
 **情况**：罐子在岛台上，垃圾桶在原处但已塞满到桶口，放不进 → 扔进回收箱（里面有用过的塑料杯）（替换）；硬塞在满垃圾桶上算最不好
@@ -4329,6 +4347,8 @@
 
 ### juice_finished（Task）
 
+**情况**：果汁喝完了，空瓶在垃圾桶里 → 拿电视柜上的汽水（替换：缺失）；拿空瓶算最不好
+
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -4348,6 +4368,8 @@
 1. `navigate(destination=kitchen_trash)` → 2. `look(target=kitchen_trash)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_drink)` → 6. `pick(object=soda_drink)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=soda_drink, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ### juice_in_use（Task）
+
+**情况**：果汁在爷爷座位旁，他正在喝 → 拿汽水（替换：被占用）；拿爷爷的果汁算最不好
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -4841,6 +4863,30 @@
 
 - 摆法 `kid_north`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 7.355])`
 - 摆法 `kid_south`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 6.495])`
+
+### tissue_in_use（Task）
+
+**情况**：纸巾盒在西边餐桌爷爷的座位旁，他正在用 → 拿岛台上的干海绵（替换：被占用）；拿走爷爷的纸巾算最不好
+
+**指令**：餐桌上洒了点汤，拿个能擦的用具过去。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `spare_sponge` 在 `dining_table_2/top` 上
+  - `tissue` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `tissue` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：没拿东西到餐桌；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `search(object=tissue, region=dining_room_0_0)` → 2. `look(target=dining_table_1/top)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=spare_sponge)` → 5. `pick(object=spare_sponge)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ---
 

@@ -2732,6 +2732,76 @@
 {
 "task": "T10_trash_the_can",
 "seed": 10,
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 11,
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 12,
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 13,
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 14,
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 15,
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 16,
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 17,
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 18,
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 19,
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
 "variant": "trash_full__living",
 "route": "v6_trash_full__living",
 "family": "trash_full"
@@ -5528,6 +5598,76 @@
 "variant": "the_kids_side__kid_north",
 "route": "v6_the_kids_side__kid_north",
 "family": "the_kids_side"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 10,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 11,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 12,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 13,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 14,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 15,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 16,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 17,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 18,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
+},
+{
+"task": "T21_bring_tissues",
+"seed": 19,
+"variant": "tissue_in_use",
+"route": "v6_tissue_in_use",
+"family": "tissue_in_use"
 },
 {
 "task": "T22_put_away_shopping",

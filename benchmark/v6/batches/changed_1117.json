@@ -520,5 +520,14 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T21_bring_tissues",
+  "seed": 10,
+  "variant": "tissue_in_use",
+  "route": "v6_tissue_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

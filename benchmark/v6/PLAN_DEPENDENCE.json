@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 253,
-   "variants": 132,
+   "layouts": 256,
+   "variants": 134,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 54,
    "goal_not_met": 93,
-   "not_observed": 61,
+   "not_observed": 64,
    "resource_missing": 41,
    "argument_mismatch": 4
   },
@@ -54,7 +54,7 @@
   "routes_between_layouts": {
    "passes": 105,
    "goal_not_met": 129,
-   "not_observed": 20,
+   "not_observed": 22,
    "argument_mismatch": 94,
    "resource_missing": 70
   },
@@ -76,7 +76,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 77,
+  "multi_layout_variants": 78,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -93,6 +93,7 @@
    "T07 two_portions",
    "T08 return_sponge_home",
    "T10 after_dinner_clear",
+   "T10 trash_moved",
    "T10 x6_gd_can_put_away",
    "T11 fruit_plate_for_guests",
    "T12 bedtime_toy",
@@ -273,6 +274,9 @@
     "adult_mug",
     "kid_bowl",
     "kid_cup"
+   ],
+   "T21 tissue_in_use": [
+    "spare_sponge"
    ],
    "T22 by_kind": [
     "bought_apple",
@@ -2756,6 +2760,8 @@
    },
    "other_variants_passing": [
     "can_in_dining_room__alt_tv_stand_2",
+    "trash_moved__dining",
+    "trash_moved__bathroom",
     "x6_gd_can_put_away__in_cabinet",
     "x6_gd_can_put_away__in_fridge"
    ]
@@ -2772,6 +2778,32 @@
    "control_route": "not_observed",
    "other_layouts": {
     "keep_kids_can__kid_desk": "argument_mismatch"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "trash_moved",
+   "layout": "trash_moved__dining",
+   "steps": 9,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "trash_moved__bathroom": "not_observed"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "trash_moved",
+   "layout": "trash_moved__bathroom",
+   "steps": 9,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "trash_moved__dining": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -3870,7 +3902,9 @@
    "geometric_atoms": [],
    "control_route": "resource_missing",
    "other_layouts": {},
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "tissue_in_use"
+   ]
   },
   {
    "task": "T21_bring_tissues",
@@ -3923,6 +3957,19 @@
     "the_kids_side__kid_north": "goal_not_met"
    },
    "other_variants_passing": []
+  },
+  {
+   "task": "T21_bring_tissues",
+   "variant": "tissue_in_use",
+   "layout": "tissue_in_use",
+   "steps": 7,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {},
+   "other_variants_passing": [
+    "no_tissue"
+   ]
   },
   {
    "task": "T22_put_away_shopping",
@@ -5185,6 +5232,16 @@
    "candidates": [
     "keep_kids_can__kid_desk",
     "keep_kids_can__kid_island",
+    "can_on_island"
+   ],
+   "passes_all": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "trash_moved",
+   "candidates": [
+    "trash_moved__dining",
+    "trash_moved__bathroom",
     "can_on_island"
    ],
    "passes_all": []
@@ -7339,6 +7396,19 @@
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "argument_mismatch",
    "hidden_state_branch": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "trash_moved",
+   "layouts": [
+    "trash_moved__dining",
+    "trash_moved__bathroom"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "not_observed",
+   "hidden_state_branch": true
   },
   {
    "task": "T10_trash_the_can",

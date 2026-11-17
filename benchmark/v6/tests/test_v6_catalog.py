@@ -311,8 +311,9 @@ def test_new_base_tasks():
                       for i in TASKS[tid]["v6_variants"].values())
         cats = sorted(x["category"] for x in tr.values())
         assert cats.count("control") == 1 and "action" not in cats, tid
-        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review)
-        assert 4 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid
+        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review);
+        # 11-17: substitution variants are added next to the old ones (never replacing them), up to two more
+        assert 4 <= len(cats) <= 8 + chained and cats.count("action_task") <= chained, tid
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

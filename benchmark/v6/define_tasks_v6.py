@@ -1430,7 +1430,7 @@ def T10(t):
                                   S("search", object=TRASH, region=region), nav(TRASH),
                                   S("hover", object=CAN, target=TRASH), S("drop", object=CAN, container=TRASH)])
                    for c, (pose, region) in moved.items()}
-    # trash_full (11-17, substitution; replaces trash_moved, a plain search): the trash can is in its place but packed
+    # trash_full (11-17, substitution; next to trash_moved, a plain search): the trash can is in its place but packed
     # to the rim (a snack carton, two cans, a tissue box, a lunch box on top); the recycling bin with a used plastic
     # cup in it (seed: on the TV stand or on the dining table) takes the can instead
     T0 = t["scene"]["move"][TRASH]["xy"]
@@ -1513,6 +1513,14 @@ def T10(t):
             rationale="the instruction excludes one can by a clue: tell the kid's can from what stands around it "
                       "and throw out only the other one (throwing the kid's out fails)",
             cases=kid_cases),
+        "trash_moved": dict(
+            base="can_on_island", control="can_on_island", conditions=["destination_unnamed", "not_in_view"],
+            watch=[CAN, TRASH],
+            factor="where the trash can is today (seed: the dining room or the bathroom)",
+            challenge="the can is on the island, but the trash can is not in its usual place by the island: it "
+                      "stands in the dining room or in the bathroom, out of view",
+            rationale="the destination, not the item, has to be found: take the can and look for the trash can",
+            cases=moved_cases),
         "trash_full": dict(
             base="can_on_island", control="can_on_island", conditions=["destination_occupied", "not_in_view"],
             goal={"all": [["inside", CAN, REC], *junk_stay, ["hand_empty", "right"]]},

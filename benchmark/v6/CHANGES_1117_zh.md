@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，58 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，59 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -40,7 +40,7 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T05 | `pens_per_notebook`<br>two_short: 10,11,15-17<br>one_short: 12-14,18,19 | 3 本作业本；钢笔只有 1 或 2 支（seed），其余用铅笔补 | 逐支拿到书桌前沿每本本子旁 | 低 | 未跑 |
 | T05 | `errand_combined`<br>pencil_dining: 10,12,13,15,18<br>pencil_bedroom: 11,14,16,17,19 | 没有钢笔，用铅笔；顺路带马克杯回厨房 | 铅笔 → 书桌，马克杯 → 厨房台面 | 低 | 未跑 |
 | T06 | `both_spots_full`（原 display_row）<br>block_at_hand: 10,11,13-15<br>block_away: 12,16-19 | 靠墙矮柜顶（4 件）和电视柜顶（6 件）摆满；积木放 4 号矮柜顶 (1.40, 0.45) | 看两处 → 积木到 4 号柜 | 杂物开局是否稳定 | 未跑 |
-| T10 | `trash_full`（原 trash_moved）<br>living: 10,11,16-18<br>dining: 12-15,19 | 垃圾桶里叠了零食盒、两个罐、纸巾盒、饭盒到桶口；罐子丢进回收箱（宽收纳箱，内有塑料杯，在电视柜 / 餐桌） | 拿罐 → 看垃圾桶 → 找回收箱 → 丢进去 | **垃圾桶里叠放的东西开局是否稳定**（z 0.037–0.222） | 未跑 |
+| T10 | `trash_full`（新加；trash_moved 已加回，不变）<br>living: 10,11,16-18<br>dining: 12-15,19 | 垃圾桶里叠了零食盒、两个罐、纸巾盒、饭盒到桶口；罐子丢进回收箱（宽收纳箱，内有塑料杯，在电视柜 / 餐桌） | 拿罐 → 看垃圾桶 → 找回收箱 → 丢进去 | **垃圾桶里叠放的东西开局是否稳定**（z 0.037–0.222） | 未跑 |
 | T11 | `no_apple_for_kid`（原 leave_one_for_kid）<br>全部 seed 同一布局 | 没有苹果，桌上香蕉和橙子，指令说孩子不爱吃橙子 | 香蕉 → 书桌 | 低 | 未跑 |
 | T11 | `fruit_plate_for_guests`<br>tray_by_table: 10,11,13,17,19<br>tray_in_study: 12,14-16,18 | 没有托盘，用小收纳盒；先把空盒放电视柜再装苹果、橙子 | 盒子 → 电视柜 → 水果逐个放进盒 | 拿小收纳盒（rim_pinch_rect）、往盒里放水果 | 未跑 |
 | T12 | `bedtime_toy`（替换 v5 duck_in_study）<br>teddy_there: 10,12,14,15,19<br>no_teddy: 11,13,16-18 | 要能抱着睡的玩具；有熊拿熊，没熊拿鸭子 | 电视柜 → 床头书架 (2.10, -4.78) | 低（T26 bear_to_bed 同路线） | 未跑 |
@@ -72,6 +72,7 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 
 | T20 | `juice_finished`（新加） | 果汁瓶放进厨房旁新加的垃圾桶 (9.05, 1.12)，z 0.037；汽水罐在电视柜 (7.30, 0.36)。T20 指令改成“早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放” | 看垃圾桶 → 汽水 → 早餐桌 | 瓶子在垃圾桶里开局是否稳定 | 未跑 |
 | T20 | `juice_in_use`（新加） | 果汁瓶在西边餐桌 (-7.70, 8.05)，爷爷的杯子和碗旁；汽水在电视柜 | 看西边餐桌 → 汽水 → 早餐桌 | 低 | 未跑 |
+| T21 | `tissue_in_use`（新加） | 纸巾盒在西边餐桌 (-7.68, 7.95) 爷爷座位旁；干海绵在岛台 (8.00, 1.80)；汤在东边餐桌 | 看西边餐桌 → 岛台海绵 → 东边餐桌 | 低 | 未跑 |
 
 ## 我这边的约定
 

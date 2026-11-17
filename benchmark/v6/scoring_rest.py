@@ -121,7 +121,9 @@ R[("T10", "can_on_island")] = d0("the can in the trash can, the hand empty", _T1
     sit="易拉罐在岛台上（对照）", good="易拉罐进垃圾桶", no="易拉罐没进垃圾桶（放别的箱子或没扔）；还拿着或掉了"))
 R[("T10", "can_in_dining_room")] = d0("the can found and in the trash can", _T10_NO, dict(
     sit="易拉罐在隔壁餐桌或电视柜，看不到，要找", good="找到并扔进垃圾桶", no="没找到；没进垃圾桶；还拿着或掉了"))
-# T10 trash_full (11-17, substitution; replaces trash_moved): the trash can packed to the rim, the recycling bin
+R[("T10", "trash_moved")] = d0("the trash can found (dining room or bathroom) and the can in it", _T10_NO, dict(
+    sit="垃圾桶不在平时的位置（在餐厅或卫生间），要找", good="找到垃圾桶并扔进去", no="没找到垃圾桶；扔进别的箱子；还拿着或掉了"))
+# T10 trash_full (11-17, substitution; next to trash_moved): the trash can packed to the rim, the recycling bin
 # (a used plastic cup in it) takes the can; pressed onto the full trash can (its contents left in) is the worst
 R[("T10", "trash_full")] = tiers(
     worst=lambda g, lid: {"all": [*atoms(g, "near_start"), HAND],
@@ -616,6 +618,13 @@ R[("T21", "the_kids_side")] = tiers(
     not_ok="the tissues not on the table; still held or dropped",
     zh=dict(sit="桌上孩子（塑料杯）和大人（马克杯）两个位子，汤是孩子洒的", good="放在孩子那边",
             second="放在桌上中间（谁那边都不是）", worst="放在大人那边", no="没放到桌上；还拿着或掉了"))
+# T21 tissue_in_use (11-17, substitution: in use): grandpa is using the tissues; the sponge instead; taking his
+R[("T21", "tissue_in_use")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "tissue", "dining_table_2/top"], HAND]},
+    why=("the tissues left with grandpa, the dry sponge brought to the spill", "", "grandpa's tissues taken from him"),
+    not_ok=_T21_NO,
+    zh=dict(sit="纸巾盒在西边餐桌爷爷的座位旁，他正在用；岛台上有块干海绵（11-17 新加）", good="海绵拿到餐桌，爷爷的纸巾不动（替换：被占用）",
+            worst="把爷爷正用着的纸巾拿走", no="没拿东西到餐桌；还拿着或掉了"))
 
 # ================================================================================================ T22 put away the shopping
 _T22_NO = "an item left on the table or not put away; the juice lying; still held or dropped"

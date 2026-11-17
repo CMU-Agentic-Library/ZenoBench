@@ -15,7 +15,7 @@
 | T05 | pens_per_notebook | 缺失 | 钢笔比本子少一支或两支（seed） → 缺的用铅笔补 |
 | T05 | errand_combined | 缺失 | 要钢笔，家里没有 → 铅笔（顺路带马克杯回厨房不变） |
 | T06 | both_spots_full（原 display_row） | 被占用 | 指令说的矮柜顶和电视柜顶都摆满了 → 摆到 4 号矮柜顶 |
-| T10 | trash_full（原 trash_moved） | 被占用 | 垃圾桶塞满到桶口 → 扔进回收箱 |
+| T10 | trash_full（新加；trash_moved 11-17 加回，并列） | 被占用 | 垃圾桶塞满到桶口 → 扔进回收箱 |
 | T11 | no_apple_for_kid（原 leave_one_for_kid） | 缺失 | 孩子要的苹果没了 → 香蕉（他不爱吃橙子） |
 | T11 | fruit_plate_for_guests | 缺失 | 家里没有托盘 → 小收纳盒装水果 |
 | T12 | bedtime_toy（原 duck_in_study） | 缺失 | 要能抱着睡的玩具；seed 有泰迪熊（用熊）或没有 → 没有时用软的橡皮鸭（小车最差） |
@@ -37,6 +37,7 @@
 | T19 | bin_out_of_reach（原 x6_gd_can_put_away） | 能力不足 | 回收箱在 1.42 m 高架子顶上够不着 → 餐桌上的小收纳箱 |
 | T20 | juice_finished（新加） | 缺失 | 果汁喝完了 → 汽水（拿空瓶最差） |
 | T20 | juice_in_use（新加） | 被占用 | 果汁在爷爷座位旁正在喝 → 汽水 |
+| T21 | tissue_in_use（新加） | 被占用 | 纸巾在爷爷座位旁正在用 → 岛台上的干海绵 |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 

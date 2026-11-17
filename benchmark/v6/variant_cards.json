@@ -12706,6 +12706,98 @@
   "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T10_trash_the_can/trash_moved__dining": {
+  "variant": "trash_moved",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   15,
+   19
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "trash_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "destination_unnamed",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_trash_moved__dining",
+  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/trash_moved__bathroom": {
+  "variant": "trash_moved",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   16,
+   17,
+   18
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "trash_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "destination_unnamed",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_trash_moved__bathroom",
+  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T10_trash_the_can/trash_full__living": {
   "variant": "trash_full",
   "category": "task",
@@ -20480,6 +20572,64 @@
   "oracle_route": "v6_the_kids_side__kid_south",
   "challenge": "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
   "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_in_use": {
+  "variant": "tissue_in_use",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring something to wipe it with.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "spare_sponge",
+    "tissue"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "spare_sponge",
+     "dining_table_2/top"
+    ],
+    [
+     "near_start",
+     "tissue",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_tissue_in_use",
+  "challenge": "the tissue box is at grandpa's place on the west dining table, by his bowl and cup (he is using it); a dry kitchen sponge lies on the island",
+  "rationale": "the tissues are in use: leave them with grandpa and bring the sponge to wipe the spill",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T22_put_away_shopping/juice_on_table": {

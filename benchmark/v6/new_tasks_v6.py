@@ -184,6 +184,20 @@ def t21():
             instruction="The kid spilled some soup at the dining table. Bring something to wipe it up and put it on "
                         "the kid's side of the table.",
             instruction_zh="孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边。"),
+        # tissue_in_use (11-17, substitution: in use): the tissue box stands at grandpa's place on the west dining
+        # table, he is having his breakfast with it; the dry sponge on the island is free
+        "tissue_in_use": fam(
+            "tissue_on_tv_stand", ["resource_in_use", "not_in_view"], "the seed's layout only",
+            "the tissue box is at grandpa's place on the west dining table, by his bowl and cup (he is using it); "
+            "a dry kitchen sponge lies on the island",
+            "the tissues are in use: leave them with grandpa and bring the sponge to wipe the spill",
+            {"": dict(add={TIS: on("tissue_box", T1, -7.68, 7.95), "spare_sponge": on("kitchen_sponge", ISL, 8.00, 1.80),
+                           **meal},
+                      goal={"all": [["on", "spare_sponge", T2], ["near_start", TIS, 0.03], H]},
+                      watch=[TIS, "spare_sponge", "soup_bowl", "bowl_side_table", "cup_side_table"],
+                      route=[S("search", object=TIS, region="dining_room_0_0"), look(T1), look(ISL)]
+                      + to_table("spare_sponge"))},
+            **TISSUES_ASKED),
     }
     return t, fams
 
