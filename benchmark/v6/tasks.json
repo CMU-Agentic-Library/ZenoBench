@@ -70153,11 +70153,11 @@
      "keep_design": [
       "kitchen_cabinet_6/top"
      ],
-     "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+     "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
      "v6": {
       "family": "clear_the_drinks_spot",
       "case": "spot_dishes",
-      "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+      "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
       "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
       "control": "cup_available",
       "contrast": null,
@@ -70565,7 +70565,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -70606,7 +70606,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -70647,7 +70647,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -70688,7 +70688,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -70729,7 +70729,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -72901,7 +72901,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -72942,7 +72942,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -72983,7 +72983,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73024,7 +73024,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73065,7 +73065,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73106,7 +73106,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73147,7 +73147,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73188,7 +73188,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73229,7 +73229,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73270,7 +73270,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73311,7 +73311,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73352,7 +73352,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73415,7 +73415,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73456,7 +73456,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73497,7 +73497,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73538,7 +73538,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73579,7 +73579,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73620,7 +73620,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73661,7 +73661,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73702,7 +73702,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73754,7 +73754,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73795,7 +73795,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73836,7 +73836,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73877,7 +73877,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73918,7 +73918,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -73959,7 +73959,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74000,7 +74000,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74041,7 +74041,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74093,7 +74093,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74134,7 +74134,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74175,7 +74175,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74216,7 +74216,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74257,7 +74257,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74298,7 +74298,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74339,7 +74339,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74380,7 +74380,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74432,7 +74432,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74473,7 +74473,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74514,7 +74514,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74555,7 +74555,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74596,7 +74596,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74637,7 +74637,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74678,7 +74678,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -74719,7 +74719,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -75305,7 +75305,7 @@
        ],
        [
         "near_start",
-        "kid_puzzle",
+        "kid_drawing",
         0.03
        ],
        [
@@ -75345,7 +75345,7 @@
       "mug_dining_cabinet",
       "mug_shelf",
       "mug_counter",
-      "kid_puzzle",
+      "kid_drawing",
       "kid_teddy",
       "kid_block_1",
       "kid_block_2",
@@ -75353,11 +75353,11 @@
       "kid_car"
      ],
      "add": {
-      "kid_puzzle": {
-       "asset": "shallow_sorting_tray",
+      "kid_drawing": {
+       "asset": "notebook",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.345,
+        3.335,
         0.36
        ],
        "yaw_deg": 90.0
@@ -75412,11 +75412,11 @@
      "keep_design": [
       "kitchen_cabinet_6/top"
      ],
-     "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+     "note": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
      "v6": {
       "family": "clear_the_drinks_spot",
       "case": "spot_kid_toys",
-      "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+      "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
       "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
       "control": "cup_available",
       "contrast": null,
@@ -75773,7 +75773,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -75814,7 +75814,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -75855,7 +75855,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -75896,7 +75896,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -75937,7 +75937,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78109,7 +78109,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78150,7 +78150,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78191,7 +78191,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78232,7 +78232,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78273,7 +78273,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78314,7 +78314,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78355,7 +78355,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78396,7 +78396,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78437,7 +78437,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78478,7 +78478,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78519,7 +78519,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78560,7 +78560,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78623,7 +78623,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78664,7 +78664,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78705,7 +78705,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78746,7 +78746,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78787,7 +78787,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78828,7 +78828,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78869,7 +78869,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78910,7 +78910,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -78962,7 +78962,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79003,7 +79003,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79044,7 +79044,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79085,7 +79085,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79126,7 +79126,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79167,7 +79167,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79208,7 +79208,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79249,7 +79249,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79301,7 +79301,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79342,7 +79342,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79383,7 +79383,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79424,7 +79424,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79465,7 +79465,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79506,7 +79506,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79547,7 +79547,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79588,7 +79588,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79640,7 +79640,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79681,7 +79681,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79722,7 +79722,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79763,7 +79763,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79804,7 +79804,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79845,7 +79845,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79886,7 +79886,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -79927,7 +79927,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -88981,7 +88981,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -89022,7 +89022,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -89063,7 +89063,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -89104,7 +89104,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -89145,7 +89145,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91316,7 +91316,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91357,7 +91357,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91398,7 +91398,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91439,7 +91439,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91480,7 +91480,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91521,7 +91521,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91562,7 +91562,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91603,7 +91603,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91644,7 +91644,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91685,7 +91685,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91726,7 +91726,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91767,7 +91767,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91830,7 +91830,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91871,7 +91871,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91912,7 +91912,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91953,7 +91953,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -91994,7 +91994,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92035,7 +92035,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92076,7 +92076,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92117,7 +92117,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92169,7 +92169,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92210,7 +92210,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92251,7 +92251,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92292,7 +92292,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92333,7 +92333,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92374,7 +92374,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92415,7 +92415,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92456,7 +92456,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92508,7 +92508,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92549,7 +92549,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92590,7 +92590,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92631,7 +92631,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92672,7 +92672,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92713,7 +92713,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92754,7 +92754,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92795,7 +92795,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92847,7 +92847,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92888,7 +92888,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92929,7 +92929,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -92970,7 +92970,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -93011,7 +93011,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -93052,7 +93052,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -93093,7 +93093,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [
@@ -93134,7 +93134,7 @@
              ],
              [
               "near_start",
-              "kid_puzzle",
+              "kid_drawing",
               0.03
              ],
              [

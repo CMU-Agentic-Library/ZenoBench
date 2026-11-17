@@ -8426,7 +8426,7 @@
   },
   "control": "cup_available",
   "oracle_route": "v6_clear_the_drinks_spot__spot_dishes",
-  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
   "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -8454,8 +8454,8 @@
     "kid_block_1",
     "kid_block_2",
     "kid_car",
+    "kid_drawing",
     "kid_duck",
-    "kid_puzzle",
     "kid_teddy"
    ],
    "removed": [
@@ -8481,7 +8481,7 @@
     ],
     [
      "near_start",
-     "kid_puzzle",
+     "kid_drawing",
      0.03
     ],
     [
@@ -8517,7 +8517,7 @@
   },
   "control": "cup_available",
   "oracle_route": "v6_clear_the_drinks_spot__spot_kid_toys",
-  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
   "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

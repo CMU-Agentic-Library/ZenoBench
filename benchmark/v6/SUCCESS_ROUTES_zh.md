@@ -1557,7 +1557,7 @@
 
 ### clear_the_drinks_spot（Task）
 
-**情况**：（去处替换）指令就是摆玻璃杯；饮品角被占满了，指令没提 → spot_dishes：是用过的碗和锅盖，收回厨房再摆；spot_kid_toys：是孩子摆着玩的拼图、小熊、积木、鸭子、小车，不能动，玻璃杯摆到另一个靠墙矮柜。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
+**情况**：（去处替换）指令就是摆玻璃杯；饮品角被占满了，指令没提 → spot_dishes：是用过的碗和锅盖，收回厨房再摆；spot_kid_toys：是孩子摆着玩的画了一半的画、小熊、积木、鸭子、小车，不能动，玻璃杯摆到另一个靠墙矮柜。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -1582,7 +1582,7 @@
       - 第 1 组：
         - `cup_counter_b` 在 `kitchen_cabinet_4/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1591,7 +1591,7 @@
       - 第 2 组：
         - `mug` 在 `kitchen_cabinet_6/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1600,7 +1600,7 @@
       - 第 3 组：
         - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1609,7 +1609,7 @@
       - 第 4 组：
         - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1618,7 +1618,7 @@
       - 第 5 组：
         - `mug_counter` 在 `kitchen_cabinet_6/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1668,7 +1668,7 @@
       - 第 2 组：
         - `cup_counter_b` 在 `kitchen_island/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1677,7 +1677,7 @@
       - 第 3 组：
         - `cup_counter_b` 在 `dining_table_2/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1686,7 +1686,7 @@
       - 第 4 组：
         - `cup_counter_b` 在 `dining_table_1/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1695,7 +1695,7 @@
       - 第 5 组：
         - `cup_counter_b` 在 `tv_stand_2/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1704,7 +1704,7 @@
       - 第 6 组：
         - `cup_counter_b` 在 `kitchen_counter_1/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1713,7 +1713,7 @@
       - 第 7 组：
         - `cup_counter_b` 在 `kitchen_counter_2/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1722,7 +1722,7 @@
       - 第 8 组：
         - `cup_counter_b` 在 `kitchen_cabinet_5/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1731,7 +1731,7 @@
       - 第 9 组：
         - `cup_counter_b` 在 `kitchen_cabinet_3/top` 上
         - `cup_counter_b` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1740,7 +1740,7 @@
       - 第 10 组：
         - `mug` 在 `kitchen_cabinet_4/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1749,7 +1749,7 @@
       - 第 11 组：
         - `mug_dining_cabinet` 在 `kitchen_cabinet_4/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1758,7 +1758,7 @@
       - 第 12 组：
         - `mug_shelf` 在 `kitchen_cabinet_4/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1767,7 +1767,7 @@
       - 第 13 组：
         - `mug_counter` 在 `kitchen_cabinet_4/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1782,7 +1782,7 @@
       - 第 16 组：
         - `mug` 在 `kitchen_island/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1791,7 +1791,7 @@
       - 第 17 组：
         - `mug` 在 `dining_table_2/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1800,7 +1800,7 @@
       - 第 18 组：
         - `mug` 在 `dining_table_1/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1809,7 +1809,7 @@
       - 第 19 组：
         - `mug` 在 `tv_stand_2/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1818,7 +1818,7 @@
       - 第 20 组：
         - `mug` 在 `kitchen_counter_1/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1827,7 +1827,7 @@
       - 第 21 组：
         - `mug` 在 `kitchen_counter_2/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1836,7 +1836,7 @@
       - 第 22 组：
         - `mug` 在 `kitchen_cabinet_5/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1845,7 +1845,7 @@
       - 第 23 组：
         - `mug` 在 `kitchen_cabinet_3/top` 上
         - `mug` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1857,7 +1857,7 @@
       - 第 25 组：
         - `mug_dining_cabinet` 在 `kitchen_island/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1866,7 +1866,7 @@
       - 第 26 组：
         - `mug_dining_cabinet` 在 `dining_table_2/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1875,7 +1875,7 @@
       - 第 27 组：
         - `mug_dining_cabinet` 在 `dining_table_1/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1884,7 +1884,7 @@
       - 第 28 组：
         - `mug_dining_cabinet` 在 `tv_stand_2/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1893,7 +1893,7 @@
       - 第 29 组：
         - `mug_dining_cabinet` 在 `kitchen_counter_1/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1902,7 +1902,7 @@
       - 第 30 组：
         - `mug_dining_cabinet` 在 `kitchen_counter_2/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1911,7 +1911,7 @@
       - 第 31 组：
         - `mug_dining_cabinet` 在 `kitchen_cabinet_5/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1920,7 +1920,7 @@
       - 第 32 组：
         - `mug_dining_cabinet` 在 `kitchen_cabinet_3/top` 上
         - `mug_dining_cabinet` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1932,7 +1932,7 @@
       - 第 34 组：
         - `mug_shelf` 在 `kitchen_island/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1941,7 +1941,7 @@
       - 第 35 组：
         - `mug_shelf` 在 `dining_table_2/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1950,7 +1950,7 @@
       - 第 36 组：
         - `mug_shelf` 在 `dining_table_1/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1959,7 +1959,7 @@
       - 第 37 组：
         - `mug_shelf` 在 `tv_stand_2/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1968,7 +1968,7 @@
       - 第 38 组：
         - `mug_shelf` 在 `kitchen_counter_1/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1977,7 +1977,7 @@
       - 第 39 组：
         - `mug_shelf` 在 `kitchen_counter_2/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1986,7 +1986,7 @@
       - 第 40 组：
         - `mug_shelf` 在 `kitchen_cabinet_5/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -1995,7 +1995,7 @@
       - 第 41 组：
         - `mug_shelf` 在 `kitchen_cabinet_3/top` 上
         - `mug_shelf` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2007,7 +2007,7 @@
       - 第 43 组：
         - `mug_counter` 在 `kitchen_island/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2016,7 +2016,7 @@
       - 第 44 组：
         - `mug_counter` 在 `dining_table_2/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2025,7 +2025,7 @@
       - 第 45 组：
         - `mug_counter` 在 `dining_table_1/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2034,7 +2034,7 @@
       - 第 46 组：
         - `mug_counter` 在 `tv_stand_2/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2043,7 +2043,7 @@
       - 第 47 组：
         - `mug_counter` 在 `kitchen_counter_1/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2052,7 +2052,7 @@
       - 第 48 组：
         - `mug_counter` 在 `kitchen_counter_2/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2061,7 +2061,7 @@
       - 第 49 组：
         - `mug_counter` 在 `kitchen_cabinet_5/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
@@ -2070,7 +2070,7 @@
       - 第 50 组：
         - `mug_counter` 在 `kitchen_cabinet_3/top` 上
         - `mug_counter` 立着
-        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_drawing` 没被挪动（离开局位置不超过 3 cm）
         - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
         - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）

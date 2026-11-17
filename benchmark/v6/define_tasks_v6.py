@@ -799,7 +799,7 @@ def T04(t):
     OTHER_CAB = "kitchen_cabinet_4/top"
     ELSEWHERE = [ISL, "dining_table_2/top", "dining_table_1/top", "tv_stand_2/top", "kitchen_counter_1/top",
                  "kitchen_counter_2/top", "kitchen_cabinet_5/top", "kitchen_cabinet_3/top"]
-    KID_TOYS = {"kid_puzzle": ("shallow_sorting_tray", 3.345, 0.36, 90.0), "kid_teddy": ("teddy_bear", 3.54, 0.30, 0.0),
+    KID_TOYS = {"kid_drawing": ("notebook", 3.335, 0.36, 90.0), "kid_teddy": ("teddy_bear", 3.54, 0.30, 0.0),
                 "kid_block_1": ("wooden_block", 3.52, 0.45, 0.0), "kid_block_2": ("wooden_block", 3.58, 0.45, 0.0),
                 "kid_duck": ("rubber_duck", 3.71, 0.26, 90.0), "kid_car": ("toy_car", 3.71, 0.43, 0.0)}
     places = [(SPOT, 0), (OTHER_CAB, 1)] + [(x, 2) for x in ELSEWHERE]
@@ -839,7 +839,7 @@ def T04(t):
             factor="what fills the drinks spot (seed: the used bowl and lid, to clear; or the kid's play things, to "
                    "leave)",
             challenge="the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the "
-                      "kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+                      "kid's play things (a drawing, teddy, blocks, duck, car); the instruction mentions neither",
             rationale="used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's "
                       "things stay, so the glass goes on the other low wall cabinet (moderate)",
             cases=spot_cases),
