@@ -1,15 +1,15 @@
 {
  "summary": {
   "scope": {
-   "layouts": 262,
+   "layouts": 265,
    "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 53,
-   "goal_not_met": 90,
+   "goal_not_met": 92,
    "not_observed": 67,
-   "resource_missing": 46,
+   "resource_missing": 47,
    "argument_mismatch": 6
   },
   "control_route_passes": [
@@ -51,10 +51,10 @@
   ],
   "routes_between_layouts": {
    "passes": 107,
-   "goal_not_met": 147,
+   "goal_not_met": 150,
    "not_observed": 20,
-   "argument_mismatch": 95,
-   "resource_missing": 103
+   "argument_mismatch": 91,
+   "resource_missing": 116
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -73,7 +73,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 81,
+  "multi_layout_variants": 82,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -120,7 +120,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 432,
+  "geometric_atoms_unchecked": 410,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -170,6 +170,23 @@
    ],
    "T03 which_bin_by_contents": [
     "spare_tray"
+   ],
+   "T04 clear_the_drinks_spot": [
+    "kid_block_1",
+    "kid_block_2",
+    "kid_car",
+    "kid_duck",
+    "kid_puzzle",
+    "kid_teddy"
+   ],
+   "T04 no_cup": [
+    "kid_cup"
+   ],
+   "T04 two_guests": [
+    "kid_cup"
+   ],
+   "T04 x6_gd_cup_in_cabinets": [
+    "kid_cup"
    ],
    "T05 pens_per_notebook": [
     "hw_notebook_1",
@@ -1839,7 +1856,8 @@
    "control_route": "resource_missing",
    "other_layouts": {
     "no_cup_mug_away": "passes",
-    "no_cup_mug_away__alt_dining_table_2": "argument_mismatch"
+    "no_cup_mug_away__alt_dining_table_2": "argument_mismatch",
+    "no_cup_kid": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -1859,7 +1877,8 @@
    "control_route": "resource_missing",
    "other_layouts": {
     "no_cup": "not_observed",
-    "no_cup_mug_away__alt_dining_table_2": "argument_mismatch"
+    "no_cup_mug_away__alt_dining_table_2": "argument_mismatch",
+    "no_cup_kid": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -1879,14 +1898,34 @@
    "control_route": "resource_missing",
    "other_layouts": {
     "no_cup": "not_observed",
-    "no_cup_mug_away": "argument_mismatch"
+    "no_cup_mug_away": "argument_mismatch",
+    "no_cup_kid": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "layout": "no_cup_kid",
+   "steps": 6,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
+   "control_route": "resource_missing",
+   "other_layouts": {
+    "no_cup": "resource_missing",
+    "no_cup_mug_away": "resource_missing",
+    "no_cup_mug_away__alt_dining_table_2": "resource_missing"
+   },
+   "other_variants_passing": [
+    "x6_gd_cup_in_cabinets__plastic_only"
+   ]
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
    "variant": "clear_the_drinks_spot",
-   "layout": "clear_the_drinks_spot",
+   "layout": "clear_the_drinks_spot__spot_dishes",
    "steps": 16,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -1898,57 +1937,48 @@
     "upright mug_counter"
    ],
    "control_route": "goal_not_met",
-   "other_layouts": {},
+   "other_layouts": {
+    "clear_the_drinks_spot__spot_kid_toys": "goal_not_met"
+   },
    "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "variant": "two_guests",
-   "layout": "two_guests__dining",
-   "steps": 11,
+   "variant": "clear_the_drinks_spot",
+   "layout": "clear_the_drinks_spot__spot_kid_toys",
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
-    "upright cup_counter_b",
-    "upright mug",
-    "clear_of cup_counter_b ['mug'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_dining_cabinet",
-    "clear_of cup_counter_b ['mug_dining_cabinet'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_shelf",
-    "clear_of cup_counter_b ['mug_shelf'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_counter",
-    "clear_of cup_counter_b ['mug_counter'] 0.03",
-    "upright mug",
-    "upright mug_dining_cabinet",
-    "clear_of mug ['mug_dining_cabinet'] 0.03",
-    "upright mug",
-    "upright mug_shelf",
-    "clear_of mug ['mug_shelf'] 0.03",
-    "upright mug",
-    "upright mug_counter",
-    "clear_of mug ['mug_counter'] 0.03",
-    "upright mug_dining_cabinet",
-    "upright mug_shelf",
-    "clear_of mug_dining_cabinet ['mug_shelf'] 0.03",
-    "upright mug_dining_cabinet",
-    "upright mug_counter",
-    "clear_of mug_dining_cabinet ['mug_counter'] 0.03",
-    "upright mug_shelf",
-    "upright mug_counter",
-    "clear_of mug_shelf ['mug_counter'] 0.03"
+    "upright cup_counter_b"
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "two_guests__study": "argument_mismatch"
+    "clear_the_drinks_spot__spot_dishes": "goal_not_met"
    },
    "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "two_guests",
-   "layout": "two_guests__study",
+   "layout": "two_guests__glass_in_cabinet",
+   "steps": 18,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright glass_cup_2",
+    "clear_of cup_counter_b ['glass_cup_2'] 0.03"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "two_guests__mug": "goal_not_met",
+    "two_guests__kid_cup": "resource_missing"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "two_guests",
+   "layout": "two_guests__mug",
    "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -1985,7 +2015,26 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "two_guests__dining": "argument_mismatch"
+    "two_guests__glass_in_cabinet": "resource_missing",
+    "two_guests__kid_cup": "resource_missing"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "two_guests",
+   "layout": "two_guests__kid_cup",
+   "steps": 11,
+   "own_route_passes": true,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright kid_cup",
+    "clear_of cup_counter_b ['kid_cup'] 0.03"
+   ],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "two_guests__glass_in_cabinet": "resource_missing",
+    "two_guests__mug": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -2000,22 +2049,22 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "x6_gd_cup_in_cabinets__cup_in_6": "argument_mismatch"
+    "x6_gd_cup_in_cabinets__plastic_only": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "x6_gd_cup_in_cabinets",
-   "layout": "x6_gd_cup_in_cabinets__cup_in_6",
+   "layout": "x6_gd_cup_in_cabinets__plastic_only",
    "steps": 20,
    "own_route_passes": true,
    "geometric_atoms": [
-    "upright cup_counter_b"
+    "upright kid_cup"
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "x6_gd_cup_in_cabinets__cup_in_4": "argument_mismatch"
+    "x6_gd_cup_in_cabinets__cup_in_4": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -5156,6 +5205,17 @@
     "no_cup",
     "no_cup_mug_away",
     "no_cup_mug_away__alt_dining_table_2",
+    "no_cup_kid",
+    "cup_available"
+   ],
+   "passes_all": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "clear_the_drinks_spot",
+   "candidates": [
+    "clear_the_drinks_spot__spot_dishes",
+    "clear_the_drinks_spot__spot_kid_toys",
     "cup_available"
    ],
    "passes_all": []
@@ -5164,8 +5224,9 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "two_guests",
    "candidates": [
-    "two_guests__dining",
-    "two_guests__study",
+    "two_guests__glass_in_cabinet",
+    "two_guests__mug",
+    "two_guests__kid_cup",
     "cup_available"
    ],
    "passes_all": []
@@ -5175,7 +5236,7 @@
    "variant": "x6_gd_cup_in_cabinets",
    "candidates": [
     "x6_gd_cup_in_cabinets__cup_in_4",
-    "x6_gd_cup_in_cabinets__cup_in_6",
+    "x6_gd_cup_in_cabinets__plastic_only",
     "no_cup"
    ],
    "passes_all": []
@@ -7220,6 +7281,19 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "no_cup",
    "layouts": [
+    "no_cup",
+    "no_cup_kid"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "layouts": [
     "no_cup_mug_away",
     "no_cup_mug_away__alt_dining_table_2"
    ],
@@ -7231,15 +7305,80 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "layouts": [
+    "no_cup_mug_away",
+    "no_cup_kid"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "layouts": [
+    "no_cup_mug_away__alt_dining_table_2",
+    "no_cup_kid"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "clear_the_drinks_spot",
+   "layouts": [
+    "clear_the_drinks_spot__spot_dishes",
+    "clear_the_drinks_spot__spot_kid_toys"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
    "variant": "two_guests",
    "layouts": [
-    "two_guests__dining",
-    "two_guests__study"
+    "two_guests__glass_in_cabinet",
+    "two_guests__mug"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "two_guests",
+   "layouts": [
+    "two_guests__glass_in_cabinet",
+    "two_guests__kid_cup"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "two_guests",
+   "layouts": [
+    "two_guests__mug",
+    "two_guests__kid_cup"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {
@@ -7247,12 +7386,12 @@
    "variant": "x6_gd_cup_in_cabinets",
    "layouts": [
     "x6_gd_cup_in_cabinets__cup_in_4",
-    "x6_gd_cup_in_cabinets__cup_in_6"
+    "x6_gd_cup_in_cabinets__plastic_only"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {

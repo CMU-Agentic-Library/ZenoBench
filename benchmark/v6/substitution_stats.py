@@ -27,6 +27,11 @@ KIND = {
     ("T03", "small_bin_or_bedroom_bin"): {"*": "能力不足"},
     ("T03", "which_bin_by_contents"): {"toys_near": "看着像但不能用", "kitchen_bin_full": "被占用"},
     ("T03", "no_bin_substitute"): {"*": "缺失"},
+    ("T04", "cup_available"): {"*": None},
+    ("T04", "no_cup"): {"*": "缺失"},
+    ("T04", "two_guests"): {"glass_in_cabinet": None, "mug": "缺失", "kid_cup": "缺失"},
+    ("T04", "x6_gd_cup_in_cabinets"): {"*": "能力不足"},
+    ("T04", "clear_the_drinks_spot"): {"spot_dishes": None, "spot_kid_toys": "去处替换"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }
@@ -45,7 +50,7 @@ def main():
             for lid in info["layouts"]:
                 case = lid.split("__", 1)[1] if "__" in lid else ""
                 base = case[:-5] if case.endswith("_flat") else case
-                kind = kinds.get(base, kinds.get("*"))
+                kind = kinds.get(base, kinds.get(lid, kinds.get("*")))
                 top = (sc.get("top_by_layout") or {}).get(lid) or "ideal"
                 d = (sc.get("D_by_layout") or {}).get(lid, sc.get("D"))
                 rows.append((t["task_id"][:3], design, case, kind, top, d))

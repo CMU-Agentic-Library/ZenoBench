@@ -83,14 +83,6 @@ SCORING: dict[tuple[str, str], dict] = {
     # T03 large_only (control): the wide bin on the TV stand is the only open container
     ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
                                 "one left out, put in a cabinet or drawer instead, still held or dropped"),
-    # T04 cup_available (control): a glass cup and a mug side by side on the island; a mug is a cup too (no_cup
-    # tests the mug as the stand-in), so either one, or both, is the task done
-    ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
-                                   "lying or upside down; on another cabinet, counter or table; still held or dropped"),
-    # T04 no_cup: no glass cup; the mug (island, TV stand or dining table) or any other mug in the house
-    ("T04", "no_cup"): only("any mug upright on the drinks corner, the hand empty (the detour is SPL's business)",
-                            "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; "
-                            "still held or dropped"),
     # T05 e1_pencil_asked (control): the pen removed, the pencil on the bedroom bookcase
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
@@ -230,6 +222,8 @@ def _layout_tiers(design: str, whys: dict, not_ok: str):
     NA where the layout cannot offer that level); per_layout leaves those out and sets the seed's D and top."""
     def build(task: dict) -> dict:
         per = next((v for (tid, d), v in LAYOUT_TIERS.items() if task["task_id"].startswith(tid) and d == design), None)
+        if per is None:                  # tiers kept per layout id for the whole task (T04: v5 layouts have no case)
+            per = next((v for (tid, d), v in LAYOUT_TIERS.items() if task["task_id"].startswith(tid) and d == "*"), None)
         if per is None:                  # not built in this process (tests read tasks.json): what was written there
             import copy
             out = copy.deepcopy(task["v6_variants"][design]["scoring"])
@@ -238,7 +232,8 @@ def _layout_tiers(design: str, whys: dict, not_ok: str):
         lays = task["v6_variants"][design]["layouts"]
         case = lambda lid: lid.split("__", 1)[1] if "__" in lid else ""  # noqa: E731
         return {"D": 1, "tiers": [
-            {"name": n, "score": sc, "goal": {"by_layout": {lid: per[case(lid)][n] for lid in lays}}, "why": whys[n]}
+            {"name": n, "score": sc, "goal": {"by_layout": {lid: (per.get(lid) or per[case(lid)])[n] for lid in lays}},
+             "why": whys[n]}
             for n, sc in (("best", 1.0), ("second", 0.6), ("worst", 0.3))], "not_ok": not_ok}
     return build
 
@@ -263,45 +258,16 @@ _T03_WHY = {"best": "both in the wide bin (the proper storage bin), nothing of a
                      "the toy bin, a bin already full), or in a substitute with things moved"}
 _T03_NO = "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped"
 
-# T04 clear_the_drinks_spot: the oatmeal bowl and the pot lid fill the drinks spot; tidy them to the kitchen and set
-# out a cup.  Off the cabinet but outside the kitchen is the worst tier (user 11-11).  For now the fridge and the
-# kitchen cabinets' insides are not kitchen spots in the goal (they fall to the worst tier)
-_SPOT = "kitchen_cabinet_6/top"
-_CUP_ON_SPOT = [[["on", x, _SPOT], ["upright", x]]
-                for x in ("cup_counter_b", "mug", "mug_dining_cabinet", "mug_shelf", "mug_counter")]
-SCORING[("T04", "clear_the_drinks_spot")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the bowl and the lid back in the kitchen (island, stove or a counter), the bowl upright, a cup upright "
-            "on the drinks spot"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["not on", "oatmeal", _SPOT], ["not on", "pot_lid", _SPOT], ["upright", "oatmeal"],
-                      ["hand_empty", "right"]], "any": _CUP_ON_SPOT},
-     "why": "the spot cleared and a cup set out, but the bowl or the lid left outside the kitchen (the dining "
-            "table, the coffee table, another cabinet)"}],
-    "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the "
-              "bowl tipped; no cup set out, or lying; still held or dropped"}
-
-# T04 two_guests: one glass cup (island), the mug in another room; any two of the cup and the mugs count (two mugs
-# too, user 11-11).  Touching or closer than 3 cm, against "not touching each other", is the worst tier
-SCORING[("T04", "two_guests")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "two cups (the glass cup and a mug, or two mugs) upright on the drinks spot, at least 3 cm apart"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["clear_of"]},
-     "why": "two cups upright on the spot, but touching or closer than 3 cm (the instruction says apart)"}],
-    "not_ok": "one cup only (the second not found); a non-cup (the juice bottle) for the second; lying or upside "
-              "down; elsewhere; still held or dropped"}
-
-# T04 x6_gd_cup_in_cabinets: a cup without a handle asked for, the glass cup in one of two closed low cabinets, the
-# mug in plain view.  A door left open is the second tier, the mug (a handle) the worst (user 11-11)
-SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the glass cup upright on the drinks spot, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
-     "why": "the glass cup upright on the spot, but a cabinet door left open"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["hand_empty", "right"]], "any": [g for g in _CUP_ON_SPOT if g[0][1] != "cup_counter_b"]},
-     "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
-    "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
+# T04 (11-17, user): the instruction names a glass for tea; levels count faults (define_tasks_v6.cost_tiers): the
+# cup (the glass 0, a mug 1, the kid's plastic cup 2; for iced lemonade the plastic cup 1 and the mug 2), the place
+# (the drinks spot 0, the other low cabinet 1, another top 2), things disturbed, an open cabinet door
+_T04_WHY = {"best": "no fault: the glass (two apart for two guests) upright where it belongs, nothing disturbed, "
+                    "doors closed",
+            "second": "one fault: a mug for the glass (iced: the kid's cup), the other low cabinet for the spot, the "
+                      "kid's things moved, two touching, or a door left open",
+            "worst": "two faults or more: the kid's plastic cup (iced: a mug), another top, the bowl or lid left "
+                     "outside the kitchen, or several faults together"}
+_T04_NO = "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped"
 
 # T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
 # Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
@@ -673,6 +639,8 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          ("T02", "block_put_away"): _BPA,
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
+         **{("T04", d): _layout_tiers(d, _T04_WHY, _T04_NO) for d in (
+             "cup_available", "no_cup", "two_guests", "x6_gd_cup_in_cabinets", "clear_the_drinks_spot")},
          **{("T03", d): _layout_tiers(d, _T03_WHY, _T03_NO) for d in (
              "small_bin_or_bedroom_bin", "which_bin_by_contents", "no_bin_substitute", "utensils_apart")},
          ("T05", "homework_ready"): _homework_ready,

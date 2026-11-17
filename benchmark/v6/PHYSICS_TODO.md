@@ -27,7 +27,7 @@
 | T04 | cup_available | control | 0/0 of 10 | - |
 | T04 | no_cup | task | 0/0 of 10 | - |
 | T04 | clear_the_drinks_spot | task | 0/0 of 10 | - |
-| T04 | two_guests | task | 0/0 of 10 | - |
+| T04 | two_guests | task | 0/0 of 10 | low cabinet doors |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
 | T05 | no_pen_pencil_away | task | 0/0 of 10 | - |

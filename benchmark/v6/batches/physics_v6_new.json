@@ -982,141 +982,141 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 10,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_kid_toys",
+"route": "v6_clear_the_drinks_spot__spot_kid_toys",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 11,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_dishes",
+"route": "v6_clear_the_drinks_spot__spot_dishes",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 12,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_dishes",
+"route": "v6_clear_the_drinks_spot__spot_dishes",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 13,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_dishes",
+"route": "v6_clear_the_drinks_spot__spot_dishes",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 14,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_kid_toys",
+"route": "v6_clear_the_drinks_spot__spot_kid_toys",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 15,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_dishes",
+"route": "v6_clear_the_drinks_spot__spot_dishes",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 16,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_dishes",
+"route": "v6_clear_the_drinks_spot__spot_dishes",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 17,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_kid_toys",
+"route": "v6_clear_the_drinks_spot__spot_kid_toys",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 18,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_kid_toys",
+"route": "v6_clear_the_drinks_spot__spot_kid_toys",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 19,
-"variant": "clear_the_drinks_spot",
-"route": "v6_clear_the_drinks_spot",
+"variant": "clear_the_drinks_spot__spot_kid_toys",
+"route": "v6_clear_the_drinks_spot__spot_kid_toys",
 "family": "clear_the_drinks_spot"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 10,
-"variant": "two_guests__study",
-"route": "v6_two_guests__study",
+"variant": "two_guests__mug",
+"route": "v6_two_guests__mug",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 11,
-"variant": "two_guests__dining",
-"route": "v6_two_guests__dining",
+"variant": "two_guests__kid_cup",
+"route": "v6_two_guests__kid_cup",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 12,
-"variant": "two_guests__study",
-"route": "v6_two_guests__study",
+"variant": "two_guests__glass_in_cabinet",
+"route": "v6_two_guests__glass_in_cabinet",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 13,
-"variant": "two_guests__dining",
-"route": "v6_two_guests__dining",
+"variant": "two_guests__glass_in_cabinet",
+"route": "v6_two_guests__glass_in_cabinet",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 14,
-"variant": "two_guests__dining",
-"route": "v6_two_guests__dining",
+"variant": "two_guests__glass_in_cabinet",
+"route": "v6_two_guests__glass_in_cabinet",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 15,
-"variant": "two_guests__dining",
-"route": "v6_two_guests__dining",
+"variant": "two_guests__mug",
+"route": "v6_two_guests__mug",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 16,
-"variant": "two_guests__study",
-"route": "v6_two_guests__study",
+"variant": "two_guests__kid_cup",
+"route": "v6_two_guests__kid_cup",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 17,
-"variant": "two_guests__study",
-"route": "v6_two_guests__study",
+"variant": "two_guests__mug",
+"route": "v6_two_guests__mug",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 18,
-"variant": "two_guests__dining",
-"route": "v6_two_guests__dining",
+"variant": "two_guests__kid_cup",
+"route": "v6_two_guests__kid_cup",
 "family": "two_guests"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 19,
-"variant": "two_guests__study",
-"route": "v6_two_guests__study",
+"variant": "two_guests__glass_in_cabinet",
+"route": "v6_two_guests__glass_in_cabinet",
 "family": "two_guests"
 },
 {
@@ -1136,15 +1136,15 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 12,
-"variant": "x6_gd_cup_in_cabinets__cup_in_6",
-"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"variant": "x6_gd_cup_in_cabinets__plastic_only",
+"route": "v6_x6_gd_cup_in_cabinets__plastic_only",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 13,
-"variant": "x6_gd_cup_in_cabinets__cup_in_6",
-"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"variant": "x6_gd_cup_in_cabinets__plastic_only",
+"route": "v6_x6_gd_cup_in_cabinets__plastic_only",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -1157,8 +1157,8 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 15,
-"variant": "x6_gd_cup_in_cabinets__cup_in_6",
-"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"variant": "x6_gd_cup_in_cabinets__plastic_only",
+"route": "v6_x6_gd_cup_in_cabinets__plastic_only",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -1171,8 +1171,8 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 17,
-"variant": "x6_gd_cup_in_cabinets__cup_in_6",
-"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"variant": "x6_gd_cup_in_cabinets__plastic_only",
+"route": "v6_x6_gd_cup_in_cabinets__plastic_only",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -1185,8 +1185,8 @@
 {
 "task": "T04_cup_or_mug_to_cabinet",
 "seed": 19,
-"variant": "x6_gd_cup_in_cabinets__cup_in_6",
-"route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
+"variant": "x6_gd_cup_in_cabinets__plastic_only",
+"route": "v6_x6_gd_cup_in_cabinets__plastic_only",
 "family": "x6_gd_cup_in_cabinets"
 },
 {

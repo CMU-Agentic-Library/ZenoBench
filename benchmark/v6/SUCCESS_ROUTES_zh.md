@@ -1475,13 +1475,13 @@
 
 ## T04_cup_or_mug_to_cabinet
 
-> 有客人要来，在靠墙矮柜上的饮品角摆一个杯子。
+> 有客人要来喝茶，在靠墙矮柜上的饮品角摆一个玻璃杯。
 
 ### cup_available（对照）
 
-**情况**：岛台上有杯子 → 拿到饮品角
+**情况**：（11-17 指令改为“有客人要来喝茶，在饮品角摆一个玻璃杯”）岛台上有玻璃杯和马克杯 → 摆玻璃杯。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -1490,18 +1490,25 @@
     - 第 1 组：
       - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
       - `cup_counter_b` 立着
-    - 第 2 组：
+- **次好（0.6）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
       - `mug` 在 `kitchen_cabinet_6/top` 上
       - `mug` 立着
-    - 第 3 组：
+    - 第 2 组：
       - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
       - `mug_dining_cabinet` 立着
-    - 第 4 组：
+    - 第 3 组：
       - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
       - `mug_shelf` 立着
-    - 第 5 组：
+    - 第 4 组：
       - `mug_counter` 在 `kitchen_cabinet_6/top` 上
       - `mug_counter` 立着
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **不行（0）**：杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了
 
 
@@ -1511,29 +1518,42 @@
 
 ### no_cup（Task）
 
-**情况**：家里没有杯子 → 用马克杯代替；马克杯不在眼前时先去找
+**情况**：（缺失）家里没有玻璃杯 → 用最好的替代。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`no_cup` D = 0、最高档 次好，`no_cup_mug_away` D = 0、最高档 次好，`alt_dining_table_2` D = 0、最高档 次好，`no_cup_kid` D = 0、最高档 最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-    - 第 2 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-    - 第 3 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 4 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 5 组：
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **次好（0.6）**：
+
+  - 摆法 `no_cup_kid`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `no_cup`、`no_cup_mug_away`、`alt_dining_table_2`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 2 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 3 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 4 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+- **最不好（0.3）**：
+
+  - 摆法 `no_cup`、`no_cup_mug_away`、`alt_dining_table_2`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `no_cup_kid`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kid_cup` 在 `kitchen_cabinet_6/top` 上
+        - `kid_cup` 立着
 - **不行（0）**：拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了
 
 
@@ -1542,243 +1562,1730 @@
 - 摆法 `no_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `navigate(destination=mug)`（换做法） → 6. `pick(object=mug)`（换做法） → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
 - 摆法 `no_cup_mug_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `search(object=mug, region=living_room_0_0)`（换做法） → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
 - 摆法 `alt_dining_table_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `count(category=cup)` → 4. `search(object=cup)` → 5. `search(object=mug, region=dining_room_0_1)`（换做法） → 6. `navigate(destination=mug)` → 7. `pick(object=mug)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=mug, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `no_cup_kid`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top)`
 
 ### clear_the_drinks_spot（Task）
 
-**情况**：早饭后燕麦碗和锅盖留在饮品角上，把柜顶占满了；指令是“早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶”，没点名是哪些东西、收到哪 → 认出碗和锅盖就是用过的餐厨用品，都收回厨房（岛台、灶台或厨房台面都算），再在腾出的地方放一个杯子
+**情况**：（去处替换）指令就是摆玻璃杯；饮品角被占满了，指令没提 → spot_dishes：是用过的碗和锅盖，收回厨房再摆；spot_kid_toys：是孩子摆着玩的拼图、小熊、积木、鸭子、小车，不能动，玻璃杯摆到另一个靠墙矮柜。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**指令**：早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`spot_dishes` D = 1、最高档 好，`spot_kid_toys` D = 1、最高档 次好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `oatmeal` 立着
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-    - 第 2 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-    - 第 3 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 4 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 5 组：
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
+  - 摆法 `spot_kid_toys`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `spot_dishes`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+- **次好（0.6）**：
+
+  - 摆法 `spot_kid_toys`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_4/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 5 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `spot_dishes`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_4/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 2 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 3 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 4 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 5 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
 - **最不好（0.3）**：
 
-  - `["not on", "oatmeal", "kitchen_cabinet_6/top"]`
-  - `["not on", "pot_lid", "kitchen_cabinet_6/top"]`
-  - `oatmeal` 立着
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-    - 第 2 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-    - 第 3 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 4 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 5 组：
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
+  - 摆法 `spot_kid_toys`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_4/top` 上
+        - `cup_counter_b` 立着
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_island/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_island/top` 上
+        - `cup_counter_b` 立着
+      - 第 5 组：
+        - `cup_counter_b` 在 `dining_table_2/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 6 组：
+        - `cup_counter_b` 在 `dining_table_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 7 组：
+        - `cup_counter_b` 在 `dining_table_1/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 8 组：
+        - `cup_counter_b` 在 `dining_table_1/top` 上
+        - `cup_counter_b` 立着
+      - 第 9 组：
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 10 组：
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 11 组：
+        - `cup_counter_b` 在 `kitchen_counter_1/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 12 组：
+        - `cup_counter_b` 在 `kitchen_counter_1/top` 上
+        - `cup_counter_b` 立着
+      - 第 13 组：
+        - `cup_counter_b` 在 `kitchen_counter_2/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 14 组：
+        - `cup_counter_b` 在 `kitchen_counter_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 15 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_5/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 16 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_5/top` 上
+        - `cup_counter_b` 立着
+      - 第 17 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_3/top` 上
+        - `cup_counter_b` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 18 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_3/top` 上
+        - `cup_counter_b` 立着
+      - 第 19 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 20 组：
+        - `mug` 在 `kitchen_cabinet_4/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 21 组：
+        - `mug` 在 `kitchen_cabinet_4/top` 上
+        - `mug` 立着
+      - 第 22 组：
+        - `mug` 在 `kitchen_island/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 23 组：
+        - `mug` 在 `kitchen_island/top` 上
+        - `mug` 立着
+      - 第 24 组：
+        - `mug` 在 `dining_table_2/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 25 组：
+        - `mug` 在 `dining_table_2/top` 上
+        - `mug` 立着
+      - 第 26 组：
+        - `mug` 在 `dining_table_1/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 27 组：
+        - `mug` 在 `dining_table_1/top` 上
+        - `mug` 立着
+      - 第 28 组：
+        - `mug` 在 `tv_stand_2/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 29 组：
+        - `mug` 在 `tv_stand_2/top` 上
+        - `mug` 立着
+      - 第 30 组：
+        - `mug` 在 `kitchen_counter_1/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 31 组：
+        - `mug` 在 `kitchen_counter_1/top` 上
+        - `mug` 立着
+      - 第 32 组：
+        - `mug` 在 `kitchen_counter_2/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 33 组：
+        - `mug` 在 `kitchen_counter_2/top` 上
+        - `mug` 立着
+      - 第 34 组：
+        - `mug` 在 `kitchen_cabinet_5/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 35 组：
+        - `mug` 在 `kitchen_cabinet_5/top` 上
+        - `mug` 立着
+      - 第 36 组：
+        - `mug` 在 `kitchen_cabinet_3/top` 上
+        - `mug` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 37 组：
+        - `mug` 在 `kitchen_cabinet_3/top` 上
+        - `mug` 立着
+      - 第 38 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 39 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_4/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 40 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_4/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 41 组：
+        - `mug_dining_cabinet` 在 `kitchen_island/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 42 组：
+        - `mug_dining_cabinet` 在 `kitchen_island/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 43 组：
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 44 组：
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 45 组：
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 46 组：
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 47 组：
+        - `mug_dining_cabinet` 在 `tv_stand_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 48 组：
+        - `mug_dining_cabinet` 在 `tv_stand_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 49 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_1/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 50 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_1/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 51 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 52 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 53 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_5/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 54 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_5/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 55 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_3/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 56 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_3/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 57 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 58 组：
+        - `mug_shelf` 在 `kitchen_cabinet_4/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 59 组：
+        - `mug_shelf` 在 `kitchen_cabinet_4/top` 上
+        - `mug_shelf` 立着
+      - 第 60 组：
+        - `mug_shelf` 在 `kitchen_island/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 61 组：
+        - `mug_shelf` 在 `kitchen_island/top` 上
+        - `mug_shelf` 立着
+      - 第 62 组：
+        - `mug_shelf` 在 `dining_table_2/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 63 组：
+        - `mug_shelf` 在 `dining_table_2/top` 上
+        - `mug_shelf` 立着
+      - 第 64 组：
+        - `mug_shelf` 在 `dining_table_1/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 65 组：
+        - `mug_shelf` 在 `dining_table_1/top` 上
+        - `mug_shelf` 立着
+      - 第 66 组：
+        - `mug_shelf` 在 `tv_stand_2/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 67 组：
+        - `mug_shelf` 在 `tv_stand_2/top` 上
+        - `mug_shelf` 立着
+      - 第 68 组：
+        - `mug_shelf` 在 `kitchen_counter_1/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 69 组：
+        - `mug_shelf` 在 `kitchen_counter_1/top` 上
+        - `mug_shelf` 立着
+      - 第 70 组：
+        - `mug_shelf` 在 `kitchen_counter_2/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 71 组：
+        - `mug_shelf` 在 `kitchen_counter_2/top` 上
+        - `mug_shelf` 立着
+      - 第 72 组：
+        - `mug_shelf` 在 `kitchen_cabinet_5/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 73 组：
+        - `mug_shelf` 在 `kitchen_cabinet_5/top` 上
+        - `mug_shelf` 立着
+      - 第 74 组：
+        - `mug_shelf` 在 `kitchen_cabinet_3/top` 上
+        - `mug_shelf` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 75 组：
+        - `mug_shelf` 在 `kitchen_cabinet_3/top` 上
+        - `mug_shelf` 立着
+      - 第 76 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 77 组：
+        - `mug_counter` 在 `kitchen_cabinet_4/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 78 组：
+        - `mug_counter` 在 `kitchen_cabinet_4/top` 上
+        - `mug_counter` 立着
+      - 第 79 组：
+        - `mug_counter` 在 `kitchen_island/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 80 组：
+        - `mug_counter` 在 `kitchen_island/top` 上
+        - `mug_counter` 立着
+      - 第 81 组：
+        - `mug_counter` 在 `dining_table_2/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 82 组：
+        - `mug_counter` 在 `dining_table_2/top` 上
+        - `mug_counter` 立着
+      - 第 83 组：
+        - `mug_counter` 在 `dining_table_1/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 84 组：
+        - `mug_counter` 在 `dining_table_1/top` 上
+        - `mug_counter` 立着
+      - 第 85 组：
+        - `mug_counter` 在 `tv_stand_2/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 86 组：
+        - `mug_counter` 在 `tv_stand_2/top` 上
+        - `mug_counter` 立着
+      - 第 87 组：
+        - `mug_counter` 在 `kitchen_counter_1/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 88 组：
+        - `mug_counter` 在 `kitchen_counter_1/top` 上
+        - `mug_counter` 立着
+      - 第 89 组：
+        - `mug_counter` 在 `kitchen_counter_2/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 90 组：
+        - `mug_counter` 在 `kitchen_counter_2/top` 上
+        - `mug_counter` 立着
+      - 第 91 组：
+        - `mug_counter` 在 `kitchen_cabinet_5/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 92 组：
+        - `mug_counter` 在 `kitchen_cabinet_5/top` 上
+        - `mug_counter` 立着
+      - 第 93 组：
+        - `mug_counter` 在 `kitchen_cabinet_3/top` 上
+        - `mug_counter` 立着
+        - `kid_puzzle` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_block_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+      - 第 94 组：
+        - `mug_counter` 在 `kitchen_cabinet_3/top` 上
+        - `mug_counter` 立着
+  - 摆法 `spot_dishes`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_4/top` 上
+        - `cup_counter_b` 立着
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_island/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_island/top` 上
+        - `cup_counter_b` 立着
+      - 第 5 组：
+        - `cup_counter_b` 在 `dining_table_2/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 6 组：
+        - `cup_counter_b` 在 `dining_table_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 7 组：
+        - `cup_counter_b` 在 `dining_table_1/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 8 组：
+        - `cup_counter_b` 在 `dining_table_1/top` 上
+        - `cup_counter_b` 立着
+      - 第 9 组：
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 10 组：
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 11 组：
+        - `cup_counter_b` 在 `kitchen_counter_1/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 12 组：
+        - `cup_counter_b` 在 `kitchen_counter_1/top` 上
+        - `cup_counter_b` 立着
+      - 第 13 组：
+        - `cup_counter_b` 在 `kitchen_counter_2/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 14 组：
+        - `cup_counter_b` 在 `kitchen_counter_2/top` 上
+        - `cup_counter_b` 立着
+      - 第 15 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_5/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 16 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_5/top` 上
+        - `cup_counter_b` 立着
+      - 第 17 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_3/top` 上
+        - `cup_counter_b` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 18 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_3/top` 上
+        - `cup_counter_b` 立着
+      - 第 19 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 20 组：
+        - `mug` 在 `kitchen_cabinet_4/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 21 组：
+        - `mug` 在 `kitchen_cabinet_4/top` 上
+        - `mug` 立着
+      - 第 22 组：
+        - `mug` 在 `kitchen_island/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 23 组：
+        - `mug` 在 `kitchen_island/top` 上
+        - `mug` 立着
+      - 第 24 组：
+        - `mug` 在 `dining_table_2/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 25 组：
+        - `mug` 在 `dining_table_2/top` 上
+        - `mug` 立着
+      - 第 26 组：
+        - `mug` 在 `dining_table_1/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 27 组：
+        - `mug` 在 `dining_table_1/top` 上
+        - `mug` 立着
+      - 第 28 组：
+        - `mug` 在 `tv_stand_2/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 29 组：
+        - `mug` 在 `tv_stand_2/top` 上
+        - `mug` 立着
+      - 第 30 组：
+        - `mug` 在 `kitchen_counter_1/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 31 组：
+        - `mug` 在 `kitchen_counter_1/top` 上
+        - `mug` 立着
+      - 第 32 组：
+        - `mug` 在 `kitchen_counter_2/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 33 组：
+        - `mug` 在 `kitchen_counter_2/top` 上
+        - `mug` 立着
+      - 第 34 组：
+        - `mug` 在 `kitchen_cabinet_5/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 35 组：
+        - `mug` 在 `kitchen_cabinet_5/top` 上
+        - `mug` 立着
+      - 第 36 组：
+        - `mug` 在 `kitchen_cabinet_3/top` 上
+        - `mug` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 37 组：
+        - `mug` 在 `kitchen_cabinet_3/top` 上
+        - `mug` 立着
+      - 第 38 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 39 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_4/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 40 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_4/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 41 组：
+        - `mug_dining_cabinet` 在 `kitchen_island/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 42 组：
+        - `mug_dining_cabinet` 在 `kitchen_island/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 43 组：
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 44 组：
+        - `mug_dining_cabinet` 在 `dining_table_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 45 组：
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 46 组：
+        - `mug_dining_cabinet` 在 `dining_table_1/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 47 组：
+        - `mug_dining_cabinet` 在 `tv_stand_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 48 组：
+        - `mug_dining_cabinet` 在 `tv_stand_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 49 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_1/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 50 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_1/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 51 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_2/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 52 组：
+        - `mug_dining_cabinet` 在 `kitchen_counter_2/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 53 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_5/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 54 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_5/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 55 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_3/top` 上
+        - `mug_dining_cabinet` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 56 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_3/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 57 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 58 组：
+        - `mug_shelf` 在 `kitchen_cabinet_4/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 59 组：
+        - `mug_shelf` 在 `kitchen_cabinet_4/top` 上
+        - `mug_shelf` 立着
+      - 第 60 组：
+        - `mug_shelf` 在 `kitchen_island/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 61 组：
+        - `mug_shelf` 在 `kitchen_island/top` 上
+        - `mug_shelf` 立着
+      - 第 62 组：
+        - `mug_shelf` 在 `dining_table_2/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 63 组：
+        - `mug_shelf` 在 `dining_table_2/top` 上
+        - `mug_shelf` 立着
+      - 第 64 组：
+        - `mug_shelf` 在 `dining_table_1/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 65 组：
+        - `mug_shelf` 在 `dining_table_1/top` 上
+        - `mug_shelf` 立着
+      - 第 66 组：
+        - `mug_shelf` 在 `tv_stand_2/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 67 组：
+        - `mug_shelf` 在 `tv_stand_2/top` 上
+        - `mug_shelf` 立着
+      - 第 68 组：
+        - `mug_shelf` 在 `kitchen_counter_1/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 69 组：
+        - `mug_shelf` 在 `kitchen_counter_1/top` 上
+        - `mug_shelf` 立着
+      - 第 70 组：
+        - `mug_shelf` 在 `kitchen_counter_2/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 71 组：
+        - `mug_shelf` 在 `kitchen_counter_2/top` 上
+        - `mug_shelf` 立着
+      - 第 72 组：
+        - `mug_shelf` 在 `kitchen_cabinet_5/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 73 组：
+        - `mug_shelf` 在 `kitchen_cabinet_5/top` 上
+        - `mug_shelf` 立着
+      - 第 74 组：
+        - `mug_shelf` 在 `kitchen_cabinet_3/top` 上
+        - `mug_shelf` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 75 组：
+        - `mug_shelf` 在 `kitchen_cabinet_3/top` 上
+        - `mug_shelf` 立着
+      - 第 76 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 77 组：
+        - `mug_counter` 在 `kitchen_cabinet_4/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 78 组：
+        - `mug_counter` 在 `kitchen_cabinet_4/top` 上
+        - `mug_counter` 立着
+      - 第 79 组：
+        - `mug_counter` 在 `kitchen_island/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 80 组：
+        - `mug_counter` 在 `kitchen_island/top` 上
+        - `mug_counter` 立着
+      - 第 81 组：
+        - `mug_counter` 在 `dining_table_2/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 82 组：
+        - `mug_counter` 在 `dining_table_2/top` 上
+        - `mug_counter` 立着
+      - 第 83 组：
+        - `mug_counter` 在 `dining_table_1/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 84 组：
+        - `mug_counter` 在 `dining_table_1/top` 上
+        - `mug_counter` 立着
+      - 第 85 组：
+        - `mug_counter` 在 `tv_stand_2/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 86 组：
+        - `mug_counter` 在 `tv_stand_2/top` 上
+        - `mug_counter` 立着
+      - 第 87 组：
+        - `mug_counter` 在 `kitchen_counter_1/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 88 组：
+        - `mug_counter` 在 `kitchen_counter_1/top` 上
+        - `mug_counter` 立着
+      - 第 89 组：
+        - `mug_counter` 在 `kitchen_counter_2/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 90 组：
+        - `mug_counter` 在 `kitchen_counter_2/top` 上
+        - `mug_counter` 立着
+      - 第 91 组：
+        - `mug_counter` 在 `kitchen_cabinet_5/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 92 组：
+        - `mug_counter` 在 `kitchen_cabinet_5/top` 上
+        - `mug_counter` 立着
+      - 第 93 组：
+        - `mug_counter` 在 `kitchen_cabinet_3/top` 上
+        - `mug_counter` 立着
+        - `oatmeal` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `pot_lid` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+        - `oatmeal` 立着
+      - 第 94 组：
+        - `mug_counter` 在 `kitchen_cabinet_3/top` 上
+        - `mug_counter` 立着
 - **不行（0）**：只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=oatmeal)` → 6. `pick(object=oatmeal)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[6.7, 1.84])` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=pot_lid, receptacle=kitchen_island/top, hint_xy=[7.1, 1.85])` → 13. `navigate(destination=cup_counter_b)` → 14. `pick(object=cup_counter_b)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `spot_dishes`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=oatmeal)` → 6. `pick(object=oatmeal)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=oatmeal, receptacle=kitchen_island/top, hint_xy=[6.7, 1.84])` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=pot_lid, receptacle=kitchen_island/top, hint_xy=[7.1, 1.85])` → 13. `navigate(destination=cup_counter_b)` → 14. `pick(object=cup_counter_b)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `spot_kid_toys`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=cup_counter_b)` → 6. `pick(object=cup_counter_b)` → 7. `navigate(destination=kitchen_cabinet_4/top)` → 8. `place(object=cup_counter_b, receptacle=kitchen_cabinet_4/top, hint_xy=[1.393, 0.44])`
 
 ### two_guests（Task）
 
-**情况**：“有两位客人要来，在饮品角摆两个杯子，两个别挨着”：家里只有一个杯子（岛台上），马克杯在别的房间（开局看不到） → 先放杯子，发现没有第二个，自己想到马克杯也是杯子，去别的房间找来补上
+**情况**：（缺失）“有两位客人要来喝茶，摆两个玻璃杯，两个别挨着”：岛台上一个玻璃杯，第二个看家里有什么 → 两个杯子按差的那个定档。杯子定档按毛病数：玻璃杯 0、马克杯 1、孩子的塑料杯 2；放到另一个矮柜 1、别的台面 2；动了孩子的东西 2、碗或锅盖没回厨房 2、两个杯子挨着 1、柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**指令**：有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。
+**指令**：有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`glass_in_cabinet` D = 1、最高档 好，`mug` D = 1、最高档 次好，`kid_cup` D = 0、最高档 最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
-    - 第 2 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
-    - 第 3 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
-    - 第 4 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
-    - 第 5 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
-    - 第 6 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-      - `mug` 离这些东西都至少 3 cm：`mug_shelf`
-    - 第 7 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-      - `mug` 离这些东西都至少 3 cm：`mug_counter`
-    - 第 8 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
-    - 第 9 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
-    - 第 10 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-      - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
+  - 摆法 `mug`、`kid_cup`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `glass_in_cabinet`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`glass_cup_2`
+        - `kitchen_cabinet_4` 关着
+- **次好（0.6）**：
+
+  - 摆法 `kid_cup`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `glass_in_cabinet`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`glass_cup_2`
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
+        - `kitchen_cabinet_4` 关着
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+        - `kitchen_cabinet_4` 关着
+      - 第 5 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
+        - `kitchen_cabinet_4` 关着
+      - 第 6 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+        - `kitchen_cabinet_4` 关着
+      - 第 7 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug`
+        - `kitchen_cabinet_4` 关着
+      - 第 8 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+        - `kitchen_cabinet_4` 关着
+      - 第 9 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_shelf`
+        - `kitchen_cabinet_4` 关着
+      - 第 10 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_counter`
+        - `kitchen_cabinet_4` 关着
+      - 第 11 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+        - `kitchen_cabinet_4` 关着
+      - 第 12 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_shelf`
+        - `kitchen_cabinet_4` 关着
+      - 第 13 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_counter`
+        - `kitchen_cabinet_4` 关着
+      - 第 14 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
+        - `kitchen_cabinet_4` 关着
+      - 第 15 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
+        - `kitchen_cabinet_4` 关着
+      - 第 16 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `mug`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 5 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+      - 第 6 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 7 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 8 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 9 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 10 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
 - **最不好（0.3）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-    - 第 2 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 3 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 4 组：
-      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-      - `cup_counter_b` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-    - 第 5 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 6 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 7 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-    - 第 8 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 9 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
-    - 第 10 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
+  - 摆法 `glass_in_cabinet`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 5 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+      - 第 6 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 7 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 8 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 9 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 10 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 11 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 12 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 13 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 14 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug`
+      - 第 15 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 16 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 17 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+      - 第 18 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 19 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 20 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 21 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 22 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 23 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `glass_cup_2` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 24 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 25 组：
+        - `glass_cup_2` 在 `kitchen_cabinet_6/top` 上
+        - `glass_cup_2` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 26 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+      - 第 27 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 28 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 29 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 30 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 31 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 32 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 33 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 34 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 35 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
+      - 第 36 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 37 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 38 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 39 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 40 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 41 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
+      - 第 42 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_4` 关着
+      - 第 43 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+  - 摆法 `kid_cup`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `kid_cup` 在 `kitchen_cabinet_6/top` 上
+        - `kid_cup` 立着
+        - `cup_counter_b` 离这些东西都至少 3 cm：`kid_cup`
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `kid_cup` 在 `kitchen_cabinet_6/top` 上
+        - `kid_cup` 立着
+  - 摆法 `mug`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 2 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 3 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 4 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 5 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 6 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 7 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 8 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 9 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+      - 第 10 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
 - **不行（0）**：只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=dining_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
-- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=living_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
+- 摆法 `glass_in_cabinet`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=glass_cup_2)` → 13. `pick(object=glass_cup_2)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=glass_cup_2, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `mug`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=dining_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
+- 摆法 `kid_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=kid_cup, region=living_room_0_1)` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
 
 ### x6_gd_cup_in_cabinets（Task）
 
-**情况**：指令要一个不带把手的杯子，说这种杯子收在厨房的矮柜里；岛台上的马克杯就在眼前但有把手 → 不拿马克杯，逐个打开矮柜找杯子，找完关门
+**情况**：（能力不足）“有客人要来，想喝冰柠檬水，在饮品角摆个杯子”：马克杯就在眼前，但装冰饮不合适；玻璃杯或孩子的塑料杯收在关着的矮柜里 → 打开柜子找。冰饮杯子：玻璃杯 0、塑料杯 1、马克杯 2；柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
-**指令**：有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。
+**指令**：有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`cup_in_4` D = 1、最高档 好，`plastic_only` D = 1、最高档 次好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-  - `cup_counter_b` 立着
-  - 手里空着
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
+  - 摆法 `plastic_only`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `cup_in_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
 - **次好（0.6）**：
 
-  - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-  - `cup_counter_b` 立着
-  - 手里空着
+  - 摆法 `cup_in_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+        - `cup_counter_b` 立着
+  - 摆法 `plastic_only`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kid_cup` 在 `kitchen_cabinet_6/top` 上
+        - `kid_cup` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
 - **最不好（0.3）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-    - 第 2 组：
-      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
-      - `mug_dining_cabinet` 立着
-    - 第 3 组：
-      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
-      - `mug_shelf` 立着
-    - 第 4 组：
-      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
-      - `mug_counter` 立着
+  - 摆法 `plastic_only`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kid_cup` 在 `kitchen_cabinet_6/top` 上
+        - `kid_cup` 立着
+      - 第 2 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 4 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 5 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 6 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 7 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 8 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 9 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+  - 摆法 `cup_in_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 2 组：
+        - `mug` 在 `kitchen_cabinet_6/top` 上
+        - `mug` 立着
+      - 第 3 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 4 组：
+        - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+        - `mug_dining_cabinet` 立着
+      - 第 5 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 6 组：
+        - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+        - `mug_shelf` 立着
+      - 第 7 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 8 组：
+        - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+        - `mug_counter` 立着
 - **不行（0）**：没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `cup_in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6)` → 4. `open(articulated=kitchen_cabinet_6)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_6)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_6)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `open(articulated=kitchen_cabinet_4)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_4)` → 13. `straighten()` → 14. `navigate(destination=cup_counter_b)` → 15. `pick(object=cup_counter_b)` → 16. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)` → 19. `navigate(destination=kitchen_cabinet_4)` → 20. `close(articulated=kitchen_cabinet_4)`
-- 摆法 `cup_in_6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `navigate(destination=cup_counter_b)` → 15. `pick(object=cup_counter_b)` → 16. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `plastic_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `navigate(destination=kid_cup)` → 15. `pick(object=kid_cup)` → 16. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)`
 
 ---
 

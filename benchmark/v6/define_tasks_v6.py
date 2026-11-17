@@ -700,6 +700,11 @@ def T02(t):
 
 def T04(t):
     C = "cup_counter_b"
+    SPOT, KID = "kitchen_cabinet_6/top", "kid_cup"
+    from benchmark.v6.scoring import NA as NA_T
+    MUGS = ["mug", "mug_dining_cabinet", "mug_shelf", "mug_counter"]       # every mug in the house
+    up = lambda x, sup=SPOT: [["on", x, sup], ["upright", x]]  # noqa: E731
+    LT = LAYOUT_TIERS.setdefault(("T04", "*"), {})          # keyed by layout id (v5 layouts have no case)
     # h_task_spot_taken (from v5): the bowl sat 15 cm from the lid, room enough for the cup (11 cm), so nothing had
     # to be moved.  Centred in the free stretch it leaves 8 cm either side: no spot fits a cup until it is moved
     t["variants"]["h_task_spot_taken"]["move"]["oatmeal"]["xy"] = [3.629, 0.36]
@@ -718,13 +723,31 @@ def T04(t):
                nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top")]
     shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.50], "yaw_deg": 0.0},  # front: 0.30 m headroom
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
-    cup_cases = {}
-    for where, first in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4")):
-        cup_cases[f"cup_in_{where[-1]}"] = dict(
-            move={C: shelf[where]}, route=cup_from(first, where),
-            failures=[f_initial("resource", [["on", C, f"{where}/inside_shelf"]], fid="resource_cup_in_cabinet")])
-    SPOT = "kitchen_cabinet_6/top"
-    MUGS = ["mug", "mug_dining_cabinet", "mug_shelf", "mug_counter"]       # every mug in the house
+    # x6_gd_cup_in_cabinets (11-17, user): iced lemonade -- a glass; the mug in plain view is a poor stand-in for a
+    # cold drink.  cup_in_4: the glass in cabinet 4 (ideal); plastic_only: no glass, the kid's plastic cup in
+    # cabinet 6 (moderate).  Cups: glass 0, plastic 1, mug 2; a cabinet door left open costs 1
+    closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    ICED_COST = {C: 0, KID: 1, **{m: 2 for m in MUGS}}
+    cup_cases = {
+        "cup_in_4": dict(move={C: shelf["kitchen_cabinet_4"]}, route=cup_from("kitchen_cabinet_6", "kitchen_cabinet_4"),
+                         failures=[f_initial("resource", [["on", C, "kitchen_cabinet_4/inside_shelf"]],
+                                             fid="resource_cup_in_cabinet")]),
+        "plastic_only": dict(
+            add={KID: {"asset": "plastic_cup", **shelf["kitchen_cabinet_6"]}},
+            goal={"all": [*up(KID), ["hand_empty", "right"], *closed]},
+            route=[st if st.get("args", {}).get("object") != C and st.get("args", {}).get("destination") != C
+                   else {**st, "args": {k: (KID if v == C else v) for k, v in st["args"].items()}}
+                   for st in cup_from("kitchen_cabinet_4", "kitchen_cabinet_6")])}
+    LT["x6_gd_cup_in_cabinets__cup_in_4"] = cost_tiers([(up(x), ICED_COST[x]) for x in (C, *MUGS)], [(closed, 1)])
+    LT["x6_gd_cup_in_cabinets__plastic_only"] = cost_tiers([(up(x), ICED_COST[x]) for x in (KID, *MUGS)],
+                                                           [(closed, 1)])
+    # 11-17 (user): levels count faults -- the cup (the glass 0, a mug 1, the kid's plastic cup 2), the place and
+    # things disturbed; 0 best, 1 second, 2 or more worst (cost_tiers).  The seed changes what is there to use
+    CUP_COST = {C: 0, **{m: 1 for m in MUGS}, KID: 2}
+    LT["cup_available"] = cost_tiers([(up(x), CUP_COST[x]) for x in (C, *MUGS)])
+    for lid in ("no_cup", "no_cup_mug_away", "no_cup_mug_away__alt_dining_table_2"):
+        LT[lid] = cost_tiers([(up(m), 1) for m in MUGS])
+    LT["no_cup_kid"] = cost_tiers([(up(KID), 2)])
     away = {"dining": (P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
             "study": (P("desk_1/top", -0.7, -6.0), "living_room_0_1")}
     # two_guests: two drinks, one cup in the house; a mug (in another room) for the second
@@ -732,10 +755,34 @@ def T04(t):
     from itertools import combinations
     two_goal = {"any": [[["on", a, SPOT], ["upright", a], ["on", m, SPOT], ["upright", m], ["clear_of", a, [m], 0.03]]
                         for a, m in combinations([C, *MUGS], 2)], "all": [["hand_empty", "right"]]}
-    two_cases = {c: dict(move={"mug": pose},
-                         route=base[:4] + [place(C, SPOT, [3.36, 0.36]), S("search", object="mug", region=region),
-                                           nav("mug"), pick("mug"), nav(SPOT), place("mug", SPOT, [3.62, 0.36])])
-                 for c, (pose, region) in away.items()}
+    # two_guests (11-17, user): two glasses asked; the seed changes the second -- a second glass put away in cabinet
+    # 4 (ideal), only a mug (dining table: moderate), or only the kid's plastic cup (study desk, no mug in the
+    # house: bad).  The pair costs as its poorer cup; touching (under 3 cm) and an open cabinet cost 1 each
+    G2 = "glass_cup_2"
+    apart = lambda a, b: [["clear_of", a, [b], 0.03]]  # noqa: E731
+    first = base[:4] + [place(C, SPOT, [3.36, 0.36])]
+
+    def second(x, region):
+        return first + [S("search", object=x, region=region), nav(x), pick(x), nav(SPOT), place(x, SPOT, [3.62, 0.36])]
+    two_cases = {
+        "glass_in_cabinet": dict(
+            move={"mug": away["dining"][0]},
+            add={G2: {"asset": "breakfast_cup", **shelf["kitchen_cabinet_4"]}},
+            goal={"all": [*up(C), *up(G2), *apart(C, G2), ["is_closed", "kitchen_cabinet_4"], ["hand_empty", "right"]]},
+            route=first + open_explore("kitchen_cabinet_4") + [
+                nav(G2), pick(G2), S("retreat", obstacle="kitchen_cabinet_4", distance_m=0.3),
+                S("close", articulated="kitchen_cabinet_4"), nav(SPOT), place(G2, SPOT, [3.62, 0.36])]),
+        "mug": dict(move={"mug": away["dining"][0]}, route=second("mug", away["dining"][1])),
+        "kid_cup": dict(remove=list(MUGS), add={KID: {"asset": "plastic_cup", **away["study"][0]}},
+                        goal={"all": [*up(C), *up(KID), *apart(C, KID), ["hand_empty", "right"]]},
+                        route=second(KID, away["study"][1]))}
+    pair = lambda cups: [g for (a, c1), (b, c2) in combinations(cups, 2)  # noqa: E731
+                         for g in ((up(a) + up(b) + apart(a, b), max(c1, c2)),     # apart
+                                   (up(a) + up(b), max(c1, c2) + 1))]               # touching: a fault
+    LT["two_guests__glass_in_cabinet"] = cost_tiers(pair([(C, 0), (G2, 0), *[(m, 1) for m in MUGS]]),
+                                                    [([["is_closed", "kitchen_cabinet_4"]], 1)])
+    LT["two_guests__mug"] = cost_tiers(pair([(C, 0), *[(m, 1) for m in MUGS]]))
+    LT["two_guests__kid_cup"] = cost_tiers(pair([(C, 0), (KID, 2)]))
     # clear_the_drinks_spot: breakfast is over and the bowl of oatmeal and the pot lid were left on the drinks spot;
     # tidy them back to the kitchen and set out a cup.  Which things are meant ("the used kitchen things") and where
     # the kitchen is the robot works out; the cup then has room.
@@ -744,42 +791,81 @@ def T04(t):
     spot_route = [look(ISL), nav(SPOT), look(SPOT), nav("oatmeal"), pick("oatmeal"), nav(ISL),
                   place("oatmeal", ISL, [6.70, 1.84]), nav("pot_lid"), pick("pot_lid"), nav(ISL),
                   place("pot_lid", ISL, [7.10, 1.85]), nav(C), pick(C), nav(SPOT), place(C, SPOT)]
+    # clear_the_drinks_spot (11-17, user): a substitution of the place -- spot_dishes: the used bowl and lid fill
+    # the drinks spot, back to the kitchen with them, the glass on the spot (ideal); spot_kid_toys: the kid's play
+    # things fill it (a puzzle tray, his teddy, blocks, the duck, the car: checked, no 11 cm left) and stay, the
+    # glass goes on the other low wall cabinet (moderate).  Costs: the cup as above; the other low cabinet 1, any
+    # other top 2; the bowl or the lid left outside the kitchen 2; the kid's things moved 2
+    OTHER_CAB = "kitchen_cabinet_4/top"
+    ELSEWHERE = [ISL, "dining_table_2/top", "dining_table_1/top", "tv_stand_2/top", "kitchen_counter_1/top",
+                 "kitchen_counter_2/top", "kitchen_cabinet_5/top", "kitchen_cabinet_3/top"]
+    KID_TOYS = {"kid_puzzle": ("shallow_sorting_tray", 3.31, 0.36, 90.0), "kid_teddy": ("teddy_bear", 3.52, 0.30, 0.0),
+                "kid_block_1": ("wooden_block", 3.50, 0.45, 0.0), "kid_block_2": ("wooden_block", 3.56, 0.45, 0.0),
+                "kid_duck": ("rubber_duck", 3.70, 0.26, 90.0), "kid_car": ("toy_car", 3.70, 0.43, 0.0)}
+    places = [(SPOT, 0), (OTHER_CAB, 1)] + [(x, 2) for x in ELSEWHERE]
+    set_out = lambda cups: [([["on", x, sup], ["upright", x]], CUP_COST[x] + pc)  # noqa: E731
+                            for x in cups for sup, pc in places]
+    dishes_home = [["on_any", "oatmeal", KITCHEN], ["on_any", "pot_lid", KITCHEN], ["upright", "oatmeal"]]
+    toys_stay = [["near_start", n, 0.03] for n in KID_TOYS]
+    spot_cases = {
+        "spot_dishes": dict(route=spot_route),
+        "spot_kid_toys": dict(
+            move={"oatmeal": P(ISL, 6.69, 1.83), "pot_lid": P(ISL, 7.10, 1.85)},
+            add={n: {"asset": a, **P(SPOT, x, y, yaw)} for n, (a, x, y, yaw) in KID_TOYS.items()},
+            goal={"all": [*up(C, OTHER_CAB), *toys_stay, ["hand_empty", "right"]]},
+            watch=[C, *MUGS, *KID_TOYS],
+            route=[look(ISL), nav(SPOT), look(SPOT), nav(C), pick(C), nav(OTHER_CAB), place(C, OTHER_CAB, [1.40, 0.42])])}
+    LT["clear_the_drinks_spot__spot_dishes"] = cost_tiers(set_out([C, *MUGS]), [(dishes_home, 2)])
+    LT["clear_the_drinks_spot__spot_kid_toys"] = dict(cost_tiers(set_out([C, *MUGS]), [(toys_stay, 2)]),
+                                                      best=NA_T)    # the spot is full: no ideal in this seed
     return {
+        # no_cup's fourth seed (merged into the v5 no_cup, MERGE): no glass and no mug in the house, only the kid's
+        # plastic cup on the island (bad: the best the house offers)
+        "no_cup_kid": dict(
+            base="no_cup", control="cup_available", conditions=["no_cup"], remove=[C, *MUGS],
+            add={KID: {"asset": "plastic_cup", **P(ISL, 7.96, 1.655)}},
+            goal={"all": [*up(KID), ["hand_empty", "right"]]}, watch=[KID],
+            challenge="no glass and no mug in the house: only the kid's plastic cup on the island",
+            rationale="the best the house offers is the kid's cup: set it out (bad, but the guest gets a cup)",
+            cases={"": dict(route=[look(ISL), nav(KID), pick(KID), nav(SPOT), place(KID, SPOT)])}),
         "clear_the_drinks_spot": dict(
             base="h_task_spot_taken", control="cup_available", conditions=["goal_items_unstated", "destination_occupied"],
-            instruction="Breakfast is over. Tidy away the used kitchen things on the low wall cabinet and set out a "
-                        "cup there; a guest is coming for tea soon.",
-            instruction_zh="早餐结束了，把靠墙矮柜上用过的餐厨用品收拾好，放上杯子，待会儿客人要来喝茶。",
+            # 11-17: the task's own words (a glass for tea at the drinks spot); what lies there the robot sees
             goal={"any": [[["on", x, SPOT], ["upright", x]] for x in (C, *MUGS)],
                   "all": [["on_any", "oatmeal", KITCHEN], ["on_any", "pot_lid", KITCHEN], ["upright", "oatmeal"],
                           ["hand_empty", "right"]]},
             watch=[C, *MUGS, "oatmeal", "pot_lid"],
-            challenge="the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; "
-                      "the instruction does not name them nor say where the kitchen things go",
-            rationale="the used kitchen things on the cabinet are the oatmeal bowl and the pot lid: take both back to "
-                      "the kitchen (island, stove or a counter), then set a cup on the cleared spot",
-            cases={"": dict(route=spot_route)}),
+            factor="what fills the drinks spot (seed: the used bowl and lid, to clear; or the kid's play things, to "
+                   "leave)",
+            challenge="the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the "
+                      "kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+            rationale="used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's "
+                      "things stay, so the glass goes on the other low wall cabinet (moderate)",
+            cases=spot_cases),
         "two_guests": dict(
             base="cup_available", control="cup_available", conditions=["missing_piece", "not_in_view"],
-            instruction="Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other.",
-            instruction_zh="有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。",
+            instruction="Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall "
+                        "cabinet, not touching each other.",
+            instruction_zh="有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。",
             goal=two_goal, watch=[C, *MUGS],
-            factor="where the mug is (seed: the dining table or the study desk)",
-            challenge="two drinks are needed and the house has one cup (on the island); the mug is in another room, "
-                      "out of view",
-            rationale="set out the cup, notice there is no second cup, and fetch a mug from another room for the "
-                      "second place; the two stand apart on the spot",
+            factor="what the second glass can be (seed: a second glass put away in cabinet 4; only a mug on the "
+                   "dining table; only the kid's plastic cup on the study desk)",
+            challenge="one glass on the island; the second one is put away in a closed cabinet, or there is none and "
+                      "a mug or only the kid's plastic cup is in another room",
+            rationale="set out the glass, then the best second one the house offers: a glass (ideal), a mug "
+                      "(moderate), the kid's cup (bad); the two stand apart",
             cases=two_cases),
         "x6_gd_cup_in_cabinets": dict(
             base="no_cup", control="no_cup",
-            factor="which cabinet holds the preferred item",
-            instruction="A guest is coming. Set out a cup without a handle at the drinks spot on the low wall "
-                        "cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
-            instruction_zh="有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。",
-            challenge="the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are "
-                      "kept in closed cabinets: the cup is in one of the two (seed decides which)",
-            rationale="the visible substitute must not end the search: the cabinets are inspected until the cup is "
-                      "found (reference route: the worse order, the cup is in the second cabinet)",
+            factor="what is put away in the cabinets (seed: the glass in cabinet 4; no glass, the kid's plastic cup "
+                   "in cabinet 6)",
+            instruction="A guest is coming and would like iced lemonade. Set out a cup at the drinks spot on the low "
+                        "wall cabinet.",
+            instruction_zh="有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。",
+            challenge="the mug is in plain view, a poor cup for a cold drink; a glass (or, when there is none, the "
+                      "kid's plastic cup) is put away in a closed low cabinet",
+            rationale="the visible mug must not end the search: open the cabinets for a glass (ideal); without one "
+                      "the plastic cup (moderate); the mug is bad; close the doors again (an open one costs a level)",
             goal=cab_goal, cases=cup_cases),
     }
 
@@ -2307,6 +2393,30 @@ def container_tiers(both_in, levels, keep, hand=("hand_empty", "right")):
     return {r: ({"any": g, "all": [list(hand)]} if g else NA) for r, g in groups.items()}
 
 
+def cost_tiers(options, faults=(), hand=True):
+    """11-17: levels by counting faults.  ``options``: [(atoms, cost)] -- the ways to do it, each with its own cost
+    (a substitute costs 1, a poor one 2); ``faults``: [(atoms that hold when it is done right, cost)].  The level is
+    the total: 0 best, 1 second, 2 or more worst; a level nothing reaches is scoring.NA.  The tiers are judged
+    best first, so a goal only has to hold for its total (an outcome that also meets a better one stops there)."""
+    from itertools import combinations
+    from benchmark.v6.scoring import NA
+    groups = {"best": [], "second": [], "worst": []}
+    for atoms, cost in options:
+        for k in range(len(faults) + 1):
+            for dropped in combinations(range(len(faults)), k):
+                total = cost + sum(faults[i][1] for i in dropped)
+                kept = [a for i, (fa, _) in enumerate(faults) if i not in dropped for a in fa]
+                groups["best" if total == 0 else "second" if total == 1 else "worst"].append(list(atoms) + kept)
+    out = {}
+    for name, g in groups.items():
+        uniq = []
+        for grp in g:
+            if grp not in uniq:
+                uniq.append(grp)
+        out[name] = {"any": uniq, "all": [["hand_empty", "right"]] if hand else []} if uniq else NA
+    return out
+
+
 def T03_long(t):
     bin_, spoon, pin = "wide_storage_bin", "breakfast_spoon", "rolling_pin"
     find_bins = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"),
@@ -2393,8 +2503,9 @@ def T03_more(t):
     # bin near, the kitchen bin (empty but for two spoons) in the bedroom (ideal); kitchen_bin_full: the kitchen bin
     # is packed with kitchen things, no room for the pin, a tray on the study desk (moderate); the toy bin is bad
     packed = [("spoon_counter", 0.0, 0.10, 0.0), ("spoon_side_table", 0.0, 0.05, 0.0)]
-    packed_add = [("foil_takeout_tray", "bin_foil_tray", -0.07, -0.07, 0.0), ("breakfast_cup", "bin_cup", 0.09, 0.06, 0.0),
-                  ("plastic_cup", "bin_plastic_cup", -0.10, 0.07, 0.0), ("breakfast_cup", "bin_cup_2", 0.09, -0.07, 0.0)]
+    # inside the bin's floor (about 31 x 27 cm): the foil tray in one half, three cups in the other corners
+    packed_add = [("foil_takeout_tray", "bin_foil_tray", -0.055, -0.06, 0.0), ("breakfast_cup", "bin_cup", 0.10, 0.065, 0.0),
+                  ("plastic_cup", "bin_plastic_cup", -0.095, 0.075, 0.0), ("breakfast_cup", "bin_cup_2", 0.10, -0.065, 0.0)]
     look_far = [S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"), look("bookcase_2/top")]
     which, which_tiers = {}, {}
     toy_add = {TOY: {"asset": "wide_storage_bin", **copy.deepcopy(TV_BIN)},
@@ -2782,15 +2893,16 @@ SEED_EXT = {
 
 
 # v5 variants that are one design with the layout changed: merged into the first as its seeds
-MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away"],
+MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_kid"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
          ("T27_leftovers_to_fridge", "which_is_leftover"): ["fruit_stays_out", "still_eating"],
          ("T29_clear_table_for_dinner", "belongs_on_table"): ["nothing_to_clear"],
          ("T30_bowls_for_soup", "bowl_not_plate"): ["clean_one"]}
-MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "where the mug is (seed: on the island in view, on the TV "
-                                                         "stand or on the dining table, out of view)",
+MERGE_FACTOR = {("T04_cup_or_mug_to_cabinet", "no_cup"): "what stands in for the glass (seed: the mug on the island "
+                                                         "in view, on the TV stand or on the dining table, out of "
+                                                         "view; or only the kid's plastic cup)",
                 ("T07_heat_oatmeal", "microwave_broken"): "where the oatmeal is (seed: by the microwave, or elsewhere "
                                                           "and to be found first)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
@@ -2947,8 +3059,9 @@ TASK_TEXT = {
                                 "the island. Roll it back in so it does not fall off.",
                                 "准备包饺子了，擀面杖滚到岛台前沿快掉下去了，把它往里滚回去，别让它掉下来。"),
     # asks for a cup only (no "a mug will do"): a mug is a cup too, whether to settle for it the robot decides
-    "T04_cup_or_mug_to_cabinet": ("A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
-                                  "有客人要来，在靠墙矮柜上的饮品角摆一个杯子。"),
+    # 11-17 (user): the instruction names the ideal (a glass) and the purpose (tea); a mug is the substitute
+    "T04_cup_or_mug_to_cabinet": ("A guest is coming for tea. Set out a glass at the drinks spot on the low wall "
+                                  "cabinet.", "有客人要来喝茶，在靠墙矮柜上的饮品角摆一个玻璃杯。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
     "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),

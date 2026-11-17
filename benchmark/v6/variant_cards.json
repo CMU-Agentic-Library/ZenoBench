@@ -7887,7 +7887,7 @@
    18,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -7978,12 +7978,11 @@
   "variant": "no_cup",
   "category": "task",
   "seeds": [
-   11,
-   14,
-   15,
+   10,
+   12,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8075,11 +8074,11 @@
   "variant": "no_cup",
   "category": "task",
   "seeds": [
-   12,
-   16,
-   17
+   11,
+   17,
+   18
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8172,11 +8171,10 @@
   "variant": "no_cup",
   "category": "task",
   "seeds": [
-   10,
    13,
-   18
+   14
   ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet.",
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8265,22 +8263,68 @@
   "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/clear_the_drinks_spot": {
+ "T04_cup_or_mug_to_cabinet/no_cup_kid": {
+  "variant": "no_cup",
+  "category": "task",
+  "seeds": [
+   15,
+   16
+  ],
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kid_cup"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "mug",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
+   ],
+   "conditions": [
+    "no_cup"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_no_cup_kid",
+  "challenge": "no glass and no mug in the house: only the kid's plastic cup on the island",
+  "rationale": "the best the house offers is the kid's cup: set it out (bad, but the guest gets a cup)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/clear_the_drinks_spot__spot_dishes": {
   "variant": "clear_the_drinks_spot",
   "category": "task",
   "seeds": [
-   10,
    11,
    12,
    13,
-   14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
-  "instruction": "Breakfast is over. Tidy away the used kitchen things on the low wall cabinet and set out a cup there; a guest is coming for tea soon.",
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8391,22 +8435,112 @@
    ]
   },
   "control": "cup_available",
-  "oracle_route": "v6_clear_the_drinks_spot",
-  "challenge": "the bowl of oatmeal and the pot lid were left on the drinks spot after breakfast and fill it; the instruction does not name them nor say where the kitchen things go",
-  "rationale": "the used kitchen things on the cabinet are the oatmeal bowl and the pot lid: take both back to the kitchen (island, stove or a counter), then set a cup on the cleared spot",
+  "oracle_route": "v6_clear_the_drinks_spot__spot_dishes",
+  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+  "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/two_guests__dining": {
+ "T04_cup_or_mug_to_cabinet/clear_the_drinks_spot__spot_kid_toys": {
+  "variant": "clear_the_drinks_spot",
+  "category": "task",
+  "seeds": [
+   10,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is coming for tea. Set out a glass at the drinks spot on the low wall cabinet.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug",
+    "oatmeal",
+    "pot_lid"
+   ],
+   "added": [
+    "kid_block_1",
+    "kid_block_2",
+    "kid_car",
+    "kid_duck",
+    "kid_puzzle",
+    "kid_teddy"
+   ],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [
+    "goal_items_unstated",
+    "destination_occupied"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_4/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "near_start",
+     "kid_puzzle",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_teddy",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_block_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_block_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_duck",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_car",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_clear_the_drinks_spot__spot_kid_toys",
+  "challenge": "the drinks spot is full: the bowl of oatmeal and the pot lid left after breakfast, or the kid's play things (puzzle tray, teddy, blocks, duck, car); the instruction mentions neither",
+  "rationale": "used kitchen things go back to the kitchen and the glass goes on the spot (ideal); the kid's things stay, so the glass goes on the other low wall cabinet (moderate)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/two_guests__glass_in_cabinet": {
   "variant": "two_guests",
   "category": "task",
   "seeds": [
-   11,
+   12,
    13,
    14,
-   15,
-   18
+   19
   ],
-  "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other.",
+  "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8414,7 +8548,9 @@
     "cup_counter_b",
     "mug"
    ],
-   "added": [],
+   "added": [
+    "glass_cup_2"
+   ],
    "removed": [
     "juice_bottle"
    ],
@@ -8426,289 +8562,37 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_shelf",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ]
-   ],
    "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "on",
+     "glass_cup_2",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "glass_cup_2"
+    ],
+    [
+     "clear_of",
+     "cup_counter_b",
+     [
+      "glass_cup_2"
+     ],
+     0.03
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
     [
      "hand_empty",
      "right"
@@ -8716,22 +8600,20 @@
    ]
   },
   "control": "cup_available",
-  "oracle_route": "v6_two_guests__dining",
-  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
-  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "oracle_route": "v6_two_guests__glass_in_cabinet",
+  "challenge": "one glass on the island; the second one is put away in a closed cabinet, or there is none and a mug or only the kid's plastic cup is in another room",
+  "rationale": "set out the glass, then the best second one the house offers: a glass (ideal), a mug (moderate), the kid's cup (bad); the two stand apart",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/two_guests__study": {
+ "T04_cup_or_mug_to_cabinet/two_guests__mug": {
   "variant": "two_guests",
   "category": "task",
   "seeds": [
    10,
-   12,
-   16,
-   17,
-   19
+   15,
+   17
   ],
-  "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other.",
+  "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -9041,9 +8923,81 @@
    ]
   },
   "control": "cup_available",
-  "oracle_route": "v6_two_guests__study",
-  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
-  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "oracle_route": "v6_two_guests__mug",
+  "challenge": "one glass on the island; the second one is put away in a closed cabinet, or there is none and a mug or only the kid's plastic cup is in another room",
+  "rationale": "set out the glass, then the best second one the house offers: a glass (ideal), a mug (moderate), the kid's cup (bad); the two stand apart",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/two_guests__kid_cup": {
+  "variant": "two_guests",
+  "category": "task",
+  "seeds": [
+   11,
+   16,
+   18
+  ],
+  "instruction": "Two guests are coming for tea. Set out two glasses at the drinks spot on the low wall cabinet, not touching each other.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b"
+   ],
+   "added": [
+    "kid_cup"
+   ],
+   "removed": [
+    "juice_bottle",
+    "mug",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "on",
+     "kid_cup",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "clear_of",
+     "cup_counter_b",
+     [
+      "kid_cup"
+     ],
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_two_guests__kid_cup",
+  "challenge": "one glass on the island; the second one is put away in a closed cabinet, or there is none and a mug or only the kid's plastic cup is in another room",
+  "rationale": "set out the glass, then the best second one the house offers: a glass (ideal), a mug (moderate), the kid's cup (bad); the two stand apart",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_4": {
@@ -9056,7 +9010,7 @@
    16,
    18
   ],
-  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "instruction": "A guest is coming and would like iced lemonade. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -9115,11 +9069,11 @@
   },
   "control": "no_cup",
   "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
-  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+  "challenge": "the mug is in plain view, a poor cup for a cold drink; a glass (or, when there is none, the kid's plastic cup) is put away in a closed low cabinet",
+  "rationale": "the visible mug must not end the search: open the cabinets for a glass (ideal); without one the plastic cup (moderate); the mug is bad; close the doors again (an open one costs a level)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_6": {
+ "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__plastic_only": {
   "variant": "x6_gd_cup_in_cabinets",
   "category": "task",
   "seeds": [
@@ -9129,48 +9083,35 @@
    17,
    19
   ],
-  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "instruction": "A guest is coming and would like iced lemonade. Set out a cup at the drinks spot on the low wall cabinet.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "cup_counter_b",
     "mug"
    ],
-   "added": [],
-   "removed": [],
+   "added": [
+    "kid_cup"
+   ],
+   "removed": [
+    "cup_counter_b"
+   ],
    "conditions": [
     "no_cup"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "cup_counter_b",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_cup_in_cabinet",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "on",
-     "cup_counter_b",
+     "kid_cup",
      "kitchen_cabinet_6/top"
     ],
     [
      "upright",
-     "cup_counter_b"
+     "kid_cup"
     ],
     [
      "hand_empty",
@@ -9187,9 +9128,9 @@
    ]
   },
   "control": "no_cup",
-  "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
-  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+  "oracle_route": "v6_x6_gd_cup_in_cabinets__plastic_only",
+  "challenge": "the mug is in plain view, a poor cup for a cold drink; a glass (or, when there is none, the kid's plastic cup) is put away in a closed low cabinet",
+  "rationale": "the visible mug must not end the search: open the cabinets for a glass (ideal); without one the plastic cup (moderate); the mug is bad; close the doors again (an open one costs a level)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/e1_pencil_asked": {

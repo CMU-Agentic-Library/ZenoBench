@@ -42,9 +42,9 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T03 | no_bin_substitute | Task-Level | - | container_absent; decoy_destination; not_in_view; small_container_present | 2 |
 | T03 | utensils_apart | Task-Level | - | destination_occupied; item_out_of_view; not_in_view | 4 |
 | T04 | cup_available | Control | - | - | 1 |
-| T04 | no_cup | Task-Level | - | no_cup; not_in_view | 3 |
-| T04 | clear_the_drinks_spot | Task-Level | - | destination_occupied; goal_items_unstated | 1 |
-| T04 | two_guests | Task-Level | - | missing_piece; not_in_view | 2 |
+| T04 | no_cup | Task-Level | - | no_cup; not_in_view | 4 |
+| T04 | clear_the_drinks_spot | Task-Level | - | destination_occupied; goal_items_unstated | 2 |
+| T04 | two_guests | Task-Level | - | missing_piece; not_in_view | 3 |
 | T04 | x6_gd_cup_in_cabinets | Task-Level | - | no_cup | 2 |
 | T05 | e1_pencil_asked | Control | - | - | 1 |
 | T05 | no_pen_pencil_away | Task-Level | - | not_in_view | 1 |

@@ -1,6 +1,6 @@
 {
- "routes": 292,
- "ok": 292,
+ "routes": 295,
+ "ok": 295,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -883,7 +883,19 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "clear_the_drinks_spot",
+   "layout": "no_cup_kid",
+   "steps": 6,
+   "atoms_checked": 2,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright kid_cup"
+   ],
+   "problems": [],
+   "variant": "no_cup"
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "layout": "clear_the_drinks_spot__spot_dishes",
    "steps": 16,
    "atoms_checked": 8,
    "atoms_geometric": 6,
@@ -900,7 +912,33 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "two_guests__dining",
+   "layout": "clear_the_drinks_spot__spot_kid_toys",
+   "steps": 8,
+   "atoms_checked": 8,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright cup_counter_b"
+   ],
+   "problems": [],
+   "variant": "clear_the_drinks_spot"
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "layout": "two_guests__glass_in_cabinet",
+   "steps": 18,
+   "atoms_checked": 4,
+   "atoms_geometric": 3,
+   "geometric_atoms": [
+    "upright cup_counter_b",
+    "upright glass_cup_2",
+    "clear_of cup_counter_b ['glass_cup_2'] 0.03"
+   ],
+   "problems": [],
+   "variant": "two_guests"
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "layout": "two_guests__mug",
    "steps": 11,
    "atoms_checked": 21,
    "atoms_geometric": 30,
@@ -941,41 +979,14 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "two_guests__study",
+   "layout": "two_guests__kid_cup",
    "steps": 11,
-   "atoms_checked": 21,
-   "atoms_geometric": 30,
+   "atoms_checked": 3,
+   "atoms_geometric": 3,
    "geometric_atoms": [
     "upright cup_counter_b",
-    "upright mug",
-    "clear_of cup_counter_b ['mug'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_dining_cabinet",
-    "clear_of cup_counter_b ['mug_dining_cabinet'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_shelf",
-    "clear_of cup_counter_b ['mug_shelf'] 0.03",
-    "upright cup_counter_b",
-    "upright mug_counter",
-    "clear_of cup_counter_b ['mug_counter'] 0.03",
-    "upright mug",
-    "upright mug_dining_cabinet",
-    "clear_of mug ['mug_dining_cabinet'] 0.03",
-    "upright mug",
-    "upright mug_shelf",
-    "clear_of mug ['mug_shelf'] 0.03",
-    "upright mug",
-    "upright mug_counter",
-    "clear_of mug ['mug_counter'] 0.03",
-    "upright mug_dining_cabinet",
-    "upright mug_shelf",
-    "clear_of mug_dining_cabinet ['mug_shelf'] 0.03",
-    "upright mug_dining_cabinet",
-    "upright mug_counter",
-    "clear_of mug_dining_cabinet ['mug_counter'] 0.03",
-    "upright mug_shelf",
-    "upright mug_counter",
-    "clear_of mug_shelf ['mug_counter'] 0.03"
+    "upright kid_cup",
+    "clear_of cup_counter_b ['kid_cup'] 0.03"
    ],
    "problems": [],
    "variant": "two_guests"
@@ -994,12 +1005,12 @@
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
-   "layout": "x6_gd_cup_in_cabinets__cup_in_6",
+   "layout": "x6_gd_cup_in_cabinets__plastic_only",
    "steps": 20,
    "atoms_checked": 4,
    "atoms_geometric": 1,
    "geometric_atoms": [
-    "upright cup_counter_b"
+    "upright kid_cup"
    ],
    "problems": [],
    "variant": "x6_gd_cup_in_cabinets"
