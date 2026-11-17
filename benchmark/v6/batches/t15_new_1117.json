@@ -1,0 +1,47 @@
+[
+ {
+  "task": "T15_cover_the_pot",
+  "seed": 10,
+  "variant": "lid_by_pot",
+  "route": "nominal",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "seed": 10,
+  "variant": "lid_elsewhere__counter",
+  "route": "v6_lid_elsewhere__counter",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "seed": 11,
+  "variant": "lid_elsewhere__dining",
+  "route": "v6_lid_elsewhere__dining",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "seed": 10,
+  "variant": "no_lid",
+  "route": "v6_no_lid",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T15_cover_the_pot",
+  "seed": 10,
+  "variant": "lid_in_use",
+  "route": "v6_lid_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

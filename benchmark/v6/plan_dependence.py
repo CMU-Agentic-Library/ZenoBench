@@ -46,7 +46,7 @@ from benchmark.v6.oracle_check import World, check  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 # variants whose instruction is meant to differ between layouts: the person's words carry the clue
-INSTRUCTION_CLUES = {"T01 which_book": "the guest says where they read last night; the robot maps that to the room"}
+INSTRUCTION_CLUES: dict[str, str] = {}   # T01 which_book (the room in the words) became homework_on_island 11-16
 NAME_HINTS = r"full|empty|spare|leftover|eating|dirty|clean|cold|warm|kid|child|guest|adult|dropped|homework|hw_|" \
              r"castle|loose|stray|example|snack|bought|stays|wrong|target|decoy|real|fake|old_|new_|his_|her_|stock"
 

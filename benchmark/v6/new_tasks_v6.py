@@ -900,7 +900,52 @@ def t30():
     return t, fams
 
 
-MAKERS = [t21, t22, t23, t24, t25, t26, t27, t28, t29, t30]
+# ================================================================== T15 cover the pot (11-17: replaces T15 book_face_up)
+# the instruction names the lid; the B variants make it unusable (absent, in use on the other pot) and a plate from
+# the counter covers the pot instead (the cover skill sets any held object centred on the rim)
+def t15():
+    POT, LID, STOVE = "handled_cooking_pot", "pot_lid", "kitchen_stove/top"
+    PLATES = ["plate_counter_a", "plate_counter_b"]
+    cover = lambda lid: [nav(POT), S("cover", container=POT, lid=lid)]  # noqa: E731
+    ctl = {"note": "the pot on the left burner, its lid on the island beside the stove",
+           "move": {LID: P(ISL, 8.05, 1.80)}}
+    t = base_task("T15_cover_the_pot", "ZB-T15", "The soup will sit a while before we eat. Cover the pot of soup on "
+                  "the stove with its lid.", "汤要放一会儿再吃，用锅盖把灶台上的汤锅盖好。", "lid_by_pot", ctl,
+                  {"all": [["covered", POT, LID], H]}, [look(STOVE), nav(LID), pick(LID)] + cover(LID), [POT, LID])
+    by_plate = {"any": [[["covered", POT, p]] for p in PLATES], "all": [H]}
+    plate_route = [look(STOVE), look(ISL), S("search", object=PLATES[0], region="kitchen_0_1"), nav(PLATES[0]),
+                   pick(PLATES[0])] + cover(PLATES[0])
+    STEW = "stew_pot"
+    fams = {
+        "lid_elsewhere": fam(
+            "lid_by_pot", ["not_in_view"], "where the lid was put (seed: the dining table or the kitchen counter)",
+            "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
+            "the lid named is in the house: find it and cover the pot with it",
+            {c: dict(move={LID: pose}, goal={"all": [["covered", POT, LID], H]}, watch=[POT, LID],
+                     route=[look(STOVE), look(ISL), S("search", object=LID, region=region), nav(LID), pick(LID)]
+                     + cover(LID))
+             for c, pose, region in (("dining", P(T2, 3.70, 6.30), "dining_room_0_1"),
+                                     ("counter", P(COUNTER, -0.10, 7.30), "kitchen_0_1"))}),
+        "no_lid": fam(
+            "lid_by_pot", ["resource_absent", "not_in_view"], "the layout only",
+            "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
+            "the lid does not exist: a plate wider than the pot's rim covers it as well (moderate); the book is no "
+            "cover for food (bad)",
+            {"": dict(remove=[LID], add={"cover_book": on("book_blue", ISL, 8.05, 1.80)}, goal=by_plate,
+                      watch=[POT, "cover_book", *PLATES], route=plate_route)}),
+        "lid_in_use": fam(
+            "lid_by_pot", ["resource_in_use", "not_in_view"], "the layout only",
+            "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
+            "the lid is in use on the stew: leave it there and cover the soup with a plate instead",
+            {"": dict(add={STEW: on("soup_pot", STOVE, 8.70, 1.725)},
+                      move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}},
+                      goal={"any": by_plate["any"], "all": [["covered", STEW, LID], ["upright", STEW], H]},
+                      watch=[POT, STEW, LID, *PLATES], route=plate_route)}),
+    }
+    return t, fams
+
+
+MAKERS = [t15, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30]
 NEW_CONDITIONS = {
     "resource_absent": {"type": "resource_identity", "decision": "alternative",
                         "meaning": "the usual thing is not in the house; the closest thing that serves the purpose "

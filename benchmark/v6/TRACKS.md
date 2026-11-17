@@ -15,17 +15,17 @@ Variants per task:
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Control | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 | Action-Level |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| Task-Level | 1 | 4 | 4 | 4 | 7 | 3 | 4 | 4 | 3 | 6 | 3 | 4 | 3 | 2 | 2 | 3 | 2 | 3 | 2 | 5 | 5 | 4 | 5 | 5 | 6 | 5 | 3 | 4 | 4 | 5 |
+| Task-Level | 1 | 4 | 4 | 4 | 7 | 3 | 4 | 4 | 3 | 6 | 3 | 3 | 3 | 3 | 2 | 3 | 2 | 3 | 2 | 5 | 5 | 4 | 5 | 5 | 6 | 5 | 3 | 4 | 4 | 5 |
 | Action + Task | 4 | 1 |  |  |  |  |  |  | 2 |  |  |  |  |  |  |  |  |  |  |  |  | 1 |  |  |  |  |  |  |  |  |
 
-Removed with the injected action failures: 141 variants (21 had nothing else, 57 equal another variant without them; `v6_dropped` per task).
+Removed with the injected action failures: 136 variants (20 had nothing else, 53 equal another variant without them; `v6_dropped` per task).
 
 ## Variants
 
 | task | variant | category | local fallback | longer-horizon change | layouts |
 |---|---|---|---|---|---|
 | T01 | overhang_ready | Control | - | - | 1 |
-| T01 | which_book | Task-Level | - | item_out_of_view; referent_clue | 2 |
+| T01 | homework_on_island | Task-Level | - | not_in_view; unsuitable_at_hand | 2 |
 | T01 | table_seats | Action + Task | expose the flat object over the edge, then pick it | spot_quality | 6 |
 | T01 | which_table | Action + Task | expose the flat object over the edge, then pick it | destination_unnamed; spot_quality | 8 |
 | T01 | no_room_fallback | Action + Task | expose the flat object over the edge, then pick it | infeasible_fallback; spot_quality | 6 |
@@ -33,29 +33,29 @@ Removed with the injected action failures: 141 variants (21 had nothing else, 57
 | T02 | clear | Control | - | - | 1 |
 | T02 | crowded_use_another | Task-Level | - | infeasible_fallback; not_in_view | 3 |
 | T02 | third_toy_elsewhere | Task-Level | - | missing_piece; not_in_view | 2 |
-| T02 | tower_for_kid | Task-Level | - | item_out_of_view; spot_quality | 2 |
+| T02 | tower_for_kid | Task-Level | - | destination_occupied; item_out_of_view | 2 |
 | T02 | tower_for_kid_duck | Task-Level | - | item_out_of_view; missing_piece; spot_quality | 2 |
 | T02 | block_put_away | Action + Task | move the base in from the edge (or stack on the other one) | not_in_view | 2 |
 | T03 | large_only | Control | - | - | 1 |
 | T03 | small_bin_or_bedroom_bin | Task-Level | - | not_in_view; small_container_present | 2 |
 | T03 | which_bin_by_contents | Task-Level | - | decoy_destination; not_in_view | 2 |
 | T03 | no_bin_substitute | Task-Level | - | container_absent; decoy_destination; not_in_view; small_container_present | 2 |
-| T03 | utensils_apart | Task-Level | - | item_out_of_view; not_in_view | 2 |
+| T03 | bin_full | Task-Level | - | destination_occupied; item_out_of_view | 2 |
 | T04 | cup_available | Control | - | - | 1 |
 | T04 | no_cup | Task-Level | - | no_cup; not_in_view | 3 |
 | T04 | clear_the_drinks_spot | Task-Level | - | destination_occupied; goal_items_unstated | 1 |
 | T04 | two_guests | Task-Level | - | missing_piece; not_in_view | 2 |
-| T04 | x6_gd_cup_in_cabinets | Task-Level | - | no_cup | 2 |
+| T04 | no_cup_in_cabinets | Task-Level | - | item_put_away; not_in_view; resource_absent | 2 |
 | T05 | e1_pencil_asked | Control | - | - | 1 |
-| T05 | no_pen_pencil_away | Task-Level | - | not_in_view | 1 |
-| T05 | check_desk_first | Task-Level | - | goal_already_met | 2 |
-| T05 | all_pens | Task-Level | - | not_in_view; unknown_count | 3 |
+| T05 | no_pencil | Task-Level | - | not_in_view; resource_absent | 2 |
+| T05 | pen_in_use | Task-Level | - | not_in_view; resource_in_use | 2 |
+| T05 | pens_for_two | Task-Level | - | missing_piece; not_in_view | 2 |
 | T05 | homework_ready | Task-Level | - | goal_items_unstated; not_in_view | 3 |
-| T05 | pens_per_notebook | Task-Level | - | count_from_scene; not_in_view | 2 |
+| T05 | pens_per_notebook | Task-Level | - | count_from_scene; missing_piece; not_in_view | 2 |
 | T05 | errand_combined | Task-Level | - | errands_combined | 2 |
 | T05 | x6_gd_pen_or_pencil_cabinets | Task-Level | - | no_pen | 2 |
 | T06 | free | Control | - | - | 1 |
-| T06 | display_row | Task-Level | - | arrangement | 2 |
+| T06 | both_spots_full | Task-Level | - | destination_occupied; not_in_view | 2 |
 | T06 | display_spot_or_tv | Task-Level | - | infeasible_fallback; spot_quality | 4 |
 | T06 | seen_from_bed | Task-Level | - | not_in_view; viewer_place | 2 |
 | T07 | microwave_works | Control | - | - | 1 |
@@ -77,26 +77,26 @@ Removed with the injected action failures: 141 variants (21 had nothing else, 57
 | T10 | can_on_island | Control | - | - | 1 |
 | T10 | can_in_dining_room | Task-Level | - | not_in_view | 2 |
 | T10 | keep_kids_can | Task-Level | - | not_in_view; referent_clue | 2 |
-| T10 | trash_moved | Task-Level | - | destination_unnamed; not_in_view | 2 |
+| T10 | trash_full | Task-Level | - | destination_occupied; not_in_view | 2 |
 | T10 | after_dinner_clear | Task-Level | - | disposal_by_state; multi_object_goal | 3 |
 | T10 | guests_coming | Task-Level | - | goal_items_unstated; multi_object_goal | 3 |
 | T10 | x6_gd_can_put_away | Task-Level | - | resource | 3 |
 | T11 | fruits_on_table | Control | - | - | 1 |
 | T11 | basket_missing | Task-Level | - | container_absent; decoy_destination | 2 |
-| T11 | leave_one_for_kid | Task-Level | - | multi_object_goal; preference_allocation; storage_place | 3 |
+| T11 | no_apple_for_kid | Task-Level | - | preference_allocation; resource_absent | 1 |
 | T11 | fruit_plate_for_guests | Task-Level | - | not_in_view; subgoal_order | 2 |
 | T12 | toys_out | Control | - | - | 1 |
-| T12 | duck_in_study | Task-Level | - | not_in_view | 2 |
+| T12 | bedtime_toy | Task-Level | - | not_in_view; resource_absent | 2 |
 | T12 | bins_capacity | Task-Level | - | joint_capacity | 6 |
 | T12 | find_all_toys | Task-Level | - | goal_items_unstated; multi_object_goal; not_in_view | 3 |
-| T12 | castle_stays | Task-Level | - | multi_object_goal; relational_exception | 3 |
 | T13 | dishes_on_tv_stand | Control | - | - | 1 |
 | T13 | no_cup | Task-Level | - | no_cup | 1 |
 | T13 | copy_the_setting | Task-Level | - | goal_by_example | 3 |
-| T13 | finish_the_table | Task-Level | - | referent_clue; rule_induction | 3 |
-| T15 | book_free | Control | - | - | 1 |
-| T15 | book_out_of_view | Task-Level | - | start_elsewhere | 1 |
-| T15 | flip_on_the_shelf | Task-Level | - | not_in_view; workspace_choice | 2 |
+| T13 | finish_the_table | Task-Level | - | resource_absent; rule_induction | 2 |
+| T15 | lid_by_pot | Control | - | - | 1 |
+| T15 | lid_elsewhere | Task-Level | - | not_in_view | 2 |
+| T15 | no_lid | Task-Level | - | not_in_view; resource_absent | 1 |
+| T15 | lid_in_use | Task-Level | - | not_in_view; resource_in_use | 1 |
 | T16 | pin_free | Control | - | - | 1 |
 | T16 | pin_out_of_view | Task-Level | - | start_elsewhere | 1 |
 | T16 | everything_near_the_edge | Task-Level | - | goal_items_unstated; multi_object_goal | 3 |
@@ -116,10 +116,10 @@ Removed with the injected action failures: 141 variants (21 had nothing else, 57
 | T20 | x6_gd_bottle_put_away | Task-Level | - | resource | 2 |
 | T14 | e1_book_ready | Control | - | - | 1 |
 | T14 | within_kids_reach | Task-Level | - | agent_ability | 2 |
-| T14 | stack_them_stably | Task-Level | - | multi_object_goal; subgoal_order | 3 |
+| T14 | kids_shelf_full | Task-Level | - | destination_occupied | 1 |
 | T14 | homework_stays | Task-Level | - | category_rule; multi_object_goal | 1 |
 | T14 | whose_book | Task-Level | - | referent_clue; storage_place | 3 |
-| T14 | next_in_series | Task-Level | - | not_in_view; referent_clue | 3 |
+| T14 | next_in_series | Task-Level | - | not_in_view; referent_clue | 2 |
 | T21 | tissue_on_tv_stand | Control | - | - | 1 |
 | T21 | tissue_out_of_view | Task-Level | - | not_in_view | 1 |
 | T21 | which_table | Task-Level | - | destination_unnamed | 2 |

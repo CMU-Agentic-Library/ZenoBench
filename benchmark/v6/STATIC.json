@@ -49,16 +49,16 @@
    "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 40,
+   "static_ok": 40
   },
   "T13_breakfast_setup": {
    "episodes": 40,
    "static_ok": 40
   },
-  "T15_book_face_up": {
-   "episodes": 30,
-   "static_ok": 30
+  "T15_cover_the_pot": {
+   "episodes": 40,
+   "static_ok": 40
   },
   "T16_rolling_pin_at_edge": {
    "episodes": 30,
@@ -130,5 +130,5 @@
   "action_task": 8,
   "task": 115
  },
- "tasks_sha1": "9ac4fb0aa28678e1a6ee985c4cdff5d87539362a"
+ "tasks_sha1": "9bbfb31b9b43697a132142cc2dbd5a4407aa9641"
 }

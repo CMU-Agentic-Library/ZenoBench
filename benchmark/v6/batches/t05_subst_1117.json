@@ -1,0 +1,92 @@
+[
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "no_pencil__pen_dining",
+  "route": "v6_no_pencil__pen_dining",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "variant": "no_pencil__pen_bedroom",
+  "route": "v6_no_pencil__pen_bedroom",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "pen_in_use__pencil_bedroom",
+  "route": "v6_pen_in_use__pencil_bedroom",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "variant": "pen_in_use__pencil_living",
+  "route": "v6_pen_in_use__pencil_living",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "pens_for_two__pen_dining",
+  "route": "v6_pens_for_two__pen_dining",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "variant": "pens_for_two__pen_living",
+  "route": "v6_pens_for_two__pen_living",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "pens_per_notebook__two_short",
+  "route": "v6_pens_per_notebook__two_short",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "variant": "pens_per_notebook__one_short",
+  "route": "v6_pens_per_notebook__one_short",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "errand_combined__pencil_dining",
+  "route": "v6_errand_combined__pencil_dining",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "variant": "errand_combined__pencil_bedroom",
+  "route": "v6_errand_combined__pencil_bedroom",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

@@ -1300,104 +1300,104 @@
 "v6_variant": "dishes_on_tv_stand"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 10,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 11,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 12,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 13,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 14,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 15,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 16,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 17,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 18,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
-"task": "T15_book_face_up",
+"task": "T15_cover_the_pot",
 "seed": 19,
-"variant": "book_free",
+"variant": "lid_by_pot",
 "route": "nominal",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "control",
-"v6_variant": "book_free"
+"v6_variant": "lid_by_pot"
 },
 {
 "task": "T16_rolling_pin_at_edge",

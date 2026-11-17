@@ -1,0 +1,20 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "variant": "tower_for_kid__study",
+  "route": "v6_tower_for_kid__study",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "variant": "tower_for_kid__counter",
+  "route": "v6_tower_for_kid__counter",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

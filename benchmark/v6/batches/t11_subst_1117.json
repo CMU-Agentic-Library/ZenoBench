@@ -1,0 +1,29 @@
+[
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "variant": "no_apple_for_kid",
+  "route": "v6_no_apple_for_kid",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "variant": "fruit_plate_for_guests__tray_by_table",
+  "route": "v6_fruit_plate_for_guests__tray_by_table",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "variant": "fruit_plate_for_guests__tray_in_study",
+  "route": "v6_fruit_plate_for_guests__tray_in_study",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

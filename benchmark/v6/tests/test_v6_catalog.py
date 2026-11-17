@@ -146,11 +146,11 @@ def test_local_fallbacks_are_action_level():
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
     assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
-    # T01: what it tests is which table, which seat, which book, or the fallback; where the book starts on the
+    # T01: what it tests is which table, which seat, a real book for the homework, or the fallback; where the book starts on the
     # island, half the layouts have it flat (expose first), so those designs are Action + Task
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
     assert {v: x["category"] for v, x in t01.items()} == {
-        "overhang_ready": "control", "which_book": "task", **{v: "action_task" for v in (
+        "overhang_ready": "control", "homework_on_island": "task", **{v: "action_task" for v in (
             "table_seats", "which_table", "no_room_fallback", "reader_seat")}}
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
@@ -207,8 +207,6 @@ def test_in_place_choices_are_redesigned_at_a_longer_horizon():
 def test_injected_only_variants_are_dropped():
     t = TASKS["T01_book_to_dining_table"]
     assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"
-    t = TASKS["T15_book_face_up"]
-    assert t["v6_dropped"]["h_mixed_block_on_book_ik"].startswith("same as h_task_block_on_book")
     for tid, t in TASKS.items():
         for info in t["v6_variants"].values():
             assert info["control"] is None or info["control"] in t["variants"], tid

@@ -32,6 +32,8 @@ def only(why: str, not_ok: str) -> dict:
 SCORING: dict[tuple[str, str], dict] = {
     # T01 overhang_ready (control): the book overhangs the island, a pick takes it as it is; both dining
     # tables are dining tables (the nearer one only saves a walk, which SPL-c already measures)
+    # T01 overhang_ready (control): the book overhangs the island, a pick takes it as it is; both dining
+    # tables are dining tables (the nearer one only saves a walk, which SPL-c already measures)
     ("T01", "overhang_ready"): only(
         "the book on either dining table, the hand empty",
         "the book anywhere else (coffee table, island, counter, floor) or still held"),
@@ -58,24 +60,41 @@ SCORING: dict[tuple[str, str], dict] = {
         {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "clear_of"]},
          "why": "the guests' table, squeezed against the dishes, nothing moved or tipped"}],
         "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held"},
-    # T01 which_book: three books (the island's, the guest's in the room the instruction names, one in the
-    # other room); the guest's book is the point.  No middle tier: the wrong book is not the task done
-    ("T01", "which_book"): {"D": 1, "tiers": [
+    # T01 homework_on_island (11-16, substitution): the island holds the kid's open homework (notebook + pencil),
+    # the one real book is in another room.  Scored by the substitute: a real book is the task, the notebook
+    # brought for a book is the visible wrong substitute (precedent: a mug for the cup, the red book for a notebook)
+    ("T01", "homework_on_island"): {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
-         "why": "only the guest's book on a dining table, the other two untouched"},
-        {"name": "worst", "score": 0.3, "goal": {"drop": ["near_start"]},
-         "why": "the guest's book on a dining table, but another book brought along or moved too"}],
-        "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
+         "why": "a real book on a dining table, the kid's notebook and pencil left on the island as they were"},
+        {"name": "second", "score": 0.6,
+         "goal": {"all": [["on_any", "paperback_book", ["dining_table_2/top", "dining_table_1/top"]],
+                          ["hand_empty", "right"]]},
+         "why": "a real book on a dining table, but the homework (notebook or pencil) moved"},
+        {"name": "worst", "score": 0.3,
+         "goal": {"all": [["on_any", "homework_notebook", ["dining_table_2/top", "dining_table_1/top"]],
+                          ["hand_empty", "right"]]},
+         "why": "the kid's homework notebook brought for a book (the thing at hand, not one to read)"}],
+        "not_ok": "nothing to read on a dining table (no book, no notebook); still held"},
     # T02 clear (control): two free blocks on the island; either on the other is the same
     ("T02", "clear"): only("one block on the other, the hand empty", "no stack, or a block dropped"),
     # T03 large_only (control): the wide bin on the TV stand is the only open container
     ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
                                 "one left out, put in a cabinet or drawer instead, still held or dropped"),
-    # T03 utensils_apart: the spoon out of view in another room, the wide bin in the bedroom the only open
-    # container; carrying the bin over first is fine (the goal only asks for the contents)
-    ("T03", "utensils_apart"): only("the rolling pin and the spoon both in the wide bin, the hand empty",
-                                    "one left out (the spoon not found); in a cabinet, drawer or on a table; "
-                                    "still held or dropped"),
+    # T03 bin_full (11-16, substitution; was utensils_apart): the wide bin is full of the kid's toys, the empty
+    # serving tray on the study desk is the substitute; the spoon is in another room
+    ("T03", "bin_full"): {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": None,
+         "why": "the rolling pin and the spoon both on the small tray on the desk, the toys left in the bin"},
+        {"name": "second", "score": 0.6,
+         "goal": {"all": [["inside", "rolling_pin", "wide_storage_bin"], ["inside", "breakfast_spoon", "wide_storage_bin"],
+                          *[["inside", n, "wide_storage_bin"] for n in ("bin_teddy", "bin_car", "bin_duck", "bin_block_1",
+                                                                         "bin_block_2")], ["hand_empty", "right"]]},
+         "why": "both pressed onto the full bin, every toy still in it: put away after a fashion"},
+        {"name": "worst", "score": 0.3,
+         "goal": {"all": [["inside", "rolling_pin", "wide_storage_bin"], ["inside", "breakfast_spoon", "wide_storage_bin"],
+                          ["hand_empty", "right"]]},
+         "why": "both in the bin, but toys taken out to make room"}],
+        "not_ok": "the two in different places; one left out (the spoon not found); still held or dropped"},
     # T04 cup_available (control): a glass cup and a mug side by side on the island; a mug is a cup too (no_cup
     # tests the mug as the stand-in), so either one, or both, is the task done
     ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
@@ -87,20 +106,12 @@ SCORING: dict[tuple[str, str], dict] = {
     # T05 e1_pencil_asked (control): the pen removed, the pencil on the bedroom bookcase
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
-    # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
-    ("T05", "no_pen_pencil_away"): only("the pencil on the study desk, the hand empty",
-                                        "the pencil not found; left elsewhere; something else brought instead; "
-                                        "still held or dropped"),
-    # T05 all_pens: 2-4 pens and pencils over the house, the count unstated; missing one is the task not done.
-    # Something else brought along does not cost
-    ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
-                              "do not cost)",
-                              "one or more missed (stopped before every place was checked); elsewhere; still held "
-                              "or dropped"),
     # T06 free (control): two blocks on the island, both display spots empty; one block (or both) on either does it
     ("T06", "free"): only("a block (or both) on the low wall cabinet or the TV stand, the hand empty",
                           "elsewhere (coffee table, dining table, left on the island); still held or dropped"),
 }
+
+
 
 
 def _no_room_fallback(task: dict) -> dict:
@@ -206,6 +217,16 @@ def _tower_for_kid(design: str):
     def build(task: dict) -> dict:
         """T02 tower_for_kid(_duck): three pieces spread over the house, the tower on a dining table, clear of
         the edge and of the table's things, which stay put.  Two pieces only is the task not done."""
+        if design == "tower_for_kid":    # 11-16: the near table piled full, the other dining table is the substitute
+            return {"D": 1, "tiers": [
+                {"name": "best", "score": 1.0, "goal": None,
+                 "why": "all three in one tower on the other dining table (the near one is full), 10 cm from its "
+                        "edge and its things, nothing on either table moved"},
+                {"name": "worst", "score": 0.3, "goal": {"drop": ["away_from_edge", "clear_of"]},
+                 "why": "the tower squeezed onto the full near table (or at an edge), nothing moved: easy to knock "
+                        "over"}],
+                "not_ok": "two blocks only (the third not found); a thing on a table moved to make room; the tower "
+                          "not on a dining table; nothing stacked"}
         return {"D": 1, "tiers": [
             {"name": "best", "score": 1.0, "goal": None,
              "why": "all three in one tower on a dining table, 5 cm from the edge and clear of the table's things, "
@@ -313,39 +334,36 @@ SCORING[("T04", "clear_the_drinks_spot")] = {"D": 1, "tiers": [
     "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the "
               "bowl tipped; no cup set out, or lying; still held or dropped"}
 
-# T04 two_guests: one glass cup (island), the mug in another room; any two of the cup and the mugs count (two mugs
-# too, user 11-11).  Touching or closer than 3 cm, against "not touching each other", is the worst tier
+# T04 two_guests (11-16, graded substitutes): one glass cup; for the second a mug (best), the kid's plastic cup
+# (second), an empty breakfast bowl on the island (worst).  Touching (against "not touching") also falls to worst
+_T04_UP = lambda x: [["on", x, _SPOT], ["upright", x]]  # noqa: E731
 SCORING[("T04", "two_guests")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None,
-     "why": "two cups (the glass cup and a mug, or two mugs) upright on the drinks spot, at least 3 cm apart"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["clear_of"]},
-     "why": "two cups upright on the spot, but touching or closer than 3 cm (the instruction says apart)"}],
-    "not_ok": "one cup only (the second not found); a non-cup (the juice bottle) for the second; lying or upside "
-              "down; elsewhere; still held or dropped"}
-
-# T04 x6_gd_cup_in_cabinets: a cup without a handle asked for, the glass cup in one of two closed low cabinets, the
-# mug in plain view.  A door left open is the second tier, the mug (a handle) the worst (user 11-11)
-SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the glass cup upright on the drinks spot, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
-     "why": "the glass cup upright on the spot, but a cabinet door left open"},
+     "why": "the glass cup and the mug upright on the drinks spot, at least 3 cm apart"},
+    {"name": "second", "score": 0.6,
+     "goal": {"all": [["hand_empty", "right"]], "any": [
+         [*_T04_UP(a), *_T04_UP("kid_plastic_cup"), ["clear_of", a, ["kid_plastic_cup"], 0.03]]
+         for a in ("cup_counter_b", "mug")]},
+     "why": "the kid's plastic cup used for the second (a cup, but a child's) though the mug was in the house"},
     {"name": "worst", "score": 0.3,
-     "goal": {"all": [["hand_empty", "right"]], "any": [g for g in _CUP_ON_SPOT if g[0][1] != "cup_counter_b"]},
-     "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
-    "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
+     "goal": {"all": [["hand_empty", "right"]], "any": [
+         [*_T04_UP(a), *_T04_UP(b)] for a, b in (("cup_counter_b", "mug"), ("cup_counter_b", "kid_plastic_cup"),
+                                                 ("mug", "kid_plastic_cup"), ("cup_counter_b", "spare_bowl"),
+                                                 ("mug", "spare_bowl"), ("kid_plastic_cup", "spare_bowl"))]},
+     "why": "the breakfast bowl in view used for the second cup; or two cups touching (the instruction says apart)"}],
+    "not_ok": "one only (no second found); the juice bottle for a cup; lying or upside down; elsewhere; still held"}
 
-# T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
-# Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
-SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
+# T04 no_cup_in_cabinets (11-16, substitution; was x6_gd_cup_in_cabinets): the cabinets hold only plates, no cup or
+# mug in the house; the kid's plastic cup is the stand-in, the bowl in view the worst
+SCORING[("T04", "no_cup_in_cabinets")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only "
-            "the pencil was"},
-    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"},
-    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
-    "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
+     "why": "the kid's plastic cup upright on the drinks spot, both cabinet doors closed"},
+    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+     "why": "the plastic cup on the spot, but a cabinet door left open"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [*_T04_UP("spare_bowl"), ["hand_empty", "right"]]},
+     "why": "the empty breakfast bowl in view set out for a cup"}],
+    "not_ok": "nothing set out; the juice bottle for a cup; lying or upside down; elsewhere; still held"}
+
 
 
 def _homework_ready(task: dict) -> dict:
@@ -370,35 +388,76 @@ def _homework_ready(task: dict) -> dict:
         "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
                   "elsewhere; still held or dropped"}
 
-# T05 pens_per_notebook: exactly one pen or pencil beside each of the 2-3 notebooks, the rest left where they are.
-# The right count not beside the notebooks is the second tier; too many (beside or not) the worst (user 11-11)
-SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
-     "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "near_start"]},
-     "why": "too many brought (one more, or all four), against \"no more\""}],
-    "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"}
+# T05 pens_per_notebook (11-17, substitution): three notebooks, a pen asked for each, too few pens (seed: one or two
+# short).  Every pen used and pencils making up the rest, one beside each notebook, no more: best; the right things
+# not beside each notebook: second; any writing thing beside each (too many, or pencils though a pen was left): worst
+def _pens_per_notebook(task: dict) -> dict:
+    best, second = {}, {}
+    from itertools import combinations
+    for lid in task["v6_variants"]["pens_per_notebook"]["layouts"]:
+        v = task["variants"][lid]
+        have = set(v.get("add", {})) | set(v.get("move", {}))
+        pens = [w for w in ("pen", "pen_2") if w in have]
+        pencils = [w for w in ("pencil", "pencil_2", "pencil_3") if w in have]
+        near = [a for a in v["goal"]["all"] if a[0] == "near_any"]
+        sets = [pens + list(c) for c in combinations(pencils, 3 - len(pens))]
+        on = lambda xs: [["on", w, _DESK5] for w in xs] + [["near_start", w, 0.03]  # noqa: E731
+                                                           for w in pens + pencils if w not in xs]
+        best[lid] = {"all": [*near, ["hand_empty", "right"]], "any": [on(x) for x in sets]}
+        second[lid] = {"all": [["hand_empty", "right"]], "any": [on(x) for x in sets]}
+    return {"D": 1, "tiers": [
+        {"name": "best", "score": 1.0, "goal": {"by_layout": best},
+         "why": "every pen used, pencils for the rest, one beside each of the three notebooks, nothing extra"},
+        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
+         "why": "the right pens and pencils on the desk, but not one beside each notebook"},
+        {"name": "worst", "score": 0.3, "goal": None,
+         "why": "a writing thing beside each notebook, but too many brought or pencils used though a pen was left"}],
+        "not_ok": "a notebook without a writing thing; elsewhere; still held or dropped"}
 
-# T05 errand_combined: a pen to the study desk, the used mug from it to a kitchen counter.  The errands' order is
-# SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
-# for the pen (the mug anywhere off the desk), the worst (user 11-11)
+
+_DESK5 = "desk_1/top"
+
+# T05 errand_combined (11-17, substitution): no pen in the house, the pencil to the study desk; the used mug from it
+# to a kitchen counter.  The mug elsewhere in the kitchen is the second tier, outside the kitchen the worst
 _MUG, _DESK = "used_mug", "desk_1/top"
 SCORING[("T05", "errand_combined")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, the mug upright on a kitchen counter"},
+     "why": "the pencil (no pen in the house) on the desk, the mug upright on a kitchen counter"},
     {"name": "second", "score": 0.6,
-     "goal": {"all": [["on", "pen", _DESK], ["on_any", _MUG, ["kitchen_island/top", "kitchen_stove/top",
-                                                               "kitchen_counter_1/top", "kitchen_counter_2/top"]],
+     "goal": {"all": [["on", "pencil", _DESK], ["on_any", _MUG, ["kitchen_island/top", "kitchen_stove/top",
+                                                                  "kitchen_counter_1/top", "kitchen_counter_2/top"]],
                       ["upright", _MUG], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"},
+     "why": "the pencil on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"},
     {"name": "worst", "score": 0.3,
-     "goal": {"all": [["not on", _MUG, _DESK], ["upright", _MUG], ["hand_empty", "right"]],
-              "any": [[["on", "pen", _DESK]], [["on", "pencil", _DESK]]]},
-     "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"}],
-    "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or "
-              "dropped"}
+     "goal": {"all": [["on", "pencil", _DESK], ["not on", _MUG, _DESK], ["upright", _MUG], ["hand_empty", "right"]]},
+     "why": "the mug taken off the desk but left outside the kitchen"}],
+    "not_ok": "one errand only (nothing to write with on the desk, or the mug still on it); the mug lying; still held "
+              "or dropped"}
+
+# T05 no_pencil (11-17, substitution): a pencil asked for, none in the house; the pen (another room) does instead
+SCORING[("T05", "no_pencil")] = only("the pen (there is no pencil) on the study desk, the hand empty",
+                                     "nothing to write with on the desk; still held or dropped")
+
+# T05 pen_in_use (11-17, substitution): the only pen lies on grandma's open shopping list (in use); the pencil
+SCORING[("T05", "pen_in_use")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the pencil on the desk, grandma's list and her pen left as they were"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["on", "pen", _DESK], ["hand_empty", "right"]]},
+     "why": "grandma's pen taken from her list (in use) to the desk"}],
+    "not_ok": "nothing to write with on the desk; still held or dropped"}
+
+# T05 pens_for_two (11-17, substitution): two kids on two desks, one pen and two pencils in the house; the pen to one,
+# a pencil to the other is best; pencils to both (the pen left) the worst
+SCORING[("T05", "pens_for_two")] = {"D": 1, "tiers": [
+    {"name": "best", "score": 1.0, "goal": None,
+     "why": "the pen beside one kid's notebook, a pencil beside the other's"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [["hand_empty", "right"]],
+              "any": [[["near_any", "hw_notebook_study", [a], 0.15], ["near_any", "hw_notebook_bedroom", [b], 0.15]]
+                      for a, b in (("pencil", "pencil_2"), ("pencil_2", "pencil"))]},
+     "why": "a pencil to each kid, the one pen left where it was"}],
+    "not_ok": "a kid gets nothing to write with; still held or dropped"}
 
 # T05 x6_gd_pen_or_pencil_cabinets: a pen asked for, a pencil in one closed low cabinet and the pen in the other.  A
 # door left open or the pencil brought along is the second tier; the pencil for the pen the worst (user 11-11)
@@ -413,17 +472,20 @@ SCORING[("T05", "x6_gd_pen_or_pencil_cabinets")] = {"D": 1, "tiers": [
      "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"}],
     "not_ok": "no pen or pencil on the desk; still held or dropped"}
 
-# T06 display_row: three blocks in a row on the low cabinet, squared, at the front, apart.  Not squared is the
-# second tier; touching or at the back (squared or not) the worst (user 11-11)
-SCORING[("T06", "display_row")] = {"D": 1, "tiers": [
+# T06 both_spots_full (11-17, substitution; replaces display_row): both named display places packed; the other low
+# cabinet, seen from the room, is the substitute.  Squeezed onto a packed top (hidden or at the edge), or put on the
+# island (a work surface), is the worst
+_T06_PACKED = ["display_bin", "display_small_bin", "display_juice", "display_can", "tv_bin", "tv_plate",
+               "tv_fruit_basket", "tv_sorting_tray", "tv_small_bin", "tv_container"]
+SCORING[("T06", "both_spots_full")] = {"D": 1, "tiers": [
     {"name": "best", "score": 1.0, "goal": None,
-     "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["squared"]},
-     "why": "all three at the front and apart, but one or more askew"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["squared", "front_visible", "clear_of"]},
-     "why": "all three on the cabinet, but touching or at the back"}],
-    "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or "
-              "dropped"}
+     "why": "the block on the other low cabinet, seen from the room, nothing on the packed tops moved"},
+    {"name": "worst", "score": 0.3,
+     "goal": {"all": [*[["near_start", n, 0.02] for n in _T06_PACKED], ["hand_empty", "right"]],
+              "any": [[["on", "wooden_block_a", x]] for x in ("kitchen_cabinet_6/top", "tv_stand_2/top",
+                                                               "kitchen_island/top")]},
+     "why": "squeezed onto a packed top (hidden or at the edge), or left on the island, nothing moved"}],
+    "not_ok": "a thing on a packed top moved or tipped to make room; elsewhere; still held or dropped"}
 
 
 def _display_spot_or_tv(task: dict) -> dict:
@@ -694,7 +756,7 @@ def _pot_in_use(task: dict) -> dict:
         "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"}
 
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
+BUILT = {("T05", "pens_per_notebook"): _pens_per_notebook, ("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
          ("T03", "no_bin_substitute"): _no_bin_substitute,
@@ -813,32 +875,32 @@ NOT_OK_ZH = {
     ("T01", "which_table"): "放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里",
     ("T01", "no_room_fallback"): "挪了或碰倒餐具、麦片腾地方；放在别处或还拿在手里",
     ("T01", "reader_seat"): "挪了或碰倒餐具；放在别处（包括另一张餐桌）或还拿在手里",
-    ("T01", "which_book"): "客人那本没到餐桌（拿错或没拿）；还拿在手里",
+    ("T01", "homework_on_island"): "餐桌上没有可看的东西（书和作业本都没拿来）；还拿在手里",
     ("T02", "clear"): "没叠上，或积木掉了",
     ("T02", "crowded_use_another"): "碗或擀面杖动了、碗倒了；没叠上",
     ("T02", "third_toy_elsewhere"): "只叠了两层（没找到第三件）；没叠上；塔不在岛台上",
-    ("T02", "tower_for_kid"): "只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上",
+    ("T02", "tower_for_kid"): "只叠了两块（没找齐）；为腾地方挪了桌上的东西；塔不在餐桌上；没叠上",
     ("T02", "tower_for_kid_duck"): "只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上",
     ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
     ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
-    ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
+    ("T03", "bin_full"): "两样分开放；只收了一样（勺子没找到）；还拿着或掉了",
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
-    ("T04", "two_guests"): "只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了",
-    ("T04", "x6_gd_cup_in_cabinets"): "没摆杯子（没找到玻璃杯）；杯子倒着或躺着；放到别处；还拿着或掉了",
+    ("T04", "two_guests"): "只摆了一个（没找到第二个）；拿果汁瓶当杯子；杯子倒着或躺着；放到别处；还拿着或掉了",
+    ("T04", "no_cup_in_cabinets"): "什么都没摆；拿果汁瓶当杯子；杯子倒着或躺着；放到别处；还拿着或掉了",
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
-    ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
-    ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
-    ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
-    ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
-    ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
+    ("T05", "no_pencil"): "书桌上没有能写字的东西；还拿着或掉了",
+    ("T05", "pen_in_use"): "书桌上没有能写字的东西；还拿着或掉了",
+    ("T05", "pens_for_two"): "有个孩子没拿到笔；还拿着或掉了",
+    ("T05", "pens_per_notebook"): "有作业本旁边没有笔；笔放到别处；还拿着或掉了",
+    ("T05", "errand_combined"): "只做了一件（书桌上没有笔，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
-    ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
+    ("T06", "both_spots_full"): "为腾地方挪了或碰倒柜顶、电视柜上的东西；放到别处；还拿着或掉了",
     ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了",
     ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了",
     ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",

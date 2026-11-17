@@ -4034,78 +4034,17 @@
   "rationale": "every seat has room, so the slot alone does not decide: find the seat with the mug and put the book in the slot beside it (within 15 cm of its plate or mug, not within 15 cm of another seat's plate); which seat that is changes with the seed",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T01_book_to_dining_table/which_book__living": {
-  "variant": "which_book",
-  "category": "task",
-  "seeds": [
-   11,
-   13,
-   14,
-   18,
-   19
-  ],
-  "instruction": "The guest wants to carry on reading over breakfast the book they read in the living room last night. Bring it to the dining table. Leave everything else as it is.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "paperback_book"
-   ],
-   "added": [
-    "book_island",
-    "book_other"
-   ],
-   "removed": [],
-   "conditions": [
-    "referent_clue",
-    "item_out_of_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "paperback_book",
-     [
-      "dining_table_2/top",
-      "dining_table_1/top"
-     ]
-    ],
-    [
-     "near_start",
-     "book_island",
-     0.03
-    ],
-    [
-     "near_start",
-     "book_other",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "overhang_ready",
-  "oracle_route": "v6_which_book__living",
-  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-  "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T01_book_to_dining_table/which_book__bedroom": {
-  "variant": "which_book",
+ "T01_book_to_dining_table/homework_on_island__living": {
+  "variant": "homework_on_island",
   "category": "task",
   "seeds": [
    10,
+   11,
    12,
    15,
-   16,
    17
   ],
-  "instruction": "The guest wants to carry on reading over breakfast the book they read in the bedroom before bed last night. Bring it to the dining table. Leave everything else as it is.",
+  "instruction": "The guest would like something to read over breakfast. Bring a book to the dining table for them.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4113,13 +4052,13 @@
     "paperback_book"
    ],
    "added": [
-    "book_island",
-    "book_other"
+    "homework_notebook",
+    "homework_pencil"
    ],
    "removed": [],
    "conditions": [
-    "referent_clue",
-    "item_out_of_view"
+    "unsuitable_at_hand",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -4136,12 +4075,12 @@
     ],
     [
      "near_start",
-     "book_island",
+     "homework_notebook",
      0.03
     ],
     [
      "near_start",
-     "book_other",
+     "homework_pencil",
      0.03
     ],
     [
@@ -4151,9 +4090,70 @@
    ]
   },
   "control": "overhang_ready",
-  "oracle_route": "v6_which_book__bedroom",
-  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-  "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+  "oracle_route": "v6_homework_on_island__living",
+  "challenge": "where the book usually lies, on the island, there is only the kid's open homework (a notebook with a pencil): it looks like a book but is not one to read, and it is in use",
+  "rationale": "the thing at hand does not serve: leave the homework, find a real book in another room and bring that to the dining table instead",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T01_book_to_dining_table/homework_on_island__bedroom": {
+  "variant": "homework_on_island",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   16,
+   18,
+   19
+  ],
+  "instruction": "The guest would like something to read over breakfast. Bring a book to the dining table for them.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "paperback_book"
+   ],
+   "added": [
+    "homework_notebook",
+    "homework_pencil"
+   ],
+   "removed": [],
+   "conditions": [
+    "unsuitable_at_hand",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "paperback_book",
+     [
+      "dining_table_2/top",
+      "dining_table_1/top"
+     ]
+    ],
+    [
+     "near_start",
+     "homework_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "homework_pencil",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "overhang_ready",
+  "oracle_route": "v6_homework_on_island__bedroom",
+  "challenge": "where the book usually lies, on the island, there is only the kid's open homework (a notebook with a pencil): it looks like a book but is not one to read, and it is in use",
+  "rationale": "the thing at hand does not serve: leave the homework, find a real book in another room and bring that to the dining table instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/clear": {
@@ -4723,18 +4723,37 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
     "floor_block",
     "oatmeal",
     "rolling_pin",
+    "spoon_target_table",
     "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "clutter_basket",
+    "clutter_book_green",
+    "clutter_book_red",
+    "clutter_bowl",
+    "clutter_cereal_c",
+    "clutter_cereal_e",
+    "clutter_fruit_basket",
+    "clutter_notebook",
+    "clutter_paperback",
+    "clutter_plate_1",
+    "clutter_plate_2",
+    "clutter_small_bin",
+    "clutter_sorting_tray",
+    "clutter_toy_box",
+    "clutter_tray"
+   ],
    "removed": [],
    "conditions": [
-    "item_out_of_view",
-    "spot_quality"
+    "destination_occupied",
+    "item_out_of_view"
    ],
    "initial_checks": []
   },
@@ -4763,7 +4782,7 @@
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4772,9 +4791,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4799,7 +4836,7 @@
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4808,9 +4845,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4835,7 +4890,7 @@
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4844,9 +4899,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4871,7 +4944,7 @@
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4880,9 +4953,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4907,7 +4998,7 @@
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4916,9 +5007,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -4943,7 +5052,7 @@
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -4952,9 +5061,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ]
    ],
@@ -4980,6 +5107,96 @@
      0.03
     ],
     [
+     "near_start",
+     "clutter_toy_box",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_sorting_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_small_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_green",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_red",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_paperback",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_e",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_side_table",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -4987,8 +5204,8 @@
   },
   "control": "clear",
   "oracle_route": "v6_tower_for_kid__counter",
-  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
-  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "challenge": "the near dining table is piled with boxes, baskets, plates and books: no spot on it is 10 cm from the edge and from them; the dining table in the west dining room is free but for a bowl, a cup and a spoon; the three blocks are spread over the house (one out of view)",
+  "rationale": "the near table cannot take a safe tower: build it on the other dining table instead, 10 cm from its edge and its things; find all three blocks, carry them one at a time, the first is the base; nothing on either table is moved",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/tower_for_kid__study": {
@@ -5006,18 +5223,37 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
     "floor_block",
     "oatmeal",
     "rolling_pin",
+    "spoon_target_table",
     "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "clutter_basket",
+    "clutter_book_green",
+    "clutter_book_red",
+    "clutter_bowl",
+    "clutter_cereal_c",
+    "clutter_cereal_e",
+    "clutter_fruit_basket",
+    "clutter_notebook",
+    "clutter_paperback",
+    "clutter_plate_1",
+    "clutter_plate_2",
+    "clutter_small_bin",
+    "clutter_sorting_tray",
+    "clutter_toy_box",
+    "clutter_tray"
+   ],
    "removed": [],
    "conditions": [
-    "item_out_of_view",
-    "spot_quality"
+    "destination_occupied",
+    "item_out_of_view"
    ],
    "initial_checks": []
   },
@@ -5046,7 +5282,7 @@
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5055,9 +5291,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5082,7 +5336,7 @@
      [
       "away_from_edge",
       "wooden_block_a",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5091,9 +5345,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5118,7 +5390,7 @@
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5127,9 +5399,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5154,7 +5444,7 @@
      [
       "away_from_edge",
       "wooden_block_b",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5163,9 +5453,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5190,7 +5498,7 @@
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5199,9 +5507,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ],
     [
@@ -5226,7 +5552,7 @@
      [
       "away_from_edge",
       "floor_block",
-      0.05
+      0.1
      ],
      [
       "clear_of",
@@ -5235,9 +5561,27 @@
        "wide_storage_bin",
        "clutter_cereal_a",
        "clutter_cereal_b",
-       "spoon_target_table"
+       "spoon_target_table",
+       "clutter_toy_box",
+       "clutter_tray",
+       "clutter_basket",
+       "clutter_fruit_basket",
+       "clutter_bowl",
+       "clutter_plate_1",
+       "clutter_sorting_tray",
+       "clutter_plate_2",
+       "clutter_small_bin",
+       "clutter_book_green",
+       "clutter_book_red",
+       "clutter_paperback",
+       "clutter_cereal_c",
+       "clutter_notebook",
+       "clutter_cereal_e",
+       "bowl_side_table",
+       "cup_side_table",
+       "spoon_side_table"
       ],
-      0.05
+      0.1
      ]
     ]
    ],
@@ -5263,6 +5607,96 @@
      0.03
     ],
     [
+     "near_start",
+     "clutter_toy_box",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_sorting_tray",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_plate_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_small_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_green",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_book_red",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_paperback",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_e",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_side_table",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -5270,8 +5704,8 @@
   },
   "control": "clear",
   "oracle_route": "v6_tower_for_kid__study",
-  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
-  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "challenge": "the near dining table is piled with boxes, baskets, plates and books: no spot on it is 10 cm from the edge and from them; the dining table in the west dining room is free but for a bowl, a cup and a spoon; the three blocks are spread over the house (one out of view)",
+  "rationale": "the near table cannot take a safe tower: build it on the other dining table instead, 10 cm from its edge and its things; find all three blocks, carry them one at a time, the first is the base; nothing on either table is moved",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/tower_for_kid_duck__counter": {
@@ -6419,13 +6853,99 @@
   "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/utensils_apart__dining": {
-  "variant": "utensils_apart",
+ "T03_utensils_one_container/bin_full__dining": {
+  "variant": "bin_full",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   15,
+   16
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "spare_tray"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "destination_occupied",
+    "item_out_of_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "spare_tray"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "spare_tray"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_bin_full__dining",
+  "challenge": "the wide bin on the low bookcase in the bedroom is full of the kid's toys (a teddy, a car, a duck, two blocks): no room for the 22 cm rolling pin; an empty serving tray is on the study desk; the spoon was left in another room (out of view)",
+  "rationale": "the usual container is taken: leave the toys in it and use the empty tray instead; find the spoon, one hand, so carry the pin and the spoon to the tray one at a time",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/bin_full__counter": {
+  "variant": "bin_full",
   "category": "task",
   "seeds": [
    10,
-   11,
-   16,
+   12,
+   17,
    18,
    19
   ],
@@ -6438,13 +6958,20 @@
     "rolling_pin",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "spare_tray"
+   ],
    "removed": [
     "mug"
    ],
    "conditions": [
-    "item_out_of_view",
-    "not_in_view"
+    "destination_occupied",
+    "item_out_of_view"
    ],
    "initial_checks": []
   },
@@ -6454,11 +6981,36 @@
     [
      "inside",
      "rolling_pin",
-     "wide_storage_bin"
+     "spare_tray"
     ],
     [
      "inside",
      "breakfast_spoon",
+     "spare_tray"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
      "wide_storage_bin"
     ],
     [
@@ -6468,63 +7020,9 @@
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_utensils_apart__dining",
-  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T03_utensils_one_container/utensils_apart__counter": {
-  "variant": "utensils_apart",
-  "category": "task",
-  "seeds": [
-   12,
-   13,
-   14,
-   15,
-   17
-  ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "rolling_pin",
-    "wide_storage_bin"
-   ],
-   "added": [],
-   "removed": [
-    "mug"
-   ],
-   "conditions": [
-    "item_out_of_view",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "rolling_pin",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "breakfast_spoon",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "large_only",
-  "oracle_route": "v6_utensils_apart__counter",
-  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+  "oracle_route": "v6_bin_full__counter",
+  "challenge": "the wide bin on the low bookcase in the bedroom is full of the kid's toys (a teddy, a car, a duck, two blocks): no room for the 22 cm rolling pin; an empty serving tray is on the study desk; the spoon was left in another room (out of view)",
+  "rationale": "the usual container is taken: leave the toys in it and use the empty tray instead; find the spoon, one hand, so carry the pin and the spoon to the tray one at a time",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/cup_available": {
@@ -7069,9 +7567,15 @@
     "cup_counter_b",
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_plastic_cup",
+    "spare_bowl"
+   ],
    "removed": [
-    "juice_bottle"
+    "juice_bottle",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
    ],
    "conditions": [
     "missing_piece",
@@ -7081,289 +7585,33 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_shelf",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ]
-   ],
    "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "on",
+     "mug",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "mug"
+    ],
+    [
+     "clear_of",
+     "cup_counter_b",
+     [
+      "mug"
+     ],
+     0.03
+    ],
     [
      "hand_empty",
      "right"
@@ -7372,8 +7620,8 @@
   },
   "control": "cup_available",
   "oracle_route": "v6_two_guests__dining",
-  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
-  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "challenge": "two drinks are needed and the house has one glass cup (on the island); for the second there are a mug in another room, the kid's plastic cup in a third place, and an empty breakfast bowl right on the island",
+  "rationale": "set out the cup, notice there is no second one, and choose the best stand-in: the mug (an adult's cup) over the kid's plastic cup, and either over the bowl in view; the two apart",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/two_guests__study": {
@@ -7394,9 +7642,15 @@
     "cup_counter_b",
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_plastic_cup",
+    "spare_bowl"
+   ],
    "removed": [
-    "juice_bottle"
+    "juice_bottle",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
    ],
    "conditions": [
     "missing_piece",
@@ -7406,289 +7660,33 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "cup_counter_b",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_dining_cabinet"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_shelf"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_dining_cabinet",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_dining_cabinet"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_dining_cabinet",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug_shelf",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_shelf"
-     ],
-     [
-      "on",
-      "mug_counter",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug_counter"
-     ],
-     [
-      "clear_of",
-      "mug_shelf",
-      [
-       "mug_counter"
-      ],
-      0.03
-     ]
-    ]
-   ],
    "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "on",
+     "mug",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "mug"
+    ],
+    [
+     "clear_of",
+     "cup_counter_b",
+     [
+      "mug"
+     ],
+     0.03
+    ],
     [
      "hand_empty",
      "right"
@@ -7697,139 +7695,129 @@
   },
   "control": "cup_available",
   "oracle_route": "v6_two_guests__study",
-  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
-  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "challenge": "two drinks are needed and the house has one glass cup (on the island); for the second there are a mug in another room, the kid's plastic cup in a third place, and an empty breakfast bowl right on the island",
+  "rationale": "set out the cup, notice there is no second one, and choose the best stand-in: the mug (an adult's cup) over the kid's plastic cup, and either over the bowl in view; the two apart",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_4": {
-  "variant": "x6_gd_cup_in_cabinets",
+ "T04_cup_or_mug_to_cabinet/no_cup_in_cabinets__cup_on_desk": {
+  "variant": "no_cup_in_cabinets",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "juice_bottle",
+    "mug"
+   ],
+   "added": [
+    "cab_plate_4",
+    "cab_plate_6",
+    "kid_plastic_cup",
+    "spare_bowl"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "mug",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
+   ],
+   "conditions": [
+    "resource_absent",
+    "item_put_away",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_plastic_cup",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "kid_plastic_cup"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "no_cup",
+  "oracle_route": "v6_no_cup_in_cabinets__cup_on_desk",
+  "challenge": "the two low cabinets hold only plates: there is no cup and no mug in the house; the kid's plastic cup is in another room, an empty breakfast bowl and the juice bottle stand on the island in view",
+  "rationale": "look in both cabinets (close them again), find no cup, and use the closest stand-in that is still a cup: the kid's plastic cup, not the bowl in view (and the bottle is no cup)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/no_cup_in_cabinets__cup_on_dining": {
+  "variant": "no_cup_in_cabinets",
   "category": "task",
   "seeds": [
    10,
-   11,
-   14,
-   16,
-   18
-  ],
-  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "cup_counter_b",
-    "mug"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "no_cup"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "cup_counter_b",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_cup_in_cabinet",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "cup_counter_b",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "upright",
-     "cup_counter_b"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "no_cup",
-  "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
-  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_6": {
-  "variant": "x6_gd_cup_in_cabinets",
-  "category": "task",
-  "seeds": [
    12,
    13,
    15,
-   17,
-   19
+   16
   ],
-  "instruction": "A guest is coming. Set out a cup without a handle at the drinks spot on the low wall cabinet; such cups are kept in the low kitchen cabinets. Close the cabinets again.",
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; cups are kept in the low kitchen cabinets. Close the cabinets again.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "cup_counter_b",
+    "juice_bottle",
     "mug"
    ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "no_cup"
+   "added": [
+    "cab_plate_4",
+    "cab_plate_6",
+    "kid_plastic_cup",
+    "spare_bowl"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "cup_counter_b",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
+   "removed": [
+    "cup_counter_b",
+    "mug",
+    "mug_counter",
+    "mug_dining_cabinet",
+    "mug_shelf"
+   ],
+   "conditions": [
+    "resource_absent",
+    "item_put_away",
+    "not_in_view"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_cup_in_cabinet",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "on",
-     "cup_counter_b",
+     "kid_plastic_cup",
      "kitchen_cabinet_6/top"
     ],
     [
      "upright",
-     "cup_counter_b"
-    ],
-    [
-     "hand_empty",
-     "right"
+     "kid_plastic_cup"
     ],
     [
      "is_closed",
@@ -7838,13 +7826,17 @@
     [
      "is_closed",
      "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "no_cup",
-  "oracle_route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-  "challenge": "the mug (with a handle) is in plain view, but a cup without a handle is asked for and those are kept in closed cabinets: the cup is in one of the two (seed decides which)",
-  "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+  "oracle_route": "v6_no_cup_in_cabinets__cup_on_dining",
+  "challenge": "the two low cabinets hold only plates: there is no cup and no mug in the house; the kid's plastic cup is in another room, an empty breakfast bowl and the juice bottle stand on the island in view",
+  "rationale": "look in both cabinets (close them again), find no cup, and use the closest stand-in that is still a cup: the kid's plastic cup, not the bowl in view (and the bottle is no cup)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/e1_pencil_asked": {
@@ -7896,90 +7888,30 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/no_pen_pencil_away": {
-  "variant": "no_pen_pencil_away",
+ "T05_pen_or_pencil_to_desk/no_pencil__pen_dining": {
+  "variant": "no_pencil",
   "category": "task",
   "seeds": [
    10,
    11,
    12,
-   13,
-   14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
-  "instruction": "The kid needs a pencil for homework. Bring a pencil to the study desk.",
+  "instruction": "The kid needs a pencil for maths homework. Bring the pencil to the study desk.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
    "moved": [
-    "pencil"
+    "pen"
    ],
    "added": [],
    "removed": [
-    "pen"
-   ],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v5fix_hard_search_pencil",
-  "challenge": "no pen; the pencil lies on the dining table in another room",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T05_pen_or_pencil_to_desk/check_desk_first__pen_on_desk": {
-  "variant": "check_desk_first",
-  "category": "task",
-  "seeds": [
-   11,
-   12,
-   13,
-   14,
-   15
-  ],
-  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pen",
     "pencil"
    ],
-   "added": [],
-   "removed": [],
    "conditions": [
-    "goal_already_met"
+    "resource_absent",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -7992,13 +7924,108 @@
      "desk_1/top"
     ],
     [
-     "near_start",
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_no_pencil__pen_dining",
+  "challenge": "a pencil is asked for, but there is no pencil in the house; one pen is in another room",
+  "rationale": "the pencil does not exist: the pen serves the same purpose (writing homework), bring it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/no_pencil__pen_bedroom": {
+  "variant": "no_pencil",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid needs a pencil for maths homework. Bring the pencil to the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen"
+   ],
+   "added": [],
+   "removed": [
+    "pencil"
+   ],
+   "conditions": [
+    "resource_absent",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
      "pen",
-     0.1
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_no_pencil__pen_bedroom",
+  "challenge": "a pencil is asked for, but there is no pencil in the house; one pen is in another room",
+  "rationale": "the pencil does not exist: the pen serves the same purpose (writing homework), bring it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/pen_in_use__pencil_bedroom": {
+  "variant": "pen_in_use",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   14,
+   15,
+   18
+  ],
+  "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "grandma_list"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pencil",
+     "desk_1/top"
     ],
     [
      "near_start",
-     "pencil",
+     "pen",
+     0.03
+    ],
+    [
+     "near_start",
+     "grandma_list",
      0.03
     ],
     [
@@ -8008,19 +8035,19 @@
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_check_desk_first__pen_on_desk",
-  "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
-  "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+  "oracle_route": "v6_pen_in_use__pencil_bedroom",
+  "challenge": "a pen is asked for; the only pen lies on grandma's open shopping list on the dining table, in use; a pencil is in another room",
+  "rationale": "the pen is in use by someone else: leave it and bring the pencil instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/check_desk_first__pencil_on_desk": {
-  "variant": "check_desk_first",
+ "T05_pen_or_pencil_to_desk/pen_in_use__pencil_living": {
+  "variant": "pen_in_use",
   "category": "task",
   "seeds": [
-   10,
+   12,
+   13,
    16,
    17,
-   18,
    19
   ],
   "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
@@ -8031,10 +8058,13 @@
     "pen",
     "pencil"
    ],
-   "added": [],
+   "added": [
+    "grandma_list"
+   ],
    "removed": [],
    "conditions": [
-    "goal_already_met"
+    "resource_in_use",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -8043,13 +8073,18 @@
    "all": [
     [
      "on",
-     "pen",
+     "pencil",
      "desk_1/top"
     ],
     [
      "near_start",
-     "pencil",
-     0.1
+     "pen",
+     0.03
+    ],
+    [
+     "near_start",
+     "grandma_list",
+     0.03
     ],
     [
      "hand_empty",
@@ -8058,126 +8093,141 @@
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_check_desk_first__pencil_on_desk",
-  "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
-  "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+  "oracle_route": "v6_pen_in_use__pencil_living",
+  "challenge": "a pen is asked for; the only pen lies on grandma's open shopping list on the dining table, in use; a pencil is in another room",
+  "rationale": "the pen is in use by someone else: leave it and bring the pencil instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/all_pens__two": {
-  "variant": "all_pens",
+ "T05_pen_or_pencil_to_desk/pens_for_two__pen_living": {
+  "variant": "pens_for_two",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   15,
+   17,
+   18
+  ],
+  "instruction": "Two kids are doing homework, one at the study desk and one at the bedroom desk. Bring each of them a pen and put it beside their notebook.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "hw_notebook_bedroom",
+    "hw_notebook_study",
+    "pencil_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pen"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pencil"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pen"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pencil_2"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pencil"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pen"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pencil_2"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pen"
+      ],
+      0.15
+     ]
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_pens_for_two__pen_living",
+  "challenge": "two kids need a pen each, on two desks in different rooms; the house has one pen and two pencils",
+  "rationale": "one pen for two: give it to one kid and a pencil to the other, each beside the notebook",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/pens_for_two__pen_dining": {
+  "variant": "pens_for_two",
   "category": "task",
   "seeds": [
    10,
    11,
-   14,
-   17
-  ],
-  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pen",
-    "pencil"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "unknown_count",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "pencil",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pen",
-     "desk_1/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v6_all_pens__two",
-  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T05_pen_or_pencil_to_desk/all_pens__three": {
-  "variant": "all_pens",
-  "category": "task",
-  "seeds": [
-   13,
-   15,
-   16
-  ],
-  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pen",
-    "pencil"
-   ],
-   "added": [
-    "pencil_2"
-   ],
-   "removed": [],
-   "conditions": [
-    "unknown_count",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "pencil",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pen",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pencil_2",
-     "desk_1/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v6_all_pens__three",
-  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T05_pen_or_pencil_to_desk/all_pens__four": {
-  "variant": "all_pens",
-  "category": "task",
-  "seeds": [
    12,
-   18,
+   16,
    19
   ],
-  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
+  "instruction": "Two kids are doing homework, one at the study desk and one at the bedroom desk. Bring each of them a pen and put it beside their notebook.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -8186,12 +8236,13 @@
     "pencil"
    ],
    "added": [
-    "pen_2",
+    "hw_notebook_bedroom",
+    "hw_notebook_study",
     "pencil_2"
    ],
    "removed": [],
    "conditions": [
-    "unknown_count",
+    "missing_piece",
     "not_in_view"
    ],
    "initial_checks": []
@@ -8200,35 +8251,89 @@
   "goal_constraints": {
    "all": [
     [
-     "on",
-     "pencil",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pen",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pencil_2",
-     "desk_1/top"
-    ],
-    [
-     "on",
-     "pen_2",
-     "desk_1/top"
-    ],
-    [
      "hand_empty",
      "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pen"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pencil"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pen"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pencil_2"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pencil"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pen"
+      ],
+      0.15
+     ]
+    ],
+    [
+     [
+      "near_any",
+      "hw_notebook_study",
+      [
+       "pencil_2"
+      ],
+      0.15
+     ],
+     [
+      "near_any",
+      "hw_notebook_bedroom",
+      [
+       "pen"
+      ],
+      0.15
+     ]
     ]
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_all_pens__four",
-  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
+  "oracle_route": "v6_pens_for_two__pen_dining",
+  "challenge": "two kids need a pen each, on two desks in different rooms; the house has one pen and two pencils",
+  "rationale": "one pen for two: give it to one kid and a pencil to the other, each beside the notebook",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/homework_ready__single": {
@@ -8497,7 +8602,7 @@
   "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/pens_per_notebook__notebooks_2": {
+ "T05_pen_or_pencil_to_desk/pens_per_notebook__one_short": {
   "variant": "pens_per_notebook",
   "category": "task",
   "seeds": [
@@ -8507,209 +8612,7 @@
    18,
    19
   ],
-  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pen",
-    "pencil"
-   ],
-   "added": [
-    "hw_notebook_1",
-    "hw_notebook_2",
-    "pen_2",
-    "pencil_2"
-   ],
-   "removed": [],
-   "conditions": [
-    "count_from_scene",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pen_2",
-      0.03
-     ],
-     [
-      "near_start",
-      "pencil_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pen",
-      0.03
-     ],
-     [
-      "near_start",
-      "pencil_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pen",
-      0.03
-     ],
-     [
-      "near_start",
-      "pen_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pencil",
-      0.03
-     ],
-     [
-      "near_start",
-      "pencil_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pencil",
-      0.03
-     ],
-     [
-      "near_start",
-      "pen_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pencil",
-      0.03
-     ],
-     [
-      "near_start",
-      "pen",
-      0.03
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "near_any",
-     "hw_notebook_1",
-     [
-      "pencil",
-      "pen",
-      "pen_2",
-      "pencil_2"
-     ],
-     0.15
-    ],
-    [
-     "near_any",
-     "hw_notebook_2",
-     [
-      "pencil",
-      "pen",
-      "pen_2",
-      "pencil_2"
-     ],
-     0.15
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v6_pens_per_notebook__notebooks_2",
-  "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-  "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T05_pen_or_pencil_to_desk/pens_per_notebook__notebooks_3": {
-  "variant": "pens_per_notebook",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   15,
-   16,
-   17
-  ],
-  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
+  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
@@ -8722,116 +8625,29 @@
     "hw_notebook_2",
     "hw_notebook_3",
     "pen_2",
-    "pencil_2"
+    "pencil_2",
+    "pencil_3"
    ],
    "removed": [],
    "conditions": [
     "count_from_scene",
+    "missing_piece",
     "not_in_view"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pencil_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pen_2",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pen",
-      0.03
-     ]
-    ],
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pen_2",
-      "desk_1/top"
-     ],
-     [
-      "on",
-      "pencil_2",
-      "desk_1/top"
-     ],
-     [
-      "near_start",
-      "pencil",
-      0.03
-     ]
-    ]
-   ],
    "all": [
     [
      "near_any",
      "hw_notebook_1",
      [
-      "pencil",
       "pen",
       "pen_2",
-      "pencil_2"
+      "pencil",
+      "pencil_2",
+      "pencil_3"
      ],
      0.15
     ],
@@ -8839,10 +8655,11 @@
      "near_any",
      "hw_notebook_2",
      [
-      "pencil",
       "pen",
       "pen_2",
-      "pencil_2"
+      "pencil",
+      "pencil_2",
+      "pencil_3"
      ],
      0.15
     ],
@@ -8850,10 +8667,11 @@
      "near_any",
      "hw_notebook_3",
      [
-      "pencil",
       "pen",
       "pen_2",
-      "pencil_2"
+      "pencil",
+      "pencil_2",
+      "pencil_3"
      ],
      0.15
     ],
@@ -8864,12 +8682,93 @@
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_pens_per_notebook__notebooks_3",
-  "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-  "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
+  "oracle_route": "v6_pens_per_notebook__one_short",
+  "challenge": "three notebooks on the desk, one pen asked for each; the house has only two pens (or one), and three pencils around the house",
+  "rationale": "count the notebooks, bring every pen, and make up the rest with pencils, one beside each notebook, no more",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/errand_combined__pen_bedroom": {
+ "T05_pen_or_pencil_to_desk/pens_per_notebook__two_short": {
+  "variant": "pens_per_notebook",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   16,
+   17
+  ],
+  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "hw_notebook_1",
+    "hw_notebook_2",
+    "hw_notebook_3",
+    "pencil_2",
+    "pencil_3"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "near_any",
+     "hw_notebook_1",
+     [
+      "pen",
+      "pencil",
+      "pencil_2",
+      "pencil_3"
+     ],
+     0.15
+    ],
+    [
+     "near_any",
+     "hw_notebook_2",
+     [
+      "pen",
+      "pencil",
+      "pencil_2",
+      "pencil_3"
+     ],
+     0.15
+    ],
+    [
+     "near_any",
+     "hw_notebook_3",
+     [
+      "pen",
+      "pencil",
+      "pencil_2",
+      "pencil_3"
+     ],
+     0.15
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_pens_per_notebook__two_short",
+  "challenge": "three notebooks on the desk, one pen asked for each; the house has only two pens (or one), and three pencils around the house",
+  "rationale": "count the notebooks, bring every pen, and make up the rest with pencils, one beside each notebook, no more",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/errand_combined__pencil_bedroom": {
   "variant": "errand_combined",
   "category": "task",
   "seeds": [
@@ -8884,13 +8783,14 @@
    "scene": "tasks/desk_prep",
    "start": null,
    "moved": [
-    "pen",
     "pencil"
    ],
    "added": [
     "used_mug"
    ],
-   "removed": [],
+   "removed": [
+    "pen"
+   ],
    "conditions": [
     "errands_combined"
    ],
@@ -8901,7 +8801,7 @@
    "all": [
     [
      "on",
-     "pen",
+     "pencil",
      "desk_1/top"
     ],
     [
@@ -8923,12 +8823,12 @@
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_errand_combined__pen_bedroom",
-  "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
-  "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
+  "oracle_route": "v6_errand_combined__pencil_bedroom",
+  "challenge": "two errands that meet at the study desk: a pen to bring there (there is no pen in the house, a pencil is in another room), a used mug to take from there to the kitchen; one hand",
+  "rationale": "no pen: bring the pencil instead; order the errands: put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/errand_combined__pen_dining": {
+ "T05_pen_or_pencil_to_desk/errand_combined__pencil_dining": {
   "variant": "errand_combined",
   "category": "task",
   "seeds": [
@@ -8943,13 +8843,14 @@
    "scene": "tasks/desk_prep",
    "start": null,
    "moved": [
-    "pen",
     "pencil"
    ],
    "added": [
     "used_mug"
    ],
-   "removed": [],
+   "removed": [
+    "pen"
+   ],
    "conditions": [
     "errands_combined"
    ],
@@ -8960,7 +8861,7 @@
    "all": [
     [
      "on",
-     "pen",
+     "pencil",
      "desk_1/top"
     ],
     [
@@ -8982,9 +8883,9 @@
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_errand_combined__pen_dining",
-  "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
-  "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
+  "oracle_route": "v6_errand_combined__pencil_dining",
+  "challenge": "two errands that meet at the study desk: a pen to bring there (there is no pen in the house, a pencil is in another room), a used mug to take from there to the kitchen; one hand",
+  "rationale": "no pen: bring the pencil instead; order the errands: put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/x6_gd_pen_or_pencil_cabinets__pen_in_4": {
@@ -9204,17 +9105,137 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/display_row__island_floor": {
-  "variant": "display_row",
+ "T06_block_destination_occupied/both_spots_full__block_at_hand": {
+  "variant": "both_spots_full",
   "category": "task",
   "seeds": [
+   10,
    11,
+   13,
    14,
+   15
+  ],
+  "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "display_bin",
+    "display_can",
+    "display_juice",
+    "display_small_bin",
+    "tv_bin",
+    "tv_container",
+    "tv_fruit_basket",
+    "tv_plate",
+    "tv_small_bin",
+    "tv_sorting_tray"
+   ],
+   "removed": [
+    "spoon_kitchen_cabinet"
+   ],
+   "conditions": [
+    "destination_occupied",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "kitchen_cabinet_4/top"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "away_from_edge",
+     "wooden_block_a",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_small_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_juice",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_can",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_plate",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_fruit_basket",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_sorting_tray",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_small_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_container",
+     0.02
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_both_spots_full__block_at_hand",
+  "challenge": "both places the instruction names, the low wall cabinet top and the TV stand top, are packed with boxes, bins, baskets and plates: a block fits nowhere on them where it can be seen; the other low cabinet's top is free and in view of the room",
+  "rationale": "neither named place can take the block: put it on display on the other low cabinet, seen from the room; nothing on the packed tops is moved",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/both_spots_full__block_away": {
+  "variant": "both_spots_full",
+  "category": "task",
+  "seeds": [
+   12,
+   16,
    17,
    18,
    19
   ],
-  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
+  "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -9224,10 +9245,24 @@
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
-   "removed": [],
+   "added": [
+    "display_bin",
+    "display_can",
+    "display_juice",
+    "display_small_bin",
+    "tv_bin",
+    "tv_container",
+    "tv_fruit_basket",
+    "tv_plate",
+    "tv_small_bin",
+    "tv_sorting_tray"
+   ],
+   "removed": [
+    "spoon_kitchen_cabinet"
+   ],
    "conditions": [
-    "arrangement"
+    "destination_occupied",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -9237,68 +9272,66 @@
     [
      "on",
      "wooden_block_a",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "wooden_block_b",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "floor_block",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "squared",
-     "wooden_block_a"
-    ],
-    [
-     "squared",
-     "wooden_block_b"
-    ],
-    [
-     "squared",
-     "floor_block"
+     "kitchen_cabinet_4/top"
     ],
     [
      "front_visible",
      "wooden_block_a"
     ],
     [
-     "front_visible",
-     "wooden_block_b"
-    ],
-    [
-     "front_visible",
-     "floor_block"
-    ],
-    [
-     "clear_of",
+     "away_from_edge",
      "wooden_block_a",
-     [
-      "wooden_block_b",
-      "floor_block"
-     ],
-     0.03
+     0.02
     ],
     [
-     "clear_of",
-     "wooden_block_b",
-     [
-      "wooden_block_a",
-      "floor_block"
-     ],
-     0.03
+     "near_start",
+     "display_bin",
+     0.02
     ],
     [
-     "clear_of",
-     "floor_block",
-     [
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
-     0.03
+     "near_start",
+     "display_small_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_juice",
+     0.02
+    ],
+    [
+     "near_start",
+     "display_can",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_plate",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_fruit_basket",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_sorting_tray",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_small_bin",
+     0.02
+    ],
+    [
+     "near_start",
+     "tv_container",
+     0.02
     ],
     [
      "hand_empty",
@@ -9307,118 +9340,9 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v6_display_row__island_floor",
-  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
-  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T06_block_destination_occupied/display_row__spread": {
-  "variant": "display_row",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   13,
-   15,
-   16
-  ],
-  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "floor_block",
-    "oatmeal",
-    "pot_lid",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "arrangement"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "wooden_block_b",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "floor_block",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "squared",
-     "wooden_block_a"
-    ],
-    [
-     "squared",
-     "wooden_block_b"
-    ],
-    [
-     "squared",
-     "floor_block"
-    ],
-    [
-     "front_visible",
-     "wooden_block_a"
-    ],
-    [
-     "front_visible",
-     "wooden_block_b"
-    ],
-    [
-     "front_visible",
-     "floor_block"
-    ],
-    [
-     "clear_of",
-     "wooden_block_a",
-     [
-      "wooden_block_b",
-      "floor_block"
-     ],
-     0.03
-    ],
-    [
-     "clear_of",
-     "wooden_block_b",
-     [
-      "wooden_block_a",
-      "floor_block"
-     ],
-     0.03
-    ],
-    [
-     "clear_of",
-     "floor_block",
-     [
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "free",
-  "oracle_route": "v6_display_row__spread",
-  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
-  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
+  "oracle_route": "v6_both_spots_full__block_away",
+  "challenge": "both places the instruction names, the low wall cabinet top and the TV stand top, are packed with boxes, bins, baskets and plates: a block fits nowhere on them where it can be seen; the other low cabinet's top is free and in view of the room",
+  "rationale": "neither named place can take the block: put it on display on the other low cabinet, seen from the room; nothing on the packed tops is moved",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/display_spot_or_tv__front_taken": {
@@ -12531,58 +12455,12 @@
   "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/trash_moved__dining": {
-  "variant": "trash_moved",
+ "T10_trash_the_can/trash_full__living": {
+  "variant": "trash_full",
   "category": "task",
   "seeds": [
    10,
    11,
-   12,
-   15,
-   19
-  ],
-  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "soda_can",
-    "trash_can"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "destination_unnamed",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "trash_can"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "can_on_island",
-  "oracle_route": "v6_trash_moved__dining",
-  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
-  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T10_trash_the_can/trash_moved__bathroom": {
-  "variant": "trash_moved",
-  "category": "task",
-  "seeds": [
-   13,
-   14,
    16,
    17,
    18
@@ -12593,12 +12471,19 @@
    "start": null,
    "moved": [
     "soda_can",
-    "trash_can"
+    "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "trash_can_1",
+    "trash_can_2",
+    "trash_carton",
+    "trash_lunch_box",
+    "trash_tissues",
+    "used_plastic_cup"
+   ],
    "removed": [],
    "conditions": [
-    "destination_unnamed",
+    "destination_occupied",
     "not_in_view"
    ],
    "initial_checks": []
@@ -12609,7 +12494,32 @@
     [
      "inside",
      "soda_can",
-     "trash_can"
+     "wide_storage_bin"
+    ],
+    [
+     "near_start",
+     "trash_carton",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_can_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_can_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_tissues",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_lunch_box",
+     0.05
     ],
     [
      "hand_empty",
@@ -12618,9 +12528,87 @@
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v6_trash_moved__bathroom",
-  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
-  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+  "oracle_route": "v6_trash_full__living",
+  "challenge": "the trash can stands in its place but is packed to the rim (a snack carton, two cans, a tissue box, a lunch box on top): the can does not go in; the recycling bin with a used plastic cup in it is in another room",
+  "rationale": "the trash can is full: leave what is in it and put the empty can into the recycling bin instead (an empty can belongs there anyway)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/trash_full__dining": {
+  "variant": "trash_full",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   15,
+   19
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "trash_can_1",
+    "trash_can_2",
+    "trash_carton",
+    "trash_lunch_box",
+    "trash_tissues",
+    "used_plastic_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "destination_occupied",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "near_start",
+     "trash_carton",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_can_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_can_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_tissues",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_lunch_box",
+     0.05
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_trash_full__dining",
+  "challenge": "the trash can stands in its place but is packed to the rim (a snack carton, two cans, a tissue box, a lunch box on top): the can does not go in; the recycling bin with a used plastic cup in it is in another room",
+  "rationale": "the trash can is full: leave what is in it and put the empty can into the recycling bin instead (an empty can belongs there anyway)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/after_dinner_clear__rubbish_leftovers": {
@@ -13446,73 +13434,22 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T11_collect_fruits/leave_one_for_kid__apple_orange": {
-  "variant": "leave_one_for_kid",
-  "category": "task",
-  "seeds": [
-   13,
-   14,
-   16,
-   17
-  ],
-  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
-  "initial_conditions": {
-   "scene": "tasks/collect_fruits",
-   "start": null,
-   "moved": [
-    "apple",
-    "fruit_basket",
-    "serving_tray"
-   ],
-   "added": [
-    "lunch_orange"
-   ],
-   "removed": [],
-   "conditions": [
-    "storage_place",
-    "preference_allocation",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "apple",
-      "desk_1/top"
-     ],
-     [
-      "inside",
-      "lunch_orange",
-      "fruit_basket"
-     ]
-    ]
-   ]
-  },
-  "control": "fruits_on_table",
-  "oracle_route": "v6_leave_one_for_kid__apple_orange",
-  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
-  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T11_collect_fruits/leave_one_for_kid__orange_banana": {
-  "variant": "leave_one_for_kid",
+ "T11_collect_fruits/no_apple_for_kid": {
+  "variant": "no_apple_for_kid",
   "category": "task",
   "seeds": [
    10,
+   11,
+   12,
+   13,
+   14,
    15,
-   18
+   16,
+   17,
+   18,
+   19
   ],
-  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
+  "instruction": "The kid doing homework in the study wants an apple. Bring one to the study desk. The kid doesn't like oranges.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -13528,9 +13465,8 @@
     "apple"
    ],
    "conditions": [
-    "storage_place",
-    "preference_allocation",
-    "multi_object_goal"
+    "resource_absent",
+    "preference_allocation"
    ],
    "initial_checks": []
   },
@@ -13538,109 +13474,20 @@
   "goal_constraints": {
    "all": [
     [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "lunch_banana",
-      "desk_1/top"
-     ],
-     [
-      "inside",
-      "lunch_orange",
-      "fruit_basket"
-     ]
-    ]
-   ]
-  },
-  "control": "fruits_on_table",
-  "oracle_route": "v6_leave_one_for_kid__orange_banana",
-  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
-  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T11_collect_fruits/leave_one_for_kid__all_three": {
-  "variant": "leave_one_for_kid",
-  "category": "task",
-  "seeds": [
-   11,
-   12,
-   19
-  ],
-  "instruction": "Lunch is over. Put the fruit on the table away, but leave one for the kid doing homework in the study as a snack. The kid doesn't like oranges.",
-  "initial_conditions": {
-   "scene": "tasks/collect_fruits",
-   "start": null,
-   "moved": [
-    "apple",
-    "fruit_basket",
-    "serving_tray"
-   ],
-   "added": [
-    "lunch_banana",
-    "lunch_orange"
-   ],
-   "removed": [],
-   "conditions": [
-    "storage_place",
-    "preference_allocation",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "apple",
-      "desk_1/top"
-     ],
-     [
-      "inside",
-      "lunch_orange",
-      "fruit_basket"
-     ],
-     [
-      "inside",
-      "lunch_banana",
-      "fruit_basket"
-     ]
+     "on",
+     "lunch_banana",
+     "desk_1/top"
     ],
     [
-     [
-      "on",
-      "lunch_banana",
-      "desk_1/top"
-     ],
-     [
-      "inside",
-      "apple",
-      "fruit_basket"
-     ],
-     [
-      "inside",
-      "lunch_orange",
-      "fruit_basket"
-     ]
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "fruits_on_table",
-  "oracle_route": "v6_leave_one_for_kid__all_three",
-  "challenge": "two or three fruits on the dining table; the instruction names neither the basket nor the desk, and which fruit is the snack follows from the kid's dislike",
-  "rationale": "split the goal: one fruit the kid eats goes to the study desk, the rest to where fruit is kept (the basket on the bedroom bookcase); with orange and banana only the banana can be the snack, with apple and banana either",
+  "oracle_route": "v6_no_apple_for_kid",
+  "challenge": "there is no apple left; a banana and an orange are on the dining table; the kid does not like oranges",
+  "rationale": "the apple does not exist: bring the fruit the kid eats instead, the banana, not the orange",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T11_collect_fruits/fruit_plate_for_guests__tray_in_study": {
@@ -13653,7 +13500,7 @@
    16,
    18
   ],
-  "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+  "instruction": "The guests are watching TV in the living room. Bring them some fruit in a container.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -13662,7 +13509,7 @@
     "fruit_basket"
    ],
    "added": [
-    "fruit_tray",
+    "fruit_box",
     "lunch_orange"
    ],
    "removed": [
@@ -13680,12 +13527,12 @@
     [
      "inside",
      "apple",
-     "fruit_tray"
+     "fruit_box"
     ],
     [
      "inside",
      "lunch_orange",
-     "fruit_tray"
+     "fruit_box"
     ],
     [
      "not on_floor",
@@ -13704,14 +13551,14 @@
     [
      [
       "on",
-      "fruit_tray",
+      "fruit_box",
       "tv_stand_2/top"
      ]
     ],
     [
      [
       "on",
-      "fruit_tray",
+      "fruit_box",
       "tv_stand_1/top"
      ]
     ]
@@ -13719,8 +13566,8 @@
   },
   "control": "fruits_on_table",
   "oracle_route": "v6_fruit_plate_for_guests__tray_in_study",
-  "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
-  "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
+  "challenge": "the apple and an orange on the dining table; there is no tray in the house, a small storage bin is elsewhere; the fruit is to end in front of the guests in a container",
+  "rationale": "no tray: use the small bin as the container; one hand cannot carry it loaded safely, so the empty bin goes to the TV stand first and the fruit is put in there",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T11_collect_fruits/fruit_plate_for_guests__tray_by_table": {
@@ -13733,7 +13580,7 @@
    17,
    19
   ],
-  "instruction": "The guests are watching TV in the living room. Bring them some fruit on a tray.",
+  "instruction": "The guests are watching TV in the living room. Bring them some fruit in a container.",
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
@@ -13742,7 +13589,7 @@
     "fruit_basket"
    ],
    "added": [
-    "fruit_tray",
+    "fruit_box",
     "lunch_orange"
    ],
    "removed": [
@@ -13760,12 +13607,12 @@
     [
      "inside",
      "apple",
-     "fruit_tray"
+     "fruit_box"
     ],
     [
      "inside",
      "lunch_orange",
-     "fruit_tray"
+     "fruit_box"
     ],
     [
      "not on_floor",
@@ -13784,14 +13631,14 @@
     [
      [
       "on",
-      "fruit_tray",
+      "fruit_box",
       "tv_stand_2/top"
      ]
     ],
     [
      [
       "on",
-      "fruit_tray",
+      "fruit_box",
       "tv_stand_1/top"
      ]
     ]
@@ -13799,8 +13646,8 @@
   },
   "control": "fruits_on_table",
   "oracle_route": "v6_fruit_plate_for_guests__tray_by_table",
-  "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
-  "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
+  "challenge": "the apple and an orange on the dining table; there is no tray in the house, a small storage bin is elsewhere; the fruit is to end in front of the guests in a container",
+  "rationale": "no tray: use the small bin as the container; one hand cannot carry it loaded safely, so the empty bin goes to the TV stand first and the fruit is put in there",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/toys_out": {
@@ -13859,70 +13706,67 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T12_tidy_toys/duck_in_study": {
-  "variant": "duck_in_study",
+ "T12_tidy_toys/bedtime_toy__teddy_there": {
+  "variant": "bedtime_toy",
   "category": "task",
   "seeds": [
    10,
-   13,
-   17,
-   18,
-   19
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "rubber_duck",
-     "storage_basket"
-    ],
-    [
-     "upright",
-     "storage_basket"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "explore_search_duck",
-  "challenge": "the duck was left on the study desk",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T12_tidy_toys/duck_in_study__alt_dining_table_2": {
-  "variant": "duck_in_study",
-  "category": "task",
-  "seeds": [
-   11,
    12,
    14,
    15,
-   16
+   19
   ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away.",
+  "instruction": "The kid is going to bed. Bring him a toy he can cuddle in bed.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "kids_teddy"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_absent",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "kids_teddy",
+     [
+      "mattress_1/top",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "toys_out",
+  "oracle_route": "v6_bedtime_toy__teddy_there",
+  "challenge": "a cuddly toy is wanted, none is named; the TV stand holds the rubber duck (and the teddy bear in some layouts), the toy car is on the floor",
+  "rationale": "the teddy bear is the toy to cuddle; when there is none, the soft rubber duck does instead, not the hard toy car; put it on the bed or the bedside shelf",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/bedtime_toy__no_teddy": {
+  "variant": "bedtime_toy",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   16,
+   17,
+   18
+  ],
+  "instruction": "The kid is going to bed. Bring him a toy he can cuddle in bed.",
   "initial_conditions": {
    "scene": "tasks/tidy_toys",
    "start": null,
@@ -13932,6 +13776,7 @@
    "added": [],
    "removed": [],
    "conditions": [
+    "resource_absent",
     "not_in_view"
    ],
    "initial_checks": []
@@ -13940,18 +13785,12 @@
   "goal_constraints": {
    "all": [
     [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
+     "on_any",
      "rubber_duck",
-     "storage_basket"
-    ],
-    [
-     "upright",
-     "storage_basket"
+     [
+      "mattress_1/top",
+      "bookcase_3/top"
+     ]
     ],
     [
      "hand_empty",
@@ -13960,9 +13799,9 @@
    ]
   },
   "control": "toys_out",
-  "oracle_route": "v6_duck_in_study__alt_dining_table_2",
-  "challenge": "the duck was left on the study desk (here the rubber_duck is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_bedtime_toy__no_teddy",
+  "challenge": "a cuddly toy is wanted, none is named; the TV stand holds the rubber duck (and the teddy bear in some layouts), the toy car is on the floor",
+  "rationale": "the teddy bear is the toy to cuddle; when there is none, the soft rubber duck does instead, not the hard toy car; put it on the bed or the bedside shelf",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/bins_capacity__side_left_full": {
@@ -15236,280 +15075,6 @@
   "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T12_tidy_toys/castle_stays__tall_two_loose": {
-  "variant": "castle_stays",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   19
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [
-    "castle_block_1",
-    "castle_block_2",
-    "castle_block_3",
-    "loose_block_1",
-    "loose_block_2"
-   ],
-   "removed": [],
-   "conditions": [
-    "relational_exception",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "rubber_duck",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "loose_block_1",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "loose_block_2",
-     "storage_basket"
-    ],
-    [
-     "near_start",
-     "castle_block_1",
-     0.03
-    ],
-    [
-     "near_start",
-     "castle_block_2",
-     0.03
-    ],
-    [
-     "near_start",
-     "castle_block_3",
-     0.03
-    ],
-    [
-     "never_picked",
-     [
-      "castle_block_1",
-      "castle_block_2",
-      "castle_block_3"
-     ]
-    ],
-    [
-     "on_top_of",
-     "castle_block_2",
-     "castle_block_1"
-    ],
-    [
-     "on_top_of",
-     "castle_block_3",
-     "castle_block_2"
-    ],
-    [
-     "upright",
-     "storage_basket"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "v6_castle_stays__tall_two_loose",
-  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
-  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T12_tidy_toys/castle_stays__short_one_loose": {
-  "variant": "castle_stays",
-  "category": "task",
-  "seeds": [
-   15,
-   16,
-   18
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [
-    "castle_block_1",
-    "castle_block_2",
-    "loose_block_1"
-   ],
-   "removed": [],
-   "conditions": [
-    "relational_exception",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "rubber_duck",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "loose_block_1",
-     "storage_basket"
-    ],
-    [
-     "near_start",
-     "castle_block_1",
-     0.03
-    ],
-    [
-     "near_start",
-     "castle_block_2",
-     0.03
-    ],
-    [
-     "never_picked",
-     [
-      "castle_block_1",
-      "castle_block_2"
-     ]
-    ],
-    [
-     "on_top_of",
-     "castle_block_2",
-     "castle_block_1"
-    ],
-    [
-     "upright",
-     "storage_basket"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "v6_castle_stays__short_one_loose",
-  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
-  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T12_tidy_toys/castle_stays__tall_none_loose": {
-  "variant": "castle_stays",
-  "category": "task",
-  "seeds": [
-   13,
-   14,
-   17
-  ],
-  "instruction": "It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid built; the kid wants to keep building it tomorrow.",
-  "initial_conditions": {
-   "scene": "tasks/tidy_toys",
-   "start": null,
-   "moved": [
-    "rubber_duck"
-   ],
-   "added": [
-    "castle_block_1",
-    "castle_block_2",
-    "castle_block_3"
-   ],
-   "removed": [],
-   "conditions": [
-    "relational_exception",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "rubber_duck",
-     "storage_basket"
-    ],
-    [
-     "near_start",
-     "castle_block_1",
-     0.03
-    ],
-    [
-     "near_start",
-     "castle_block_2",
-     0.03
-    ],
-    [
-     "near_start",
-     "castle_block_3",
-     0.03
-    ],
-    [
-     "never_picked",
-     [
-      "castle_block_1",
-      "castle_block_2",
-      "castle_block_3"
-     ]
-    ],
-    [
-     "on_top_of",
-     "castle_block_2",
-     "castle_block_1"
-    ],
-    [
-     "on_top_of",
-     "castle_block_3",
-     "castle_block_2"
-    ],
-    [
-     "upright",
-     "storage_basket"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "toys_out",
-  "oracle_route": "v6_castle_stays__tall_none_loose",
-  "challenge": "a tower of identical wooden blocks on the living-room floor, loose blocks of the same kind beside it, the car and the duck",
-  "rationale": "the same kind of object is treated by its relation: blocks in the tower stay where they are, loose blocks are toys to put away; taking the tower apart or leaving loose blocks fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T13_breakfast_setup/dishes_on_tv_stand": {
   "variant": "dishes_on_tv_stand",
   "category": "control",
@@ -16003,150 +15568,15 @@
   "rationale": "read the example (which things, where relative to its spoon, stacked or not), copy it at the other spoon in the diner's frame (the other diner faces the other way: left and right flip in the room), and when a kind is missing in the house put the closest one (the mug for the cup) in its place",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T13_breakfast_setup/finish_the_table__adult_seat": {
-  "variant": "finish_the_table",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   16,
-   17
-  ],
-  "instruction": "Set the rest of the places at the table.",
-  "initial_conditions": {
-   "scene": "tasks/breakfast_setup",
-   "start": null,
-   "moved": [
-    "bowl",
-    "mug"
-   ],
-   "added": [
-    "bowl_2",
-    "e_mid_bowl",
-    "e_mid_drink",
-    "e_mid_spoon",
-    "e_mid_toy",
-    "e_north_bowl",
-    "e_north_drink",
-    "e_north_spoon",
-    "kid_cup",
-    "mug_2",
-    "w_mid_spoon",
-    "w_north_bowl",
-    "w_north_drink",
-    "w_north_spoon"
-   ],
-   "removed": [
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "cup",
-    "spoon",
-    "spoon_target_table"
-   ],
-   "conditions": [
-    "rule_induction",
-    "referent_clue"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "near_any",
-     "w_mid_spoon",
-     [
-      "bowl",
-      "bowl_2"
-     ],
-     0.12
-    ],
-    [
-     "near_any",
-     "w_mid_spoon",
-     [
-      "mug",
-      "mug_2"
-     ],
-     0.12
-    ],
-    [
-     "not near_any",
-     "w_mid_spoon",
-     [
-      "kid_cup"
-     ],
-     0.25
-    ],
-    [
-     "near_start",
-     "e_north_spoon",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_north_bowl",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_north_drink",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_mid_spoon",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_mid_bowl",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_mid_drink",
-     0.03
-    ],
-    [
-     "near_start",
-     "e_mid_toy",
-     0.03
-    ],
-    [
-     "near_start",
-     "w_north_spoon",
-     0.03
-    ],
-    [
-     "near_start",
-     "w_north_bowl",
-     0.03
-    ],
-    [
-     "near_start",
-     "w_north_drink",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "dishes_on_tv_stand",
-  "oracle_route": "v6_finish_the_table__adult_seat",
-  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
-  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T13_breakfast_setup/finish_the_table__kid_seat": {
   "variant": "finish_the_table",
   "category": "task",
   "seeds": [
    11,
-   13,
-   19
+   12,
+   14,
+   16,
+   18
   ],
   "instruction": "Set the rest of the places at the table.",
   "initial_conditions": {
@@ -16165,7 +15595,7 @@
     "e_north_bowl",
     "e_north_drink",
     "e_north_spoon",
-    "kid_cup",
+    "kid_small_bowl",
     "mug_2",
     "w_mid_spoon",
     "w_mid_toy",
@@ -16182,7 +15612,7 @@
    ],
    "conditions": [
     "rule_induction",
-    "referent_clue"
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -16202,7 +15632,7 @@
      "near_any",
      "w_mid_spoon",
      [
-      "kid_cup"
+      "kid_small_bowl"
      ],
      0.12
     ],
@@ -16273,17 +15703,19 @@
   },
   "control": "dishes_on_tv_stand",
   "oracle_route": "v6_finish_the_table__kid_seat",
-  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
-  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
+  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; an empty kid's place (spoon and a toy car) needs a plastic cup, but there is no other plastic cup in the house: a mug and a small bowl are left",
+  "rationale": "induce the rule (adults: bowl and mug; the kid: bowl and plastic cup); for the kid's place there is no plastic cup: a small bowl does instead (unbreakable for a kid) rather than a china mug",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/finish_the_table__adult_and_kid": {
   "variant": "finish_the_table",
   "category": "task",
   "seeds": [
-   14,
+   10,
+   13,
    15,
-   18
+   17,
+   19
   ],
   "instruction": "Set the rest of the places at the table.",
   "initial_conditions": {
@@ -16302,7 +15734,7 @@
     "e_north_bowl",
     "e_north_drink",
     "e_north_spoon",
-    "kid_cup",
+    "kid_small_bowl",
     "mug_2",
     "w_mid_spoon",
     "w_north_bowl",
@@ -16320,7 +15752,7 @@
    ],
    "conditions": [
     "rule_induction",
-    "referent_clue"
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -16349,7 +15781,7 @@
      "not near_any",
      "w_mid_spoon",
      [
-      "kid_cup"
+      "kid_small_bowl"
      ],
      0.25
     ],
@@ -16366,7 +15798,7 @@
      "near_any",
      "w_south_spoon",
      [
-      "kid_cup"
+      "kid_small_bowl"
      ],
      0.12
     ],
@@ -16436,12 +15868,12 @@
   },
   "control": "dishes_on_tv_stand",
   "oracle_route": "v6_finish_the_table__adult_and_kid",
-  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; the empty places have a spoon, a kid's one also a toy car",
-  "rationale": "induce the rule from the set places (adults: bowl and mug; the kid: bowl and plastic cup), tell whose empty place it is from the toy beside it, set it by that rule",
+  "challenge": "three places are set: two adults' with a bowl and a mug, the kid's with a bowl, a plastic cup and a toy beside it; an empty kid's place (spoon and a toy car) needs a plastic cup, but there is no other plastic cup in the house: a mug and a small bowl are left",
+  "rationale": "induce the rule (adults: bowl and mug; the kid: bowl and plastic cup); for the kid's place there is no plastic cup: a small bowl does instead (unbreakable for a kid) rather than a china mug",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_book_face_up/book_free": {
-  "variant": "book_free",
+ "T15_cover_the_pot/lid_by_pot": {
+  "variant": "lid_by_pot",
   "category": "control",
   "seeds": [
    10,
@@ -16455,12 +15887,13 @@
    18,
    19
   ],
-  "instruction": "A paperback has been lying face down on the kitchen island; its spine is getting bent. Please sort it out; leave it on the island, he has not finished it.",
+  "instruction": "The soup will sit a while before we eat. Cover the pot of soup on the stove with its lid.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "paperback_book"
+    "handled_cooking_pot",
+    "pot_lid"
    ],
    "added": [],
    "removed": [],
@@ -16471,13 +15904,9 @@
   "goal_constraints": {
    "all": [
     [
-     "flipped",
-     "paperback_book"
-    ],
-    [
-     "on",
-     "paperback_book",
-     "kitchen_island/top"
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
     ],
     [
      "hand_empty",
@@ -16487,12 +15916,102 @@
   },
   "control": null,
   "oracle_route": "nominal",
-  "challenge": "the book lies on the island with free paths to the front edge",
+  "challenge": "the pot on the left burner, its lid on the island beside the stove",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_book_face_up/book_out_of_view": {
-  "variant": "book_out_of_view",
+ "T15_cover_the_pot/lid_elsewhere__dining": {
+  "variant": "lid_elsewhere",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   18,
+   19
+  ],
+  "instruction": "The soup will sit a while before we eat. Cover the pot of soup on the stove with its lid.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_by_pot",
+  "oracle_route": "v6_lid_elsewhere__dining",
+  "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
+  "rationale": "the lid named is in the house: find it and cover the pot with it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T15_cover_the_pot/lid_elsewhere__counter": {
+  "variant": "lid_elsewhere",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   15,
+   16,
+   17
+  ],
+  "instruction": "The soup will sit a while before we eat. Cover the pot of soup on the stove with its lid.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_by_pot",
+  "oracle_route": "v6_lid_elsewhere__counter",
+  "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
+  "rationale": "the lid named is in the house: find it and cover the pot with it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T15_cover_the_pot/no_lid": {
+  "variant": "no_lid",
   "category": "task",
   "seeds": [
    10,
@@ -16506,84 +16025,118 @@
    18,
    19
   ],
-  "instruction": "A paperback has been lying face down on the kitchen island; its spine is getting bent. Please sort it out; leave it on the island, he has not finished it.",
+  "instruction": "The soup will sit a while before we eat. Cover the pot of soup on the stove with its lid.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
-   "start": [
-    4.764,
-    0.699,
-    195.0
-   ],
+   "start": null,
    "moved": [
-    "paperback_book"
+    "handled_cooking_pot",
+    "plate_counter_a"
    ],
-   "added": [],
-   "removed": [],
+   "added": [
+    "cover_book"
+   ],
+   "removed": [
+    "pot_lid"
+   ],
    "conditions": [
-    "start_elsewhere"
+    "resource_absent",
+    "not_in_view"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
+   "any": [
+    [
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_a"
+     ]
+    ],
+    [
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_b"
+     ]
+    ]
+   ],
    "all": [
-    [
-     "flipped",
-     "paperback_book"
-    ],
-    [
-     "on",
-     "paperback_book",
-     "kitchen_island/top"
-    ],
     [
      "hand_empty",
      "right"
     ]
    ]
   },
-  "control": "book_free",
-  "oracle_route": "explore_search_book",
-  "challenge": "the robot starts at the wall cabinet facing away",
-  "rationale": "",
+  "control": "lid_by_pot",
+  "oracle_route": "v6_no_lid",
+  "challenge": "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",
+  "rationale": "the lid does not exist: a plate wider than the pot's rim covers it as well (moderate); the book is no cover for food (bad)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_book_face_up/flip_on_the_shelf__shelf_1": {
-  "variant": "flip_on_the_shelf",
+ "T15_cover_the_pot/lid_in_use": {
+  "variant": "lid_in_use",
   "category": "task",
   "seeds": [
    10,
+   11,
+   12,
    13,
+   14,
    15,
+   16,
+   17,
    18,
    19
   ],
-  "instruction": "A paperback is lying face down in the bedroom bookcase. Turn it face up for me and leave it on the same shelf.",
+  "instruction": "The soup will sit a while before we eat. Cover the pot of soup on the stove with its lid.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "paperback_book"
+    "handled_cooking_pot",
+    "plate_counter_a",
+    "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "stew_pot"
+   ],
    "removed": [],
    "conditions": [
-    "workspace_choice",
+    "resource_in_use",
     "not_in_view"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "all": [
+   "any": [
     [
-     "flipped",
-     "paperback_book"
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_a"
+     ]
     ],
     [
-     "on",
-     "paperback_book",
-     "bookcase_2/shelf_1"
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_b"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "covered",
+     "stew_pot",
+     "pot_lid"
+    ],
+    [
+     "upright",
+     "stew_pot"
     ],
     [
      "hand_empty",
@@ -16591,59 +16144,10 @@
     ]
    ]
   },
-  "control": "book_free",
-  "oracle_route": "v6_flip_on_the_shelf__shelf_1",
-  "challenge": "the face-down book lies on a shelf inside the bookcase, with only about 24 cm above it",
-  "rationale": "the turn needs room above the book: do it where there is room (the open top of the bookcase), then put the book back on its shelf; turning it in place fails",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T15_book_face_up/flip_on_the_shelf__shelf_0": {
-  "variant": "flip_on_the_shelf",
-  "category": "task",
-  "seeds": [
-   11,
-   12,
-   14,
-   16,
-   17
-  ],
-  "instruction": "A paperback is lying face down in the bedroom bookcase. Turn it face up for me and leave it on the same shelf.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "paperback_book"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "workspace_choice",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "flipped",
-     "paperback_book"
-    ],
-    [
-     "on",
-     "paperback_book",
-     "bookcase_2/shelf_0"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "book_free",
-  "oracle_route": "v6_flip_on_the_shelf__shelf_0",
-  "challenge": "the face-down book lies on a shelf inside the bookcase, with only about 24 cm above it",
-  "rationale": "the turn needs room above the book: do it where there is room (the open top of the bookcase), then put the book back on its shelf; turning it in place fails",
+  "control": "lid_by_pot",
+  "oracle_route": "v6_lid_in_use",
+  "challenge": "the lid is on the other pot (a stew on the right burner); plates stand on the kitchen counter",
+  "rationale": "the lid is in use on the stew: leave it there and cover the soup with a plate instead",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T16_rolling_pin_at_edge/pin_free": {
@@ -18746,125 +18250,22 @@
   "rationale": "weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a low shelf (below 0.8 m), not back with its set",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/stack_them_stably__red_blue": {
-  "variant": "stack_them_stably",
-  "category": "task",
-  "seeds": [
-   11,
-   13,
-   16,
-   19
-  ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
-  "initial_conditions": {
-   "scene": "tasks/shelve_books",
-   "start": null,
-   "moved": [
-    "book_red"
-   ],
-   "added": [
-    "desk_book_blue"
-   ],
-   "removed": [],
-   "conditions": [
-    "subgoal_order",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "book_red",
-     [
-      "bookcase_2/top",
-      "bookcase_3/top"
-     ]
-    ],
-    [
-     "on_top_of",
-     "desk_book_blue",
-     "book_red"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__red_blue",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T14_shelve_the_book/stack_them_stably__green_paperback": {
-  "variant": "stack_them_stably",
-  "category": "task",
-  "seeds": [
-   14,
-   17,
-   18
-  ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
-  "initial_conditions": {
-   "scene": "tasks/shelve_books",
-   "start": null,
-   "moved": [
-    "book_red"
-   ],
-   "added": [
-    "desk_book_green",
-    "desk_paperback_book"
-   ],
-   "removed": [
-    "book_red"
-   ],
-   "conditions": [
-    "subgoal_order",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "desk_book_green",
-     [
-      "bookcase_2/top",
-      "bookcase_3/top"
-     ]
-    ],
-    [
-     "on_top_of",
-     "desk_paperback_book",
-     "desk_book_green"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__green_paperback",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T14_shelve_the_book/stack_them_stably__blue_green": {
-  "variant": "stack_them_stably",
+ "T14_shelve_the_book/kids_shelf_full": {
+  "variant": "kids_shelf_full",
   "category": "task",
   "seeds": [
    10,
+   11,
    12,
-   15
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
   ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
+  "instruction": "The kid finished reading. Put the book away on his bookcase.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
@@ -18872,15 +18273,28 @@
     "book_red"
    ],
    "added": [
-    "desk_book_blue",
-    "desk_book_green"
+    "kidsfull_shelf_0_b1",
+    "kidsfull_shelf_0_g1",
+    "kidsfull_shelf_0_g2",
+    "kidsfull_shelf_0_p1",
+    "kidsfull_shelf_0_p2",
+    "kidsfull_shelf_0_p3",
+    "kidsfull_shelf_1_b1",
+    "kidsfull_shelf_1_g1",
+    "kidsfull_shelf_1_g2",
+    "kidsfull_shelf_1_p1",
+    "kidsfull_shelf_1_p2",
+    "kidsfull_shelf_1_p3",
+    "kidsfull_top_b1",
+    "kidsfull_top_b2",
+    "kidsfull_top_g1",
+    "kidsfull_top_g2",
+    "kidsfull_top_p1",
+    "kidsfull_top_p2"
    ],
-   "removed": [
-    "book_red"
-   ],
+   "removed": [],
    "conditions": [
-    "subgoal_order",
-    "multi_object_goal"
+    "destination_occupied"
    ],
    "initial_checks": []
   },
@@ -18888,28 +18302,226 @@
   "goal_constraints": {
    "all": [
     [
-     "on_any",
-     "desk_book_green",
-     [
-      "bookcase_2/top",
-      "bookcase_3/top"
-     ]
+     "near_start",
+     "kidsfull_top_g1",
+     0.03
     ],
     [
-     "on_top_of",
-     "desk_book_blue",
-     "desk_book_green"
+     "near_start",
+     "kidsfull_top_g2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_top_p1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_top_b1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_top_b2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_top_p2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_g1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_g2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_p1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_b1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_p2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_1_p3",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_g1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_g2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_p1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_b1",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_p2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kidsfull_shelf_0_p3",
+     0.03
     ],
     [
      "hand_empty",
      "right"
     ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_1/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_1/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_4/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_4/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "bookcase_3/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_4/shelf_2"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_0"
+     ]
+    ],
+    [
+     [
+      "on",
+      "book_red",
+      "large_shelf_5/shelf_1"
+     ]
+    ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__blue_green",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
+  "oracle_route": "v6_kids_shelf_full",
+  "challenge": "every level of the kid's bookcase is packed with books: the red book fits nowhere on it; the other bookcase in the bedroom has room",
+  "rationale": "his bookcase cannot take the book: put it on the other bookcase in his room instead; do not squeeze it in or take shelved books out",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/homework_stays": {
@@ -18935,6 +18547,10 @@
     "book_red"
    ],
    "added": [
+    "baking_bowl_1",
+    "baking_bowl_2",
+    "baking_pin_1",
+    "baking_pin_2",
     "desk_mug",
     "homework",
     "hw_pencil"
@@ -18971,13 +18587,33 @@
      "on_any",
      "desk_mug",
      [
-      "kitchen_counter_1/top",
-      "kitchen_counter_2/top"
+      "kitchen_cabinet_6/top",
+      "kitchen_cabinet_4/top"
      ]
     ],
     [
      "upright",
      "desk_mug"
+    ],
+    [
+     "near_start",
+     "baking_pin_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "baking_bowl_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "baking_pin_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "baking_bowl_2",
+     0.03
     ],
     [
      "near_start",
@@ -19004,8 +18640,8 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_homework_stays",
-  "challenge": "the desk holds the finished book, a used mug and the open homework with its pencil",
-  "rationale": "each thing by what it is and what the instruction says about it: the book back on a bookcase, the mug to a kitchen worktop, the homework stays as it lies",
+  "challenge": "the desk holds the finished book, a used mug and the open homework with its pencil; both kitchen counters are in use (someone is baking on them)",
+  "rationale": "each thing by what it is and what the instruction says about it: the book back on a bookcase, the homework stays as it lies; the mug belongs on a kitchen counter, but they are in use, so it goes on another kitchen top (a low kitchen cabinet)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/whose_book__blue_book": {
@@ -19080,8 +18716,8 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_whose_book__blue_book",
-  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the tall shelf; the desk holds one or both kinds; the paperbacks' shelf is packed on its lower levels, only its top level (1.17 m, out of reach) has room",
+  "rationale": "each book to the shelf holding its kind; the paperbacks' shelf cannot be reached where it has room, so the paperback goes on another bookcase instead, not with the hardcovers",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/whose_book__paperback": {
@@ -19103,8 +18739,39 @@
     "blue_shelved_1",
     "blue_shelved_2",
     "paperback",
-    "paperback_shelved_1",
-    "paperback_shelved_2"
+    "pb_shelf_0_1",
+    "pb_shelf_0_10",
+    "pb_shelf_0_11",
+    "pb_shelf_0_2",
+    "pb_shelf_0_3",
+    "pb_shelf_0_4",
+    "pb_shelf_0_5",
+    "pb_shelf_0_6",
+    "pb_shelf_0_7",
+    "pb_shelf_0_8",
+    "pb_shelf_0_9",
+    "pb_shelf_1_1",
+    "pb_shelf_1_10",
+    "pb_shelf_1_11",
+    "pb_shelf_1_2",
+    "pb_shelf_1_3",
+    "pb_shelf_1_4",
+    "pb_shelf_1_5",
+    "pb_shelf_1_6",
+    "pb_shelf_1_7",
+    "pb_shelf_1_8",
+    "pb_shelf_1_9",
+    "pb_shelf_2_1",
+    "pb_shelf_2_10",
+    "pb_shelf_2_11",
+    "pb_shelf_2_2",
+    "pb_shelf_2_3",
+    "pb_shelf_2_4",
+    "pb_shelf_2_5",
+    "pb_shelf_2_6",
+    "pb_shelf_2_7",
+    "pb_shelf_2_8",
+    "pb_shelf_2_9"
    ],
    "removed": [
     "book_red"
@@ -19122,9 +18789,15 @@
      "on_any",
      "paperback",
      [
-      "large_shelf_2/shelf_0",
-      "large_shelf_2/shelf_1",
-      "large_shelf_2/shelf_2",
+      "bookcase_1/top",
+      "bookcase_1/shelf_1",
+      "bookcase_1/shelf_0",
+      "bookcase_3/top",
+      "bookcase_3/shelf_1",
+      "bookcase_3/shelf_0",
+      "bookcase_4/top",
+      "bookcase_4/shelf_1",
+      "bookcase_4/shelf_0",
       "large_shelf_2/shelf_3"
      ]
     ],
@@ -19140,12 +18813,167 @@
     ],
     [
      "near_start",
-     "paperback_shelved_1",
+     "pb_shelf_0_1",
      0.03
     ],
     [
      "near_start",
-     "paperback_shelved_2",
+     "pb_shelf_0_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_11",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_11",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_11",
      0.03
     ],
     [
@@ -19156,8 +18984,8 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_whose_book__paperback",
-  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the tall shelf; the desk holds one or both kinds; the paperbacks' shelf is packed on its lower levels, only its top level (1.17 m, out of reach) has room",
+  "rationale": "each book to the shelf holding its kind; the paperbacks' shelf cannot be reached where it has room, so the paperback goes on another bookcase instead, not with the hardcovers",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/whose_book__both": {
@@ -19180,8 +19008,39 @@
     "blue_shelved_1",
     "blue_shelved_2",
     "paperback",
-    "paperback_shelved_1",
-    "paperback_shelved_2"
+    "pb_shelf_0_1",
+    "pb_shelf_0_10",
+    "pb_shelf_0_11",
+    "pb_shelf_0_2",
+    "pb_shelf_0_3",
+    "pb_shelf_0_4",
+    "pb_shelf_0_5",
+    "pb_shelf_0_6",
+    "pb_shelf_0_7",
+    "pb_shelf_0_8",
+    "pb_shelf_0_9",
+    "pb_shelf_1_1",
+    "pb_shelf_1_10",
+    "pb_shelf_1_11",
+    "pb_shelf_1_2",
+    "pb_shelf_1_3",
+    "pb_shelf_1_4",
+    "pb_shelf_1_5",
+    "pb_shelf_1_6",
+    "pb_shelf_1_7",
+    "pb_shelf_1_8",
+    "pb_shelf_1_9",
+    "pb_shelf_2_1",
+    "pb_shelf_2_10",
+    "pb_shelf_2_11",
+    "pb_shelf_2_2",
+    "pb_shelf_2_3",
+    "pb_shelf_2_4",
+    "pb_shelf_2_5",
+    "pb_shelf_2_6",
+    "pb_shelf_2_7",
+    "pb_shelf_2_8",
+    "pb_shelf_2_9"
    ],
    "removed": [
     "book_red"
@@ -19208,9 +19067,15 @@
      "on_any",
      "paperback",
      [
-      "large_shelf_2/shelf_0",
-      "large_shelf_2/shelf_1",
-      "large_shelf_2/shelf_2",
+      "bookcase_1/top",
+      "bookcase_1/shelf_1",
+      "bookcase_1/shelf_0",
+      "bookcase_3/top",
+      "bookcase_3/shelf_1",
+      "bookcase_3/shelf_0",
+      "bookcase_4/top",
+      "bookcase_4/shelf_1",
+      "bookcase_4/shelf_0",
       "large_shelf_2/shelf_3"
      ]
     ],
@@ -19226,12 +19091,167 @@
     ],
     [
      "near_start",
-     "paperback_shelved_1",
+     "pb_shelf_0_1",
      0.03
     ],
     [
      "near_start",
-     "paperback_shelved_2",
+     "pb_shelf_0_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_0_11",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_1_11",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_8",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_9",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_10",
+     0.03
+    ],
+    [
+     "near_start",
+     "pb_shelf_2_11",
      0.03
     ],
     [
@@ -19242,154 +19262,21 @@
   },
   "control": "e1_book_ready",
   "oracle_route": "v6_whose_book__both",
-  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the living-room shelf; the desk holds one or both kinds",
-  "rationale": "where each book goes follows from the books already shelved: each to the shelf holding its kind",
+  "challenge": "blue hardcovers stand on the bookcase in the bedroom, paperbacks on the tall shelf; the desk holds one or both kinds; the paperbacks' shelf is packed on its lower levels, only its top level (1.17 m, out of reach) has room",
+  "rationale": "each book to the shelf holding its kind; the paperbacks' shelf cannot be reached where it has room, so the paperback goes on another bookcase instead, not with the hardcovers",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/next_in_series__on_bookcase": {
+ "T14_shelve_the_book/next_in_series__green_on_bookcase": {
   "variant": "next_in_series",
   "category": "task",
   "seeds": [
    10,
-   12,
-   18,
-   19
-  ],
-  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
-  "initial_conditions": {
-   "scene": "tasks/shelve_books",
-   "start": null,
-   "moved": [
-    "book_red"
-   ],
-   "added": [
-    "blue_book_case",
-    "green_book_case",
-    "paperback_shelf",
-    "red_book_2"
-   ],
-   "removed": [],
-   "conditions": [
-    "referent_clue",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "book_red",
-     [
-      "bookcase_2/top",
-      "bookcase_2/shelf_1",
-      "bookcase_2/shelf_0"
-     ]
-    ],
-    [
-     "on",
-     "red_book_2",
-     "desk_1/top"
-    ],
-    [
-     "near_start",
-     "blue_book_case",
-     0.03
-    ],
-    [
-     "near_start",
-     "paperback_shelf",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_book_ready",
-  "oracle_route": "v6_next_in_series__on_bookcase",
-  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
-  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T14_shelve_the_book/next_in_series__on_other_bookcase": {
-  "variant": "next_in_series",
-  "category": "task",
-  "seeds": [
-   13,
-   16,
-   17
-  ],
-  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
-  "initial_conditions": {
-   "scene": "tasks/shelve_books",
-   "start": null,
-   "moved": [
-    "book_red"
-   ],
-   "added": [
-    "blue_book_case",
-    "green_book_case",
-    "paperback_shelf",
-    "red_book_2"
-   ],
-   "removed": [],
-   "conditions": [
-    "referent_clue",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "book_red",
-     [
-      "bookcase_2/top",
-      "bookcase_2/shelf_1",
-      "bookcase_2/shelf_0"
-     ]
-    ],
-    [
-     "on",
-     "red_book_2",
-     "desk_1/top"
-    ],
-    [
-     "near_start",
-     "blue_book_case",
-     0.03
-    ],
-    [
-     "near_start",
-     "paperback_shelf",
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_book_ready",
-  "oracle_route": "v6_next_in_series__on_other_bookcase",
-  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
-  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T14_shelve_the_book/next_in_series__on_tall_shelf": {
-  "variant": "next_in_series",
-  "category": "task",
-  "seeds": [
    11,
    14,
-   15
+   17,
+   19
   ],
-  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the other book of the same set to his desk for tomorrow.",
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the next book of the same red set to his desk for tomorrow.",
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
@@ -19399,8 +19286,7 @@
    "added": [
     "blue_book_case",
     "green_book_case",
-    "paperback_shelf",
-    "red_book_2"
+    "paperback_shelf"
    ],
    "removed": [],
    "conditions": [
@@ -19422,30 +19308,100 @@
      ]
     ],
     [
-     "on",
-     "red_book_2",
-     "desk_1/top"
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "green_book_case",
+      "desk_1/top"
+     ]
     ],
     [
-     "near_start",
-     "blue_book_case",
-     0.03
-    ],
+     [
+      "on",
+      "blue_book_case",
+      "desk_1/top"
+     ]
+    ]
+   ]
+  },
+  "control": "e1_book_ready",
+  "oracle_route": "v6_next_in_series__green_on_bookcase",
+  "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
+  "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/next_in_series__green_on_tall_shelf": {
+  "variant": "next_in_series",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   15,
+   16,
+   18
+  ],
+  "instruction": "The kid finished the red book. Put it back on his bookcase, and bring the next book of the same red set to his desk for tomorrow.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [
+    "blue_book_case",
+    "green_book_case",
+    "paperback_shelf"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
     [
-     "near_start",
-     "paperback_shelf",
-     0.03
+     "on_any",
+     "book_red",
+     [
+      "bookcase_2/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0"
+     ]
     ],
     [
      "hand_empty",
      "right"
     ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "green_book_case",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "blue_book_case",
+      "desk_1/top"
+     ]
+    ]
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_next_in_series__on_tall_shelf",
-  "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
-  "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
+  "oracle_route": "v6_next_in_series__green_on_tall_shelf",
+  "challenge": "there is no other red book in the house; the kid's bookcase and shelves hold his hardcovers of other colours (blue, green), the bedside bookcase a grown-up's paperback",
+  "rationale": "the next red book does not exist: bring one of the kid's other hardcovers (the green one) instead, not the grown-up's paperback",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T21_bring_tissues/tissue_on_tv_stand": {

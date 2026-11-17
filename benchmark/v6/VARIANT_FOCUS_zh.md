@@ -203,7 +203,7 @@
 | 任务 | variant | 细标签 | 动作级 |
 |---|---|---|---|
 | T01 | `reader_seat` | referent_clue, spot_quality | 是 |
-| T01 | `which_book` | item_out_of_view, referent_clue |  |
+| T01 | `homework_on_island` | unsuitable_at_hand, not_in_view |  |
 | T01 | `which_table` | destination_unnamed, spot_quality | 是 |
 | T03 | `which_bin_by_contents` | decoy_destination, not_in_view |  |
 | T06 | `seen_from_bed` | not_in_view, viewer_place |  |

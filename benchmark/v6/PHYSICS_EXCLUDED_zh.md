@@ -13,7 +13,6 @@
 
 | # | episode | 失败步骤 | 物体与几何 | 历史 |
 |---|---|---|---|---|
-| A1 | `T04_cup_or_mug_to_cabinet/s10_x6_gd_cup_in_cabinets__cup_in_4_v6_x6_gd_cup_in_cabinets__cup_in_4` | pick cup_counter_b：no reachable grasp from any base pose | 杯子在 kitchen_cabinet_4/inside_shelf（z 0.31，上方净空 0.30 m）。breakfast_cup 只有从上方捏杯沿的抓法，600/600 个候选手臂的 link5-7 和夹爪都撞到柜顶板（z 0.6–0.7）。杯底直径 7.3 cm，大于 PINCH_MAX 6.8 cm，没有侧捏。11-16 把杯子挪到层板前沿（y 0.42 → 0.50）：构建出 12 个（原来 0），仍然失败在 pick_grasp 撞 link_7 / lift 时还碰着（excl_fix_1115） | xxxxx x |
 | A2 | `T25_drink_for_guest/s10_cups_for_two__one_there_v6_cups_for_two__one_there` | pick stock_cup_1：同上 | 同一层板，同 A1；挪到前沿后同样失败。同样的失败：`cups_for_two__none_two_inside` | xxxxx x |
 | A3 | `T21_bring_tissues/s10_tissue_put_away__in_4_v6_tissue_put_away__in_4` | pick tissue：同上 | 同一层板（净空 0.30 m），69 个候选在预抓取姿态全部撞固定物体（手指、link5-7）。muqingj 的 v6full_1116（旧位置）同样失败在 pick tissue：no reachable grasp from any base pose。11-16 纸巾挪到层板前沿（y 0.50），**未验证、仍排除**：zihan 机器上这条第一步 tuck 就撞窗（见下“机器差异”），muqingj 机器上还没跑过新位置 | xxxxx x |
 | A5 | `T18_check_cabinet_dishes/s10_enough_for_dinner__two_short_v6_enough_for_dinner__two_short` | place bowl_kitchen_cabinet → kitchen_cabinet_6/inside_shelf：no spot of 4 reachable | 11-16 已修取碗：备用碗从 kitchen_cabinet_3/top（z 1.17，没有 IK）挪到 kitchen_cabinet_4/top，pick 成功；设计改成“两个人吃饭、柜里要 2 个碗”（3 个 17.8 cm 的碗把 56 cm 的层板占满，第三个没有空位）。剩下的是往柜内层板（净空 0.38 m）放：只有 x 3.50 附近放进去过，3.38 / 3.62 / 3.685 都没有可达的空位；空柜子时 3.52 也失败过一次（excl_fix_1116b）。`enough`、`one_short` 已成功 | xxxxx x |
@@ -46,6 +45,7 @@ zihan 的机器上 `rig.tuck` 一开局就判折叠姿态（rest）碰撞，改�
 
 | episode | 原来的编号 | 结论 |
 |---|---|---|
+| `T04_cup_or_mug_to_cabinet/s10_x6_gd_cup_in_cabinets__cup_in_4…` | A1 | **设计已改**（11-16，替换任务）：variant 改成 `no_cup_in_cabinets`，柜子里只有盘子，用孩子的塑料杯顶上，不再从柜内层板拿杯子 |
 | `T09_tomato_soup/s10_tomato_in_fridge__in_fridge_v6_tomato_in_fridge__in_fridge` | A7 | **已修**（88197712）：番茄从 y 3.30（冰箱正面往里 29 cm）挪到 y 3.14（离层板前沿 10 cm），pick 成功（sim 检查 fridgetomato_1115）。门开到 80° 或 92° 都没用 |
 | `T22_put_away_shopping/s10_juice_on_table_nominal`（及 T22 所有把果汁放进冰箱的 variant） | A8 | **已修**（11-16）：冰箱里的位置 (5.78, 3.18) → (5.90, 3.12)：往前挪，并离开冰箱左壁（x 5.78 时放下后 tuck 擦到左壁把瓶子碰倒）。excl_fix_1116：juice_on_table 成功；by_kind、two_spots 成功 |
 | `T22_put_away_shopping/s10_two_spots_v6_two_spots` | A6 | **已修**（11-16）：零食放进 kitchen_cabinet_6/inside_shelf 的目标点 (3.60, 0.36) → (3.45, 0.42)（靠前、离铰链远）；关冰箱后先走到岛台再看（原地转身撞冰箱）。excl_fix_1116 整条成功（1730 s） |

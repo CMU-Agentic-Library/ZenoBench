@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1530 episodes remain (1070 of the 107 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1530 episodes remain (1100 of the 110 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -12,7 +12,7 @@
 | T01 | which_table | action_task | 0/0 of 10 | - |
 | T01 | no_room_fallback | action_task | 0/0 of 10 | - |
 | T01 | reader_seat | action_task | 0/0 of 10 | - |
-| T01 | which_book | task | 0/0 of 10 | - |
+| T01 | homework_on_island | task | 0/0 of 10 | - |
 | T02 | clear | control | 0/0 of 10 | - |
 | T02 | crowded_use_another | task | 0/0 of 10 | - |
 | T02 | third_toy_elsewhere | task | 0/0 of 10 | - |
@@ -23,22 +23,22 @@
 | T03 | small_bin_or_bedroom_bin | task | 0/0 of 10 | - |
 | T03 | which_bin_by_contents | task | 0/0 of 10 | - |
 | T03 | no_bin_substitute | task | 0/0 of 10 | - |
-| T03 | utensils_apart | task | 0/0 of 10 | - |
+| T03 | bin_full | task | 0/0 of 10 | - |
 | T04 | cup_available | control | 0/0 of 10 | - |
 | T04 | no_cup | task | 0/0 of 10 | - |
 | T04 | clear_the_drinks_spot | task | 0/0 of 10 | - |
 | T04 | two_guests | task | 0/0 of 10 | - |
-| T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
+| T04 | no_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
-| T05 | no_pen_pencil_away | task | 0/0 of 10 | - |
-| T05 | check_desk_first | task | 0/0 of 10 | - |
-| T05 | all_pens | task | 0/0 of 10 | - |
+| T05 | no_pencil | task | 0/0 of 10 | - |
+| T05 | pen_in_use | task | 0/0 of 10 | - |
+| T05 | pens_for_two | task | 0/0 of 10 | - |
 | T05 | homework_ready | task | 0/0 of 10 | - |
 | T05 | pens_per_notebook | task | 0/0 of 10 | - |
 | T05 | errand_combined | task | 0/0 of 10 | - |
 | T05 | x6_gd_pen_or_pencil_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T06 | free | control | 0/0 of 10 | - |
-| T06 | display_row | task | 0/0 of 10 | - |
+| T06 | both_spots_full | task | 0/0 of 10 | - |
 | T06 | display_spot_or_tv | task | 0/0 of 10 | - |
 | T06 | seen_from_bed | task | 0/0 of 10 | - |
 | T07 | microwave_works | control | 0/0 of 10 | - |
@@ -60,26 +60,26 @@
 | T10 | can_on_island | control | 0/0 of 10 | - |
 | T10 | can_in_dining_room | task | 0/0 of 10 | - |
 | T10 | keep_kids_can | task | 0/0 of 10 | - |
-| T10 | trash_moved | task | 0/0 of 10 | - |
+| T10 | trash_full | task | 0/0 of 10 | - |
 | T10 | after_dinner_clear | task | 0/0 of 10 | - |
 | T10 | guests_coming | task | 0/0 of 10 | - |
 | T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
-| T11 | leave_one_for_kid | task | 0/0 of 10 | - |
+| T11 | no_apple_for_kid | task | 0/0 of 10 | - |
 | T11 | fruit_plate_for_guests | task | 0/0 of 10 | - |
 | T12 | toys_out | control | 0/0 of 10 | - |
-| T12 | duck_in_study | task | 0/0 of 10 | - |
+| T12 | bedtime_toy | task | 0/0 of 10 | - |
 | T12 | bins_capacity | task | 0/0 of 10 | - |
 | T12 | find_all_toys | task | 0/0 of 10 | - |
-| T12 | castle_stays | task | 0/0 of 10 | - |
 | T13 | dishes_on_tv_stand | control | 0/0 of 10 | - |
 | T13 | no_cup | task | 0/0 of 10 | - |
 | T13 | copy_the_setting | task | 0/0 of 10 | - |
 | T13 | finish_the_table | task | 0/0 of 10 | - |
-| T15 | book_free | control | 0/0 of 10 | - |
-| T15 | book_out_of_view | task | 0/0 of 10 | - |
-| T15 | flip_on_the_shelf | task | 0/0 of 10 | - |
+| T15 | lid_by_pot | control | 0/0 of 10 | - |
+| T15 | lid_elsewhere | task | 0/0 of 10 | search of the pot lid |
+| T15 | no_lid | task | 0/0 of 10 | - |
+| T15 | lid_in_use | task | 0/0 of 10 | - |
 | T16 | pin_free | control | 0/0 of 10 | - |
 | T16 | pin_out_of_view | task | 0/0 of 10 | - |
 | T16 | everything_near_the_edge | task | 0/0 of 10 | - |
@@ -99,7 +99,7 @@
 | T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp, low cabinet doors |
 | T14 | e1_book_ready | control | 0/0 of 10 | - |
 | T14 | within_kids_reach | task | 0/0 of 10 | - |
-| T14 | stack_them_stably | task | 0/0 of 10 | - |
+| T14 | kids_shelf_full | task | 0/0 of 10 | - |
 | T14 | homework_stays | task | 0/0 of 10 | - |
 | T14 | whose_book | task | 0/0 of 10 | - |
 | T14 | next_in_series | task | 0/0 of 10 | - |

@@ -1,0 +1,20 @@
+[
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "bedtime_toy__teddy_there",
+  "route": "v6_bedtime_toy__teddy_there",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "variant": "bedtime_toy__no_teddy",
+  "route": "v6_bedtime_toy__no_teddy",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]
