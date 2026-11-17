@@ -40,7 +40,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T03 | small_bin_or_bedroom_bin | Task-Level | - | not_in_view; small_container_present | 2 |
 | T03 | which_bin_by_contents | Task-Level | - | decoy_destination; not_in_view | 2 |
 | T03 | no_bin_substitute | Task-Level | - | container_absent; decoy_destination; not_in_view; small_container_present | 2 |
-| T03 | utensils_apart | Task-Level | - | item_out_of_view; not_in_view | 2 |
+| T03 | utensils_apart | Task-Level | - | destination_occupied; item_out_of_view; not_in_view | 4 |
 | T04 | cup_available | Control | - | - | 1 |
 | T04 | no_cup | Task-Level | - | no_cup; not_in_view | 3 |
 | T04 | clear_the_drinks_spot | Task-Level | - | destination_occupied; goal_items_unstated | 1 |

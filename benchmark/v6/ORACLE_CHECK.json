@@ -1,6 +1,6 @@
 {
- "routes": 290,
- "ok": 290,
+ "routes": 292,
+ "ok": 292,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -719,7 +719,7 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "small_bin_or_bedroom_bin__on_island",
+   "layout": "small_bin_or_bedroom_bin__wide_in_bedroom",
    "steps": 15,
    "atoms_checked": 5,
    "atoms_geometric": 0,
@@ -729,7 +729,7 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "small_bin_or_bedroom_bin__beside_wide_bin",
+   "layout": "small_bin_or_bedroom_bin__basket_in_bedroom",
    "steps": 15,
    "atoms_checked": 5,
    "atoms_geometric": 0,
@@ -749,9 +749,9 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "which_bin_by_contents__tools_near",
-   "steps": 12,
-   "atoms_checked": 7,
+   "layout": "which_bin_by_contents__kitchen_bin_full",
+   "steps": 18,
+   "atoms_checked": 11,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -779,7 +779,7 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "utensils_apart__dining",
+   "layout": "utensils_apart__bin_free",
    "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
@@ -789,9 +789,29 @@
   },
   {
    "task": "T03_utensils_one_container",
-   "layout": "utensils_apart__counter",
-   "steps": 14,
-   "atoms_checked": 3,
+   "layout": "utensils_apart__bin_full_tray",
+   "steps": 17,
+   "atoms_checked": 8,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "utensils_apart"
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "layout": "utensils_apart__bin_full_basket",
+   "steps": 17,
+   "atoms_checked": 8,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "utensils_apart"
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "layout": "utensils_apart__bin_full_fruit",
+   "steps": 17,
+   "atoms_checked": 10,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

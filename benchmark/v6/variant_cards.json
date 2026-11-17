@@ -7064,7 +7064,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/small_bin_or_bedroom_bin__on_island": {
+ "T03_utensils_one_container/small_bin_or_bedroom_bin__wide_in_bedroom": {
   "variant": "small_bin_or_bedroom_bin",
   "category": "task",
   "seeds": [
@@ -7127,12 +7127,12 @@
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_small_bin_or_bedroom_bin__on_island",
+  "oracle_route": "v6_small_bin_or_bedroom_bin__wide_in_bedroom",
   "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
   "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/small_bin_or_bedroom_bin__beside_wide_bin": {
+ "T03_utensils_one_container/small_bin_or_bedroom_bin__basket_in_bedroom": {
   "variant": "small_bin_or_bedroom_bin",
   "category": "task",
   "seeds": [
@@ -7154,7 +7154,8 @@
    "added": [
     "small_bin_block_1",
     "small_bin_block_2",
-    "small_storage_bin"
+    "small_storage_bin",
+    "storage_basket"
    ],
    "removed": [
     "mug"
@@ -7171,16 +7172,12 @@
     [
      "inside",
      "rolling_pin",
-     "wide_storage_bin"
+     "storage_basket"
     ],
     [
      "inside",
      "breakfast_spoon",
-     "wide_storage_bin"
-    ],
-    [
-     "hand_empty",
-     "right"
+     "storage_basket"
     ],
     [
      "inside",
@@ -7191,11 +7188,15 @@
      "inside",
      "small_bin_block_2",
      "small_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
+  "oracle_route": "v6_small_bin_or_bedroom_bin__basket_in_bedroom",
   "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
   "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -7280,7 +7281,7 @@
   "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/which_bin_by_contents__tools_near": {
+ "T03_utensils_one_container/which_bin_by_contents__kitchen_bin_full": {
   "variant": "which_bin_by_contents",
   "category": "task",
   "seeds": [
@@ -7302,6 +7303,11 @@
     "wide_storage_bin"
    ],
    "added": [
+    "bin_cup",
+    "bin_cup_2",
+    "bin_foil_tray",
+    "bin_plastic_cup",
+    "spare_tray",
     "toy_bin_block_1",
     "toy_bin_block_2",
     "toy_storage_bin"
@@ -7321,12 +7327,12 @@
     [
      "inside",
      "rolling_pin",
-     "wide_storage_bin"
+     "spare_tray"
     ],
     [
      "inside",
      "breakfast_spoon",
-     "wide_storage_bin"
+     "spare_tray"
     ],
     [
      "inside",
@@ -7349,13 +7355,33 @@
      "wide_storage_bin"
     ],
     [
+     "inside",
+     "bin_foil_tray",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_cup",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_plastic_cup",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_cup_2",
+     "wide_storage_bin"
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_which_bin_by_contents__tools_near",
+  "oracle_route": "v6_which_bin_by_contents__kitchen_bin_full",
   "challenge": "two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
   "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -7528,15 +7554,13 @@
   "rationale": "no bin is named and none is in the house: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/utensils_apart__dining": {
+ "T03_utensils_one_container/utensils_apart__bin_free": {
   "variant": "utensils_apart",
   "category": "task",
   "seeds": [
    10,
    11,
-   16,
-   18,
-   19
+   18
   ],
   "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
   "initial_conditions": {
@@ -7553,7 +7577,8 @@
    ],
    "conditions": [
     "item_out_of_view",
-    "not_in_view"
+    "not_in_view",
+    "destination_occupied"
    ],
    "initial_checks": []
   },
@@ -7577,19 +7602,17 @@
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_utensils_apart__dining",
-  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+  "oracle_route": "v6_utensils_apart__bin_free",
+  "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+  "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/utensils_apart__counter": {
+ "T03_utensils_one_container/utensils_apart__bin_full_tray": {
   "variant": "utensils_apart",
   "category": "task",
   "seeds": [
-   12,
    13,
    14,
-   15,
    17
   ],
   "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
@@ -7601,13 +7624,21 @@
     "rolling_pin",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "spare_tray"
+   ],
    "removed": [
     "mug"
    ],
    "conditions": [
     "item_out_of_view",
-    "not_in_view"
+    "not_in_view",
+    "destination_occupied"
    ],
    "initial_checks": []
   },
@@ -7617,11 +7648,36 @@
     [
      "inside",
      "rolling_pin",
-     "wide_storage_bin"
+     "spare_tray"
     ],
     [
      "inside",
      "breakfast_spoon",
+     "spare_tray"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
      "wide_storage_bin"
     ],
     [
@@ -7631,9 +7687,189 @@
    ]
   },
   "control": "large_only",
-  "oracle_route": "v6_utensils_apart__counter",
-  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+  "oracle_route": "v6_utensils_apart__bin_full_tray",
+  "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+  "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/utensils_apart__bin_full_basket": {
+  "variant": "utensils_apart",
+  "category": "task",
+  "seeds": [
+   16,
+   19
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "storage_basket"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "item_out_of_view",
+    "not_in_view",
+    "destination_occupied"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_utensils_apart__bin_full_basket",
+  "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+  "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/utensils_apart__bin_full_fruit": {
+  "variant": "utensils_apart",
+  "category": "task",
+  "seeds": [
+   12,
+   15
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "apple",
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "fruit_basket",
+    "orange"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "item_out_of_view",
+    "not_in_view",
+    "destination_occupied"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "fruit_basket"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "fruit_basket"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "apple",
+     "fruit_basket"
+    ],
+    [
+     "inside",
+     "orange",
+     "fruit_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_utensils_apart__bin_full_fruit",
+  "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+  "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/cup_available": {

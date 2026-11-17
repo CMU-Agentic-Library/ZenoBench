@@ -59604,7 +59604,7 @@
       "top": "ideal"
      }
     },
-    "small_bin_or_bedroom_bin__on_island": {
+    "small_bin_or_bedroom_bin__wide_in_bedroom": {
      "move": {
       "wide_storage_bin": {
        "support": "bookcase_2/top",
@@ -59709,12 +59709,12 @@
      "note": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
      "v6": {
       "family": "small_bin_or_bedroom_bin",
-      "case": "on_island",
+      "case": "wide_in_bedroom",
       "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
       "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
       "control": "large_only",
       "contrast": null,
-      "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
+      "factor": "what is left once the small bin on the island is ruled out (seed: the wide bin in the bedroom, or no wide bin and a storage basket on the bedroom floor)",
       "derived_from": "small_and_large"
      },
      "layout": {
@@ -59866,93 +59866,205 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
+        "goal": {
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_1",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_2",
-           "small_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "wide_storage_bin"
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "wide_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "small_storage_bin"
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "small_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "both in one bin, but the small bin's blocks taken out or moved"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held",
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
       "top": "ideal"
      }
     },
-    "small_bin_or_bedroom_bin__beside_wide_bin": {
+    "small_bin_or_bedroom_bin__basket_in_bedroom": {
      "move": {
       "wide_storage_bin": {
        "support": "bookcase_2/top",
        "xy": [
-        0.885,
-        -0.43
+        1.0888,
+        -0.4277
        ],
        "yaw_deg": 0.0
       },
@@ -59983,32 +60095,42 @@
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
-       "support": "bookcase_2/top",
+       "support": "kitchen_island/top",
        "xy": [
-        1.195,
-        -0.43
+        7.1,
+        1.75
        ],
-       "yaw_deg": 90.0
+       "yaw_deg": 0.0
       },
       "small_bin_block_1": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.718,
+       "z": 0.869,
        "xy": [
-        1.16,
-        -0.485
+        7.045,
+        1.785
        ],
-       "yaw_deg": 90.0
+       "yaw_deg": 0.0
       },
       "small_bin_block_2": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.718,
+       "z": 0.869,
        "xy": [
-        1.16,
-        -0.375
+        7.155,
+        1.785
        ],
-       "yaw_deg": 90.0
+       "yaw_deg": 0.0
+      },
+      "storage_basket": {
+       "asset": "storage_basket",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        0.894,
+        -1.931
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -60016,16 +60138,12 @@
        [
         "inside",
         "rolling_pin",
-        "wide_storage_bin"
+        "storage_basket"
        ],
        [
         "inside",
         "breakfast_spoon",
-        "wide_storage_bin"
-       ],
-       [
-        "hand_empty",
-        "right"
+        "storage_basket"
        ],
        [
         "inside",
@@ -60036,13 +60154,17 @@
         "inside",
         "small_bin_block_2",
         "small_storage_bin"
+       ],
+       [
+        "hand_empty",
+        "right"
        ]
       ]
      },
      "watch": [
       "rolling_pin",
       "breakfast_spoon",
-      "wide_storage_bin",
+      "storage_basket",
       "small_storage_bin",
       "small_bin_block_1",
       "small_bin_block_2"
@@ -60051,16 +60173,38 @@
      "note": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
      "v6": {
       "family": "small_bin_or_bedroom_bin",
-      "case": "beside_wide_bin",
+      "case": "basket_in_bedroom",
       "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom; the small bin stands either on the island next to the utensils (in view, near) or beside the wide bin",
       "rationale": "measure what room is left: the small bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin).  With the small bin on the island it has to be ruled out before any other container is in view",
       "control": "large_only",
       "contrast": null,
-      "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
+      "factor": "what is left once the small bin on the island is ruled out (seed: the wide bin in the bedroom, or no wide bin and a storage basket on the bedroom floor)",
       "derived_from": "small_and_large"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "small_bin_block_1",
+         "small_bin_block_2",
+         "small_storage_bin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.99,
+         1.665,
+         7.21,
+         1.835
+        ],
+        "dx": [
+         -0.43,
+         1.03
+        ],
+        "dy": [
+         -0.14,
+         0.14
+        ]
+       },
        {
         "names": [
          "breakfast_spoon"
@@ -60137,28 +60281,10 @@
        ],
        "bookcase_2/top": [
         [
-         0.715,
-         -0.58,
-         1.055,
-         -0.28
-        ],
-        [
-         1.11,
-         -0.54,
-         1.28,
-         -0.32
-        ],
-        [
-         1.14,
-         -0.505,
-         1.18,
-         -0.465
-        ],
-        [
-         1.14,
-         -0.395,
-         1.18,
-         -0.355
+         0.9188,
+         -0.5777,
+         1.2588,
+         -0.2777
         ]
        ]
       },
@@ -60193,7 +60319,7 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "wide_storage_bin"
+        "breakfast_spoon"
        ],
        "look": []
       }
@@ -60202,86 +60328,156 @@
       "D": 1,
       "tiers": [
        {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
-       },
-       {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_1",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_2",
-           "small_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "wide_storage_bin"
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "wide_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "small_storage_bin"
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "small_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "both in one bin, but the small bin's blocks taken out or moved"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held",
-      "top": "ideal"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
      }
     },
     "which_bin_by_contents__toys_near": {
@@ -60426,7 +60622,7 @@
       "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
       "control": "large_only",
       "contrast": null,
-      "factor": "which bin is near (seed: the toy bin on the TV stand and the kitchen bin in the bedroom, or the other way round)",
+      "factor": "whether the kitchen bin can take them (seed: the toy bin near, the kitchen bin in the bedroom with room; or the kitchen bin packed full, a tray on the study desk)",
       "derived_from": "large_only"
      },
      "layout": {
@@ -60612,105 +60808,355 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the kitchen bin, the toys and the spoons left where they were"
+        "goal": {
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_1",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_2",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_counter",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_side_table",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped",
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
       "top": "ideal"
      }
     },
-    "which_bin_by_contents__tools_near": {
+    "which_bin_by_contents__kitchen_bin_full": {
      "move": {
       "wide_storage_bin": {
-       "support": "tv_stand_2/top",
+       "support": "bookcase_2/top",
        "xy": [
-        7.3,
-        0.4
+        1.0888,
+        -0.4277
        ],
        "yaw_deg": 0.0
       },
       "spoon_counter": {
        "support": null,
-       "z": 0.493,
+       "z": 0.718,
        "xy": [
-        7.3,
-        0.5
+        1.089,
+        -0.328
        ],
        "yaw_deg": 0.0
       },
       "spoon_side_table": {
        "support": null,
-       "z": 0.493,
+       "z": 0.718,
        "xy": [
-        7.3,
-        0.45
+        1.089,
+        -0.378
        ],
        "yaw_deg": 0.0
       },
@@ -60743,12 +61189,12 @@
        [
         "inside",
         "rolling_pin",
-        "wide_storage_bin"
+        "spare_tray"
        ],
        [
         "inside",
         "breakfast_spoon",
-        "wide_storage_bin"
+        "spare_tray"
        ],
        [
         "inside",
@@ -60771,6 +61217,26 @@
         "wide_storage_bin"
        ],
        [
+        "inside",
+        "bin_foil_tray",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_cup",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_plastic_cup",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_cup_2",
+        "wide_storage_bin"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -60783,56 +61249,129 @@
       "breakfast_spoon",
       "wide_storage_bin",
       "toy_storage_bin",
+      "spare_tray",
       "toy_bin_block_1",
       "toy_bin_block_2",
       "spoon_counter",
-      "spoon_side_table"
+      "spoon_side_table",
+      "bin_foil_tray",
+      "bin_cup",
+      "bin_plastic_cup",
+      "bin_cup_2"
      ],
      "add": {
       "toy_storage_bin": {
        "asset": "wide_storage_bin",
-       "support": "bookcase_2/top",
+       "support": "tv_stand_2/top",
        "xy": [
-        1.0888,
-        -0.4277
+        7.3,
+        0.4
        ],
        "yaw_deg": 0.0
       },
       "toy_bin_block_1": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.718,
+       "z": 0.493,
        "xy": [
-        1.009,
-        -0.478
+        7.22,
+        0.35
        ],
        "yaw_deg": 15.0
       },
       "toy_bin_block_2": {
        "asset": "wooden_block",
        "support": null,
-       "z": 0.718,
+       "z": 0.493,
        "xy": [
-        1.159,
-        -0.388
+        7.37,
+        0.44
        ],
        "yaw_deg": -20.0
+      },
+      "bin_foil_tray": {
+       "asset": "foil_takeout_tray",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.019,
+        -0.498
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_cup": {
+       "asset": "breakfast_cup",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.368
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_plastic_cup": {
+       "asset": "plastic_cup",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.989,
+        -0.358
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_cup_2": {
+       "asset": "breakfast_cup",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.498
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -6.218
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v6",
      "note": "two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
      "v6": {
       "family": "which_bin_by_contents",
-      "case": "tools_near",
+      "case": "kitchen_bin_full",
       "challenge": "two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
       "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
       "control": "large_only",
       "contrast": null,
-      "factor": "which bin is near (seed: the toy bin on the TV stand and the kitchen bin in the bedroom, or the other way round)",
+      "factor": "whether the kitchen bin can take them (seed: the toy bin near, the kitchen bin in the bedroom with room; or the kitchen bin packed full, a tray on the study desk)",
       "derived_from": "large_only"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "spare_tray"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.835,
+         -6.318,
+         -0.565,
+         -6.118
+        ],
+        "dx": [
+         -0.56,
+         0.52
+        ],
+        "search": [
+         "spare_tray"
+        ]
+       },
        {
         "names": [
          "breakfast_spoon"
@@ -60881,9 +61420,9 @@
        },
        {
         "names": [
-         "spoon_counter",
-         "spoon_side_table",
-         "wide_storage_bin"
+         "toy_bin_block_1",
+         "toy_bin_block_2",
+         "toy_storage_bin"
         ],
         "support": "tv_stand_2/top",
         "box": [
@@ -60933,20 +61472,70 @@
          -0.2777
         ],
         [
-         0.9845,
-         -0.5025,
-         1.0335,
-         -0.4535
+         0.9983,
+         -0.3485,
+         1.1797,
+         -0.3075
         ],
         [
-         1.1334,
-         -0.4136,
-         1.1846,
-         -0.3624
+         0.9983,
+         -0.3985,
+         1.1797,
+         -0.3575
+        ],
+        [
+         0.919,
+         -0.568,
+         1.119,
+         -0.428
+        ],
+        [
+         1.1252,
+         -0.4228,
+         1.2328,
+         -0.3132
+        ],
+        [
+         0.949,
+         -0.398,
+         1.029,
+         -0.318
+        ],
+        [
+         1.1252,
+         -0.5528,
+         1.2328,
+         -0.4432
         ]
        ]
       },
       "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -61002,7 +61591,10 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "spare_tray",
+        "wide_storage_bin"
+       ],
        "look": []
       }
      },
@@ -61010,80 +61602,278 @@
       "D": 1,
       "tiers": [
        {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "both in the kitchen bin, the toys and the spoons left where they were"
-       },
-       {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_1",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_2",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_counter",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_side_table",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped",
-      "top": "ideal"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
      }
     },
     "no_bin_substitute__basket": {
@@ -61486,23 +62276,11 @@
       "D": 1,
       "tiers": [
        {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
-       },
-       {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -61514,28 +62292,6 @@
               "inside",
               "breakfast_spoon",
               "storage_basket"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -61546,17 +62302,27 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -61568,28 +62334,6 @@
               "inside",
               "breakfast_spoon",
               "serving_tray"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -61600,13 +62344,29 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
@@ -61614,13 +62374,19 @@
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
             [
              [
               "inside",
@@ -61630,6 +62396,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -61643,18 +62429,50 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
             [
              [
               "inside",
@@ -61664,6 +62482,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -61677,17 +62515,43 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped",
-      "top": "ideal"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
      }
     },
     "no_bin_substitute__tray": {
@@ -62138,23 +63002,11 @@
       "D": 1,
       "tiers": [
        {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
-       },
-       {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -62166,28 +63018,6 @@
               "inside",
               "breakfast_spoon",
               "storage_basket"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -62198,17 +63028,27 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -62220,28 +63060,6 @@
               "inside",
               "breakfast_spoon",
               "serving_tray"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -62252,13 +63070,29 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
@@ -62266,13 +63100,19 @@
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
             [
              [
               "inside",
@@ -62282,6 +63122,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -62295,18 +63155,50 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
             [
              [
               "inside",
@@ -62316,6 +63208,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -62329,20 +63241,46 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped",
-      "top": "ideal"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
      }
     },
-    "utensils_apart__dining": {
+    "utensils_apart__bin_free": {
      "move": {
       "wide_storage_bin": {
        "support": "bookcase_2/top",
@@ -62374,7 +63312,8 @@
      ],
      "conditions": [
       "item_out_of_view",
-      "not_in_view"
+      "not_in_view",
+      "destination_occupied"
      ],
      "goal": {
       "all": [
@@ -62400,15 +63339,15 @@
       "wide_storage_bin"
      ],
      "since": "v6",
-     "note": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
+     "note": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
      "v6": {
       "family": "utensils_apart",
-      "case": "dining",
-      "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-      "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+      "case": "bin_free",
+      "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+      "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
       "control": "large_only",
       "contrast": null,
-      "factor": "where the spoon was left (seed: the dining table or the kitchen counter)",
+      "factor": "whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
       "derived_from": "large_only"
      },
      "layout": {
@@ -62596,15 +63535,43 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_tray": "n/a",
+          "utensils_apart__bin_full_basket": "n/a",
+          "utensils_apart__bin_full_fruit": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        }
       ],
-      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped",
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
       "top": "ideal"
      }
     },
-    "utensils_apart__counter": {
+    "utensils_apart__bin_full_tray": {
      "move": {
       "wide_storage_bin": {
        "support": "bookcase_2/top",
@@ -62615,10 +63582,10 @@
        "yaw_deg": 0.0
       },
       "breakfast_spoon": {
-       "support": "kitchen_counter_2/top",
+       "support": "dining_table_2/top",
        "xy": [
-        -0.104,
-        7.129
+        3.7,
+        6.3
        ],
        "yaw_deg": 0.0
       },
@@ -62636,18 +63603,44 @@
      ],
      "conditions": [
       "item_out_of_view",
-      "not_in_view"
+      "not_in_view",
+      "destination_occupied"
      ],
      "goal": {
       "all": [
        [
         "inside",
         "rolling_pin",
-        "wide_storage_bin"
+        "spare_tray"
        ],
        [
         "inside",
         "breakfast_spoon",
+        "spare_tray"
+       ],
+       [
+        "inside",
+        "bin_teddy",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_car",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_duck",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_1",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_2",
         "wide_storage_bin"
        ],
        [
@@ -62659,40 +63652,126 @@
      "watch": [
       "rolling_pin",
       "breakfast_spoon",
-      "wide_storage_bin"
+      "wide_storage_bin",
+      "spare_tray",
+      "bin_teddy",
+      "bin_car",
+      "bin_duck",
+      "bin_block_1",
+      "bin_block_2"
      ],
+     "add": {
+      "bin_teddy": {
+       "asset": "teddy_bear",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.999,
+        -0.428
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_car": {
+       "asset": "toy_car",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.119,
+        -0.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_duck": {
+       "asset": "rubber_duck",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.358
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.189,
+        -0.498
+       ],
+       "yaw_deg": 10.0
+      },
+      "bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.089,
+        -0.333
+       ],
+       "yaw_deg": -15.0
+      },
+      "spare_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -6.218
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v6",
-     "note": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
+     "note": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
      "v6": {
       "family": "utensils_apart",
-      "case": "counter",
-      "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
-      "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+      "case": "bin_full_tray",
+      "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+      "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
       "control": "large_only",
       "contrast": null,
-      "factor": "where the spoon was left (seed: the dining table or the kitchen counter)",
+      "factor": "whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
       "derived_from": "large_only"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
+         "spare_tray"
         ],
-        "support": "kitchen_counter_2/top",
+        "support": "desk_1/top",
         "box": [
-         -0.1947,
-         7.1085,
-         -0.0133,
-         7.1494
+         -0.835,
+         -6.318,
+         -0.565,
+         -6.118
         ],
         "dx": [
-         -0.31,
-         0.25
+         -0.56,
+         0.52
+        ],
+        "search": [
+         "spare_tray"
+        ]
+       },
+       {
+        "names": [
+         "breakfast_spoon"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.6093,
+         6.2795,
+         3.7907,
+         6.3205
+        ],
+        "dx": [
+         -0.81,
+         0.03
         ],
         "dy": [
-         -0.12,
-         2.27
+         -0.77,
+         1.62
         ],
         "pick": [
          "breakfast_spoon"
@@ -62726,30 +63805,24 @@
        }
       ],
       "static": {
-       "kitchen_counter_2/top": [
+       "dining_table_2/top": [
         [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
         ],
         [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
         ],
         [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
         ]
        ],
        "kitchen_island/top": [
@@ -62784,33 +63857,97 @@
          -0.5777,
          1.2588,
          -0.2777
+        ],
+        [
+         0.9462,
+         -0.508,
+         1.0518,
+         -0.348
+        ],
+        [
+         1.0924,
+         -0.548,
+         1.1456,
+         -0.428
+        ],
+        [
+         1.134,
+         -0.3909,
+         1.224,
+         -0.3251
+        ],
+        [
+         1.1658,
+         -0.5212,
+         1.2122,
+         -0.4748
+        ],
+        [
+         1.0645,
+         -0.3575,
+         1.1135,
+         -0.3085
         ]
        ]
       },
       "reach": {
-       "kitchen_counter_2/top": [
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
         [
          0,
          -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
+         -1.408,
+         -6.326,
+         -5.709,
          0.2
         ],
         [
          1,
          -1,
-         6.969,
-         -0.266,
-         0.147,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
          0.2
         ]
        ],
@@ -62845,6 +63982,1478 @@
        "room": "living_room_0_0",
        "hide": [
         "breakfast_spoon",
+        "spare_tray",
+        "wide_storage_bin"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": "n/a"
+         }
+        },
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
+       }
+      ],
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
+     }
+    },
+    "utensils_apart__bin_full_basket": {
+     "move": {
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.7,
+        1.635
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "mug"
+     ],
+     "conditions": [
+      "item_out_of_view",
+      "not_in_view",
+      "destination_occupied"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "rolling_pin",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "breakfast_spoon",
+        "storage_basket"
+       ],
+       [
+        "inside",
+        "bin_teddy",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_car",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_duck",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_1",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_2",
+        "wide_storage_bin"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "wide_storage_bin",
+      "storage_basket",
+      "bin_teddy",
+      "bin_car",
+      "bin_duck",
+      "bin_block_1",
+      "bin_block_2"
+     ],
+     "add": {
+      "bin_teddy": {
+       "asset": "teddy_bear",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.999,
+        -0.428
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_car": {
+       "asset": "toy_car",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.119,
+        -0.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_duck": {
+       "asset": "rubber_duck",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.358
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.189,
+        -0.498
+       ],
+       "yaw_deg": 10.0
+      },
+      "bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.089,
+        -0.333
+       ],
+       "yaw_deg": -15.0
+      },
+      "storage_basket": {
+       "asset": "storage_basket",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        0.894,
+        -1.931
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+     "v6": {
+      "family": "utensils_apart",
+      "case": "bin_full_basket",
+      "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+      "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
+      "control": "large_only",
+      "contrast": null,
+      "factor": "whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
+      "derived_from": "large_only"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "breakfast_spoon"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.6093,
+         6.2795,
+         3.7907,
+         6.3205
+        ],
+        "dx": [
+         -0.81,
+         0.03
+        ],
+        "dy": [
+         -0.77,
+         1.62
+        ],
+        "pick": [
+         "breakfast_spoon"
+        ],
+        "search": [
+         "breakfast_spoon"
+        ]
+       },
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.59,
+         1.6119,
+         6.81,
+         1.6582
+        ],
+        "dx": [
+         -0.03,
+         1.43
+        ],
+        "dy": [
+         -0.08,
+         0.31
+        ],
+        "pick": [
+         "rolling_pin"
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ]
+       ],
+       "bookcase_2/top": [
+        [
+         0.9188,
+         -0.5777,
+         1.2588,
+         -0.2777
+        ],
+        [
+         0.9462,
+         -0.508,
+         1.0518,
+         -0.348
+        ],
+        [
+         1.0924,
+         -0.548,
+         1.1456,
+         -0.428
+        ],
+        [
+         1.134,
+         -0.3909,
+         1.224,
+         -0.3251
+        ],
+        [
+         1.1658,
+         -0.5212,
+         1.2122,
+         -0.4748
+        ],
+        [
+         1.0645,
+         -0.3575,
+         1.1135,
+         -0.3085
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "breakfast_spoon",
+        "rolling_pin",
+        "wide_storage_bin"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": "n/a"
+         }
+        },
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
+       }
+      ],
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "moderate"
+     }
+    },
+    "utensils_apart__bin_full_fruit": {
+     "move": {
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.7,
+        1.635
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "mug"
+     ],
+     "conditions": [
+      "item_out_of_view",
+      "not_in_view",
+      "destination_occupied"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "rolling_pin",
+        "fruit_basket"
+       ],
+       [
+        "inside",
+        "breakfast_spoon",
+        "fruit_basket"
+       ],
+       [
+        "inside",
+        "bin_teddy",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_car",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_duck",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_1",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "bin_block_2",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "apple",
+        "fruit_basket"
+       ],
+       [
+        "inside",
+        "orange",
+        "fruit_basket"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "wide_storage_bin",
+      "fruit_basket",
+      "bin_teddy",
+      "bin_car",
+      "bin_duck",
+      "bin_block_1",
+      "bin_block_2",
+      "apple",
+      "orange"
+     ],
+     "add": {
+      "bin_teddy": {
+       "asset": "teddy_bear",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.999,
+        -0.428
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_car": {
+       "asset": "toy_car",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.119,
+        -0.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_duck": {
+       "asset": "rubber_duck",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.358
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.189,
+        -0.498
+       ],
+       "yaw_deg": 10.0
+      },
+      "bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.089,
+        -0.333
+       ],
+       "yaw_deg": -15.0
+      },
+      "fruit_basket": {
+       "asset": "fruit_basket",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.2,
+        7.6
+       ],
+       "yaw_deg": 0.0
+      },
+      "apple": {
+       "asset": "apple",
+       "support": null,
+       "z": 0.87,
+       "xy": [
+        3.17,
+        7.58
+       ],
+       "yaw_deg": 0.0
+      },
+      "orange": {
+       "asset": "orange",
+       "support": null,
+       "z": 0.87,
+       "xy": [
+        3.24,
+        7.63
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+     "v6": {
+      "family": "utensils_apart",
+      "case": "bin_full_fruit",
+      "challenge": "the rolling pin is on the island, the spoon was left on the dining table (out of view); the wide bin on the bedroom bookcase is empty or full of the kid's toys",
+      "rationale": "find the bin; full -> leave the toys and use another container (a tray or a basket: moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
+      "control": "large_only",
+      "contrast": null,
+      "factor": "whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
+      "derived_from": "large_only"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "apple",
+         "breakfast_spoon",
+         "fruit_basket",
+         "orange"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.0545,
+         6.2795,
+         3.7907,
+         7.7262
+        ],
+        "dx": [
+         -0.25,
+         0.03
+        ],
+        "dy": [
+         -0.77,
+         0.21
+        ],
+        "pick": [
+         "breakfast_spoon"
+        ],
+        "search": [
+         "breakfast_spoon",
+         "fruit_basket"
+        ]
+       },
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.59,
+         1.6119,
+         6.81,
+         1.6582
+        ],
+        "dx": [
+         -0.03,
+         1.43
+        ],
+        "dy": [
+         -0.08,
+         0.31
+        ],
+        "pick": [
+         "rolling_pin"
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ]
+       ],
+       "bookcase_2/top": [
+        [
+         0.9188,
+         -0.5777,
+         1.2588,
+         -0.2777
+        ],
+        [
+         0.9462,
+         -0.508,
+         1.0518,
+         -0.348
+        ],
+        [
+         1.0924,
+         -0.548,
+         1.1456,
+         -0.428
+        ],
+        [
+         1.134,
+         -0.3909,
+         1.224,
+         -0.3251
+        ],
+        [
+         1.1658,
+         -0.5212,
+         1.2122,
+         -0.4748
+        ],
+        [
+         1.0645,
+         -0.3575,
+         1.1135,
+         -0.3085
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "breakfast_spoon",
+        "fruit_basket",
         "wide_storage_bin"
        ],
        "look": []
@@ -62854,14 +65463,240 @@
       "D": 0,
       "tiers": [
        {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped",
-      "top": "ideal"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "top": "bad"
      }
     }
    },
@@ -62908,14 +65743,16 @@
    "nominal": "nominal",
    "oracle": {
     "large_only": "nominal",
-    "small_bin_or_bedroom_bin__on_island": "v6_small_bin_or_bedroom_bin__on_island",
-    "small_bin_or_bedroom_bin__beside_wide_bin": "v6_small_bin_or_bedroom_bin__beside_wide_bin",
+    "small_bin_or_bedroom_bin__wide_in_bedroom": "v6_small_bin_or_bedroom_bin__wide_in_bedroom",
+    "small_bin_or_bedroom_bin__basket_in_bedroom": "v6_small_bin_or_bedroom_bin__basket_in_bedroom",
     "which_bin_by_contents__toys_near": "v6_which_bin_by_contents__toys_near",
-    "which_bin_by_contents__tools_near": "v6_which_bin_by_contents__tools_near",
+    "which_bin_by_contents__kitchen_bin_full": "v6_which_bin_by_contents__kitchen_bin_full",
     "no_bin_substitute__basket": "v6_no_bin_substitute__basket",
     "no_bin_substitute__tray": "v6_no_bin_substitute__tray",
-    "utensils_apart__dining": "v6_utensils_apart__dining",
-    "utensils_apart__counter": "v6_utensils_apart__counter"
+    "utensils_apart__bin_free": "v6_utensils_apart__bin_free",
+    "utensils_apart__bin_full_tray": "v6_utensils_apart__bin_full_tray",
+    "utensils_apart__bin_full_basket": "v6_utensils_apart__bin_full_basket",
+    "utensils_apart__bin_full_fruit": "v6_utensils_apart__bin_full_fruit"
    },
    "routes": {
     "nominal": {
@@ -63002,7 +65839,7 @@
      ],
      "since": "v2"
     },
-    "v6_small_bin_or_bedroom_bin__on_island": {
+    "v6_small_bin_or_bedroom_bin__wide_in_bedroom": {
      "steps": [
       {
        "skill": "navigate",
@@ -63099,9 +65936,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "small_bin_or_bedroom_bin__on_island"
+     "variant": "small_bin_or_bedroom_bin__wide_in_bedroom"
     },
-    "v6_small_bin_or_bedroom_bin__beside_wide_bin": {
+    "v6_small_bin_or_bedroom_bin__basket_in_bedroom": {
      "steps": [
       {
        "skill": "navigate",
@@ -63116,25 +65953,6 @@
        }
       },
       {
-       "skill": "search",
-       "args": {
-        "object": "wide_storage_bin",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
        "skill": "measure",
        "args": {
         "object": "small_storage_bin"
@@ -63144,6 +65962,24 @@
        "skill": "measure",
        "args": {
         "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "storage_basket"
        }
       },
       {
@@ -63161,14 +65997,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "storage_basket"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
-        "container": "wide_storage_bin"
+        "container": "storage_basket"
        }
       },
       {
@@ -63186,19 +66022,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "storage_basket"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "rolling_pin",
-        "receptacle": "wide_storage_bin"
+        "receptacle": "storage_basket"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "small_bin_or_bedroom_bin__beside_wide_bin"
+     "variant": "small_bin_or_bedroom_bin__basket_in_bedroom"
     },
     "v6_which_bin_by_contents__toys_near": {
      "steps": [
@@ -63299,7 +66135,7 @@
      "kind": "v6_oracle",
      "variant": "which_bin_by_contents__toys_near"
     },
-    "v6_which_bin_by_contents__tools_near": {
+    "v6_which_bin_by_contents__kitchen_bin_full": {
      "steps": [
       {
        "skill": "navigate",
@@ -63326,6 +66162,44 @@
        }
       },
       {
+       "skill": "search",
+       "args": {
+        "object": "wide_storage_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "spare_tray",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "spare_tray"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "breakfast_spoon"
@@ -63340,14 +66214,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
-        "container": "wide_storage_bin"
+        "container": "spare_tray"
        }
       },
       {
@@ -63365,19 +66239,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "rolling_pin",
-        "receptacle": "wide_storage_bin"
+        "receptacle": "spare_tray"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "which_bin_by_contents__tools_near"
+     "variant": "which_bin_by_contents__kitchen_bin_full"
     },
     "v6_no_bin_substitute__basket": {
      "steps": [
@@ -63588,7 +66462,7 @@
      "kind": "v6_oracle",
      "variant": "no_bin_substitute__tray"
     },
-    "v6_utensils_apart__dining": {
+    "v6_utensils_apart__bin_free": {
      "steps": [
       {
        "skill": "navigate",
@@ -63680,9 +66554,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "utensils_apart__dining"
+     "variant": "utensils_apart__bin_free"
     },
-    "v6_utensils_apart__counter": {
+    "v6_utensils_apart__bin_full_tray": {
      "steps": [
       {
        "skill": "navigate",
@@ -63716,6 +66590,25 @@
        }
       },
       {
+       "skill": "search",
+       "args": {
+        "object": "spare_tray",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "spare_tray"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "rolling_pin"
@@ -63730,21 +66623,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "rolling_pin",
-        "receptacle": "wide_storage_bin"
+        "receptacle": "spare_tray"
        }
       },
       {
        "skill": "search",
        "args": {
         "object": "breakfast_spoon",
-        "region": "kitchen_0_1"
+        "region": "dining_room_0_1"
        }
       },
       {
@@ -63762,19 +66655,244 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wide_storage_bin"
+        "destination": "spare_tray"
        }
       },
       {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
-        "container": "wide_storage_bin"
+        "container": "spare_tray"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "utensils_apart__counter"
+     "variant": "utensils_apart__bin_full_tray"
+    },
+    "v6_utensils_apart__bin_full_basket": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wide_storage_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "breakfast_spoon",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "utensils_apart__bin_full_basket"
+    },
+    "v6_utensils_apart__bin_full_fruit": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wide_storage_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "fruit_basket",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_basket"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "fruit_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "fruit_basket"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "breakfast_spoon",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_basket"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "fruit_basket"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "utensils_apart__bin_full_fruit"
     }
    },
    "benchmark_version": "v6",
@@ -63838,21 +66956,21 @@
      "origin": "v6",
      "control": "large_only",
      "layouts": [
-      "small_bin_or_bedroom_bin__on_island",
-      "small_bin_or_bedroom_bin__beside_wide_bin"
+      "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "small_bin_or_bedroom_bin__basket_in_bedroom"
      ],
-     "factor": "where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on the bedroom bookcase)",
+     "factor": "what is left once the small bin on the island is ruled out (seed: the wide bin in the bedroom, or no wide bin and a storage basket on the bedroom floor)",
      "seeds": {
-      "10": "small_bin_or_bedroom_bin__on_island",
-      "11": "small_bin_or_bedroom_bin__on_island",
-      "12": "small_bin_or_bedroom_bin__on_island",
-      "13": "small_bin_or_bedroom_bin__on_island",
-      "14": "small_bin_or_bedroom_bin__beside_wide_bin",
-      "15": "small_bin_or_bedroom_bin__on_island",
-      "16": "small_bin_or_bedroom_bin__beside_wide_bin",
-      "17": "small_bin_or_bedroom_bin__beside_wide_bin",
-      "18": "small_bin_or_bedroom_bin__beside_wide_bin",
-      "19": "small_bin_or_bedroom_bin__beside_wide_bin"
+      "10": "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "11": "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "12": "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "13": "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "14": "small_bin_or_bedroom_bin__basket_in_bedroom",
+      "15": "small_bin_or_bedroom_bin__wide_in_bedroom",
+      "16": "small_bin_or_bedroom_bin__basket_in_bedroom",
+      "17": "small_bin_or_bedroom_bin__basket_in_bedroom",
+      "18": "small_bin_or_bedroom_bin__basket_in_bedroom",
+      "19": "small_bin_or_bedroom_bin__basket_in_bedroom"
      },
      "scoring": {
       "D": 1,
@@ -63860,83 +66978,203 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"
+        "goal": {
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_1",
-           "small_storage_bin"
-          ],
-          [
-           "inside",
-           "small_bin_block_2",
-           "small_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a fashion"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "wide_storage_bin"
+         "by_layout": {
+          "small_bin_or_bedroom_bin__wide_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "wide_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "inside",
-            "rolling_pin",
-            "small_storage_bin"
+          },
+          "small_bin_or_bedroom_bin__basket_in_bedroom": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
+             ]
+            ]
            ],
-           [
-            "inside",
-            "breakfast_spoon",
-            "small_storage_bin"
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "both in one bin, but the small bin's blocks taken out or moved"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put into the wide one; still held"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "D_by_layout": {
+       "small_bin_or_bedroom_bin__wide_in_bedroom": 1,
+       "small_bin_or_bedroom_bin__basket_in_bedroom": 1
+      },
+      "top_by_layout": {
+       "small_bin_or_bedroom_bin__wide_in_bedroom": "ideal",
+       "small_bin_or_bedroom_bin__basket_in_bedroom": "moderate"
+      }
      }
     },
     "which_bin_by_contents": {
@@ -63944,18 +67182,18 @@
      "control": "large_only",
      "layouts": [
       "which_bin_by_contents__toys_near",
-      "which_bin_by_contents__tools_near"
+      "which_bin_by_contents__kitchen_bin_full"
      ],
-     "factor": "which bin is near (seed: the toy bin on the TV stand and the kitchen bin in the bedroom, or the other way round)",
+     "factor": "whether the kitchen bin can take them (seed: the toy bin near, the kitchen bin in the bedroom with room; or the kitchen bin packed full, a tray on the study desk)",
      "seeds": {
-      "10": "which_bin_by_contents__tools_near",
+      "10": "which_bin_by_contents__kitchen_bin_full",
       "11": "which_bin_by_contents__toys_near",
-      "12": "which_bin_by_contents__tools_near",
+      "12": "which_bin_by_contents__kitchen_bin_full",
       "13": "which_bin_by_contents__toys_near",
       "14": "which_bin_by_contents__toys_near",
-      "15": "which_bin_by_contents__tools_near",
-      "16": "which_bin_by_contents__tools_near",
-      "17": "which_bin_by_contents__tools_near",
+      "15": "which_bin_by_contents__kitchen_bin_full",
+      "16": "which_bin_by_contents__kitchen_bin_full",
+      "17": "which_bin_by_contents__kitchen_bin_full",
       "18": "which_bin_by_contents__toys_near",
       "19": "which_bin_by_contents__toys_near"
      },
@@ -63965,77 +67203,335 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the kitchen bin, the toys and the spoons left where they were"
+        "goal": {
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "inside",
-           "rolling_pin",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "breakfast_spoon",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_1",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "toy_bin_block_2",
-           "toy_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_counter",
-           "wide_storage_bin"
-          ],
-          [
-           "inside",
-           "spoon_side_table",
-           "wide_storage_bin"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "which_bin_by_contents__toys_near": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "which_bin_by_contents__kitchen_bin_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_1",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "toy_bin_block_2",
+              "toy_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_counter",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "spoon_side_table",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_foil_tray",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_plastic_cup",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_cup_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or dropped"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "D_by_layout": {
+       "which_bin_by_contents__toys_near": 1,
+       "which_bin_by_contents__kitchen_bin_full": 1
+      },
+      "top_by_layout": {
+       "which_bin_by_contents__toys_near": "ideal",
+       "which_bin_by_contents__kitchen_bin_full": "moderate"
+      }
      }
     },
     "no_bin_substitute": {
@@ -64064,8 +67560,13 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"
+        "goal": {
+         "by_layout": {
+          "no_bin_substitute__basket": "n/a",
+          "no_bin_substitute__tray": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
        },
        {
         "name": "second",
@@ -64073,12 +67574,6 @@
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -64090,28 +67585,6 @@
               "inside",
               "breakfast_spoon",
               "storage_basket"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -64122,17 +67595,27 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -64144,28 +67627,6 @@
               "inside",
               "breakfast_spoon",
               "serving_tray"
-             ]
-            ],
-            [
-             [
-              "inside",
-              "rolling_pin",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "breakfast_spoon",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_1",
-              "small_storage_bin"
-             ],
-             [
-              "inside",
-              "small_bin_block_2",
-              "small_storage_bin"
              ],
              [
               "inside",
@@ -64176,13 +67637,29 @@
               "inside",
               "orange",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin slanted in), its blocks still in it, the fruit untouched"
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
        },
        {
         "name": "worst",
@@ -64190,13 +67667,19 @@
         "goal": {
          "by_layout": {
           "no_bin_substitute__basket": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
             [
              [
               "inside",
@@ -64206,6 +67689,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -64219,18 +67722,50 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "no_bin_substitute__tray": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "serving_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "serving_tray"
+             ]
+            ],
             [
              [
               "inside",
@@ -64240,6 +67775,26 @@
              [
               "inside",
               "breakfast_spoon",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
               "small_storage_bin"
              ]
             ],
@@ -64253,49 +67808,462 @@
               "inside",
               "breakfast_spoon",
               "fruit_basket"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "small_bin_block_1",
+              "small_storage_bin"
+             ],
+             [
+              "inside",
+              "small_bin_block_2",
+              "small_storage_bin"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit basket, with the fruit in it or taken out"
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "D_by_layout": {
+       "no_bin_substitute__basket": 1,
+       "no_bin_substitute__tray": 1
+      },
+      "top_by_layout": {
+       "no_bin_substitute__basket": "moderate",
+       "no_bin_substitute__tray": "moderate"
+      }
      }
     },
     "utensils_apart": {
      "origin": "v6",
      "control": "large_only",
      "layouts": [
-      "utensils_apart__dining",
-      "utensils_apart__counter"
+      "utensils_apart__bin_free",
+      "utensils_apart__bin_full_tray",
+      "utensils_apart__bin_full_basket",
+      "utensils_apart__bin_full_fruit"
      ],
-     "factor": "where the spoon was left (seed: the dining table or the kitchen counter)",
+     "factor": "whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
      "seeds": {
-      "10": "utensils_apart__dining",
-      "11": "utensils_apart__dining",
-      "12": "utensils_apart__counter",
-      "13": "utensils_apart__counter",
-      "14": "utensils_apart__counter",
-      "15": "utensils_apart__counter",
-      "16": "utensils_apart__dining",
-      "17": "utensils_apart__counter",
-      "18": "utensils_apart__dining",
-      "19": "utensils_apart__dining"
+      "10": "utensils_apart__bin_free",
+      "11": "utensils_apart__bin_free",
+      "12": "utensils_apart__bin_full_fruit",
+      "13": "utensils_apart__bin_full_tray",
+      "14": "utensils_apart__bin_full_tray",
+      "15": "utensils_apart__bin_full_fruit",
+      "16": "utensils_apart__bin_full_basket",
+      "17": "utensils_apart__bin_full_tray",
+      "18": "utensils_apart__bin_free",
+      "19": "utensils_apart__bin_full_basket"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the rolling pin and the spoon both in the wide bin, the hand empty"
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_tray": "n/a",
+          "utensils_apart__bin_full_basket": "n/a",
+          "utensils_apart__bin_full_fruit": "n/a"
+         }
+        },
+        "why": "both in the wide bin (the proper storage bin), nothing of anyone else's moved"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": "n/a"
+         }
+        },
+        "why": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the wide bin with someone else's things moved"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "utensils_apart__bin_free": "n/a",
+          "utensils_apart__bin_full_tray": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "spare_tray"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "spare_tray"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_basket": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "storage_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "storage_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "utensils_apart__bin_full_fruit": {
+           "any": [
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "rolling_pin",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "breakfast_spoon",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_teddy",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_car",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_duck",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_1",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "bin_block_2",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "apple",
+              "fruit_basket"
+             ],
+             [
+              "inside",
+              "orange",
+              "fruit_basket"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, the toy bin, a bin already full), or in a substitute with things moved"
        }
       ],
-      "not_ok": "one left out (the spoon not found); in a cabinet, drawer or on a table; still held or dropped"
+      "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
+      "D_by_layout": {
+       "utensils_apart__bin_free": 0,
+       "utensils_apart__bin_full_tray": 1,
+       "utensils_apart__bin_full_basket": 1,
+       "utensils_apart__bin_full_fruit": 0
+      },
+      "top_by_layout": {
+       "utensils_apart__bin_free": "ideal",
+       "utensils_apart__bin_full_tray": "moderate",
+       "utensils_apart__bin_full_basket": "moderate",
+       "utensils_apart__bin_full_fruit": "bad"
+      }
      }
     }
    },
@@ -64351,6 +68319,7 @@
      "category": "task",
      "local": [],
      "longer": [
+      "destination_occupied",
       "item_out_of_view",
       "not_in_view"
      ]

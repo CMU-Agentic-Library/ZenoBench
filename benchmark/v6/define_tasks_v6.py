@@ -2292,6 +2292,21 @@ def small_bin_with_blocks(sup, xy, yaw=0.0):
     return out
 
 
+def container_tiers(both_in, levels, keep, hand=("hand_empty", "right")):
+    """11-17 (T03): tier goals for "both utensils in one container", the level fixed by the container
+    (``levels``: {container: "best"|"second"|"worst"}); moving someone else's things (``keep``: atoms that hold
+    while they are untouched) costs one level.  A level no container of the layout reaches is scoring.NA."""
+    from benchmark.v6.scoring import NA
+    rank = ("best", "second", "worst")
+    groups = {r: [] for r in rank}
+    for c, lv in levels.items():
+        i = rank.index(lv)
+        groups[lv].append(both_in(c) + list(keep))                       # untouched: its own level
+        if keep and i < 2:
+            groups[rank[i + 1]].append(both_in(c))                       # something moved: one level down
+    return {r: ({"any": g, "all": [list(hand)]} if g else NA) for r, g in groups.items()}
+
+
 def T03_long(t):
     bin_, spoon, pin = "wide_storage_bin", "breakfast_spoon", "rolling_pin"
     find_bins = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"),
@@ -2300,14 +2315,35 @@ def T03_long(t):
                 nav(pin), pick(pin), nav(bin_), S("approach", target=bin_), place(pin, bin_)]
     bin_goal = {"all": [["inside", pin, bin_], ["inside", spoon, bin_], ["hand_empty", "right"]]}   # no mug option
     blocks_stay = [["inside", b, "small_storage_bin"] for b in SMALL_BIN_BLOCKS]       # the toys stay in the small bin
+    # 11-17 (user): the seed changes what is left once the small bin is ruled out -- the wide bin in the bedroom
+    # (ideal) or no wide bin, a storage basket on the bedroom floor (moderate); the small bin (pin slanted) is bad
+    both_in = lambda c: [["inside", pin, c], ["inside", spoon, c]]  # noqa: E731
+    BASKET = {"support": None, "z": 0.001, "xy": [0.894, -1.931], "yaw_deg": 0.0}
+    measure = [look("kitchen_island/top"), S("measure", object="small_storage_bin"), S("measure", object=pin)]
+    sb_cases = {
+        "wide_in_bedroom": dict(route=measure + find_bins[1:] + put_both),
+        "basket_in_bedroom": dict(
+            remove=["mug", bin_], add={**small_bin_with_blocks("kitchen_island/top", (7.1, 1.75)),
+                                       "storage_basket": {"asset": "storage_basket", **BASKET}},
+            goal={"all": both_in("storage_basket") + blocks_stay + [["hand_empty", "right"]]},
+            watch=[pin, spoon, "storage_basket", "small_storage_bin", *SMALL_BIN_BLOCKS],
+            route=measure + [S("search", object="storage_basket", region="bedroom_0_1"), nav("storage_basket"),
+                             look("storage_basket")]
+            + [st if not (st["skill"] in ("navigate", "approach", "drop", "place") and bin_ in st["args"].values())
+               else {**st, "args": {k: ("storage_basket" if v == bin_ else v) for k, v in st["args"].items()}}
+               for st in put_both])}
+    LAYOUT_TIERS[("T03", "small_bin_or_bedroom_bin")] = {
+        "wide_in_bedroom": container_tiers(both_in, {bin_: "best", "small_storage_bin": "worst"}, blocks_stay),
+        "basket_in_bedroom": container_tiers(both_in, {"storage_basket": "second", "small_storage_bin": "worst"},
+                                             blocks_stay)}
     return {
         "small_bin_or_bedroom_bin": dict(
             base="small_and_large", control="large_only", conditions=["small_container_present", "not_in_view"],
             move={bin_: copy.deepcopy(BEDROOM_BIN)}, remove=["mug"],
             add=small_bin_with_blocks("kitchen_island/top", (7.1, 1.75)),
             goal={"all": bin_goal["all"] + blocks_stay}, watch=[pin, spoon, bin_, "small_storage_bin", *SMALL_BIN_BLOCKS],
-            factor="where the small bin stands (seed: on the island next to the utensils, or beside the wide bin on "
-                   "the bedroom bookcase)",
+            factor="what is left once the small bin on the island is ruled out (seed: the wide bin in the bedroom, "
+                   "or no wide bin and a storage basket on the bedroom floor)",
             challenge="a small storage bin (22 x 17 cm) with two toy blocks in it: the spoon would still fit, the 22 cm "
                       "rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in "
                       "the bedroom; the small bin stands either on the island next to the utensils (in view, near) "
@@ -2316,13 +2352,7 @@ def T03_long(t):
                       "container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small "
                       "bin).  With the small bin on the island it has to be ruled out before any other container is "
                       "in view",
-            cases={"on_island": dict(route=[look("kitchen_island/top"), S("measure", object="small_storage_bin"),
-                                            S("measure", object=pin)] + find_bins[1:] + put_both),
-                   "beside_wide_bin": dict(
-                       move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}},
-                       add=small_bin_with_blocks("bookcase_2/top", (1.195, -0.43), 90.0),
-                       route=find_bins + [S("measure", object="small_storage_bin"), S("measure", object=pin)]
-                       + put_both)}),
+            cases=sb_cases),
     }
 
 
@@ -2350,18 +2380,45 @@ def T03_more(t):
     TOY = "toy_storage_bin"
     toys = [("toy_bin_block_1", -0.08, -0.05, 15.0), ("toy_bin_block_2", 0.07, 0.04, -20.0)]
     tools = [("spoon_counter", 0.0, 0.10, 0.0), ("spoon_side_table", 0.0, 0.05, 0.0)]
-    which = {}
-    for case, kitchen_at, toy_at in (("toys_near", BEDROOM_BIN, TV_BIN), ("tools_near", TV_BIN, BEDROOM_BIN)):
-        look_far = [S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"), look("bookcase_2/top")]
-        which[case] = dict(
-            move={bin_: copy.deepcopy(kitchen_at), **inside_bin(kitchen_at, tools)},
-            add={TOY: {"asset": "wide_storage_bin", **copy.deepcopy(toy_at)},
-                 **{n: {"asset": "wooden_block", **m} for n, m in inside_bin(toy_at, toys).items()}},
-            route=[look("kitchen_island/top"), look("tv_stand_2/top")]
-            + (look_far if case == "toys_near" else []) + put_both(bin_))
-    which_goal = {"all": [["inside", pin, bin_], ["inside", spoon, bin_],
-                          *[["inside", n, TOY] for n, *_ in toys], *[["inside", n, bin_] for n, *_ in tools],
-                          ["hand_empty", "right"]]}
+    both_in = lambda c: [["inside", pin, c], ["inside", spoon, c]]  # noqa: E731
+    # a small shallow tray flush with the study desk's front edge (11-16: every set-down point within reach)
+    DESK_TRAY = "spare_tray"
+    desk_tray = {DESK_TRAY: {"asset": "shallow_sorting_tray", "support": "desk_1/top", "xy": [-0.70, -6.218],
+                             "yaw_deg": 0.0}}
+
+    def to_tray(first_look):
+        return first_look + [S("search", object=DESK_TRAY, region="living_room_0_1"), nav(DESK_TRAY),
+                             look(DESK_TRAY)] + put_both(DESK_TRAY, drop_spoon=True)
+    # which_bin_by_contents (11-17, user): the seed changes the substitution, not the places -- toys_near: the toy
+    # bin near, the kitchen bin (empty but for two spoons) in the bedroom (ideal); kitchen_bin_full: the kitchen bin
+    # is packed with kitchen things, no room for the pin, a tray on the study desk (moderate); the toy bin is bad
+    packed = [("spoon_counter", 0.0, 0.10, 0.0), ("spoon_side_table", 0.0, 0.05, 0.0)]
+    packed_add = [("foil_takeout_tray", "bin_foil_tray", -0.07, -0.07, 0.0), ("breakfast_cup", "bin_cup", 0.09, 0.06, 0.0),
+                  ("plastic_cup", "bin_plastic_cup", -0.10, 0.07, 0.0), ("breakfast_cup", "bin_cup_2", 0.09, -0.07, 0.0)]
+    look_far = [S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"), look("bookcase_2/top")]
+    which, which_tiers = {}, {}
+    toy_add = {TOY: {"asset": "wide_storage_bin", **copy.deepcopy(TV_BIN)},
+               **{n: {"asset": "wooden_block", **m} for n, m in inside_bin(TV_BIN, toys).items()}}
+    toys_keep = [["inside", n, TOY] for n, *_ in toys]
+    tools_keep = [["inside", n, bin_] for n, *_ in tools]
+    which["toys_near"] = dict(
+        move={bin_: copy.deepcopy(BEDROOM_BIN), **inside_bin(BEDROOM_BIN, tools)}, add=copy.deepcopy(toy_add),
+        goal={"all": both_in(bin_) + toys_keep + tools_keep + [["hand_empty", "right"]]},
+        route=[look("kitchen_island/top"), look("tv_stand_2/top")] + look_far + put_both(bin_))
+    which_tiers["toys_near"] = container_tiers(both_in, {bin_: "best", TOY: "worst"}, toys_keep + tools_keep)
+    full_in = inside_bin(BEDROOM_BIN, [(n, dx, dy, yaw) for _, n, dx, dy, yaw in packed_add])
+    full_keep = tools_keep + [["inside", n, bin_] for _, n, *_ in packed_add]
+    which["kitchen_bin_full"] = dict(
+        move={bin_: copy.deepcopy(BEDROOM_BIN), **inside_bin(BEDROOM_BIN, packed)},
+        add={**copy.deepcopy(toy_add), **{n: {"asset": a, **full_in[n]} for a, n, *_ in packed_add},
+             **copy.deepcopy(desk_tray)},
+        goal={"all": both_in(DESK_TRAY) + toys_keep + full_keep + [["hand_empty", "right"]]},
+        watch=[pin, spoon, bin_, TOY, DESK_TRAY, *[n for n, *_ in toys + tools], *[n for _, n, *_ in packed_add]],
+        route=to_tray([look("kitchen_island/top"), look("tv_stand_2/top")] + look_far))
+    which_tiers["kitchen_bin_full"] = container_tiers(both_in, {DESK_TRAY: "second", bin_: "worst", TOY: "worst"},
+                                                      toys_keep + full_keep)
+    LAYOUT_TIERS[("T03", "which_bin_by_contents")] = which_tiers
+    which_goal = which["toys_near"]["goal"]
 
     # no_bin_substitute: no wide bin; the small bin (TV stand) is too small; the substitute (the
     # storage basket on the bedroom floor or the serving tray on the study desk) is in another room; the fruit
@@ -2386,16 +2443,59 @@ def T03_more(t):
                    look("tv_stand_2/top"), S("measure", object="small_storage_bin"),
                    S("search", object=x, region=region), nav(x), look(x)] + put_both(x, drop_spoon=(x != "serving_tray")))
 
-    # utensils_apart: the rolling pin on the island, the spoon left in another room, the bin in the bedroom
-    apart = {}
-    for case, sp, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
-                             ("counter", P("kitchen_counter_2/top", -0.1, 7.3), "kitchen_0_1")):
+    # 11-17 (user): the substitute is moderate (no bin in the house: the best a seed offers); the small bin (pin
+    # slanted) and the fruit basket are bad; moving the blocks or the fruit costs a level
+    sub_keep = [["inside", "apple", "fruit_basket"], ["inside", "orange", "fruit_basket"],
+                *[["inside", b, "small_storage_bin"] for b in SMALL_BIN_BLOCKS]]
+    LAYOUT_TIERS[("T03", "no_bin_substitute")] = {
+        case: container_tiers(both_in, {x: "second", "small_storage_bin": "worst", "fruit_basket": "worst"}, sub_keep)
+        for case, (x, *_) in subs.items()}
+
+    # utensils_apart (11-17, user: in use) -- the rolling pin on the island, the spoon left in another room (out
+    # of view); the wide bin in the bedroom is empty (ideal) or full of the kid's toys (no room for the pin), and
+    # the seed changes the substitute: the tray on the study desk or the storage basket on the bedroom floor
+    # (moderate), or only the fruit basket with fruit in it (bad).  Pressing them onto the full bin is bad too
+    full_toys = [("teddy_bear", "bin_teddy", -0.09, 0.0, 0.0), ("toy_car", "bin_car", 0.03, -0.06, 0.0),
+                 ("rubber_duck", "bin_duck", 0.09, 0.07, 0.0), ("wooden_block", "bin_block_1", 0.10, -0.07, 10.0),
+                 ("wooden_block", "bin_block_2", 0.0, 0.095, -15.0)]
+    toys_in = inside_bin(BEDROOM_BIN, [(n, dx, dy, yaw) for _, n, dx, dy, yaw in full_toys])
+    full_add = {n: {"asset": a, **toys_in[n]} for a, n, *_ in full_toys}
+    toys_stay = [["inside", n, bin_] for _, n, *_ in full_toys]
+    fruit_keep = [["inside", "apple", "fruit_basket"], ["inside", "orange", "fruit_basket"]]
+    SP_DINING = P("dining_table_2/top", 3.7, 6.3)
+    find_bin = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"),
+                look("bookcase_2/top")]
+
+    def apart_route(c, first=()):
+        """The pin first, then the spoon from the dining table, both into ``c``."""
+        return find_bin + list(first) + [
+            nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c),
+            S("search", object=spoon, region="dining_room_0_1"), nav(spoon), pick(spoon), nav(c),
+            S("approach", target=c), S("drop", object=spoon, container=c)]
+    apart, apart_tiers = {}, {}
+    apart["bin_free"] = dict(move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING}, route=apart_route(bin_),
+                             goal={"all": both_in(bin_) + [["hand_empty", "right"]]}, watch=[pin, spoon, bin_])
+    apart_tiers["bin_free"] = container_tiers(both_in, {bin_: "best"}, [])
+    for case, (x, add_x, first) in {
+            "bin_full_tray": (DESK_TRAY, desk_tray, [S("search", object=DESK_TRAY, region="living_room_0_1"),
+                                                     nav(DESK_TRAY), look(DESK_TRAY)]),
+            "bin_full_basket": ("storage_basket",
+                                {"storage_basket": {"asset": "storage_basket", "support": None, "z": 0.001,
+                                                    "xy": [0.894, -1.931], "yaw_deg": 0.0}},
+                                [nav("storage_basket"), look("storage_basket")]),
+            "bin_full_fruit": ("fruit_basket", {k: v for k, v in fruit.items()},
+                               [S("search", object="fruit_basket", region="dining_room_0_1"), nav("fruit_basket"),
+                                look("fruit_basket")])}.items():
+        keep = toys_stay + (fruit_keep if x == "fruit_basket" else [])
         apart[case] = dict(
-            move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: sp},
-            route=[look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"),
-                   look("bookcase_2/top"), nav(pin), pick(pin), nav(bin_), S("approach", target=bin_), place(pin, bin_),
-                   S("search", object=spoon, region=region), nav(spoon), pick(spoon), nav(bin_),
-                   S("approach", target=bin_), S("drop", object=spoon, container=bin_)])
+            move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING},
+            add={**copy.deepcopy(full_add), **copy.deepcopy(add_x)},
+            goal={"all": both_in(x) + keep + [["hand_empty", "right"]]},
+            watch=[pin, spoon, bin_, x, *[n for _, n, *_ in full_toys], *(["apple", "orange"] if x == "fruit_basket" else [])],
+            route=apart_route(x, first))
+        apart_tiers[case] = container_tiers(both_in, {x: "worst" if x == "fruit_basket" else "second", bin_: "worst"},
+                                            keep)
+    LAYOUT_TIERS[("T03", "utensils_apart")] = apart_tiers
     bin_goal = {"all": [["inside", pin, bin_], ["inside", spoon, bin_], ["hand_empty", "right"]]}
     return {
         "which_bin_by_contents": dict(
@@ -2404,8 +2504,8 @@ def T03_more(t):
                         "kitchen utensils are kept.",
             instruction_zh="烘焙结束了，把擀面杖和勺子一起收进放厨房用具的那个箱子里。",
             goal=which_goal, watch=[pin, spoon, bin_, TOY, *[n for n, *_ in toys + tools]],
-            factor="which bin is near (seed: the toy bin on the TV stand and the kitchen bin in the bedroom, or the "
-                   "other way round)",
+            factor="whether the kitchen bin can take them (seed: the toy bin near, the kitchen bin in the bedroom "
+                   "with room; or the kitchen bin packed full, a tray on the study desk)",
             challenge="two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the "
                       "toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
             rationale="the bins look the same from outside: look into the near one; if it holds toys, the utensils go "
@@ -2426,13 +2526,15 @@ def T03_more(t):
                       "fruit basket (food), find the substitute in another room and put both utensils in it",
             cases=sub_cases),
         "utensils_apart": dict(
-            base="large_only", control="large_only", conditions=["item_out_of_view", "not_in_view"],
+            base="large_only", control="large_only", conditions=["item_out_of_view", "not_in_view",
+                                                                 "destination_occupied"],
             goal=bin_goal, watch=[pin, spoon, bin_],
-            factor="where the spoon was left (seed: the dining table or the kitchen counter)",
-            challenge="the rolling pin is on the island, the spoon was left in another room (out of view), the bin is "
-                      "on the low bookcase in the bedroom",
-            rationale="only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a "
-                      "time (the pin first, then the spoon)",
+            factor="whether the wide bin has room and what stands in for it (seed: empty; full of toys with a tray "
+                   "on the study desk, a storage basket on the bedroom floor, or only the fruit basket)",
+            challenge="the rolling pin is on the island, the spoon was left on the dining table (out of view); the "
+                      "wide bin on the bedroom bookcase is empty or full of the kid's toys",
+            rationale="find the bin; full -> leave the toys and use another container (a tray or a basket: "
+                      "moderate; only the fruit basket: bad); carry the pin and the spoon one at a time",
             cases=apart),
     }
 

@@ -83,11 +83,6 @@ SCORING: dict[tuple[str, str], dict] = {
     # T03 large_only (control): the wide bin on the TV stand is the only open container
     ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
                                 "one left out, put in a cabinet or drawer instead, still held or dropped"),
-    # T03 utensils_apart: the spoon out of view in another room, the wide bin in the bedroom the only open
-    # container; carrying the bin over first is fine (the goal only asks for the contents)
-    ("T03", "utensils_apart"): only("the rolling pin and the spoon both in the wide bin, the hand empty",
-                                    "one left out (the spoon not found); in a cabinet, drawer or on a table; "
-                                    "still held or dropped"),
     # T04 cup_available (control): a glass cup and a mug side by side on the island; a mug is a cup too (no_cup
     # tests the mug as the stand-in), so either one, or both, is the task done
     ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
@@ -258,70 +253,15 @@ _BPA = _layout_tiers("block_put_away", {
              "door left open"},
     "two levels only (no third piece); no stack; a block dropped")
 
-# T03 small_bin_or_bedroom_bin: a small bin (two toy blocks in it) that holds the spoon but not the 22 cm rolling
-# pin, near or beside the wide bin in the bedroom.  ``inside`` is lenient (the centre within the rim, at most 3 cm
-# above it): a pin slanted into the small bin can count, one lying across its rim with its centre too high
-# cannot; the mug never counts (user 11-11)
-_P, _S, _W, _SB = "rolling_pin", "breakfast_spoon", "wide_storage_bin", "small_storage_bin"
-_BLOCKS_IN = [["inside", "small_bin_block_1", _SB], ["inside", "small_bin_block_2", _SB]]
-SCORING[("T03", "small_bin_or_bedroom_bin")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["inside", _P, _SB], ["inside", _S, _SB], *_BLOCKS_IN, ["hand_empty", "right"]]},
-     "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a "
-            "fashion"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["hand_empty", "right"]],
-              "any": [[["inside", _P, _W], ["inside", _S, _W]], [["inside", _P, _SB], ["inside", _S, _SB]]]},
-     "why": "both in one bin, but the small bin's blocks taken out or moved"}],
-    "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put "
-              "into the wide one; still held"}
-
-
-# T03 which_bin_by_contents: two wide bins of one make, the toy bin (toy_storage_bin, two blocks) and the kitchen
-# bin (wide_storage_bin, two spoons).  The wrong bin with nothing disturbed is the worst tier (user 11-11);
-# carrying the kitchen bin over and filling it there is the best tier (the goal only asks for the contents)
-_TOY = "toy_storage_bin"
-_WHICH_KEPT = [["inside", "toy_bin_block_1", _TOY], ["inside", "toy_bin_block_2", _TOY],
-               ["inside", "spoon_counter", _W], ["inside", "spoon_side_table", _W]]
-SCORING[("T03", "which_bin_by_contents")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "both in the kitchen bin, the toys and the spoons left where they were"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["inside", _P, _W], ["inside", _S, _W], ["hand_empty", "right"]]},
-     "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["inside", _P, _TOY], ["inside", _S, _TOY], *_WHICH_KEPT, ["hand_empty", "right"]]},
-     "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"}],
-    "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or "
-              "dropped"}
-
-
-def _no_bin_substitute(task: dict) -> dict:
-    """T03 no_bin_substitute: no wide bin; the substitute (basket or tray, seed) in another room; the small bin
-    (two blocks) holds the pin only slanted; the fruit basket holds an apple and an orange.  The fruit basket,
-    fruit in it or taken out, is the worst tier (user 11-11)."""
-    lays = task["v6_variants"]["no_bin_substitute"]["layouts"]
-    both = lambda c: [["inside", _P, c], ["inside", _S, c]]
-    fruit = [["inside", "apple", "fruit_basket"], ["inside", "orange", "fruit_basket"]]
-    second, worst = {}, {}
-    for lid in lays:
-        x = next(a[2] for a in task["variants"][lid]["goal"]["all"] if a[:2] == ["inside", _P])
-        second[lid] = {"all": [["hand_empty", "right"]],
-                       "any": [both(x), both(_SB) + [["inside", "small_bin_block_1", _SB],
-                                                     ["inside", "small_bin_block_2", _SB]] + fruit]}
-        worst[lid] = {"all": [["hand_empty", "right"]], "any": [both(_SB), both("fruit_basket")]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin "
-                "slanted in), its blocks still in it, the fruit untouched"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit "
-                "basket, with the fruit in it or taken out"}],
-        "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"}
+# T03 (11-17, user): the container decides the level, the same in every seed -- the wide bin (the kitchen bin)
+# ideal, a basket or a tray moderate, the small bin (pin slanted), the fruit basket, the toy bin or a full bin bad;
+# moving someone else's things (blocks, fruit, spoons, toys) costs a level.  Per-seed goals in LAYOUT_TIERS
+_T03_WHY = {"best": "both in the wide bin (the proper storage bin), nothing of anyone else's moved",
+            "second": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the "
+                      "wide bin with someone else's things moved",
+            "worst": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, "
+                     "the toy bin, a bin already full), or in a substitute with things moved"}
+_T03_NO = "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped"
 
 # T04 clear_the_drinks_spot: the oatmeal bowl and the pot lid fill the drinks spot; tidy them to the kitchen and set
 # out a cup.  Off the cabinet but outside the kitchen is the worst tier (user 11-11).  For now the fridge and the
@@ -733,7 +673,8 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          ("T02", "block_put_away"): _BPA,
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
-         ("T03", "no_bin_substitute"): _no_bin_substitute,
+         **{("T03", d): _layout_tiers(d, _T03_WHY, _T03_NO) for d in (
+             "small_bin_or_bedroom_bin", "which_bin_by_contents", "no_bin_substitute", "utensils_apart")},
          ("T05", "homework_ready"): _homework_ready,
          ("T06", "display_spot_or_tv"): _display_spot_or_tv,
          ("T06", "seen_from_bed"): _seen_from_bed,
@@ -879,9 +820,9 @@ NOT_OK_ZH = {
     ("T02", "tower_for_kid_duck"): "只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上",
     ("T02", "block_put_away"): "只有两层（没有第三件）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
-    ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
+    ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
-    ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
+    ("T03", "utensils_apart"): "两样不在同一个容器；只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
@@ -915,7 +856,7 @@ NOT_OK_ZH = {
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "x6_gd_tomato_elsewhere"): "只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_dining_room"): "用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了",
-    ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
+    ("T03", "which_bin_by_contents"): "两样分在两个箱子；只收了一样；还拿着或掉了",
 }
 
 

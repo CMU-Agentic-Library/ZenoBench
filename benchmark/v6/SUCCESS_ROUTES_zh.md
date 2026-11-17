@@ -1128,123 +1128,49 @@
 
 ### small_bin_or_bedroom_bin（Task）
 
-**情况**：岛台上餐具旁边有个小储物箱（22 × 17 cm），里面已经放了两块积木：勺子还放得下，22 cm 的擀面杖平放、斜放都放不进；宽储物箱在卧室矮书架上 → 看剩下的空间判断放不下，两样要放同一个容器，所以都拿去卧室的宽箱；小箱里的积木不动。小箱在岛台上时开局就在眼前，还没见到别的容器就得先排除它
+**情况**：（11-17 改：能力不足）岛台上餐具旁边有个小储物箱（22 × 17 cm，里面两块积木），放不下 22 cm 的擀面杖 → 先排除小箱，再看还剩什么容器。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `rolling_pin` 在 `wide_storage_bin` 里
-  - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - 手里空着
-  - `small_bin_block_1` 在 `small_storage_bin` 里
-  - `small_bin_block_2` 在 `small_storage_bin` 里
-- **次好（0.6）**：
-
-  - `rolling_pin` 在 `small_storage_bin` 里
-  - `breakfast_spoon` 在 `small_storage_bin` 里
-  - `small_bin_block_1` 在 `small_storage_bin` 里
-  - `small_bin_block_2` 在 `small_storage_bin` 里
-  - 手里空着
-- **最不好（0.3）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `rolling_pin` 在 `wide_storage_bin` 里
-      - `breakfast_spoon` 在 `wide_storage_bin` 里
-    - 第 2 组：
-      - `rolling_pin` 在 `small_storage_bin` 里
-      - `breakfast_spoon` 在 `small_storage_bin` 里
-- **不行（0）**：两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里
-
-
-**参考调用顺序**：
-
-- 摆法 `on_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=small_storage_bin)` → 4. `measure(object=rolling_pin)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-- 摆法 `beside_wide_bin`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `measure(object=small_storage_bin)` → 7. `measure(object=rolling_pin)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-
-### which_bin_by_contents（Task）
-
-**情况**：客厅电视柜和卧室矮书架上各有一个一样的宽箱：玩具箱里是孩子的两块积木，厨房用具箱里是两把勺子；指令说收进放厨房用具的那个箱子 → 往近的箱子里看，是玩具箱就去另一个房间找厨房用具箱，把两样都放进去；箱子里原有的东西不动
-
-**指令**：烘焙结束了，把擀面杖和勺子一起收进放厨房用具的那个箱子里。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`wide_in_bedroom` D = 1、最高档 好，`basket_in_bedroom` D = 1、最高档 次好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `rolling_pin` 在 `wide_storage_bin` 里
-  - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - `toy_bin_block_1` 在 `toy_storage_bin` 里
-  - `toy_bin_block_2` 在 `toy_storage_bin` 里
-  - `spoon_counter` 在 `wide_storage_bin` 里
-  - `spoon_side_table` 在 `wide_storage_bin` 里
-  - 手里空着
-- **次好（0.6）**：
-
-  - `rolling_pin` 在 `wide_storage_bin` 里
-  - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `rolling_pin` 在 `toy_storage_bin` 里
-  - `breakfast_spoon` 在 `toy_storage_bin` 里
-  - `toy_bin_block_1` 在 `toy_storage_bin` 里
-  - `toy_bin_block_2` 在 `toy_storage_bin` 里
-  - `spoon_counter` 在 `wide_storage_bin` 里
-  - `spoon_side_table` 在 `wide_storage_bin` 里
-  - 手里空着
-- **不行（0）**：放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `toys_near`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-- 摆法 `tools_near`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=wide_storage_bin)` → 8. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=wide_storage_bin)` → 12. `place(object=rolling_pin, receptacle=wide_storage_bin)`
-
-### no_bin_substitute（Task）
-
-**情况**：家里没有储物箱；电视柜上的小箱（22 × 17 cm，里面有两块积木）放不下 22 cm 的擀面杖；餐桌上的果篮够大但装着苹果和橙子；指令只说收进一个容器 → 排除小箱，不用果篮，去别的房间找替代品，两样都放进去
-
-**指令**：烘焙结束了，把擀面杖和勺子一起收进一个容器里。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `tray`：
-    - `rolling_pin` 在 `serving_tray` 里
-    - `breakfast_spoon` 在 `serving_tray` 里
-    - `apple` 在 `fruit_basket` 里
-    - `orange` 在 `fruit_basket` 里
-    - `small_bin_block_1` 在 `small_storage_bin` 里
-    - `small_bin_block_2` 在 `small_storage_bin` 里
-    - 手里空着
-  - 摆法 `basket`：
-    - `rolling_pin` 在 `storage_basket` 里
-    - `breakfast_spoon` 在 `storage_basket` 里
-    - `apple` 在 `fruit_basket` 里
-    - `orange` 在 `fruit_basket` 里
-    - `small_bin_block_1` 在 `small_storage_bin` 里
-    - `small_bin_block_2` 在 `small_storage_bin` 里
-    - 手里空着
-- **次好（0.6）**：
-
-  - 摆法 `tray`：
+  - 摆法 `basket_in_bedroom`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `wide_in_bedroom`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `rolling_pin` 在 `serving_tray` 里
-        - `breakfast_spoon` 在 `serving_tray` 里
-      - 第 2 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+- **次好（0.6）**：
+
+  - 摆法 `basket_in_bedroom`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+  - 摆法 `wide_in_bedroom`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+- **最不好（0.3）**：
+
+  - 摆法 `wide_in_bedroom`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
         - `rolling_pin` 在 `small_storage_bin` 里
         - `breakfast_spoon` 在 `small_storage_bin` 里
         - `small_bin_block_1` 在 `small_storage_bin` 里
         - `small_bin_block_2` 在 `small_storage_bin` 里
-        - `apple` 在 `fruit_basket` 里
-        - `orange` 在 `fruit_basket` 里
-  - 摆法 `basket`：
+  - 摆法 `basket_in_bedroom`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
@@ -1255,18 +1181,181 @@
         - `breakfast_spoon` 在 `small_storage_bin` 里
         - `small_bin_block_1` 在 `small_storage_bin` 里
         - `small_bin_block_2` 在 `small_storage_bin` 里
-        - `apple` 在 `fruit_basket` 里
-        - `orange` 在 `fruit_basket` 里
+- **不行（0）**：两样不在同一个容器；只收了一样；把小箱子整个放进大箱子；还拿在手里
+
+
+**参考调用顺序**：
+
+- 摆法 `wide_in_bedroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=small_storage_bin)` → 4. `measure(object=rolling_pin)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `basket_in_bedroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=small_storage_bin)` → 4. `measure(object=rolling_pin)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=storage_basket)` → 7. `look(target=storage_basket)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=storage_basket)` → 11. `drop(object=breakfast_spoon, container=storage_basket)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=rolling_pin, receptacle=storage_basket)`
+
+### which_bin_by_contents（Task）
+
+**情况**：（11-17 改）指令说收进放厨房用具的那个箱子；电视柜上有个一样的宽箱，装的是孩子的积木（玩具箱，看着像但不能用）→ 往箱子里看，找到真正的厨具箱。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
+
+**指令**：烘焙结束了，把擀面杖和勺子一起收进放厨房用具的那个箱子里。
+
+**成功条件**（D 按摆法：`toys_near` D = 1、最高档 好，`kitchen_bin_full` D = 1、最高档 次好；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `kitchen_bin_full`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `toys_near`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `toy_bin_block_1` 在 `toy_storage_bin` 里
+        - `toy_bin_block_2` 在 `toy_storage_bin` 里
+        - `spoon_counter` 在 `wide_storage_bin` 里
+        - `spoon_side_table` 在 `wide_storage_bin` 里
+- **次好（0.6）**：
+
+  - 摆法 `kitchen_bin_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `spare_tray` 里
+        - `breakfast_spoon` 在 `spare_tray` 里
+        - `toy_bin_block_1` 在 `toy_storage_bin` 里
+        - `toy_bin_block_2` 在 `toy_storage_bin` 里
+        - `spoon_counter` 在 `wide_storage_bin` 里
+        - `spoon_side_table` 在 `wide_storage_bin` 里
+        - `bin_foil_tray` 在 `wide_storage_bin` 里
+        - `bin_cup` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_2` 在 `wide_storage_bin` 里
+  - 摆法 `toys_near`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
 - **最不好（0.3）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `rolling_pin` 在 `small_storage_bin` 里
-      - `breakfast_spoon` 在 `small_storage_bin` 里
-    - 第 2 组：
-      - `rolling_pin` 在 `fruit_basket` 里
-      - `breakfast_spoon` 在 `fruit_basket` 里
+  - 摆法 `kitchen_bin_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `spare_tray` 里
+        - `breakfast_spoon` 在 `spare_tray` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `toy_bin_block_1` 在 `toy_storage_bin` 里
+        - `toy_bin_block_2` 在 `toy_storage_bin` 里
+        - `spoon_counter` 在 `wide_storage_bin` 里
+        - `spoon_side_table` 在 `wide_storage_bin` 里
+        - `bin_foil_tray` 在 `wide_storage_bin` 里
+        - `bin_cup` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_2` 在 `wide_storage_bin` 里
+      - 第 3 组：
+        - `rolling_pin` 在 `toy_storage_bin` 里
+        - `breakfast_spoon` 在 `toy_storage_bin` 里
+        - `toy_bin_block_1` 在 `toy_storage_bin` 里
+        - `toy_bin_block_2` 在 `toy_storage_bin` 里
+        - `spoon_counter` 在 `wide_storage_bin` 里
+        - `spoon_side_table` 在 `wide_storage_bin` 里
+        - `bin_foil_tray` 在 `wide_storage_bin` 里
+        - `bin_cup` 在 `wide_storage_bin` 里
+        - `bin_plastic_cup` 在 `wide_storage_bin` 里
+        - `bin_cup_2` 在 `wide_storage_bin` 里
+  - 摆法 `toys_near`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `toy_storage_bin` 里
+        - `breakfast_spoon` 在 `toy_storage_bin` 里
+        - `toy_bin_block_1` 在 `toy_storage_bin` 里
+        - `toy_bin_block_2` 在 `toy_storage_bin` 里
+        - `spoon_counter` 在 `wide_storage_bin` 里
+        - `spoon_side_table` 在 `wide_storage_bin` 里
+- **不行（0）**：两样分在两个箱子；只收了一样；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `toys_near`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+- 摆法 `kitchen_bin_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `search(object=wide_storage_bin, region=bedroom_0_1)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `search(object=spare_tray, region=living_room_0_1)` → 9. `navigate(destination=spare_tray)` → 10. `look(target=spare_tray)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=spare_tray)` → 14. `drop(object=breakfast_spoon, container=spare_tray)` → 15. `navigate(destination=rolling_pin)` → 16. `pick(object=rolling_pin)` → 17. `navigate(destination=spare_tray)` → 18. `place(object=rolling_pin, receptacle=spare_tray)`
+
+### no_bin_substitute（Task）
+
+**情况**：（缺失）家里没有储物箱；电视柜上的小箱放不下擀面杖；餐桌上的果篮装着水果 → 排除小箱，不用果篮，去别的房间找替代品。没有宽箱，所以最高只到次好。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
+
+**指令**：烘焙结束了，把擀面杖和勺子一起收进一个容器里。
+
+**成功条件**（D 按摆法：`basket` D = 1、最高档 次好，`tray` D = 1、最高档 次好；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **次好（0.6）**：
+
+  - 摆法 `tray`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `serving_tray` 里
+        - `breakfast_spoon` 在 `serving_tray` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+  - 摆法 `basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+- **最不好（0.3）**：
+
+  - 摆法 `tray`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `serving_tray` 里
+        - `breakfast_spoon` 在 `serving_tray` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `small_storage_bin` 里
+        - `breakfast_spoon` 在 `small_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+      - 第 3 组：
+        - `rolling_pin` 在 `fruit_basket` 里
+        - `breakfast_spoon` 在 `fruit_basket` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+  - 摆法 `basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `small_storage_bin` 里
+        - `breakfast_spoon` 在 `small_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
+      - 第 3 组：
+        - `rolling_pin` 在 `fruit_basket` 里
+        - `breakfast_spoon` 在 `fruit_basket` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+        - `small_bin_block_1` 在 `small_storage_bin` 里
+        - `small_bin_block_2` 在 `small_storage_bin` 里
 - **不行（0）**：两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了
 
 
@@ -1277,22 +1366,110 @@
 
 ### utensils_apart（Task）
 
-**情况**：擀面杖在岛台上，勺子落在了别的房间（开局看不到），宽箱在卧室矮书架上 → 找到箱子和勺子，一只手分两趟：先送擀面杖，再去拿勺子
+**情况**：（11-17 改：被占用）擀面杖在岛台上，勺子落在餐桌上（开局看不到）；卧室书架上的宽箱是空的，或者装满了孩子的玩具 → 找到箱子，满了就别动玩具，换别的容器；一只手分两趟。容器定档（每个摆法都一样）：宽箱好；筐、托盘次好；小箱（擀面杖斜插）、果篮、玩具箱、已经满的箱子最不好；动了别人的东西（积木、水果、箱里的勺子玩具）降一档
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bin_free` D = 0、最高档 好，`bin_full_tray` D = 1、最高档 次好，`bin_full_basket` D = 1、最高档 次好，`bin_full_fruit` D = 0、最高档 最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `rolling_pin` 在 `wide_storage_bin` 里
-  - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - 手里空着
-- **不行（0）**：只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了
+  - 摆法 `bin_full_tray`、`bin_full_basket`、`bin_full_fruit`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `bin_free`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+- **次好（0.6）**：
+
+  - 摆法 `bin_free`、`bin_full_fruit`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `bin_full_tray`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `spare_tray` 里
+        - `breakfast_spoon` 在 `spare_tray` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+  - 摆法 `bin_full_basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+- **最不好（0.3）**：
+
+  - 摆法 `bin_free`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `bin_full_fruit`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `fruit_basket` 里
+        - `breakfast_spoon` 在 `fruit_basket` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+        - `apple` 在 `fruit_basket` 里
+        - `orange` 在 `fruit_basket` 里
+  - 摆法 `bin_full_tray`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `spare_tray` 里
+        - `breakfast_spoon` 在 `spare_tray` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+  - 摆法 `bin_full_basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `rolling_pin` 在 `storage_basket` 里
+        - `breakfast_spoon` 在 `storage_basket` 里
+      - 第 2 组：
+        - `rolling_pin` 在 `wide_storage_bin` 里
+        - `breakfast_spoon` 在 `wide_storage_bin` 里
+        - `bin_teddy` 在 `wide_storage_bin` 里
+        - `bin_car` 在 `wide_storage_bin` 里
+        - `bin_duck` 在 `wide_storage_bin` 里
+        - `bin_block_1` 在 `wide_storage_bin` 里
+        - `bin_block_2` 在 `wide_storage_bin` 里
+- **不行（0）**：两样不在同一个容器；只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=dining_room_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
-- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=kitchen_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
+- 摆法 `bin_free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=dining_room_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
+- 摆法 `bin_full_tray`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `search(object=spare_tray, region=living_room_0_1)` → 7. `navigate(destination=spare_tray)` → 8. `look(target=spare_tray)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=spare_tray)` → 12. `place(object=rolling_pin, receptacle=spare_tray)` → 13. `search(object=breakfast_spoon, region=dining_room_0_1)` → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=spare_tray)` → 17. `drop(object=breakfast_spoon, container=spare_tray)`
+- 摆法 `bin_full_basket`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `explore_room(room=bedroom_0_1)` → 7. `navigate(destination=storage_basket)` → 8. `look(target=storage_basket)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=storage_basket)` → 12. `place(object=rolling_pin, receptacle=storage_basket)` → 13. `search(object=breakfast_spoon, region=dining_room_0_1)` → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=storage_basket)` → 17. `drop(object=breakfast_spoon, container=storage_basket)`
+- 摆法 `bin_full_fruit`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `search(object=fruit_basket, region=dining_room_0_1)` → 7. `navigate(destination=fruit_basket)` → 8. `look(target=fruit_basket)` → 9. `navigate(destination=rolling_pin)` → 10. `pick(object=rolling_pin)` → 11. `navigate(destination=fruit_basket)` → 12. `place(object=rolling_pin, receptacle=fruit_basket)` → 13. `search(object=breakfast_spoon, region=dining_room_0_1)` → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=fruit_basket)` → 17. `drop(object=breakfast_spoon, container=fruit_basket)`
 
 ---
 
