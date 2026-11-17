@@ -31,14 +31,14 @@ def broken(tid, lid, drop):
 
 
 def test_missing_open_is_caught():
-    p = broken("T25", "cold_one", lambda i, s: s["skill"] == "open")    # 11-17: T09 tomato_in_fridge left
+    p = broken("T09", "tomato_in_fridge__in_fridge", lambda i, s: s["skill"] == "open")
     assert any("inside closed breakfast_fridge" in x["problem"] for x in p)
 
 
 def test_missing_walk_is_caught():
-    lid = "which_surface__dining"                   # 11-17: T08 far_sponge_tv left
+    lid = "far_sponge_tv__alt_dining_table_2"
     steps = TASKS["T08"]["routes"][TASKS["T08"]["oracle"][lid]]["steps"]
-    k = max(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
+    k = next(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
     p = broken("T08", lid, lambda i, s: i == k)
     assert any("not near kitchen_island/top" in x["problem"] for x in p)
 
@@ -71,15 +71,16 @@ def test_cup_on_the_desk_beside_the_bed_passes():
         return [dict(s, args={**s["args"], **({"destination": "desk_1/top"} if s["args"].get("destination") == "bookcase_3/top" else {}),
                               **({"receptacle": "desk_1/top", "hint_xy": [0.20, -2.95]}
                                  if s["args"].get("receptacle") == "bookcase_3/top" else {})}) for s in st]
-    assert edited("T12", "cup_to_bedside__bed_east", to_desk) == []   # was T28 (folded into T12, 11-17)
+    assert edited("T28", "cup_on_counter", to_desk) == []
 
 
 DEPENDENT = [("T22", "tray_elsewhere"), ("T25", "cups_for_two"),
-             pytest.param("T12", "where_his_cup_is", marks=pytest.mark.xfail(
+             pytest.param("T28", "where_his_cup_is", marks=pytest.mark.xfail(
                  strict=True, reason="11-10: once the cabinet closes with the hand free (navigate back, close), the "
                                      "in_cabinet route also solves on_counter (open, look, take the cup from the counter): "
                                      "it failed there only for closing away from the cabinet. User 11-10: keep it, "
-                                     "the route is the GT."))]
+                                     "the route is the GT.")),
+             ("T30", "bowls_in_cabinet")]
 
 
 @pytest.mark.parametrize("tid,vid", DEPENDENT)
@@ -112,7 +113,9 @@ def test_reference_routes_pass_the_gate():
     assert bad == []
 
 
-@pytest.mark.parametrize("tid,vid,kinds", [("T25", "cups_for_two", ("breakfast_cup", "breakfast_mug", "plastic_cup"))])
+@pytest.mark.parametrize("tid,vid,kinds", [("T25", "cups_for_two", ("breakfast_cup", "breakfast_mug", "plastic_cup")),
+                                           ("T30", "bowls_in_cabinet", ("breakfast_bowl", "breakfast_cup",
+                                                                         "breakfast_mug", "plastic_cup"))])
 def test_every_vessel_in_the_house_counts(tid, vid, kinds):
     """no hidden whitelist: every cup / mug (/ bowl) in the layout is one the goal's counts accept, so another
     reasonable vessel the robot finds does not fail it (the first kind always; the others where the layout falls

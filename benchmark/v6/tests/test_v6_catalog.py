@@ -145,11 +145,12 @@ def test_local_fallbacks_are_action_level():
     """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
-    # T01: what it tests is which table, which seat, a real book for the homework, or the fallback; where the book starts on the
+    assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
+    # T01: what it tests is which table, which seat, which book, or the fallback; where the book starts on the
     # island, half the layouts have it flat (expose first), so those designs are Action + Task
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
     assert {v: x["category"] for v, x in t01.items()} == {
-        "overhang_ready": "control", "homework_on_island": "task", **{v: "action_task" for v in (
+        "overhang_ready": "control", "which_book": "task", **{v: "action_task" for v in (
             "table_seats", "which_table", "no_room_fallback", "reader_seat")}}
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
@@ -189,7 +190,8 @@ def test_every_layout_has_its_route():
 def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
     for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
-                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin")):   # 11-17: T09 pot_in_dining_room left
+                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin"),
+                          ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"
@@ -303,17 +305,14 @@ def test_new_base_tasks():
     """T21-T30: a control and at least three Task-Level variants each (five before same-design merges), plus a dependent-decisions one in some (Action + Task
     when it clears a full destination), no Action-Level, no dynamic event, Chinese text."""
     for k in range(21, 31):
-        if k >= 26:          # 11-17: T27 dropped, T26/T28/T29/T30 folded into T12/T10/T18 (user)
-            continue
         tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
         tr = TASKS[tid]["v6_tracks"]
         chained = sum("dependent_decisions" in (TASKS[tid]["variants"][i["layouts"][0]].get("conditions") or [])
                       for i in TASKS[tid]["v6_variants"].values())
         cats = sorted(x["category"] for x in tr.values())
         assert cats.count("control") == 1 and "action" not in cats, tid
-        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review);
-        # 11-17: substitution variants are added next to the old ones (never replacing them), up to two more
-        assert 4 <= len(cats) <= 8 + chained and cats.count("action_task") <= chained, tid
+        # six designs each at first; same-design variants were since merged into seeds (2026-11-09 review)
+        assert 4 <= len(cats) <= 6 + chained and cats.count("action_task") <= chained, tid
         t = TASKS[tid]
         assert t["instruction_zh"]
         for info in t["v6_variants"].values():

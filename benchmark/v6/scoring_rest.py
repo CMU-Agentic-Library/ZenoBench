@@ -123,17 +123,6 @@ R[("T10", "can_in_dining_room")] = d0("the can found and in the trash can", _T10
     sit="易拉罐在隔壁餐桌或电视柜，看不到，要找", good="找到并扔进垃圾桶", no="没找到；没进垃圾桶；还拿着或掉了"))
 R[("T10", "trash_moved")] = d0("the trash can found (dining room or bathroom) and the can in it", _T10_NO, dict(
     sit="垃圾桶不在平时的位置（在餐厅或卫生间），要找", good="找到垃圾桶并扔进去", no="没找到垃圾桶；扔进别的箱子；还拿着或掉了"))
-# T10 trash_full (11-17, substitution; next to trash_moved): the trash can packed to the rim, the recycling bin
-# (a used plastic cup in it) takes the can; pressed onto the full trash can (its contents left in) is the worst
-R[("T10", "trash_full")] = tiers(
-    worst=lambda g, lid: {"all": [*atoms(g, "near_start"), HAND],
-                          "any": [[["inside", "soda_can", "trash_can"]], [["near_any", "soda_can", ["trash_can"], 0.03]]]},
-    why=("the can in the recycling bin, the full trash can left as it was", "",
-         "the can pressed onto the full trash can (its contents left in)"),
-    not_ok="the trash can's contents taken out or tipped to make room; the can left out; still held or dropped",
-    zh=dict(sit="垃圾桶在原处但塞满到桶口（零食盒、两个罐子、纸巾盒、饭盒），罐子放不进；回收箱（里面有用过的塑料杯）在电视柜或餐桌（按摆法）",
-            good="罐子扔进回收箱，垃圾桶里的东西没动", worst="罐子硬塞在满垃圾桶上（桶里东西没动）",
-            no="把垃圾桶里的东西倒出来腾地方；罐子没扔；还拿着或掉了"))
 R[("T10", "keep_kids_can")] = tiers(
     second=lambda g, lid: plus(drop(g, "near_start"), ["not inside", "kids_can", "trash_can"]),
     why=("the drunk can in the trash, the kid's can and homework untouched",
@@ -213,42 +202,38 @@ def _kid_fruit(g, lid, kid_gets):
     return [[["on", f, "desk_1/top"], *[["inside", o, "fruit_basket"] for o in fruits if o != f]] for f in kid_gets(fruits)]
 
 
-# T11 no_apple_for_kid (11-17, substitution; replaces leave_one_for_kid): no apple left; the banana (the kid does not
-# like oranges) is the substitute, the orange the worst
-R[("T11", "no_apple_for_kid")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "lunch_orange", "desk_1/top"], HAND]},
-    why=("the banana on the study desk (no apple left)", "", "the orange (the kid does not like it) brought instead"),
-    not_ok="nothing brought to the desk; still held or dropped",
-    zh=dict(sit="孩子想吃苹果，家里苹果没了；餐桌上有香蕉和橙子，指令说孩子不爱吃橙子", good="拿香蕉到书桌",
-            worst="拿了橙子", no="什么都没拿；还拿着或掉了"))
+R[("T11", "leave_one_for_kid")] = tiers(
+    second=lambda g, lid: {"all": [HAND], "any": [[a if a[0] == "on" else ["not on", a[1], "dining_table_2/top"]
+                                                     for a in grp] + [["not on_floor", a[1]] for a in grp
+                                                                       if a[0] == "inside"] for grp in g["any"]]},
+    worst=lambda g, lid: {"all": [HAND], "any": _kid_fruit(g, lid, lambda fs: ["lunch_orange"])},
+    why=("a fruit the kid likes on the study desk, the rest in the fruit basket",
+         "the right fruit to the kid, the rest put away somewhere other than the basket",
+         "the orange (the kid does not like it) to the kid, the rest in the basket"),
+    not_ok="nothing for the kid; fruit left on the table; still held or dropped",
+    zh=dict(sit="餐桌上两到三个水果（苹果、橙子、香蕉），孩子不爱吃橙子；果篮和书桌都没点名",
+            good="给孩子留一个他爱吃的放书桌，其余进果篮", second="给对了，其余收到了别处（不是果篮）",
+            worst="给了孩子橙子，其余进果篮", no="没给孩子；水果留在桌上；还拿着或掉了"))
 R[("T11", "fruit_plate_for_guests")] = tiers(
     second=lambda g, lid: plus(drop_atoms(g, lambda a: a[0] in ("inside", "not on_floor")), any_=[
-        [["inside", "apple", "fruit_box"]], [["inside", "lunch_orange", "fruit_box"]]]),
+        [["inside", "apple", "fruit_tray"]], [["inside", "lunch_orange", "fruit_tray"]]]),
     worst=lambda g, lid: {"all": [["on_any", "apple", ["tv_stand_2/top", "tv_stand_1/top"]],
                                   ["on_any", "lunch_orange", ["tv_stand_2/top", "tv_stand_1/top"]], HAND]},
-    why=("the small bin (no tray in the house) with the apple and the orange in front of the guests",
-         "the bin in front of the guests with one fruit only", "the fruit carried to the guests without a container"),
+    why=("the tray with the apple and the orange in front of the guests",
+         "the tray in front of the guests with one fruit only", "the fruit carried to the guests without the tray"),
     not_ok="nothing brought to the guests; fruit dropped; still held",
-    zh=dict(sit="苹果和橙子在餐桌；指令要用容器端过去，家里没有托盘，小收纳盒在书桌或餐桌旁的架子上（11-17 改成替换）",
-            good="小收纳盒装着两个水果放到客人面前", second="盒子到了但只装了一个水果", worst="水果直接拿过去，没用容器",
+    zh=dict(sit="苹果和橙子在餐桌，托盘在书桌或餐桌旁的架子上；要用托盘端到客厅电视柜前",
+            good="托盘装着两个水果放到客人面前", second="托盘到了但只装了一个水果", worst="水果直接拿过去，没用托盘",
             no="什么都没端过去；水果掉了；还拿着"))
 
 # ================================================================================================ T12 tidy toys
 _T12_NO = "a toy left out; the basket tipped; still held or dropped"
 R[("T12", "toys_out")] = d0("the car and the duck in the storage basket", _T12_NO, dict(
     sit="小车在客厅地上，鸭子在电视柜（对照）", good="两样都进储物篮", no="有玩具没收；篮子倒了；还拿着或掉了"))
-# T12 bedtime_toy (11-17, substitution; replaces duck_in_study): a cuddly toy to bed, none named.  With the teddy
-# there: the teddy best, the duck second; without it the duck is the substitute (best); the toy car the worst
-_BEDS = ["mattress_1/top", "bookcase_3/top"]
-R[("T12", "bedtime_toy")] = tiers(
-    second=lambda g, lid: {"all": [["on_any", "rubber_duck", _BEDS], HAND]} if lid.endswith("teddy_there") else None,
-    worst=lambda g, lid: {"all": [["on_any", "toy_car", _BEDS], HAND]},
-    why=("the teddy bear by the bed; without a teddy, the soft rubber duck",
-         "the rubber duck though the teddy was there", "the hard toy car brought to cuddle"),
-    not_ok="nothing brought to the bed; still held or dropped",
-    zh=dict(sit="孩子要睡觉，要个能抱着睡的玩具，指令没点名；seed：泰迪熊在电视柜上，或者家里没有泰迪熊（只有橡皮鸭和小车）",
-            good="有熊拿熊；没熊拿橡皮鸭（替换）", second="有熊却拿了鸭子", worst="拿了小车（硬的，不能抱）",
-            no="什么都没拿到床边；还拿着或掉了"))
+R[("T12", "duck_in_study")] = d0("both toys in the basket, the duck found", _T12_NO, dict(
+    sit="鸭子落在书桌或餐桌，要找", good="两样都进储物篮", no="没找到鸭子；有玩具没收；还拿着或掉了"))
+
+
 def _bins(g, lid, keep_blocks):
     names = {a[2] for a in atoms(g, "inside") + atoms(g, "fully_inside")}
     if "toy_bin_small" in names:
@@ -278,7 +263,6 @@ R[("T12", "find_all_toys")] = tiers(
     zh=dict(sit="小车在客厅地上，其他玩具分散在别的房间（2-4 件）；餐桌上一块黄海绵不是玩具",
             good="找齐全部玩具进篮子，海绵没动", second="玩具齐了，但挪了海绵（没放进篮子）",
             worst="玩具齐了，海绵也当玩具放进了篮子", no="有玩具没找到；篮子倒了；还拿着或掉了"))
-# T12 castle_stays (restored 11-17)
 R[("T12", "castle_stays")] = tiers(
     # the castle standing at the end (its blocks one on another) is what counts for the second tier: nudged, taken
     # apart and built again (user 11-12), or the loose blocks left beside it
@@ -318,29 +302,22 @@ R[("T13", "copy_the_setting")] = tiers(
             no="少一样；摆错位置；倒了；还拿着或掉了"))
 
 
-def _finish_mug(g, lid):
-    """The kid's drink a mug instead of the small bowl (no plastic cup in the house)."""
-    out = []
-    for a in g["all"]:
-        if a[0] == "near_any" and a[2] == ["kid_small_bowl"]:
-            out.append(["near_any", a[1], ["mug", "mug_2"], a[3]])
-        elif a[0] == "not near_any" and set(a[2]) & {"mug", "mug_2"}:
-            continue
-        else:
-            out.append(a)
-    return {"all": out}
+def _finish_worst(g, lid):
+    g2 = drop(g, "near_start", "not near_any")
+    drinks = ["mug", "mug_2", "kid_cup"]
+    return {"all": [a if not (a[0] == "near_any" and set(a[2]) & set(drinks)) else ["near_any", a[1], drinks, a[3]]
+                    for a in g2["all"]]}
 
 
 R[("T13", "finish_the_table")] = tiers(
-    second=_finish_mug, worst=lambda g, lid: drop(g, "near_start"),
-    why=("each empty place set like its kind; the kid's drink in the small bowl (no plastic cup left), the set "
-         "places untouched",
-         "the kid's place given a china mug instead (no plastic cup left)",
-         "the empty places set, but something of the set places nudged"),
+    second=lambda g, lid: drop(g, "near_start"), worst=_finish_worst,
+    why=("each empty place set like its kind (adult: bowl and mug; kid: bowl and plastic cup), the set places untouched",
+         "the empty places set right, but something of the set places nudged",
+         "a bowl and a drink at each empty place, but the wrong drink (a mug at the kid's, the plastic cup at an adult's)"),
     not_ok="an empty place left unset or half set; tipped; still held or dropped",
-    zh=dict(sit="三份已摆好（大人碗+马克杯，孩子碗+塑料杯+玩具）；剩下孩子的位子（有时还有一个大人位）只有勺子，家里没有第二个塑料杯，有一个马克杯和一个小碗（11-17 改成替换）",
-            good="空位按大人/孩子摆好，孩子的杯子用小碗顶上（不怕摔）", second="孩子位放了马克杯（陶瓷，容易摔）",
-            worst="摆好了，但碰动了已摆好的东西", no="有空位没摆或只摆一半；倒了；还拿着或掉了"))
+    zh=dict(sit="三份已摆好（大人碗+马克杯，孩子碗+塑料杯+玩具），剩下的位子只有勺子（孩子位还有小车）",
+            good="空位按大人/孩子摆对，已摆好的没动", second="摆对了，但碰动了已摆好的东西",
+            worst="每个空位都有碗和杯，但杯子类型错了（孩子位放马克杯或大人位放塑料杯）", no="有空位没摆或只摆一半；倒了；还拿着或掉了"))
 
 # ================================================================================================ T14 shelve the book
 R[("T14", "e1_book_ready")] = tiers(
@@ -362,61 +339,38 @@ def _pile_worst(g, lid):
     return {"all": [*base, *[x for b in books for x in _off(b, "desk_1/top")], HAND]}
 
 
-# T14 kids_shelf_full (11-17, substitution; replaces stack_them_stably): every level of the kid's bookcase packed;
-# another bookcase is the substitute; squeezed onto his packed bookcase (nothing moved) the worst
-R[("T14", "kids_shelf_full")] = tiers(
-    worst=lambda g, lid: {"all": g["all"], "any": [
-        [["on_any", "book_red", ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"]]],
-        [["near_any", "book_red", [a[1] for a in atoms(g, "near_start")], 0.02]]]},
-    why=("the book on another bookcase in his room, his packed bookcase untouched", "",
-         "the book squeezed onto (or on top of the books of) his packed bookcase, nothing moved"),
-    not_ok="books on his bookcase moved or taken out to make room; the book left on the desk; still held or dropped",
-    zh=dict(sit="孩子书架每一层都塞满了书，红书放不下；卧室里另一个书架有地方（11-17 替换 stack_them_stably）",
-            good="书放到卧室另一个书架，孩子书架没动", worst="硬塞到孩子书架上（压在别的书上），架上的书没动",
-            no="挪了或拿出架上的书腾地方；书留在书桌；还拿着或掉了"))
+R[("T14", "stack_them_stably")] = tiers(
+    worst=_pile_worst,
+    why=("one pile on the bookcase, largest at the bottom", "",
+         "the books on the bookcase, but not one pile or not largest-first"),
+    not_ok="a book left on the desk or elsewhere; a book on the floor; still held or dropped",
+    zh=dict(sit="书桌上两本大小不同的书；收到卧室书架上摞成一摞，大的在下", good="一摞、大的在下",
+            worst="都上了书架，但没摞成一摞或大小顺序反了", no="有书留在桌上或别处；书掉地上；还拿着或掉了"))
 
 
-def _hw_mug(g, tops):
-    return [a if a[:2] != ["on_any", "desk_mug"] else ["on_any", "desk_mug", tops] for a in g["all"]]
+def _hw_mug(g):
+    return [a if a[:2] != ["on_any", "desk_mug"] else ["on_any", "desk_mug", KITCHEN_TOPS] for a in g["all"]]
 
 
-# T14 homework_stays (11-17, substitution): both kitchen counters in use (baking); the mug on a low kitchen cabinet
-# top instead.  The mug squeezed onto a counter beside the baking things is second; the homework moved the worst
 R[("T14", "homework_stays")] = tiers(
-    second=lambda g, lid: {"all": _hw_mug(g, ["kitchen_counter_1/top", "kitchen_counter_2/top"])},
-    worst=lambda g, lid: {"all": [a for a in _hw_mug(g, ["kitchen_counter_1/top", "kitchen_counter_2/top",
-                                                         "kitchen_cabinet_6/top", "kitchen_cabinet_4/top"])
-                                  if not (a[0] in ("near_start", "never_picked") and
-                                          (a[1] in ("homework", "hw_pencil") or a[1] == ["homework", "hw_pencil"]))]},
-    why=("the book shelved, the mug on a low kitchen cabinet (the counters are in use), the homework untouched",
-         "the mug put on a counter among the baking things",
+    second=lambda g, lid: {"all": _hw_mug(g)},
+    worst=lambda g, lid: {"all": [a for a in _hw_mug(g) if a[0] not in ("near_start", "never_picked")]},
+    why=("the book shelved, the mug on a kitchen counter, the homework and its pencil untouched",
+         "the book shelved, the mug in the kitchen but not on a counter (island, stove)",
          "the book and the mug away, but the open homework or its pencil moved or put away"),
-    not_ok="the book or the mug left on the desk; the mug tipped; the baking things moved; still held or dropped",
-    zh=dict(sit="书桌上有看完的书、用过的马克杯、摊开的作业和铅笔；两个厨房台面都有人在用（擀面杖和面盆）（11-17 加替换）",
-            good="书上书架，杯子放到厨房矮柜顶（台面在用），作业和铅笔没动", second="杯子塞到台面上做饭的东西旁边",
-            worst="书和杯子收好了，但把作业或铅笔挪了或收起来了", no="书或杯子留在书桌；杯子倒了；碰了做饭的东西；还拿着或掉了"))
+    not_ok="the book or the mug left on the desk; the mug tipped; still held or dropped",
+    zh=dict(sit="书桌上有看完的书、用过的马克杯、摊开的作业和铅笔；作业明天还要写",
+            good="书上书架，杯子回厨房台面，作业和铅笔没动", second="杯子回了厨房但不是台面（岛台、灶台）",
+            worst="书和杯子收好了，但把作业或铅笔挪了或收起来了", no="书或杯子留在书桌；杯子倒了；还拿着或掉了"))
 R[("T14", "whose_book")] = tiers(
     second=lambda g, lid: drop(g, "near_start"),
     worst=lambda g, lid: {"all": [*[["on_any", a[1], SHELVES] for a in atoms(g, "on_any")], HAND]},
-    why=("each book on the shelf with its kind (the paperback, whose shelf has room only out of reach, on another "
-         "bookcase), the shelved books untouched",
-         "each book placed right, but shelved books nudged",
-         "the books shelved, but the paperback with the hardcovers (or the hardcover with the paperbacks)"),
+    why=("each book on the shelf with its kind, the shelved books untouched",
+         "each book with its kind, but shelved books nudged",
+         "the books shelved, but on the other kind's shelf"),
     not_ok="a book left on the desk or elsewhere; still held or dropped",
-    zh=dict(sit="蓝色精装书在卧室书架，平装书在高书架；书桌上有一种或两种；平装书架低的三层都塞满了，只有最高一层（1.17 m，够不着）有空（11-17 加替换）",
-            good="蓝皮书放回同类书架；平装书放到别的书架（不是精装书那个），原有的书没动",
-            second="放对了但碰动了架上的书", worst="平装书塞进了精装书的书架（或反过来）", no="有书留在桌上或别处；还拿着或掉了"))
-# T14 no_second_red_book (11-17, substitution; next_in_series restored beside it): no second red book; one of the kid's other hardcovers (green or blue) is
-# the substitute, the grown-up's paperback the worst
-R[("T14", "no_second_red_book")] = tiers(
-    worst=lambda g, lid: {"all": [a for a in g["all"]], "any": [[["on", "paperback_shelf", "desk_1/top"]]]},
-    why=("the red book back on his bookcase, one of his other hardcovers (no second red one) on the desk", "",
-         "the red one shelved, but the grown-up's paperback brought to the desk"),
-    not_ok="no book brought to the desk; the red book left out; still held or dropped",
-    zh=dict(sit="看完的红皮书要放回孩子书架，再拿同套的下一本红皮书；家里没有第二本红皮书，孩子还有绿皮、蓝皮的书，床头书架上有大人的平装书（11-17 改成替换）",
-            good="红皮书回孩子书架，拿孩子的绿皮或蓝皮书到书桌", worst="拿了大人的平装书", no="书桌上没有书；红皮书没收；还拿着或掉了"))
-
-# T14 next_in_series (restored 11-17)
+    zh=dict(sit="蓝色精装书在卧室书架，平装书在客厅书架；书桌上有一种或两种", good="各放到同类书的书架，原有的书没动",
+            second="放对了但碰动了架上的书", worst="都上了书架，但放到了另一类书的书架", no="有书留在桌上或别处；还拿着或掉了"))
 R[("T14", "next_in_series")] = tiers(
     second=lambda g, lid: plus(drop_atoms(g, lambda a: a[0] == "near_start" or a[:2] == ["on_any", "book_red"]),
                                ["on_any", "book_red", SHELVES]),
@@ -487,25 +441,11 @@ _hide = tiers(
             no="积木一眼能看到；藏进微波炉或冰箱；还拿着"))
 R[("T17", "lid_off")] = _hide
 R[("T17", "h_task_lid_elsewhere")] = _hide
-# T17 pot_in_use (11-17, substitution: in use): the stove pot holds soup; the empty pot on the dining table hides
-# the block; the block in the soup is the worst
-R[("T17", "pot_in_use")] = tiers(
-    worst=lambda g, lid: {"all": [["inside", "wooden_block_b", "soup_pot"], HAND]},
-    why=("hidden in the empty pot from the dining room, covered, the soup pot untouched", "",
-         "hidden in the pot full of soup"),
-    not_ok="the block in plain sight; the soup pot tipped; still held",
-    zh=dict(sit="灶上那口锅装着昨天的汤；空锅在餐桌，锅盖在岛台（11-17 替换 hide_both）",
-            good="藏进餐桌那口空锅，盖好盖子，汤锅没动（替换）", worst="藏进装汤的锅里", no="一眼能看到；汤锅碰倒；还拿着"))
-# T17 no_pot (11-17, substitution: missing): no pot in the house; a closed low cabinet hides the block; merely put
-# out of the way (still seen) is the worst
-R[("T17", "no_pot")] = tiers(
-    worst=lambda g, lid: {"all": [["not on", "wooden_block_b", "kitchen_island/top"],
-                                  ["not on", "wooden_block_b", "kitchen_microwave/inside_floor"],
-                                  ["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"], HAND]},
-    why=("hidden in a closed low cabinet (no pot in the house)", "", "moved off the island but still in sight"),
-    not_ok="left on the island; in the microwave or the fridge; still held",
-    zh=dict(sit="家里的锅都不在（拿去洗了）（11-17 替换 hide_somewhere）", good="藏进厨房矮柜，关好柜门（替换）",
-            worst="拿离岛台了但还看得见", no="留在岛台；藏进微波炉或冰箱；还拿着"))
+R[("T17", "hide_both")] = _hide
+R[("T17", "hide_somewhere")] = d0("hidden out of sight, not in an appliance", "in plain sight; in the microwave or "
+                                  "the fridge (dangerous, ruled out); still held", dict(
+    sit="没指定藏哪，只说别藏进电器", good="藏到一眼看不到的地方（不是电器），各处同档", no="一眼能看到；藏进微波炉或冰箱；还拿着"))
+
 # ================================================================================================ T18 set out bowls
 # (11-17: replaces check_cabinet_dishes, which only looked)
 R[("T18", "bowls_in_cabinet")] = doors_second(
@@ -533,24 +473,6 @@ R[("T18", "bowl_in_use")] = tiers(
     not_ok="the leftovers tipped out; fewer than two on the table; still held",
     zh=dict(sit="柜里两只碗，其中一只装着剩的小番茄；台面有玻璃保鲜盒", good="干净的碗加保鲜盒摆好，装剩菜的碗不动（替换：被占用）",
             worst="把装剩菜的碗也端上桌", no="剩菜倒出来了；不到两个；还拿着"))
-R[("T18", "no_bowl")] = tiers(
-    worst=lambda g, lid: {"all": [HAND], "any": [[["on", p, "dining_table_2/top"]]
-                                                 for p in ("plate_inside_kitchen_cabinet", "plate_counter_a", "plate_counter_b")]},
-    why=("no bowl in the house: the mug and the glass box (both hold soup) with the spoons", "",
-         "a plate set as one of the two (soup does not stay on it)"),
-    not_ok="fewer than two on the table; dropped; still held",
-    zh=dict(sit="家里没有干净碗；矮柜里一个马克杯（和平时那个盘子），台面上一个玻璃保鲜盒（原 T30 no_bowl）",
-            good="马克杯加保鲜盒，配上勺子（替换：缺失）", worst="用了盘子", no="不到两个；掉了；还拿着"))
-R[("T18", "plate_not_bowl")] = tiers(
-    second=lambda g, lid: drop(g, "is_closed"),
-    worst=lambda g, lid: {"all": [["on", "dinner_bowl_1", "dining_table_2/top"],
-                                  ["on", "plate_inside_kitchen_cabinet", "dining_table_2/top"], HAND]},
-    why=("both bowls (the second from the other cabinet), the plate left, both doors closed",
-         "the same, a door left open", "the plate set as the second bowl"),
-    not_ok="fewer than two on the table; dropped; still held",
-    zh=dict(sit="靠墙矮柜里一只碗和一个盘子，另一只碗在 4 号矮柜（原 T30 bowl_not_plate）",
-            good="去 4 号柜找到第二只碗，盘子不动，两个柜门关好", second="做到了但有柜门没关", worst="拿盘子当第二只碗",
-            no="不到两个；掉了；还拿着"))
 R[("T18", "door_stuck")] = d0("the bowls from the other low cabinet set with the spoons, its door closed",
                               "fewer than two bowls or spoons on the table; still held", dict(
     sit="靠墙矮柜的门卡住打不开（需要 sim 支持锁住的门）；4 号矮柜里也有两只碗", good="去 4 号矮柜拿碗摆好，配上勺子（替换：损坏）",
@@ -560,15 +482,8 @@ R[("T18", "door_stuck")] = d0("the bowls from the other low cabinet set with the
 _T19_NO = "the can or the cube not in the recycling bin; still held or dropped"
 R[("T19", "bin_on_bookcase")] = d0("the can and the cube in the recycling bin", _T19_NO, dict(
     sit="罐子在电视柜，泡沫块在地上，回收箱在卧室矮书架（对照）", good="两样都进回收箱", no="有一样没进回收箱；还拿着或掉了"))
-# T19 (11-17, substitution): the recycling bin packed / absent / out of reach; another container takes the two
-R[("T19", "recycle_bin_full")] = tiers(
-    worst=lambda g, lid: {"all": [*atoms(g, "inside")[2:], HAND],
-                          "any": [[["near_any", x, ["wide_storage_bin"], 0.03]] for x in ("soda_can", "foam_cube")]},
-    why=("the can and the cube in the empty storage bin, the packed recycling bin untouched", "",
-         "pressed onto the packed recycling bin"),
-    not_ok="the packed bin's contents taken out; one left out; still held or dropped",
-    zh=dict(sit="卧室书架上的回收箱塞满了（麦片盒、塑料杯、罐子），罐子和泡沫块放不进；电视柜上有个空收纳箱",
-            good="两样放进空收纳箱（替换：被占用）", worst="硬压在满回收箱上", no="把回收箱里的东西拿出来；有一样没收；还拿着或掉了"))
+R[("T19", "m_can_in_dining_room")] = d0("both in the recycling bin, the can found", _T19_NO, dict(
+    sit="罐子在餐桌或电视柜，要找", good="两样都进回收箱", no="没找到罐子；没进回收箱；还拿着或掉了"))
 R[("T19", "lookalike_bin")] = tiers(
     worst=lambda g, lid: {"all": [["inside", "soda_can", "toy_storage_bin"], ["inside", "foam_cube", "toy_storage_bin"],
                                   ["inside", "toy_block_in_bin_1", "toy_storage_bin"],
@@ -578,10 +493,8 @@ R[("T19", "lookalike_bin")] = tiers(
     not_ok="split between the bins; the toy bin's blocks taken out; one left out; still held or dropped",
     zh=dict(sit="客厅柜上有个一样的箱子装着积木，真正的回收箱（有用过的塑料杯）在卧室书架", good="两样进回收箱",
             worst="两样进了装积木的那个箱子，积木没动", no="分在两个箱子；动了积木；有一样没收；还拿着或掉了"))
-R[("T19", "bin_out_of_reach")] = d0("the recycling bin out of reach: both in the small bin on the dining table",
-                                    "one left out; still held or dropped", dict(
-    sit="回收箱放在厨房高架子顶上（1.42 m），够不着；餐桌上有个空的小收纳箱", good="两样放进小收纳箱（替换：能力不足）",
-    no="有一样没收；还拿着或掉了"))
+R[("T19", "x6_gd_can_put_away")] = doors_second("both in the recycling bin, the cabinet doors closed", _T19_NO, dict(
+    sit="罐子被收进了两个矮柜之一，找完关门", good="两样进回收箱，柜门关好", second="收好了但柜门没关", no="没找到罐子；没进回收箱；还拿着或掉了"))
 
 # ================================================================================================ T20 juice back to the table
 _juice = tiers(
@@ -598,23 +511,6 @@ R[("T20", "x6_gd_bottle_put_away")] = tiers(
     not_ok="the bottle not on the breakfast table; still held or dropped",
     zh=dict(sit="果汁瓶被收进两个矮柜之一", good="立着放回餐桌，柜门关好", second="立着放回了，但柜门没关",
             worst="放回了但躺着", no="没放回餐桌；还拿着或掉了"))
-
-# T20 juice_finished / juice_in_use (11-17, substitution): the soda instead of the juice; the empty or the taken
-# bottle brought is the worst
-R[("T20", "juice_finished")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "juice_bottle", "dining_table_2/top"], HAND]},
-    why=("the juice used up: the can of soda standing on the breakfast table", "",
-         "the empty juice bottle fished out of the trash and brought"),
-    not_ok="nothing to drink on the table; still held or dropped",
-    zh=dict(sit="果汁喝完了，空瓶扔在厨房旁的垃圾桶里；电视柜上有一罐汽水（11-17 替换）", good="汽水立着放到早餐桌（替换：缺失）",
-            worst="把空果汁瓶从垃圾桶里拿来", no="桌上没有喝的；还拿着或掉了"))
-R[("T20", "juice_in_use")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "juice_bottle", "dining_table_2/top"], HAND]},
-    why=("the juice at grandpa's place left there, the soda standing on the breakfast table", "",
-         "grandpa's juice taken from his place"),
-    not_ok="nothing to drink on the table; grandpa's things tipped; still held or dropped",
-    zh=dict(sit="果汁瓶在西边餐厅爷爷的座位旁，他正在吃早饭；电视柜上有一罐汽水（11-17 替换）", good="果汁不动，汽水立着放到早餐桌（替换：被占用）",
-            worst="把爷爷的果汁拿走", no="桌上没有喝的；碰倒爷爷的东西；还拿着或掉了"))
 
 # ================================================================================================ T21 bring tissues
 _T21_NO = "nothing to wipe with on the table; still held or dropped"
@@ -636,13 +532,6 @@ R[("T21", "the_kids_side")] = tiers(
     not_ok="the tissues not on the table; still held or dropped",
     zh=dict(sit="桌上孩子（塑料杯）和大人（马克杯）两个位子，汤是孩子洒的", good="放在孩子那边",
             second="放在桌上中间（谁那边都不是）", worst="放在大人那边", no="没放到桌上；还拿着或掉了"))
-# T21 tissue_in_use (11-17, substitution: in use): grandpa is using the tissues; the sponge instead; taking his
-R[("T21", "tissue_in_use")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "tissue", "dining_table_2/top"], HAND]},
-    why=("the tissues left with grandpa, the dry sponge brought to the spill", "", "grandpa's tissues taken from him"),
-    not_ok=_T21_NO,
-    zh=dict(sit="纸巾盒在西边餐桌爷爷的座位旁，他正在用；岛台上有块干海绵（11-17 新加）", good="海绵拿到餐桌，爷爷的纸巾不动（替换：被占用）",
-            worst="把爷爷正用着的纸巾拿走", no="没拿东西到餐桌；还拿着或掉了"))
 
 # ================================================================================================ T22 put away the shopping
 _T22_NO = "an item left on the table or not put away; the juice lying; still held or dropped"
@@ -701,28 +590,15 @@ _tray = tiers(
     zh=dict(sit="没有果篮，托盘代替（在岛台，或在西餐厅：装着橙子或压着四本书）", good="苹果放进托盘，果汁收好，门关好",
             second="做到了但门没关", worst="苹果进了托盘，但从托盘上拿下的书没放回书架", no="有东西没收；果汁躺着；还拿着或掉了"))
 R[("T22", "tray_elsewhere")] = _tray
-# T22 basket_in_use (11-17, substitution: in use): the kid's blocks in the fruit basket; the apple into the tray.
-# The apple put in among his toys is the worst
-R[("T22", "basket_in_use")] = tiers(
-    second=lambda g, lid: drop(g, "is_closed"),
-    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[0] == "is_closed" or a[:2] == ["inside", "bought_apple"]),
-                              ["inside", "bought_apple", "home_basket"]),
-    why=("the juice away, the apple in the tray, the kid's blocks left in the basket, doors closed",
-         "the same, a door left open", "the apple put in the basket among the kid's toys"),
-    not_ok="the kid's blocks taken out of the basket; " + _T22_NO,
-    zh=dict(sit="岛台上的果篮里装着孩子的积木（他拿来当玩具筐），旁边有个空托盘（11-17 新加）",
-            good="苹果放进托盘，积木留在果篮里，果汁收好，门关好（替换：被占用）", second="做到了但门没关",
-            worst="苹果放进果篮和玩具混在一起", no="把积木从果篮里拿出来；有东西没收；果汁躺着；还拿着或掉了"))
-# T22 basket_out_of_reach (11-17, substitution: not enough): the basket on top of the tall kitchen shelf
-R[("T22", "basket_out_of_reach")] = doors_second(
-    "the basket out of reach: the apple in the tray on the island, the juice away, doors closed", _T22_NO, dict(
-        sit="果篮放在厨房高架子顶上（1.41 m），够不着；岛台上有个托盘（11-17 新加）",
-        good="苹果放进托盘，果汁收好，门关好（替换：能力不足）", second="做到了但门没关", no="有东西没收；果汁躺着；还拿着或掉了"))
 
 # ================================================================================================ T23 pick up what dropped
 _T23_NO = "a dropped thing left on the floor or put in a wrong kind of place; still held"
 R[("T23", "spoon_on_floor")] = d0("the spoon on a kitchen counter or the island", _T23_NO, dict(
     sit="厨房地上一把勺子（对照）", good="勺子放到厨房台面或岛台", no="勺子还在地上或放别处；还拿着"))
+R[("T23", "dropped_out_of_view")] = d0("the spoon found and on a kitchen counter or the island", _T23_NO, dict(
+    sit="勺子滑到隔壁餐厅地上，看不到", good="找到放回厨房台面或岛台", no="没找到；还在地上；还拿着"))
+R[("T23", "dropped_in_two_rooms")] = d0("the spoon in the kitchen, the pencil on a desk", _T23_NO, dict(
+    sit="厨房地上勺子，书桌下铅笔", good="勺子回厨房台面，铅笔放书桌", no="有一样还在地上；放错地方；还拿着"))
 R[("T23", "by_kind")] = tiers(
     worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
                               ["not on_floor", "dropped_block"]),
@@ -731,70 +607,56 @@ R[("T23", "by_kind")] = tiers(
     not_ok=_T23_NO,
     zh=dict(sit="厨房地上勺子和一块积木，玩具箱在客厅", good="勺子回厨房，积木进玩具箱", worst="积木捡起来了但没进玩具箱",
             no="有东西还在地上；还拿着"))
-# T23 belongs_on_floor (11-17, substitution: missing): no toy box; the block into the small bin, not the laundry basket
 R[("T23", "belongs_on_floor")] = tiers(
     second=lambda g, lid: plus(drop(g, "near_start"), ["on_floor", "kitchen_bin"], ["on_floor", "laundry_basket"]),
-    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
-                              ["inside", "dropped_block", "laundry_basket"]),
-    why=("the spoon to the kitchen, the block in the small storage bin, the bin and the laundry basket left as they are",
-         "the same, but the bin or the basket nudged (still on the floor)",
-         "the block dropped into the laundry basket (it is for laundry)"),
-    not_ok="the bin or the basket lifted off the floor; " + _T23_NO,
-    zh=dict(sit="厨房地上勺子和一块积木，旁边是垃圾桶和洗衣篮（本来就放地上）；家里没有玩具箱，电视柜上有个空的小收纳箱（11-17 改成替换）",
-            good="勺子回厨房，积木放进小收纳箱，桶和篮没动（替换：缺失；洗衣篮不是替代品）", second="做到了但碰动了桶或篮（还在地上）",
-            worst="积木扔进洗衣篮", no="把桶或篮从地上拿起来；有东西还在地上；还拿着"))
-# T23 toy_box_full (11-17, substitution: in use): the toy bin packed; the block into the empty small bin.  The block
-# pressed onto the packed bin is the worst
-R[("T23", "toy_box_full")] = tiers(
-    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
-                              any_=[[["inside", "dropped_block", "toy_bin"]],
-                                    [["near_any", "dropped_block", ["toy_bin"], 0.03]]]),
-    why=("the spoon to the kitchen, the block in the empty small bin, the packed toy bin untouched", "",
-         "the block pressed onto the packed toy bin"),
-    not_ok="the toy bin's toys taken out to make room; " + _T23_NO,
-    zh=dict(sit="厨房地上勺子和一块积木；卧室书架上的玩具箱塞满了（泰迪熊露出箱口）；电视柜上有个空的小收纳箱（11-17 新加）",
-            good="勺子回厨房，积木放进空的小收纳箱，玩具箱没动（替换：被占用）", worst="积木硬压在满玩具箱上",
-            no="把玩具箱里的玩具拿出来腾地方；有东西还在地上；还拿着"))
-# T23 no_toy_box (11-17, substitution: missing): no toy box; the block into the small bin, onto a table is the worst
-R[("T23", "no_toy_box")] = tiers(
-    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
-                              ["not on_floor", "dropped_block"]),
-    why=("the spoon to the kitchen, the block in the small storage bin (the toy box's stand-in)", "",
-         "the block off the floor but only set down on some surface, not in a container"),
+    worst=lambda g, lid: drop(g, "near_start"),
+    why=("the spoon picked up, the bin and the laundry basket left where they are",
+         "the spoon picked up, the bin or the basket nudged (still on the floor)",
+         "the spoon picked up, and the bin or the basket lifted off the floor too"),
     not_ok=_T23_NO,
-    zh=dict(sit="厨房地上勺子和一块积木；家里没有玩具箱，电视柜上有个空的小收纳箱（11-17 新加）",
-            good="勺子回厨房，积木放进小收纳箱（替换：缺失）", worst="积木捡起来但只放在桌面/柜面上，没进容器",
-            no="有东西还在地上；还拿着"))
+    zh=dict(sit="勺子旁边有垃圾桶和洗衣篮，它们本来就放地上", good="只捡勺子，桶和篮没动", second="碰动了桶或篮（还在地上）",
+            worst="把桶或篮也从地上拿起来放别处了", no="勺子还在地上；还拿着"))
+R[("T23", "only_this_room")] = tiers(
+    second=lambda g, lid: drop(g, "near_start"),
+    why=("the kitchen spoon picked up, the living-room car left", "the spoon up, and the car picked up too (outside the "
+                                                                   "kitchen, not asked)", ""),
+    not_ok=_T23_NO,
+    zh=dict(sit="只说厨房地上；客厅地上还有孩子的小车", good="只捡厨房的勺子", second="勺子捡了，顺手把客厅小车也收了",
+            no="勺子还在地上；还拿着"))
+
 # ================================================================================================ T24 a snack for the kid
 _T24_NO = "nothing to eat on the kid's desk; still held or dropped"
 R[("T24", "apple_on_table")] = d0("the apple on the study desk", _T24_NO, dict(
     sit="苹果在餐桌，孩子在书房（对照）", good="苹果送到书桌", no="书桌上没吃的；还拿着或掉了"))
+R[("T24", "fruit_out_of_view")] = d0("the apple from the basket on the study desk", _T24_NO, dict(
+    sit="餐桌没吃的，果篮（有苹果）在卧室书架", good="找到苹果送到书桌", no="没找到；还拿着或掉了"))
 R[("T24", "where_is_he")] = d0("the snack on the desk with the homework", "on the other desk; " + _T24_NO, dict(
     sit="作业在书房或卧室书桌（按摆法），没说哪个房间", good="送到有作业的那张桌", no="送到另一张桌；还拿着或掉了"))
+R[("T24", "no_apples_for_him")] = tiers(
+    second=lambda g, lid: drop(g, "not on"), worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
+    why=("the banana on the desk", "the banana, and the apple brought too", "the apple only (he does not like it)"),
+    not_ok=_T24_NO,
+    zh=dict(sit="苹果和香蕉，孩子不爱吃苹果", good="拿香蕉", second="香蕉和苹果都拿了", worst="只拿了苹果", no="什么都没拿；还拿着或掉了"))
 R[("T24", "dinner_soon")] = tiers(
     second=lambda g, lid: drop(g, "not on"), worst=lambda g, lid: {"all": [["on", "snack_box", "desk_1/top"], HAND]},
     why=("the apple on the desk", "the apple, and the snack box too", "the snack box only (dinner in half an hour)"),
     not_ok=_T24_NO,
     zh=dict(sit="苹果和一盒零食，半小时后吃晚饭", good="拿苹果", second="苹果和零食都拿了", worst="只拿了零食", no="什么都没拿；还拿着或掉了"))
-# T24 apple_in_use (11-17, substitution: in use): grandpa's apple stays, the banana instead
-R[("T24", "apple_in_use")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
-    why=("the banana on the desk, grandpa's apple left with him", "", "grandpa's apple taken to the kid"),
-    not_ok=_T24_NO,
-    zh=dict(sit="唯一的苹果在西边餐桌爷爷的座位旁（他正在吃），东边餐桌上有香蕉（11-17 新加）",
-            good="香蕉送到书桌，爷爷的苹果不动（替换：被占用）", worst="把爷爷的苹果拿去给孩子", no="书桌上没吃的；还拿着或掉了"))
-# T24 apple_on_floor (11-17, substitution: broken -- dirty): the orange instead of the apple off the floor
-R[("T24", "apple_on_floor")] = tiers(
-    worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
-    why=("the orange on the desk, the apple off the floor not given", "", "the apple off the kitchen floor given to the kid"),
-    not_ok=_T24_NO,
-    zh=dict(sit="唯一的苹果掉在厨房地上（脏了），餐桌上有一个橙子（11-17 新加）",
-            good="橙子送到书桌（替换：损坏/弄脏）；地上苹果捡起放台面也行", worst="把地上的苹果送给孩子", no="书桌上没吃的；还拿着或掉了"))
+R[("T24", "two_kids")] = tiers(
+    worst=lambda g, lid: {"all": [["on_any", "snack_apple", DESKS], ["on_any", "snack_banana", DESKS], HAND]},
+    why=("one fruit on each kid's desk", "", "both fruits brought, but to the same kid"),
+    not_ok="a kid gets nothing and a fruit left on the table; still held or dropped",
+    zh=dict(sit="两个孩子分别在书房和卧室书桌，餐桌上一个苹果一个香蕉", good="每人一个", worst="两个都给了同一个孩子",
+            no="有孩子没拿到且水果留在桌上；还拿着或掉了"))
 
 # ================================================================================================ T25 a drink for the guest
 _T25_NO = "no drink or no cup by the guest; the juice lying; still held or dropped"
 R[("T25", "drink_on_island")] = d0("the juice and a cup (or a mug) by the guest", _T25_NO, dict(
     sit="果汁和杯子在岛台（对照）", good="果汁和杯子（马克杯也行）到电视柜", no="缺饮料或杯子；果汁躺着；还拿着或掉了"))
+R[("T25", "cup_elsewhere")] = d0("the juice and a cup from the counter by the guest", _T25_NO, dict(
+    sit="岛台只有果汁，杯子在小厨房台面", good="果汁和杯子到客人那", no="缺饮料或杯子；果汁躺着；还拿着或掉了"))
+R[("T25", "two_guests")] = d0("the juice and two cups by the guests", "only one cup; " + _T25_NO, dict(
+    sit="两位客人，一瓶果汁两个杯子在岛台", good="果汁和两个杯子到客人那", no="只拿一个杯子；缺饮料；还拿着或掉了"))
 R[("T25", "cold_one")] = tiers(
     second=lambda g, lid: one_of(g, ("is_closed",), ("near_start",)),
     worst=lambda g, lid: {"all": [["on", "guest_juice", "tv_stand_2/top"], ["upright", "guest_juice"],
@@ -805,6 +667,9 @@ R[("T25", "cold_one")] = tiers(
     not_ok=_T25_NO,
     zh=dict(sit="天热；岛台一瓶常温的，冰箱里一瓶冰的", good="拿冰的和杯子，冰箱关好，常温的没动",
             second="拿了冰的，但冰箱没关或也挪了常温那瓶", worst="拿了常温那瓶", no="缺饮料或杯子；躺着；还拿着或掉了"))
+R[("T25", "drink_in_fridge")] = doors_second("the juice from the fridge and a cup by the guest, the fridge closed",
+                                             _T25_NO, dict(sit="外面没饮料，果汁在冰箱", good="拿出果汁和杯子，冰箱关好",
+                                                           second="拿了但冰箱没关", no="缺饮料或杯子；躺着；还拿着或掉了"))
 
 
 def _cups_worst(g, lid):
@@ -843,81 +708,149 @@ R[("T25", "little_guest")] = tiers(
     zh=dict(sit="客人是小朋友；岛台上瓷杯和塑料杯", good="果汁和塑料杯", second="塑料杯和瓷杯都拿了", worst="只拿了瓷杯",
             no="缺饮料或杯子；躺着；还拿着或掉了"))
 
-# ================================================================================================ T12 + T26/T28 (11-17)
-_T12_THINGS_NO = "a thing of his left in the living room or put elsewhere; still held or dropped"
-R[("T12", "his_room")] = d0("the car in the basket in his room", "the other bedroom; " + _T12_THINGS_NO, dict(
-    sit="两间卧室，有玩具篮的是他的（原 T26 two_bedrooms）", good="小车进他房间的玩具篮", no="放进另一间卧室；还拿着或掉了"))
-R[("T12", "his_things_whose")] = tiers(
+# ================================================================================================ T26 the kid's things to his room
+_T26_NO = "a thing of his left in the living room or put elsewhere; still held or dropped"
+R[("T26", "car_in_living_room")] = d0("the car in his toy basket", _T26_NO, dict(
+    sit="小车在客厅地上，玩具篮在他卧室（对照）", good="小车进玩具篮", no="还在客厅或放别处；还拿着或掉了"))
+R[("T26", "scattered")] = d0("the car, the duck and the block in his toy basket", "one left out; " + _T26_NO, dict(
+    sit="小车在地上、鸭子在电视柜、积木在岛台", good="三样都进玩具篮", no="有一样没拿回；还拿着或掉了"))
+R[("T26", "two_bedrooms")] = d0("the car in the basket in his room", "the other bedroom; " + _T26_NO, dict(
+    sit="两间卧室，有玩具篮的是他的", good="小车进他房间的玩具篮", no="放进另一间卧室；还拿着或掉了"))
+R[("T26", "whose")] = tiers(
     worst=lambda g, lid: drop(g, "near_start"),
     why=("his picture book to his bookcase, the grown-up's novel left", "",
          "his book shelved, but the grown-up's novel taken to his room too"),
     not_ok="his book left out or put elsewhere; still held or dropped",
-    zh=dict(sit="电视柜上一本像他书架上那种的图画书和一本大人的小说（原 T26 whose）", good="图画书回他书架，小说没动",
+    zh=dict(sit="电视柜上一本像他书架上那种的图画书和一本大人的小说", good="图画书回他书架，小说没动",
             worst="图画书回了，但小说也拿过去了", no="图画书没拿回；还拿着或掉了"))
 _CAR_OR = [["inside", "living_car", "kids_basket"], ["on_any", "living_car", SHELVES]]
 _BOOK_OR = [["inside", "kid_book", "kids_basket"], ["on_any", "kid_book", SHELVES]]
-R[("T12", "his_things_by_kind")] = tiers(
+R[("T26", "where_in_room")] = tiers(
     second=lambda g, lid: {"all": [HAND], "any": [[c, b] for c, b in product(_CAR_OR, _BOOK_OR)]},
     why=("the car in the toy basket, the book on his bookcase", "both in his room, but the car on a shelf or the book "
                                                                 "in the basket", ""),
-    not_ok=_T12_THINGS_NO,
-    zh=dict(sit="小车和一本他的图画书在客厅（原 T26 where_in_room）", good="小车进玩具篮，书上他书架",
-            second="都拿回了，但车放书架或书放篮子", no="有一样没拿回；还拿着或掉了"))
-_T12_CUP_NO = "the cup not by his bed; the cup lying; still held or dropped"
-R[("T12", "cup_to_bedside")] = tiers(
-    second=lambda g, lid: drop(g, "near_start") if lid.endswith("already_there") else None,
-    why=("his cup standing by the bed with his teddy (left there if it already was)",
-         "it was already there: moved about, but still by his bed", ""),
-    not_ok="the other bed; the cup taken away from his bed; " + _T12_CUP_NO,
-    zh=dict(sit="两间卧室，有泰迪熊的床是他的；杯子在厨房台面，或已经在他床边（原 T28 cup_on_counter / which_bed / already_there）",
-            good="杯子立着放到他的床边；已经在了就不动", second="（已经在床边时）挪了一下但还在床边",
-            no="放到另一张床边；把杯子拿走了；躺着；还拿着或掉了"))
-R[("T12", "where_his_cup_is")] = tiers(
+    not_ok=_T26_NO,
+    zh=dict(sit="小车和一本他的图画书在客厅", good="小车进玩具篮，书上他书架", second="都拿回了，但车放书架或书放篮子",
+            no="有一样没拿回；还拿着或掉了"))
+R[("T26", "bear_to_bed")] = tiers(
+    second=lambda g, lid: {"all": [["inside", "living_bear", "kids_basket"], HAND]},
+    why=("the teddy on his bed or the bedside shelf (bedtime)", "the teddy in his toy basket", ""),
+    not_ok=_T26_NO,
+    zh=dict(sit="要睡觉了，泰迪熊在电视柜", good="熊放到床上或床头", second="熊放进了玩具篮", no="熊没拿回；还拿着或掉了"))
+
+# ================================================================================================ T27 leftovers to the fridge
+_T27_NO = "a leftover not in the fridge; a dish tipped; still held or dropped"
+for _d, _sit in (("rice_on_table", "餐桌上一盒剩饭（对照）"), ("fridge_out_of_view", "机器人从餐厅出发，冰箱看不到"),
+                 ("two_leftovers", "剩饭在桌上，剩汤在桌上或还在灶上的锅里")):
+    R[("T27", _d)] = doors_second("every leftover in the fridge, the fridge closed", _T27_NO, dict(
+        sit=_sit, good="剩菜都进冰箱，门关好", second="进了冰箱但门没关", no="有剩菜没进冰箱；倒了；还拿着或掉了"))
+R[("T27", "which_is_leftover")] = tiers(
+    second=lambda g, lid: drop(g, "is_closed"),
+    worst=lambda g, lid: drop_atoms(g, lambda a: a[0] in ("is_closed", "near_start", "never_picked", "not on")),
+    why=("only the rice in the fridge, the fridge closed, the rest left (empty tray, fruit and cereal, the bowl someone "
+         "eats from)", "the same, the fridge left open",
+         "the rice in the fridge, but something that is not a leftover moved or put in too"),
+    not_ok=_T27_NO + "; the bowl someone eats from tipped",
+    zh=dict(sit="剩饭旁边还有不是剩菜的：空锡纸盒；或果篮和麦片；或有人正在吃的一碗燕麦", good="只把剩饭放进冰箱，门关好",
+            second="冰箱门没关", worst="剩饭进了，但把不是剩菜的也挪了或放进冰箱（包括别人正吃的碗）", no="剩饭没进冰箱；倒了；还拿着或掉了"))
+
+# ================================================================================================ T28 his cup to the bedside
+_T28_NO = "the cup not by his bed; the cup lying; still held or dropped"
+R[("T28", "cup_on_counter")] = d0("his cup standing by his bed", _T28_NO, dict(
+    sit="他的塑料杯在厨房台面（对照）", good="杯子立着放床边", no="没放床边；躺着；还拿着或掉了"))
+R[("T28", "which_bed")] = d0("his cup by the bed with his teddy", "the other bed; " + _T28_NO, dict(
+    sit="两间卧室，有泰迪熊的床是他的", good="放到他的床边", no="放到另一张床边；还拿着或掉了"))
+R[("T28", "cup_out_of_view")] = d0("his cup found and by his bed", _T28_NO, dict(
+    sit="杯子落在餐桌上，看不到", good="找到放床边", no="没找到；没放床边；还拿着或掉了"))
+R[("T28", "where_his_cup_is")] = tiers(
     second=lambda g, lid: one_of(g, ("is_closed",), ("near_start",)),
     worst=lambda g, lid: {"all": [HAND], "any": [[["on_any", x, ["bookcase_3/top", "desk_1/top"]], ["upright", x]]
                                                  for x in ("cup_counter_b", "counter_mug")]},
     why=("his plastic cup by his bed, the china cup and the mug left, the cabinet closed",
          "his cup, but the cabinet left open or the other cups moved",
          "the china cup or the mug brought instead of his"),
-    not_ok=_T12_CUP_NO,
-    zh=dict(sit="台面上瓷杯和马克杯，他的塑料杯和它们一起或收在矮柜里（原 T28 where_his_cup_is）",
-            good="他的塑料杯放床边，其他没动，柜门关好", second="拿对了，但柜门没关或挪了别的杯子", worst="拿了瓷杯或马克杯代替",
-            no="没放床边；躺着；还拿着或掉了"))
+    not_ok=_T28_NO,
+    zh=dict(sit="台面上瓷杯和马克杯，他的塑料杯和它们一起或收在矮柜里", good="他的塑料杯放床边，其他没动，柜门关好",
+            second="拿对了，但柜门没关或挪了别的杯子", worst="拿了瓷杯或马克杯代替", no="没放床边；躺着；还拿着或掉了"))
+R[("T28", "already_there")] = tiers(
+    second=lambda g, lid: drop(g, "near_start"),
+    why=("seen it is already there and left it", "moved it about, but it is still by his bed", ""),
+    not_ok="the cup taken away from his bed; still held or dropped",
+    zh=dict(sit="杯子已经在他床边", good="看到已经在了就不动", second="挪了一下但还在床边", no="把杯子拿走了；还拿着或掉了"))
 
-# ================================================================================================ T10 + T29 (11-17)
-_CLEAR_NO = "a thing that does not belong left on the table; a setting piece tipped; still held or dropped"
-_TBL = "dining_table_2/top"
+# ================================================================================================ T29 clear the table
+_T29_NO = "the thing left on the table; a setting piece tipped; still held or dropped"
+R[("T29", "car_on_table")] = tiers(
+    second=lambda g, lid: plus(drop(g, "inside"), *_off("table_car", "dining_table_2/top")),
+    why=("the toy car in his toy box", "the car off the table but not in the toy box", ""),
+    not_ok=_T29_NO,
+    zh=dict(sit="小车在餐桌，玩具箱在客厅（对照）", good="小车进玩具箱", second="从桌上拿走了但没进玩具箱", no="小车还在桌上；还拿着或掉了"))
+R[("T29", "belongs_on_table")] = tiers(
+    second=lambda g, lid: plus(drop(g, "near_start"), ["on", "set_bowl", "dining_table_2/top"],
+                               ["on", "set_spoon", "dining_table_2/top"]),
+    worst=lambda g, lid: drop(g, "near_start"),
+    why=("what does not belong taken away, the bowl and spoon set for the meal left (nothing at all if nothing to clear)",
+         "the same, but the setting nudged on the table", "the set bowl or spoon taken off the table too"),
+    not_ok=_T29_NO,
+    zh=dict(sit="桌上摆好了碗和勺子（吃饭用），有时还有小车", good="只拿走小车（没有就不动）", second="碗勺被碰动但还在桌上",
+            worst="把摆好的碗或勺也拿走了", no="小车还在桌上；碰倒了；还拿着或掉了"))
+R[("T29", "homework_on_table")] = tiers(
+    second=lambda g, lid: {"all": [*_off("hw_notebook", "dining_table_2/top"), *_off("hw_pencil", "dining_table_2/top"),
+                                   HAND]},
+    why=("the notebook and the pencil to the study desk", "both off the table, but not to his desk", ""),
+    not_ok=_T29_NO,
+    zh=dict(sit="孩子的作业本和铅笔在餐桌", good="放回书房书桌", second="拿走了但没放书桌", no="有一样还在桌上；还拿着或掉了"))
+R[("T29", "several")] = tiers(
+    second=lambda g, lid: {"all": [*[a for a in g["all"]], *_off("table_book", "dining_table_2/top")]},
+    worst=lambda g, lid: {"all": [*_off("table_car", "dining_table_2/top"), *_off("empty_can", "dining_table_2/top"),
+                                  *_off("table_book", "dining_table_2/top"), HAND]},
+    why=("the car in the toy box, the can in the trash, the book on a bookcase or shelf",
+         "the car and the can in place, the book off the table but not shelved",
+         "everything off the table, but not each to its place"),
+    not_ok=_T29_NO,
+    zh=dict(sit="桌上小车、一本平装书、一个空罐", good="小车进玩具箱、罐子进垃圾桶、书上书架", second="车和罐对了，书拿走但没上书架",
+            worst="都拿走了但没各回各处", no="有东西还在桌上；还拿着或掉了"))
+R[("T29", "which_table")] = tiers(
+    second=lambda g, lid: drop(g, "near_start"),
+    why=("the toy on the table with the soup to the toy box, the other table's toy left",
+         "the meal table cleared, and the other table's toy put away too", ""),
+    not_ok="the meal table's toy left there; still held or dropped",
+    zh=dict(sit="两张餐桌上各有一个玩具，汤在其中一张", good="只收有汤那张桌上的玩具", second="两个玩具都收了",
+            no="有汤那张的玩具没收；还拿着或掉了"))
 
-
-def _clear_second(g, lid):
-    case = lid.split("__")[-1]
-    if case == "car":
-        return plus(drop(g, "inside"), *_off("table_car", _TBL))
-    if case in ("car_and_setting", "setting_only"):
-        return plus(drop(g, "near_start"), ["on", "set_bowl", _TBL], ["on", "set_spoon", _TBL])
-    if case == "homework":
-        return {"all": [*_off("hw_notebook", _TBL), *_off("hw_pencil", _TBL), HAND]}
-    return {"all": [*g["all"], *_off("table_book", _TBL)]}             # several: the book off but not shelved
-
-
-def _clear_worst(g, lid):
-    case = lid.split("__")[-1]
-    if case in ("car_and_setting", "setting_only"):
-        return drop(g, "near_start")
-    if case == "several":
-        return {"all": [*_off("table_car", _TBL), *_off("empty_can", _TBL), *_off("table_book", _TBL), HAND]}
-    return None
-
-
-R[("T10", "clear_table_for_dinner")] = tiers(
-    second=_clear_second, worst=_clear_worst,
-    why=("what does not belong taken each to its place (toy box, bookshelf, trash, study desk), the set bowl and spoon "
-         "left", "off the table but not to its place (or the setting nudged)",
-         "the set bowl or spoon taken away too; or everything off the table but none to its place"),
-    not_ok=_CLEAR_NO,
-    zh=dict(sit="餐桌上有不该放的：小车 / 小车加摆好的碗勺 / 只有碗勺 / 小车、平装书、空罐 / 作业本和铅笔（原 T29）",
-            good="不该放的各回各处（玩具箱、书架、垃圾桶、书桌），碗勺留着", second="拿走了但没放到该去的地方，或碰动了碗勺",
-            worst="把碗勺也拿走了；或都拿走了但没一样回原处", no="不该放的还在桌上；碰倒了；还拿着或掉了"))
+# ================================================================================================ T30 bowls for the soup
+_T30_NO = "fewer bowls than needed on the island; a bowl dropped; still held"
+R[("T30", "bowl_on_cabinet")] = d0("a clean bowl on the island by the stove", _T30_NO, dict(
+    sit="汤在灶上，干净碗在靠墙矮柜（对照）", good="碗拿到岛台", no="岛台上没碗；碗掉了；还拿着"))
+R[("T30", "how_many")] = d0("three bowls on the island (three spoons at the table)", _T30_NO, dict(
+    sit="餐桌摆了三把勺子，柜上三个干净碗", good="三个碗到岛台", no="不到三个；碗掉了；还拿着"))
+R[("T30", "bowl_put_away")] = doors_second("a bowl from the cabinet on the island, the door closed", _T30_NO, dict(
+    sit="外面没碗，干净碗在矮柜里", good="拿碗到岛台，柜门关好", second="拿了但柜门没关", no="岛台上没碗；碗掉了；还拿着"))
+R[("T30", "no_bowl")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "spare_plate", "kitchen_island/top"], HAND]},
+    why=("no bowl in the house: a mug (holds soup) on the island", "", "the plate brought (soup does not stay on it)"),
+    not_ok="nothing brought; dropped; still held",
+    zh=dict(sit="家里没有干净碗，柜上一个马克杯一个盘子", good="拿马克杯（能盛汤的替代）", worst="拿了盘子", no="什么都没拿；掉了；还拿着"))
+R[("T30", "bowls_in_cabinet")] = tiers(
+    second=lambda g, lid: drop(g, "is_closed"),
+    worst=lambda g, lid: {"all": [["count_on_at_least", ["soup_bowl_1", "soup_bowl_2", "soup_bowl_3", "spare_mug"],
+                                   "kitchen_island/top", 3], HAND]} if lid.endswith("two_inside") else None,
+    why=("three for the three spoons: bowls (a mug only when the bowls run out), the cabinet closed",
+         "the same, the cabinet left open", "the mug used though a third bowl was in the cabinet"),
+    not_ok="fewer than three; dropped; still held",
+    zh=dict(sit="三把勺子；柜上一个碗和一个马克杯，柜里还有两个或一个碗；家里没别的碗",
+            good="凑够三个（碗不够时才用马克杯），柜门关好", second="凑够了但柜门没关", worst="柜里还有碗却用了马克杯",
+            no="不到三个；掉了；还拿着"))
+R[("T30", "bowl_not_plate")] = tiers(
+    second=lambda g, lid: drop(g, "near_start"),
+    worst=lambda g, lid: {"all": [["on", "spare_plate" if lid == "bowl_not_plate" else "full_bowl",
+                                   "kitchen_island/top"], HAND]},
+    why=("the clean bowl on the island, the plate (or the full bowl) left", "the clean bowl, and the plate or the full "
+                                                                            "bowl brought too",
+         "only the plate, or only the bowl still full of oatmeal"),
+    not_ok="nothing brought; dropped; still held",
+    zh=dict(sit="柜上一个碗旁边是盘子，或是一碗还盛着燕麦的碗", good="只拿干净的碗", second="干净碗拿了，盘子或满碗也拿了",
+            worst="只拿了盘子或那碗满的", no="什么都没拿；掉了；还拿着"))
 
 
 def scoring_for(task_id: str, design: str, task: dict) -> dict | None:

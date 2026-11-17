@@ -38,7 +38,7 @@
 | 隐藏状态分叉（关键观测前看到的一样，路线互迁都失败） | 79 个里有 46 个 |
 
 **有一条固定序列通过全部布局的 10 个**（需要逐个检查，不是结论）：
-- T01 `table_seats`、`homework_on_island`
+- T01 `table_seats`、`which_book`
 - T05 `check_desk_first`
 - T06 `seen_from_bed`
 - T09 `x6_gd_tomato_elsewhere`
@@ -102,7 +102,7 @@ T30：
 - run_episode 的 recovery planner 输入：指令、技能列表、观察；
 - benchmark profile 的 `gt_objects`、`task_status`、`mask_feedback`、`anonymize_names`；
 - 静态已知地点：只有家具和房间，没有物体；
-- 指令：不含 variant 或布局名，每个布局的指令相同（原来的例外 T01 `which_book` 11-16 改成了 `homework_on_island`，指令不再随布局变）；
+- 指令：不含 variant 或布局名，每个布局的指令相同。例外是 T01 `which_book`，指令本身就是线索（客人说昨晚在哪儿看的书），这是设计如此；
 - oracle 路线和配置注释：以上面向 planner 的字段里都没有。
 
 **结果：没有泄露。** 上一版报告说 `env_service/worker.py` 的开局消息把 variant 和 seed 发给了 planner，这是审计脚本的误报：那条消息只到 server，server 不转发。审计现在直接检查 server 返回给 planner 的字段。

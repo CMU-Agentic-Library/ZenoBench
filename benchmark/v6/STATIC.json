@@ -1,7 +1,7 @@
 {
- "variants": 127,
- "episodes": 1270,
- "static_ok": 1270,
+ "variants": 157,
+ "episodes": 1570,
+ "static_ok": 1570,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -17,12 +17,12 @@
    "static_ok": 50
   },
   "T04_cup_or_mug_to_cabinet": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T05_pen_or_pencil_to_desk": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 80,
+   "static_ok": 80
   },
   "T06_block_destination_occupied": {
    "episodes": 40,
@@ -33,12 +33,12 @@
    "static_ok": 50
   },
   "T08_wipe_island": {
-   "episodes": 40,
-   "static_ok": 40
+   "episodes": 50,
+   "static_ok": 50
   },
   "T09_tomato_soup": {
-   "episodes": 20,
-   "static_ok": 20
+   "episodes": 60,
+   "static_ok": 60
   },
   "T10_trash_the_can": {
    "episodes": 70,
@@ -49,28 +49,28 @@
    "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 50,
+   "static_ok": 50
   },
   "T13_breakfast_setup": {
    "episodes": 40,
    "static_ok": 40
   },
   "T15_cover_the_pot": {
-   "episodes": 30,
-   "static_ok": 30
+   "episodes": 40,
+   "static_ok": 40
   },
   "T16_pack_snack_box": {
-   "episodes": 30,
-   "static_ok": 30
+   "episodes": 40,
+   "static_ok": 40
   },
   "T17_hide_and_seek_block": {
-   "episodes": 30,
-   "static_ok": 30
+   "episodes": 40,
+   "static_ok": 40
   },
   "T18_set_out_bowls": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T19_recycling": {
    "episodes": 40,
@@ -81,34 +81,54 @@
    "static_ok": 30
   },
   "T14_shelve_the_book": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T21_bring_tissues": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T22_put_away_shopping": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T23_pick_up_dropped": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T24_snack_for_kid": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T25_drink_for_guest": {
    "episodes": 70,
    "static_ok": 70
   },
-  "T21_bring_tissues": {
-   "episodes": 50,
-   "static_ok": 50
+  "T26_kids_things_to_room": {
+   "episodes": 60,
+   "static_ok": 60
   },
-  "T22_put_away_shopping": {
-   "episodes": 80,
-   "static_ok": 80
-  },
-  "T23_pick_up_dropped": {
-   "episodes": 50,
-   "static_ok": 50
-  },
-  "T24_snack_for_kid": {
-   "episodes": 50,
-   "static_ok": 50
-  },
-  "T25_drink_for_guest": {
+  "T27_leftovers_to_fridge": {
    "episodes": 40,
    "static_ok": 40
+  },
+  "T28_cup_to_bedside": {
+   "episodes": 50,
+   "static_ok": 50
+  },
+  "T29_clear_table_for_dinner": {
+   "episodes": 50,
+   "static_ok": 50
+  },
+  "T30_bowls_for_soup": {
+   "episodes": 60,
+   "static_ok": 60
   }
  },
  "categories": {
-  "control": 25,
-  "action_task": 6,
-  "task": 96
+  "control": 30,
+  "action_task": 8,
+  "task": 119
  },
- "tasks_sha1": "e4ed3c054eb5f6cc0cb2dab625f43218551df682"
+ "tasks_sha1": "f340a7b5560a6a1723c6e6a57eaea5a206f586f5"
 }

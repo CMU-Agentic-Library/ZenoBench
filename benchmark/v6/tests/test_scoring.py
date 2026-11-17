@@ -9,8 +9,7 @@ from benchmark.v6.scoring import BUILT, SCORING, check_spec, score, scoring_for
 TASKS = json.loads((Path(__file__).resolve().parents[1] / "tasks.json").read_text())
 
 
-KEYS = sorted(k for k in set(SCORING) | set(BUILT)        # 11-17: designs that left the benchmark are skipped
-              if any(t["task_id"].startswith(k[0]) and k[1] in t["v6_variants"] for t in TASKS["tasks"]))
+KEYS = sorted(set(SCORING) | set(BUILT))
 
 
 def _spec(key):

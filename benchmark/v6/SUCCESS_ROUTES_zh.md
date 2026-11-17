@@ -298,28 +298,24 @@
 - 摆法 `mug_2_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.428])`
 - 摆法 `mug_3_flat`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)` → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.094])`
 
-### homework_on_island（Task）
+### which_book（Task）
 
-**情况**：指令只说客人想边吃早饭边看点东西、拿本书到餐桌；岛台上平时放书的地方只有孩子摊开的作业本和铅笔（像书，但不是拿来读的，正在用） → 眼前的东西不合适：作业本不动，去别的房间找一本真正的书送到餐桌（替换；把作业本拿去算最不好）
+**情况**：岛台上有一本书（不是要找的）；指令说客人昨晚在哪个房间看书（客厅看电视时，或卧室睡前），书就留在那里；另一个房间也有一本别的书 → 不拿眼前岛台上的书，去指令说的房间拿那本，送到餐桌；岛台上和另一个房间的书都不动
 
-**指令**：客人想边吃早饭边看点东西，帮他拿本书到餐桌上。
+**指令**：客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-  - `homework_notebook`、`homework_pencil` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- **次好（0.6）**：
-
-  - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+  - `book_island`、`book_other` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - **最不好（0.3）**：
 
-  - `homework_notebook` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
+  - `paperback_book` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
   - 手里空着
-- **不行（0）**：餐桌上没有可看的东西（书和作业本都没拿来）；还拿在手里
+- **不行（0）**：客人那本没到餐桌（拿错或没拿）；还拿在手里
 
 
 **参考调用顺序**：
@@ -503,7 +499,7 @@
 
 ### tower_for_kid（Task）
 
-**情况**：孩子想在餐桌上看积木塔；三块积木分散在岛台、客厅电视柜和另一间房的桌上（开局看不到）；近处的餐桌堆满了杂物，没有离边和杂物都 ≥ 10 cm 的地方 → 换到西边餐厅那张餐桌搭（替换：换地方放）；找全三块，一只手往返三趟，第一块离边 ≥ 10 cm 当底座，再叠另外两块；两张桌上原有东西都不动
+**情况**：孩子想在餐桌上看积木塔；三块积木分散在岛台、客厅电视柜和另一间房的桌上（开局看不到）；餐桌上有储物箱、两盒麦片和勺子 → 找全三块，一只手往返三趟、安排先后；第一块放在餐桌上离边缘至少 5 cm、不贴着储物箱和麦片的空处当底座，再叠另外两块；桌上原有东西不动
 
 **指令**：孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。
 
@@ -511,48 +507,48 @@
 
 - **好（1.0）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `wooden_block_b` 叠在 `wooden_block_a` 上
       - `floor_block` 叠在 `wooden_block_b` 上
       - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_a` 离台面边缘至少 10 cm
-      - `wooden_block_a` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `wooden_block_a` 离台面边缘至少 5 cm
+      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - 第 2 组：
       - `floor_block` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 叠在 `floor_block` 上
       - `wooden_block_a` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_a` 离台面边缘至少 10 cm
-      - `wooden_block_a` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `wooden_block_a` 离台面边缘至少 5 cm
+      - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - 第 3 组：
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `floor_block` 叠在 `wooden_block_a` 上
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_b` 离台面边缘至少 10 cm
-      - `wooden_block_b` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - 第 4 组：
       - `floor_block` 叠在 `wooden_block_b` 上
       - `wooden_block_a` 叠在 `floor_block` 上
       - `wooden_block_b` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `wooden_block_b` 离台面边缘至少 10 cm
-      - `wooden_block_b` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `wooden_block_b` 离台面边缘至少 5 cm
+      - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - 第 5 组：
       - `wooden_block_a` 叠在 `floor_block` 上
       - `wooden_block_b` 叠在 `wooden_block_a` 上
       - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `floor_block` 离台面边缘至少 10 cm
-      - `floor_block` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
     - 第 6 组：
       - `wooden_block_b` 叠在 `floor_block` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-      - `floor_block` 离台面边缘至少 10 cm
-      - `floor_block` 离这些东西都至少 10 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table`
+      - `floor_block` 离台面边缘至少 5 cm
+      - `floor_block` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
 - **最不好（0.3）**：
 
-  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`clutter_toy_box`、`clutter_tray`、`clutter_basket`、`clutter_fruit_basket`、`clutter_bowl`、`clutter_plate_1`、`clutter_sorting_tray`、`clutter_plate_2`、`clutter_small_bin`、`clutter_book_green`、`clutter_book_red`、`clutter_paperback`、`clutter_cereal_c`、`clutter_notebook`、`clutter_cereal_e`、`bowl_side_table`、`cup_side_table`、`spoon_side_table` 没被挪动（离开局位置不超过 3 cm）
+  - `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
@@ -579,13 +575,13 @@
       - `wooden_block_b` 叠在 `floor_block` 上
       - `wooden_block_a` 叠在 `wooden_block_b` 上
       - `floor_block` 在其中任一处上：`dining_table_2/top`、`dining_table_1/top`
-- **不行（0）**：只叠了两块（没找齐）；为腾地方挪了桌上的东西；塔不在餐桌上；没叠上
+- **不行（0）**：只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上
 
 
 **参考调用顺序**：
 
-- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=wooden_block_a, receptacle=dining_table_1/top, hint_xy=[-7.64, 7.8])` → 10. `search(object=wooden_block_b, region=living_room_0_0)` → 11. `navigate(destination=wooden_block_b)` → 12. `pick(object=wooden_block_b)` → 13. `navigate(destination=wooden_block_a)` → 14. `stack(object=wooden_block_b, base=wooden_block_a)` → 15. `search(object=floor_block, region=kitchen_0_1)` → 16. `navigate(destination=floor_block)` → 17. `pick(object=floor_block)` → 18. `navigate(destination=wooden_block_a)` → 19. `stack(object=floor_block, base=wooden_block_b)`
-- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `navigate(destination=dining_table_1/top)` → 8. `look(target=dining_table_1/top)` → 9. `place(object=wooden_block_a, receptacle=dining_table_1/top, hint_xy=[-7.64, 7.8])` → 10. `search(object=floor_block, region=living_room_0_0)` → 11. `navigate(destination=floor_block)` → 12. `pick(object=floor_block)` → 13. `navigate(destination=wooden_block_a)` → 14. `stack(object=floor_block, base=wooden_block_a)` → 15. `search(object=wooden_block_b, region=living_room_0_1)` → 16. `navigate(destination=wooden_block_b)` → 17. `pick(object=wooden_block_b)` → 18. `navigate(destination=wooden_block_a)` → 19. `stack(object=wooden_block_b, base=floor_block)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=wooden_block_b, region=living_room_0_0)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=floor_block, region=kitchen_0_1)` → 14. `navigate(destination=floor_block)` → 15. `pick(object=floor_block)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=floor_block, base=wooden_block_b)`
+- 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=dining_table_2/top)` → 6. `look(target=dining_table_2/top)` → 7. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 8. `search(object=floor_block, region=living_room_0_0)` → 9. `navigate(destination=floor_block)` → 10. `pick(object=floor_block)` → 11. `navigate(destination=wooden_block_a)` → 12. `stack(object=floor_block, base=wooden_block_a)` → 13. `search(object=wooden_block_b, region=living_room_0_1)` → 14. `navigate(destination=wooden_block_b)` → 15. `pick(object=wooden_block_b)` → 16. `navigate(destination=wooden_block_a)` → 17. `stack(object=wooden_block_b, base=floor_block)`
 
 ### tower_for_kid_duck（Task）
 
@@ -895,44 +891,24 @@
 - 摆法 `basket`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `explore_room(room=bedroom_0_1)` → 7. `navigate(destination=storage_basket)` → 8. `look(target=storage_basket)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=storage_basket)` → 12. `drop(object=breakfast_spoon, container=storage_basket)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=rolling_pin, receptacle=storage_basket)`
 - 摆法 `tray`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `search(object=serving_tray, region=living_room_0_1)` → 7. `navigate(destination=serving_tray)` → 8. `look(target=serving_tray)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=serving_tray)` → 12. `place(object=breakfast_spoon, receptacle=serving_tray)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=serving_tray)` → 16. `place(object=rolling_pin, receptacle=serving_tray)`
 
-### bin_full（Task）
+### utensils_apart（Task）
 
-**情况**：擀面杖在岛台上，勺子落在了别的房间（开局看不到）；卧室矮书架上的宽箱装满了孩子的玩具，放不下擀面杖；书房书桌上有个空托盘 → 箱子被占了：玩具不动，改用托盘（替换）；一只手分两趟把擀面杖和勺子送到托盘
+**情况**：擀面杖在岛台上，勺子落在了别的房间（开局看不到），宽箱在卧室矮书架上 → 找到箱子和勺子，一只手分两趟：先送擀面杖，再去拿勺子
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `rolling_pin` 在 `spare_tray` 里
-  - `breakfast_spoon` 在 `spare_tray` 里
-  - `bin_teddy` 在 `wide_storage_bin` 里
-  - `bin_car` 在 `wide_storage_bin` 里
-  - `bin_duck` 在 `wide_storage_bin` 里
-  - `bin_block_1` 在 `wide_storage_bin` 里
-  - `bin_block_2` 在 `wide_storage_bin` 里
-  - 手里空着
-- **次好（0.6）**：
-
-  - `rolling_pin` 在 `wide_storage_bin` 里
-  - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - `bin_teddy` 在 `wide_storage_bin` 里
-  - `bin_car` 在 `wide_storage_bin` 里
-  - `bin_duck` 在 `wide_storage_bin` 里
-  - `bin_block_1` 在 `wide_storage_bin` 里
-  - `bin_block_2` 在 `wide_storage_bin` 里
-  - 手里空着
-- **最不好（0.3）**：
-
   - `rolling_pin` 在 `wide_storage_bin` 里
   - `breakfast_spoon` 在 `wide_storage_bin` 里
   - 手里空着
-- **不行（0）**：两样分开放；只收了一样（勺子没找到）；还拿着或掉了
+- **不行（0）**：只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `search(object=spare_tray, region=living_room_0_1)` → 7. `navigate(destination=spare_tray)` → 8. `look(target=spare_tray)` → 9. `search(object=breakfast_spoon, region=dining_room_0_1)` → 10. `navigate(destination=breakfast_spoon)` → 11. `pick(object=breakfast_spoon)` → 12. `navigate(destination=spare_tray)` → 13. `drop(object=breakfast_spoon, container=spare_tray)` → 14. `navigate(destination=rolling_pin)` → 15. `pick(object=rolling_pin)` → 16. `navigate(destination=spare_tray)` → 17. `place(object=rolling_pin, receptacle=spare_tray)`
-- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `search(object=spare_tray, region=living_room_0_1)` → 7. `navigate(destination=spare_tray)` → 8. `look(target=spare_tray)` → 9. `search(object=breakfast_spoon, region=kitchen_0_1)` → 10. `navigate(destination=breakfast_spoon)` → 11. `pick(object=breakfast_spoon)` → 12. `navigate(destination=spare_tray)` → 13. `drop(object=breakfast_spoon, container=spare_tray)` → 14. `navigate(destination=rolling_pin)` → 15. `pick(object=rolling_pin)` → 16. `navigate(destination=spare_tray)` → 17. `place(object=rolling_pin, receptacle=spare_tray)`
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=dining_room_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=wide_storage_bin, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=rolling_pin)` → 7. `pick(object=rolling_pin)` → 8. `navigate(destination=wide_storage_bin)` → 9. `place(object=rolling_pin, receptacle=wide_storage_bin)` → 10. `search(object=breakfast_spoon, region=kitchen_0_1)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=breakfast_spoon, container=wide_storage_bin)`
 
 ---
 
@@ -1067,33 +1043,76 @@
 
 ### two_guests（Task）
 
+**情况**：“有两位客人要来，在饮品角摆两个杯子，两个别挨着”：家里只有一个杯子（岛台上），马克杯在别的房间（开局看不到） → 先放杯子，发现没有第二个，自己想到马克杯也是杯子，去别的房间找来补上
+
 **指令**：有两位客人要来。在靠墙矮柜上的饮品角摆两个杯子，两个别挨着。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
-  - `cup_counter_b`、`mug` 立着
-  - `mug` 在 `kitchen_cabinet_6/top` 上
-  - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
-  - 手里空着
-- **次好（0.6）**：
-
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
       - `cup_counter_b` 立着
-      - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-      - `kid_plastic_cup` 立着
-      - `cup_counter_b` 离这些东西都至少 3 cm：`kid_plastic_cup`
-    - 第 2 组：
       - `mug` 在 `kitchen_cabinet_6/top` 上
       - `mug` 立着
-      - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-      - `kid_plastic_cup` 立着
-      - `mug` 离这些东西都至少 3 cm：`kid_plastic_cup`
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug`
+    - 第 2 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+    - 第 3 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 4 组：
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `cup_counter_b` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 5 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_dining_cabinet`
+    - 第 6 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 7 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 8 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_shelf`
+    - 第 9 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug_dining_cabinet` 离这些东西都至少 3 cm：`mug_counter`
+    - 第 10 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+      - `mug_shelf` 离这些东西都至少 3 cm：`mug_counter`
 - **最不好（0.3）**：
 
   - 手里空着
@@ -1106,68 +1125,55 @@
     - 第 2 组：
       - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
       - `cup_counter_b` 立着
-      - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-      - `kid_plastic_cup` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
     - 第 3 组：
-      - `mug` 在 `kitchen_cabinet_6/top` 上
-      - `mug` 立着
-      - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-      - `kid_plastic_cup` 立着
+      - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
+      - `cup_counter_b` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
     - 第 4 组：
       - `cup_counter_b` 在 `kitchen_cabinet_6/top` 上
       - `cup_counter_b` 立着
-      - `spare_bowl` 在 `kitchen_cabinet_6/top` 上
-      - `spare_bowl` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
     - 第 5 组：
       - `mug` 在 `kitchen_cabinet_6/top` 上
       - `mug` 立着
-      - `spare_bowl` 在 `kitchen_cabinet_6/top` 上
-      - `spare_bowl` 立着
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
     - 第 6 组：
-      - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-      - `kid_plastic_cup` 立着
-      - `spare_bowl` 在 `kitchen_cabinet_6/top` 上
-      - `spare_bowl` 立着
-- **不行（0）**：只摆了一个（没找到第二个）；拿果汁瓶当杯子；杯子倒着或躺着；放到别处；还拿着或掉了
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 7 组：
+      - `mug` 在 `kitchen_cabinet_6/top` 上
+      - `mug` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+    - 第 8 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+    - 第 9 组：
+      - `mug_dining_cabinet` 在 `kitchen_cabinet_6/top` 上
+      - `mug_dining_cabinet` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+    - 第 10 组：
+      - `mug_shelf` 在 `kitchen_cabinet_6/top` 上
+      - `mug_shelf` 立着
+      - `mug_counter` 在 `kitchen_cabinet_6/top` 上
+      - `mug_counter` 立着
+- **不行（0）**：只摆了一个杯子（没找到第二个）；拿果汁瓶等当第二个；杯子倒着或躺着；放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=dining_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
 - 摆法 `study`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=living_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
-
-### no_cup_in_cabinets（Task）
-
-**情况**：指令要一个杯子，说杯子一般收在厨房矮柜里，用完关柜门；两个矮柜里只有盘子，家里没有杯子和马克杯 → 两个柜子都看过（关好门），用孩子的塑料杯顶上（替换），不拿眼前的早餐碗，果汁瓶不算杯子
-
-**指令**：有客人要来。在靠墙矮柜上的饮品角摆一个杯子，杯子一般收在厨房的矮柜里。用完把柜门关好。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-  - `kid_plastic_cup` 立着
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
-  - 手里空着
-- **次好（0.6）**：
-
-  - `kid_plastic_cup` 在 `kitchen_cabinet_6/top` 上
-  - `kid_plastic_cup` 立着
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `spare_bowl` 在 `kitchen_cabinet_6/top` 上
-  - `spare_bowl` 立着
-  - 手里空着
-- **不行（0）**：什么都没摆；拿果汁瓶当杯子；杯子倒着或躺着；放到别处；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `cup_on_desk`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `close(articulated=kitchen_cabinet_6)` → 15. `search(object=kid_plastic_cup, region=living_room_0_1)` → 16. `navigate(destination=kid_plastic_cup)` → 17. `pick(object=kid_plastic_cup)` → 18. `navigate(destination=kitchen_cabinet_6/top)` → 19. `place(object=kid_plastic_cup, receptacle=kitchen_cabinet_6/top)`
-- 摆法 `cup_on_dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `close(articulated=kitchen_cabinet_6)` → 15. `search(object=kid_plastic_cup, region=dining_room_0_1)` → 16. `navigate(destination=kid_plastic_cup)` → 17. `pick(object=kid_plastic_cup)` → 18. `navigate(destination=kitchen_cabinet_6/top)` → 19. `place(object=kid_plastic_cup, receptacle=kitchen_cabinet_6/top)`
 
 ### x6_gd_cup_in_cabinets（Task）
 
@@ -1238,6 +1244,27 @@
 
 1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `navigate(destination=pencil)`（换做法） → 4. `pick(object=pencil)`（换做法） → 5. `present(object=pencil)`（补救） → 6. `navigate(destination=desk_1/top)` → 7. `place(object=pencil, receptacle=desk_1/top)`
 
+### no_pen_pencil_away（Task）
+
+**情况**：要铅笔，铅笔在另一个房间的餐桌上 → 去找铅笔
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pen` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `pencil` 在 `desk_1/top` 上
+- **不行（0）**：没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `navigate(destination=pen)` → 4. `navigate(destination=dining_table_2/top)`（补救） → 5. `look(target=dining_table_2/top)`（补救） → 6. `navigate(destination=pencil)` → 7. `pick(object=pencil)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=pencil, receptacle=desk_1/top)`
+
 ### check_desk_first（Task）
 
 **情况**：指令要钢笔；书桌上已经有一支笔：要么就是钢笔，要么只是铅笔（钢笔在卧室书架上） → 先看书桌：是钢笔就停手（再拿一支算失败）；只有铅笔不算数，去拿钢笔，铅笔留在桌上
@@ -1273,92 +1300,39 @@
 - 摆法 `pen_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pen)`
 - 摆法 `pencil_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)` → 4. `search(object=pen, region=bedroom_0_1)` → 5. `navigate(destination=pen)` → 6. `pick(object=pen)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
-### no_pencil（Task）
+### all_pens（Task）
 
-**情况**：要铅笔，家里没有铅笔，只有一支钢笔在别的房间 → 用钢笔顶上（替换）
+**情况**：孩子整理文具盒，把家里所有钢笔和铅笔都收到书桌上；指令不说有几支，2 到 4 支分散在卧室书架、餐桌、电视柜、厨房台面 → 一间间找，一次拿一支，每个地方都找过才算完；漏一支算失败
 
-**指令**：孩子做数学作业需要铅笔，请把铅笔拿到书房的书桌上。
+**指令**：孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。
 
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `pen` 在 `desk_1/top` 上
-  - 手里空着
-- **不行（0）**：书桌上没有能写字的东西；还拿着或掉了
+  - 摆法 `two`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - 手里空着
+  - 摆法 `three`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - `pencil_2` 在 `desk_1/top` 上
+    - 手里空着
+  - 摆法 `four`：
+    - `pencil` 在 `desk_1/top` 上
+    - `pen` 在 `desk_1/top` 上
+    - `pencil_2` 在 `desk_1/top` 上
+    - `pen_2` 在 `desk_1/top` 上
+    - 手里空着
+- **不行（0）**：漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])`
-- 摆法 `pen_bedroom`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])`
-
-### pen_in_use（Task）
-
-**情况**：要钢笔，唯一的钢笔压在奶奶正在写的购物清单上（餐桌） → 不拿奶奶的笔，用铅笔（替换）；拿奶奶的笔算最不好
-
-**指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `pencil` 在 `desk_1/top` 上
-  - `pen`、`grandma_list` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `pen` 在 `desk_1/top` 上
-  - 手里空着
-- **不行（0）**：书桌上没有能写字的东西；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `pencil_bedroom`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])`
-- 摆法 `pencil_living`：1. `search(object=pencil, region=living_room_0_0)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])`
-
-### pens_for_two（Task）
-
-**情况**：两个孩子在书房和卧室书桌写作业，各要一支钢笔；家里只有一支钢笔和两支铅笔 → 钢笔给一个、铅笔给另一个，放在各自本子旁（替换）
-
-**指令**：两个孩子在写作业，一个在书房书桌，一个在卧室书桌。给每人拿一支钢笔，放在他的作业本旁边。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pen`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pencil`
-    - 第 2 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pen`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pencil_2`
-    - 第 3 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pencil`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pen`
-    - 第 4 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pencil_2`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pen`
-- **最不好（0.3）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pencil`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pencil_2`
-    - 第 2 组：
-      - `hw_notebook_study` 离其中至少一个不超过 15 cm：`pencil_2`
-      - `hw_notebook_bedroom` 离其中至少一个不超过 15 cm：`pencil`
-- **不行（0）**：有个孩子没拿到笔；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `pen_living`：1. `search(object=pen, region=living_room_0_0)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -6.22])` → 6. `search(object=pencil, region=bedroom_0_1)` → 7. `navigate(destination=pencil)` → 8. `pick(object=pencil)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=pencil, receptacle=desk_3/top, hint_xy=[6.194, -5.369])`
-- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -6.22])` → 6. `search(object=pencil, region=bedroom_0_1)` → 7. `navigate(destination=pencil)` → 8. `pick(object=pencil)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=pencil, receptacle=desk_3/top, hint_xy=[6.194, -5.369])`
+- 摆法 `two`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])`
+- 摆法 `three`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])`
+- 摆法 `four`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])` → 16. `search(object=pen_2, region=kitchen_0_1)` → 17. `navigate(destination=pen_2)` → 18. `pick(object=pen_2)` → 19. `navigate(destination=desk_1/top)` → 20. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
 ### homework_ready（Task）
 
@@ -1476,123 +1450,186 @@
 
 ### pens_per_notebook（Task）
 
-**情况**：书桌上 3 本作业本，每本要一支钢笔；钢笔不够 → 钢笔全用上，缺的用铅笔补，每本旁一支，不多拿（替换）
+**情况**：孩子们在书桌写作业，指令说桌上有几本作业本就拿几支笔，每本旁边放一支，不要多拿；家里有 4 支笔分散在不同房间 → 先数作业本，再拿正好那么多支，每本旁边放一支，其余的笔不动
 
-**指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支钢笔来，每本旁边放一支，不要多拿。
+**指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `one_short`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
+  - 摆法 `notebooks_2`：
+    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
         - `pen` 在 `desk_1/top` 上
         - `pen_2` 在 `desk_1/top` 上
-        - `pencil` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
         - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
+      - 第 5 组：
         - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 6 组：
         - `pen_2` 在 `desk_1/top` 上
         - `pencil_2` 在 `desk_1/top` 上
         - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-  - 摆法 `two_short`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `notebooks_3`：
+    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `pen` 在 `desk_1/top` 上
         - `pencil` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
         - `pen` 在 `desk_1/top` 上
-        - `pencil` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
         - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
         - `pen` 在 `desk_1/top` 上
         - `pencil_2` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
         - `pencil` 没被挪动（离开局位置不超过 3 cm）
 - **次好（0.6）**：
 
-  - 摆法 `one_short`：
+  - 摆法 `notebooks_2`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
         - `pen` 在 `desk_1/top` 上
         - `pen_2` 在 `desk_1/top` 上
-        - `pencil` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
         - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
+      - 第 5 组：
         - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pencil` 没被挪动（离开局位置不超过 3 cm）
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 6 组：
         - `pen_2` 在 `desk_1/top` 上
         - `pencil_2` 在 `desk_1/top` 上
         - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-  - 摆法 `two_short`：
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `notebooks_3`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `pen` 在 `desk_1/top` 上
         - `pencil` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
         - `pen` 在 `desk_1/top` 上
-        - `pencil` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
         - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
         - `pen` 在 `desk_1/top` 上
         - `pencil_2` 在 `desk_1/top` 上
-        - `pencil_3` 在 `desk_1/top` 上
+        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+        - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
         - `pencil` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
-  - 摆法 `one_short`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pen`、`pen_2`、`pencil`、`pencil_2`、`pencil_3`
+  - 摆法 `notebooks_3`：
     - 手里空着
-  - 摆法 `two_short`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
-    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pen`、`pencil`、`pencil_2`、`pencil_3`
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+  - 摆法 `notebooks_2`：
     - 手里空着
-- **不行（0）**：有作业本旁边没有笔；笔放到别处；还拿着或掉了
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 3 组：
+        - `pencil` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 4 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pen_2` 在 `desk_1/top` 上
+      - 第 5 组：
+        - `pen` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+      - 第 6 组：
+        - `pen_2` 在 `desk_1/top` 上
+        - `pencil_2` 在 `desk_1/top` 上
+- **不行（0）**：拿少了（比作业本少）；笔放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `one_short`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-1.0, -6.22])` → 6. `search(object=pen_2, region=living_room_0_0)` → 7. `navigate(destination=pen_2)` → 8. `pick(object=pen_2)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.57, -6.22])` → 11. `search(object=pencil, region=bedroom_0_1)` → 12. `navigate(destination=pencil)` → 13. `pick(object=pencil)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
-- 摆法 `two_short`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-1.0, -6.22])` → 6. `search(object=pencil, region=bedroom_0_1)` → 7. `navigate(destination=pencil)` → 8. `pick(object=pencil)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.57, -6.22])` → 11. `search(object=pencil_2, region=dining_room_0_1)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
+- 摆法 `notebooks_2`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.85, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -6.22])`
+- 摆法 `notebooks_3`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.0, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.57, -6.22])` → 11. `search(object=pen_2, region=living_room_0_0)` → 12. `navigate(destination=pen_2)` → 13. `pick(object=pen_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
 
 ### errand_combined（Task）
 
-**情况**：拿钢笔到书桌，顺路把书桌上的马克杯带回厨房台面；家里没有钢笔 → 用铅笔顶上（替换），放下后顺手把马克杯送回厨房
+**情况**：两件事：拿一支钢笔到书房书桌；书桌上有个用过的马克杯要拿回厨房台面；只有一只手 → 先拿钢笔到书桌，放下后顺手拿起马克杯送回厨房，比单独跑一趟省路
 
 **指令**：孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。
 
@@ -1600,29 +1637,33 @@
 
 - **好（1.0）**：
 
-  - `pencil` 在 `desk_1/top` 上
+  - `pen` 在 `desk_1/top` 上
   - `used_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `used_mug` 立着
   - 手里空着
 - **次好（0.6）**：
 
-  - `pencil` 在 `desk_1/top` 上
+  - `pen` 在 `desk_1/top` 上
   - `used_mug` 在其中任一处上：`kitchen_island/top`、`kitchen_stove/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `used_mug` 立着
   - 手里空着
 - **最不好（0.3）**：
 
-  - `pencil` 在 `desk_1/top` 上
   - `["not on", "used_mug", "desk_1/top"]`
   - `used_mug` 立着
   - 手里空着
-- **不行（0）**：只做了一件（书桌上没有笔，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pen` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `pencil` 在 `desk_1/top` 上
+- **不行（0）**：只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `pencil_bedroom`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
-- 摆法 `pencil_dining`：1. `search(object=pencil, region=dining_room_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
+- 摆法 `pen_bedroom`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
+- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.748, -6.146])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.144, 7.109])`
 
 ### x6_gd_pen_or_pencil_cabinets（Task）
 
@@ -1686,37 +1727,54 @@
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)`
 
-### both_spots_full（Task）
+### display_row（Task）
 
-**情况**：指令说摆到靠墙矮柜或电视柜上；两处都摆满了东西，积木放不下也看不见 → 摆到另一个矮柜（4 号柜）顶上，从房间看得见（替换）；硬塞在满的地方算最不好
+**情况**：三块积木要在靠墙矮柜顶排成一排展示：摆正、放在前面看得见的地方、彼此别挨着；积木散在不同地方 → 一块块拿来，每放一块都要给下一块留位置
+
+**指令**：把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+  - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+  - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
   - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_a` 离台面边缘至少 2 cm
-  - `display_bin`、`display_small_bin`、`display_juice`、`display_can`、`tv_bin`、`tv_plate`、`tv_fruit_basket`、`tv_sorting_tray`、`tv_small_bin`、`tv_container` 没被挪动（离开局位置不超过 2 cm）
+  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+  - 手里空着
+- **次好（0.6）**：
+
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
   - 手里空着
 - **最不好（0.3）**：
 
-  - `display_bin`、`display_small_bin`、`display_juice`、`display_can`、`tv_bin`、`tv_plate`、`tv_fruit_basket`、`tv_sorting_tray`、`tv_small_bin`、`tv_container` 没被挪动（离开局位置不超过 2 cm）
+  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+  - `floor_block` 在 `kitchen_cabinet_6/top` 上
   - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-    - 第 2 组：
-      - `wooden_block_a` 在 `tv_stand_2/top` 上
-    - 第 3 组：
-      - `wooden_block_a` 在 `kitchen_island/top` 上
-- **不行（0）**：为腾地方挪了或碰倒柜顶、电视柜上的东西；放到别处；还拿着或掉了
+- **不行（0）**：只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `block_at_hand`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `look(target=tv_stand_2/top)` → 7. `navigate(destination=wooden_block_a)` → 8. `pick(object=wooden_block_a)` → 9. `navigate(destination=kitchen_cabinet_4/top)` → 10. `place(object=wooden_block_a, receptacle=kitchen_cabinet_4/top, hint_xy=[1.4, 0.45])`
-- 摆法 `block_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `look(target=tv_stand_2/top)` → 7. `search(object=wooden_block_a, region=dining_room_0_1)` → 8. `navigate(destination=wooden_block_a)` → 9. `pick(object=wooden_block_a)` → 10. `navigate(destination=kitchen_cabinet_4/top)` → 11. `place(object=wooden_block_a, receptacle=kitchen_cabinet_4/top, hint_xy=[1.4, 0.45])`
+- 摆法 `island_floor`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `square(object=wooden_block_a)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 12. `square(object=wooden_block_b)` → 13. `explore_room(room=living_room_0_0)` → 14. `navigate(destination=floor_block)` → 15. `look(target=floor_block)` → 16. `pick(object=floor_block)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])` → 19. `square(object=floor_block)`
+- 摆法 `spread`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `square(object=wooden_block_a)` → 8. `search(object=wooden_block_b, region=dining_room_0_1)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=kitchen_cabinet_6/top)` → 12. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 13. `square(object=wooden_block_b)` → 14. `search(object=floor_block, region=kitchen_0_1)` → 15. `navigate(destination=floor_block)` → 16. `pick(object=floor_block)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])` → 19. `square(object=floor_block)`
 
 ### display_spot_or_tv（Task）
 
@@ -2152,6 +2210,30 @@
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=kitchen_sponge)` → 6. `pick(object=kitchen_sponge)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
+### far_sponge_tv（Task）
+
+**情况**：从餐厅出发，海绵不在岛台 → 先找海绵
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
+- **次好（0.6）**：
+
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 不在地上
+  - 手里空着
+- **不行（0）**：没找到海绵；没擦或没擦完；海绵还拿着或掉在地上
+
+
+**参考调用顺序**：
+
+- 摆法 `far_sponge_tv`：1. `search(object=kitchen_sponge, region=living_room_0_0)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `alt_dining_table_2`：1. `search(object=kitchen_sponge, region=dining_room_0_1)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+
 ### wipe_and_sort（Task）
 
 **情况**：岛台上两排东西：厨房用品（擀面杖、汽水罐、马克杯、燕麦碗、书、勺子、果汁）中间混着孩子的玩具；客厅地上有玩具箱，海绵在电视柜上；指令说玩具收进玩具箱，厨房的东西留在岛台上 → 按类别分：玩具送进玩具箱不再拿回，厨房的东西不动；玩具拿走后前排空出一条，擦完海绵留在岛台上
@@ -2369,6 +2451,51 @@
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
+### lid_on_spoon_away（Action + Task）
+
+**情况**：锅盖盖着，勺子也不在 → 揭盖；找勺子
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `lid_on_spoon_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=living_room_0_0)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `alt_dining_table_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=dining_room_0_1)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+
 ### pot_in_use（Task）
 
 **情况**：灶上左边炉眼可能放着一锅昨天剩的番茄汤（满的），平时用的空锅在隔壁餐厅的餐桌上；指令只说"灶上的锅" → 先看锅里：已经装满别的汤的锅在用，番茄不能倒进去，那锅也别动；去餐厅把空锅拿到右边空炉眼上再做。灶上是空锅时就直接用
@@ -2442,6 +2569,154 @@
 - 摆法 `in_use`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.7, 1.725])` → 10. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 11. `navigate(destination=breakfast_spoon)` → 12. `pick(object=breakfast_spoon)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 17. `navigate(destination=pot_lid)` → 18. `pick(object=pot_lid)` → 19. `navigate(destination=handled_cooking_pot)` → 20. `cover(container=handled_cooking_pot, lid=pot_lid)` → 21. `navigate(destination=kitchen_stove)` → 22. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 - 摆法 `free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `navigate(destination=breakfast_spoon)` → 7. `pick(object=breakfast_spoon)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 12. `navigate(destination=pot_lid)` → 13. `pick(object=pot_lid)` → 14. `navigate(destination=handled_cooking_pot)` → 15. `cover(container=handled_cooking_pot, lid=pot_lid)` → 16. `navigate(destination=kitchen_stove)` → 17. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
+### tomato_in_fridge（Action + Task）
+
+**情况**：汤要用三颗小番茄；岛台上只有两颗，第三颗收在关着的冰箱里（指令没说在哪） → 数一数不够，想到食材放在冰箱，开冰箱拿出来再关好（Action），而不是满屋找（Task）；三颗都在岛台上时去开冰箱是白跑
+
+**指令**：午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+  - `breakfast_fridge` 关着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+      - `breakfast_fridge` 关着
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+      - `breakfast_fridge` 关着
+    - 第 3 组：
+      - `handled_cooking_pot` 搅拌过
+      - `handled_cooking_pot` 盖着 `pot_lid`
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - `fridge_tomato` 在 `handled_cooking_pot` 里
+  - `fridge_tomato` 温度至少 60 °C
+- **不行（0）**：只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `in_fridge`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `bend()` → 7. `explore_furniture(furniture=breakfast_fridge)` → 8. `straighten()` → 9. `navigate(destination=fridge_tomato)` → 10. `pick(object=fridge_tomato)` → 11. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_fridge)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=breakfast_spoon)` → 17. `pick(object=breakfast_spoon)` → 18. `navigate(destination=handled_cooking_pot)` → 19. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 22. `navigate(destination=pot_lid)` → 23. `pick(object=pot_lid)` → 24. `navigate(destination=handled_cooking_pot)` → 25. `cover(container=handled_cooking_pot, lid=pot_lid)` → 26. `navigate(destination=kitchen_stove)` → 27. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `on_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2, fridge_tomato], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+
+### x6_gd_tomato_elsewhere（Task）
+
+**情况**：一颗番茄在岛台，另一颗不在 → 先放一颗，再去找另一颗
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=dining_room_0_1)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `cabinet6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=living_room_0_0)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+
+### pot_in_dining_room（Task）
+
+**情况**：番茄旁边有碗和马克杯，锅却不在灶上，而在隔壁餐厅的餐桌上（锅盖在灶上）；指令和任务本身一样 → 不能就近用碗或杯，要去餐厅把锅拿回炉眼上，再做汤
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `handled_cooking_pot` 搅拌过
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `handled_cooking_pot` 盖着 `pot_lid`
+    - 第 2 组：
+      - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
+  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+  - `cherry_tomato_1` 温度至少 60 °C
+  - `cherry_tomato_2` 温度至少 60 °C
+  - `kitchen_stove` 已经停止加热
+  - 手里空着
+- **不行（0）**：用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 10. `navigate(destination=cherry_tomato_1)`（补救） → 11. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 12. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 13. `navigate(destination=breakfast_spoon)` → 14. `pick(object=breakfast_spoon)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 19. `navigate(destination=pot_lid)` → 20. `pick(object=pot_lid)` → 21. `navigate(destination=handled_cooking_pot)` → 22. `cover(container=handled_cooking_pot, lid=pot_lid)` → 23. `navigate(destination=kitchen_stove)` → 24. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+
 ---
 
 ## T10_trash_the_can
@@ -2464,6 +2739,24 @@
 **参考调用顺序**：
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+
+### can_in_dining_room（Task）
+
+**情况**：罐子在隔壁看不到的地方 → 先找
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `soda_can` 在 `trash_can` 里
+  - 手里空着
+- **不行（0）**：没找到；没进垃圾桶；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `can_in_dining_room`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `pick(object=soda_can)` → 5. `search(object=soda_can, region=dining_room_0_1)` → 6. `navigate(destination=soda_can)` → 7. `pick(object=soda_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `alt_tv_stand_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `pick(object=soda_can)` → 5. `search(object=soda_can, region=living_room_0_0)` → 6. `navigate(destination=soda_can)` → 7. `pick(object=soda_can)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
 ### keep_kids_can（Task）
 
@@ -2510,34 +2803,6 @@
 
 - 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=dining_room_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 - 摆法 `bathroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=bathroom_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
-
-### trash_full（Task）
-
-**情况**：罐子在岛台上，垃圾桶在原处但已塞满到桶口，放不进 → 扔进回收箱（里面有用过的塑料杯）（替换）；硬塞在满垃圾桶上算最不好
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `soda_can` 在 `wide_storage_bin` 里
-  - `trash_carton`、`trash_can_1`、`trash_can_2`、`trash_tissues`、`trash_lunch_box` 没被挪动（离开局位置不超过 5 cm）
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `trash_carton`、`trash_can_1`、`trash_can_2`、`trash_tissues`、`trash_lunch_box` 没被挪动（离开局位置不超过 5 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `soda_can` 在 `trash_can` 里
-    - 第 2 组：
-      - `soda_can` 离其中至少一个不超过 3 cm：`trash_can`
-- **不行（0）**：把垃圾桶里的东西倒出来腾地方；罐子没扔；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `living`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `look(target=trash_can)` → 8. `search(object=wide_storage_bin, region=living_room_0_0)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)`
-- 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `look(target=trash_can)` → 8. `search(object=wide_storage_bin, region=dining_room_0_1)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)`
 
 ### after_dinner_clear（Task）
 
@@ -2708,123 +2973,33 @@
 - 摆法 `can_block`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `lift(object=soda_can, height_m=0.95)` → 8. `navigate(destination=trash_can)` → 9. `hover(object=soda_can, target=trash_can)` → 10. `drop(object=soda_can, container=trash_can)` → 11. `navigate(destination=wooden_block_a)` → 12. `look(target=wooden_block_a)` → 13. `pick(object=wooden_block_a)` → 14. `navigate(destination=toy_box)` → 15. `place(object=wooden_block_a, receptacle=toy_box)`
 - 摆法 `can_mug`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `lift(object=soda_can, height_m=0.95)` → 8. `navigate(destination=trash_can)` → 9. `hover(object=soda_can, target=trash_can)` → 10. `drop(object=soda_can, container=trash_can)` → 11. `navigate(destination=used_mug)` → 12. `pick(object=used_mug)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
 
-### clear_table_for_dinner（Task）
+### x6_gd_can_put_away（Task）
 
-**情况**：（11-17 由 T29 并入）“要吃饭了，把餐桌上不该放的东西拿走。”桌上的东西各回各处：小车进客厅玩具箱、平装书上书架、空罐进垃圾桶、作业本和铅笔回书桌；摆好的碗勺留着（只有碗勺时什么都不用做）
+**情况**：指令只说空易拉罐在厨房里被误收起来了、要开门才能找到；它在靠墙矮柜、微波炉或冰箱里 → 逐个打开找，扔进垃圾桶，打开的门都关好
 
-**指令**：要吃饭了，把餐桌上不该放的东西拿走。
+**指令**：厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `car`：
-    - `table_car` 在 `toy_box` 里
-    - 手里空着
-  - 摆法 `several`：
-    - `table_car` 在 `toy_box` 里
-    - `empty_can` 在 `trash_can` 里
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `table_book` 在 `bookcase_1/top` 上
-      - 第 2 组：
-        - `table_book` 在 `bookcase_1/shelf_1` 上
-      - 第 3 组：
-        - `table_book` 在 `bookcase_1/shelf_0` 上
-      - 第 4 组：
-        - `table_book` 在 `bookcase_2/top` 上
-      - 第 5 组：
-        - `table_book` 在 `bookcase_2/shelf_1` 上
-      - 第 6 组：
-        - `table_book` 在 `bookcase_2/shelf_0` 上
-      - 第 7 组：
-        - `table_book` 在 `bookcase_3/top` 上
-      - 第 8 组：
-        - `table_book` 在 `bookcase_3/shelf_1` 上
-      - 第 9 组：
-        - `table_book` 在 `bookcase_3/shelf_0` 上
-      - 第 10 组：
-        - `table_book` 在 `bookcase_4/top` 上
-      - 第 11 组：
-        - `table_book` 在 `bookcase_4/shelf_1` 上
-      - 第 12 组：
-        - `table_book` 在 `bookcase_4/shelf_0` 上
-      - 第 13 组：
-        - `table_book` 在 `large_shelf_2/shelf_0` 上
-      - 第 14 组：
-        - `table_book` 在 `large_shelf_2/shelf_1` 上
-      - 第 15 组：
-        - `table_book` 在 `large_shelf_2/shelf_2` 上
-      - 第 16 组：
-        - `table_book` 在 `large_shelf_2/shelf_3` 上
-  - 摆法 `car_and_setting`：
-    - `table_car` 在 `toy_box` 里
-    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
-  - 摆法 `setting_only`：
-    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
-  - 摆法 `homework`：
-    - `hw_notebook` 在 `desk_1/top` 上
-    - `hw_pencil` 在 `desk_1/top` 上
-    - 手里空着
+  - `soda_can` 在 `trash_can` 里
+  - 手里空着
+  - `kitchen_microwave` 关着
+  - `kitchen_cabinet_6` 关着
+  - `breakfast_fridge` 关着
 - **次好（0.6）**：
 
-  - 摆法 `car`：
-    - 手里空着
-    - `["not on", "table_car", "dining_table_2/top"]`
-    - `table_car` 不在地上
-  - 摆法 `setting_only`：
-    - 手里空着
-    - `set_bowl` 在 `dining_table_2/top` 上
-    - `set_spoon` 在 `dining_table_2/top` 上
-  - 摆法 `car_and_setting`：
-    - `table_car` 在 `toy_box` 里
-    - 手里空着
-    - `set_bowl` 在 `dining_table_2/top` 上
-    - `set_spoon` 在 `dining_table_2/top` 上
-  - 摆法 `several`：
-    - `table_car` 在 `toy_box` 里
-    - `empty_can` 在 `trash_can` 里
-    - 手里空着
-    - `["not on", "table_book", "dining_table_2/top"]`
-    - `table_book` 不在地上
-  - 摆法 `homework`：
-    - `["not on", "hw_notebook", "dining_table_2/top"]`
-    - `hw_notebook` 不在地上
-    - `["not on", "hw_pencil", "dining_table_2/top"]`
-    - `hw_pencil` 不在地上
-    - 手里空着
-- **最不好（0.3）**：
-
-  - 摆法 `setting_only`：
-    - 手里空着
-  - 摆法 `car`、`car_and_setting`：
-    - `table_car` 在 `toy_box` 里
-    - 手里空着
-  - 摆法 `several`：
-    - `["not on", "table_car", "dining_table_2/top"]`
-    - `table_car` 不在地上
-    - `["not on", "empty_can", "dining_table_2/top"]`
-    - `empty_can` 不在地上
-    - `["not on", "table_book", "dining_table_2/top"]`
-    - `table_book` 不在地上
-    - 手里空着
-  - 摆法 `homework`：
-    - `hw_notebook` 在 `desk_1/top` 上
-    - `hw_pencil` 在 `desk_1/top` 上
-    - 手里空着
-- **不行（0）**：不该放的还在桌上；碰倒了；还拿着或掉了
+  - `soda_can` 在 `trash_can` 里
+  - 手里空着
+- **不行（0）**：没找到或没扔；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `car`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
-- 摆法 `car_and_setting`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
-- 摆法 `setting_only`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)`
-- 摆法 `several`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)` → 7. `navigate(destination=empty_can)` → 8. `pick(object=empty_can)` → 9. `navigate(destination=trash_can)` → 10. `drop(object=empty_can, container=trash_can)` → 11. `navigate(destination=table_book)` → 12. `pick(object=table_book)` → 13. `navigate(destination=bookcase_2/top)` → 14. `place(object=table_book, receptacle=bookcase_2/top, hint_xy=[1.005, -0.479])`
-- 摆法 `homework`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=hw_notebook)` → 4. `pick(object=hw_notebook)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=hw_notebook, receptacle=desk_1/top, hint_xy=[-0.708, -6.166])` → 7. `navigate(destination=hw_pencil)` → 8. `pick(object=hw_pencil)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=hw_pencil, receptacle=desk_1/top, hint_xy=[-0.188, -5.946])`
+- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `navigate(destination=kitchen_cabinet_6)` → 6. `open(articulated=kitchen_cabinet_6)` → 7. `bend()` → 8. `explore_furniture(furniture=kitchen_cabinet_6)` → 9. `straighten()` → 10. `navigate(destination=soda_can)` → 11. `pick(object=soda_can)` → 12. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 13. `navigate(destination=trash_can)` → 14. `drop(object=soda_can, container=trash_can)` → 15. `navigate(destination=kitchen_cabinet_6)` → 16. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `in_microwave`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_microwave)` → 8. `open(articulated=kitchen_microwave)` → 9. `look(target=kitchen_microwave/inside_floor)` → 10. `navigate(destination=soda_can)` → 11. `pick(object=soda_can)` → 12. `retreat(obstacle=kitchen_microwave, distance_m=0.3)` → 13. `close(articulated=kitchen_microwave)` → 14. `navigate(destination=trash_can)` → 15. `drop(object=soda_can, container=trash_can)`
+- 摆法 `in_fridge`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `navigate(destination=kitchen_cabinet_6)` → 6. `open(articulated=kitchen_cabinet_6)` → 7. `bend()` → 8. `explore_furniture(furniture=kitchen_cabinet_6)` → 9. `straighten()` → 10. `close(articulated=kitchen_cabinet_6)` → 11. `navigate(destination=breakfast_fridge)` → 12. `open(articulated=breakfast_fridge)` → 13. `bend()` → 14. `explore_furniture(furniture=breakfast_fridge)` → 15. `straighten()` → 16. `navigate(destination=soda_can)` → 17. `pick(object=soda_can)` → 18. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 19. `navigate(destination=trash_can)` → 20. `drop(object=soda_can, container=trash_can)` → 21. `navigate(destination=breakfast_fridge)` → 22. `close(articulated=breakfast_fridge)`
 
 ---
 
@@ -2891,65 +3066,136 @@
 - 摆法 `basket_missing`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `place(object=apple, receptacle=fruit_basket)` → 8. `navigate(destination=desk_1/top)`（换做法） → 9. `look(target=desk_1/top)`（换做法） → 10. `navigate(destination=serving_tray)`（换做法） → 11. `place(object=apple, receptacle=serving_tray)`（换做法）
 - 摆法 `basket_gone_bowl_there`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=apple)` → 4. `pick(object=apple)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `identify(object=bowl_kitchen_cabinet)`（补救） → 8. `navigate(destination=desk_1/top)`（换做法） → 9. `look(target=desk_1/top)`（换做法） → 10. `navigate(destination=serving_tray)`（换做法） → 11. `place(object=apple, receptacle=serving_tray)`（换做法）
 
-### no_apple_for_kid（Task）
+### leave_one_for_kid（Task）
 
-**情况**：孩子想吃苹果，家里苹果没了，桌上有香蕉和橙子，指令说他不爱吃橙子 → 拿香蕉（替换）；拿橙子算最不好
+**情况**：指令只说“桌上的水果收起来，给书房写作业的孩子留一个当点心，孩子不爱吃橙子” → 拆成两个子目标：一个不是橙子的水果放到书房书桌，其余放进卧室书架上的果篮（指令没说果篮在哪）
 
-**指令**：在书房写作业的孩子想吃个苹果，给他拿一个到书桌上。他不爱吃橙子。
+**指令**：午饭吃完了，把桌上的水果收起来，给在书房写作业的孩子留一个当点心。孩子不爱吃橙子。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `lunch_banana` 在 `desk_1/top` 上
-  - 手里空着
+  - 摆法 `all_three`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `desk_1/top` 上
+        - `lunch_orange` 在 `fruit_basket` 里
+        - `lunch_banana` 在 `fruit_basket` 里
+      - 第 2 组：
+        - `lunch_banana` 在 `desk_1/top` 上
+        - `apple` 在 `fruit_basket` 里
+        - `lunch_orange` 在 `fruit_basket` 里
+  - 摆法 `apple_orange`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `desk_1/top` 上
+        - `lunch_orange` 在 `fruit_basket` 里
+  - 摆法 `orange_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `lunch_banana` 在 `desk_1/top` 上
+        - `lunch_orange` 在 `fruit_basket` 里
+- **次好（0.6）**：
+
+  - 摆法 `all_three`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `desk_1/top` 上
+        - `["not on", "lunch_orange", "dining_table_2/top"]`
+        - `["not on", "lunch_banana", "dining_table_2/top"]`
+        - `lunch_orange` 不在地上
+        - `lunch_banana` 不在地上
+      - 第 2 组：
+        - `lunch_banana` 在 `desk_1/top` 上
+        - `["not on", "apple", "dining_table_2/top"]`
+        - `["not on", "lunch_orange", "dining_table_2/top"]`
+        - `apple` 不在地上
+        - `lunch_orange` 不在地上
+  - 摆法 `apple_orange`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `desk_1/top` 上
+        - `["not on", "lunch_orange", "dining_table_2/top"]`
+        - `lunch_orange` 不在地上
+  - 摆法 `orange_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `lunch_banana` 在 `desk_1/top` 上
+        - `["not on", "lunch_orange", "dining_table_2/top"]`
+        - `lunch_orange` 不在地上
 - **最不好（0.3）**：
 
-  - `lunch_orange` 在 `desk_1/top` 上
-  - 手里空着
-- **不行（0）**：什么都没拿；还拿着或掉了
+  - 摆法 `all_three`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `lunch_orange` 在 `desk_1/top` 上
+        - `apple` 在 `fruit_basket` 里
+        - `lunch_banana` 在 `fruit_basket` 里
+  - 摆法 `apple_orange`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `lunch_orange` 在 `desk_1/top` 上
+        - `apple` 在 `fruit_basket` 里
+  - 摆法 `orange_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `lunch_orange` 在 `desk_1/top` 上
+        - `lunch_banana` 在 `fruit_basket` 里
+- **不行（0）**：没给孩子；水果留在桌上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=lunch_banana)` → 4. `pick(object=lunch_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=lunch_banana, receptacle=desk_1/top, hint_xy=[-0.908, -6.186])`
+- 摆法 `apple_orange`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=apple)` → 5. `pick(object=apple)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.908, -6.166])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `orange_banana`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=lunch_banana)` → 5. `pick(object=lunch_banana)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=lunch_banana, receptacle=desk_1/top, hint_xy=[-0.908, -6.186])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)`
+- 摆法 `all_three`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_basket, region=bedroom_0_1)` → 4. `navigate(destination=apple)` → 5. `pick(object=apple)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=apple, receptacle=desk_1/top, hint_xy=[-0.908, -6.166])` → 8. `navigate(destination=lunch_orange)` → 9. `pick(object=lunch_orange)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=lunch_orange, receptacle=fruit_basket)` → 12. `navigate(destination=lunch_banana)` → 13. `pick(object=lunch_banana)` → 14. `navigate(destination=bookcase_2/top)` → 15. `place(object=lunch_banana, receptacle=fruit_basket)`
 
 ### fruit_plate_for_guests（Task）
 
-**情况**：找个容器装水果端给客厅的客人；家里没有托盘 → 用小收纳盒（替换），先把空盒放到电视柜再装水果
+**情况**：指令只说“客人在客厅看电视，用托盘端点水果过去”，没说托盘在哪 → 找到托盘，先把空托盘放到电视柜，再把苹果和橙子一个个放上去（一只手端装满的托盘容易掉，子目标顺序决定能不能做成）
 
-**指令**：客人在客厅看电视，找个容器装点水果给他们端过去。
+**指令**：客人在客厅看电视，用托盘给他们端点水果过去。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `apple` 在 `fruit_box` 里
-  - `lunch_orange` 在 `fruit_box` 里
+  - `apple` 在 `fruit_tray` 里
+  - `lunch_orange` 在 `fruit_tray` 里
   - `apple` 不在地上
   - `lunch_orange` 不在地上
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `fruit_box` 在 `tv_stand_2/top` 上
+      - `fruit_tray` 在 `tv_stand_2/top` 上
     - 第 2 组：
-      - `fruit_box` 在 `tv_stand_1/top` 上
+      - `fruit_tray` 在 `tv_stand_1/top` 上
 - **次好（0.6）**：
 
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `fruit_box` 在 `tv_stand_2/top` 上
-      - `apple` 在 `fruit_box` 里
+      - `fruit_tray` 在 `tv_stand_2/top` 上
+      - `apple` 在 `fruit_tray` 里
     - 第 2 组：
-      - `fruit_box` 在 `tv_stand_2/top` 上
-      - `lunch_orange` 在 `fruit_box` 里
+      - `fruit_tray` 在 `tv_stand_2/top` 上
+      - `lunch_orange` 在 `fruit_tray` 里
     - 第 3 组：
-      - `fruit_box` 在 `tv_stand_1/top` 上
-      - `apple` 在 `fruit_box` 里
+      - `fruit_tray` 在 `tv_stand_1/top` 上
+      - `apple` 在 `fruit_tray` 里
     - 第 4 组：
-      - `fruit_box` 在 `tv_stand_1/top` 上
-      - `lunch_orange` 在 `fruit_box` 里
+      - `fruit_tray` 在 `tv_stand_1/top` 上
+      - `lunch_orange` 在 `fruit_tray` 里
 - **最不好（0.3）**：
 
   - `apple` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
@@ -2960,8 +3206,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `tray_in_study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_box, region=living_room_0_1)` → 4. `navigate(destination=fruit_box)` → 5. `pick(object=fruit_box)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_box, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_box)` → 11. `place(object=apple, receptacle=fruit_box)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_box)` → 15. `place(object=lunch_orange, receptacle=fruit_box)`
-- 摆法 `tray_by_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_box, region=dining_room_0_1)` → 4. `navigate(destination=fruit_box)` → 5. `pick(object=fruit_box)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_box, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_box)` → 11. `place(object=apple, receptacle=fruit_box)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_box)` → 15. `place(object=lunch_orange, receptacle=fruit_box)`
+- 摆法 `tray_in_study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=living_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
+- 摆法 `tray_by_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=dining_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
 
 ---
 
@@ -2988,37 +3234,25 @@
 
 1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `look(target=toy_car)` → 5. `pick(object=toy_car)` → 6. `navigate(destination=storage_basket)` → 7. `place(object=toy_car, receptacle=storage_basket)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `nod()`（补救）
 
-### bedtime_toy（Task）
+### duck_in_study（Task）
 
-**情况**：孩子要睡觉，要个能抱着睡的玩具（指令没点名） → 有泰迪熊就拿熊；没有就拿软的橡皮鸭顶上（替换），不拿硬的小车；放到床上或床头书架
+**情况**：鸭子落在别处，开局看不到 → 找鸭子
 
-**指令**：孩子要睡觉了，给他拿个能抱着睡的玩具到床边。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `teddy_there`：
-    - `kids_teddy` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
-    - 手里空着
-  - 摆法 `no_teddy`：
-    - `rubber_duck` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
-    - 手里空着
-- **次好（0.6）**：
-
-  - `rubber_duck` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
+  - `toy_car` 在 `storage_basket` 里
+  - `rubber_duck` 在 `storage_basket` 里
+  - `storage_basket` 立着
   - 手里空着
-- **最不好（0.3）**：
-
-  - `toy_car` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
-  - 手里空着
-- **不行（0）**：什么都没拿到床边；还拿着或掉了
+- **不行（0）**：没找到鸭子；有玩具没收；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `teddy_there`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kids_teddy)` → 4. `pick(object=kids_teddy)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kids_teddy, receptacle=bookcase_3/top, hint_xy=[2.1, -4.78])`
-- 摆法 `no_teddy`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=rubber_duck)` → 4. `pick(object=rubber_duck)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=rubber_duck, receptacle=bookcase_3/top, hint_xy=[2.1, -4.78])`
+- 摆法 `duck_in_study`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `look(target=toy_car)` → 5. `pick(object=toy_car)` → 6. `navigate(destination=storage_basket)` → 7. `place(object=toy_car, receptacle=storage_basket)` → 8. `navigate(destination=rubber_duck)` → 9. `search(object=rubber_duck, region=living_room_0_1)` → 10. `navigate(destination=rubber_duck)` → 11. `pick(object=rubber_duck)` → 12. `navigate(destination=storage_basket)` → 13. `place(object=rubber_duck, receptacle=storage_basket)`
+- 摆法 `alt_dining_table_2`：1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `look(target=toy_car)` → 5. `pick(object=toy_car)` → 6. `navigate(destination=storage_basket)` → 7. `place(object=toy_car, receptacle=storage_basket)` → 8. `navigate(destination=rubber_duck)` → 9. `search(object=rubber_duck, region=dining_room_0_1)` → 10. `navigate(destination=rubber_duck)` → 11. `pick(object=rubber_duck)` → 12. `navigate(destination=storage_basket)` → 13. `place(object=rubber_duck, receptacle=storage_basket)`
 
 ### bins_capacity（Task）
 
@@ -3274,6 +3508,87 @@
 - 摆法 `half_bin_and_tray`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `look(target=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_tray)` → 10. `place(object=toy_car, receptacle=toy_tray)` → 11. `search(object=rubber_duck, region=living_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
 - 摆法 `half_bin_and_tray_duck_dining`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `look(target=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_tray)` → 10. `place(object=toy_car, receptacle=toy_tray)` → 11. `search(object=rubber_duck, region=dining_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
 
+### find_all_toys（Task）
+
+**情况**：玩具散在好几个房间，指令没说有几个；餐桌上有块黄海绵像积木但不是玩具 → 把各房间找遍，认出哪些是玩具，全放进筐，海绵别动（找到一两个就停算失败）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `all_four`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `stray_block` 在 `storage_basket` 里
+    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+    - `storage_basket` 立着
+    - 手里空着
+  - 摆法 `car_duck_bear`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+    - `storage_basket` 立着
+    - 手里空着
+  - 摆法 `car_duck`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+    - `storage_basket` 立着
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `all_four`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `stray_block` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+    - `kitchen_sponge` 不在 `storage_basket` 里
+  - 摆法 `car_duck_bear`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+    - `kitchen_sponge` 不在 `storage_basket` 里
+  - 摆法 `car_duck`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+    - `kitchen_sponge` 不在 `storage_basket` 里
+- **最不好（0.3）**：
+
+  - 摆法 `all_four`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `stray_block` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+  - 摆法 `car_duck_bear`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `teddy_bear` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+  - 摆法 `car_duck`：
+    - `toy_car` 在 `storage_basket` 里
+    - `rubber_duck` 在 `storage_basket` 里
+    - `storage_basket` 立着
+    - 手里空着
+- **不行（0）**：有玩具没找到；篮子倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `car_duck`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=living_room_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)`
+- 摆法 `car_duck_bear`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=bathroom_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `search(object=teddy_bear, region=dining_room_0_1)` → 13. `navigate(destination=teddy_bear)` → 14. `pick(object=teddy_bear)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=teddy_bear, receptacle=storage_basket)`
+- 摆法 `all_four`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=living_room_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `search(object=teddy_bear, region=dining_room_0_1)` → 13. `navigate(destination=teddy_bear)` → 14. `pick(object=teddy_bear)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=teddy_bear, receptacle=storage_basket)` → 17. `search(object=stray_block, region=living_room_0_0)` → 18. `navigate(destination=stray_block)` → 19. `pick(object=stray_block)` → 20. `navigate(destination=storage_basket)` → 21. `place(object=stray_block, receptacle=storage_basket)`
+
 ### castle_stays（Task）
 
 **情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐。检测的是：整局没拿起过塔上的积木（过程要求），结束时每块都在原位、叠放关系还在（终态）。中途被碰倒的话，不拿起来就搭不回去，终态会判失败；碰歪了又恰好推回原位这种情况检测不到
@@ -3336,190 +3651,6 @@
 - 摆法 `tall_two_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)` → 11. `navigate(destination=loose_block_1)` → 12. `look(target=loose_block_1)` → 13. `pick(object=loose_block_1)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=loose_block_1, receptacle=storage_basket)` → 16. `navigate(destination=loose_block_2)` → 17. `look(target=loose_block_2)` → 18. `pick(object=loose_block_2)` → 19. `navigate(destination=storage_basket)` → 20. `place(object=loose_block_2, receptacle=storage_basket)`
 - 摆法 `short_one_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)` → 11. `navigate(destination=loose_block_1)` → 12. `look(target=loose_block_1)` → 13. `pick(object=loose_block_1)` → 14. `navigate(destination=storage_basket)` → 15. `place(object=loose_block_1, receptacle=storage_basket)`
 - 摆法 `tall_none_loose`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=storage_basket)` → 10. `place(object=rubber_duck, receptacle=storage_basket)`
-
-### his_things_whose（Task）
-
-**情况**：（11-17 由 T26 whose 并入，指令“把孩子落在客厅的东西拿回他房间”）电视柜上一本他的图画书和一本大人的小说 → 只拿他的书回他书架
-
-**指令**：把孩子落在客厅的东西拿回他房间。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-  - `adult_novel` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-  - 手里空着
-- **不行（0）**：图画书没拿回；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kid_book)` → 4. `pick(object=kid_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
-
-### his_things_by_kind（Task）
-
-**情况**：（由 T26 where_in_room 并入，同上指令）小车和他的一本书 → 小车进他卧室的玩具筐，书上他书架
-
-**指令**：把孩子落在客厅的东西拿回他房间。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `living_car` 在 `kids_basket` 里
-  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-  - 手里空着
-- **次好（0.6）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `living_car` 在 `kids_basket` 里
-      - `kid_book` 在 `kids_basket` 里
-    - 第 2 组：
-      - `living_car` 在 `kids_basket` 里
-      - `kid_book` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
-    - 第 3 组：
-      - `living_car` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
-      - `kid_book` 在 `kids_basket` 里
-    - 第 4 组：
-      - `living_car` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
-      - `kid_book` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
-- **不行（0）**：有一样没拿回；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `navigate(destination=kids_basket)` → 6. `place(object=living_car, receptacle=kids_basket)` → 7. `navigate(destination=kid_book)` → 8. `pick(object=kid_book)` → 9. `navigate(destination=bookcase_2/top)` → 10. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
-
-### his_room（Task）
-
-**情况**：（由 T26 two_bedrooms 并入，同上指令）两间卧室，有他玩具筐的是他的 → 小车送进去
-
-**指令**：把孩子落在客厅的东西拿回他房间。
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `living_car` 在 `kids_basket` 里
-  - 手里空着
-- **不行（0）**：放进另一间卧室；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `room_east`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)`
-- 摆法 `room_south`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_0)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)`
-
-### cup_to_bedside（Task）
-
-**情况**：（由 T28 并入，指令“孩子要睡了，把他的水杯拿到床边”）两张床，有小熊的是他的 → 杯子从厨房台面拿到他床边；已经在了就不动
-
-**指令**：孩子要睡了，把他的水杯拿到床边。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `bed_south`：
-    - `kid_cup` 在 `cell_shelf_2/top` 上
-    - `kid_cup` 立着
-    - 手里空着
-  - 摆法 `already_there`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
-  - 摆法 `bed_east`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - 手里空着
-- **次好（0.6）**：
-
-  - 摆法 `bed_south`：
-    - `kid_cup` 在 `cell_shelf_2/top` 上
-    - `kid_cup` 立着
-    - 手里空着
-  - 摆法 `already_there`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - 手里空着
-  - 摆法 `bed_east`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - 手里空着
-- **不行（0）**：放到另一张床边；把杯子拿走了；躺着；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `bed_east`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `look(target=mattress_2/top)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `bed_south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `look(target=mattress_1/top)` → 6. `navigate(destination=cell_shelf_2/top)` → 7. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.491, -10.846])`
-- 摆法 `already_there`：1. `navigate(destination=bookcase_3/top)` → 2. `look(target=bookcase_3/top)`
-
-### where_his_cup_is（Task）
-
-**情况**：（由 T28 并入，同上指令）台面上瓷杯和马克杯；他的塑料杯也在台面上，或收在矮柜里 → 别人的杯子不能拿，去矮柜找他的，关好门
-
-**指令**：孩子要睡了，把他的水杯拿到床边。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `on_counter`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
-    - 手里空着
-  - 摆法 `in_cabinet`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
-    - `kitchen_cabinet_4` 关着
-    - 手里空着
-- **次好（0.6）**：
-
-  - 摆法 `in_cabinet`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `cup_counter_b` 没被挪动（离开局位置不超过 3 cm）
-        - `counter_mug` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-        - `kitchen_cabinet_4` 关着
-  - 摆法 `on_counter`：
-    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-    - `kid_cup` 立着
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `cup_counter_b` 没被挪动（离开局位置不超过 3 cm）
-        - `counter_mug` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-- **最不好（0.3）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `cup_counter_b` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-      - `cup_counter_b` 立着
-    - 第 2 组：
-      - `counter_mug` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
-      - `counter_mug` 立着
-- **不行（0）**：没放床边；躺着；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `on_counter`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `close(articulated=kitchen_cabinet_4)`
 
 ---
 
@@ -3655,7 +3786,7 @@
 
 ### finish_the_table（Task）
 
-**情况**：三份已摆好（大人碗+马克杯，孩子碗+塑料杯+玩具），剩下孩子的位子要摆；家里没有第二个塑料杯 → 孩子的杯子用小碗顶上（替换），马克杯次之
+**情况**：“把桌上剩下的位子也摆好”：已摆好的三份里大人是碗+马克杯，孩子是碗+塑料杯、旁边放着玩具 → 归纳出两条规律，看空位旁边有没有玩具车判断是谁的位子，按对应规律摆
 
 **指令**：把桌上剩下的位子也摆好。
 
@@ -3665,56 +3796,65 @@
 
   - 摆法 `kid_seat`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_small_bowl`
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
     - `w_mid_spoon` 离这些都超过 25 cm：`mug`、`mug_2`
     - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
     - 手里空着
   - 摆法 `adult_and_kid`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
-    - `w_mid_spoon` 离这些都超过 25 cm：`kid_small_bowl`
+    - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
     - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_small_bowl`
+    - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
     - `w_south_spoon` 离这些都超过 25 cm：`mug_2`
+    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `adult_seat`：
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
+    - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
     - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
     - 手里空着
 - **次好（0.6）**：
 
   - 摆法 `kid_seat`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
+    - `w_mid_spoon` 离这些都超过 25 cm：`mug`、`mug_2`
+    - 手里空着
+  - 摆法 `adult_seat`：
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
-    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+    - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
     - 手里空着
   - 摆法 `adult_and_kid`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
-    - `w_mid_spoon` 离这些都超过 25 cm：`kid_small_bowl`
+    - `w_mid_spoon` 离这些都超过 25 cm：`kid_cup`
     - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_south_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
-    - `e_north_spoon`、`e_north_bowl`、`e_north_drink`、`e_mid_spoon`、`e_mid_bowl`、`e_mid_drink`、`e_mid_toy`、`w_north_spoon`、`w_north_bowl`、`w_north_drink` 没被挪动（离开局位置不超过 3 cm）
+    - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_cup`
+    - `w_south_spoon` 离这些都超过 25 cm：`mug_2`
     - 手里空着
 - **最不好（0.3）**：
 
-  - 摆法 `kid_seat`：
+  - 摆法 `adult_seat`、`kid_seat`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`kid_small_bowl`
-    - `w_mid_spoon` 离这些都超过 25 cm：`mug`、`mug_2`
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`、`kid_cup`
     - 手里空着
   - 摆法 `adult_and_kid`：
     - `w_mid_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`
-    - `w_mid_spoon` 离这些都超过 25 cm：`kid_small_bowl`
+    - `w_mid_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`、`kid_cup`
     - `w_south_spoon` 离其中至少一个不超过 12 cm：`bowl`、`bowl_2`
-    - `w_south_spoon` 离其中至少一个不超过 12 cm：`kid_small_bowl`
-    - `w_south_spoon` 离这些都超过 25 cm：`mug_2`
+    - `w_south_spoon` 离其中至少一个不超过 12 cm：`mug`、`mug_2`、`kid_cup`
     - 手里空着
 - **不行（0）**：有空位没摆或只摆一半；倒了；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `kid_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `look(target=kitchen_counter_2/top)` → 11. `navigate(destination=kid_small_bowl)` → 12. `pick(object=kid_small_bowl)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=kid_small_bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])`
-- 摆法 `adult_and_kid`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])` → 15. `navigate(destination=bowl_2)` → 16. `pick(object=bowl_2)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=bowl_2, receptacle=dining_table_2/top, hint_xy=[2.89, 6.04])` → 19. `navigate(destination=kitchen_counter_2/top)` → 20. `look(target=kitchen_counter_2/top)` → 21. `navigate(destination=kid_small_bowl)` → 22. `pick(object=kid_small_bowl)` → 23. `navigate(destination=dining_table_2/top)` → 24. `place(object=kid_small_bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 5.7])`
+- 摆法 `adult_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])`
+- 摆法 `kid_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `look(target=kitchen_counter_2/top)` → 11. `navigate(destination=kid_cup)` → 12. `pick(object=kid_cup)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])`
+- 摆法 `adult_and_kid`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=bowl)` → 6. `pick(object=bowl)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=bowl, receptacle=dining_table_2/top, hint_xy=[2.89, 6.89])` → 9. `navigate(destination=bookcase_2/top)` → 10. `look(target=bookcase_2/top)` → 11. `navigate(destination=mug)` → 12. `pick(object=mug)` → 13. `navigate(destination=dining_table_2/top)` → 14. `place(object=mug, receptacle=dining_table_2/top, hint_xy=[2.89, 6.55])` → 15. `navigate(destination=bowl_2)` → 16. `pick(object=bowl_2)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=bowl_2, receptacle=dining_table_2/top, hint_xy=[2.89, 6.04])` → 19. `navigate(destination=kitchen_counter_2/top)` → 20. `look(target=kitchen_counter_2/top)` → 21. `navigate(destination=kid_cup)` → 22. `pick(object=kid_cup)` → 23. `navigate(destination=dining_table_2/top)` → 24. `place(object=kid_cup, receptacle=dining_table_2/top, hint_xy=[2.89, 5.7])`
 
 ---
 
@@ -3723,8 +3863,6 @@
 > 汤要放一会儿再吃，用锅盖把灶台上的汤锅盖好。
 
 ### lid_by_pot（对照）
-
-**情况**：锅盖在灶台旁边的岛台上 → 拿起锅盖盖好
 
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
@@ -3739,9 +3877,23 @@
 
 1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=pot_lid)` → 4. `pick(object=pot_lid)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `cover(container=handled_cooking_pot, lid=pot_lid)`
 
-### no_lid（Task）
+### lid_elsewhere（Task）
 
-**情况**：家里没有锅盖 → 用厨房台面上的盘子盖（替换：缺失）；用岛台上的书盖算最不好
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - 手里空着
+- **不行（0）**：没盖；没找到锅盖；还拿着
+
+
+**参考调用顺序**：
+
+- 摆法 `dining`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `search(object=pot_lid, region=dining_room_0_1)` → 6. `navigate(destination=pot_lid)` → 7. `pick(object=pot_lid)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `cover(container=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `counter`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `search(object=pot_lid, region=kitchen_0_1)` → 6. `navigate(destination=pot_lid)` → 7. `pick(object=pot_lid)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `cover(container=handled_cooking_pot, lid=pot_lid)`
+
+### no_lid（Task）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -3765,8 +3917,6 @@
 1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `search(object=plate_counter_a, region=kitchen_0_1)` → 6. `navigate(destination=plate_counter_a)` → 7. `pick(object=plate_counter_a)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `cover(container=handled_cooking_pot, lid=plate_counter_a)`
 
 ### lid_in_use（Task）
-
-**情况**：锅盖盖在另一锅炖菜上 → 用盘子盖汤锅，炖菜的盖子不动（替换：被占用）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -3800,8 +3950,6 @@
 
 ### box_on_counter（对照）
 
-**情况**：零食盒（小收纳盒）在厨房台面 → 空盒先放书桌，再把苹果装进去
-
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -3816,9 +3964,29 @@
 
 1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=snack_box)` → 4. `pick(object=snack_box)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_box, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=school_apple)` → 10. `pick(object=school_apple)` → 11. `navigate(destination=snack_box)` → 12. `place(object=school_apple, receptacle=snack_box)`
 
-### no_box（Task）
+### box_in_cabinet（Task）
 
-**情况**：没有零食盒 → 用碗装（替换：缺失）；用大收纳箱算最不好
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `school_apple` 在 `snack_box` 里
+  - `snack_box` 在 `desk_1/top` 上
+  - 手里空着
+  - `kitchen_cabinet_6` 关着
+- **次好（0.6）**：
+
+  - `school_apple` 在 `snack_box` 里
+  - `snack_box` 在 `desk_1/top` 上
+  - 手里空着
+- **不行（0）**：没找到盒子；没装好；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=snack_box)` → 7. `pick(object=snack_box)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=snack_box, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=dining_table_2/top)` → 14. `look(target=dining_table_2/top)` → 15. `navigate(destination=school_apple)` → 16. `pick(object=school_apple)` → 17. `navigate(destination=snack_box)` → 18. `place(object=school_apple, receptacle=snack_box)`
+
+### no_box（Task）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -3839,8 +4007,6 @@
 1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=spare_bowl)` → 4. `pick(object=spare_bowl)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=spare_bowl, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=school_apple)` → 10. `pick(object=school_apple)` → 11. `navigate(destination=spare_bowl)` → 12. `place(object=school_apple, receptacle=spare_bowl)`
 
 ### box_in_use（Task）
-
-**情况**：零食盒里装着孩子的蜡笔和积木 → 东西不动，用碗装（替换：被占用）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -3893,36 +4059,68 @@
 
 1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
 
-### pot_in_use（Task）
+### h_task_lid_elsewhere（Task）
 
-**情况**：灶上那口锅装着昨天的汤 → 积木藏进餐桌那口空锅，盖好（替换：被占用）；藏进汤锅算最不好
+**情况**：锅盖在靠墙柜上 → 先把锅盖拿到灶台，再藏
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `wooden_block_b` 藏好了（从房间里看不到）
-  - `wooden_block_b` 在 `handled_cooking_pot` 里
   - `handled_cooking_pot` 盖着 `pot_lid`
-  - `soup_pot` 没被挪动（离开局位置不超过 3 cm）
-  - `soup_pot` 立着
   - 手里空着
-- **最不好（0.3）**：
+- **次好（0.6）**：
 
-  - `wooden_block_b` 在 `soup_pot` 里
+  - `wooden_block_b` 藏好了（从房间里看不到）
   - 手里空着
-- **不行（0）**：一眼能看到；汤锅碰倒；还拿着
+  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+- **不行（0）**：积木一眼能看到；藏进微波炉或冰箱；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 4. `navigate(destination=kitchen_island/top)` → 5. `look(target=kitchen_island/top)` → 6. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=pot_lid)` → 4. `pick(object=pot_lid)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `place(object=pot_lid, receptacle=kitchen_stove/top, hint_xy=[8.715, 1.655])` → 7. `navigate(destination=handled_cooking_pot)` → 8. `look(target=kitchen_stove/top)` → 9. `navigate(destination=kitchen_island/top)` → 10. `look(target=kitchen_island/top)` → 11. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
 
-### no_pot（Task）
+### hide_both（Task）
 
-**情况**：家里没有锅 → 积木藏进厨房矮柜关好门（替换：缺失），不藏进电器
+**情况**：两块积木藏进同一个锅，另一块在别的房间 → 找到第二块，中间再揭一次盖，最后盖好
+
+**指令**：我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `wooden_block_b` 藏好了（从房间里看不到）
+  - `floor_block` 藏好了（从房间里看不到）
+  - `handled_cooking_pot` 盖着 `pot_lid`
+  - 手里空着
+- **次好（0.6）**：
+
+  - `wooden_block_b` 藏好了（从房间里看不到）
+  - `floor_block` 藏好了（从房间里看不到）
+  - 手里空着
+  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+  - `["not on", "floor_block", "kitchen_microwave/inside_floor"]`
+  - `["not on", "floor_block", "breakfast_fridge/inside_shelf"]`
+- **不行（0）**：积木一眼能看到；藏进微波炉或冰箱；还拿着
+
+
+**参考调用顺序**：
+
+- 摆法 `tv_stand`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=living_room_0_0)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
+- 摆法 `dining`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=dining_room_0_1)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
+
+### hide_somewhere（Task）
+
+**情况**：指令只说“把木积木藏到孩子一眼看不到的地方，别藏进电器里，危险”，没说藏哪 → 自己挑能藏住又不是电器的地方：锅盖在手边就藏进灶上的锅里盖好；锅盖被收到靠墙柜上了，就藏进矮柜里关好门（藏进微波炉或冰箱算失败）
+
+**指令**：陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -3930,18 +4128,13 @@
   - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
   - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
   - 手里空着
-- **最不好（0.3）**：
-
-  - `["not on", "wooden_block_b", "kitchen_island/top"]`
-  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
-  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
-  - 手里空着
-- **不行（0）**：留在岛台；藏进微波炉或冰箱；还拿着
+- **不行（0）**：一眼能看到；藏进微波炉或冰箱；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=kitchen_cabinet_4)` → 6. `open(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b, grasp=side)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 11. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `pot_ready`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `lid_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=kitchen_cabinet_4)` → 6. `open(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b, grasp=side)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 11. `close(articulated=kitchen_cabinet_4)`
 
 ---
 
@@ -3950,8 +4143,6 @@
 > 快吃晚饭了，从靠墙矮柜里拿两只干净的碗摆到餐桌上，每只碗配一把勺子。
 
 ### bowls_in_cabinet（对照）
-
-**情况**：柜里两只碗，台面两把勺子 → 开柜拿碗摆好，关柜，配勺子
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -3977,9 +4168,34 @@
 
 1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=dinner_bowl_2)` → 12. `pick(object=dinner_bowl_2)` → 13. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 14. `navigate(destination=dining_table_2/top)` → 15. `place(object=dinner_bowl_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 16. `navigate(destination=kitchen_cabinet_6)` → 17. `close(articulated=kitchen_cabinet_6)` → 18. `navigate(destination=kitchen_counter_2/top)` → 19. `look(target=kitchen_counter_2/top)` → 20. `navigate(destination=dinner_spoon_1)` → 21. `pick(object=dinner_spoon_1)` → 22. `navigate(destination=dining_table_2/top)` → 23. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 24. `navigate(destination=dinner_spoon_2)` → 25. `pick(object=dinner_spoon_2)` → 26. `navigate(destination=dining_table_2/top)` → 27. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
 
-### one_bowl（Task）
+### bowls_apart（Task）
 
-**情况**：只有一只碗 → 第二个用玻璃保鲜盒（替换：缺失），用盘子算最不好
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `dinner_bowl_1` 在 `dining_table_2/top` 上
+  - `dinner_bowl_2` 在 `dining_table_2/top` 上
+  - `dinner_spoon_1` 在 `dining_table_2/top` 上
+  - `dinner_spoon_2` 在 `dining_table_2/top` 上
+  - `kitchen_cabinet_6` 关着
+  - `kitchen_cabinet_4` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `dinner_bowl_1` 在 `dining_table_2/top` 上
+  - `dinner_bowl_2` 在 `dining_table_2/top` 上
+  - `dinner_spoon_1` 在 `dining_table_2/top` 上
+  - `dinner_spoon_2` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：碗或勺子不到两个；碗掉了；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `open(articulated=kitchen_cabinet_4)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_4)` → 17. `straighten()` → 18. `navigate(destination=dinner_bowl_2)` → 19. `pick(object=dinner_bowl_2)` → 20. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_bowl_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 23. `navigate(destination=kitchen_cabinet_4)` → 24. `close(articulated=kitchen_cabinet_4)` → 25. `navigate(destination=kitchen_counter_2/top)` → 26. `look(target=kitchen_counter_2/top)` → 27. `navigate(destination=dinner_spoon_1)` → 28. `pick(object=dinner_spoon_1)` → 29. `navigate(destination=dining_table_2/top)` → 30. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 31. `navigate(destination=dinner_spoon_2)` → 32. `pick(object=dinner_spoon_2)` → 33. `navigate(destination=dining_table_2/top)` → 34. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
+
+### one_bowl（Task）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -4013,8 +4229,6 @@
 - 摆法 `mug`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `look(target=kitchen_counter_2/top)` → 15. `navigate(destination=spare_mug)` → 16. `pick(object=spare_mug)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=spare_mug, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 19. `navigate(destination=dinner_spoon_1)` → 20. `pick(object=dinner_spoon_1)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 23. `navigate(destination=dinner_spoon_2)` → 24. `pick(object=dinner_spoon_2)` → 25. `navigate(destination=dining_table_2/top)` → 26. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
 
 ### bowl_in_use（Task）
-
-**情况**：一只碗装着剩菜 → 它不动，第二个用保鲜盒（替换：被占用）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -4051,76 +4265,7 @@
 - 摆法 `tomatoes`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `look(target=kitchen_counter_2/top)` → 15. `navigate(destination=glass_box)` → 16. `pick(object=glass_box)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=glass_box, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 19. `navigate(destination=dinner_spoon_1)` → 20. `pick(object=dinner_spoon_1)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 23. `navigate(destination=dinner_spoon_2)` → 24. `pick(object=dinner_spoon_2)` → 25. `navigate(destination=dining_table_2/top)` → 26. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
 - 摆法 `oatmeal`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `look(target=kitchen_counter_2/top)` → 15. `navigate(destination=glass_box)` → 16. `pick(object=glass_box)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=glass_box, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 19. `navigate(destination=dinner_spoon_1)` → 20. `pick(object=dinner_spoon_1)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 23. `navigate(destination=dinner_spoon_2)` → 24. `pick(object=dinner_spoon_2)` → 25. `navigate(destination=dining_table_2/top)` → 26. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
 
-### no_bowl（Task）
-
-**情况**：（11-17 由 T30 no_bowl 并入）家里没有干净碗；矮柜里一个马克杯（和平时那个盘子），台面上一个玻璃保鲜盒 → 马克杯加保鲜盒（替换：缺失），用盘子最不好
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `spare_mug` 在 `dining_table_2/top` 上
-  - `glass_box` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_6` 关着
-  - 手里空着
-- **最不好（0.3）**：
-
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `plate_inside_kitchen_cabinet` 在 `dining_table_2/top` 上
-    - 第 2 组：
-      - `plate_counter_a` 在 `dining_table_2/top` 上
-    - 第 3 组：
-      - `plate_counter_b` 在 `dining_table_2/top` 上
-- **不行（0）**：不到两个；掉了；还拿着
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=spare_mug)` → 7. `pick(object=spare_mug)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=spare_mug, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_counter_2/top)` → 14. `look(target=kitchen_counter_2/top)` → 15. `navigate(destination=glass_box)` → 16. `pick(object=glass_box)` → 17. `navigate(destination=dining_table_2/top)` → 18. `place(object=glass_box, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 19. `navigate(destination=dinner_spoon_1)` → 20. `pick(object=dinner_spoon_1)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 23. `navigate(destination=dinner_spoon_2)` → 24. `pick(object=dinner_spoon_2)` → 25. `navigate(destination=dining_table_2/top)` → 26. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
-
-### plate_not_bowl（Task）
-
-**情况**：（由 T30 bowl_not_plate 并入）矮柜里一只碗和一个盘子，另一只碗在 4 号矮柜 → 盘子不是汤碗，去 4 号柜拿第二只碗（看着像但不能用）
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `dinner_bowl_2` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
-  - 手里空着
-  - `plate_inside_kitchen_cabinet` 没被挪动（离开局位置不超过 3 cm）
-- **次好（0.6）**：
-
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `dinner_bowl_2` 在 `dining_table_2/top` 上
-  - `dinner_spoon_1` 在 `dining_table_2/top` 上
-  - `dinner_spoon_2` 在 `dining_table_2/top` 上
-  - 手里空着
-  - `plate_inside_kitchen_cabinet` 没被挪动（离开局位置不超过 3 cm）
-- **最不好（0.3）**：
-
-  - `dinner_bowl_1` 在 `dining_table_2/top` 上
-  - `plate_inside_kitchen_cabinet` 在 `dining_table_2/top` 上
-  - 手里空着
-- **不行（0）**：不到两个；掉了；还拿着
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `open(articulated=kitchen_cabinet_4)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_4)` → 17. `straighten()` → 18. `navigate(destination=dinner_bowl_2)` → 19. `pick(object=dinner_bowl_2)` → 20. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 21. `navigate(destination=dining_table_2/top)` → 22. `place(object=dinner_bowl_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 23. `navigate(destination=kitchen_cabinet_4)` → 24. `close(articulated=kitchen_cabinet_4)` → 25. `navigate(destination=kitchen_counter_2/top)` → 26. `look(target=kitchen_counter_2/top)` → 27. `navigate(destination=dinner_spoon_1)` → 28. `pick(object=dinner_spoon_1)` → 29. `navigate(destination=dining_table_2/top)` → 30. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 31. `navigate(destination=dinner_spoon_2)` → 32. `pick(object=dinner_spoon_2)` → 33. `navigate(destination=dining_table_2/top)` → 34. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
-
 ### door_stuck（Task）
-
-**情况**：靠墙矮柜的门打不开 → 去 4 号矮柜拿（替换：损坏；sim 还要支持锁住的门）
 
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
@@ -4163,6 +4308,25 @@
 
 1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=wide_storage_bin)` → 9. `drop(object=soda_can, container=wide_storage_bin)` → 10. `navigate(destination=foam_cube)` → 11. `look(target=foam_cube)` → 12. `pick(object=foam_cube)` → 13. `navigate(destination=wide_storage_bin)` → 14. `drop(object=foam_cube, container=wide_storage_bin)`
 
+### m_can_in_dining_room（Task）
+
+**情况**：罐子不在原处，看不到 → 先找
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `soda_can` 在 `wide_storage_bin` 里
+  - `foam_cube` 在 `wide_storage_bin` 里
+  - 手里空着
+- **不行（0）**：没找到罐子；没进回收箱；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `m_can_in_dining_room`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)` → 11. `navigate(destination=foam_cube)` → 12. `look(target=foam_cube)` → 13. `pick(object=foam_cube)` → 14. `navigate(destination=wide_storage_bin)` → 15. `drop(object=foam_cube, container=wide_storage_bin)`
+- 摆法 `alt_tv_stand_2`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=living_room_0_0)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)` → 11. `navigate(destination=foam_cube)` → 12. `look(target=foam_cube)` → 13. `pick(object=foam_cube)` → 14. `navigate(destination=wide_storage_bin)` → 15. `drop(object=foam_cube, container=wide_storage_bin)`
+
 ### lookalike_bin（Task）
 
 **情况**：罐子不在原处；客厅还有个一模一样、装着积木的箱子 → 认准书架上那个（里面有塑料杯）
@@ -4189,63 +4353,39 @@
 - 摆法 `lookalike_bin`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `identify(object=wide_storage_bin)`（补救） → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=soda_can, container=wide_storage_bin)` → 12. `navigate(destination=foam_cube)` → 13. `touch(object=foam_cube)`（补救） → 14. `pick(object=foam_cube)` → 15. `navigate(destination=wide_storage_bin)` → 16. `drop(object=foam_cube, container=wide_storage_bin)`
 - 摆法 `alt_tv_stand_2`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=living_room_0_0)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `identify(object=wide_storage_bin)`（补救） → 10. `navigate(destination=wide_storage_bin)` → 11. `drop(object=soda_can, container=wide_storage_bin)` → 12. `navigate(destination=foam_cube)` → 13. `touch(object=foam_cube)`（补救） → 14. `pick(object=foam_cube)` → 15. `navigate(destination=wide_storage_bin)` → 16. `drop(object=foam_cube, container=wide_storage_bin)`
 
-### recycle_bin_full（Task）
+### x6_gd_can_put_away（Task）
+
+**情况**：“电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好”：泡沫块在客厅地上 → 逐个打开矮柜找罐子，两样都放进回收箱（书架上装回收的那个）
+
+**指令**：电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_can` 在 `spare_bin` 里
-  - `foam_cube` 在 `spare_bin` 里
-  - `rec_cereal_1` 在 `wide_storage_bin` 里
-  - `rec_cereal_2` 在 `wide_storage_bin` 里
-  - `rec_cup_1` 在 `wide_storage_bin` 里
-  - `rec_cup_2` 在 `wide_storage_bin` 里
-  - `rec_can_1` 在 `wide_storage_bin` 里
-  - `rec_can_2` 在 `wide_storage_bin` 里
+  - `soda_can` 在 `wide_storage_bin` 里
+  - `foam_cube` 在 `wide_storage_bin` 里
   - 手里空着
-- **最不好（0.3）**：
+  - `kitchen_cabinet_6` 关着
+  - `kitchen_cabinet_4` 关着
+- **次好（0.6）**：
 
-  - `rec_cereal_1` 在 `wide_storage_bin` 里
-  - `rec_cereal_2` 在 `wide_storage_bin` 里
-  - `rec_cup_1` 在 `wide_storage_bin` 里
-  - `rec_cup_2` 在 `wide_storage_bin` 里
-  - `rec_can_1` 在 `wide_storage_bin` 里
-  - `rec_can_2` 在 `wide_storage_bin` 里
+  - `soda_can` 在 `wide_storage_bin` 里
+  - `foam_cube` 在 `wide_storage_bin` 里
   - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `soda_can` 离其中至少一个不超过 3 cm：`wide_storage_bin`
-    - 第 2 组：
-      - `foam_cube` 离其中至少一个不超过 3 cm：`wide_storage_bin`
-- **不行（0）**：把回收箱里的东西拿出来；有一样没收；还拿着或掉了
+- **不行（0）**：没找到罐子；没进回收箱；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `navigate(destination=bookcase_2/top)` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=spare_bin)` → 9. `drop(object=soda_can, container=spare_bin)` → 10. `navigate(destination=foam_cube)` → 11. `look(target=foam_cube)` → 12. `pick(object=foam_cube)` → 13. `navigate(destination=spare_bin)` → 14. `drop(object=foam_cube, container=spare_bin)`
-
-### bin_out_of_reach（Task）
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `soda_can` 在 `spare_small_bin` 里
-  - `foam_cube` 在 `spare_small_bin` 里
-  - 手里空着
-- **不行（0）**：有一样没收；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `navigate(destination=large_shelf_6/top)` → 7. `look(target=large_shelf_6/top)` → 8. `navigate(destination=wide_storage_bin)` → 9. `look(target=large_shelf_6/top)` → 10. `navigate(destination=dining_table_2/top)` → 11. `look(target=dining_table_2/top)` → 12. `navigate(destination=spare_small_bin)` → 13. `drop(object=soda_can, container=spare_small_bin)` → 14. `navigate(destination=foam_cube)` → 15. `look(target=foam_cube)` → 16. `pick(object=foam_cube)` → 17. `navigate(destination=spare_small_bin)` → 18. `drop(object=foam_cube, container=spare_small_bin)`
+- 摆法 `in_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=wide_storage_bin)` → 18. `drop(object=soda_can, container=wide_storage_bin)` → 19. `navigate(destination=kitchen_cabinet_4)` → 20. `close(articulated=kitchen_cabinet_4)` → 21. `navigate(destination=foam_cube)` → 22. `look(target=foam_cube)` → 23. `pick(object=foam_cube)` → 24. `navigate(destination=wide_storage_bin)` → 25. `drop(object=foam_cube, container=wide_storage_bin)`
+- 摆法 `in_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=wide_storage_bin)` → 18. `drop(object=soda_can, container=wide_storage_bin)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)` → 21. `navigate(destination=foam_cube)` → 22. `look(target=foam_cube)` → 23. `pick(object=foam_cube)` → 24. `navigate(destination=wide_storage_bin)` → 25. `drop(object=foam_cube, container=wide_storage_bin)`
 
 ---
 
 ## T20_juice_back_to_table
 
-> 早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放。
+> 有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。
 
 ### bottle_on_cabinet（对照）
 
@@ -4269,50 +4409,60 @@
 
 1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=juice_bottle)` → 4. `pick(object=juice_bottle)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
-### juice_finished（Task）
+### m_bottle_on_tv_stand（Task）
 
-**情况**：果汁喝完了，空瓶在垃圾桶里 → 拿电视柜上的汽水（替换：缺失）；拿空瓶算最不好
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `soda_drink` 在 `dining_table_2/top` 上
-  - `soda_drink` 立着
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `juice_bottle` 在 `dining_table_2/top` 上
-  - 手里空着
-- **不行（0）**：桌上没有喝的；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_trash)` → 2. `look(target=kitchen_trash)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_drink)` → 6. `pick(object=soda_drink)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=soda_drink, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
-
-### juice_in_use（Task）
-
-**情况**：果汁在爷爷座位旁，他正在喝 → 拿汽水（替换：被占用）；拿爷爷的果汁算最不好
+**情况**：瓶子在客厅看不到的地方 → 先找
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_drink` 在 `dining_table_2/top` 上
-  - `soda_drink` 立着
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - `juice_bottle` 立着
   - 手里空着
-  - `juice_bottle` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
   - `juice_bottle` 在 `dining_table_2/top` 上
   - 手里空着
-- **不行（0）**：桌上没有喝的；碰倒爷爷的东西；还拿着或掉了
+- **不行（0）**：没放回餐桌；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `search(object=juice_bottle, region=dining_room_0_0)` → 2. `look(target=dining_table_1/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_drink)` → 6. `pick(object=soda_drink)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=soda_drink, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+- 摆法 `m_bottle_on_tv_stand`：1. `search(object=juice_bottle, region=living_room_0_0)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+- 摆法 `alt_bookcase_2`：1. `search(object=juice_bottle, region=bedroom_0_1)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+
+### x6_gd_bottle_put_away（Task）
+
+**情况**：瓶子被收进了两个矮柜之一 → 逐个找
+
+**指令**：有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - `juice_bottle` 立着
+  - 手里空着
+  - `kitchen_cabinet_6` 关着
+  - `kitchen_cabinet_4` 关着
+- **次好（0.6）**：
+
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - `juice_bottle` 立着
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：没放回餐桌；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `in_cabinet_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `in_cabinet_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])` → 17. `navigate(destination=kitchen_cabinet_6)` → 18. `close(articulated=kitchen_cabinet_6)`
 
 ---
 
@@ -4390,72 +4540,63 @@
 - 摆法 `set_on_large_shelf_4`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_4/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_4/shelf_1, hint_xy=[3.7, -5.15])`
 - 摆法 `set_on_large_shelf_5`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_5/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_5/shelf_1, hint_xy=[4.45, -0.35])`
 
-### kids_shelf_full（Task）
+### stack_them_stably（Task）
 
-**情况**：孩子书架每层都塞满了，红书放不下 → 放到卧室另一个书架（替换）；硬塞算最不好
+**情况**：“把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面”：两本大小不同的书 → 比较书的大小，大的在下
 
-**指令**：孩子看完书了，把书收到他卧室的书架上。
+**指令**：孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `kidsfull_top_g1`、`kidsfull_top_g2`、`kidsfull_top_p1`、`kidsfull_top_b1`、`kidsfull_top_b2`、`kidsfull_top_p2`、`kidsfull_shelf_1_g1`、`kidsfull_shelf_1_g2`、`kidsfull_shelf_1_p1`、`kidsfull_shelf_1_b1`、`kidsfull_shelf_1_p2`、`kidsfull_shelf_1_p3`、`kidsfull_shelf_0_g1`、`kidsfull_shelf_0_g2`、`kidsfull_shelf_0_p1`、`kidsfull_shelf_0_b1`、`kidsfull_shelf_0_p2`、`kidsfull_shelf_0_p3` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `book_red` 在 `bookcase_1/top` 上
-    - 第 2 组：
-      - `book_red` 在 `bookcase_1/shelf_1` 上
-    - 第 3 组：
-      - `book_red` 在 `bookcase_1/shelf_0` 上
-    - 第 4 组：
-      - `book_red` 在 `bookcase_3/top` 上
-    - 第 5 组：
-      - `book_red` 在 `bookcase_3/shelf_1` 上
-    - 第 6 组：
-      - `book_red` 在 `bookcase_3/shelf_0` 上
-    - 第 7 组：
-      - `book_red` 在 `bookcase_4/top` 上
-    - 第 8 组：
-      - `book_red` 在 `bookcase_4/shelf_1` 上
-    - 第 9 组：
-      - `book_red` 在 `bookcase_4/shelf_0` 上
-    - 第 10 组：
-      - `book_red` 在 `bookcase_3/top` 上
-    - 第 11 组：
-      - `book_red` 在 `bookcase_3/shelf_1` 上
-    - 第 12 组：
-      - `book_red` 在 `bookcase_3/shelf_0` 上
-    - 第 13 组：
-      - `book_red` 在 `large_shelf_4/shelf_0` 上
-    - 第 14 组：
-      - `book_red` 在 `large_shelf_4/shelf_1` 上
-    - 第 15 组：
-      - `book_red` 在 `large_shelf_4/shelf_2` 上
-    - 第 16 组：
-      - `book_red` 在 `large_shelf_5/shelf_0` 上
-    - 第 17 组：
-      - `book_red` 在 `large_shelf_5/shelf_1` 上
+  - 摆法 `red_blue`：
+    - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `desk_book_blue` 叠在 `book_red` 上
+    - 手里空着
+  - 摆法 `blue_green`：
+    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `desk_book_blue` 叠在 `desk_book_green` 上
+    - 手里空着
+  - 摆法 `green_paperback`：
+    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `desk_paperback_book` 叠在 `desk_book_green` 上
+    - 手里空着
 - **最不好（0.3）**：
 
-  - `kidsfull_top_g1`、`kidsfull_top_g2`、`kidsfull_top_p1`、`kidsfull_top_b1`、`kidsfull_top_b2`、`kidsfull_top_p2`、`kidsfull_shelf_1_g1`、`kidsfull_shelf_1_g2`、`kidsfull_shelf_1_p1`、`kidsfull_shelf_1_b1`、`kidsfull_shelf_1_p2`、`kidsfull_shelf_1_p3`、`kidsfull_shelf_0_g1`、`kidsfull_shelf_0_g2`、`kidsfull_shelf_0_p1`、`kidsfull_shelf_0_b1`、`kidsfull_shelf_0_p2`、`kidsfull_shelf_0_p3` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-    - 第 2 组：
-      - `book_red` 离其中至少一个不超过 2 cm：`kidsfull_top_g1`、`kidsfull_top_g2`、`kidsfull_top_p1`、`kidsfull_top_b1`、`kidsfull_top_b2`、`kidsfull_top_p2`、`kidsfull_shelf_1_g1`、`kidsfull_shelf_1_g2`、`kidsfull_shelf_1_p1`、`kidsfull_shelf_1_b1`、`kidsfull_shelf_1_p2`、`kidsfull_shelf_1_p3`、`kidsfull_shelf_0_g1`、`kidsfull_shelf_0_g2`、`kidsfull_shelf_0_p1`、`kidsfull_shelf_0_b1`、`kidsfull_shelf_0_p2`、`kidsfull_shelf_0_p3`
-- **不行（0）**：挪了或拿出架上的书腾地方；书留在书桌；还拿着或掉了
+  - 摆法 `red_blue`：
+    - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `["not on", "book_red", "desk_1/top"]`
+    - `book_red` 不在地上
+    - `["not on", "desk_book_blue", "desk_1/top"]`
+    - `desk_book_blue` 不在地上
+    - 手里空着
+  - 摆法 `blue_green`：
+    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `["not on", "desk_book_blue", "desk_1/top"]`
+    - `desk_book_blue` 不在地上
+    - `["not on", "desk_book_green", "desk_1/top"]`
+    - `desk_book_green` 不在地上
+    - 手里空着
+  - 摆法 `green_paperback`：
+    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
+    - `["not on", "desk_book_green", "desk_1/top"]`
+    - `desk_book_green` 不在地上
+    - `["not on", "desk_paperback_book", "desk_1/top"]`
+    - `desk_paperback_book` 不在地上
+    - 手里空着
+- **不行（0）**：有书留在桌上或别处；书掉地上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=book_red, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `red_blue`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=book_red)`
+- 摆法 `green_paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_paperback_book)` → 8. `pick(object=desk_paperback_book)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_paperback_book, base=desk_book_green)`
+- 摆法 `blue_green`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=desk_book_green)`
 
 ### homework_stays（Task）
 
-**情况**：收拾书桌：书上书架、杯子回厨房、作业别动；两个厨房台面都有人在做饭 → 杯子放到厨房矮柜顶（替换）
+**情况**：“把书桌收拾一下，东西都放到最合适的地方，作业他明天还要接着写”：书桌上有看完的书、用过的马克杯、摊开的作业本和铅笔 → 书放回书柜（家里任一书柜、任一层都算），杯子拿回厨房（两个厨房台面都算），作业原样不动（过程要求：整局不拿起作业本和铅笔）
 
 **指令**：孩子看完书了，把他的书桌收拾一下，东西都放到最合适的地方。作业他明天还要接着写。
 
@@ -4464,36 +4605,35 @@
 - **好（1.0）**：
 
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
-  - `desk_mug` 在其中任一处上：`kitchen_cabinet_6/top`、`kitchen_cabinet_4/top`
+  - `desk_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
   - `desk_mug` 立着
-  - `baking_pin_1`、`baking_bowl_1`、`baking_pin_2`、`baking_bowl_2`、`homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
+  - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
   - 过程要求：整局都没拿起过 `homework`、`hw_pencil`（拆了再搭回去不算）
   - 手里空着
 - **次好（0.6）**：
 
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
-  - `desk_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`
+  - `desk_mug` 在其中任一处上：`kitchen_island/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_stove/top`
   - `desk_mug` 立着
-  - `baking_pin_1`、`baking_bowl_1`、`baking_pin_2`、`baking_bowl_2`、`homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
+  - `homework`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
   - 过程要求：整局都没拿起过 `homework`、`hw_pencil`（拆了再搭回去不算）
   - 手里空着
 - **最不好（0.3）**：
 
   - `book_red` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`
-  - `desk_mug` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_cabinet_6/top`、`kitchen_cabinet_4/top`
+  - `desk_mug` 在其中任一处上：`kitchen_island/top`、`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_stove/top`
   - `desk_mug` 立着
-  - `baking_pin_1`、`baking_bowl_1`、`baking_pin_2`、`baking_bowl_2` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
-- **不行（0）**：书或杯子留在书桌；杯子倒了；碰了做饭的东西；还拿着或掉了
+- **不行（0）**：书或杯子留在书桌；杯子倒了；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top)` → 7. `navigate(destination=desk_mug)` → 8. `pick(object=desk_mug)` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `look(target=kitchen_counter_2/top)` → 11. `navigate(destination=kitchen_cabinet_6/top)` → 12. `place(object=desk_mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.43, 0.45])`
+1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top)` → 7. `navigate(destination=desk_mug)` → 8. `pick(object=desk_mug)` → 9. `navigate(destination=kitchen_counter_2/top)` → 10. `place(object=desk_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.384, 7.609])`
 
 ### whose_book（Task）
 
-**情况**：书桌上的书按种类放回同类书的书架；平装书架低的三层塞满了，只剩最高一层（够不着）有空 → 平装书放到别的书架（替换），不塞进精装书那个
+**情况**：“把书房书桌上的书收好，放到摆着同类书的书架上”：卧室书柜上摆着蓝色精装书，客厅书架上摆着平装书；书桌上有其中一类或两类 → 看每本书是哪一类，放到摆着同类书的那个书架上
 
 **指令**：把书房书桌上的书收好，放到摆着同类书的书架上。
 
@@ -4507,12 +4647,12 @@
     - 手里空着
   - 摆法 `both`：
     - `blue_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-    - `paperback` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_2/shelf_3`
-    - `blue_shelved_1`、`blue_shelved_2`、`pb_shelf_0_1`、`pb_shelf_0_2`、`pb_shelf_0_3`、`pb_shelf_0_4`、`pb_shelf_0_5`、`pb_shelf_0_6`、`pb_shelf_0_7`、`pb_shelf_0_8`、`pb_shelf_0_9`、`pb_shelf_0_10`、`pb_shelf_0_11`、`pb_shelf_1_1`、`pb_shelf_1_2`、`pb_shelf_1_3`、`pb_shelf_1_4`、`pb_shelf_1_5`、`pb_shelf_1_6`、`pb_shelf_1_7`、`pb_shelf_1_8`、`pb_shelf_1_9`、`pb_shelf_1_10`、`pb_shelf_1_11`、`pb_shelf_2_1`、`pb_shelf_2_2`、`pb_shelf_2_3`、`pb_shelf_2_4`、`pb_shelf_2_5`、`pb_shelf_2_6`、`pb_shelf_2_7`、`pb_shelf_2_8`、`pb_shelf_2_9`、`pb_shelf_2_10`、`pb_shelf_2_11` 没被挪动（离开局位置不超过 3 cm）
+    - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
+    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
     - 手里空着
   - 摆法 `paperback`：
-    - `paperback` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_2/shelf_3`
-    - `blue_shelved_1`、`blue_shelved_2`、`pb_shelf_0_1`、`pb_shelf_0_2`、`pb_shelf_0_3`、`pb_shelf_0_4`、`pb_shelf_0_5`、`pb_shelf_0_6`、`pb_shelf_0_7`、`pb_shelf_0_8`、`pb_shelf_0_9`、`pb_shelf_0_10`、`pb_shelf_0_11`、`pb_shelf_1_1`、`pb_shelf_1_2`、`pb_shelf_1_3`、`pb_shelf_1_4`、`pb_shelf_1_5`、`pb_shelf_1_6`、`pb_shelf_1_7`、`pb_shelf_1_8`、`pb_shelf_1_9`、`pb_shelf_1_10`、`pb_shelf_1_11`、`pb_shelf_2_1`、`pb_shelf_2_2`、`pb_shelf_2_3`、`pb_shelf_2_4`、`pb_shelf_2_5`、`pb_shelf_2_6`、`pb_shelf_2_7`、`pb_shelf_2_8`、`pb_shelf_2_9`、`pb_shelf_2_10`、`pb_shelf_2_11` 没被挪动（离开局位置不超过 3 cm）
+    - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
+    - `blue_shelved_1`、`blue_shelved_2`、`paperback_shelved_1`、`paperback_shelved_2` 没被挪动（离开局位置不超过 3 cm）
     - 手里空着
 - **次好（0.6）**：
 
@@ -4521,10 +4661,10 @@
     - 手里空着
   - 摆法 `both`：
     - `blue_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-    - `paperback` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_2/shelf_3`
+    - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
     - 手里空着
   - 摆法 `paperback`：
-    - `paperback` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_2/shelf_3`
+    - `paperback` 在其中任一处上：`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`
     - 手里空着
 - **最不好（0.3）**：
 
@@ -4544,40 +4684,8 @@
 **参考调用顺序**：
 
 - 摆法 `blue_book`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=blue_book)` → 4. `pick(object=blue_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.5])`
-- 摆法 `paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=paperback)` → 4. `pick(object=paperback)` → 5. `navigate(destination=large_shelf_2/shelf_2)` → 6. `look(target=large_shelf_2/shelf_2)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=paperback, receptacle=bookcase_3/top, hint_xy=[2.093, -4.817])`
-- 摆法 `both`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=blue_book)` → 4. `pick(object=blue_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.5])` → 7. `navigate(destination=paperback)` → 8. `pick(object=paperback)` → 9. `navigate(destination=large_shelf_2/shelf_2)` → 10. `look(target=large_shelf_2/shelf_2)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=paperback, receptacle=bookcase_3/top, hint_xy=[2.093, -4.817])`
-
-### no_second_red_book（Task）
-
-**情况**：红皮书放回去，再拿同套下一本红皮书；家里没有第二本 → 拿孩子的绿皮/蓝皮书（替换），不拿大人的平装书
-
-**指令**：孩子看完这本红皮书了，收回他的书架，再把同一套红皮书的下一本拿到书桌上，他明天看。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `green_book_case` 在 `desk_1/top` 上
-    - 第 2 组：
-      - `blue_book_case` 在 `desk_1/top` 上
-- **最不好（0.3）**：
-
-  - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `paperback_shelf` 在 `desk_1/top` 上
-- **不行（0）**：书桌上没有书；红皮书没收；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `green_on_bookcase`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `navigate(destination=green_book_case)` → 9. `pick(object=green_book_case)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=green_book_case, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
-- 摆法 `green_on_tall_shelf`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.0, -0.55])` → 7. `look(target=bookcase_2/top)` → 8. `search(object=green_book_case, region=bedroom_0_1)` → 9. `look(target=large_shelf_4/shelf_1)` → 10. `navigate(destination=green_book_case)` → 11. `pick(object=green_book_case)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=green_book_case, receptacle=desk_1/top, hint_xy=[-0.808, -6.166])`
+- 摆法 `paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=paperback)` → 4. `pick(object=paperback)` → 5. `navigate(destination=large_shelf_2/shelf_2)` → 6. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
+- 摆法 `both`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=blue_book)` → 4. `pick(object=blue_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=blue_book, receptacle=bookcase_2/top, hint_xy=[1.0, -0.5])` → 7. `navigate(destination=paperback)` → 8. `pick(object=paperback)` → 9. `navigate(destination=large_shelf_2/shelf_2)` → 10. `place(object=paperback, receptacle=large_shelf_2/shelf_2, hint_xy=[-1.86, -0.95])`
 
 ### next_in_series（Task）
 
@@ -4641,6 +4749,23 @@
 
 1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.908, 6.655])`
 
+### tissue_out_of_view（Task）
+
+**情况**：纸巾盒不在常放的地方，在书房书桌上 → 先找
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `tissue` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：没找到；没拿到餐桌；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `search(object=tissue, region=living_room_0_1)` → 2. `navigate(destination=tissue)` → 3. `pick(object=tissue)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.908, 6.655])`
+
 ### which_table（Task）
 
 **情况**：两张餐桌，一张上有人在吃饭（汤碗），另一张空着 → 送到吃饭的那张
@@ -4682,6 +4807,32 @@
 
 1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=spare_sponge)` → 4. `pick(object=spare_sponge)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
+### tissue_put_away（Task）
+
+**情况**：纸巾收在两个矮柜之一 → 逐个打开找，拿出来后关好门
+
+**指令**：餐桌上洒了点汤，拿点擦的东西过去。纸巾收在柜子里了，拿完把柜门关好。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `tissue` 在 `dining_table_2/top` 上
+  - `kitchen_cabinet_4` 关着
+  - `kitchen_cabinet_6` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `tissue` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：没拿到餐桌；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `in_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.908, 6.655])` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `in_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=tissue)` → 13. `pick(object=tissue)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[2.908, 6.655])` → 17. `navigate(destination=kitchen_cabinet_6)` → 18. `close(articulated=kitchen_cabinet_6)`
+
 ### the_kids_side（Task）
 
 **情况**：“孩子吃饭把汤洒了，拿点擦的东西过去，放在孩子那一边”：桌上一份有塑料杯（孩子的），一份有马克杯（大人的） → 放到孩子那份旁边
@@ -4712,30 +4863,6 @@
 
 - 摆法 `kid_north`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 7.355])`
 - 摆法 `kid_south`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=tissue)` → 4. `pick(object=tissue)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=tissue, receptacle=dining_table_2/top, hint_xy=[3.708, 6.495])`
-
-### tissue_in_use（Task）
-
-**情况**：纸巾盒在西边餐桌爷爷的座位旁，他正在用 → 拿岛台上的干海绵（替换：被占用）；拿走爷爷的纸巾算最不好
-
-**指令**：餐桌上洒了点汤，拿个能擦的用具过去。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `spare_sponge` 在 `dining_table_2/top` 上
-  - `tissue` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `tissue` 在 `dining_table_2/top` 上
-  - 手里空着
-- **不行（0）**：没拿东西到餐桌；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `search(object=tissue, region=dining_room_0_0)` → 2. `look(target=dining_table_1/top)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=spare_sponge)` → 5. `pick(object=spare_sponge)` → 6. `navigate(destination=dining_table_2/top)` → 7. `place(object=spare_sponge, receptacle=dining_table_2/top, hint_xy=[2.928, 6.655])`
 
 ---
 
@@ -5206,84 +5333,6 @@
 - 摆法 `books_on_it`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `search(object=west_tray, region=dining_room_0_0)` → 11. `look(target=west_tray)` → 12. `navigate(destination=tray_book_1)` → 13. `pick(object=tray_book_1)` → 14. `navigate(destination=bookcase_1/top)` → 15. `place(object=tray_book_1, receptacle=bookcase_1/top, hint_xy=[-9.569, 6.528])` → 16. `navigate(destination=tray_book_2)` → 17. `pick(object=tray_book_2)` → 18. `navigate(destination=bookcase_1/top)` → 19. `place(object=tray_book_2, receptacle=bookcase_1/top, hint_xy=[-9.59, 6.82])` → 20. `navigate(destination=tray_book_3)` → 21. `pick(object=tray_book_3)` → 22. `navigate(destination=bookcase_1/shelf_1)` → 23. `place(object=tray_book_3, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.52])` → 24. `navigate(destination=tray_book_4)` → 25. `pick(object=tray_book_4)` → 26. `navigate(destination=bookcase_1/shelf_1)` → 27. `place(object=tray_book_4, receptacle=bookcase_1/shelf_1, hint_xy=[-9.59, 6.82])` → 28. `navigate(destination=bought_apple)` → 29. `pick(object=bought_apple)` → 30. `navigate(destination=west_tray)` → 31. `place(object=bought_apple, receptacle=west_tray)`
 - 摆法 `basket_missing`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_apple)` → 11. `pick(object=bought_apple)` → 12. `navigate(destination=fruit_tray)` → 13. `place(object=bought_apple, receptacle=fruit_tray)`
 
-### basket_in_use（Task）
-
-**情况**：果篮在岛台上，里面装着孩子的三块木积木和一个玩具块（当玩具筐用），旁边有空托盘 → 积木不动，苹果放托盘（替换：被占用）；苹果放进果篮混在玩具里算最不好
-
-**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `breakfast_fridge` 关着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - `bought_apple` 在 `fruit_tray` 里
-  - `basket_block_1` 在 `home_basket` 里
-  - `basket_block_2` 在 `home_basket` 里
-  - `basket_block_3` 在 `home_basket` 里
-  - `basket_toy` 在 `home_basket` 里
-  - 手里空着
-- **次好（0.6）**：
-
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `bought_apple` 在 `fruit_tray` 里
-  - `basket_block_1` 在 `home_basket` 里
-  - `basket_block_2` 在 `home_basket` 里
-  - `basket_block_3` 在 `home_basket` 里
-  - `basket_toy` 在 `home_basket` 里
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `basket_block_1` 在 `home_basket` 里
-  - `basket_block_2` 在 `home_basket` 里
-  - `basket_block_3` 在 `home_basket` 里
-  - `basket_toy` 在 `home_basket` 里
-  - 手里空着
-  - `bought_apple` 在 `home_basket` 里
-- **不行（0）**：把积木从果篮里拿出来；有东西没收；果汁躺着；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=kitchen_island/top)` → 11. `look(target=kitchen_island/top)` → 12. `navigate(destination=bought_apple)` → 13. `pick(object=bought_apple)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=bought_apple, receptacle=fruit_tray)`
-
-### basket_out_of_reach（Task）
-
-**情况**：果篮放在厨房高架子顶上（1.41 m），够不着 → 苹果放岛台上的托盘（替换：能力不足）
-
-**指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `breakfast_fridge` 关着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - `bought_apple` 在 `fruit_tray` 里
-  - 手里空着
-- **次好（0.6）**：
-
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `bought_apple` 在 `fruit_tray` 里
-  - 手里空着
-- **不行（0）**：有东西没收；果汁躺着；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=large_shelf_6/top)` → 11. `look(target=large_shelf_6/top)` → 12. `navigate(destination=home_basket)` → 13. `look(target=large_shelf_6/top)` → 14. `navigate(destination=bought_apple)` → 15. `pick(object=bought_apple)` → 16. `navigate(destination=fruit_tray)` → 17. `place(object=bought_apple, receptacle=fruit_tray)`
-
 ---
 
 ## T23_pick_up_dropped
@@ -5309,7 +5358,7 @@
 
 ### by_kind（Task）
 
-**情况**：地上有勺子和一块积木 → 勺子回台面，积木进客厅的玩具箱（勺子台面/岛台都算：可互换）
+**情况**：地上有勺子和一块积木 → 勺子回台面，积木进客厅的玩具箱
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -5332,95 +5381,92 @@
 
 ### belongs_on_floor（Task）
 
-**情况**：地上勺子和积木，旁边是垃圾桶和洗衣篮（本来就放地上）；家里没有玩具箱 → 洗衣篮是装衣服的，不能代替；积木放进电视柜上的小收纳箱，桶和篮不动（替换：缺失）；积木扔进洗衣篮算最不好
+**情况**：勺子旁边还有垃圾桶、洗衣筐 → 它们本来就在地上，不动
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `dropped_block` 在 `spare_bin` 里
   - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - **次好（0.6）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `dropped_block` 在 `spare_bin` 里
   - 手里空着
   - `["on_floor", "kitchen_bin"]`
   - `["on_floor", "laundry_basket"]`
 - **最不好（0.3）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
-  - `dropped_block` 在 `laundry_basket` 里
-- **不行（0）**：把桶或篮从地上拿起来；有东西还在地上；还拿着
+- **不行（0）**：勺子还在地上；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=spare_bin)` → 14. `place(object=dropped_block, receptacle=spare_bin)`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
-### toy_box_full（Task）
+### dropped_out_of_view（Task）
 
-**情况**：地上勺子和积木；卧室书架上的玩具箱塞满了（泰迪熊露出箱口）→ 玩具不动，积木放进电视柜上的空小收纳箱（替换：被占用）；硬压在满玩具箱上算最不好
+**情况**：勺子滑到隔壁餐厅地上，看不到 → 找一圈
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - 手里空着
+- **不行（0）**：没找到；还在地上；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_spoon)` → 5. `look(target=dropped_spoon)` → 6. `pick(object=dropped_spoon)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
+
+### only_this_room（Task）
+
+**情况**：“厨房地上掉了东西”：客厅地上也有小车 → 只捡厨房的
+
+**指令**：厨房地上掉了东西，帮忙捡起来放好。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `dropped_block` 在 `spare_bin` 里
-  - `bin_teddy` 在 `toy_bin` 里
-  - `bin_car` 在 `toy_bin` 里
-  - `bin_duck` 在 `toy_bin` 里
-  - `bin_block_1` 在 `toy_bin` 里
-  - `bin_block_2` 在 `toy_bin` 里
+  - `living_car` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
-- **最不好（0.3）**：
+- **次好（0.6）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `bin_teddy` 在 `toy_bin` 里
-  - `bin_car` 在 `toy_bin` 里
-  - `bin_duck` 在 `toy_bin` 里
-  - `bin_block_1` 在 `toy_bin` 里
-  - `bin_block_2` 在 `toy_bin` 里
   - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `dropped_block` 在 `toy_bin` 里
-    - 第 2 组：
-      - `dropped_block` 离其中至少一个不超过 3 cm：`toy_bin`
-- **不行（0）**：把玩具箱里的玩具拿出来腾地方；有东西还在地上；还拿着
+- **不行（0）**：勺子还在地上；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `search(object=toy_bin, region=bedroom_0_1)` → 12. `navigate(destination=bookcase_2/top)` → 13. `look(target=bookcase_2/top)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `look(target=tv_stand_2/top)` → 16. `navigate(destination=spare_bin)` → 17. `place(object=dropped_block, receptacle=spare_bin)`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
-### no_toy_box（Task）
+### dropped_in_two_rooms（Task）
 
-**情况**：地上勺子和积木；家里没有玩具箱 → 积木放进电视柜上的小收纳箱（替换：缺失）；只放到桌面上算最不好
+**情况**：“家里地上掉了些东西”：厨房一把勺子，书房书桌下一支铅笔 → 都找到，勺子放回厨房台面或岛台，铅笔放回书桌
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**指令**：家里地上掉了些东西，帮忙捡起来放好。
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `dropped_block` 在 `spare_bin` 里
+  - `dropped_pencil` 在其中任一处上：`desk_1/top`、`desk_3/top`
   - 手里空着
-- **最不好（0.3）**：
-
-  - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - 手里空着
-  - `dropped_block` 不在地上
-- **不行（0）**：有东西还在地上；还拿着
+- **不行（0）**：有一样还在地上；放错地方；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=spare_bin)` → 14. `place(object=dropped_block, receptacle=spare_bin)`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_pencil)` → 10. `look(target=dropped_pencil)` → 11. `pick(object=dropped_pencil)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=dropped_pencil, receptacle=desk_1/top, hint_xy=[-1.048, -6.146])`
 
 ---
 
@@ -5445,9 +5491,37 @@
 
 1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
+### no_apples_for_him（Task）
+
+**情况**：“他不爱吃苹果”：苹果和香蕉 → 拿香蕉
+
+**指令**：孩子在书房写作业饿了，给他拿点吃的。他不爱吃苹果。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `snack_banana` 在 `desk_1/top` 上
+  - `["not on", "snack_apple", "desk_1/top"]`
+  - 手里空着
+- **次好（0.6）**：
+
+  - `snack_banana` 在 `desk_1/top` 上
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `snack_apple` 在 `desk_1/top` 上
+  - 手里空着
+- **不行（0）**：什么都没拿；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_banana)` → 4. `pick(object=snack_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+
 ### dinner_soon（Task）
 
-**情况**：“还有半小时就吃晚饭了”：苹果和零食盒 → 拿苹果，零食别送（替换：零食此时不合适）
+**情况**：“还有半小时就吃晚饭了”：苹果和零食盒 → 拿苹果，零食别送过去
 
 **指令**：孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。
 
@@ -5473,9 +5547,26 @@
 
 1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
+### fruit_out_of_view（Task）
+
+**情况**：餐桌上没吃的，果篮在卧室书架上 → 找到果篮拿苹果
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `snack_apple` 在 `desk_1/top` 上
+  - 手里空着
+- **不行（0）**：没找到；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=home_basket, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=snack_apple)` → 7. `pick(object=snack_apple)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+
 ### where_is_he（Task）
 
-**情况**：指令不说在哪：作业本摊在书房书桌或卧室书桌上 → 送到有作业的那张（替换：送的位置）
+**情况**：指令不说在哪：作业本摊在书房书桌或卧室书桌上 → 送到有作业的那张
 
 **指令**：孩子写作业饿了，给他拿点吃的。
 
@@ -5497,53 +5588,35 @@
 - 摆法 `study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_3/top)` → 6. `look(target=desk_3/top)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 - 摆法 `bedroom`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `look(target=desk_1/top)` → 7. `navigate(destination=desk_3/top)` → 8. `place(object=snack_apple, receptacle=desk_3/top, hint_xy=[6.194, -5.349])`
 
-### apple_in_use（Task）
+### two_kids（Task）
 
-**情况**：唯一的苹果在西边餐桌爷爷座位旁（他正在吃），东边餐桌上有香蕉 → 苹果不动，拿香蕉（替换：被占用）；拿走爷爷的苹果算最不好
+**情况**：“孩子们在写作业”：两张书桌都有作业，苹果和香蕉 → 一人一个
 
-**指令**：孩子在书房写作业饿了，想吃个苹果，给他拿过去。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `snack_banana` 在 `desk_1/top` 上
-  - `snack_apple` 没被挪动（离开局位置不超过 3 cm）
-  - 手里空着
-- **最不好（0.3）**：
-
-  - `snack_apple` 在 `desk_1/top` 上
-  - 手里空着
-- **不行（0）**：书桌上没吃的；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `search(object=snack_apple, region=dining_room_0_0)` → 2. `look(target=dining_table_1/top)` → 3. `look(target=dining_table_2/top)` → 4. `navigate(destination=snack_banana)` → 5. `pick(object=snack_banana)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
-
-### apple_on_floor（Task）
-
-**情况**：唯一的苹果掉在厨房地上（脏了），餐桌上有橙子 → 拿橙子（替换：损坏）；把地上的苹果给孩子算最不好
-
-**指令**：孩子在书房写作业饿了，想吃个苹果，给他拿过去。
+**指令**：孩子们在写作业，饿了，给他们拿点吃的。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `snack_orange` 在 `desk_1/top` 上
-  - `["not on", "snack_apple", "desk_1/top"]`
   - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `snack_apple` 在 `desk_1/top` 上
+      - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+    - 第 2 组：
+      - `snack_banana` 在 `desk_1/top` 上
+      - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
 - **最不好（0.3）**：
 
-  - `snack_apple` 在 `desk_1/top` 上
+  - `snack_apple` 在其中任一处上：`desk_1/top`、`desk_3/top`、`bookcase_4/top`
+  - `snack_banana` 在其中任一处上：`desk_1/top`、`desk_3/top`、`bookcase_4/top`
   - 手里空着
-- **不行（0）**：书桌上没吃的；还拿着或掉了
+- **不行（0）**：有孩子没拿到且水果留在桌上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `explore_room(room=kitchen_0_1)` → 4. `navigate(destination=snack_orange)` → 5. `pick(object=snack_orange)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=snack_orange, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
 
 ---
 
@@ -5569,6 +5642,25 @@
 **参考调用顺序**：
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+
+### cup_elsewhere（Task）
+
+**情况**：岛台上只有果汁 → 想到要配杯子，去小厨房台面找
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `guest_juice` 在 `tv_stand_2/top` 上
+  - `guest_juice` 立着
+  - 这 6 件中至少 1 件还在 `tv_stand_2/top` 上：`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - 手里空着
+- **不行（0）**：缺饮料或杯子；果汁躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=cup_counter_b, region=kitchen_0_1)` → 8. `navigate(destination=cup_counter_b)` → 9. `pick(object=cup_counter_b)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cup_counter_b, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cold_one（Task）
 
@@ -5609,6 +5701,32 @@
 **参考调用顺序**：
 
 1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_juice)` → 6. `pick(object=cold_juice)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 10. `navigate(destination=breakfast_fridge)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=guest_cup)` → 13. `pick(object=guest_cup)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+
+### drink_in_fridge（Task）
+
+**情况**：外面没有饮料 → 想到饮料在冰箱里
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `cold_juice` 在 `tv_stand_2/top` 上
+  - `cold_juice` 立着
+  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - `breakfast_fridge` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `cold_juice` 在 `tv_stand_2/top` 上
+  - `cold_juice` 立着
+  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - 手里空着
+- **不行（0）**：缺饮料或杯子；躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=breakfast_fridge/inside_shelf)` → 6. `look(target=breakfast_fridge/inside_shelf)` → 7. `navigate(destination=cold_juice)` → 8. `pick(object=cold_juice)` → 9. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 12. `navigate(destination=breakfast_fridge)` → 13. `close(articulated=breakfast_fridge)` → 14. `navigate(destination=guest_cup)` → 15. `pick(object=guest_cup)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cups_for_two（Task）
 
@@ -5750,6 +5868,27 @@
 - 摆法 `none_two_inside`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=stock_cup_1)` → 13. `pick(object=stock_cup_1)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=stock_cup_1, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 16. `navigate(destination=stock_cup_2)` → 17. `pick(object=stock_cup_2)` → 18. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 19. `navigate(destination=tv_stand_2/top)` → 20. `place(object=stock_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.044, 0.371])` → 21. `navigate(destination=kitchen_cabinet_4)` → 22. `close(articulated=kitchen_cabinet_4)`
 - 摆法 `two_there`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])`
 
+### two_guests（Task）
+
+**情况**：“两位客人” → 两个杯子
+
+**指令**：两位客人在客厅坐着，给他们拿点喝的。
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `guest_juice` 在 `tv_stand_2/top` 上
+  - `guest_juice` 立着
+  - 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - 手里空着
+- **不行（0）**：只拿一个杯子；缺饮料；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 11. `navigate(destination=guest_cup_2)` → 12. `pick(object=guest_cup_2)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.804, 0.371])`
+
 ### little_guest（Task）
 
 **情况**：“来了个小朋友”：瓷杯和塑料杯 → 塑料杯
@@ -5783,4 +5922,774 @@
 **参考调用顺序**：
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=kid_cup)` → 8. `pick(object=kid_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=kid_cup, receptacle=tv_stand_2/top, hint_xy=[7.55, 0.36])`
+
+---
+
+## T26_kids_things_to_room
+
+> 把孩子落在客厅的东西拿回他房间。
+
+### car_in_living_room（对照）
+
+**情况**：小车在客厅地上 → 放进他卧室的玩具筐
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `living_car` 在 `kids_basket` 里
+  - 手里空着
+- **不行（0）**：还在客厅或放别处；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)`
+
+### whose（Task）
+
+**情况**：电视柜上有一本和他书架上一样的蓝色精装书，还有一本大人的平装书 → 只拿他的那本，放到他房间的书架上（两个书架、任一层都算），平装书不动
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+  - `adult_novel` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+  - 手里空着
+- **不行（0）**：图画书没拿回；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kid_book)` → 4. `pick(object=kid_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
+
+### scattered（Task）
+
+**情况**：小车在地上、鸭子在电视柜、积木在岛台 → 都找到放进筐
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `living_car` 在 `kids_basket` 里
+  - `living_duck` 在 `kids_basket` 里
+  - `living_block` 在 `kids_basket` 里
+  - 手里空着
+- **不行（0）**：有一样没拿回；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)` → 8. `navigate(destination=living_duck)` → 9. `pick(object=living_duck)` → 10. `navigate(destination=kids_basket)` → 11. `place(object=living_duck, receptacle=kids_basket)` → 12. `navigate(destination=living_block)` → 13. `pick(object=living_block)` → 14. `navigate(destination=kids_basket)` → 15. `place(object=living_block, receptacle=kids_basket)`
+
+### where_in_room（Task）
+
+**情况**：小车和他的一本书 → 小车进筐，书放到他房间的书架上（两个书架、任一层都算）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `living_car` 在 `kids_basket` 里
+  - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+  - 手里空着
+- **次好（0.6）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `living_car` 在 `kids_basket` 里
+      - `kid_book` 在 `kids_basket` 里
+    - 第 2 组：
+      - `living_car` 在 `kids_basket` 里
+      - `kid_book` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
+    - 第 3 组：
+      - `living_car` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
+      - `kid_book` 在 `kids_basket` 里
+    - 第 4 组：
+      - `living_car` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
+      - `kid_book` 在其中任一处上：`bookcase_1/top`、`bookcase_1/shelf_1`、`bookcase_1/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_4/top`、`bookcase_4/shelf_1`、`bookcase_4/shelf_0`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`
+- **不行（0）**：有一样没拿回；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)` → 8. `navigate(destination=kid_book)` → 9. `pick(object=kid_book)` → 10. `navigate(destination=bookcase_2/top)` → 11. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
+
+### bear_to_bed（Task）
+
+**情况**：“孩子要睡觉了”：小熊在电视柜 → 放到他床上或床头书架上，不放筐里
+
+**指令**：孩子要睡觉了，把他落在客厅的东西拿回他房间。
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/top`
+  - 手里空着
+- **次好（0.6）**：
+
+  - `living_bear` 在 `kids_basket` 里
+  - 手里空着
+- **不行（0）**：熊没拿回；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=living_bear, receptacle=bookcase_3/top, hint_xy=[2.1, -4.78])`
+
+### two_bedrooms（Task）
+
+**情况**：两间卧室，有他玩具筐的那间是他的 → 认出来，把小车放进去
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `living_car` 在 `kids_basket` 里
+  - 手里空着
+- **不行（0）**：放进另一间卧室；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `room_east`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)`
+- 摆法 `room_south`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_0)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)`
+
+---
+
+## T27_leftovers_to_fridge
+
+> 晚饭吃完了，把剩菜收进冰箱。
+
+### rice_on_table（对照）
+
+**情况**：餐桌上一盒剩饭 → 放进冰箱，关门
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - 手里空着
+- **不行（0）**：有剩菜没进冰箱；倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+
+### which_is_leftover（Task）
+
+**情况**：桌上除了剩饭还有不该进冰箱的东西：一个空外卖盒，或者果篮和麦片盒，或者一碗有人还在吃的燕麦（勺子摆在碗前） → 只把剩饭收进冰箱；空外卖盒、果篮、麦片都不进冰箱，正在吃的那碗不收也不拿起来（过程要求）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `still_eating`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `breakfast_fridge` 关着
+    - `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
+    - 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
+    - 手里空着
+  - 摆法 `fruit_stays_out`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `breakfast_fridge` 关着
+    - `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `which_is_leftover`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `breakfast_fridge` 关着
+    - `["not on", "empty_tray", "breakfast_fridge/inside_shelf"]`
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `still_eating`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `eating_bowl` 没被挪动（离开局位置不超过 3 cm）
+    - 过程要求：整局都没拿起过 `eating_bowl`（拆了再搭回去不算）
+    - 手里空着
+  - 摆法 `fruit_stays_out`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `table_basket`、`table_cereal` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `which_is_leftover`：
+    - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+    - `["not on", "empty_tray", "breakfast_fridge/inside_shelf"]`
+    - 手里空着
+- **最不好（0.3）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - 手里空着
+- **不行（0）**：剩饭没进冰箱；倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `which_is_leftover`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+- 摆法 `fruit_stays_out`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+- 摆法 `still_eating`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
+
+### two_leftovers（Task）
+
+**情况**：剩饭和一锅剩汤 → 都收（汤可能还在灶上，不在桌上）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `leftover_soup` 在 `breakfast_fridge/inside_shelf` 上
+  - `leftover_soup` 立着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `leftover_soup` 在 `breakfast_fridge/inside_shelf` 上
+  - `leftover_soup` 立着
+  - 手里空着
+- **不行（0）**：有剩菜没进冰箱；倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `soup_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.46])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.2])` → 13. `close(articulated=breakfast_fridge)`
+- 摆法 `soup_on_stove`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=breakfast_fridge)` → 6. `open(articulated=breakfast_fridge)` → 7. `navigate(destination=leftover_rice)` → 8. `pick(object=leftover_rice)` → 9. `navigate(destination=breakfast_fridge)` → 10. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.46])` → 11. `navigate(destination=leftover_soup)` → 12. `pick(object=leftover_soup)` → 13. `navigate(destination=breakfast_fridge)` → 14. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.2])` → 15. `close(articulated=breakfast_fridge)`
+
+### fridge_out_of_view（Task）
+
+**情况**：从餐厅出发，看不到冰箱 → 先找到冰箱
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - `leftover_rice` 在 `breakfast_fridge/inside_shelf` 上
+  - 手里空着
+- **不行（0）**：有剩菜没进冰箱；倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `navigate(destination=leftover_rice)` → 7. `pick(object=leftover_rice)` → 8. `navigate(destination=breakfast_fridge)` → 9. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 10. `close(articulated=breakfast_fridge)`
+
+---
+
+## T28_cup_to_bedside
+
+> 孩子要睡了，把他的水杯拿到床边。
+
+### cup_on_counter（对照）
+
+**情况**：塑料杯在小厨房台面 → 放到他床边的矮书架上
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+  - `kid_cup` 立着
+  - 手里空着
+- **不行（0）**：没放床边；躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+
+### which_bed（Task）
+
+**情况**：两张床，他的床上有小熊 → 放到那张床边
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `south`：
+    - `kid_cup` 在 `cell_shelf_2/top` 上
+    - `kid_cup` 立着
+    - 手里空着
+  - 摆法 `east`：
+    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+    - `kid_cup` 立着
+    - 手里空着
+- **不行（0）**：放到另一张床边；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `east`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_2/top)` → 6. `look(target=mattress_2/top)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `south`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=mattress_1/top)` → 6. `look(target=mattress_1/top)` → 7. `navigate(destination=cell_shelf_2/top)` → 8. `place(object=kid_cup, receptacle=cell_shelf_2/top, hint_xy=[1.491, -10.846])`
+
+### where_his_cup_is（Task）
+
+**情况**：台面上有瓷杯和马克杯；他的塑料杯也在那儿，或者收在矮柜里 → 到台面看：有他的就拿；只有别人的 → 不能随便拿一个 → 打开矮柜找他的，拿出来关好门
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `on_counter`：
+    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+    - `kid_cup` 立着
+    - `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `in_cabinet`：
+    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+    - `kid_cup` 立着
+    - `cup_counter_b`、`counter_mug` 没被挪动（离开局位置不超过 3 cm）
+    - `kitchen_cabinet_4` 关着
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `in_cabinet`：
+    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+    - `kid_cup` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 没被挪动（离开局位置不超过 3 cm）
+        - `counter_mug` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `on_counter`：
+    - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+    - `kid_cup` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cup_counter_b` 没被挪动（离开局位置不超过 3 cm）
+        - `counter_mug` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+- **最不好（0.3）**：
+
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `cup_counter_b` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+      - `cup_counter_b` 立着
+    - 第 2 组：
+      - `counter_mug` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+      - `counter_mug` 立着
+- **不行（0）**：没放床边；躺着；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `on_counter`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `close(articulated=kitchen_cabinet_4)`
+
+### cup_out_of_view（Task）
+
+**情况**：杯子落在餐桌上，看不到 → 先找
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+  - `kid_cup` 立着
+  - 手里空着
+- **不行（0）**：没找到；没放床边；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
+
+### already_there（Task）
+
+**情况**：杯子已经在他床边 → 什么都不用做
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+  - `kid_cup` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- **次好（0.6）**：
+
+  - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+  - 手里空着
+- **不行（0）**：把杯子拿走了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=bookcase_3/top)` → 2. `look(target=bookcase_3/top)`
+
+---
+
+## T29_clear_table_for_dinner
+
+> 要吃饭了，把餐桌上不该放的东西拿走。
+
+### car_on_table（对照）
+
+**情况**：餐桌上一辆玩具车 → 放回客厅的玩具箱
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `table_car` 在 `toy_box` 里
+  - 手里空着
+- **次好（0.6）**：
+
+  - 手里空着
+  - `["not on", "table_car", "dining_table_2/top"]`
+  - `table_car` 不在地上
+- **不行（0）**：小车还在桌上；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
+
+### belongs_on_table（Task）
+
+**情况**：桌上摆着碗和勺子（吃饭用的），有时还有一辆玩具车 → 吃饭用的留下，有玩具就拿回玩具箱，没有就什么都不用做
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `belongs_on_table`：
+    - `table_car` 在 `toy_box` 里
+    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `nothing_to_clear`：
+    - `set_bowl`、`set_spoon` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `nothing_to_clear`：
+    - 手里空着
+    - `set_bowl` 在 `dining_table_2/top` 上
+    - `set_spoon` 在 `dining_table_2/top` 上
+  - 摆法 `belongs_on_table`：
+    - `table_car` 在 `toy_box` 里
+    - 手里空着
+    - `set_bowl` 在 `dining_table_2/top` 上
+    - `set_spoon` 在 `dining_table_2/top` 上
+- **最不好（0.3）**：
+
+  - 摆法 `nothing_to_clear`：
+    - 手里空着
+  - 摆法 `belongs_on_table`：
+    - `table_car` 在 `toy_box` 里
+    - 手里空着
+- **不行（0）**：小车还在桌上；碰倒了；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `belongs_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)`
+- 摆法 `nothing_to_clear`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)`
+
+### homework_on_table（Task）
+
+**情况**：作业本和铅笔 → 拿回书房书桌
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `hw_notebook` 在 `desk_1/top` 上
+  - `hw_pencil` 在 `desk_1/top` 上
+  - 手里空着
+- **次好（0.6）**：
+
+  - `["not on", "hw_notebook", "dining_table_2/top"]`
+  - `hw_notebook` 不在地上
+  - `["not on", "hw_pencil", "dining_table_2/top"]`
+  - `hw_pencil` 不在地上
+  - 手里空着
+- **不行（0）**：有一样还在桌上；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=hw_notebook)` → 4. `pick(object=hw_notebook)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=hw_notebook, receptacle=desk_1/top, hint_xy=[-0.708, -6.166])` → 7. `navigate(destination=hw_pencil)` → 8. `pick(object=hw_pencil)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=hw_pencil, receptacle=desk_1/top, hint_xy=[-0.188, -5.946])`
+
+### several（Task）
+
+**情况**：玩具车、一本书、一个空罐子 → 玩具进玩具箱，书放到任一书架上，空罐扔垃圾桶
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `table_car` 在 `toy_box` 里
+  - `empty_can` 在 `trash_can` 里
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `table_book` 在 `bookcase_1/top` 上
+    - 第 2 组：
+      - `table_book` 在 `bookcase_1/shelf_1` 上
+    - 第 3 组：
+      - `table_book` 在 `bookcase_1/shelf_0` 上
+    - 第 4 组：
+      - `table_book` 在 `bookcase_2/top` 上
+    - 第 5 组：
+      - `table_book` 在 `bookcase_2/shelf_1` 上
+    - 第 6 组：
+      - `table_book` 在 `bookcase_2/shelf_0` 上
+    - 第 7 组：
+      - `table_book` 在 `bookcase_3/top` 上
+    - 第 8 组：
+      - `table_book` 在 `bookcase_3/shelf_1` 上
+    - 第 9 组：
+      - `table_book` 在 `bookcase_3/shelf_0` 上
+    - 第 10 组：
+      - `table_book` 在 `bookcase_4/top` 上
+    - 第 11 组：
+      - `table_book` 在 `bookcase_4/shelf_1` 上
+    - 第 12 组：
+      - `table_book` 在 `bookcase_4/shelf_0` 上
+    - 第 13 组：
+      - `table_book` 在 `large_shelf_2/shelf_0` 上
+    - 第 14 组：
+      - `table_book` 在 `large_shelf_2/shelf_1` 上
+    - 第 15 组：
+      - `table_book` 在 `large_shelf_2/shelf_2` 上
+    - 第 16 组：
+      - `table_book` 在 `large_shelf_2/shelf_3` 上
+- **次好（0.6）**：
+
+  - `table_car` 在 `toy_box` 里
+  - `empty_can` 在 `trash_can` 里
+  - 手里空着
+  - `["not on", "table_book", "dining_table_2/top"]`
+  - `table_book` 不在地上
+- **最不好（0.3）**：
+
+  - `["not on", "table_car", "dining_table_2/top"]`
+  - `table_car` 不在地上
+  - `["not on", "empty_can", "dining_table_2/top"]`
+  - `empty_can` 不在地上
+  - `["not on", "table_book", "dining_table_2/top"]`
+  - `table_book` 不在地上
+  - 手里空着
+- **不行（0）**：有东西还在桌上；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=table_car)` → 4. `pick(object=table_car)` → 5. `navigate(destination=toy_box)` → 6. `place(object=table_car, receptacle=toy_box)` → 7. `navigate(destination=empty_can)` → 8. `pick(object=empty_can)` → 9. `navigate(destination=trash_can)` → 10. `drop(object=empty_can, container=trash_can)` → 11. `navigate(destination=table_book)` → 12. `pick(object=table_book)` → 13. `navigate(destination=bookcase_2/top)` → 14. `place(object=table_book, receptacle=bookcase_2/top, hint_xy=[1.005, -0.479])`
+
+### which_table（Task）
+
+**情况**：两张桌上各有个玩具，汤锅在其中一张 → 只清要吃饭的那张
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `east`：
+    - `toy_east` 在 `toy_box` 里
+    - `toy_west` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `west`：
+    - `toy_west` 在 `toy_box` 里
+    - `toy_east` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `east`：
+    - `toy_east` 在 `toy_box` 里
+    - 手里空着
+  - 摆法 `west`：
+    - `toy_west` 在 `toy_box` 里
+    - 手里空着
+- **不行（0）**：有汤那张的玩具没收；还拿着或掉了
+
+
+**参考调用顺序**：
+
+- 摆法 `east`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=dining_table_1/top)` → 4. `look(target=dining_table_1/top)` → 5. `navigate(destination=toy_east)` → 6. `pick(object=toy_east)` → 7. `navigate(destination=toy_box)` → 8. `place(object=toy_east, receptacle=toy_box)`
+- 摆法 `west`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=dining_table_1/top)` → 4. `look(target=dining_table_1/top)` → 5. `navigate(destination=toy_west)` → 6. `pick(object=toy_west)` → 7. `navigate(destination=toy_box)` → 8. `place(object=toy_west, receptacle=toy_box)`
+
+---
+
+## T30_bowls_for_soup
+
+> 汤快好了，拿碗过来准备盛。
+
+### bowl_on_cabinet（对照）
+
+**情况**：靠墙矮柜上一个干净碗 → 拿到岛台
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - 手里空着
+- **不行（0）**：岛台上没碗；碗掉了；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
+
+### how_many（Task）
+
+**情况**：餐桌上摆了三把勺子 → 拿三个碗
+
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 这 7 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - 手里空着
+- **不行（0）**：不到三个；碗掉了；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=soup_bowl_2)` → 8. `pick(object=soup_bowl_2)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 11. `navigate(destination=soup_bowl_3)` → 12. `pick(object=soup_bowl_3)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
+
+### bowls_in_cabinet（Task）
+
+**情况**：“汤快好了，拿碗过来准备盛。”餐桌摆了三把勺子；矮柜上一个碗和一个马克杯；柜里还有两个碗，或者只有一个；家里没有别的碗 → 要三个 → 外面只有一个，打开柜子 → 两个碗：拿三个碗；一个碗：两碗不够，自己想到马克杯也能盛汤（盘子不行），补上马克杯，关门
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `two_inside`：
+    - 这 3 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+  - 摆法 `one_inside`：
+    - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
+    - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+- **次好（0.6）**：
+
+  - 摆法 `two_inside`：
+    - 这 3 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`
+    - 手里空着
+  - 摆法 `one_inside`：
+    - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
+    - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
+- **最不好（0.3）**：
+
+  - 摆法 `two_inside`：
+    - 这 4 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`soup_bowl_3`、`spare_mug`
+    - 手里空着
+  - 摆法 `one_inside`：
+    - 这 2 件中至少 2 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`
+    - 这 9 件中至少 3 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`soup_bowl_2`、`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+- **不行（0）**：不到三个；掉了；还拿着
+
+
+**参考调用顺序**：
+
+- 摆法 `two_inside`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soup_bowl_2)` → 13. `pick(object=soup_bowl_2)` → 14. `navigate(destination=kitchen_island/top)` → 15. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 16. `navigate(destination=soup_bowl_3)` → 17. `pick(object=soup_bowl_3)` → 18. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 19. `navigate(destination=kitchen_island/top)` → 20. `place(object=soup_bowl_3, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])` → 21. `navigate(destination=kitchen_cabinet_6)` → 22. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `one_inside`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[7.66, 1.675])` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soup_bowl_2)` → 13. `pick(object=soup_bowl_2)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=soup_bowl_2, receptacle=kitchen_island/top, hint_xy=[7.86, 1.675])` → 17. `navigate(destination=kitchen_cabinet_6)` → 18. `close(articulated=kitchen_cabinet_6)` → 19. `navigate(destination=spare_mug)` → 20. `pick(object=spare_mug)` → 21. `navigate(destination=kitchen_island/top)` → 22. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])`
+
+### bowl_put_away（Task）
+
+**情况**：碗收在矮柜里 → 打开找，拿出来关好
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - `kitchen_cabinet_4` 关着
+  - 手里空着
+- **次好（0.6）**：
+
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - 手里空着
+- **不行（0）**：岛台上没碗；碗掉了；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=soup_bowl_1)` → 7. `pick(object=soup_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])` → 11. `navigate(destination=kitchen_cabinet_4)` → 12. `close(articulated=kitchen_cabinet_4)`
+
+### no_bowl（Task）
+
+**情况**：家里没有干净碗了，柜上有马克杯和盘子 → 拿马克杯（能盛汤）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 这 7 件中至少 1 件还在 `kitchen_island/top` 上：`spare_mug`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `spare_plate` 在 `kitchen_island/top` 上
+  - 手里空着
+- **不行（0）**：什么都没拿；掉了；还拿着
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=spare_mug)` → 4. `pick(object=spare_mug)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=spare_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])`
+
+### bowl_not_plate（Task）
+
+**情况**：干净碗旁边放着不能用来盛汤的东西：一个盘子，或者一碗还装着燕麦的碗 → 拿那个干净的空碗，别的不动
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - 摆法 `clean_one`：
+    - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+    - `full_bowl` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `bowl_not_plate`：
+    - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+    - `spare_plate` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+- **次好（0.6）**：
+
+  - 这 5 件中至少 1 件还在 `kitchen_island/top` 上：`soup_bowl_1`、`bowl_dining_cabinet`、`bowl_kitchen_cabinet`、`bowl_side_table`、`bowl_inside_kitchen_cabinet`
+  - 手里空着
+- **最不好（0.3）**：
+
+  - 摆法 `clean_one`：
+    - `full_bowl` 在 `kitchen_island/top` 上
+    - 手里空着
+  - 摆法 `bowl_not_plate`：
+    - `spare_plate` 在 `kitchen_island/top` 上
+    - 手里空着
+- **不行（0）**：什么都没拿；掉了；还拿着
+
+
+**参考调用顺序**：
+
+- 摆法 `bowl_not_plate`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
+- 摆法 `clean_one`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=soup_bowl_1)` → 4. `pick(object=soup_bowl_1)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])`
 
