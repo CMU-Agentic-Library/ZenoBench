@@ -75357,7 +75357,7 @@
        "asset": "shallow_sorting_tray",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.31,
+        3.345,
         0.36
        ],
        "yaw_deg": 90.0
@@ -75366,7 +75366,7 @@
        "asset": "teddy_bear",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.52,
+        3.54,
         0.3
        ],
        "yaw_deg": 0.0
@@ -75375,7 +75375,7 @@
        "asset": "wooden_block",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.5,
+        3.52,
         0.45
        ],
        "yaw_deg": 0.0
@@ -75384,7 +75384,7 @@
        "asset": "wooden_block",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.56,
+        3.58,
         0.45
        ],
        "yaw_deg": 0.0
@@ -75393,7 +75393,7 @@
        "asset": "rubber_duck",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.7,
+        3.71,
         0.26
        ],
        "yaw_deg": 90.0
@@ -75402,7 +75402,7 @@
        "asset": "toy_car",
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.7,
+        3.71,
         0.43
        ],
        "yaw_deg": 0.0
@@ -96584,12 +96584,59 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pencil on the study desk, the hand empty",
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_pen_pencil_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "spare_pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        }
       ],
-      "not_ok": "the pencil not found; left elsewhere; something else brought instead; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
@@ -96723,6 +96770,325 @@
       ],
       "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped",
       "top": "ideal"
+     }
+    },
+    "no_pen_pencil_in_use": {
+     "move": {
+      "pencil": {
+       "support": null,
+       "z": 0.878,
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "pen"
+     ],
+     "conditions": [
+      "resource_in_use",
+      "not_in_view"
+     ],
+     "add": {
+      "grandma_list": {
+       "asset": "notebook",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_pen": {
+       "asset": "pen",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.15,
+        -0.4
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "spare_pen",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "pencil",
+        0.03
+       ],
+       [
+        "near_start",
+        "grandma_list",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "pencil",
+      "spare_pen",
+      "grandma_list"
+     ],
+     "since": "v6",
+     "note": "the only pencil lies on grandma's open list at the dining table (she is using it); a pen is on the bedroom bookcase",
+     "v6": {
+      "family": "no_pen_pencil_in_use",
+      "case": null,
+      "challenge": "the only pencil lies on grandma's open list at the dining table (she is using it); a pen is on the bedroom bookcase",
+      "rationale": "the pencil is in use: leave it, bring the pen instead (the best the house offers)",
+      "control": "e1_pencil_asked",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "no_pen_pencil_away"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "pen",
+         "spare_pen"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         1.08,
+         -0.4081,
+         1.22,
+         -0.3919
+        ],
+        "dx": [
+         -0.36,
+         0.06
+        ],
+        "dy": [
+         -0.2,
+         0.14
+        ],
+        "pick": [
+         "spare_pen"
+        ],
+        "search": [
+         "spare_pen"
+        ]
+       },
+       {
+        "names": [
+         "grandma_list",
+         "pencil"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.445,
+         6.3654,
+         3.655,
+         6.5347
+        ],
+        "dx": [
+         -0.64,
+         0.17
+        ],
+        "dy": [
+         -0.86,
+         1.41
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_2/top": [
+        [
+         0,
+         1,
+         1.295,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         0.705,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -0.619,
+         0.705,
+         1.295,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [
+        "spare_pen"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_pen_pencil_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "spare_pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": "n/a",
+          "no_pen_pencil_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "spare_pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "top": "moderate"
      }
     },
     "check_desk_first__pen_on_desk": {
@@ -96895,50 +97261,169 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was",
+        "goal": {
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.1
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
-        },
-        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)",
-        "raw": "worst"
        }
       ],
-      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
@@ -97126,51 +97611,592 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was",
+        "goal": {
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.1
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "check_desk_first__pen_on_desk": "n/a",
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": "n/a"
+         }
         },
-        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
+     }
+    },
+    "check_desk_first__pen_in_use": {
+     "remove": [],
+     "conditions": [
+      "goal_already_met"
+     ],
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
+     "move": {
+      "pencil": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.65,
+        -5.95
+       ],
+       "yaw_deg": 90.0
+      },
+      "pen": {
+       "support": null,
+       "z": 0.878,
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "grandma_list": {
+       "asset": "notebook",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "pencil",
+        "desk_1/top"
+       ],
+       [
+        "not on",
+        "pen",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "pen",
+        0.03
+       ],
+       [
+        "near_start",
+        "grandma_list",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "pen",
+      "pencil",
+      "grandma_list"
+     ],
+     "since": "v6",
+     "note": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+     "v6": {
+      "family": "check_desk_first",
+      "case": "pen_in_use",
+      "challenge": "a pen is asked for; a writing thing already lies on the study desk: the pen itself, or only a pencil (the pen is then on the bedroom bookcase)",
+      "rationale": "look before fetching: if the pen is there the goal already holds and the right plan is to stop (fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
+      "control": "e1_pencil_asked",
+      "contrast": null,
+      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
+      "derived_from": "e1_pencil_asked"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "pencil"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.6586,
+         -6.04,
+         -0.6414,
+         -5.86
+        ],
+        "dx": [
+         -0.73,
+         0.6
+        ],
+        "dy": [
+         -0.27,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "grandma_list",
+         "pen"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.445,
+         6.3654,
+         3.655,
+         6.5347
+        ],
+        "dx": [
+         -0.64,
+         0.17
+        ],
+        "dy": [
+         -0.86,
+         1.41
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "bedroom_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.1
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "top": "moderate"
      }
     },
     "all_pens__two": {
@@ -98173,7 +99199,7 @@
       "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "how many writing things and notebooks there are (seed: one pen and one notebook; several; a pencil and no pen)",
+      "factor": "what there is to write in (seed: one pen and one notebook; several; the only notebook in use by the brother, the red book beside it)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -98351,8 +99377,222 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)",
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__notebook_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "bro_pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
@@ -98361,12 +99601,6 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -98379,16 +99613,16 @@
               "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "homework_ready__several": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -98461,34 +99695,40 @@
               "notebook_2",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
-          "homework_ready__pencil_only": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
               "desk_1/top"
              ],
              [
               "on",
-              "notebook_1",
+              "book_red",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
@@ -98497,44 +99737,50 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
               "on",
               "pen",
               "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__several": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__several": {
            "any": [
             [
              [
               "on",
               "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
               "desk_1/top"
              ]
             ],
@@ -98543,46 +99789,50 @@
               "on",
               "pen_2",
               "desk_1/top"
-             ]
-            ],
-            [
+             ],
              [
               "on",
-              "pencil",
+              "book_red",
               "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__pencil_only": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil with the red book in place of a notebook",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
@@ -98769,7 +100019,7 @@
       "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "how many writing things and notebooks there are (seed: one pen and one notebook; several; a pencil and no pen)",
+      "factor": "what there is to write in (seed: one pen and one notebook; several; the only notebook in use by the brother, the red book beside it)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -98991,8 +100241,222 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)",
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__notebook_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "bro_pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
@@ -99001,12 +100465,6 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -99019,16 +100477,16 @@
               "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "homework_ready__several": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -99101,34 +100559,40 @@
               "notebook_2",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
-          "homework_ready__pencil_only": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
               "desk_1/top"
              ],
              [
               "on",
-              "notebook_1",
+              "book_red",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
@@ -99137,44 +100601,50 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
               "on",
               "pen",
               "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__several": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__several": {
            "any": [
             [
              [
               "on",
               "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
               "desk_1/top"
              ]
             ],
@@ -99183,52 +100653,56 @@
               "on",
               "pen_2",
               "desk_1/top"
-             ]
-            ],
-            [
+             ],
              [
               "on",
-              "pencil",
+              "book_red",
               "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__pencil_only": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil with the red book in place of a notebook",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
-    "homework_ready__pencil_only": {
+    "homework_ready__notebook_in_use": {
      "remove": [
-      "pen"
+      "pencil"
      ],
      "conditions": [
       "goal_items_unstated",
@@ -99237,11 +100711,11 @@
      "instruction": "The kid is about to do homework at the study desk. Get the desk ready with what they need to do written homework.",
      "instruction_zh": "孩子马上要在书房书桌写作业了。把写作业要用的东西准备到书桌上。",
      "move": {
-      "pencil": {
-       "support": "dining_table_2/top",
+      "pen": {
+       "support": "bookcase_2/top",
        "xy": [
-        3.308,
-        5.675
+        1.15,
+        -0.4
        ],
        "yaw_deg": 0.0
       }
@@ -99249,10 +100723,20 @@
      "add": {
       "notebook_1": {
        "asset": "notebook",
-       "support": "bookcase_2/top",
+       "support": "dining_table_2/top",
        "xy": [
-        1.005,
-        -0.459
+        3.6,
+        6.5
+       ],
+       "yaw_deg": 0.0
+      },
+      "bro_pencil": {
+       "asset": "pencil",
+       "support": null,
+       "z": 0.878,
+       "xy": [
+        3.6,
+        6.5
        ],
        "yaw_deg": 0.0
       },
@@ -99276,30 +100760,31 @@
       }
      },
      "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "notebook_1",
-         "desk_1/top"
-        ]
-       ]
-      ],
       "all": [
        [
-        "near_start",
-        "teddy_bear",
-        0.05
+        "on",
+        "pen",
+        "desk_1/top"
+       ],
+       [
+        "on",
+        "book_red",
+        "desk_1/top"
        ],
        [
         "near_start",
-        "book_red",
-        0.05
+        "notebook_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "bro_pencil",
+        0.03
+       ],
+       [
+        "near_start",
+        "teddy_bear",
+        0.03
        ],
        [
         "hand_empty",
@@ -99308,77 +100793,78 @@
       ]
      },
      "watch": [
-      "pencil",
+      "pen",
       "notebook_1",
       "teddy_bear",
-      "book_red"
+      "book_red",
+      "bro_pencil"
      ],
      "since": "v6",
      "note": "the instruction names the purpose, not the items; writing things and notebooks are in other rooms, next to a book (no notebook) and the kid's teddy bear",
      "v6": {
       "family": "homework_ready",
-      "case": "pencil_only",
+      "case": "notebook_in_use",
       "challenge": "the instruction names the purpose, not the items; writing things and notebooks are in other rooms, next to a book (no notebook) and the kid's teddy bear",
       "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "how many writing things and notebooks there are (seed: one pen and one notebook; several; a pencil and no pen)",
+      "factor": "what there is to write in (seed: one pen and one notebook; several; the only notebook in use by the brother, the red book beside it)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "notebook_1",
          "pen"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.9,
-         -0.5436,
+         1.08,
+         -0.4081,
          1.22,
-         -0.3744
+         -0.3919
         ],
         "dx": [
-         -0.18,
+         -0.36,
          0.06
         ],
         "dy": [
-         -0.06,
-         0.12
+         -0.2,
+         0.14
         ],
         "pick": [
-         "notebook_1"
+         "pen"
         ],
         "search": [
-         "notebook_1"
+         "pen"
         ]
        },
        {
         "names": [
          "book_red",
-         "pencil"
+         "bro_pencil",
+         "notebook_1"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.218,
-         5.6664,
+         3.495,
+         6.4154,
          3.77,
          6.9337
         ],
         "dx": [
-         -0.42,
+         -0.69,
          0.05
         ],
         "dy": [
-         -0.16,
+         -0.91,
          1.01
         ],
         "pick": [
-         "pencil"
+         "book_red"
         ],
         "search": [
-         "pencil"
+         "book_red"
         ]
        },
        {
@@ -99515,8 +101001,8 @@
       "start": {
        "room": "bedroom_0_1",
        "hide": [
-        "notebook_1",
-        "pencil"
+        "book_red",
+        "pen"
        ],
        "look": []
       }
@@ -99527,8 +101013,222 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)",
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__notebook_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "bro_pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
@@ -99537,12 +101237,6 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -99555,16 +101249,16 @@
               "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "homework_ready__several": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -99637,34 +101331,40 @@
               "notebook_2",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
-          "homework_ready__pencil_only": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
               "desk_1/top"
              ],
              [
               "on",
-              "notebook_1",
+              "book_red",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
@@ -99673,44 +101373,50 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
               "on",
               "pen",
               "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__several": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__several": {
            "any": [
             [
              [
               "on",
               "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
               "desk_1/top"
              ]
             ],
@@ -99719,47 +101425,51 @@
               "on",
               "pen_2",
               "desk_1/top"
-             ]
-            ],
-            [
+             ],
              [
               "on",
-              "pencil",
+              "book_red",
               "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__pencil_only": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil with the red book in place of a notebook",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped",
-      "top": "ideal"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "top": "moderate"
      }
     },
     "pens_per_notebook__notebooks_2": {
@@ -100589,8 +102299,8 @@
        ]
       ]
      },
-     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: take it back to the kitchen counter.",
-     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。",
+     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: put it back where it belongs.",
+     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，放回合适的地方。",
      "watch": [
       "pen",
       "used_mug"
@@ -100614,15 +102324,15 @@
       }
      },
      "since": "v6",
-     "note": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+     "note": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there back where it belongs (the kitchen); one hand",
      "v6": {
       "family": "errand_combined",
       "case": "pen_bedroom",
-      "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+      "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there back where it belongs (the kitchen); one hand",
       "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "where the pen is (seed: the bedroom bookcase or the dining table)",
+      "factor": "whether the pen is free (seed: on the bedroom bookcase; or on grandma's list at the dining table, in use, the pencil on the bedroom bookcase)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -100769,88 +102479,399 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, the mug upright on a kitchen counter",
+        "goal": {
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "on_any",
-           "used_mug",
-           [
-            "kitchen_island/top",
-            "kitchen_stove/top",
-            "kitchen_counter_1/top",
-            "kitchen_counter_2/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "not on",
-           "used_mug",
-           "desk_1/top"
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "on",
-            "pen",
-            "desk_1/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
-    "errand_combined__pen_dining": {
+    "errand_combined__pen_in_use": {
      "remove": [],
      "conditions": [
       "errands_combined"
@@ -100864,14 +102885,33 @@
         -5.946
        ],
        "yaw_deg": 0.0
+      },
+      "grandma_list": {
+       "asset": "notebook",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
       "all": [
        [
         "on",
-        "pen",
+        "pencil",
         "desk_1/top"
+       ],
+       [
+        "near_start",
+        "pen",
+        0.03
+       ],
+       [
+        "near_start",
+        "grandma_list",
+        0.03
        ],
        [
         "on_any",
@@ -100891,18 +102931,21 @@
        ]
       ]
      },
-     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: take it back to the kitchen counter.",
-     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。",
+     "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: put it back where it belongs.",
+     "instruction_zh": "孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，放回合适的地方。",
      "watch": [
       "pen",
-      "used_mug"
+      "pencil",
+      "used_mug",
+      "grandma_list"
      ],
      "move": {
       "pen": {
-       "support": "dining_table_2/top",
+       "support": null,
+       "z": 0.878,
        "xy": [
-        3.708,
-        6.595
+        3.55,
+        6.45
        ],
        "yaw_deg": 0.0
       },
@@ -100916,15 +102959,15 @@
       }
      },
      "since": "v6",
-     "note": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+     "note": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there back where it belongs (the kitchen); one hand",
      "v6": {
       "family": "errand_combined",
-      "case": "pen_dining",
-      "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+      "case": "pen_in_use",
+      "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there back where it belongs (the kitchen); one hand",
       "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
       "control": "e1_pencil_asked",
       "contrast": null,
-      "factor": "where the pen is (seed: the bedroom bookcase or the dining table)",
+      "factor": "whether the pen is free (seed: on the bedroom bookcase; or on grandma's list at the dining table, in use, the pencil on the bedroom bookcase)",
       "derived_from": "e1_pencil_asked"
      },
      "layout": {
@@ -100943,6 +102986,12 @@
         "dx": [
          -0.21,
          0.28
+        ],
+        "pick": [
+         "pencil"
+        ],
+        "search": [
+         "pencil"
         ]
        },
        {
@@ -100970,28 +103019,23 @@
        },
        {
         "names": [
+         "grandma_list",
          "pen"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.638,
-         6.5869,
-         3.778,
-         6.6031
+         3.445,
+         6.3654,
+         3.655,
+         6.5347
         ],
         "dx": [
-         -0.84,
-         0.05
+         -0.64,
+         0.17
         ],
         "dy": [
-         -1.08,
-         1.34
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
+         -0.86,
+         1.41
         ]
        }
       ],
@@ -101018,10 +103062,10 @@
        ],
        "desk_1/top": [
         [
-         -0.818,
-         -6.1541,
-         -0.678,
-         -6.1379
+         -0.838,
+         -6.1546,
+         -0.658,
+         -6.1374
         ]
        ]
       },
@@ -101125,85 +103169,396 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, the mug upright on a kitchen counter",
+        "goal": {
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "on_any",
-           "used_mug",
-           [
-            "kitchen_island/top",
-            "kitchen_stove/top",
-            "kitchen_counter_1/top",
-            "kitchen_counter_2/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "not on",
-           "used_mug",
-           "desk_1/top"
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "on",
-            "pen",
-            "desk_1/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped",
-      "top": "ideal"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "top": "moderate"
      }
     },
     "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
@@ -101231,8 +103586,8 @@
      "conditions": [
       "no_pen"
      ],
-     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
-     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
      "goal": {
       "all": [
        [
@@ -101269,15 +103624,15 @@
       }
      ],
      "since": "v6",
-     "note": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
+     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
      "v6": {
       "family": "x6_gd_pen_or_pencil_cabinets",
       "case": "pen_in_4",
-      "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-      "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+      "rationale": "find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen taken) costs",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
-      "factor": "which cabinet holds the preferred item",
+      "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
       "derived_from": "h_task_pencil_in_cabinet"
      },
      "layout": {
@@ -101297,94 +103652,287 @@
         "name": "best",
         "score": 1.0,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "not on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_6"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_4"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed",
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "no pen or pencil on the desk; still held or dropped",
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal"
      }
     },
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6": {
+    "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
      "move": {
       "pencil": {
-       "support": "kitchen_cabinet_4/inside_shelf",
-       "xy": [
-        1.4,
-        0.42
-       ],
-       "yaw_deg": 90
-      },
-      "pen": {
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
         3.63,
         0.36
        ],
        "yaw_deg": 90
+      },
+      "pen": {
+       "support": null,
+       "z": 0.878,
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
       }
      },
      "remove": [
@@ -101393,18 +103941,35 @@
      "conditions": [
       "no_pen"
      ],
-     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.",
-     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。笔都收在厨房那两个矮柜里，拿完把柜门关好。",
+     "instruction": "The kid needs a pen for homework. Bring a pen to the study desk.",
+     "instruction_zh": "孩子写作业要用钢笔，拿一支钢笔到书房书桌上。",
+     "add": {
+      "grandma_list": {
+       "asset": "notebook",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "goal": {
       "all": [
        [
         "on",
-        "pen",
+        "pencil",
         "desk_1/top"
        ],
        [
-        "hand_empty",
-        "right"
+        "near_start",
+        "pen",
+        0.03
+       ],
+       [
+        "near_start",
+        "grandma_list",
+        0.03
        ],
        [
         "is_closed",
@@ -101413,39 +103978,112 @@
        [
         "is_closed",
         "kitchen_cabinet_4"
+       ],
+       [
+        "hand_empty",
+        "right"
        ]
       ]
      },
-     "failures": [
-      {
-       "id": "resource_pen_in_cabinet",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "pen",
-         "kitchen_cabinet_6/inside_shelf"
-        ]
-       ]
-      }
+     "watch": [
+      "pen",
+      "pencil",
+      "grandma_list"
      ],
      "since": "v6",
-     "note": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
+     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
      "v6": {
       "family": "x6_gd_pen_or_pencil_cabinets",
-      "case": "pen_in_6",
-      "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
-      "rationale": "a pen is asked for, so finding the pencil is not enough: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+      "case": "pen_in_use",
+      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+      "rationale": "find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen taken) costs",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
-      "factor": "which cabinet holds the preferred item",
+      "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
       "derived_from": "h_task_pencil_in_cabinet"
      },
      "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
+      "clusters": [
+       {
+        "names": [
+         "grandma_list",
+         "pen"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.445,
+         6.3654,
+         3.655,
+         6.5347
+        ],
+        "dx": [
+         -0.64,
+         0.17
+        ],
+        "dy": [
+         -0.86,
+         1.41
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
        "hide": [],
@@ -101459,75 +104097,267 @@
         "name": "best",
         "score": 1.0,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "not on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_6"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_4"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed",
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too",
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter",
         "raw": "second"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed",
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults",
         "raw": "worst"
        }
       ],
-      "not_ok": "no pen or pencil on the desk; still held or dropped",
-      "top": "ideal"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "top": "moderate"
      }
     }
    },
@@ -101563,20 +104393,22 @@
    "oracle": {
     "no_pen_pencil_away": "v5fix_hard_search_pencil",
     "e1_pencil_asked": "v5_e1_pencil_asked",
+    "no_pen_pencil_in_use": "v6_no_pen_pencil_in_use",
     "check_desk_first__pen_on_desk": "v6_check_desk_first__pen_on_desk",
     "check_desk_first__pencil_on_desk": "v6_check_desk_first__pencil_on_desk",
+    "check_desk_first__pen_in_use": "v6_check_desk_first__pen_in_use",
     "all_pens__two": "v6_all_pens__two",
     "all_pens__three": "v6_all_pens__three",
     "all_pens__four": "v6_all_pens__four",
     "homework_ready__single": "v6_homework_ready__single",
     "homework_ready__several": "v6_homework_ready__several",
-    "homework_ready__pencil_only": "v6_homework_ready__pencil_only",
+    "homework_ready__notebook_in_use": "v6_homework_ready__notebook_in_use",
     "pens_per_notebook__notebooks_2": "v6_pens_per_notebook__notebooks_2",
     "pens_per_notebook__notebooks_3": "v6_pens_per_notebook__notebooks_3",
     "errand_combined__pen_bedroom": "v6_errand_combined__pen_bedroom",
-    "errand_combined__pen_dining": "v6_errand_combined__pen_dining",
+    "errand_combined__pen_in_use": "v6_errand_combined__pen_in_use",
     "x6_gd_pen_or_pencil_cabinets__pen_in_4": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_use": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use"
    },
    "routes": {
     "nominal": {
@@ -101744,6 +104576,66 @@
      "kind": "v5_route_fix",
      "fixes": "hard_search_pencil"
     },
+    "v6_no_pen_pencil_in_use": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pencil"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "pencil"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "spare_pen",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_pen"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spare_pen"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spare_pen",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.748,
+         -6.146
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "no_pen_pencil_in_use"
+    },
     "v6_check_desk_first__pen_on_desk": {
      "steps": [
       {
@@ -101827,6 +104719,48 @@
      ],
      "kind": "v6_oracle",
      "variant": "check_desk_first__pencil_on_desk"
+    },
+    "v6_check_desk_first__pen_in_use": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "pencil"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "pen"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "check_desk_first__pen_in_use"
     },
     "v6_all_pens__two": {
      "steps": [
@@ -102350,37 +105284,25 @@
      "kind": "v6_oracle",
      "variant": "homework_ready__several"
     },
-    "v6_homework_ready__pencil_only": {
+    "v6_homework_ready__notebook_in_use": {
      "steps": [
       {
        "skill": "search",
        "args": {
-        "object": "notebook_1",
+        "object": "pen",
         "region": "bedroom_0_1"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "notebook_1"
-       }
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "notebook_1"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "notebook_1"
+        "destination": "pen"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "notebook_1"
+        "object": "pen"
        }
       },
       {
@@ -102392,31 +105314,31 @@
       {
        "skill": "place",
        "args": {
-        "object": "notebook_1",
+        "object": "pen",
         "receptacle": "desk_1/top",
         "hint_xy": [
          -0.908,
-         -6.166
+         -6.146
         ]
        }
       },
       {
        "skill": "search",
        "args": {
-        "object": "pencil",
+        "object": "book_red",
         "region": "dining_room_0_1"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "pencil"
+        "destination": "book_red"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "pencil"
+        "object": "book_red"
        }
       },
       {
@@ -102428,17 +105350,17 @@
       {
        "skill": "place",
        "args": {
-        "object": "pencil",
+        "object": "book_red",
         "receptacle": "desk_1/top",
         "hint_xy": [
          -0.608,
-         -6.146
+         -6.166
         ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "homework_ready__pencil_only"
+     "variant": "homework_ready__notebook_in_use"
     },
     "v6_pens_per_notebook__notebooks_2": {
      "steps": [
@@ -102697,13 +105619,12 @@
      "kind": "v6_oracle",
      "variant": "errand_combined__pen_bedroom"
     },
-    "v6_errand_combined__pen_dining": {
+    "v6_errand_combined__pen_in_use": {
      "steps": [
       {
-       "skill": "search",
+       "skill": "explore_room",
        "args": {
-        "object": "pen",
-        "region": "dining_room_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -102713,9 +105634,28 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "pen"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pencil",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pencil"
+       }
+      },
+      {
        "skill": "pick",
        "args": {
-        "object": "pen"
+        "object": "pencil"
        }
       },
       {
@@ -102727,7 +105667,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "pen",
+        "object": "pencil",
         "receptacle": "desk_1/top",
         "hint_xy": [
          -0.748,
@@ -102760,7 +105700,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "errand_combined__pen_dining"
+     "variant": "errand_combined__pen_in_use"
     },
     "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4": {
      "steps": [
@@ -102870,7 +105810,7 @@
      "kind": "v6_oracle",
      "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4"
     },
-    "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6": {
+    "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use": {
      "steps": [
       {
        "skill": "navigate",
@@ -102933,13 +105873,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "pen"
+        "destination": "pencil"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "pen"
+        "object": "pencil"
        }
       },
       {
@@ -102947,6 +105887,24 @@
        "args": {
         "obstacle": "kitchen_cabinet_6",
         "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "pen"
        }
       },
       {
@@ -102958,7 +105916,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "pen",
+        "object": "pencil",
         "receptacle": "desk_1/top"
        }
       },
@@ -102976,7 +105934,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+     "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use"
     }
    },
    "benchmark_version": "v6",
@@ -103036,31 +105994,137 @@
      "origin": "v5",
      "control": "e1_pencil_asked",
      "layouts": [
-      "no_pen_pencil_away"
+      "no_pen_pencil_away",
+      "no_pen_pencil_in_use"
      ],
      "seeds": {
       "10": "no_pen_pencil_away",
       "11": "no_pen_pencil_away",
       "12": "no_pen_pencil_away",
       "13": "no_pen_pencil_away",
-      "14": "no_pen_pencil_away",
-      "15": "no_pen_pencil_away",
+      "14": "no_pen_pencil_in_use",
+      "15": "no_pen_pencil_in_use",
       "16": "no_pen_pencil_away",
-      "17": "no_pen_pencil_away",
-      "18": "no_pen_pencil_away",
-      "19": "no_pen_pencil_away"
+      "17": "no_pen_pencil_in_use",
+      "18": "no_pen_pencil_in_use",
+      "19": "no_pen_pencil_in_use"
      },
+     "factor": "whether the pencil is free (seed: on the dining table; or on grandma's list, in use, a pen on the bedroom bookcase)",
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "no_pen_pencil_away": true,
+       "no_pen_pencil_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pencil on the study desk, the hand empty"
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_pen_pencil_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "spare_pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": "n/a",
+          "no_pen_pencil_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "spare_pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_pen_pencil_away": "n/a",
+          "no_pen_pencil_in_use": "n/a"
+         }
+        },
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults"
        }
       ],
-      "not_ok": "the pencil not found; left elsewhere; something else brought instead; still held or dropped"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "D_by_layout": {
+       "no_pen_pencil_away": 0,
+       "no_pen_pencil_in_use": 1
+      },
+      "top_by_layout": {
+       "no_pen_pencil_away": "ideal",
+       "no_pen_pencil_in_use": "moderate"
+      }
      }
     },
     "check_desk_first": {
@@ -103068,68 +106132,237 @@
      "control": "e1_pencil_asked",
      "layouts": [
       "check_desk_first__pen_on_desk",
-      "check_desk_first__pencil_on_desk"
+      "check_desk_first__pencil_on_desk",
+      "check_desk_first__pen_in_use"
      ],
      "factor": "what lies on the desk (seed: the pen asked for, or only a pencil with the pen on the bedroom bookcase)",
      "seeds": {
-      "10": "check_desk_first__pencil_on_desk",
-      "11": "check_desk_first__pen_on_desk",
+      "10": "check_desk_first__pen_in_use",
+      "11": "check_desk_first__pencil_on_desk",
       "12": "check_desk_first__pen_on_desk",
-      "13": "check_desk_first__pen_on_desk",
-      "14": "check_desk_first__pen_on_desk",
+      "13": "check_desk_first__pen_in_use",
+      "14": "check_desk_first__pen_in_use",
       "15": "check_desk_first__pen_on_desk",
-      "16": "check_desk_first__pencil_on_desk",
-      "17": "check_desk_first__pencil_on_desk",
+      "16": "check_desk_first__pen_on_desk",
+      "17": "check_desk_first__pen_on_desk",
       "18": "check_desk_first__pencil_on_desk",
       "19": "check_desk_first__pencil_on_desk"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "check_desk_first__pen_on_desk": true,
+       "check_desk_first__pencil_on_desk": true,
+       "check_desk_first__pen_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only the pencil was"
+        "goal": {
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.1
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pencil",
+              0.1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "check_desk_first__pen_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "check_desk_first__pen_on_desk": "n/a",
+          "check_desk_first__pencil_on_desk": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "check_desk_first__pen_in_use": "n/a"
+         }
         },
-        "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults"
        }
       ],
-      "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "D_by_layout": {
+       "check_desk_first__pen_on_desk": 1,
+       "check_desk_first__pencil_on_desk": 1,
+       "check_desk_first__pen_in_use": 1
+      },
+      "top_by_layout": {
+       "check_desk_first__pen_on_desk": "ideal",
+       "check_desk_first__pencil_on_desk": "ideal",
+       "check_desk_first__pen_in_use": "moderate"
+      }
      }
     },
     "all_pens": {
@@ -103172,29 +106405,248 @@
      "layouts": [
       "homework_ready__single",
       "homework_ready__several",
-      "homework_ready__pencil_only"
+      "homework_ready__notebook_in_use"
      ],
-     "factor": "how many writing things and notebooks there are (seed: one pen and one notebook; several; a pencil and no pen)",
+     "factor": "what there is to write in (seed: one pen and one notebook; several; the only notebook in use by the brother, the red book beside it)",
      "seeds": {
-      "10": "homework_ready__pencil_only",
+      "10": "homework_ready__notebook_in_use",
       "11": "homework_ready__several",
       "12": "homework_ready__single",
       "13": "homework_ready__several",
-      "14": "homework_ready__pencil_only",
+      "14": "homework_ready__notebook_in_use",
       "15": "homework_ready__single",
       "16": "homework_ready__several",
       "17": "homework_ready__single",
       "18": "homework_ready__single",
-      "19": "homework_ready__pencil_only"
+      "19": "homework_ready__notebook_in_use"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "homework_ready__single": true,
+       "homework_ready__several": true,
+       "homework_ready__notebook_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "a pen or pencil and a notebook on the desk, the red book and the teddy bear untouched (bringing every pen and notebook does not cost)"
+        "goal": {
+         "by_layout": {
+          "homework_ready__single": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__several": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen_2",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_2",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ],
+             [
+              "near_start",
+              "book_red",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "homework_ready__notebook_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "bro_pencil",
+              0.03
+             ],
+             [
+              "near_start",
+              "teddy_bear",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs"
        },
        {
         "name": "second",
@@ -103202,12 +106654,6 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -103220,16 +106666,16 @@
               "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
           "homework_ready__several": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
@@ -103302,34 +106748,40 @@
               "notebook_2",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           },
-          "homework_ready__pencil_only": {
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
               "desk_1/top"
              ],
              [
               "on",
-              "notebook_1",
+              "book_red",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil and a notebook on the desk, but the red book or the teddy bear brought or moved too"
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter"
        },
        {
         "name": "worst",
@@ -103337,44 +106789,50 @@
         "goal": {
          "by_layout": {
           "homework_ready__single": {
-           "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ],
            "any": [
             [
              [
               "on",
               "pen",
               "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__several": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__several": {
            "any": [
             [
              [
               "on",
               "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "book_red",
               "desk_1/top"
              ]
             ],
@@ -103383,45 +106841,59 @@
               "on",
               "pen_2",
               "desk_1/top"
-             ]
-            ],
-            [
+             ],
              [
               "on",
-              "pencil",
+              "book_red",
               "desk_1/top"
              ]
             ]
-           ]
-          },
-          "homework_ready__pencil_only": {
+           ],
            "all": [
-            [
-             "on",
-             "book_red",
-             "desk_1/top"
-            ],
             [
              "hand_empty",
              "right"
             ]
-           ],
+           ]
+          },
+          "homework_ready__notebook_in_use": {
            "any": [
             [
              [
               "on",
-              "pencil",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "notebook_1",
               "desk_1/top"
              ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "a pen or pencil with the red book in place of a notebook"
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults"
        }
       ],
-      "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; elsewhere; still held or dropped"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "D_by_layout": {
+       "homework_ready__single": 1,
+       "homework_ready__several": 1,
+       "homework_ready__notebook_in_use": 1
+      },
+      "top_by_layout": {
+       "homework_ready__single": "ideal",
+       "homework_ready__several": "ideal",
+       "homework_ready__notebook_in_use": "moderate"
+      }
      }
     },
     "pens_per_notebook": {
@@ -103483,102 +106955,425 @@
      "control": "e1_pencil_asked",
      "layouts": [
       "errand_combined__pen_bedroom",
-      "errand_combined__pen_dining"
+      "errand_combined__pen_in_use"
      ],
-     "factor": "where the pen is (seed: the bedroom bookcase or the dining table)",
+     "factor": "whether the pen is free (seed: on the bedroom bookcase; or on grandma's list at the dining table, in use, the pencil on the bedroom bookcase)",
      "seeds": {
-      "10": "errand_combined__pen_dining",
+      "10": "errand_combined__pen_in_use",
       "11": "errand_combined__pen_bedroom",
-      "12": "errand_combined__pen_dining",
-      "13": "errand_combined__pen_dining",
+      "12": "errand_combined__pen_in_use",
+      "13": "errand_combined__pen_in_use",
       "14": "errand_combined__pen_bedroom",
-      "15": "errand_combined__pen_dining",
+      "15": "errand_combined__pen_in_use",
       "16": "errand_combined__pen_bedroom",
       "17": "errand_combined__pen_bedroom",
-      "18": "errand_combined__pen_dining",
+      "18": "errand_combined__pen_in_use",
       "19": "errand_combined__pen_bedroom"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "errand_combined__pen_bedroom": true,
+       "errand_combined__pen_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the pen on the desk, the mug upright on a kitchen counter"
+        "goal": {
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "on_any",
-           "used_mug",
-           [
-            "kitchen_island/top",
-            "kitchen_stove/top",
-            "kitchen_counter_1/top",
-            "kitchen_counter_2/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "not on",
-           "used_mug",
-           "desk_1/top"
-          ],
-          [
-           "upright",
-           "used_mug"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ],
-         "any": [
-          [
-           [
-            "on",
-            "pen",
-            "desk_1/top"
+         "by_layout": {
+          "errand_combined__pen_bedroom": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ],
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
+          },
+          "errand_combined__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "used_mug",
+              [
+               "kitchen_island/top",
+               "kitchen_stove/top"
+              ]
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "used_mug",
+              "desk_1/top"
+             ],
+             [
+              "upright",
+              "used_mug"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
            ]
-          ]
-         ]
+          }
+         }
         },
-        "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults"
        }
       ],
-      "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or dropped"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "D_by_layout": {
+       "errand_combined__pen_bedroom": 1,
+       "errand_combined__pen_in_use": 1
+      },
+      "top_by_layout": {
+       "errand_combined__pen_bedroom": "ideal",
+       "errand_combined__pen_in_use": "moderate"
+      }
      }
     },
     "x6_gd_pen_or_pencil_cabinets": {
@@ -103586,93 +107381,297 @@
      "control": "e1_pencil_asked",
      "layouts": [
       "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-      "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+      "x6_gd_pen_or_pencil_cabinets__pen_in_use"
      ],
-     "factor": "which cabinet holds the preferred item",
+     "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
      "seeds": {
-      "10": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
+      "10": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
       "11": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "12": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "13": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-      "14": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-      "15": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-      "16": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
+      "14": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+      "15": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+      "16": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
       "17": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-      "18": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
+      "18": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
       "19": "x6_gd_pen_or_pencil_cabinets__pen_in_4"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "x6_gd_pen_or_pencil_cabinets__pen_in_4": true,
+       "x6_gd_pen_or_pencil_cabinets__pen_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "not on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_6"
-          ],
-          [
-           "is_closed",
-           "kitchen_cabinet_4"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"
+        "why": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pen",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "grandma_list",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"
+        "why": "one step down: a stand-in where the asked-for thing was free, something extra moved or brought, a door left open, the mug in the kitchen but not on a counter"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
-         "all": [
-          [
-           "on",
-           "pencil",
-           "desk_1/top"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "pen",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "pen",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "pencil",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"
+        "why": "further down: taking what someone is using, the red book for a notebook, several faults"
        }
       ],
-      "not_ok": "no pen or pencil on the desk; still held or dropped"
+      "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
+      "D_by_layout": {
+       "x6_gd_pen_or_pencil_cabinets__pen_in_4": 1,
+       "x6_gd_pen_or_pencil_cabinets__pen_in_use": 1
+      },
+      "top_by_layout": {
+       "x6_gd_pen_or_pencil_cabinets__pen_in_4": "ideal",
+       "x6_gd_pen_or_pencil_cabinets__pen_in_use": "moderate"
+      }
      }
     }
    },
@@ -103701,7 +107700,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "not_in_view",
+      "resource_in_use"
      ]
     },
     "check_desk_first": {

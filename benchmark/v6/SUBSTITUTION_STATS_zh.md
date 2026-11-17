@@ -1,32 +1,32 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 39 个摆法，其中 32 个要做替换，7 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 6.4 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 51 个摆法，其中 41 个要做替换，10 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 8.2 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 16 | +9.6 |
-| 被占用 | 6 | -0.4 |
-| 能力不足 | 4 | -2.4 |
-| 看着像但不能用 | 3 | -3.4 |
-| 去处替换 | 3 | -3.4 |
+| 缺失 | 16 | +7.8 |
+| 被占用 | 11 | +2.8 |
+| 能力不足 | 4 | -4.2 |
+| 看着像但不能用 | 7 | -1.2 |
+| 去处替换 | 3 | -5.2 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 14 |
-| 不在 | 18 |
+| 在 | 18 |
+| 不在 | 23 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
 | 缺失 | 6 | 10 |
-| 被占用 | 2 | 4 |
+| 被占用 | 2 | 9 |
 | 能力不足 | 2 | 2 |
-| 看着像但不能用 | 3 | 0 |
+| 看着像但不能用 | 7 | 0 |
 | 去处替换 | 1 | 2 |
 
 ## 每个摆法
@@ -72,3 +72,15 @@
 | T04 | two_guests | kid_cup | 缺失 | 不在 | 1 |
 | T04 | x6_gd_cup_in_cabinets | cup_in_4 | 能力不足 | 在 | 1 |
 | T04 | x6_gd_cup_in_cabinets | plastic_only | 能力不足 | 不在 | 1 |
+| T05 | no_pen_pencil_away | — | 不用替换 | 在 | 0 |
+| T05 | no_pen_pencil_away | — | 被占用 | 不在 | 1 |
+| T05 | check_desk_first | pen_on_desk | 不用替换 | 在 | 1 |
+| T05 | check_desk_first | pencil_on_desk | 看着像但不能用 | 在 | 1 |
+| T05 | check_desk_first | pen_in_use | 被占用 | 不在 | 1 |
+| T05 | homework_ready | single | 看着像但不能用 | 在 | 1 |
+| T05 | homework_ready | several | 看着像但不能用 | 在 | 1 |
+| T05 | homework_ready | notebook_in_use | 被占用 | 不在 | 1 |
+| T05 | errand_combined | pen_bedroom | 不用替换 | 在 | 1 |
+| T05 | errand_combined | pen_in_use | 被占用 | 不在 | 1 |
+| T05 | x6_gd_pen_or_pencil_cabinets | pen_in_4 | 看着像但不能用 | 在 | 1 |
+| T05 | x6_gd_pen_or_pencil_cabinets | pen_in_use | 被占用 | 不在 | 1 |

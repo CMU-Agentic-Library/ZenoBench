@@ -87,11 +87,6 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
     # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
-    ("T05", "no_pen_pencil_away"): only("the pencil on the study desk, the hand empty",
-                                        "the pencil not found; left elsewhere; something else brought instead; "
-                                        "still held or dropped"),
-    # T05 all_pens: 2-4 pens and pencils over the house, the count unstated; missing one is the task not done.
-    # Something else brought along does not cost
     ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
                               "do not cost)",
                               "one or more missed (stopped before every place was checked); elsewhere; still held "
@@ -260,6 +255,15 @@ _T03_WHY = {"best": "both in the wide bin (the proper storage bin), nothing of a
                      "the toy bin, a bin already full), or in a substitute with things moved"}
 _T03_NO = "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped"
 
+# T05 (11-17, user): the seed changes what is free to use (a pen, a pencil, a notebook may be in use on someone's
+# list or notebook); levels by cost_tiers, the seed's best always 1.0
+_T05_WHY = {"best": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing "
+                    "anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
+            "second": "one step down: a stand-in where the asked-for thing was free, something extra moved or "
+                      "brought, a door left open, the mug in the kitchen but not on a counter",
+            "worst": "further down: taking what someone is using, the red book for a notebook, several faults"}
+_T05_NO = "nothing to write with on the desk (or no notebook); one errand only; still held or dropped"
+
 # T04 (11-17, user): the instruction names a glass for tea; levels count faults (define_tasks_v6.cost_tiers): the
 # cup (the glass 0, a mug 1, the kid's plastic cup 2; for iced lemonade the plastic cup 1 and the mug 2), the place
 # (the drinks spot 0, the other low cabinet 1, another top 2), things disturbed, an open cabinet door
@@ -273,15 +277,7 @@ _T04_NO = "no cup set out; lying or upside down; a non-cup (the juice bottle); s
 
 # T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
 # Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
-SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only "
-            "the pencil was"},
-    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"},
-    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
-    "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
+# T05 check_desk_first: 11-17 per-seed tiers (_layout_tiers)
 
 
 def _homework_ready(task: dict) -> dict:
@@ -321,33 +317,12 @@ SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
 # SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
 # for the pen (the mug anywhere off the desk), the worst (user 11-11)
 _MUG, _DESK = "used_mug", "desk_1/top"
-SCORING[("T05", "errand_combined")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, the mug upright on a kitchen counter"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["on", "pen", _DESK], ["on_any", _MUG, ["kitchen_island/top", "kitchen_stove/top",
-                                                               "kitchen_counter_1/top", "kitchen_counter_2/top"]],
-                      ["upright", _MUG], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["not on", _MUG, _DESK], ["upright", _MUG], ["hand_empty", "right"]],
-              "any": [[["on", "pen", _DESK]], [["on", "pencil", _DESK]]]},
-     "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"}],
-    "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or "
-              "dropped"}
+# T05 errand_combined: 11-17 per-seed tiers (_layout_tiers)
 
 # T05 x6_gd_pen_or_pencil_cabinets: a pen asked for, a pencil in one closed low cabinet and the pen in the other.  A
 # door left open or the pencil brought along is the second tier; the pencil for the pen the worst (user 11-11)
 _CLOSED = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
-SCORING[("T05", "x6_gd_pen_or_pencil_cabinets")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0,
-     "goal": {"all": [["on", "pen", _DESK], ["not on", "pencil", _DESK], *_CLOSED, ["hand_empty", "right"]]},
-     "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", _DESK], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"},
-    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", _DESK], ["hand_empty", "right"]]},
-     "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"}],
-    "not_ok": "no pen or pencil on the desk; still held or dropped"}
+# T05 x6_gd_pen_or_pencil_cabinets: 11-17 per-seed tiers (_layout_tiers)
 
 # T06 display_row: three blocks in a row on the low cabinet, squared, at the front, apart.  Not squared is the
 # second tier; touching or at the back (squared or not) the worst (user 11-11)
@@ -645,7 +620,9 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              "cup_available", "no_cup", "two_guests", "x6_gd_cup_in_cabinets", "clear_the_drinks_spot")},
          **{("T03", d): _layout_tiers(d, _T03_WHY, _T03_NO) for d in (
              "small_bin_or_bedroom_bin", "which_bin_by_contents", "no_bin_substitute", "utensils_apart")},
-         ("T05", "homework_ready"): _homework_ready,
+         **{("T05", d): _layout_tiers(d, _T05_WHY, _T05_NO) for d in (
+             "no_pen_pencil_away", "check_desk_first", "homework_ready", "errand_combined",
+             "x6_gd_pen_or_pencil_cabinets")},
          ("T06", "display_spot_or_tv"): _display_spot_or_tv,
          ("T06", "seen_from_bed"): _seen_from_bed,
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,

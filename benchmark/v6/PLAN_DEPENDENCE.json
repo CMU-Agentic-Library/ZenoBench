@@ -1,15 +1,15 @@
 {
  "summary": {
   "scope": {
-   "layouts": 265,
+   "layouts": 267,
    "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 53,
    "goal_not_met": 92,
-   "not_observed": 67,
-   "resource_missing": 47,
+   "not_observed": 68,
+   "resource_missing": 48,
    "argument_mismatch": 6
   },
   "control_route_passes": [
@@ -50,11 +50,11 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 107,
-   "goal_not_met": 150,
-   "not_observed": 20,
-   "argument_mismatch": 91,
-   "resource_missing": 116
+   "passes": 109,
+   "goal_not_met": 156,
+   "not_observed": 21,
+   "argument_mismatch": 87,
+   "resource_missing": 117
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -73,7 +73,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 82,
+  "multi_layout_variants": 83,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -187,6 +187,9 @@
    ],
    "T04 x6_gd_cup_in_cabinets": [
     "kid_cup"
+   ],
+   "T05 no_pen_pencil_away": [
+    "spare_pen"
    ],
    "T05 pens_per_notebook": [
     "hw_notebook_1",
@@ -2076,12 +2079,26 @@
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
-   "other_layouts": {},
+   "other_layouts": {
+    "no_pen_pencil_in_use": "resource_missing"
+   },
    "other_variants_passing": [
     "check_desk_first__pencil_on_desk",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_4"
    ]
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "no_pen_pencil_away",
+   "layout": "no_pen_pencil_in_use",
+   "steps": 8,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "no_pen_pencil_away": "goal_not_met"
+   },
+   "other_variants_passing": []
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -2092,7 +2109,8 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "check_desk_first__pencil_on_desk": "argument_mismatch"
+    "check_desk_first__pencil_on_desk": "argument_mismatch",
+    "check_desk_first__pen_in_use": "passes"
    },
    "other_variants_passing": []
   },
@@ -2105,12 +2123,26 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "check_desk_first__pen_on_desk": "goal_not_met"
+    "check_desk_first__pen_on_desk": "goal_not_met",
+    "check_desk_first__pen_in_use": "goal_not_met"
    },
    "other_variants_passing": [
-    "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_4"
    ]
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layout": "check_desk_first__pen_in_use",
+   "steps": 6,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "check_desk_first__pen_on_desk": "passes",
+    "check_desk_first__pencil_on_desk": "argument_mismatch"
+   },
+   "other_variants_passing": []
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -2164,7 +2196,7 @@
    "control_route": "resource_missing",
    "other_layouts": {
     "homework_ready__several": "resource_missing",
-    "homework_ready__pencil_only": "argument_mismatch"
+    "homework_ready__notebook_in_use": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -2178,18 +2210,18 @@
    "control_route": "goal_not_met",
    "other_layouts": {
     "homework_ready__single": "passes",
-    "homework_ready__pencil_only": "argument_mismatch"
+    "homework_ready__notebook_in_use": "goal_not_met"
    },
    "other_variants_passing": []
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "homework_ready",
-   "layout": "homework_ready__pencil_only",
-   "steps": 12,
+   "layout": "homework_ready__notebook_in_use",
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "not_observed",
+   "control_route": "resource_missing",
    "other_layouts": {
     "homework_ready__single": "argument_mismatch",
     "homework_ready__several": "resource_missing"
@@ -2233,15 +2265,15 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "errand_combined__pen_dining": "argument_mismatch"
+    "errand_combined__pen_in_use": "goal_not_met"
    },
    "other_variants_passing": []
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "errand_combined",
-   "layout": "errand_combined__pen_dining",
-   "steps": 8,
+   "layout": "errand_combined__pen_in_use",
+   "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright used_mug"
@@ -2261,20 +2293,20 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6": "argument_mismatch"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_use": "goal_not_met"
    },
    "other_variants_passing": []
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "x6_gd_pen_or_pencil_cabinets",
-   "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-   "steps": 18,
+   "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+   "steps": 21,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_pen_or_pencil_cabinets__pen_in_4": "argument_mismatch"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_4": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -5243,10 +5275,21 @@
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
+   "variant": "no_pen_pencil_away",
+   "candidates": [
+    "no_pen_pencil_away",
+    "no_pen_pencil_in_use",
+    "e1_pencil_asked"
+   ],
+   "passes_all": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
    "variant": "check_desk_first",
    "candidates": [
     "check_desk_first__pen_on_desk",
     "check_desk_first__pencil_on_desk",
+    "check_desk_first__pen_in_use",
     "e1_pencil_asked"
    ],
    "passes_all": []
@@ -5268,7 +5311,7 @@
    "candidates": [
     "homework_ready__single",
     "homework_ready__several",
-    "homework_ready__pencil_only",
+    "homework_ready__notebook_in_use",
     "e1_pencil_asked"
    ],
    "passes_all": []
@@ -5288,7 +5331,7 @@
    "variant": "errand_combined",
    "candidates": [
     "errand_combined__pen_bedroom",
-    "errand_combined__pen_dining",
+    "errand_combined__pen_in_use",
     "e1_pencil_asked"
    ],
    "passes_all": []
@@ -5298,7 +5341,7 @@
    "variant": "x6_gd_pen_or_pencil_cabinets",
    "candidates": [
     "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6",
+    "x6_gd_pen_or_pencil_cabinets__pen_in_use",
     "e1_pencil_asked"
    ],
    "passes_all": []
@@ -7396,6 +7439,19 @@
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
+   "variant": "no_pen_pencil_away",
+   "layouts": [
+    "no_pen_pencil_away",
+    "no_pen_pencil_in_use"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
    "variant": "check_desk_first",
    "layouts": [
     "check_desk_first__pen_on_desk",
@@ -7405,6 +7461,32 @@
    "same_before_key_observation": false,
    "route_a_on_b": "goal_not_met",
    "route_b_on_a": "argument_mismatch",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layouts": [
+    "check_desk_first__pen_on_desk",
+    "check_desk_first__pen_in_use"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "check_desk_first",
+   "layouts": [
+    "check_desk_first__pencil_on_desk",
+    "check_desk_first__pen_in_use"
+   ],
+   "start_room": "bedroom_0_1",
+   "same_before_key_observation": false,
+   "route_a_on_b": "argument_mismatch",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": false
   },
   {
@@ -7464,12 +7546,12 @@
    "variant": "homework_ready",
    "layouts": [
     "homework_ready__single",
-    "homework_ready__pencil_only"
+    "homework_ready__notebook_in_use"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": false,
    "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": false
   },
   {
@@ -7477,12 +7559,12 @@
    "variant": "homework_ready",
    "layouts": [
     "homework_ready__several",
-    "homework_ready__pencil_only"
+    "homework_ready__notebook_in_use"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": false
   },
   {
@@ -7503,12 +7585,12 @@
    "variant": "errand_combined",
    "layouts": [
     "errand_combined__pen_bedroom",
-    "errand_combined__pen_dining"
+    "errand_combined__pen_in_use"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": false,
    "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": false
   },
   {
@@ -7516,12 +7598,12 @@
    "variant": "x6_gd_pen_or_pencil_cabinets",
    "layouts": [
     "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-    "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+    "x6_gd_pen_or_pencil_cabinets__pen_in_use"
    ],
    "start_room": "bedroom_0_1",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {

@@ -47,8 +47,8 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T04 | two_guests | Task-Level | - | missing_piece; not_in_view | 3 |
 | T04 | x6_gd_cup_in_cabinets | Task-Level | - | no_cup | 2 |
 | T05 | e1_pencil_asked | Control | - | - | 1 |
-| T05 | no_pen_pencil_away | Task-Level | - | not_in_view | 1 |
-| T05 | check_desk_first | Task-Level | - | goal_already_met | 2 |
+| T05 | no_pen_pencil_away | Task-Level | - | not_in_view; resource_in_use | 2 |
+| T05 | check_desk_first | Task-Level | - | goal_already_met | 3 |
 | T05 | all_pens | Task-Level | - | not_in_view; unknown_count | 3 |
 | T05 | homework_ready | Task-Level | - | goal_items_unstated; not_in_view | 3 |
 | T05 | pens_per_notebook | Task-Level | - | count_from_scene; not_in_view | 2 |

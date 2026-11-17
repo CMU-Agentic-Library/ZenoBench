@@ -33,6 +33,11 @@ KIND = {
     ("T04", "two_guests"): {"glass_in_cabinet": None, "mug": "缺失", "kid_cup": "缺失"},
     ("T04", "x6_gd_cup_in_cabinets"): {"*": "能力不足"},
     ("T04", "clear_the_drinks_spot"): {"spot_dishes": None, "spot_kid_toys": "去处替换"},
+    ("T05", "no_pen_pencil_away"): {"no_pen_pencil_away": None, "no_pen_pencil_in_use": "被占用"},
+    ("T05", "check_desk_first"): {"pen_on_desk": None, "pencil_on_desk": "看着像但不能用", "pen_in_use": "被占用"},
+    ("T05", "homework_ready"): {"single": "看着像但不能用", "several": "看着像但不能用", "notebook_in_use": "被占用"},
+    ("T05", "errand_combined"): {"pen_bedroom": None, "pen_in_use": "被占用"},
+    ("T05", "x6_gd_pen_or_pencil_cabinets"): {"pen_in_4": "看着像但不能用", "pen_in_use": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

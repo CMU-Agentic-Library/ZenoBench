@@ -1640,15 +1640,15 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 14,
-"variant": "no_pen_pencil_away",
-"route": "v5fix_hard_search_pencil",
+"variant": "no_pen_pencil_in_use",
+"route": "v6_no_pen_pencil_in_use",
 "family": "no_pen_pencil_away"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 15,
-"variant": "no_pen_pencil_away",
-"route": "v5fix_hard_search_pencil",
+"variant": "no_pen_pencil_in_use",
+"route": "v6_no_pen_pencil_in_use",
 "family": "no_pen_pencil_away"
 },
 {
@@ -1661,36 +1661,36 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 17,
-"variant": "no_pen_pencil_away",
-"route": "v5fix_hard_search_pencil",
+"variant": "no_pen_pencil_in_use",
+"route": "v6_no_pen_pencil_in_use",
 "family": "no_pen_pencil_away"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 18,
-"variant": "no_pen_pencil_away",
-"route": "v5fix_hard_search_pencil",
+"variant": "no_pen_pencil_in_use",
+"route": "v6_no_pen_pencil_in_use",
 "family": "no_pen_pencil_away"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 19,
-"variant": "no_pen_pencil_away",
-"route": "v5fix_hard_search_pencil",
+"variant": "no_pen_pencil_in_use",
+"route": "v6_no_pen_pencil_in_use",
 "family": "no_pen_pencil_away"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
-"variant": "check_desk_first__pencil_on_desk",
-"route": "v6_check_desk_first__pencil_on_desk",
+"variant": "check_desk_first__pen_in_use",
+"route": "v6_check_desk_first__pen_in_use",
 "family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 11,
-"variant": "check_desk_first__pen_on_desk",
-"route": "v6_check_desk_first__pen_on_desk",
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
 "family": "check_desk_first"
 },
 {
@@ -1703,15 +1703,15 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 13,
-"variant": "check_desk_first__pen_on_desk",
-"route": "v6_check_desk_first__pen_on_desk",
+"variant": "check_desk_first__pen_in_use",
+"route": "v6_check_desk_first__pen_in_use",
 "family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 14,
-"variant": "check_desk_first__pen_on_desk",
-"route": "v6_check_desk_first__pen_on_desk",
+"variant": "check_desk_first__pen_in_use",
+"route": "v6_check_desk_first__pen_in_use",
 "family": "check_desk_first"
 },
 {
@@ -1724,15 +1724,15 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 16,
-"variant": "check_desk_first__pencil_on_desk",
-"route": "v6_check_desk_first__pencil_on_desk",
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
 "family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 17,
-"variant": "check_desk_first__pencil_on_desk",
-"route": "v6_check_desk_first__pencil_on_desk",
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
 "family": "check_desk_first"
 },
 {
@@ -1822,8 +1822,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
-"variant": "homework_ready__pencil_only",
-"route": "v6_homework_ready__pencil_only",
+"variant": "homework_ready__notebook_in_use",
+"route": "v6_homework_ready__notebook_in_use",
 "family": "homework_ready"
 },
 {
@@ -1850,8 +1850,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 14,
-"variant": "homework_ready__pencil_only",
-"route": "v6_homework_ready__pencil_only",
+"variant": "homework_ready__notebook_in_use",
+"route": "v6_homework_ready__notebook_in_use",
 "family": "homework_ready"
 },
 {
@@ -1885,8 +1885,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 19,
-"variant": "homework_ready__pencil_only",
-"route": "v6_homework_ready__pencil_only",
+"variant": "homework_ready__notebook_in_use",
+"route": "v6_homework_ready__notebook_in_use",
 "family": "homework_ready"
 },
 {
@@ -1962,8 +1962,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
-"variant": "errand_combined__pen_dining",
-"route": "v6_errand_combined__pen_dining",
+"variant": "errand_combined__pen_in_use",
+"route": "v6_errand_combined__pen_in_use",
 "family": "errand_combined"
 },
 {
@@ -1976,15 +1976,15 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 12,
-"variant": "errand_combined__pen_dining",
-"route": "v6_errand_combined__pen_dining",
+"variant": "errand_combined__pen_in_use",
+"route": "v6_errand_combined__pen_in_use",
 "family": "errand_combined"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 13,
-"variant": "errand_combined__pen_dining",
-"route": "v6_errand_combined__pen_dining",
+"variant": "errand_combined__pen_in_use",
+"route": "v6_errand_combined__pen_in_use",
 "family": "errand_combined"
 },
 {
@@ -1997,8 +1997,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 15,
-"variant": "errand_combined__pen_dining",
-"route": "v6_errand_combined__pen_dining",
+"variant": "errand_combined__pen_in_use",
+"route": "v6_errand_combined__pen_in_use",
 "family": "errand_combined"
 },
 {
@@ -2018,8 +2018,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 18,
-"variant": "errand_combined__pen_dining",
-"route": "v6_errand_combined__pen_dining",
+"variant": "errand_combined__pen_in_use",
+"route": "v6_errand_combined__pen_in_use",
 "family": "errand_combined"
 },
 {
@@ -2032,8 +2032,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
-"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -2060,22 +2060,22 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 14,
-"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 15,
-"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 16,
-"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -2088,8 +2088,8 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 18,
-"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
+"variant": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
+"route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_use",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {

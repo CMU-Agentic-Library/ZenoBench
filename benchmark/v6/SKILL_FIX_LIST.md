@@ -20,7 +20,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | soda_can | 151 | 19 | 11% | IK / reach / base pose 10, grasp miss 9 | T10 T19 | 6 | pick soda_can: not held (lift -0.160 m) |
 | place | mug | 29 | 18 | 38% | carry slip 16, other 1, placement result 1 | T04 T13 | 3 | carry: mug slipped out of the hand while carrying it |
 | approach | kitchen_island/top | 43 | 17 | 28% | other 16, IK / reach / base pose 1 | T08 | 0 | approach kitchen_island/top: parked but IK fails at [7.564, 1.565, 0.96] |
-| place | book_red | 8 | 17 | 68% | carry slip 7, placement result 5, IK / reach / base pose 3 | T14 | 4 | flat_turn: book_red slipped out of the hand while carrying it |
+| place | book_red | 8 | 17 | 68% | carry slip 7, placement result 5, IK / reach / base pose 3 | T14 | 5 | flat_turn: book_red slipped out of the hand while carrying it |
 | drop | rubber_duck | 23 | 15 | 39% | carry slip 7, IK / reach / base pose 4, other 4 | T12 | 1 | no IK for drop_prelift |
 | place | cup_counter_b | 27 | 14 | 34% | carry slip 10, placement result 3, other 1 | T04 | 4 | place_above: cup_counter_b slipped out of the hand while carrying it |
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 8 | pick breakfast_spoon: not held (lift -0.001 m) |
@@ -37,7 +37,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 7 | face desk_1/top: turning in place would hit furniture |
 | arrange |  | 2 | 8 | 80% | IK / reach / base pose 5, other 2, placement result 1 | T13 | 0 | SUBSKILL_FAILED: pick_object(object=cup): no IK for pick_lift |
 | pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 1 | pick from cavity oatmeal: front approach missed by 0.163 m |
-| pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 3 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
+| pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 4 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
 | pick | pot_lid | 90 | 7 | 7% | grasp miss 7 | T17 | 6 | pick pot_lid: not held (lift 0.010 m) |
 | place | rolling_pin | 72 | 6 | 8% | other 5, carry slip 1 | T03 | 4 | carry: rolling_pin slipped out of the hand while carrying it |
 | place | oatmeal | 156 | 6 | 4% | other 4, IK / reach / base pose 1, placement result 1 | T04 T07 T16 | 1 | no IK for place_above |
