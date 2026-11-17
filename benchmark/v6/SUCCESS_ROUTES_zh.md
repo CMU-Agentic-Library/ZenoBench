@@ -1173,6 +1173,8 @@
 
 ### x6_gd_cup_in_cabinets（Task）
 
+**情况**：指令要一个不带把手的杯子，说这种杯子收在厨房的矮柜里；岛台上的马克杯就在眼前但有把手 → 不拿马克杯，逐个打开矮柜找杯子，找完关门
+
 **指令**：有客人要来。在靠墙矮柜上的饮品角摆一个不带把手的杯子，这种杯子收在厨房的矮柜里。用完把柜门关好。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
@@ -1239,6 +1241,8 @@
 1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `navigate(destination=pencil)`（换做法） → 4. `pick(object=pencil)`（换做法） → 5. `present(object=pencil)`（补救） → 6. `navigate(destination=desk_1/top)` → 7. `place(object=pencil, receptacle=desk_1/top)`
 
 ### check_desk_first（Task）
+
+**情况**：指令要钢笔；书桌上已经有一支笔：要么就是钢笔，要么只是铅笔（钢笔在卧室书架上） → 先看书桌：是钢笔就停手（再拿一支算失败）；只有铅笔不算数，去拿钢笔，铅笔留在桌上
 
 **指令**：孩子写作业要用钢笔，拿一支钢笔到书房书桌上。
 
@@ -3482,6 +3486,8 @@
 
 ### castle_stays（Task）
 
+**情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐。检测的是：整局没拿起过塔上的积木（过程要求），结束时每块都在原位、叠放关系还在（终态）。中途被碰倒的话，不拿起来就搭不回去，终态会判失败；碰歪了又恰好推回原位这种情况检测不到
+
 **指令**：快到睡觉时间了，把孩子的玩具收起来。他搭的积木城堡别拆，明天还要接着搭。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
@@ -4274,7 +4280,7 @@
 
 ## T20_juice_back_to_table
 
-> 有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。
+> 早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放。
 
 ### bottle_on_cabinet（对照）
 
@@ -4320,6 +4326,47 @@
 
 - 摆法 `m_bottle_on_tv_stand`：1. `search(object=juice_bottle, region=living_room_0_0)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 - 摆法 `alt_bookcase_2`：1. `search(object=juice_bottle, region=bedroom_0_1)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+
+### juice_finished（Task）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `soda_drink` 在 `dining_table_2/top` 上
+  - `soda_drink` 立着
+  - 手里空着
+- **最不好（0.3）**：
+
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：桌上没有喝的；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `navigate(destination=kitchen_trash)` → 2. `look(target=kitchen_trash)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_drink)` → 6. `pick(object=soda_drink)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=soda_drink, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+
+### juice_in_use（Task）
+
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
+
+- **好（1.0）**：
+
+  - `soda_drink` 在 `dining_table_2/top` 上
+  - `soda_drink` 立着
+  - 手里空着
+  - `juice_bottle` 没被挪动（离开局位置不超过 3 cm）
+- **最不好（0.3）**：
+
+  - `juice_bottle` 在 `dining_table_2/top` 上
+  - 手里空着
+- **不行（0）**：桌上没有喝的；碰倒爷爷的东西；还拿着或掉了
+
+
+**参考调用顺序**：
+
+1. `search(object=juice_bottle, region=dining_room_0_0)` → 2. `look(target=dining_table_1/top)` → 3. `navigate(destination=tv_stand_2/top)` → 4. `look(target=tv_stand_2/top)` → 5. `navigate(destination=soda_drink)` → 6. `pick(object=soda_drink)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=soda_drink, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ### x6_gd_bottle_put_away（Task）
 
@@ -4588,6 +4635,8 @@
 
 ### no_second_red_book（Task）
 
+**情况**：红皮书放回去，再拿同套下一本红皮书；家里没有第二本 → 拿孩子的绿皮/蓝皮书（替换），不拿大人的平装书
+
 **指令**：孩子看完这本红皮书了，收回他的书架，再把同一套红皮书的下一本拿到书桌上，他明天看。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
@@ -4618,7 +4667,7 @@
 
 ### next_in_series（Task）
 
-**情况**：红皮书放回去，再拿同套下一本红皮书；家里没有第二本 → 拿孩子的绿皮/蓝皮书（替换），不拿大人的平装书
+**情况**：“红书收回书架，再把同一套的另一本拿到书桌上”：另一本红封面的书混在别的书里 → 两个方向的子目标；按封面认出同一套，找遍书架
 
 **指令**：孩子看完这本红书了，收回他的书架，再把同一套的另一本拿到书桌上，他明天看。
 

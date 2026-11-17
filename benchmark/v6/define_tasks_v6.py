@@ -2337,8 +2337,15 @@ def T19(t):
 
 def T20(t):
     J = "juice_bottle"
+    # 11-17: the instruction names the juice for breakfast (not "put it back"), so a substitute can do
+    t["instruction"] = "Breakfast needs juice. Bring the juice bottle to the breakfast table and stand it up."
+    t["instruction_zh"] = "早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放。"
     base = OR(t, "bottle_on_cabinet")           # nav cab6 top, look, nav bottle, pick, nav dining, place
     i = at(base, "pick", object=J)
+    TABLE, SODA, TV = "dining_table_2/top", "soda_drink", "tv_stand_2/top"
+    soda = {SODA: {"asset": "soda_can", "support": TV, "xy": [7.30, 0.36], "yaw_deg": 0.0}}
+    soda_route = [nav(TV), look(TV), nav(SODA), pick(SODA), nav(TABLE), place(SODA, TABLE, [2.948, 7.295])]
+    soda_goal = {"all": [["on", SODA, TABLE], ["upright", SODA], ["hand_empty", "right"]]}
 
     # the bowl needs more room than the cabinet top has left: the other low cabinet
     instr = ("Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, "
@@ -2348,6 +2355,31 @@ def T20(t):
     tail = base[i + 1:]
     take = lambda art: [nav(J), pick(J), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
     return {
+        # juice_finished (11-17, substitution: missing): the juice is used up, the empty bottle thrown into the
+        # trash can by the kitchen; a can of soda on the TV stand is the drink there is
+        "juice_finished": dict(
+            base="bottle_on_cabinet", control="bottle_on_cabinet", conditions=["resource_absent", "not_in_view"],
+            move={J: {"support": None, "z": 0.037, "xy": [9.05, 1.12], "yaw_deg": 0.0}},
+            add={"kitchen_trash": {"asset": "trash_can", "support": None, "z": 0.0, "xy": [9.05, 1.12], "yaw_deg": 0.0},
+                 **soda},
+            goal=soda_goal, watch=[J, SODA, "kitchen_trash"],
+            factor="the layout only",
+            challenge="the juice is used up: the empty bottle lies in the trash can by the kitchen; a can of soda "
+                      "stands on the TV stand",
+            rationale="the juice does not exist any more: bring the soda instead, not the empty bottle",
+            cases={"": dict(route=[nav("kitchen_trash"), look("kitchen_trash")] + soda_route)}),
+        # juice_in_use (11-17, substitution: in use): grandpa is having breakfast at the west dining table with the
+        # juice by his cup; the soda on the TV stand is free
+        "juice_in_use": dict(
+            base="bottle_on_cabinet", control="bottle_on_cabinet", conditions=["resource_in_use", "not_in_view"],
+            move={J: {"support": "dining_table_1/top", "xy": [-7.70, 8.05], "yaw_deg": 0.0}}, add=dict(soda),
+            goal={"all": [*soda_goal["all"], ["near_start", J, 0.03]]}, watch=[J, SODA, "cup_side_table", "bowl_side_table"],
+            factor="the layout only",
+            challenge="the juice bottle stands at grandpa's place on the west dining table, by his cup and bowl "
+                      "(he is having breakfast); a can of soda stands on the TV stand",
+            rationale="the juice is in use at someone's place: leave it and bring the soda instead",
+            cases={"": dict(route=[S("search", object=J, region="dining_room_0_0"), look("dining_table_1/top")]
+                            + soda_route)}),
         "x6_gd_bottle_put_away": dict(
             base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal, instruction_zh="有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
             factor="which closed place holds the item",

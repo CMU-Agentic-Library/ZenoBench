@@ -502,5 +502,23 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "variant": "juice_finished",
+  "route": "v6_juice_finished",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "variant": "juice_in_use",
+  "route": "v6_juice_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

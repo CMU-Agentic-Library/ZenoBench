@@ -579,6 +579,23 @@ R[("T20", "x6_gd_bottle_put_away")] = tiers(
     zh=dict(sit="果汁瓶被收进两个矮柜之一", good="立着放回餐桌，柜门关好", second="立着放回了，但柜门没关",
             worst="放回了但躺着", no="没放回餐桌；还拿着或掉了"))
 
+# T20 juice_finished / juice_in_use (11-17, substitution): the soda instead of the juice; the empty or the taken
+# bottle brought is the worst
+R[("T20", "juice_finished")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "juice_bottle", "dining_table_2/top"], HAND]},
+    why=("the juice used up: the can of soda standing on the breakfast table", "",
+         "the empty juice bottle fished out of the trash and brought"),
+    not_ok="nothing to drink on the table; still held or dropped",
+    zh=dict(sit="果汁喝完了，空瓶扔在厨房旁的垃圾桶里；电视柜上有一罐汽水（11-17 替换）", good="汽水立着放到早餐桌（替换：缺失）",
+            worst="把空果汁瓶从垃圾桶里拿来", no="桌上没有喝的；还拿着或掉了"))
+R[("T20", "juice_in_use")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "juice_bottle", "dining_table_2/top"], HAND]},
+    why=("the juice at grandpa's place left there, the soda standing on the breakfast table", "",
+         "grandpa's juice taken from his place"),
+    not_ok="nothing to drink on the table; grandpa's things tipped; still held or dropped",
+    zh=dict(sit="果汁瓶在西边餐厅爷爷的座位旁，他正在吃早饭；电视柜上有一罐汽水（11-17 替换）", good="果汁不动，汽水立着放到早餐桌（替换：被占用）",
+            worst="把爷爷的果汁拿走", no="桌上没有喝的；碰倒爷爷的东西；还拿着或掉了"))
+
 # ================================================================================================ T21 bring tissues
 _T21_NO = "nothing to wipe with on the table; still held or dropped"
 R[("T21", "tissue_on_tv_stand")] = d0("the tissues on the dining table", _T21_NO, dict(

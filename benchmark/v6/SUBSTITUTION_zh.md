@@ -35,6 +35,8 @@
 | T18 | door_stuck（新任务） | 损坏 | 靠墙矮柜门卡住打不开 → 去 4 号矮柜拿碗（sim 要支持锁住的门） |
 | T19 | recycle_bin_full（原 m_can_in_dining_room） | 被占用 | 回收箱塞满了 → 电视柜上的空收纳箱 |
 | T19 | bin_out_of_reach（原 x6_gd_can_put_away） | 能力不足 | 回收箱在 1.42 m 高架子顶上够不着 → 餐桌上的小收纳箱 |
+| T20 | juice_finished（新加） | 缺失 | 果汁喝完了 → 汽水（拿空瓶最差） |
+| T20 | juice_in_use（新加） | 被占用 | 果汁在爷爷座位旁正在喝 → 汽水 |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 

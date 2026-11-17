@@ -1,7 +1,7 @@
 {
- "variants": 160,
- "episodes": 1600,
- "static_ok": 1600,
+ "variants": 162,
+ "episodes": 1620,
+ "static_ok": 1620,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -77,8 +77,8 @@
    "static_ok": 40
   },
   "T20_juice_back_to_table": {
-   "episodes": 30,
-   "static_ok": 30
+   "episodes": 50,
+   "static_ok": 50
   },
   "T14_shelve_the_book": {
    "episodes": 70,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 122
+  "task": 124
  },
- "tasks_sha1": "0ae19ab11ae94f9151d54438032200f48c08e026"
+ "tasks_sha1": "d2c052d16047b5ded8081d9e4ffcfbd7d39fcb72"
 }

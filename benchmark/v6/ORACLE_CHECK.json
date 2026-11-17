@@ -1,6 +1,6 @@
 {
- "routes": 281,
- "ok": 281,
+ "routes": 283,
+ "ok": 283,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2317,6 +2317,30 @@
    ],
    "problems": [],
    "variant": "m_bottle_on_tv_stand"
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "layout": "juice_finished",
+   "steps": 8,
+   "atoms_checked": 2,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright soda_drink"
+   ],
+   "problems": [],
+   "variant": "juice_finished"
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "layout": "juice_in_use",
+   "steps": 8,
+   "atoms_checked": 3,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright soda_drink"
+   ],
+   "problems": [],
+   "variant": "juice_in_use"
   },
   {
    "task": "T20_juice_back_to_table",

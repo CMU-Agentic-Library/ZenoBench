@@ -4552,6 +4552,146 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 10,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 11,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 12,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 13,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 14,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 15,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 16,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 17,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 18,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 19,
+"variant": "juice_finished",
+"route": "v6_juice_finished",
+"family": "juice_finished"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 11,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 12,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 13,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 14,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 15,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 16,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 17,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 18,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 19,
+"variant": "juice_in_use",
+"route": "v6_juice_in_use",
+"family": "juice_in_use"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
 "family": "x6_gd_bottle_put_away"

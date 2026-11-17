@@ -129127,8 +129127,8 @@
    "source": [
     "skill_library/tasks.json:organize_utility_items"
    ],
-   "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
-   "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
+   "instruction": "Breakfast needs juice. Bring the juice bottle to the breakfast table and stand it up.",
+   "instruction_zh": "早饭要喝果汁，把果汁瓶拿到早餐桌上，立着放。",
    "scene": {
     "base": "tasks/organize_utility_items",
     "remove": [
@@ -129557,6 +129557,415 @@
       "not_ok": "the bottle not on the breakfast table; still held or dropped"
      }
     },
+    "juice_finished": {
+     "move": {
+      "juice_bottle": {
+       "support": null,
+       "z": 0.037,
+       "xy": [
+        9.05,
+        1.12
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "kitchen_trash": {
+       "asset": "trash_can",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        9.05,
+        1.12
+       ],
+       "yaw_deg": 0.0
+      },
+      "soda_drink": {
+       "asset": "soda_can",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.3,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "resource_absent",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "soda_drink",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "soda_drink"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "juice_bottle",
+      "soda_drink",
+      "kitchen_trash"
+     ],
+     "since": "v6",
+     "note": "the juice is used up: the empty bottle lies in the trash can by the kitchen; a can of soda stands on the TV stand",
+     "v6": {
+      "family": "juice_finished",
+      "case": null,
+      "challenge": "the juice is used up: the empty bottle lies in the trash can by the kitchen; a can of soda stands on the TV stand",
+      "rationale": "the juice does not exist any more: bring the soda instead, not the empty bottle",
+      "control": "bottle_on_cabinet",
+      "contrast": null,
+      "factor": "the layout only",
+      "derived_from": "bottle_on_cabinet"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "soda_drink"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.267,
+         0.327,
+         7.333,
+         0.393
+        ],
+        "dx": [
+         -0.61,
+         1.03
+        ],
+        "dy": [
+         -0.1,
+         0.11
+        ],
+        "pick": [
+         "soda_drink"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice used up: the can of soda standing on the breakfast table"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "juice_finished": {
+           "all": [
+            [
+             "on",
+             "juice_bottle",
+             "dining_table_2/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the empty juice bottle fished out of the trash and brought"
+       }
+      ],
+      "not_ok": "nothing to drink on the table; still held or dropped"
+     }
+    },
+    "juice_in_use": {
+     "move": {
+      "juice_bottle": {
+       "support": "dining_table_1/top",
+       "xy": [
+        -7.7,
+        8.05
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "soda_drink": {
+       "asset": "soda_can",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.3,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "resource_in_use",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "soda_drink",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "soda_drink"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.03
+       ]
+      ]
+     },
+     "watch": [
+      "juice_bottle",
+      "soda_drink",
+      "cup_side_table",
+      "bowl_side_table"
+     ],
+     "since": "v6",
+     "note": "the juice bottle stands at grandpa's place on the west dining table, by his cup and bowl (he is having breakfast); a can of soda stands on the TV stand",
+     "v6": {
+      "family": "juice_in_use",
+      "case": null,
+      "challenge": "the juice bottle stands at grandpa's place on the west dining table, by his cup and bowl (he is having breakfast); a can of soda stands on the TV stand",
+      "rationale": "the juice is in use at someone's place: leave it and bring the soda instead",
+      "control": "bottle_on_cabinet",
+      "contrast": null,
+      "factor": "the layout only",
+      "derived_from": "bottle_on_cabinet"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "juice_bottle"
+        ],
+        "support": "dining_table_1/top",
+        "box": [
+         -7.729,
+         8.021,
+         -7.671,
+         8.079
+        ],
+        "dx": [
+         -0.8,
+         0.17
+        ],
+        "dy": [
+         -1.14,
+         0.76
+        ],
+        "search": [
+         "juice_bottle"
+        ]
+       },
+       {
+        "names": [
+         "soda_drink"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.267,
+         0.327,
+         7.333,
+         0.393
+        ],
+        "dx": [
+         -0.61,
+         1.03
+        ],
+        "dy": [
+         -0.1,
+         0.11
+        ],
+        "pick": [
+         "soda_drink"
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_1/top": [
+        [
+         -8.2047,
+         7.3463,
+         -7.9953,
+         7.5539
+        ],
+        [
+         -7.8993,
+         8.1799,
+         -7.7606,
+         8.3198
+        ],
+        [
+         -8.3347,
+         8.0461,
+         -8.1681,
+         8.1947
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_1/top": [
+        [
+         0,
+         1,
+         -7.488,
+         7.018,
+         8.605,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -8.541,
+         6.869,
+         8.853,
+         0.2
+        ],
+        [
+         1,
+         1,
+         8.853,
+         -8.541,
+         -7.488,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.869,
+         -8.541,
+         -7.588,
+         0.2
+        ]
+       ],
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "juice_bottle"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice at grandpa's place left there, the soda standing on the breakfast table"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "juice_in_use": {
+           "all": [
+            [
+             "on",
+             "juice_bottle",
+             "dining_table_2/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "grandpa's juice taken from his place"
+       }
+      ],
+      "not_ok": "nothing to drink on the table; grandpa's things tipped; still held or dropped"
+     }
+    },
     "x6_gd_bottle_put_away__in_cabinet_4": {
      "move": {
       "juice_bottle": {
@@ -129919,6 +130328,8 @@
     "bottle_on_cabinet": "nominal",
     "m_bottle_on_tv_stand": "v5_m_bottle_on_tv_stand",
     "m_bottle_on_tv_stand__alt_bookcase_2": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
+    "juice_finished": "v6_juice_finished",
+    "juice_in_use": "v6_juice_in_use",
     "x6_gd_bottle_put_away__in_cabinet_4": "v6_x6_gd_bottle_put_away__in_cabinet_4",
     "x6_gd_bottle_put_away__in_cabinet_6": "v6_x6_gd_bottle_put_away__in_cabinet_6"
    },
@@ -130056,6 +130467,125 @@
      ],
      "kind": "v6_seed_extension",
      "variant": "m_bottle_on_tv_stand__alt_bookcase_2"
+    },
+    "v6_juice_finished": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_trash"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_trash"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_drink"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_drink"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_drink",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.948,
+         7.295
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "juice_finished"
+    },
+    "v6_juice_in_use": {
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "juice_bottle",
+        "region": "dining_room_0_0"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_drink"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_drink"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_drink",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.948,
+         7.295
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "juice_in_use"
     },
     "v6_x6_gd_bottle_put_away__in_cabinet_4": {
      "steps": [
@@ -130451,6 +130981,114 @@
       "not_ok": "the bottle not on the breakfast table; still held or dropped"
      }
     },
+    "juice_finished": {
+     "origin": "v6",
+     "control": "bottle_on_cabinet",
+     "layouts": [
+      "juice_finished"
+     ],
+     "factor": "the layout only",
+     "seeds": {
+      "10": "juice_finished",
+      "11": "juice_finished",
+      "12": "juice_finished",
+      "13": "juice_finished",
+      "14": "juice_finished",
+      "15": "juice_finished",
+      "16": "juice_finished",
+      "17": "juice_finished",
+      "18": "juice_finished",
+      "19": "juice_finished"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice used up: the can of soda standing on the breakfast table"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "juice_finished": {
+           "all": [
+            [
+             "on",
+             "juice_bottle",
+             "dining_table_2/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the empty juice bottle fished out of the trash and brought"
+       }
+      ],
+      "not_ok": "nothing to drink on the table; still held or dropped"
+     }
+    },
+    "juice_in_use": {
+     "origin": "v6",
+     "control": "bottle_on_cabinet",
+     "layouts": [
+      "juice_in_use"
+     ],
+     "factor": "the layout only",
+     "seeds": {
+      "10": "juice_in_use",
+      "11": "juice_in_use",
+      "12": "juice_in_use",
+      "13": "juice_in_use",
+      "14": "juice_in_use",
+      "15": "juice_in_use",
+      "16": "juice_in_use",
+      "17": "juice_in_use",
+      "18": "juice_in_use",
+      "19": "juice_in_use"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice at grandpa's place left there, the soda standing on the breakfast table"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "juice_in_use": {
+           "all": [
+            [
+             "on",
+             "juice_bottle",
+             "dining_table_2/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "grandpa's juice taken from his place"
+       }
+      ],
+      "not_ok": "nothing to drink on the table; grandpa's things tipped; still held or dropped"
+     }
+    },
     "x6_gd_bottle_put_away": {
      "origin": "v6",
      "control": "bottle_on_cabinet",
@@ -130587,6 +131225,22 @@
      "local": [],
      "longer": [
       "not_in_view"
+     ]
+    },
+    "juice_finished": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "resource_absent"
+     ]
+    },
+    "juice_in_use": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "resource_in_use"
      ]
     },
     "x6_gd_bottle_put_away": {
