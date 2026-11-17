@@ -1671,11 +1671,6 @@
       ],
       "steps": [
        {
-        "policy": "policy_003",
-        "args": [],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_062",
         "args": [
          "$receptacle"
@@ -1687,11 +1682,6 @@
         "args": [
          "$receptacle"
         ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_003",
-        "args": [],
         "kwargs": {}
        },
        {
@@ -8907,11 +8897,6 @@
       ],
       "steps": [
        {
-        "policy": "policy_003",
-        "args": [],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_022",
         "args": [
          "$articulated"
@@ -8944,11 +8929,6 @@
       ],
       "steps": [
        {
-        "policy": "policy_003",
-        "args": [],
-        "kwargs": {}
-       },
-       {
         "policy": "policy_022",
         "args": [
          "$articulated"
@@ -8978,11 +8958,6 @@
        }
       ],
       "steps": [
-       {
-        "policy": "policy_003",
-        "args": [],
-        "kwargs": {}
-       },
        {
         "policy": "policy_022",
         "args": [
@@ -9317,11 +9292,6 @@
        }
       ],
       "steps": [
-       {
-        "policy": "policy_003",
-        "args": [],
-        "kwargs": {}
-       },
        {
         "policy": "policy_023",
         "args": [

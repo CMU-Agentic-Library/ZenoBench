@@ -15,7 +15,7 @@ Paired SkillNode: `skill_012` (`inspect-receptacle`).
 
 ## Policy paths
 
-- `closed_cabinet` when receptacle.kind == 'articulated' and not receptacle.is_open: `policy_003()` -> `policy_062($receptacle)` -> `policy_088($receptacle)` -> `policy_003()` -> `policy_063($receptacle)`
+- `closed_cabinet` when receptacle.kind == 'articulated' and not receptacle.is_open: `policy_062($receptacle)` -> `policy_088($receptacle)` -> `policy_063($receptacle)`
 - `open_view` when always: `policy_088($receptacle)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

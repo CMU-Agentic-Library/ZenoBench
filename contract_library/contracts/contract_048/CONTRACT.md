@@ -23,8 +23,8 @@ Paired SkillNode: `skill_040` (`open-articulated`).
 - `powered_microwave` when articulated.powered: `policy_024($articulated)`
 - `refrigerator_loaded` when articulated.category == 'refrigerator' and robot.right_held: `policy_022($articulated, goal=@articulated.wide_open_q)`
 - `loaded` when robot.right_held: `policy_022($articulated)`
-- `refrigerator` when articulated.category == 'refrigerator': `policy_003()` -> `policy_022($articulated, goal=@articulated.wide_open_q)`
-- `drawer` when articulated.type == 'prismatic': `policy_003()` -> `policy_022($articulated)`
-- `hinged_door` when articulated.type == 'revolute': `policy_003()` -> `policy_022($articulated)`
+- `refrigerator` when articulated.category == 'refrigerator': `policy_022($articulated, goal=@articulated.wide_open_q)`
+- `drawer` when articulated.type == 'prismatic': `policy_022($articulated)`
+- `hinged_door` when articulated.type == 'revolute': `policy_022($articulated)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

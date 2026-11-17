@@ -124,11 +124,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_003",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_062",
       "args": [
        "$receptacle"
@@ -140,11 +135,6 @@
       "args": [
        "$receptacle"
       ],
-      "kwargs": {}
-     },
-     {
-      "policy": "policy_003",
-      "args": [],
       "kwargs": {}
      },
      {

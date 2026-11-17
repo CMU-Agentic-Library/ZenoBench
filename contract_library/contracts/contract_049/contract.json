@@ -251,11 +251,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_003",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_023",
       "args": [
        "$articulated"

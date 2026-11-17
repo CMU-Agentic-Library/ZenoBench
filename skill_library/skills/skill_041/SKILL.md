@@ -66,8 +66,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `handle_push` — when articulated.has_handle
 
-1. `policy_003()`
-2. `policy_023($articulated)`
+1. `policy_023($articulated)`
 - extra precondition `hand_empty(hand=right)`
 - Every empty hand x {push the outer face, ride the handle (right)} in one park search.
 

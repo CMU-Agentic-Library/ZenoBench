@@ -121,14 +121,11 @@
    ],
    "extra_postconditions": [],
    "chain": [
-    "policy_003()",
     "policy_062($receptacle)",
     "policy_088($receptacle)",
-    "policy_003()",
     "policy_063($receptacle)"
    ],
    "policies": [
-    "policy_003",
     "policy_062",
     "policy_063",
     "policy_088"

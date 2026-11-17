@@ -297,11 +297,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_003",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_022",
       "args": [
        "$articulated"
@@ -334,11 +329,6 @@
     ],
     "steps": [
      {
-      "policy": "policy_003",
-      "args": [],
-      "kwargs": {}
-     },
-     {
       "policy": "policy_022",
       "args": [
        "$articulated"
@@ -368,11 +358,6 @@
      }
     ],
     "steps": [
-     {
-      "policy": "policy_003",
-      "args": [],
-      "kwargs": {}
-     },
      {
       "policy": "policy_022",
       "args": [

@@ -48,11 +48,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `closed_cabinet` — when receptacle.kind == 'articulated' and not receptacle.is_open
 
-1. `policy_003()`
-2. `policy_062($receptacle)`
-3. `policy_088($receptacle)`
-4. `policy_003()`
-5. `policy_063($receptacle)`
+1. `policy_062($receptacle)`
+2. `policy_088($receptacle)`
+3. `policy_063($receptacle)`
 - extra precondition `hand_empty(hand=right)`
 - Open with the annotation-selected route, look, close again.
 
