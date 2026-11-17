@@ -145,7 +145,6 @@ def test_local_fallbacks_are_action_level():
     """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
     # an Action-Level step only inside a Task-Level design (the closed fridge for the third tomato)
-    assert cat("T09_tomato_soup", "tomato_in_fridge") == "action_task"
     # T01: what it tests is which table, which seat, a real book for the homework, or the fallback; where the book starts on the
     # island, half the layouts have it flat (expose first), so those designs are Action + Task
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
@@ -190,8 +189,7 @@ def test_every_layout_has_its_route():
 def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
     for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
-                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin"),
-                          ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
+                          ("T03_utensils_one_container", "three_containers", "small_bin_or_bedroom_bin")):   # 11-17: T09 pot_in_dining_room left
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"

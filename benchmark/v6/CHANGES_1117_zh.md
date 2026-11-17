@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，86 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，84 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -89,6 +89,7 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T10 | 新变体 `clear_table_for_dinner`（原 T29 的 car_on_table / belongs_on_table / nothing_to_clear / several / homework_on_table 做 seed） | 布局照搬 T29 | 同原任务 | 低 | 未跑 |
 | T18 | 新变体 `no_bowl`、`plate_not_bowl`；one_bowl 加 mug、bowl_in_use 加 oatmeal 两个 seed（原 T30） | 马克杯在台面 (0.15, 7.85) 或矮柜里 (3.32, 0.40)；燕麦碗在矮柜 (3.60, 0.40) | 同 T18 | 低 | 未跑 |
 | T26/T28/T29/T30 | 并进 T12/T10/T18 后删掉；T26 car_in_living_room（= T12 对照）、bear_to_bed（= T12 bedtime_toy）、T28 cup_out_of_view、T29 which_table、T30 bowl_on_cabinet/bowl_put_away/how_many 没带过去。现在 25 个任务 | | | | 不用跑 |
+| 多个 | 删掉 16 个“来源替换”（东西不变，只是去别处找/从柜里拿）：T08 far_sponge_tv；T09 lid_on_spoon_away、tomato_in_fridge、x6_gd_tomato_elsewhere、pot_in_dining_room；T10 can_in_dining_room、x6_gd_can_put_away；T12 find_all_toys；T15 lid_elsewhere；T16 box_in_cabinet；T17 h_task_lid_elsewhere；T18 bowls_apart；T20 m_bottle_on_tv_stand、x6_gd_bottle_put_away；T21 tissue_out_of_view、tissue_put_away（用户要求；T05 x6_gd_pen_or_pencil_cabinets 保留） | | | | 不用跑 |
 
 ## 我这边的约定
 

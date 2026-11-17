@@ -31,14 +31,14 @@ def broken(tid, lid, drop):
 
 
 def test_missing_open_is_caught():
-    p = broken("T09", "tomato_in_fridge__in_fridge", lambda i, s: s["skill"] == "open")
+    p = broken("T25", "cold_one", lambda i, s: s["skill"] == "open")    # 11-17: T09 tomato_in_fridge left
     assert any("inside closed breakfast_fridge" in x["problem"] for x in p)
 
 
 def test_missing_walk_is_caught():
-    lid = "far_sponge_tv__alt_dining_table_2"
+    lid = "which_surface__dining"                   # 11-17: T08 far_sponge_tv left
     steps = TASKS["T08"]["routes"][TASKS["T08"]["oracle"][lid]]["steps"]
-    k = next(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
+    k = max(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
     p = broken("T08", lid, lambda i, s: i == k)
     assert any("not near kitchen_island/top" in x["problem"] for x in p)
 

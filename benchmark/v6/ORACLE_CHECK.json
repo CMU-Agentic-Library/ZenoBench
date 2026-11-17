@@ -1,6 +1,6 @@
 {
- "routes": 265,
- "ok": 265,
+ "routes": 236,
+ "ok": 236,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1340,26 +1340,6 @@
   },
   {
    "task": "T08_wipe_island",
-   "layout": "far_sponge_tv",
-   "steps": 6,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "far_sponge_tv"
-  },
-  {
-   "task": "T08_wipe_island",
-   "layout": "far_sponge_tv__alt_dining_table_2",
-   "steps": 6,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "far_sponge_tv"
-  },
-  {
-   "task": "T08_wipe_island",
    "layout": "wipe_and_sort__blocks",
    "steps": 16,
    "atoms_checked": 12,
@@ -1450,26 +1430,6 @@
   },
   {
    "task": "T09_tomato_soup",
-   "layout": "lid_on_spoon_away",
-   "steps": 19,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "lid_on_spoon_away"
-  },
-  {
-   "task": "T09_tomato_soup",
-   "layout": "lid_on_spoon_away__alt_dining_table_2",
-   "steps": 19,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "lid_on_spoon_away"
-  },
-  {
-   "task": "T09_tomato_soup",
    "layout": "pot_in_use__in_use",
    "steps": 22,
    "atoms_checked": 11,
@@ -1493,56 +1453,6 @@
    "variant": "pot_in_use"
   },
   {
-   "task": "T09_tomato_soup",
-   "layout": "tomato_in_fridge__in_fridge",
-   "steps": 27,
-   "atoms_checked": 11,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tomato_in_fridge"
-  },
-  {
-   "task": "T09_tomato_soup",
-   "layout": "tomato_in_fridge__on_island",
-   "steps": 15,
-   "atoms_checked": 11,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tomato_in_fridge"
-  },
-  {
-   "task": "T09_tomato_soup",
-   "layout": "x6_gd_tomato_elsewhere__dining",
-   "steps": 20,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_tomato_elsewhere"
-  },
-  {
-   "task": "T09_tomato_soup",
-   "layout": "x6_gd_tomato_elsewhere__cabinet6",
-   "steps": 20,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_tomato_elsewhere"
-  },
-  {
-   "task": "T09_tomato_soup",
-   "layout": "pot_in_dining_room",
-   "steps": 24,
-   "atoms_checked": 8,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "pot_in_dining_room"
-  },
-  {
    "task": "T10_trash_the_can",
    "layout": "can_on_island",
    "steps": 9,
@@ -1551,26 +1461,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "can_on_island"
-  },
-  {
-   "task": "T10_trash_the_can",
-   "layout": "can_in_dining_room",
-   "steps": 9,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "can_in_dining_room"
-  },
-  {
-   "task": "T10_trash_the_can",
-   "layout": "can_in_dining_room__alt_tv_stand_2",
-   "steps": 9,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "can_in_dining_room"
   },
   {
    "task": "T10_trash_the_can",
@@ -1703,36 +1593,6 @@
    ],
    "problems": [],
    "variant": "guests_coming"
-  },
-  {
-   "task": "T10_trash_the_can",
-   "layout": "x6_gd_can_put_away__in_cabinet",
-   "steps": 16,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_can_put_away"
-  },
-  {
-   "task": "T10_trash_the_can",
-   "layout": "x6_gd_can_put_away__in_microwave",
-   "steps": 15,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_can_put_away"
-  },
-  {
-   "task": "T10_trash_the_can",
-   "layout": "x6_gd_can_put_away__in_fridge",
-   "steps": 22,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "x6_gd_can_put_away"
   },
   {
    "task": "T10_trash_the_can",
@@ -1951,42 +1811,6 @@
    ],
    "problems": [],
    "variant": "bins_capacity"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__car_duck",
-   "steps": 11,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__car_duck_bear",
-   "steps": 16,
-   "atoms_checked": 5,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__all_four",
-   "steps": 21,
-   "atoms_checked": 6,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
   },
   {
    "task": "T12_tidy_toys",
@@ -2228,26 +2052,6 @@
   },
   {
    "task": "T15_cover_the_pot",
-   "layout": "lid_elsewhere__dining",
-   "steps": 9,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "lid_elsewhere"
-  },
-  {
-   "task": "T15_cover_the_pot",
-   "layout": "lid_elsewhere__counter",
-   "steps": 9,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "lid_elsewhere"
-  },
-  {
-   "task": "T15_cover_the_pot",
    "layout": "no_lid",
    "steps": 9,
    "atoms_checked": 3,
@@ -2277,16 +2081,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "box_on_counter"
-  },
-  {
-   "task": "T16_pack_snack_box",
-   "layout": "box_in_cabinet",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "box_in_cabinet"
   },
   {
    "task": "T16_pack_snack_box",
@@ -2320,16 +2114,6 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "h_task_lid_elsewhere",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "h_task_lid_elsewhere"
-  },
-  {
-   "task": "T17_hide_and_seek_block",
    "layout": "pot_in_use",
    "steps": 6,
    "atoms_checked": 5,
@@ -2359,16 +2143,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "bowls_in_cabinet"
-  },
-  {
-   "task": "T18_set_out_bowls",
-   "layout": "bowls_apart",
-   "steps": 34,
-   "atoms_checked": 7,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "bowls_apart"
   },
   {
    "task": "T18_set_out_bowls",
@@ -2504,30 +2278,6 @@
   },
   {
    "task": "T20_juice_back_to_table",
-   "layout": "m_bottle_on_tv_stand",
-   "steps": 5,
-   "atoms_checked": 2,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright juice_bottle"
-   ],
-   "problems": [],
-   "variant": "m_bottle_on_tv_stand"
-  },
-  {
-   "task": "T20_juice_back_to_table",
-   "layout": "m_bottle_on_tv_stand__alt_bookcase_2",
-   "steps": 5,
-   "atoms_checked": 2,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright juice_bottle"
-   ],
-   "problems": [],
-   "variant": "m_bottle_on_tv_stand"
-  },
-  {
-   "task": "T20_juice_back_to_table",
    "layout": "juice_finished",
    "steps": 8,
    "atoms_checked": 2,
@@ -2549,30 +2299,6 @@
    ],
    "problems": [],
    "variant": "juice_in_use"
-  },
-  {
-   "task": "T20_juice_back_to_table",
-   "layout": "x6_gd_bottle_put_away__in_cabinet_4",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright juice_bottle"
-   ],
-   "problems": [],
-   "variant": "x6_gd_bottle_put_away"
-  },
-  {
-   "task": "T20_juice_back_to_table",
-   "layout": "x6_gd_bottle_put_away__in_cabinet_6",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright juice_bottle"
-   ],
-   "problems": [],
-   "variant": "x6_gd_bottle_put_away"
   },
   {
    "task": "T14_shelve_the_book",
@@ -2718,16 +2444,6 @@
   },
   {
    "task": "T21_bring_tissues",
-   "layout": "tissue_out_of_view",
-   "steps": 5,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_out_of_view"
-  },
-  {
-   "task": "T21_bring_tissues",
    "layout": "which_table__east",
    "steps": 8,
    "atoms_checked": 2,
@@ -2755,26 +2471,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "no_tissue"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_put_away__in_4",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_put_away"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_put_away__in_6",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_put_away"
   },
   {
    "task": "T21_bring_tissues",

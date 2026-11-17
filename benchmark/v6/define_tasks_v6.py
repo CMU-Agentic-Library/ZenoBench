@@ -3099,6 +3099,17 @@ TASK_TEXT = {
 INSTR_TO_TASK = {("T07_heat_oatmeal", "microwave_holds_pot"), ("T07_heat_oatmeal", "h_mixed_pot_inside_grasp")}
 
 
+# 11-17 (user): variants whose only change is where the very same thing has to be fetched from (another room, a
+# cabinet, the fridge) are not substitution and leave the benchmark (tracks.apply_tracks drops them, after the
+# same-design merge, so the variants merged into them leave too).  T05 x6_gd_pen_or_pencil_cabinets stays (user).
+DROPPED_1117 = {("T08", "far_sponge_tv"), ("T09", "lid_on_spoon_away"), ("T09", "tomato_in_fridge"),
+                ("T09", "x6_gd_tomato_elsewhere"), ("T09", "pot_in_dining_room"), ("T10", "can_in_dining_room"),
+                ("T10", "x6_gd_can_put_away"), ("T12", "find_all_toys"), ("T15", "lid_elsewhere"),
+                ("T16", "box_in_cabinet"), ("T17", "h_task_lid_elsewhere"), ("T18", "bowls_apart"),
+                ("T20", "m_bottle_on_tv_stand"), ("T20", "x6_gd_bottle_put_away"), ("T21", "tissue_out_of_view"),
+                ("T21", "tissue_put_away")}
+
+
 def build_task(t: dict) -> dict:
     t = copy.deepcopy(t)
     if t["task_id"] in TASK_TEXT:

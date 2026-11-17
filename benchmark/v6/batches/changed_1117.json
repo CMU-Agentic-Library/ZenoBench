@@ -398,15 +398,6 @@
  {
   "task": "T16_pack_snack_box",
   "seed": 10,
-  "variant": "box_in_cabinet",
-  "route": "v6_box_in_cabinet",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true
- },
- {
-  "task": "T16_pack_snack_box",
-  "seed": 10,
   "variant": "no_box",
   "route": "v6_no_box",
   "planner": "scripted",
@@ -445,15 +436,6 @@
   "seed": 10,
   "variant": "bowls_in_cabinet",
   "route": "nominal",
-  "planner": "scripted",
-  "profile": "sticky/gt",
-  "video": true
- },
- {
-  "task": "T18_set_out_bowls",
-  "seed": 10,
-  "variant": "bowls_apart",
-  "route": "v6_bowls_apart",
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true

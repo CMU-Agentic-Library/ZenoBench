@@ -1,7 +1,7 @@
 {
- "variants": 143,
- "episodes": 1430,
- "static_ok": 1430,
+ "variants": 127,
+ "episodes": 1270,
+ "static_ok": 1270,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -33,60 +33,60 @@
    "static_ok": 50
   },
   "T08_wipe_island": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 40,
+   "static_ok": 40
   },
   "T09_tomato_soup": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 20,
+   "static_ok": 20
   },
   "T10_trash_the_can": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 70,
+   "static_ok": 70
   },
   "T11_collect_fruits": {
    "episodes": 40,
    "static_ok": 40
   },
   "T12_tidy_toys": {
-   "episodes": 100,
-   "static_ok": 100
+   "episodes": 90,
+   "static_ok": 90
   },
   "T13_breakfast_setup": {
    "episodes": 40,
    "static_ok": 40
   },
   "T15_cover_the_pot": {
-   "episodes": 40,
-   "static_ok": 40
+   "episodes": 30,
+   "static_ok": 30
   },
   "T16_pack_snack_box": {
-   "episodes": 40,
-   "static_ok": 40
+   "episodes": 30,
+   "static_ok": 30
   },
   "T17_hide_and_seek_block": {
-   "episodes": 40,
-   "static_ok": 40
+   "episodes": 30,
+   "static_ok": 30
   },
   "T18_set_out_bowls": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T19_recycling": {
    "episodes": 40,
    "static_ok": 40
   },
   "T20_juice_back_to_table": {
-   "episodes": 50,
-   "static_ok": 50
+   "episodes": 30,
+   "static_ok": 30
   },
   "T14_shelve_the_book": {
    "episodes": 70,
    "static_ok": 70
   },
   "T21_bring_tissues": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T22_put_away_shopping": {
    "episodes": 80,
@@ -107,8 +107,8 @@
  },
  "categories": {
   "control": 25,
-  "action_task": 8,
-  "task": 110
+  "action_task": 6,
+  "task": 96
  },
- "tasks_sha1": "258d2074a44017d4009781da20cd0d02e8391f4a"
+ "tasks_sha1": "e4ed3c054eb5f6cc0cb2dab625f43218551df682"
 }

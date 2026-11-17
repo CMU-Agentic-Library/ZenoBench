@@ -272,6 +272,10 @@ def strip_injected(doc):
         # a variant redesigned at a longer horizon leaves, with every variant merged into it
         for vid, why in (t.get("v6_replaced") or {}).items():
             dropped[vid] = why
+        from benchmark.v6.define_tasks_v6 import DROPPED_1117
+        for vid in list(t["v6_variants"]):          # 11-17 (user): source variants (the same thing, fetched elsewhere)
+            if any(t["task_id"].startswith(tid) and vid == v for tid, v in DROPPED_1117):
+                dropped[vid] = "removed 11-17: only where the same thing is fetched from changes (not a substitution)"
         controls = [vid for vid in t["v6_variants"] if vid not in dropped and
                     all(not a and not b for a, b in (content(t, lid) for lid in t["v6_variants"][vid]["layouts"]))]
         for vid in dropped:
