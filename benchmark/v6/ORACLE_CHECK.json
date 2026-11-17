@@ -1,6 +1,6 @@
 {
- "routes": 283,
- "ok": 283,
+ "routes": 282,
+ "ok": 282,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2951,16 +2951,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "whose"
-  },
-  {
-   "task": "T26_kids_things_to_room",
-   "layout": "scattered",
-   "steps": 15,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "scattered"
   },
   {
    "task": "T26_kids_things_to_room",

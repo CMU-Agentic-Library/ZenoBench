@@ -5978,25 +5978,6 @@
 
 1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kid_book)` → 4. `pick(object=kid_book)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=kid_book, receptacle=bookcase_2/top, hint_xy=[1.12, -0.43])`
 
-### scattered（Task）
-
-**情况**：小车在地上、鸭子在电视柜、积木在岛台 → 都找到放进筐
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `living_car` 在 `kids_basket` 里
-  - `living_duck` 在 `kids_basket` 里
-  - `living_block` 在 `kids_basket` 里
-  - 手里空着
-- **不行（0）**：有一样没拿回；还拿着或掉了
-
-
-**参考调用顺序**：
-
-1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=living_car)` → 3. `look(target=living_car)` → 4. `pick(object=living_car)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=kids_basket)` → 7. `place(object=living_car, receptacle=kids_basket)` → 8. `navigate(destination=living_duck)` → 9. `pick(object=living_duck)` → 10. `navigate(destination=kids_basket)` → 11. `place(object=living_duck, receptacle=kids_basket)` → 12. `navigate(destination=living_block)` → 13. `pick(object=living_block)` → 14. `navigate(destination=kids_basket)` → 15. `place(object=living_block, receptacle=kids_basket)`
-
 ### where_in_room（Task）
 
 **情况**：小车和他的一本书 → 小车进筐，书放到他房间的书架上（两个书架、任一层都算）

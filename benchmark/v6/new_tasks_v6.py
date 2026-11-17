@@ -621,16 +621,6 @@ def t26():
             {"": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36), **room},
                       watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], ["near_start", nv, 0.03], H]},
                       route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.43]))}),
-        "scattered": fam(
-            "car_in_living_room", ["goal_items_unstated", "multi_object_goal"], "the seed's layout only",
-            "the car on the floor, the duck on the TV stand, a block on the island",
-            "everything of his in the living room, not only the first thing seen",
-            {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), "living_duck": on("rubber_duck", TV, 7.00, 0.36),
-                           "living_block": on("wooden_block", ISL, 7.20, 1.80), **room},
-                      watch=[CAR, "living_duck", "living_block", BASK],
-                      goal={"all": [["inside", x, BASK] for x in (CAR, "living_duck", "living_block")] + [H]},
-                      route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK) + into("living_duck", BASK)
-                      + into("living_block", BASK))}),
         "where_in_room": fam(
             "car_in_living_room", ["storage_place", "multi_object_goal"], "the seed's layout only",
             "the car and one of his picture books in the living room",

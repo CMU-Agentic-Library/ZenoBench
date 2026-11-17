@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 253,
-   "variants": 131,
+   "layouts": 252,
+   "variants": 130,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 52,
-   "goal_not_met": 94,
+   "goal_not_met": 93,
    "not_observed": 64,
    "resource_missing": 39,
    "argument_mismatch": 4
@@ -381,10 +381,6 @@
     "kids_shelf_book"
    ],
    "T26 car_in_living_room": [
-    "kids_basket",
-    "kids_shelf_book"
-   ],
-   "T26 scattered": [
     "kids_basket",
     "kids_shelf_book"
    ],
@@ -4317,17 +4313,6 @@
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
-   "other_layouts": {},
-   "other_variants_passing": []
-  },
-  {
-   "task": "T26_kids_things_to_room",
-   "variant": "scattered",
-   "layout": "scattered",
-   "steps": 15,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "goal_not_met",
    "other_layouts": {},
    "other_variants_passing": []
   },

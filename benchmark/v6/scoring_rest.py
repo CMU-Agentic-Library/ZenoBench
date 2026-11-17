@@ -829,8 +829,6 @@ R[("T25", "little_guest")] = tiers(
 _T26_NO = "a thing of his left in the living room or put elsewhere; still held or dropped"
 R[("T26", "car_in_living_room")] = d0("the car in his toy basket", _T26_NO, dict(
     sit="小车在客厅地上，玩具篮在他卧室（对照）", good="小车进玩具篮", no="还在客厅或放别处；还拿着或掉了"))
-R[("T26", "scattered")] = d0("the car, the duck and the block in his toy basket", "one left out; " + _T26_NO, dict(
-    sit="小车在地上、鸭子在电视柜、积木在岛台", good="三样都进玩具篮", no="有一样没拿回；还拿着或掉了"))
 R[("T26", "two_bedrooms")] = d0("the car in the basket in his room", "the other bedroom; " + _T26_NO, dict(
     sit="两间卧室，有玩具篮的是他的", good="小车进他房间的玩具篮", no="放进另一间卧室；还拿着或掉了"))
 R[("T26", "whose")] = tiers(

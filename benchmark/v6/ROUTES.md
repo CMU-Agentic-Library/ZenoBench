@@ -470,7 +470,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Task-Level
 
 * `whose` (v6_whose, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(kid_book) pick(kid_book) navigate(bookcase_2/top) place(kid_book,bookcase_2/top,[1.12, -0.43])
-* `scattered` (v6_scattered, 15 steps): explore_room(living_room_0_0) navigate(living_car) look(living_car) pick(living_car) explore_room(bedroom_0_1) navigate(kids_basket) place(living_car,kids_basket) navigate(living_duck) pick(living_duck) navigate(kids_basket) place(living_duck,kids_basket) navigate(living_block) pick(living_block) navigate(kids_basket) place(living_block,kids_basket)
 * `where_in_room` (v6_where_in_room, 11 steps): explore_room(living_room_0_0) navigate(living_car) look(living_car) pick(living_car) explore_room(bedroom_0_1) navigate(kids_basket) place(living_car,kids_basket) navigate(kid_book) pick(kid_book) navigate(bookcase_2/top) place(kid_book,bookcase_2/top,[1.12, -0.43])
 * `bear_to_bed` (v6_bear_to_bed, 6 steps): navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(living_bear) pick(living_bear) navigate(bookcase_3/top) place(living_bear,bookcase_3/top,[2.1, -4.78])
 * `two_bedrooms__room_east` (v6_two_bedrooms__room_east, 7 steps): explore_room(living_room_0_0) navigate(living_car) look(living_car) pick(living_car) explore_room(bedroom_0_1) navigate(kids_basket) place(living_car,kids_basket)

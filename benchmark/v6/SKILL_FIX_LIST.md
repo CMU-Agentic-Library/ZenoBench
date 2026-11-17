@@ -111,9 +111,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | leftover_soup | T27/two_leftovers |
 | pick | leftovers | T10/after_dinner_clear |
 | pick | living_bear | T26/bear_to_bed |
-| pick | living_block | T26/scattered |
-| pick | living_car | T26/scattered, T26/two_bedrooms, T26/where_in_room |
-| pick | living_duck | T26/scattered |
+| pick | living_car | T26/two_bedrooms, T26/where_in_room |
 | pick | loose_block_1 | T12/castle_stays |
 | pick | loose_block_2 | T12/castle_stays |
 | pick | lunch_banana | T11/no_apple_for_kid |
@@ -189,9 +187,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | leftover_soup | T27/two_leftovers |
 | place | leftovers | T10/after_dinner_clear |
 | place | living_bear | T26/bear_to_bed |
-| place | living_block | T26/scattered |
-| place | living_car | T26/scattered, T26/two_bedrooms, T26/where_in_room |
-| place | living_duck | T26/scattered |
+| place | living_car | T26/two_bedrooms, T26/where_in_room |
 | place | loose_block_1 | T12/castle_stays |
 | place | loose_block_2 | T12/castle_stays |
 | place | lunch_banana | T11/no_apple_for_kid |
