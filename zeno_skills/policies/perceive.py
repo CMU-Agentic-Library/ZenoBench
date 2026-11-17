@@ -8,7 +8,7 @@ policy_118 MarkSpotsPolicy    number free spots for the held object on the suppo
 policy_070 SearchObjectPolicy  visit candidate supports/cabinets in order until the object is seen
 policy_071 PointAtPolicy       point the closed right fingers at a target
 policy_072 PresentHeldPolicy   hold the carried object in front of the head camera
-policy_088 InspectReceptaclePolicy  look into a container, cabinet or appliance and list contents
+policy_088 InspectReceptaclePolicy  look into a container, cabinet or appliance and list contents (the inspect skill)
 
 Visibility is the geometric test in perception.project_to_head_camera; with
 ``first_person=True`` the policies also store the RGB frame in the event log
@@ -24,10 +24,8 @@ import numpy as np
 from .base import AtomicPolicy
 from .. import skills
 from ..kinematics import gripper_rot
-from ..perception import (HEAD_LIMITS, look_angles, project_to_head_camera,
-                          rig_head_pose)
-from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
-                          objects_on_support)
+from ..perception import look_angles, project_to_head_camera, rig_head_pose
+from ..predicates import entity_footprint, entity_kind, entity_point, memory
 from ..rig import SkillFailure
 from ..tolerances import (COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z, LOOK_STEPS, SEARCH_AIM_SPACING_M,
                           SEARCH_STEPS, SWEEP_PITCH, SWEEP_STEPS, SWEEP_YAWS, VIEW_TURNS)
@@ -64,16 +62,6 @@ def aim_at(name, p, steps=LOOK_STEPS):
     return ("point", name, [float(v) for v in p], int(steps))
 
 
-def facing_for(rig, p):
-    """The heading (deg) to turn the base to so the head can centre ``p``, or None when its yaw is within
-    the head's range from here."""
-    yaw, _ = look_angles(rig, p)
-    if abs(yaw) < HEAD_LIMITS["head_yaw_joint"][1] - 0.02:
-        return None
-    x, y, _ = rig.base_pose()
-    return math.degrees(math.atan2(p[1] - y, p[0] - x))
-
-
 def record_view(rig):
     """Mark every annotated object, support and articulated part in view as observed."""
     mem = memory(rig)
@@ -94,20 +82,12 @@ def record_view(rig):
 
 
 class LookAtPolicy(AtomicPolicy):
-    """Aim the head camera at a target (the look skill); the base turns toward it first when the
-    bearing exceeds the head yaw range (the look's plan: navigate's turn, then the head)."""
+    """Aim the head camera at a target: the look skill (skill_jobs.look.look_job -- the base turned toward
+    it first when its bearing is past the head's yaw range, the result judged and recorded there)."""
 
     def execute(self, target):
-        rig = self.rig
-        p = entity_point(rig, target)
-        look(rig, [aim_at(target, p)], face=facing_for(rig, p), label="look")
-        ok, detail = project_to_head_camera(rig, p, exclude=target)
-        seen = record_view(rig)
-        rig.log("look_result", target=target, visible=ok, detail=detail, seen=seen)
-        if not ok:
-            raise SkillFailure(f"look at {target}: {detail}")
-        memory(rig)["observed"][target] = rig.tick
-        return {"visible": True, "seen": seen}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["look"], {"target": target})
 
 
 def _travel_tw(rig):
@@ -285,14 +265,13 @@ class ExploreFurniturePolicy(AtomicPolicy):
             look_once(label)
             if len(seen) == len(targets) or rig.held is not None:
                 return
-            # the crouch: posture skills, not migrated yet (9.3 step 5)
+            # the crouch: posture skills, not migrated yet (9.3 step 5).  A crouch that fails fails the
+            # exploration (docs rule 3; it used to be logged as explore_crouch_skip and the layers left unseen)
             idx = rig.kin.names.index("torso_lift_joint")
             q0 = min(max(float(rig.q()[idx]), float(rig.kin.lo[idx])), float(rig.kin.hi[idx]))   # measured: may sit past a limit
             try:
                 LowerTorsoPolicy(rig).execute()
                 look_once(label + "_low")
-            except SkillFailure as exc:
-                rig.log("explore_crouch_skip", reason=str(exc))
             finally:
                 look(rig, HEAD_HOME, label=label + "_home")
                 SetTorsoHeightPolicy(rig).execute(q0)
@@ -573,41 +552,9 @@ class PresentHeldPolicy(AtomicPolicy):
 
 
 class InspectReceptaclePolicy(AtomicPolicy):
-    """Look into a container, an open cabinet or an appliance and return what is inside."""
+    """Look into a container, an open cabinet or an appliance and return what is inside: the inspect skill
+    (skill_jobs.look.inspect_job)."""
 
     def execute(self, receptacle):
-        rig = self.rig
-        kind, rec = entity_kind(rig.ann, receptacle)
-        st = rig.state()
-        if kind == "object":
-            if not rig.ann.asset_of(rec).get("container"):
-                raise SkillFailure(f"inspect {receptacle}: not a container")
-            b = rig.geo.bottom(receptacle, st)
-            p = np.array([b[0], b[1], b[2] + rig.ann.asset_of(rec)["container"]["rim_height"]])
-            inside = objects_inside(rig, receptacle, st)
-        elif kind == "articulated":
-            box = rec.get("cavity_aabb") or rec.get("body_aabb")
-            p = np.array([(box[0] + box[3]) / 2, (box[1] + box[4]) / 2, (box[2] + box[5]) / 2])
-            inside = [n for n in rig.ann.objects
-                      if all(box[i] < rig.geo.centre(n, st)[i] < box[i + 3] for i in range(3))]
-            sups = [s["name"] for s in rig.ann.supports if s.get("furniture") == receptacle]
-            for sname in sups:
-                inside += [n for n in objects_on_support(rig, sname, st) if n not in inside]
-        elif kind in ("support", "furniture", "appliance"):
-            p = entity_point(rig, receptacle, st)
-            inside = objects_on_support(rig, receptacle if kind != "appliance" else receptacle + "/top", st)
-        else:
-            raise SkillFailure(f"inspect {receptacle}: unsupported receptacle kind {kind}")
-        look(rig, [aim_at(receptacle, p)], face=facing_for(rig, p), label=f"inspect_{receptacle}")
-        ok, detail = project_to_head_camera(rig, p, exclude=receptacle)
-        record_view(rig)
-        visible = [n for n in inside if project_to_head_camera(rig, rig.geo.centre(n, rig.state()), exclude=n)[0]]
-        mem = memory(rig)
-        for n in visible:
-            mem["observed"][n] = rig.tick
-        mem["observed"][receptacle] = rig.tick
-        mem.setdefault("contents", {})[receptacle] = visible
-        rig.log("inspect_result", receptacle=receptacle, visible=ok, contents=visible, hidden=sorted(set(inside) - set(visible)))
-        if not ok:
-            raise SkillFailure(f"inspect {receptacle}: {detail}")
-        return {"contents": visible}
+        from ..motion_skills import SKILLS, run_skill
+        return run_skill(self.rig, SKILLS["inspect"], {"receptacle": receptacle})

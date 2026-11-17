@@ -269,3 +269,5 @@ SEARCH_STEPS = _t("SEARCH_STEPS", 60, "ticks", "inherited (search's drive_head),
 SEARCH_AIM_SPACING_M = _t("SEARCH_AIM_SPACING_M", 0.6, "m", "chosen (5e962d8f): search aims the head at points this far "
                           "apart along a long support (one look at the centre of counter_2, 2.47 m long, left a pot "
                           "at its end 52 deg off the axis)")
+COUNT_YAWS = _t("COUNT_YAWS", (-0.9, -0.3, 0.3, 0.9), "rad", "inherited (extra.CountCategoryPolicy's), unmeasured: "
+                "the head yaws count looks along, at pitch 0.25 rad")

@@ -32,8 +32,7 @@ from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
-
-COUNT_YAWS = (-0.9, -0.3, 0.3, 0.9)     # rad: the head yaws count looks along (inherited, unmeasured)
+from ..tolerances import COUNT_YAWS
 
 
 def _park_diag():

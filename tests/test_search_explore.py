@@ -273,3 +273,85 @@ def test_the_head_moves_through_the_actuator_as_a_segment():
     assert seg.kind == "action" and seg.action == ("head", 0.3, -0.1, 60)
     PC.drive_head(act, 0.3, -0.1, steps=60)
     assert calls == [("declare", False), ("head", 0.3, -0.1, 60)]
+
+
+# ------------------------------------------------------------------ the look / inspect skills (jobs)
+def test_look_at_is_only_the_look_skill(monkeypatch):
+    """docs 2.3: AtomicPolicy.execute is run_skill and nothing else; the job decides the turn and judges."""
+    from zeno_skills import motion_skills as MS
+    calls = []
+    monkeypatch.setattr(MS, "run_skill", lambda rig, skill, args: calls.append((skill.name, args)) or {"visible": True})
+    assert PC.LookAtPolicy(SimpleNamespace()).execute("cup") == {"visible": True}
+    assert calls == [("look", {"target": "cup"})]
+    calls.clear()
+    PC.InspectReceptaclePolicy(SimpleNamespace()).execute("cabinet")
+    assert calls == [("inspect", {"receptacle": "cabinet"})]
+
+
+def _job_rig():
+    return SimpleNamespace(held=None, kin=None, left_kin=None, log=lambda *a, **k: None, tick=7, memory={},
+                           base_pose=lambda: (0.0, 0.0, 0.0))
+
+
+def test_the_look_job_turns_only_past_the_head_yaw_range_and_judges_the_view(monkeypatch):
+    from zeno_skills import predicates
+    from zeno_skills.skill_jobs import look as LJ
+    rig = _job_rig()
+    monkeypatch.setattr(predicates, "entity_point", lambda r, n, st=None: np.array([-2.0, 0.0, 0.8]))
+    monkeypatch.setattr(LJ, "look_angles", lambda r, p, **k: (3.0, 0.0))           # behind: past the yaw range
+    monkeypatch.setattr(PC, "record_view", lambda r: ["cup"])
+    monkeypatch.setattr(predicates, "memory", lambda r: r.memory.setdefault("m", {"observed": {}}))
+    seen = {"ok": False}
+    monkeypatch.setattr(LJ, "project_to_head_camera", lambda r, p, exclude=None: (seen["ok"], "line of sight blocked"))
+    got = {}
+    monkeypatch.setattr(LJ, "_job", lambda r, st, sk, aims, face, label, on_view=None, done=None:
+                        got.update(aims=aims, face=face, done=done) or "job")
+    LJ.look_job(rig, {"target": "cup"}, None)
+    assert got["face"] == pytest.approx(180.0) and got["aims"][0][1] == "cup"
+    with pytest.raises(SkillFailure, match="look at cup: line of sight blocked"):
+        got["done"]()
+    seen["ok"] = True
+    assert got["done"]() == {"visible": True, "seen": ["cup"]} and rig.memory["m"]["observed"]["cup"] == 7
+    monkeypatch.setattr(LJ, "look_angles", lambda r, p, **k: (0.4, 0.0))           # within it: no turn
+    LJ.look_job(rig, {"target": "cup"}, None)
+    assert got["face"] is None
+
+
+def test_the_inspect_job_records_the_contents_it_sees(monkeypatch):
+    from zeno_skills import predicates
+    from zeno_skills.skill_jobs import look as LJ
+    rig = _job_rig()
+    rig.ann = SimpleNamespace(supports=[{"name": "cab/top", "furniture": "cab"}], objects={"cup": {}, "bowl": {}})
+    rig.state = lambda: {}
+    rig.geo = SimpleNamespace(centre=lambda n, st: np.array([1.0, 0.0, 0.9]) if n == "cup" else np.array([9.0, 0.0, 0.9]))
+    monkeypatch.setattr(predicates, "entity_kind", lambda ann, n: ("support", {}))
+    monkeypatch.setattr(predicates, "entity_point", lambda r, n, st=None: np.array([1.0, 0.0, 0.9]))
+    monkeypatch.setattr(predicates, "objects_on_support", lambda r, n, st: ["cup", "bowl"])
+    monkeypatch.setattr(predicates, "memory", lambda r: r.memory.setdefault("m", {"observed": {}}))
+    monkeypatch.setattr(PC, "record_view", lambda r: [])
+    monkeypatch.setattr(LJ, "look_angles", lambda r, p, **k: (0.0, 0.0))
+    monkeypatch.setattr(LJ, "project_to_head_camera", lambda r, p, exclude=None: (bool(p[0] < 5), ""))
+    got = {}
+    monkeypatch.setattr(LJ, "_job", lambda r, st, sk, aims, face, label, on_view=None, done=None:
+                        got.update(done=done) or "job")
+    LJ.inspect_job(rig, {"receptacle": "cab/top"}, None)
+    assert got["done"]() == {"contents": ["cup"]} and rig.memory["m"]["contents"]["cab/top"] == ["cup"]
+
+
+def test_a_crouch_that_fails_fails_explore_furniture(monkeypatch):
+    """It was logged as explore_crouch_skip and the low layers left unseen (rule 3: no swallowed failure)."""
+    from zeno_skills.policies import posture
+    w = World(sees=lambda pose, p: p[2] > 0.9)                 # the top only, standing
+    monkeypatch.setattr(posture.LowerTorsoPolicy, "execute", lambda self, height=None: (_ for _ in ()).throw(
+        SkillFailure("torso_lift_joint: actual -0.380, target -0.540")))
+    monkeypatch.setattr(posture.SetTorsoHeightPolicy, "execute", lambda self, h: h)
+    _patch(monkeypatch, w, {"shelf": []})
+    monkeypatch.setattr(PC, "entity_footprint", lambda rig, name: [0.0, 0.5, 0.4, 0.9])
+    monkeypatch.setattr(PC, "_board_blocks", lambda cam, q, layers: False)
+    rig = _rig(LAYERS)
+    rig.base_pose = lambda: w.pose
+    rig.kin = SimpleNamespace(names=["torso_lift_joint", "waist_pitch_joint"], lo=np.array([-0.54, 0.0]),
+                              hi=np.array([0.0, 1.0]))
+    rig.q = lambda: np.zeros(9)
+    with pytest.raises(SkillFailure, match="torso_lift_joint"):
+        PC.ExploreFurniturePolicy(rig).execute("shelf")
