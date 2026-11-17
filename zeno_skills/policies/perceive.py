@@ -44,6 +44,13 @@ def look(rig, aims, face=None, label="look", on_view=None):
     return run_skill(rig, SKILLS["look"], {"aims": list(aims), "face": face, "label": label, "on_view": on_view})
 
 
+def torso(rig, skill, target):
+    """Run a posture skill on the torso lift (crouch down, stand back up: motion_skills.run_skill) to ``target``
+    m, the arms riding the body as they are; SkillFailure where it cannot be made."""
+    from ..motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS[skill], {"joint": "torso_lift_joint", "target": float(target)})
+
+
 def aim_at(name, p, steps=LOOK_STEPS):
     return ("point", name, [float(v) for v in p], int(steps))
 
@@ -195,7 +202,6 @@ class ExploreFurniturePolicy(AtomicPolicy):
     def execute(self, furniture, *, max_views=3, min_spacing=0.4):
         rig = self.rig
         from .base_motion import standoff_poses
-        from .posture import LowerTorsoPolicy, SetTorsoHeightPolicy
         from ..predicates import NEAR_M
         layers = sorted((s_ for s_ in rig.ann.supports if s_.get("furniture") == furniture), key=lambda s_: s_["z"])
         if not layers:
@@ -218,16 +224,17 @@ class ExploreFurniturePolicy(AtomicPolicy):
             look_once(label)
             if len(seen) == len(targets) or rig.held is not None:
                 return
-            # the crouch: posture skills, not migrated yet (9.3 step 5).  A crouch that fails fails the
-            # exploration (docs rule 3; it used to be logged as explore_crouch_skip and the layers left unseen)
+            # the crouch: the posture skills (9.3 step 5), the torso down to its limit and back to where it was.  A
+            # crouch that cannot be made here fails the exploration (docs rule 3; it used to be logged as
+            # explore_crouch_skip and the layers left unseen)
             idx = rig.kin.names.index("torso_lift_joint")
             q0 = min(max(float(rig.q()[idx]), float(rig.kin.lo[idx])), float(rig.kin.hi[idx]))   # measured: may sit past a limit
             try:
-                LowerTorsoPolicy(rig).execute()
+                torso(rig, "crouch", rig.kin.lo[idx])
                 look_once(label + "_low")
             finally:
                 look(rig, HEAD_HOME, label=label + "_home")
-                SetTorsoHeightPolicy(rig).execute(q0)
+                torso(rig, "stand", q0)
 
         box = entity_footprint(rig, furniture)
         x, y, _ = rig.base_pose()

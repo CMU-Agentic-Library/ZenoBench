@@ -342,11 +342,14 @@ def test_the_inspect_job_records_the_contents_it_sees(monkeypatch):
 
 def test_a_crouch_that_fails_fails_explore_furniture(monkeypatch):
     """It was logged as explore_crouch_skip and the low layers left unseen (rule 3: no swallowed failure)."""
-    from zeno_skills.policies import posture
     w = World(sees=lambda pose, p: p[2] > 0.9)                 # the top only, standing
-    monkeypatch.setattr(posture.LowerTorsoPolicy, "execute", lambda self, height=None: (_ for _ in ()).throw(
-        SkillFailure("torso_lift_joint: actual -0.380, target -0.540")))
-    monkeypatch.setattr(posture.SetTorsoHeightPolicy, "execute", lambda self, h: h)
+    moves = []
+
+    def torso(rig, skill, target):
+        moves.append((skill, round(float(target), 2)))
+        if skill == "crouch":
+            raise SkillFailure("torso_lift_joint: no collision-free trajectory to the joint goal (GRAPH_FAIL)")
+    monkeypatch.setattr(PC, "torso", torso)
     _patch(monkeypatch, w, {"shelf": []})
     monkeypatch.setattr(PC, "entity_footprint", lambda rig, name: [0.0, 0.5, 0.4, 0.9])
     monkeypatch.setattr(PC, "_board_blocks", lambda cam, q, layers: False)
@@ -357,3 +360,4 @@ def test_a_crouch_that_fails_fails_explore_furniture(monkeypatch):
     rig.q = lambda: np.zeros(9)
     with pytest.raises(SkillFailure, match="torso_lift_joint"):
         PC.ExploreFurniturePolicy(rig).execute("shelf")
+    assert moves == [("crouch", -0.54), ("stand", 0.0)]         # down by the crouch skill, back up by stand
