@@ -2838,6 +2838,9 @@ NEW_CONDITIONS = {
                           "meaning": "the instruction names kinds of destination (trash, fridge, counter); which "
                                      "object goes where follows from what it is and its state (an empty disposable "
                                      "tray is rubbish, a glass box with food is leftovers)"},
+    "resource_broken": {"type": "resource_state", "decision": "alternative",
+                        "meaning": "the resource the instruction names is there but spoiled for its use (an apple "
+                                   "off the floor): it is not used; another one is fetched"},
     "resource_in_use": {"type": "resource_state", "decision": "alternative",
                         "meaning": "the resource the instruction names is there but already in use (a pot full of "
                                    "other soup): it is not to be used or disturbed; another one is fetched"},

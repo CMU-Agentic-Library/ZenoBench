@@ -460,19 +460,12 @@ def t24():
                   "something to eat.", "孩子在书房写作业饿了，给他拿点吃的。", "apple_on_table", ctl,
                   {"all": [["on", AP, DESK], H]}, fetch(AP, DESK, [-1.10, -5.95]), [AP],
                   remove=["clutter_cereal_a", "clutter_cereal_b"])
-    BA, SN = "snack_banana", "snack_box"
+    BA, SN, OR = "snack_banana", "snack_box", "snack_orange"
+    # 11-17 substitution variants name the apple (the ideal), so another fruit is a stand-in
+    APPLE_ASKED = dict(instruction="The kid is doing homework in the study and is hungry; he wants an apple. Bring "
+                                   "him one.", instruction_zh="孩子在书房写作业饿了，想吃个苹果，给他拿过去。")
     hw3 = {"homework_3": on("notebook", DESK3, 6.60, -5.50)}
     fams = {
-        "no_apples_for_him": fam(
-            "apple_on_table", ["preference_allocation"], "the seed's layout only",
-            "an apple and a banana on the table; the kid does not like apples",
-            "choose by what the kid likes: the banana",
-            {"": dict(add={AP: on("apple", T2, 3.30, 6.70), BA: on("banana", T2, 3.30, 7.10), **hw},
-                      watch=[AP, BA], goal={"all": [["on", BA, DESK], ["not on", AP, DESK], H]},
-                      route=[look(T2)] + fetch(BA, DESK, [-1.10, -5.95]))},
-            instruction="The kid is doing homework in the study and is hungry. Bring him something to eat; he "
-                        "doesn't like apples.",
-            instruction_zh="孩子在书房写作业饿了，给他拿点吃的。他不爱吃苹果。"),
         "dinner_soon": fam(
             "apple_on_table", ["preference_allocation"], "the seed's layout only",
             "an apple and a box of snacks on the table; dinner is in half an hour",
@@ -483,16 +476,6 @@ def t24():
             instruction="The kid is doing homework in the study and is hungry. Bring him something to eat; "
                         "dinner is in half an hour.",
             instruction_zh="孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。"),
-        "fruit_out_of_view": fam(
-            "apple_on_table", ["not_in_view"], "the seed's layout only",
-            "no food on the dining table; the fruit basket with an apple is on the bedroom bookcase",
-            "find where food is kept (the fruit basket), take something from it",
-            {"": dict(add={"home_basket": on("fruit_basket", "bookcase_2/top", 0.92, -0.43),
-                           AP: {"asset": "apple", "support": None, "z": 0.73, "xy": [0.92, -0.43], "yaw_deg": 0.0},
-                           **hw},
-                      watch=[AP, "home_basket"],
-                      route=[look(T2), S("search", object="home_basket", region="bedroom_0_1")]
-                      + fetch(AP, DESK, [-1.10, -5.95]))}),
         "where_is_he": fam(
             "apple_on_table", ["referent_clue"], "where the homework lies (seed: the study desk or the bedroom desk)",
             "the kid's open homework lies on one of two desks; the instruction does not say which room",
@@ -503,17 +486,30 @@ def t24():
                              route=[nav(AP), pick(AP), look(DESK), nav(DESK3), place(AP, DESK3, [6.20, -5.50])])},
             instruction="The kid is doing homework and is hungry. Bring him something to eat.",
             instruction_zh="孩子写作业饿了，给他拿点吃的。"),
-        "two_kids": fam(
-            "apple_on_table", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
-            "two kids' homework, on the study desk and on the bedroom desk; an apple and a banana on the table",
-            "one snack for each kid: as many as there are kids doing homework, one to each desk",
-            {"": dict(add={AP: on("apple", T2, 3.30, 6.70), BA: on("banana", T2, 3.30, 7.10), **hw, **hw3},
-                      watch=[AP, BA],
-                      goal={"all": [H], "any": [[["on", AP, DESK], ["on_any", BA, AT_DESK3]],
-                                                [["on", BA, DESK], ["on_any", AP, AT_DESK3]]]},
-                      route=fetch(AP, DESK, [-1.10, -5.95]) + fetch(BA, DESK3, [6.20, -5.50]))},
-            instruction="The kids are doing homework and are hungry. Bring them something to eat.",
-            instruction_zh="孩子们在写作业，饿了，给他们拿点吃的。"),
+        # apple_in_use (11-17, substitution: in use): the one apple is at grandpa's place on the west dining table
+        # (he is having it with his breakfast); a banana on the east dining table is free
+        "apple_in_use": fam(
+            "apple_on_table", ["resource_in_use", "not_in_view"], "the seed's layout only",
+            "the only apple lies at grandpa's place on the west dining table, by his bowl and cup (he is eating); "
+            "a banana on the east dining table",
+            "the apple is in use: leave it with grandpa and bring the banana instead",
+            {"": dict(add={AP: on("apple", T1, -7.70, 8.05), BA: on("banana", T2, 3.30, 7.10), **hw},
+                      watch=[AP, BA, "bowl_side_table", "cup_side_table"],
+                      goal={"all": [["on", BA, DESK], ["near_start", AP, 0.03], H]},
+                      route=[S("search", object=AP, region="dining_room_0_0"), look(T1), look(T2)]
+                      + fetch(BA, DESK, [-1.10, -5.95]))},
+            **APPLE_ASKED),
+        # apple_on_floor (11-17, substitution: broken -- dirty): the only apple fell on the kitchen floor; an orange
+        # on the dining table is the clean fruit there is
+        "apple_on_floor": fam(
+            "apple_on_table", ["resource_broken", "not_in_view"], "the seed's layout only",
+            "the only apple fell on the kitchen floor (dirty now); an orange on the dining table",
+            "an apple off the floor is not given to a kid: bring the orange instead",
+            {"": dict(add={AP: floor("apple", -0.85, 7.70), OR: on("orange", T2, 3.30, 7.10), **hw},
+                      watch=[AP, OR],
+                      goal={"all": [["on", OR, DESK], ["not on", AP, DESK], H]},
+                      route=[look(T2), S("search", object=AP, region="kitchen_0_1")] + fetch(OR, DESK, [-1.10, -5.95]))},
+            **APPLE_ASKED),
     }
     return t, fams
 

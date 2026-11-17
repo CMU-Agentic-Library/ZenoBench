@@ -2,7 +2,7 @@
 
 背景：按 11-16 的会议，bench 的重点改成 **substitution（替换）**。我（zihan）逐个任务把不是替换的 variant 改成了替换，或者在原 variant 里加了替换。**场景布局、参考路线（GT）、成功条件和打分都写好了**，`define_tasks_v6 → validate_v6 → oracle_check` 静态全过，`pytest benchmark/v6/tests` 492 个通过。**物理还没验证完，请你跑。**
 
-- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，64 条，每个改过的布局取一个 seed，profile `sticky/gt`。
+- 要跑的 batch：`benchmark/v6/batches/changed_1117.json`，66 条，每个改过的布局取一个 seed，profile `sticky/gt`。
   ```
   python benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/changed_1117.json --out <out> --jobs 1
   ```
@@ -79,6 +79,9 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T23 | `toy_box_full`（新加） | 卧室书架上的宽收纳箱照 T03 bin_full 装满（泰迪、车、鸭子、两块积木，z 0.718）；空小收纳箱在电视柜 | 勺子回台面 → 拿积木 → 看卧室玩具箱 → 小收纳箱 | 照搬 T03 布局 | 未跑 |
 | T23 | `no_toy_box`（新加） | 同上无玩具箱，空小收纳箱在电视柜 | 勺子回台面 → 积木进小收纳箱 | 低 | 未跑 |
 | T23 | 删掉 dropped_out_of_view、only_this_room、dropped_in_two_rooms（用户要求） | | | | 不用跑 |
+| T24 | `apple_in_use`（新加） | 苹果在西边餐桌 (-7.70, 8.05) 爷爷的碗和杯旁；香蕉在东边餐桌 (3.30, 7.10)；指令点名苹果 | 找苹果 → 看两张餐桌 → 香蕉送书桌 | 低 | 未跑 |
+| T24 | `apple_on_floor`（新加，condition `resource_broken`） | 苹果在厨房地上 (-0.85, 7.70)；橙子在东边餐桌 (3.30, 7.10) | 看餐桌 → 找苹果（厨房） → 橙子送书桌 | 苹果在地上滚不滚 | 未跑 |
+| T24 | 删掉 no_apples_for_him、fruit_out_of_view、two_kids（用户要求） | | | | 不用跑 |
 
 ## 我这边的约定
 

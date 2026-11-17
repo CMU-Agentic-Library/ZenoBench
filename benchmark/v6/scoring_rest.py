@@ -751,26 +751,27 @@ R[("T23", "no_toy_box")] = tiers(
 _T24_NO = "nothing to eat on the kid's desk; still held or dropped"
 R[("T24", "apple_on_table")] = d0("the apple on the study desk", _T24_NO, dict(
     sit="苹果在餐桌，孩子在书房（对照）", good="苹果送到书桌", no="书桌上没吃的；还拿着或掉了"))
-R[("T24", "fruit_out_of_view")] = d0("the apple from the basket on the study desk", _T24_NO, dict(
-    sit="餐桌没吃的，果篮（有苹果）在卧室书架", good="找到苹果送到书桌", no="没找到；还拿着或掉了"))
 R[("T24", "where_is_he")] = d0("the snack on the desk with the homework", "on the other desk; " + _T24_NO, dict(
     sit="作业在书房或卧室书桌（按摆法），没说哪个房间", good="送到有作业的那张桌", no="送到另一张桌；还拿着或掉了"))
-R[("T24", "no_apples_for_him")] = tiers(
-    second=lambda g, lid: drop(g, "not on"), worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
-    why=("the banana on the desk", "the banana, and the apple brought too", "the apple only (he does not like it)"),
-    not_ok=_T24_NO,
-    zh=dict(sit="苹果和香蕉，孩子不爱吃苹果", good="拿香蕉", second="香蕉和苹果都拿了", worst="只拿了苹果", no="什么都没拿；还拿着或掉了"))
 R[("T24", "dinner_soon")] = tiers(
     second=lambda g, lid: drop(g, "not on"), worst=lambda g, lid: {"all": [["on", "snack_box", "desk_1/top"], HAND]},
     why=("the apple on the desk", "the apple, and the snack box too", "the snack box only (dinner in half an hour)"),
     not_ok=_T24_NO,
     zh=dict(sit="苹果和一盒零食，半小时后吃晚饭", good="拿苹果", second="苹果和零食都拿了", worst="只拿了零食", no="什么都没拿；还拿着或掉了"))
-R[("T24", "two_kids")] = tiers(
-    worst=lambda g, lid: {"all": [["on_any", "snack_apple", DESKS], ["on_any", "snack_banana", DESKS], HAND]},
-    why=("one fruit on each kid's desk", "", "both fruits brought, but to the same kid"),
-    not_ok="a kid gets nothing and a fruit left on the table; still held or dropped",
-    zh=dict(sit="两个孩子分别在书房和卧室书桌，餐桌上一个苹果一个香蕉", good="每人一个", worst="两个都给了同一个孩子",
-            no="有孩子没拿到且水果留在桌上；还拿着或掉了"))
+# T24 apple_in_use (11-17, substitution: in use): grandpa's apple stays, the banana instead
+R[("T24", "apple_in_use")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
+    why=("the banana on the desk, grandpa's apple left with him", "", "grandpa's apple taken to the kid"),
+    not_ok=_T24_NO,
+    zh=dict(sit="唯一的苹果在西边餐桌爷爷的座位旁（他正在吃），东边餐桌上有香蕉（11-17 新加）",
+            good="香蕉送到书桌，爷爷的苹果不动（替换：被占用）", worst="把爷爷的苹果拿去给孩子", no="书桌上没吃的；还拿着或掉了"))
+# T24 apple_on_floor (11-17, substitution: broken -- dirty): the orange instead of the apple off the floor
+R[("T24", "apple_on_floor")] = tiers(
+    worst=lambda g, lid: {"all": [["on", "snack_apple", "desk_1/top"], HAND]},
+    why=("the orange on the desk, the apple off the floor not given", "", "the apple off the kitchen floor given to the kid"),
+    not_ok=_T24_NO,
+    zh=dict(sit="唯一的苹果掉在厨房地上（脏了），餐桌上有一个橙子（11-17 新加）",
+            good="橙子送到书桌（替换：损坏/弄脏）；地上苹果捡起放台面也行", worst="把地上的苹果送给孩子", no="书桌上没吃的；还拿着或掉了"))
 
 # ================================================================================================ T25 a drink for the guest
 _T25_NO = "no drink or no cup by the guest; the juice lying; still held or dropped"

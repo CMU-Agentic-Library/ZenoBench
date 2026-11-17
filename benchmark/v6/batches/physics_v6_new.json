@@ -6442,76 +6442,6 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 11,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 12,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 13,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 14,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 15,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 16,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 17,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 18,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 19,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
-"family": "no_apples_for_him"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 10,
 "variant": "dinner_soon",
 "route": "v6_dinner_soon",
 "family": "dinner_soon"
@@ -6578,76 +6508,6 @@
 "variant": "dinner_soon",
 "route": "v6_dinner_soon",
 "family": "dinner_soon"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 10,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 11,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 12,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 13,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 14,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 15,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 16,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 17,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 18,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
-},
-{
-"task": "T24_snack_for_kid",
-"seed": 19,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
-"family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
@@ -6722,72 +6582,142 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 11,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 13,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 16,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 18,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "two_kids",
-"route": "v6_two_kids",
-"family": "two_kids"
+"variant": "apple_in_use",
+"route": "v6_apple_in_use",
+"family": "apple_in_use"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 10,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 11,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 12,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 13,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 14,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 15,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 16,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 17,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 18,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 19,
+"variant": "apple_on_floor",
+"route": "v6_apple_on_floor",
+"family": "apple_on_floor"
 },
 {
 "task": "T25_drink_for_guest",

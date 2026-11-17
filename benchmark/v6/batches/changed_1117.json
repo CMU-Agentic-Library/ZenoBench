@@ -574,5 +574,23 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "seed": 10,
+  "variant": "apple_in_use",
+  "route": "v6_apple_in_use",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T24_snack_for_kid",
+  "seed": 10,
+  "variant": "apple_on_floor",
+  "route": "v6_apple_on_floor",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

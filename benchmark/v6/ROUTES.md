@@ -440,12 +440,11 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Task-Level
 
-* `no_apples_for_him` (v6_no_apples_for_him, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
 * `dinner_soon` (v6_dinner_soon, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
-* `fruit_out_of_view` (v6_fruit_out_of_view, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) search(home_basket,bedroom_0_1) navigate(bookcase_2/top) look(bookcase_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
 * `where_is_he__study` (v6_where_is_he__study, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_3/top) look(desk_3/top) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
 * `where_is_he__bedroom` (v6_where_is_he__bedroom, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) look(desk_1/top) navigate(desk_3/top) place(snack_apple,desk_3/top,[6.194, -5.349])
-* `two_kids` (v6_two_kids, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_banana) pick(snack_banana) navigate(desk_3/top) place(snack_banana,desk_3/top,[6.194, -5.329])
+* `apple_in_use` (v6_apple_in_use, 7 steps): search(snack_apple,dining_room_0_0) look(dining_table_1/top) look(dining_table_2/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
+* `apple_on_floor` (v6_apple_on_floor, 7 steps): navigate(dining_table_2/top) look(dining_table_2/top) explore_room(kitchen_0_1) navigate(snack_orange) pick(snack_orange) navigate(desk_1/top) place(snack_orange,desk_1/top,[-1.248, -5.946])
 
 ## T25_drink_for_guest
 

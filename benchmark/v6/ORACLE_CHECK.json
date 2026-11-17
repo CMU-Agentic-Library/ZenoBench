@@ -1,6 +1,6 @@
 {
- "routes": 287,
- "ok": 287,
+ "routes": 286,
+ "ok": 286,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2800,16 +2800,6 @@
   },
   {
    "task": "T24_snack_for_kid",
-   "layout": "no_apples_for_him",
-   "steps": 6,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "no_apples_for_him"
-  },
-  {
-   "task": "T24_snack_for_kid",
    "layout": "dinner_soon",
    "steps": 6,
    "atoms_checked": 3,
@@ -2817,16 +2807,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "dinner_soon"
-  },
-  {
-   "task": "T24_snack_for_kid",
-   "layout": "fruit_out_of_view",
-   "steps": 9,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "fruit_out_of_view"
   },
   {
    "task": "T24_snack_for_kid",
@@ -2850,13 +2830,23 @@
   },
   {
    "task": "T24_snack_for_kid",
-   "layout": "two_kids",
-   "steps": 10,
-   "atoms_checked": 5,
+   "layout": "apple_in_use",
+   "steps": 7,
+   "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "two_kids"
+   "variant": "apple_in_use"
+  },
+  {
+   "task": "T24_snack_for_kid",
+   "layout": "apple_on_floor",
+   "steps": 7,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "apple_on_floor"
   },
   {
    "task": "T25_drink_for_guest",

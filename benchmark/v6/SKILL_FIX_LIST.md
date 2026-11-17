@@ -7,8 +7,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
-| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 51 | carry: paperback_book slipped out of the hand while carrying it |
-| navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 19 | carry: apple slipped out of the hand while carrying it |
+| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 49 | carry: paperback_book slipped out of the hand while carrying it |
+| navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 18 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
 | open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 12 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
@@ -129,9 +129,10 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | plate_counter_a | T13/copy_the_setting, T15/lid_in_use, T15/no_lid |
 | pick | red_book_2 | T14/next_in_series |
 | pick | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
-| pick | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |
-| pick | snack_banana | T24/no_apples_for_him, T24/two_kids |
+| pick | snack_apple | T24/dinner_soon, T24/where_is_he |
+| pick | snack_banana | T24/apple_in_use |
 | pick | snack_box | T16/box_in_cabinet |
+| pick | snack_orange | T24/apple_on_floor |
 | pick | soda_drink | T20/juice_finished, T20/juice_in_use |
 | pick | soup_bowl_1 | T30/bowl_not_plate, T30/bowl_put_away, T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |
@@ -207,9 +208,10 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | plate_counter_a | T13/copy_the_setting |
 | place | red_book_2 | T14/next_in_series |
 | place | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
-| place | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |
-| place | snack_banana | T24/no_apples_for_him, T24/two_kids |
+| place | snack_apple | T24/dinner_soon, T24/where_is_he |
+| place | snack_banana | T24/apple_in_use |
 | place | snack_box | T16/box_in_cabinet |
+| place | snack_orange | T24/apple_on_floor |
 | place | soda_drink | T20/juice_finished, T20/juice_in_use |
 | place | soup_bowl_1 | T30/bowl_not_plate, T30/bowl_put_away, T30/bowls_in_cabinet, T30/how_many |
 | place | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |

@@ -48,6 +48,10 @@
 | T23 | belongs_on_floor（改） | 缺失 | 没有玩具箱，手边的洗衣篮不是替代品 → 电视柜上的小收纳箱 |
 | T23 | toy_box_full（新加） | 被占用 | 玩具箱塞满（泰迪熊露出）→ 空的小收纳箱 |
 | T23 | no_toy_box（新加） | 缺失 | 没有玩具箱 → 小收纳箱（只放桌面最差） |
+| T24 | dinner_soon | 能力不足（此时不合适） | 快吃晚饭了，零食不合适 → 苹果 |
+| T24 | where_is_he | 可互换（送的位置） | 孩子在哪张书桌按作业本决定 |
+| T24 | apple_in_use（新加） | 被占用 | 唯一的苹果爷爷正在吃 → 香蕉 |
+| T24 | apple_on_floor（新加） | 损坏 | 苹果掉地上脏了 → 橙子 |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 
