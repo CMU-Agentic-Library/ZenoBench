@@ -59,13 +59,20 @@ SCORING: dict[tuple[str, str], dict] = {
          "why": "the guests' table, squeezed against the dishes, nothing moved or tipped"}],
         "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held"},
     # T01 which_book: three books (the island's, the guest's in the room the instruction names, one in the
-    # other room); the guest's book is the point.  No middle tier: the wrong book is not the task done
+    # other room); the guest's book is the point.  11-17 (user): a substitution -- a wrong book brought instead is
+    # the second tier, the guest's book with another one brought along or moved the worst
     ("T01", "which_book"): {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
          "why": "only the guest's book on a dining table, the other two untouched"},
+        {"name": "second", "score": 0.6,
+         "goal": {"all": [["not on_any", "paperback_book", ["dining_table_2/top", "dining_table_1/top"]],
+                          ["hand_empty", "right"]],
+                  "any": [[["on_any", "book_island", ["dining_table_2/top", "dining_table_1/top"]]],
+                          [["on_any", "book_other", ["dining_table_2/top", "dining_table_1/top"]]]]},
+         "why": "a wrong book (the island's or the other room's) brought instead of the guest's"},
         {"name": "worst", "score": 0.3, "goal": {"drop": ["near_start"]},
          "why": "the guest's book on a dining table, but another book brought along or moved too"}],
-        "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
+        "not_ok": "no book on a dining table; still held"},
     # T02 clear (control): two free blocks on the island; either on the other is the same
     ("T02", "clear"): only("one block on the other, the hand empty", "no stack, or a block dropped"),
     # T03 large_only (control): the wide bin on the TV stand is the only open container
@@ -813,7 +820,7 @@ NOT_OK_ZH = {
     ("T01", "which_table"): "放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里",
     ("T01", "no_room_fallback"): "挪了或碰倒餐具、麦片腾地方；放在别处或还拿在手里",
     ("T01", "reader_seat"): "挪了或碰倒餐具；放在别处（包括另一张餐桌）或还拿在手里",
-    ("T01", "which_book"): "客人那本没到餐桌（拿错或没拿）；还拿在手里",
+    ("T01", "which_book"): "餐桌上一本书都没有；还拿在手里",
     ("T02", "clear"): "没叠上，或积木掉了",
     ("T02", "crowded_use_another"): "碗或擀面杖动了、碗倒了；没叠上",
     ("T02", "third_toy_elsewhere"): "只叠了两层（没找到第三件）；没叠上；塔不在岛台上",

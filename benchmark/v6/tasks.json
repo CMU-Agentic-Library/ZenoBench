@@ -24806,7 +24806,8 @@
      },
      "conditions": [
       "referent_clue",
-      "item_out_of_view"
+      "item_out_of_view",
+      "unsuitable_at_hand"
      ],
      "watch": [
       "paperback_book",
@@ -24859,15 +24860,15 @@
        ]
       ]
      },
-     "instruction": "The guest wants to carry on reading over breakfast the book they read in the living room last night. Bring it to the dining table. Leave everything else as it is.",
-     "instruction_zh": "客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。",
+     "instruction": "The guest wants to carry on over breakfast with the book they were leafing through while watching TV last night. Bring it to the dining table.",
+     "instruction_zh": "客人想吃早饭时接着看昨晚看电视时翻的那本书，帮忙拿到餐桌上。",
      "since": "v6",
-     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
      "v6": {
       "family": "which_book",
       "case": "living",
-      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-      "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
+      "rationale": "the nearest book is not the one meant: tell the room from what the guest was doing (TV: the living room; bed: the bedroom), take the book there and bring it to the dining table; a wrong book brought instead is the substitute (second)",
       "control": "overhang_ready",
       "contrast": null,
       "factor": "the room the guest read in (seed: living room or bedroom)",
@@ -25071,6 +25072,49 @@
         "why": "only the guest's book on a dining table, the other two untouched"
        },
        {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "not on_any",
+           "paperback_book",
+           [
+            "dining_table_2/top",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on_any",
+            "book_island",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "book_other",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "a wrong book (the island's or the other room's) brought instead of the guest's"
+       },
+       {
         "name": "worst",
         "score": 0.3,
         "goal": {
@@ -25081,7 +25125,7 @@
         "why": "the guest's book on a dining table, but another book brought along or moved too"
        }
       ],
-      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
+      "not_ok": "no book on a dining table; still held"
      }
     },
     "which_book__bedroom": {
@@ -25097,7 +25141,8 @@
      },
      "conditions": [
       "referent_clue",
-      "item_out_of_view"
+      "item_out_of_view",
+      "unsuitable_at_hand"
      ],
      "watch": [
       "paperback_book",
@@ -25150,15 +25195,15 @@
        ]
       ]
      },
-     "instruction": "The guest wants to carry on reading over breakfast the book they read in the bedroom before bed last night. Bring it to the dining table. Leave everything else as it is.",
-     "instruction_zh": "客人想吃早饭时接着看昨晚睡前在卧室读的那本书，帮忙拿到餐桌上。其他东西别动。",
+     "instruction": "The guest wants to carry on over breakfast with the book they read before going to sleep last night. Bring it to the dining table.",
+     "instruction_zh": "客人想吃早饭时接着看昨晚睡前读的那本书，帮忙拿到餐桌上。",
      "since": "v6",
-     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
      "v6": {
       "family": "which_book",
       "case": "bedroom",
-      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-      "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
+      "rationale": "the nearest book is not the one meant: tell the room from what the guest was doing (TV: the living room; bed: the bedroom), take the book there and bring it to the dining table; a wrong book brought instead is the substitute (second)",
       "control": "overhang_ready",
       "contrast": null,
       "factor": "the room the guest read in (seed: living room or bedroom)",
@@ -25362,6 +25407,49 @@
         "why": "only the guest's book on a dining table, the other two untouched"
        },
        {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "not on_any",
+           "paperback_book",
+           [
+            "dining_table_2/top",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on_any",
+            "book_island",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "book_other",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "a wrong book (the island's or the other room's) brought instead of the guest's"
+       },
+       {
         "name": "worst",
         "score": 0.3,
         "goal": {
@@ -25372,7 +25460,7 @@
         "why": "the guest's book on a dining table, but another book brought along or moved too"
        }
       ],
-      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
+      "not_ok": "no book on a dining table; still held"
      }
     }
    },
@@ -30149,6 +30237,49 @@
         "why": "only the guest's book on a dining table, the other two untouched"
        },
        {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [
+          [
+           "not on_any",
+           "paperback_book",
+           [
+            "dining_table_2/top",
+            "dining_table_1/top"
+           ]
+          ],
+          [
+           "hand_empty",
+           "right"
+          ]
+         ],
+         "any": [
+          [
+           [
+            "on_any",
+            "book_island",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ],
+          [
+           [
+            "on_any",
+            "book_other",
+            [
+             "dining_table_2/top",
+             "dining_table_1/top"
+            ]
+           ]
+          ]
+         ]
+        },
+        "why": "a wrong book (the island's or the other room's) brought instead of the guest's"
+       },
+       {
         "name": "worst",
         "score": 0.3,
         "goal": {
@@ -30159,7 +30290,7 @@
         "why": "the guest's book on a dining table, but another book brought along or moved too"
        }
       ],
-      "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"
+      "not_ok": "no book on a dining table; still held"
      }
     }
    },
@@ -30229,7 +30360,8 @@
      "local": [],
      "longer": [
       "item_out_of_view",
-      "referent_clue"
+      "referent_clue",
+      "unsuitable_at_hand"
      ]
     }
    }

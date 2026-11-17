@@ -25,7 +25,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | task | variant | category | local fallback | longer-horizon change | layouts |
 |---|---|---|---|---|---|
 | T01 | overhang_ready | Control | - | - | 1 |
-| T01 | which_book | Task-Level | - | item_out_of_view; referent_clue | 2 |
+| T01 | which_book | Task-Level | - | item_out_of_view; referent_clue; unsuitable_at_hand | 2 |
 | T01 | table_seats | Action + Task | expose the flat object over the edge, then pick it | spot_quality | 6 |
 | T01 | which_table | Action + Task | expose the flat object over the edge, then pick it | destination_unnamed; spot_quality | 8 |
 | T01 | no_room_fallback | Action + Task | expose the flat object over the edge, then pick it | infeasible_fallback; spot_quality | 6 |

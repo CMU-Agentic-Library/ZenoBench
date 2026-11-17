@@ -247,12 +247,14 @@ def T01(t):
     for room, (sup, xy) in T01_BOOK_AT.items():
         osup, oxy = T01_BOOK_OTHER[room]
         instructions = {
-            "living": ("The guest wants to carry on reading over breakfast the book they read in the living room "
-                       "last night. Bring it to the dining table. Leave everything else as it is.",
-                       "客人想吃早饭时接着看昨晚在客厅读的那本书，帮忙拿到餐桌上。其他东西别动。"),
-            "bedroom": ("The guest wants to carry on reading over breakfast the book they read in the bedroom "
-                        "before bed last night. Bring it to the dining table. Leave everything else as it is.",
-                        "客人想吃早饭时接着看昨晚睡前在卧室读的那本书，帮忙拿到餐桌上。其他东西别动。"),
+            # 11-17 (user): vaguer -- the room is not named, only what the guest was doing (TV: the living room;
+            # before going to sleep: the bedroom)
+            "living": ("The guest wants to carry on over breakfast with the book they were leafing through while "
+                       "watching TV last night. Bring it to the dining table.",
+                       "客人想吃早饭时接着看昨晚看电视时翻的那本书，帮忙拿到餐桌上。"),
+            "bedroom": ("The guest wants to carry on over breakfast with the book they read before going to sleep "
+                        "last night. Bring it to the dining table.",
+                        "客人想吃早饭时接着看昨晚睡前读的那本书，帮忙拿到餐桌上。"),
         }[room]
         colour = {"living": "red", "bedroom": "green"}[room]
         if True:
@@ -337,14 +339,17 @@ def T01(t):
                       "seat's plate); which seat that is changes with the seed",
             cases=reader),
         "which_book": dict(
-            base="overhang_ready", control="overhang_ready", conditions=["referent_clue", "item_out_of_view"],
+            base="overhang_ready", control="overhang_ready",
+            conditions=["referent_clue", "item_out_of_view", "unsuitable_at_hand"],   # 11-17: a substitution (user)
             watch=[B, "book_island", "book_other"],
             factor="the room the guest read in (seed: living room or bedroom)",
             challenge="a book lies on the island; the guest's book is in the room they read in last night (on the TV "
                       "stand in the living room, or on the bookcase in the bedroom), and the other room has a "
-                      "third book; the instruction names only the room and the occasion",
-            rationale="the nearest book is not the one meant: go to the room the instruction names, take the book "
-                      "there and bring it to the dining table; the island book and the book in the other room stay",
+                      "third book; the instruction names only what the guest was doing (watching TV, or before going "
+                      "to sleep), not the room",
+            rationale="the nearest book is not the one meant: tell the room from what the guest was doing (TV: "
+                      "the living room; bed: the bedroom), take the book there and bring it to the dining table; a "
+                      "wrong book brought instead is the substitute (second)",
             cases=books),
     }
     for vid in T01_FLAT_TWINS:                           # every layout also with the book lying flat

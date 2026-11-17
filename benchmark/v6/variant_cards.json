@@ -4044,7 +4044,7 @@
    18,
    19
   ],
-  "instruction": "The guest wants to carry on reading over breakfast the book they read in the living room last night. Bring it to the dining table. Leave everything else as it is.",
+  "instruction": "The guest wants to carry on over breakfast with the book they were leafing through while watching TV last night. Bring it to the dining table.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4058,7 +4058,8 @@
    "removed": [],
    "conditions": [
     "referent_clue",
-    "item_out_of_view"
+    "item_out_of_view",
+    "unsuitable_at_hand"
    ],
    "initial_checks": []
   },
@@ -4091,8 +4092,8 @@
   },
   "control": "overhang_ready",
   "oracle_route": "v6_which_book__living",
-  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-  "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
+  "rationale": "the nearest book is not the one meant: tell the room from what the guest was doing (TV: the living room; bed: the bedroom), take the book there and bring it to the dining table; a wrong book brought instead is the substitute (second)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/which_book__bedroom": {
@@ -4105,7 +4106,7 @@
    16,
    17
   ],
-  "instruction": "The guest wants to carry on reading over breakfast the book they read in the bedroom before bed last night. Bring it to the dining table. Leave everything else as it is.",
+  "instruction": "The guest wants to carry on over breakfast with the book they read before going to sleep last night. Bring it to the dining table.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -4119,7 +4120,8 @@
    "removed": [],
    "conditions": [
     "referent_clue",
-    "item_out_of_view"
+    "item_out_of_view",
+    "unsuitable_at_hand"
    ],
    "initial_checks": []
   },
@@ -4152,8 +4154,8 @@
   },
   "control": "overhang_ready",
   "oracle_route": "v6_which_book__bedroom",
-  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
-  "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+  "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only what the guest was doing (watching TV, or before going to sleep), not the room",
+  "rationale": "the nearest book is not the one meant: tell the room from what the guest was doing (TV: the living room; bed: the bedroom), take the book there and bring it to the dining table; a wrong book brought instead is the substitute (second)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/clear": {
