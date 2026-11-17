@@ -547,5 +547,32 @@
   "planner": "scripted",
   "profile": "sticky/gt",
   "video": true
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "seed": 10,
+  "variant": "belongs_on_floor",
+  "route": "v6_belongs_on_floor",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "seed": 10,
+  "variant": "toy_box_full",
+  "route": "v6_toy_box_full",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T23_pick_up_dropped",
+  "seed": 10,
+  "variant": "no_toy_box",
+  "route": "v6_no_toy_box",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
  }
 ]

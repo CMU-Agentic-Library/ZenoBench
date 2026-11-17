@@ -5460,7 +5460,7 @@
 
 ### by_kind（Task）
 
-**情况**：地上有勺子和一块积木 → 勺子回台面，积木进客厅的玩具箱
+**情况**：地上有勺子和一块积木 → 勺子回台面，积木进客厅的玩具箱（勺子台面/岛台都算：可互换）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -5483,92 +5483,95 @@
 
 ### belongs_on_floor（Task）
 
-**情况**：勺子旁边还有垃圾桶、洗衣筐 → 它们本来就在地上，不动
+**情况**：地上勺子和积木，旁边是垃圾桶和洗衣篮（本来就放地上）；家里没有玩具箱 → 洗衣篮是装衣服的，不能代替；积木放进电视柜上的小收纳箱，桶和篮不动（替换：缺失）；积木扔进洗衣篮算最不好
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - `dropped_block` 在 `spare_bin` 里
   - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
 - **次好（0.6）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - `dropped_block` 在 `spare_bin` 里
   - 手里空着
   - `["on_floor", "kitchen_bin"]`
   - `["on_floor", "laundry_basket"]`
 - **最不好（0.3）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - `kitchen_bin`、`laundry_basket` 没被挪动（离开局位置不超过 3 cm）
   - 手里空着
-- **不行（0）**：勺子还在地上；还拿着
+  - `dropped_block` 在 `laundry_basket` 里
+- **不行（0）**：把桶或篮从地上拿起来；有东西还在地上；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=spare_bin)` → 14. `place(object=dropped_block, receptacle=spare_bin)`
 
-### dropped_out_of_view（Task）
+### toy_box_full（Task）
 
-**情况**：勺子滑到隔壁餐厅地上，看不到 → 找一圈
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - 手里空着
-- **不行（0）**：没找到；还在地上；还拿着
-
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_spoon)` → 5. `look(target=dropped_spoon)` → 6. `pick(object=dropped_spoon)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
-
-### only_this_room（Task）
-
-**情况**：“厨房地上掉了东西”：客厅地上也有小车 → 只捡厨房的
-
-**指令**：厨房地上掉了东西，帮忙捡起来放好。
+**情况**：地上勺子和积木；卧室书架上的玩具箱塞满了（泰迪熊露出箱口）→ 玩具不动，积木放进电视柜上的空小收纳箱（替换：被占用）；硬压在满玩具箱上算最不好
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `living_car` 没被挪动（离开局位置不超过 3 cm）
+  - `dropped_block` 在 `spare_bin` 里
+  - `bin_teddy` 在 `toy_bin` 里
+  - `bin_car` 在 `toy_bin` 里
+  - `bin_duck` 在 `toy_bin` 里
+  - `bin_block_1` 在 `toy_bin` 里
+  - `bin_block_2` 在 `toy_bin` 里
   - 手里空着
-- **次好（0.6）**：
+- **最不好（0.3）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - `bin_teddy` 在 `toy_bin` 里
+  - `bin_car` 在 `toy_bin` 里
+  - `bin_duck` 在 `toy_bin` 里
+  - `bin_block_1` 在 `toy_bin` 里
+  - `bin_block_2` 在 `toy_bin` 里
   - 手里空着
-- **不行（0）**：勺子还在地上；还拿着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `dropped_block` 在 `toy_bin` 里
+    - 第 2 组：
+      - `dropped_block` 离其中至少一个不超过 3 cm：`toy_bin`
+- **不行（0）**：把玩具箱里的玩具拿出来腾地方；有东西还在地上；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `search(object=toy_bin, region=bedroom_0_1)` → 12. `navigate(destination=bookcase_2/top)` → 13. `look(target=bookcase_2/top)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `look(target=tv_stand_2/top)` → 16. `navigate(destination=spare_bin)` → 17. `place(object=dropped_block, receptacle=spare_bin)`
 
-### dropped_in_two_rooms（Task）
+### no_toy_box（Task）
 
-**情况**：“家里地上掉了些东西”：厨房一把勺子，书房书桌下一支铅笔 → 都找到，勺子放回厨房台面或岛台，铅笔放回书桌
+**情况**：地上勺子和积木；家里没有玩具箱 → 积木放进电视柜上的小收纳箱（替换：缺失）；只放到桌面上算最不好
 
-**指令**：家里地上掉了些东西，帮忙捡起来放好。
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-  - `dropped_pencil` 在其中任一处上：`desk_1/top`、`desk_3/top`
+  - `dropped_block` 在 `spare_bin` 里
   - 手里空着
-- **不行（0）**：有一样还在地上；放错地方；还拿着
+- **最不好（0.3）**：
+
+  - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
+  - 手里空着
+  - `dropped_block` 不在地上
+- **不行（0）**：有东西还在地上；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_pencil)` → 10. `look(target=dropped_pencil)` → 11. `pick(object=dropped_pencil)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=dropped_pencil, receptacle=desk_1/top, hint_xy=[-1.048, -6.146])`
+1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `navigate(destination=dropped_block)` → 9. `look(target=dropped_block)` → 10. `pick(object=dropped_block)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=spare_bin)` → 14. `place(object=dropped_block, receptacle=spare_bin)`
 
 ---
 

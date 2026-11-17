@@ -8,7 +8,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
 | navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 51 | carry: paperback_book slipped out of the hand while carrying it |
-| navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 18 | carry: apple slipped out of the hand while carrying it |
+| navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 19 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
 | open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 12 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
@@ -87,9 +87,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | dinner_bowl_2 | T18/bowls_apart, T18/door_stuck |
 | pick | dinner_spoon_1 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | pick | dinner_spoon_2 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
-| pick | dropped_block | T23/by_kind |
-| pick | dropped_pencil | T23/dropped_in_two_rooms |
-| pick | dropped_spoon | T23/belongs_on_floor, T23/by_kind, T23/dropped_in_two_rooms, T23/dropped_out_of_view, T23/only_this_room |
+| pick | dropped_block | T23/belongs_on_floor, T23/by_kind, T23/no_toy_box, T23/toy_box_full |
+| pick | dropped_spoon | T23/belongs_on_floor, T23/by_kind, T23/no_toy_box, T23/toy_box_full |
 | pick | empty_can | T29/several |
 | pick | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid |
 | pick | foil_takeout_tray | T07/vessel_decides_appliance |
@@ -169,9 +168,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | dinner_bowl_2 | T18/bowls_apart, T18/door_stuck |
 | place | dinner_spoon_1 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | place | dinner_spoon_2 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
-| place | dropped_block | T23/by_kind |
-| place | dropped_pencil | T23/dropped_in_two_rooms |
-| place | dropped_spoon | T23/belongs_on_floor, T23/by_kind, T23/dropped_in_two_rooms, T23/dropped_out_of_view, T23/only_this_room |
+| place | dropped_block | T23/belongs_on_floor, T23/by_kind, T23/no_toy_box, T23/toy_box_full |
+| place | dropped_spoon | T23/belongs_on_floor, T23/by_kind, T23/no_toy_box, T23/toy_box_full |
 | place | foil_takeout_tray | T07/vessel_decides_appliance |
 | place | fruit_box | T11/fruit_plate_for_guests |
 | place | glass_box | T18/bowl_in_use, T18/one_bowl |

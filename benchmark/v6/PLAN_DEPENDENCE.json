@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 258,
-   "variants": 136,
+   "layouts": 257,
+   "variants": 135,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 54,
-   "goal_not_met": 95,
-   "not_observed": 64,
+   "passes": 52,
+   "goal_not_met": 97,
+   "not_observed": 63,
    "resource_missing": 41,
    "argument_mismatch": 4
   },
@@ -39,8 +39,6 @@
    "T19 lookalike_bin",
    "T21 which_table",
    "T22 not_shopping",
-   "T23 belongs_on_floor",
-   "T23 only_this_room",
    "T24 dinner_soon",
    "T24 where_is_he",
    "T26 two_bedrooms",
@@ -314,25 +312,26 @@
     "old_snack"
    ],
    "T23 belongs_on_floor": [
-    "dropped_spoon"
+    "dropped_block",
+    "dropped_spoon",
+    "spare_bin"
    ],
    "T23 by_kind": [
     "dropped_block",
     "dropped_spoon"
    ],
-   "T23 dropped_in_two_rooms": [
-    "dropped_pencil",
+   "T23 no_toy_box": [
+    "dropped_block",
     "dropped_spoon",
-    "homework"
-   ],
-   "T23 dropped_out_of_view": [
-    "dropped_spoon"
-   ],
-   "T23 only_this_room": [
-    "dropped_spoon"
+    "spare_bin"
    ],
    "T23 spoon_on_floor": [
     "dropped_spoon"
+   ],
+   "T23 toy_box_full": [
+    "dropped_block",
+    "dropped_spoon",
+    "spare_bin"
    ],
    "T24 apple_on_table": [
     "homework",
@@ -4132,51 +4131,43 @@
    "task": "T23_pick_up_dropped",
    "variant": "belongs_on_floor",
    "layout": "belongs_on_floor",
-   "steps": 7,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "dropped_out_of_view",
-    "only_this_room"
-   ]
-  },
-  {
-   "task": "T23_pick_up_dropped",
-   "variant": "dropped_out_of_view",
-   "layout": "dropped_out_of_view",
-   "steps": 8,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {},
-   "other_variants_passing": []
-  },
-  {
-   "task": "T23_pick_up_dropped",
-   "variant": "only_this_room",
-   "layout": "only_this_room",
-   "steps": 7,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "passes",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "belongs_on_floor",
-    "dropped_out_of_view"
-   ]
-  },
-  {
-   "task": "T23_pick_up_dropped",
-   "variant": "dropped_in_two_rooms",
-   "layout": "dropped_in_two_rooms",
-   "steps": 13,
+   "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {},
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "toy_box_full",
+    "no_toy_box"
+   ]
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "variant": "toy_box_full",
+   "layout": "toy_box_full",
+   "steps": 17,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {},
+   "other_variants_passing": [
+    "belongs_on_floor",
+    "no_toy_box"
+   ]
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "variant": "no_toy_box",
+   "layout": "no_toy_box",
+   "steps": 14,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {},
+   "other_variants_passing": [
+    "belongs_on_floor",
+    "toy_box_full"
+   ]
   },
   {
    "task": "T24_snack_for_kid",

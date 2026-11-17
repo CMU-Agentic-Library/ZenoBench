@@ -705,10 +705,6 @@ R[("T22", "basket_out_of_reach")] = doors_second(
 _T23_NO = "a dropped thing left on the floor or put in a wrong kind of place; still held"
 R[("T23", "spoon_on_floor")] = d0("the spoon on a kitchen counter or the island", _T23_NO, dict(
     sit="厨房地上一把勺子（对照）", good="勺子放到厨房台面或岛台", no="勺子还在地上或放别处；还拿着"))
-R[("T23", "dropped_out_of_view")] = d0("the spoon found and on a kitchen counter or the island", _T23_NO, dict(
-    sit="勺子滑到隔壁餐厅地上，看不到", good="找到放回厨房台面或岛台", no="没找到；还在地上；还拿着"))
-R[("T23", "dropped_in_two_rooms")] = d0("the spoon in the kitchen, the pencil on a desk", _T23_NO, dict(
-    sit="厨房地上勺子，书桌下铅笔", good="勺子回厨房台面，铅笔放书桌", no="有一样还在地上；放错地方；还拿着"))
 R[("T23", "by_kind")] = tiers(
     worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
                               ["not on_floor", "dropped_block"]),
@@ -717,23 +713,40 @@ R[("T23", "by_kind")] = tiers(
     not_ok=_T23_NO,
     zh=dict(sit="厨房地上勺子和一块积木，玩具箱在客厅", good="勺子回厨房，积木进玩具箱", worst="积木捡起来了但没进玩具箱",
             no="有东西还在地上；还拿着"))
+# T23 belongs_on_floor (11-17, substitution: missing): no toy box; the block into the small bin, not the laundry basket
 R[("T23", "belongs_on_floor")] = tiers(
     second=lambda g, lid: plus(drop(g, "near_start"), ["on_floor", "kitchen_bin"], ["on_floor", "laundry_basket"]),
-    worst=lambda g, lid: drop(g, "near_start"),
-    why=("the spoon picked up, the bin and the laundry basket left where they are",
-         "the spoon picked up, the bin or the basket nudged (still on the floor)",
-         "the spoon picked up, and the bin or the basket lifted off the floor too"),
+    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
+                              ["inside", "dropped_block", "laundry_basket"]),
+    why=("the spoon to the kitchen, the block in the small storage bin, the bin and the laundry basket left as they are",
+         "the same, but the bin or the basket nudged (still on the floor)",
+         "the block dropped into the laundry basket (it is for laundry)"),
+    not_ok="the bin or the basket lifted off the floor; " + _T23_NO,
+    zh=dict(sit="厨房地上勺子和一块积木，旁边是垃圾桶和洗衣篮（本来就放地上）；家里没有玩具箱，电视柜上有个空的小收纳箱（11-17 改成替换）",
+            good="勺子回厨房，积木放进小收纳箱，桶和篮没动（替换：缺失；洗衣篮不是替代品）", second="做到了但碰动了桶或篮（还在地上）",
+            worst="积木扔进洗衣篮", no="把桶或篮从地上拿起来；有东西还在地上；还拿着"))
+# T23 toy_box_full (11-17, substitution: in use): the toy bin packed; the block into the empty small bin.  The block
+# pressed onto the packed bin is the worst
+R[("T23", "toy_box_full")] = tiers(
+    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
+                              any_=[[["inside", "dropped_block", "toy_bin"]],
+                                    [["near_any", "dropped_block", ["toy_bin"], 0.03]]]),
+    why=("the spoon to the kitchen, the block in the empty small bin, the packed toy bin untouched", "",
+         "the block pressed onto the packed toy bin"),
+    not_ok="the toy bin's toys taken out to make room; " + _T23_NO,
+    zh=dict(sit="厨房地上勺子和一块积木；卧室书架上的玩具箱塞满了（泰迪熊露出箱口）；电视柜上有个空的小收纳箱（11-17 新加）",
+            good="勺子回厨房，积木放进空的小收纳箱，玩具箱没动（替换：被占用）", worst="积木硬压在满玩具箱上",
+            no="把玩具箱里的玩具拿出来腾地方；有东西还在地上；还拿着"))
+# T23 no_toy_box (11-17, substitution: missing): no toy box; the block into the small bin, onto a table is the worst
+R[("T23", "no_toy_box")] = tiers(
+    worst=lambda g, lid: plus(drop_atoms(g, lambda a: a[:2] == ["inside", "dropped_block"]),
+                              ["not on_floor", "dropped_block"]),
+    why=("the spoon to the kitchen, the block in the small storage bin (the toy box's stand-in)", "",
+         "the block off the floor but only set down on some surface, not in a container"),
     not_ok=_T23_NO,
-    zh=dict(sit="勺子旁边有垃圾桶和洗衣篮，它们本来就放地上", good="只捡勺子，桶和篮没动", second="碰动了桶或篮（还在地上）",
-            worst="把桶或篮也从地上拿起来放别处了", no="勺子还在地上；还拿着"))
-R[("T23", "only_this_room")] = tiers(
-    second=lambda g, lid: drop(g, "near_start"),
-    why=("the kitchen spoon picked up, the living-room car left", "the spoon up, and the car picked up too (outside the "
-                                                                   "kitchen, not asked)", ""),
-    not_ok=_T23_NO,
-    zh=dict(sit="只说厨房地上；客厅地上还有孩子的小车", good="只捡厨房的勺子", second="勺子捡了，顺手把客厅小车也收了",
-            no="勺子还在地上；还拿着"))
-
+    zh=dict(sit="厨房地上勺子和一块积木；家里没有玩具箱，电视柜上有个空的小收纳箱（11-17 新加）",
+            good="勺子回厨房，积木放进小收纳箱（替换：缺失）", worst="积木捡起来但只放在桌面/柜面上，没进容器",
+            no="有东西还在地上；还拿着"))
 # ================================================================================================ T24 a snack for the kid
 _T24_NO = "nothing to eat on the kid's desk; still held or dropped"
 R[("T24", "apple_on_table")] = d0("the apple on the study desk", _T24_NO, dict(

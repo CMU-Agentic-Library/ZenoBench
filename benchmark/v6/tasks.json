@@ -154374,6 +154374,8 @@
       0.0
      ],
      "conditions": [
+      "container_absent",
+      "decoy_destination",
       "goal_items_unstated"
      ],
      "add": {
@@ -154386,6 +154388,16 @@
         7.7
        ],
        "yaw_deg": 30.0
+      },
+      "dropped_block": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        -0.95,
+        8.1
+       ],
+       "yaw_deg": 0.0
       },
       "kitchen_bin": {
        "asset": "trash_can",
@@ -154406,6 +154418,15 @@
         8.4
        ],
        "yaw_deg": 0.0
+      },
+      "spare_bin": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.3,
+        0.4
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -154418,6 +154439,11 @@
          "kitchen_counter_1/top",
          "kitchen_island/top"
         ]
+       ],
+       [
+        "inside",
+        "dropped_block",
+        "spare_bin"
        ],
        [
         "near_start",
@@ -154437,16 +154463,18 @@
      },
      "watch": [
       "dropped_spoon",
+      "dropped_block",
       "kitchen_bin",
-      "laundry_basket"
+      "laundry_basket",
+      "spare_bin"
      ],
      "since": "v6",
-     "note": "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
+     "note": "a spoon and a toy block on the kitchen floor, a waste bin and a laundry basket standing next to them (they live on the floor); no toy box in the house; an empty small storage bin on the TV stand",
      "v6": {
       "family": "belongs_on_floor",
       "case": null,
-      "challenge": "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
-      "rationale": "only what fell is picked up: the bin and the basket belong on the floor and stay",
+      "challenge": "a spoon and a toy block on the kitchen floor, a waste bin and a laundry basket standing next to them (they live on the floor); no toy box in the house; an empty small storage bin on the TV stand",
+      "rationale": "no toy box: the laundry basket at hand is for laundry, not a stand-in; the block into the small bin, the spoon to the counter, the bin and the basket left where they are",
       "control": "spoon_on_floor",
       "contrast": null,
       "factor": "the seed's layout only",
@@ -154454,9 +154482,53 @@
      },
      "move": {},
      "layout": {
-      "clusters": [],
+      "clusters": [
+       {
+        "names": [
+         "spare_bin"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.19,
+         0.315,
+         7.41,
+         0.485
+        ],
+        "dx": [
+         -0.53,
+         0.95
+        ]
+       }
+      ],
       "static": {},
-      "reach": {},
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "kitchen_0_1",
        "hide": [],
@@ -154470,7 +154542,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "the spoon picked up, the bin and the laundry basket left where they are"
+        "why": "the spoon to the kitchen, the block in the small storage bin, the bin and the laundry basket left as they are"
        },
        {
         "name": "second",
@@ -154489,6 +154561,11 @@
              ]
             ],
             [
+             "inside",
+             "dropped_block",
+             "spare_bin"
+            ],
+            [
              "hand_empty",
              "right"
             ],
@@ -154504,7 +154581,7 @@
           }
          }
         },
-        "why": "the spoon picked up, the bin or the basket nudged (still on the floor)"
+        "why": "the same, but the bin or the basket nudged (still on the floor)"
        },
        {
         "name": "worst",
@@ -154523,89 +154600,45 @@
              ]
             ],
             [
+             "near_start",
+             "kitchen_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "laundry_basket",
+             0.03
+            ],
+            [
              "hand_empty",
              "right"
+            ],
+            [
+             "inside",
+             "dropped_block",
+             "laundry_basket"
             ]
            ]
           }
          }
         },
-        "why": "the spoon picked up, and the bin or the basket lifted off the floor too"
+        "why": "the block dropped into the laundry basket (it is for laundry)"
        }
       ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
+      "not_ok": "the bin or the basket lifted off the floor; a dropped thing left on the floor or put in a wrong kind of place; still held"
      }
     },
-    "dropped_out_of_view": {
+    "toy_box_full": {
      "start": [
       -1.2,
       9.4,
       0.0
      ],
      "conditions": [
-      "not_in_view"
+      "destination_occupied",
+      "storage_place",
+      "multi_object_goal"
      ],
-     "add": {
-      "dropped_spoon": {
-       "asset": "breakfast_spoon",
-       "support": null,
-       "z": 0.0,
-       "xy": [
-        1.05,
-        7.5
-       ],
-       "yaw_deg": 30.0
-      }
-     },
-     "since": "v6",
-     "note": "the spoon fell and slid into the dining room next door, out of view from the kitchen",
-     "v6": {
-      "family": "dropped_out_of_view",
-      "case": null,
-      "challenge": "the spoon fell and slid into the dining room next door, out of view from the kitchen",
-      "rationale": "look around until the dropped thing is found, then put it back on the counter",
-      "control": "spoon_on_floor",
-      "contrast": null,
-      "factor": "the seed's layout only",
-      "derived_from": "bare"
-     },
-     "move": {},
-     "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
-      "start": {
-       "room": "kitchen_0_1",
-       "hide": [
-        "dropped_spoon"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "the spoon found and on a kitchen counter or the island"
-       }
-      ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
-     }
-    },
-    "only_this_room": {
-     "start": [
-      -1.2,
-      9.4,
-      0.0
-     ],
-     "conditions": [
-      "referent_clue"
-     ],
-     "instruction": "Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
-     "instruction_zh": "厨房地上掉了东西，帮忙捡起来放好。",
      "add": {
       "dropped_spoon": {
        "asset": "breakfast_spoon",
@@ -154617,13 +154650,81 @@
        ],
        "yaw_deg": 30.0
       },
-      "living_car": {
-       "asset": "toy_car",
+      "dropped_block": {
+       "asset": "wooden_block",
        "support": null,
        "z": 0.0,
        "xy": [
-        4.36,
-        1.68
+        -1.0,
+        8.5
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_bin": {
+       "asset": "wide_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_teddy": {
+       "asset": "teddy_bear",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.999,
+        -0.428
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_car": {
+       "asset": "toy_car",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.119,
+        -0.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_duck": {
+       "asset": "rubber_duck",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.179,
+        -0.358
+       ],
+       "yaw_deg": 0.0
+      },
+      "bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.189,
+        -0.498
+       ],
+       "yaw_deg": 10.0
+      },
+      "bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.089,
+        -0.333
+       ],
+       "yaw_deg": -15.0
+      },
+      "spare_bin": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.3,
+        0.4
        ],
        "yaw_deg": 0.0
       }
@@ -154640,9 +154741,34 @@
         ]
        ],
        [
-        "near_start",
-        "living_car",
-        0.03
+        "inside",
+        "dropped_block",
+        "spare_bin"
+       ],
+       [
+        "inside",
+        "bin_teddy",
+        "toy_bin"
+       ],
+       [
+        "inside",
+        "bin_car",
+        "toy_bin"
+       ],
+       [
+        "inside",
+        "bin_duck",
+        "toy_bin"
+       ],
+       [
+        "inside",
+        "bin_block_1",
+        "toy_bin"
+       ],
+       [
+        "inside",
+        "bin_block_2",
+        "toy_bin"
        ],
        [
         "hand_empty",
@@ -154652,15 +154778,23 @@
      },
      "watch": [
       "dropped_spoon",
-      "living_car"
+      "dropped_block",
+      "toy_bin",
+      "spare_bin",
+      "toy_bin",
+      "bin_teddy",
+      "bin_car",
+      "bin_duck",
+      "bin_block_1",
+      "bin_block_2"
      ],
      "since": "v6",
-     "note": "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
+     "note": "a spoon and a toy block on the kitchen floor; the kid's toy bin on the bedroom bookcase is packed (a teddy sticking out, a car, a duck, two blocks); an empty small storage bin on the TV stand",
      "v6": {
-      "family": "only_this_room",
+      "family": "toy_box_full",
       "case": null,
-      "challenge": "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
-      "rationale": "the instruction names the kitchen: pick up the spoon, leave the car in the living room",
+      "challenge": "a spoon and a toy block on the kitchen floor; the kid's toy bin on the bedroom bookcase is packed (a teddy sticking out, a car, a duck, two blocks); an empty small storage bin on the TV stand",
+      "rationale": "the toy bin is full: leave the toys in it, the block into the empty small bin; the spoon to the counter",
       "control": "spoon_on_floor",
       "contrast": null,
       "factor": "the seed's layout only",
@@ -154668,9 +154802,92 @@
      },
      "move": {},
      "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
+      "clusters": [
+       {
+        "names": [
+         "spare_bin"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.19,
+         0.315,
+         7.41,
+         0.485
+        ],
+        "dx": [
+         -0.53,
+         0.95
+        ]
+       }
+      ],
+      "static": {
+       "bookcase_2/top": [
+        [
+         0.9188,
+         -0.5777,
+         1.2588,
+         -0.2777
+        ],
+        [
+         0.9462,
+         -0.508,
+         1.0518,
+         -0.348
+        ],
+        [
+         1.0924,
+         -0.548,
+         1.1456,
+         -0.428
+        ],
+        [
+         1.134,
+         -0.3909,
+         1.224,
+         -0.3251
+        ],
+        [
+         1.1658,
+         -0.5212,
+         1.2122,
+         -0.4748
+        ],
+        [
+         1.0645,
+         -0.3575,
+         1.1135,
+         -0.3085
+        ]
+       ]
+      },
+      "reach": {
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "kitchen_0_1",
        "hide": [],
@@ -154684,14 +154901,14 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "the kitchen spoon picked up, the living-room car left"
+        "why": "the spoon to the kitchen, the block in the empty small bin, the packed toy bin untouched"
        },
        {
-        "name": "second",
-        "score": 0.6,
+        "name": "worst",
+        "score": 0.3,
         "goal": {
          "by_layout": {
-          "only_this_room": {
+          "toy_box_full": {
            "all": [
             [
              "on_any",
@@ -154703,31 +154920,74 @@
              ]
             ],
             [
+             "inside",
+             "bin_teddy",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_car",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_duck",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_block_1",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_block_2",
+             "toy_bin"
+            ],
+            [
              "hand_empty",
              "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "dropped_block",
+              "toy_bin"
+             ]
+            ],
+            [
+             [
+              "near_any",
+              "dropped_block",
+              [
+               "toy_bin"
+              ],
+              0.03
+             ]
             ]
            ]
           }
          }
         },
-        "why": "the spoon up, and the car picked up too (outside the kitchen, not asked)"
+        "why": "the block pressed onto the packed toy bin"
        }
       ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
+      "not_ok": "the toy bin's toys taken out to make room; a dropped thing left on the floor or put in a wrong kind of place; still held"
      }
     },
-    "dropped_in_two_rooms": {
+    "no_toy_box": {
      "start": [
       -1.2,
       9.4,
       0.0
      ],
      "conditions": [
-      "goal_items_unstated",
-      "not_in_view"
+      "container_absent",
+      "storage_place",
+      "multi_object_goal"
      ],
-     "instruction": "Some things fell on the floor around the house. Please pick them up and put them where they belong.",
-     "instruction_zh": "家里地上掉了些东西，帮忙捡起来放好。",
      "add": {
       "dropped_spoon": {
        "asset": "breakfast_spoon",
@@ -154739,22 +154999,22 @@
        ],
        "yaw_deg": 30.0
       },
-      "dropped_pencil": {
-       "asset": "pencil",
+      "dropped_block": {
+       "asset": "wooden_block",
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.45,
-        -5.55
+        -1.0,
+        8.5
        ],
-       "yaw_deg": 20.0
+       "yaw_deg": 0.0
       },
-      "homework": {
-       "asset": "notebook",
-       "support": "desk_1/top",
+      "spare_bin": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
        "xy": [
-        -0.7,
-        -5.95
+        7.3,
+        0.4
        ],
        "yaw_deg": 0.0
       }
@@ -154771,12 +155031,9 @@
         ]
        ],
        [
-        "on_any",
-        "dropped_pencil",
-        [
-         "desk_1/top",
-         "desk_3/top"
-        ]
+        "inside",
+        "dropped_block",
+        "spare_bin"
        ],
        [
         "hand_empty",
@@ -154786,15 +155043,16 @@
      },
      "watch": [
       "dropped_spoon",
-      "dropped_pencil"
+      "dropped_block",
+      "spare_bin"
      ],
      "since": "v6",
-     "note": "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
+     "note": "a spoon and a toy block on the kitchen floor; no toy box anywhere; an empty small storage bin on the TV stand",
      "v6": {
-      "family": "dropped_in_two_rooms",
+      "family": "no_toy_box",
       "case": null,
-      "challenge": "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
-      "rationale": "more than one thing fell, in different rooms: look through the house, put each back (the spoon on the counter, the pencil on the desk with the notebook)",
+      "challenge": "a spoon and a toy block on the kitchen floor; no toy box anywhere; an empty small storage bin on the TV stand",
+      "rationale": "the toy box does not exist: put the block into the small bin (not just onto a table); the spoon to the counter",
       "control": "spoon_on_floor",
       "contrast": null,
       "factor": "the seed's layout only",
@@ -154805,79 +155063,94 @@
       "clusters": [
        {
         "names": [
-         "homework"
+         "spare_bin"
         ],
-        "support": "desk_1/top",
+        "support": "tv_stand_2/top",
         "box": [
-         -0.805,
-         -6.0347,
-         -0.595,
-         -5.8654
+         7.19,
+         0.315,
+         7.41,
+         0.485
         ],
         "dx": [
-         -0.59,
-         0.55
-        ],
-        "dy": [
-         -0.28,
-         0.14
+         -0.53,
+         0.95
         ]
        }
       ],
-      "static": {
-       "desk_1/top": [
-        [
-         -1.138,
-         -6.1546,
-         -0.958,
-         -6.1374
-        ]
-       ]
-      },
+      "static": {},
       "reach": {
-       "desk_1/top": [
+       "tv_stand_2/top": [
         [
          0,
          1,
-         -0.025,
-         -6.326,
-         -5.812,
+         8.375,
+         0.312,
+         0.514,
          0.2
         ],
         [
          0,
          -1,
-         -1.408,
-         -6.326,
-         -5.709,
+         6.644,
+         0.312,
+         0.514,
          0.2
         ],
         [
          1,
-         -1,
-         -6.326,
-         -1.408,
-         -0.025,
+         1,
+         0.514,
+         6.644,
+         8.375,
          0.2
         ]
        ]
       },
       "start": {
        "room": "kitchen_0_1",
-       "hide": [
-        "dropped_pencil"
-       ],
+       "hide": [],
        "look": []
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "the spoon in the kitchen, the pencil on a desk"
+        "why": "the spoon to the kitchen, the block in the small storage bin (the toy box's stand-in)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_toy_box": {
+           "all": [
+            [
+             "on_any",
+             "dropped_spoon",
+             [
+              "kitchen_counter_2/top",
+              "kitchen_counter_1/top",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ],
+            [
+             "not on_floor",
+             "dropped_block"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the block off the floor but only set down on some surface, not in a container"
        }
       ],
       "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
@@ -154909,9 +155182,8 @@
     "spoon_on_floor": "nominal",
     "by_kind": "v6_by_kind",
     "belongs_on_floor": "v6_belongs_on_floor",
-    "dropped_out_of_view": "v6_dropped_out_of_view",
-    "only_this_room": "v6_only_this_room",
-    "dropped_in_two_rooms": "v6_dropped_in_two_rooms"
+    "toy_box_full": "v6_toy_box_full",
+    "no_toy_box": "v6_no_toy_box"
    },
    "routes": {
     "nominal": {
@@ -155107,12 +155379,55 @@
          7.609
         ]
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dropped_block"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dropped_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "dropped_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "dropped_block",
+        "receptacle": "spare_bin"
+       }
       }
      ],
      "kind": "v6_oracle",
      "variant": "belongs_on_floor"
     },
-    "v6_dropped_out_of_view": {
+    "v6_toy_box_full": {
      "steps": [
       {
        "skill": "navigate",
@@ -155124,12 +155439,6 @@
        "skill": "look",
        "args": {
         "target": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "dining_room_0_1"
        }
       },
       {
@@ -155166,65 +155475,74 @@
          7.609
         ]
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dropped_block"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dropped_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "dropped_block"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "toy_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "dropped_block",
+        "receptacle": "spare_bin"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "dropped_out_of_view"
+     "variant": "toy_box_full"
     },
-    "v6_only_this_room": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dropped_spoon"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dropped_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "dropped_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_counter_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
-        "hint_xy": [
-         -0.364,
-         7.609
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "only_this_room"
-    },
-    "v6_dropped_in_two_rooms": {
+    "v6_no_toy_box": {
      "steps": [
       {
        "skill": "navigate",
@@ -155274,49 +155592,51 @@
        }
       },
       {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_1"
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_pencil"
+        "destination": "dropped_block"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_pencil"
+        "target": "dropped_block"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "dropped_pencil"
+        "object": "dropped_block"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/top"
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_bin"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "dropped_pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.048,
-         -6.146
-        ]
+        "object": "dropped_block",
+        "receptacle": "spare_bin"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "dropped_in_two_rooms"
+     "variant": "no_toy_box"
     }
    },
    "vary": {},
@@ -155455,7 +155775,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "the spoon picked up, the bin and the laundry basket left where they are"
+        "why": "the spoon to the kitchen, the block in the small storage bin, the bin and the laundry basket left as they are"
        },
        {
         "name": "second",
@@ -155474,6 +155794,11 @@
              ]
             ],
             [
+             "inside",
+             "dropped_block",
+             "spare_bin"
+            ],
+            [
              "hand_empty",
              "right"
             ],
@@ -155489,7 +155814,7 @@
           }
          }
         },
-        "why": "the spoon picked up, the bin or the basket nudged (still on the floor)"
+        "why": "the same, but the bin or the basket nudged (still on the floor)"
        },
        {
         "name": "worst",
@@ -155508,69 +155833,52 @@
              ]
             ],
             [
+             "near_start",
+             "kitchen_bin",
+             0.03
+            ],
+            [
+             "near_start",
+             "laundry_basket",
+             0.03
+            ],
+            [
              "hand_empty",
              "right"
+            ],
+            [
+             "inside",
+             "dropped_block",
+             "laundry_basket"
             ]
            ]
           }
          }
         },
-        "why": "the spoon picked up, and the bin or the basket lifted off the floor too"
+        "why": "the block dropped into the laundry basket (it is for laundry)"
        }
       ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
+      "not_ok": "the bin or the basket lifted off the floor; a dropped thing left on the floor or put in a wrong kind of place; still held"
      }
     },
-    "dropped_out_of_view": {
+    "toy_box_full": {
      "origin": "v6",
      "control": "spoon_on_floor",
      "layouts": [
-      "dropped_out_of_view"
+      "toy_box_full"
      ],
      "factor": "the seed's layout only",
      "seeds": {
-      "10": "dropped_out_of_view",
-      "11": "dropped_out_of_view",
-      "12": "dropped_out_of_view",
-      "13": "dropped_out_of_view",
-      "14": "dropped_out_of_view",
-      "15": "dropped_out_of_view",
-      "16": "dropped_out_of_view",
-      "17": "dropped_out_of_view",
-      "18": "dropped_out_of_view",
-      "19": "dropped_out_of_view"
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "the spoon found and on a kitchen counter or the island"
-       }
-      ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
-     }
-    },
-    "only_this_room": {
-     "origin": "v6",
-     "control": "spoon_on_floor",
-     "layouts": [
-      "only_this_room"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "only_this_room",
-      "11": "only_this_room",
-      "12": "only_this_room",
-      "13": "only_this_room",
-      "14": "only_this_room",
-      "15": "only_this_room",
-      "16": "only_this_room",
-      "17": "only_this_room",
-      "18": "only_this_room",
-      "19": "only_this_room"
+      "10": "toy_box_full",
+      "11": "toy_box_full",
+      "12": "toy_box_full",
+      "13": "toy_box_full",
+      "14": "toy_box_full",
+      "15": "toy_box_full",
+      "16": "toy_box_full",
+      "17": "toy_box_full",
+      "18": "toy_box_full",
+      "19": "toy_box_full"
      },
      "scoring": {
       "D": 1,
@@ -155579,14 +155887,116 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "the kitchen spoon picked up, the living-room car left"
+        "why": "the spoon to the kitchen, the block in the empty small bin, the packed toy bin untouched"
        },
        {
-        "name": "second",
-        "score": 0.6,
+        "name": "worst",
+        "score": 0.3,
         "goal": {
          "by_layout": {
-          "only_this_room": {
+          "toy_box_full": {
+           "all": [
+            [
+             "on_any",
+             "dropped_spoon",
+             [
+              "kitchen_counter_2/top",
+              "kitchen_counter_1/top",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             "inside",
+             "bin_teddy",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_car",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_duck",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_block_1",
+             "toy_bin"
+            ],
+            [
+             "inside",
+             "bin_block_2",
+             "toy_bin"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "inside",
+              "dropped_block",
+              "toy_bin"
+             ]
+            ],
+            [
+             [
+              "near_any",
+              "dropped_block",
+              [
+               "toy_bin"
+              ],
+              0.03
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the block pressed onto the packed toy bin"
+       }
+      ],
+      "not_ok": "the toy bin's toys taken out to make room; a dropped thing left on the floor or put in a wrong kind of place; still held"
+     }
+    },
+    "no_toy_box": {
+     "origin": "v6",
+     "control": "spoon_on_floor",
+     "layouts": [
+      "no_toy_box"
+     ],
+     "factor": "the seed's layout only",
+     "seeds": {
+      "10": "no_toy_box",
+      "11": "no_toy_box",
+      "12": "no_toy_box",
+      "13": "no_toy_box",
+      "14": "no_toy_box",
+      "15": "no_toy_box",
+      "16": "no_toy_box",
+      "17": "no_toy_box",
+      "18": "no_toy_box",
+      "19": "no_toy_box"
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the spoon to the kitchen, the block in the small storage bin (the toy box's stand-in)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "no_toy_box": {
            "all": [
             [
              "on_any",
@@ -155600,44 +156010,16 @@
             [
              "hand_empty",
              "right"
+            ],
+            [
+             "not on_floor",
+             "dropped_block"
             ]
            ]
           }
          }
         },
-        "why": "the spoon up, and the car picked up too (outside the kitchen, not asked)"
-       }
-      ],
-      "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
-     }
-    },
-    "dropped_in_two_rooms": {
-     "origin": "v6",
-     "control": "spoon_on_floor",
-     "layouts": [
-      "dropped_in_two_rooms"
-     ],
-     "factor": "the seed's layout only",
-     "seeds": {
-      "10": "dropped_in_two_rooms",
-      "11": "dropped_in_two_rooms",
-      "12": "dropped_in_two_rooms",
-      "13": "dropped_in_two_rooms",
-      "14": "dropped_in_two_rooms",
-      "15": "dropped_in_two_rooms",
-      "16": "dropped_in_two_rooms",
-      "17": "dropped_in_two_rooms",
-      "18": "dropped_in_two_rooms",
-      "19": "dropped_in_two_rooms"
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "the spoon in the kitchen, the pencil on a desk"
+        "why": "the block off the floor but only set down on some surface, not in a container"
        }
       ],
       "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held"
@@ -155664,29 +156046,27 @@
      "category": "task",
      "local": [],
      "longer": [
+      "container_absent",
+      "decoy_destination",
       "goal_items_unstated"
      ]
     },
-    "dropped_out_of_view": {
+    "toy_box_full": {
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "destination_occupied",
+      "multi_object_goal",
+      "storage_place"
      ]
     },
-    "only_this_room": {
+    "no_toy_box": {
      "category": "task",
      "local": [],
      "longer": [
-      "referent_clue"
-     ]
-    },
-    "dropped_in_two_rooms": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "goal_items_unstated",
-      "not_in_view"
+      "container_absent",
+      "multi_object_goal",
+      "storage_place"
      ]
     }
    }

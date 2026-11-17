@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1660 episodes remain (1250 of the 125 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1650 episodes remain (1240 of the 124 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -131,9 +131,8 @@
 | T23 | spoon_on_floor | control | 0/0 of 10 | - |
 | T23 | by_kind | task | 0/0 of 10 | - |
 | T23 | belongs_on_floor | task | 0/0 of 10 | - |
-| T23 | dropped_out_of_view | task | 0/0 of 10 | - |
-| T23 | only_this_room | task | 0/0 of 10 | - |
-| T23 | dropped_in_two_rooms | task | 0/0 of 10 | - |
+| T23 | toy_box_full | task | 0/0 of 10 | - |
+| T23 | no_toy_box | task | 0/0 of 10 | - |
 | T24 | apple_on_table | control | 0/0 of 10 | - |
 | T24 | no_apples_for_him | task | 0/0 of 10 | - |
 | T24 | dinner_soon | task | 0/0 of 10 | - |

@@ -21999,12 +21999,16 @@
    ],
    "moved": [],
    "added": [
+    "dropped_block",
     "dropped_spoon",
     "kitchen_bin",
-    "laundry_basket"
+    "laundry_basket",
+    "spare_bin"
    ],
    "removed": [],
    "conditions": [
+    "container_absent",
+    "decoy_destination",
     "goal_items_unstated"
    ],
    "initial_checks": []
@@ -22020,6 +22024,11 @@
       "kitchen_counter_1/top",
       "kitchen_island/top"
      ]
+    ],
+    [
+     "inside",
+     "dropped_block",
+     "spare_bin"
     ],
     [
      "near_start",
@@ -22039,12 +22048,12 @@
   },
   "control": "spoon_on_floor",
   "oracle_route": "v6_belongs_on_floor",
-  "challenge": "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
-  "rationale": "only what fell is picked up: the bin and the basket belong on the floor and stay",
+  "challenge": "a spoon and a toy block on the kitchen floor, a waste bin and a laundry basket standing next to them (they live on the floor); no toy box in the house; an empty small storage bin on the TV stand",
+  "rationale": "no toy box: the laundry basket at hand is for laundry, not a stand-in; the block into the small bin, the spoon to the counter, the bin and the basket left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/dropped_out_of_view": {
-  "variant": "dropped_out_of_view",
+ "T23_pick_up_dropped/toy_box_full": {
+  "variant": "toy_box_full",
   "category": "task",
   "seeds": [
    10,
@@ -22068,11 +22077,21 @@
    ],
    "moved": [],
    "added": [
-    "dropped_spoon"
+    "bin_block_1",
+    "bin_block_2",
+    "bin_car",
+    "bin_duck",
+    "bin_teddy",
+    "dropped_block",
+    "dropped_spoon",
+    "spare_bin",
+    "toy_bin"
    ],
    "removed": [],
    "conditions": [
-    "not_in_view"
+    "destination_occupied",
+    "storage_place",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
@@ -22089,19 +22108,49 @@
      ]
     ],
     [
+     "inside",
+     "dropped_block",
+     "spare_bin"
+    ],
+    [
+     "inside",
+     "bin_teddy",
+     "toy_bin"
+    ],
+    [
+     "inside",
+     "bin_car",
+     "toy_bin"
+    ],
+    [
+     "inside",
+     "bin_duck",
+     "toy_bin"
+    ],
+    [
+     "inside",
+     "bin_block_1",
+     "toy_bin"
+    ],
+    [
+     "inside",
+     "bin_block_2",
+     "toy_bin"
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_out_of_view",
-  "challenge": "the spoon fell and slid into the dining room next door, out of view from the kitchen",
-  "rationale": "look around until the dropped thing is found, then put it back on the counter",
+  "oracle_route": "v6_toy_box_full",
+  "challenge": "a spoon and a toy block on the kitchen floor; the kid's toy bin on the bedroom bookcase is packed (a teddy sticking out, a car, a duck, two blocks); an empty small storage bin on the TV stand",
+  "rationale": "the toy bin is full: leave the toys in it, the block into the empty small bin; the spoon to the counter",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/only_this_room": {
-  "variant": "only_this_room",
+ "T23_pick_up_dropped/no_toy_box": {
+  "variant": "no_toy_box",
   "category": "task",
   "seeds": [
    10,
@@ -22115,7 +22164,7 @@
    18,
    19
   ],
-  "instruction": "Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": [
@@ -22125,12 +22174,15 @@
    ],
    "moved": [],
    "added": [
+    "dropped_block",
     "dropped_spoon",
-    "living_car"
+    "spare_bin"
    ],
    "removed": [],
    "conditions": [
-    "referent_clue"
+    "container_absent",
+    "storage_place",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
@@ -22147,9 +22199,9 @@
      ]
     ],
     [
-     "near_start",
-     "living_car",
-     0.03
+     "inside",
+     "dropped_block",
+     "spare_bin"
     ],
     [
      "hand_empty",
@@ -22158,77 +22210,9 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_only_this_room",
-  "challenge": "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
-  "rationale": "the instruction names the kitchen: pick up the spoon, leave the car in the living room",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T23_pick_up_dropped/dropped_in_two_rooms": {
-  "variant": "dropped_in_two_rooms",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Some things fell on the floor around the house. Please pick them up and put them where they belong.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": [
-    -1.2,
-    9.4,
-    0.0
-   ],
-   "moved": [],
-   "added": [
-    "dropped_pencil",
-    "dropped_spoon",
-    "homework"
-   ],
-   "removed": [],
-   "conditions": [
-    "goal_items_unstated",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "dropped_spoon",
-     [
-      "kitchen_counter_2/top",
-      "kitchen_counter_1/top",
-      "kitchen_island/top"
-     ]
-    ],
-    [
-     "on_any",
-     "dropped_pencil",
-     [
-      "desk_1/top",
-      "desk_3/top"
-     ]
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_in_two_rooms",
-  "challenge": "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
-  "rationale": "more than one thing fell, in different rooms: look through the house, put each back (the spoon on the counter, the pencil on the desk with the notebook)",
+  "oracle_route": "v6_no_toy_box",
+  "challenge": "a spoon and a toy block on the kitchen floor; no toy box anywhere; an empty small storage bin on the TV stand",
+  "rationale": "the toy box does not exist: put the block into the small bin (not just onto a table); the spoon to the counter",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T24_snack_for_kid/apple_on_table": {

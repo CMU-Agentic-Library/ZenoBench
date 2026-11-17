@@ -1,6 +1,6 @@
 {
- "routes": 288,
- "ok": 288,
+ "routes": 287,
+ "ok": 287,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2761,8 +2761,8 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "belongs_on_floor",
-   "steps": 7,
-   "atoms_checked": 4,
+   "steps": 14,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -2770,33 +2770,23 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "dropped_out_of_view",
-   "steps": 8,
-   "atoms_checked": 2,
+   "layout": "toy_box_full",
+   "steps": 17,
+   "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "dropped_out_of_view"
+   "variant": "toy_box_full"
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "only_this_room",
-   "steps": 7,
+   "layout": "no_toy_box",
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
-   "variant": "only_this_room"
-  },
-  {
-   "task": "T23_pick_up_dropped",
-   "layout": "dropped_in_two_rooms",
-   "steps": 13,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "dropped_in_two_rooms"
+   "variant": "no_toy_box"
   },
   {
    "task": "T24_snack_for_kid",

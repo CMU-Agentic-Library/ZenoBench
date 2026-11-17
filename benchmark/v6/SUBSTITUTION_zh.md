@@ -44,6 +44,10 @@
 | T22 | tray_elsewhere | 缺失 | 没有果篮 → 西边餐厅的托盘（有橙子直接放；被书占满先把书放回书架） |
 | T22 | basket_in_use（新加） | 被占用 | 果篮里装着孩子的积木 → 托盘（苹果混进玩具最差） |
 | T22 | basket_out_of_reach（新加） | 能力不足 | 果篮在 1.41 m 高架子顶上够不着 → 岛台上的托盘 |
+| T23 | by_kind | 可互换（不属四类） | 勺子放哪个厨房台面或岛台都算 |
+| T23 | belongs_on_floor（改） | 缺失 | 没有玩具箱，手边的洗衣篮不是替代品 → 电视柜上的小收纳箱 |
+| T23 | toy_box_full（新加） | 被占用 | 玩具箱塞满（泰迪熊露出）→ 空的小收纳箱 |
+| T23 | no_toy_box（新加） | 缺失 | 没有玩具箱 → 小收纳箱（只放桌面最差） |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 

@@ -363,6 +363,16 @@ def t22():
 
 
 # ================================================================== T23 pick up what was dropped
+# T03 bin_full's packed toy bin (wide storage bin on the bedroom bookcase; the toys' z is absolute)
+TOY_BIN_FULL = {"toy_bin": {"asset": "wide_storage_bin", "support": "bookcase_2/top", "xy": [1.0888, -0.4277], "yaw_deg": 0.0},
+                **{n: {"asset": a, "support": None, "z": 0.718, "xy": [x, y], "yaw_deg": yaw}
+                   for n, a, x, y, yaw in (("bin_teddy", "teddy_bear", 0.999, -0.428, 0.0),
+                                           ("bin_car", "toy_car", 1.119, -0.488, 0.0),
+                                           ("bin_duck", "rubber_duck", 1.179, -0.358, 0.0),
+                                           ("bin_block_1", "wooden_block", 1.189, -0.498, 10.0),
+                                           ("bin_block_2", "wooden_block", 1.089, -0.333, -15.0))}}
+
+
 def t23():
     SP = "dropped_spoon"
     START = (-1.20, 9.40, 0.0)                       # the small kitchen with the counter
@@ -385,45 +395,54 @@ def t23():
                       watch=[SP, "dropped_block", "toy_box"],
                       goal={"all": sgoal + [["inside", "dropped_block", "toy_box"], H]},
                       route=[look(COUNTER)] + back + into("dropped_block", "toy_box"))}),
+        # belongs_on_floor (11-17, substitution: missing, with a wrong stand-in): a spoon and a toy block fell; there
+        # is no toy box; the laundry basket on the floor right by the block looks like it could take it but holds
+        # laundry (it and the waste bin live on the floor and stay); the empty small bin on the TV stand takes it
         "belongs_on_floor": fam(
-            "spoon_on_floor", ["goal_items_unstated"], "the seed's layout only",
-            "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
-            "only what fell is picked up: the bin and the basket belong on the floor and stay",
-            {"": dict(add={**spoon, "kitchen_bin": floor("trash_can", -1.10, 7.25),
-                           "laundry_basket": floor("storage_basket", -1.15, 8.40)},
-                      watch=[SP, "kitchen_bin", "laundry_basket"],
-                      goal={"all": sgoal + [["near_start", "kitchen_bin", 0.03], ["near_start", "laundry_basket", 0.03],
+            "spoon_on_floor", ["container_absent", "decoy_destination", "goal_items_unstated"], "the seed's layout only",
+            "a spoon and a toy block on the kitchen floor, a waste bin and a laundry basket standing next to them "
+            "(they live on the floor); no toy box in the house; an empty small storage bin on the TV stand",
+            "no toy box: the laundry basket at hand is for laundry, not a stand-in; the block into the small bin, "
+            "the spoon to the counter, the bin and the basket left where they are",
+            {"": dict(add={**spoon, "dropped_block": floor("wooden_block", -0.95, 8.10),
+                           "kitchen_bin": floor("trash_can", -1.10, 7.25),
+                           "laundry_basket": floor("storage_basket", -1.15, 8.40),
+                           "spare_bin": on("small_storage_bin", TV, 7.30, 0.40)},
+                      watch=[SP, "dropped_block", "kitchen_bin", "laundry_basket", "spare_bin"],
+                      goal={"all": sgoal + [["inside", "dropped_block", "spare_bin"],
+                                            ["near_start", "kitchen_bin", 0.03], ["near_start", "laundry_basket", 0.03],
                                             H]},
-                      route=[look(COUNTER)] + back)}),
-        "dropped_out_of_view": fam(
-            "spoon_on_floor", ["not_in_view"], "the seed's layout only",
-            "the spoon fell and slid into the dining room next door, out of view from the kitchen",
-            "look around until the dropped thing is found, then put it back on the counter",
-            {"": dict(add={SP: floor("breakfast_spoon", 1.05, 7.50, 30.0)},   # 0.4 m off the wall, not 9 cm
-                      route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")] + back)}),
-        "only_this_room": fam(
-            "spoon_on_floor", ["referent_clue"], "the seed's layout only",
-            "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
-            "the instruction names the kitchen: pick up the spoon, leave the car in the living room",
-            {"": dict(add={**spoon, "living_car": floor("toy_car", 4.36, 1.68)},
-                      watch=[SP, "living_car"], goal={"all": sgoal + [["near_start", "living_car", 0.03], H]},
-                      route=[look(COUNTER)] + back)},
-            instruction="Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
-            instruction_zh="厨房地上掉了东西，帮忙捡起来放好。"),
-        "dropped_in_two_rooms": fam(
-            "spoon_on_floor", ["goal_items_unstated", "not_in_view"], "the seed's layout only",
-            "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
-            "more than one thing fell, in different rooms: look through the house, put each back (the spoon on "
-            "the counter, the pencil on the desk with the notebook)",
-            {"": dict(add={**spoon, "dropped_pencil": floor("pencil", -0.45, -5.55, 20.0),
-                           "homework": on("notebook", DESK, -0.70, -5.95)},
-                      watch=[SP, "dropped_pencil"],
-                      goal={"all": sgoal + [["on_any", "dropped_pencil", [DESK, "desk_3/top"]], H]},
-                      route=[look(COUNTER)] + back + [S("search", object="dropped_pencil", region="living_room_0_1")]
-                      + fetch("dropped_pencil", DESK, [-1.05, -5.95]))},
-            instruction="Some things fell on the floor around the house. Please pick them up and put them where "
-                        "they belong.",
-            instruction_zh="家里地上掉了些东西，帮忙捡起来放好。"),
+                      route=[look(COUNTER)] + back + into("dropped_block", "spare_bin"))}),
+        # toy_box_full (11-17, substitution: in use): the kid's toys are kept in the wide bin on the bedroom bookcase,
+        # packed (the teddy sticks out, T03 bin_full's layout); there is no other toy box; an empty small storage
+        # bin on the TV stand takes the block
+        "toy_box_full": fam(
+            "spoon_on_floor", ["destination_occupied", "storage_place", "multi_object_goal"], "the seed's layout only",
+            "a spoon and a toy block on the kitchen floor; the kid's toy bin on the bedroom bookcase is packed "
+            "(a teddy sticking out, a car, a duck, two blocks); an empty small storage bin on the TV stand",
+            "the toy bin is full: leave the toys in it, the block into the empty small bin; the spoon to the counter",
+            {"": dict(add={**spoon, "dropped_block": floor("wooden_block", -1.00, 8.50), **TOY_BIN_FULL,
+                           "spare_bin": on("small_storage_bin", TV, 7.30, 0.40)},
+                      watch=[SP, "dropped_block", "toy_bin", "spare_bin", *TOY_BIN_FULL],
+                      goal={"all": sgoal + [["inside", "dropped_block", "spare_bin"]]
+                            + [["inside", n, "toy_bin"] for n in TOY_BIN_FULL if n != "toy_bin"] + [H]},
+                      route=[look(COUNTER)] + back + [nav("dropped_block"), pick("dropped_block"),
+                                                      S("search", object="toy_bin", region="bedroom_0_1"),
+                                                      nav("bookcase_2/top"), look("bookcase_2/top"),
+                                                      nav("spare_bin"), place("dropped_block", "spare_bin")])}),
+        # no_toy_box (11-17, substitution: missing): there is no toy box in the house; an empty small storage bin on
+        # the TV stand holds the block instead
+        "no_toy_box": fam(
+            "spoon_on_floor", ["container_absent", "storage_place", "multi_object_goal"], "the seed's layout only",
+            "a spoon and a toy block on the kitchen floor; no toy box anywhere; an empty small storage bin on the TV "
+            "stand",
+            "the toy box does not exist: put the block into the small bin (not just onto a table); the spoon to the "
+            "counter",
+            {"": dict(add={**spoon, "dropped_block": floor("wooden_block", -1.00, 8.50),
+                           "spare_bin": on("small_storage_bin", TV, 7.30, 0.40)},
+                      watch=[SP, "dropped_block", "spare_bin"],
+                      goal={"all": sgoal + [["inside", "dropped_block", "spare_bin"], H]},
+                      route=[look(COUNTER)] + back + into("dropped_block", "spare_bin"))}),
     }
     return t, fams
 
