@@ -47,8 +47,7 @@ def execute(act, seg):
             act.wait(seg.action[1])
             return
         if what == "head":                      # aim the head camera; the arms, base and hands stay
-            # not declared: the contact monitor watches the arms, the base and what the hands hold, none of
-            # which moves -- the motion before it keeps its Allow (a contact it allowed is still allowed)
+            act.declare(seg.name, seg.spec.allow, side=seg.info.get("side", "right"), follows=False)
             _, yaw, pitch, steps = seg.action
             act.aim_head(yaw, pitch, steps)
             return

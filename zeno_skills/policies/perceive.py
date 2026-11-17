@@ -1,6 +1,6 @@
 """Head-camera and gesture policies.
 
-policy_068 LookAtPolicy        aim head yaw/pitch at a target; record what is in view
+policy_068 LookAtPolicy        aim head yaw/pitch at a target (the look skill); record what is in view
 policy_069 ExploreRoomPolicy   visit stand-off poses in a room and sweep the head; counts furniture
 policy_116 ExploreFurniturePolicy  aim the head at every support layer (shelf, top) of one piece of furniture
 policy_117 ViewSupportPolicy  stand where one head camera frame holds a whole support surface, aim at it
@@ -29,32 +29,49 @@ from ..perception import (HEAD_LIMITS, look_angles, project_to_head_camera,
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
 from ..rig import SkillFailure
-from ..tolerances import COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z
+from ..tolerances import (COVER_MIN_AREA, COVER_MIN_CLEARANCE, COVER_OK, COVER_Z, LOOK_STEPS, SEARCH_AIM_SPACING_M,
+                          SEARCH_STEPS, SWEEP_PITCH, SWEEP_STEPS, SWEEP_YAWS, VIEW_TURNS)
 
-# Exploration (ExploreRoomPolicy, ExploreFurniturePolicy).  What it counts and when it succeeds: tolerances
-# (COVER_*).  How it looks -- execution parameters and a budget, not thresholds -- here; inherited (5df416bf),
-# unmeasured: docs/COLLISION_PLAN.md §8.
-VIEW_TURNS = (0.0, 180.0)       # deg the base turns at each room viewpoint (look both ways)
-SWEEP_YAWS = (-1.0, -0.5, 0.0, 0.5, 1.0)   # rad: head yaws of a sweep...
-SWEEP_PITCH = 0.3               # rad: ...at this pitch (positive looks down)...
-SWEEP_STEPS = 50                # ...each reached in this many ticks
-VIEW_TRIES = 3                  # navigates a furniture exploration may try per view it wants
-SEARCH_AIM_SPACING_M = 0.6      # m between the points search aims at along a long support (chosen, 5e962d8f: one look
-                                # at the centre of counter_2, 2.47 m long, left a pot at its end 52 deg off the axis)
+# Exploration and search: what counts, when it succeeds, and the sweep's angles and ticks are in tolerances
+# (inherited, unmeasured: docs/COLLISION_PLAN.md §8).  Every head motion here is a look (run_skill: the look
+# skill's plan of head segments, skill_plans/look.py); these policies are the task layer that chooses where
+# to stand and what to aim at, and judges what was seen.
+SWEEP = tuple(("head", y, SWEEP_PITCH, SWEEP_STEPS) for y in SWEEP_YAWS)
+HEAD_HOME = (("head", 0.0, 0.0, LOOK_STEPS),)
 
 
-def head_segment(rig, yaw, pitch, steps=90, name="head"):
-    """The head aimed at (yaw, pitch) rad as a plan segment: an action, nothing else moves
-    (run.execute -> Actuator.aim_head)."""
-    from ..motion_state import Segment, Spec
-    return Segment(name, Spec(), np.asarray(rig.q(), float), kind="action",
-                   action=("head", float(yaw), float(pitch), int(steps)))
+def head_segment(rig, yaw, pitch, steps=LOOK_STEPS, name="head"):
+    """The head aimed at (yaw, pitch) rad as a plan segment (skill_plans.look.head_segment)."""
+    from ..skill_plans.look import head_segment as seg
+    return seg(rig.q(), yaw, pitch, steps, name)
 
 
-def drive_head(rig, yaw, pitch, steps=90):
-    """Aim the head (head_segment, executed by run.execute like every other motion of a skill)."""
+def drive_head(rig, yaw, pitch, steps=LOOK_STEPS):
+    """One head segment run by run.execute, outside any skill's plan: for the skills not migrated yet that
+    still turn the head on their own (present, a stir's peek) and run_skill's head-straight step."""
     from ..run import execute
     execute(rig, head_segment(rig, yaw, pitch, steps))
+
+
+def look(rig, aims, face=None, label="look", on_view=None):
+    """Run the look skill (motion_skills.run_skill): [the base turned to heading ``face``], then the head at
+    each of ``aims`` (skill_plans.look.head_aims); ``on_view(rig, what)`` after each head segment."""
+    from ..motion_skills import SKILLS, run_skill
+    return run_skill(rig, SKILLS["look"], {"aims": list(aims), "face": face, "label": label, "on_view": on_view})
+
+
+def aim_at(name, p, steps=LOOK_STEPS):
+    return ("point", name, [float(v) for v in p], int(steps))
+
+
+def facing_for(rig, p):
+    """The heading (deg) to turn the base to so the head can centre ``p``, or None when its yaw is within
+    the head's range from here."""
+    yaw, _ = look_angles(rig, p)
+    if abs(yaw) < HEAD_LIMITS["head_yaw_joint"][1] - 0.02:
+        return None
+    x, y, _ = rig.base_pose()
+    return math.degrees(math.atan2(p[1] - y, p[0] - x))
 
 
 def record_view(rig):
@@ -77,18 +94,13 @@ def record_view(rig):
 
 
 class LookAtPolicy(AtomicPolicy):
-    """Aim the head camera at a target; turn the base first if the bearing
-    exceeds the head yaw range."""
+    """Aim the head camera at a target (the look skill); the base turns toward it first when the
+    bearing exceeds the head yaw range (the look's plan: navigate's turn, then the head)."""
 
     def execute(self, target):
         rig = self.rig
         p = entity_point(rig, target)
-        yaw, pitch = look_angles(rig, p)
-        if abs(yaw) >= HEAD_LIMITS["head_yaw_joint"][1] - 0.02:
-            from .base_motion import FaceTargetPolicy
-            FaceTargetPolicy(rig).execute(target)
-            yaw, pitch = look_angles(rig, p)
-        drive_head(rig, yaw, pitch)
+        look(rig, [aim_at(target, p)], face=facing_for(rig, p), label="look")
         ok, detail = project_to_head_camera(rig, p, exclude=target)
         seen = record_view(rig)
         rig.log("look_result", target=target, visible=ok, detail=detail, seen=seen)
@@ -98,13 +110,37 @@ class LookAtPolicy(AtomicPolicy):
         return {"visible": True, "seen": seen}
 
 
-class ExploreRoomPolicy(AtomicPolicy):
-    """Cover a room: from up to ``max_views`` stand-off poses sweep the head
-    left/centre/right; coverage = fraction of the room's furniture (and, outside
-    the benchmark, objects) seen.  A piece of furniture counts once, as soon as
-    one of its support layers is in view; every layer is explore_furniture's job."""
+def _travel_tw(rig):
+    """Torso and waist the base arrives with (skills._rest_posture): where a stand-off's camera will be."""
+    return dict(zip(rig.kin.names[:2], (float(q) for q in skills._rest_posture(rig)[0][:2])))
 
-    def execute(self, room, *, max_views=6, min_spacing=1.6):
+
+def _predicted(rig, pose, targets, tw):
+    """{target: its first point in view from ``pose``} (perception.in_view_from: the head aimed at the point,
+    the frustum, walls and furniture boxes -- no dynamic occluders)."""
+    from ..perception import in_view_from
+    out = {}
+    for k, pts in targets.items():
+        for p, _ in pts:
+            if in_view_from(rig, pose, p, tw)[0]:
+                out[k] = p
+                break
+    return out
+
+
+class ExploreRoomPolicy(AtomicPolicy):
+    """Cover a room: coverage = fraction of the room's furniture (and, outside the benchmark, objects)
+    seen.  A piece of furniture counts once, as soon as one of its support layers is in view; every layer
+    is explore_furniture's job.
+
+    The viewpoints are decided first, from one goal set: the room's own spots and the stand-offs of its
+    furniture (base_motion.standoff_poses), those the base can get to (one base_reachable field), each with
+    the targets predicted in view from it (_predicted); then a greedy cover -- the viewpoint that adds the
+    most targets not covered yet, the nearer on a tie -- up to ``max_views``.  At each: navigate there, a
+    look at the targets it was chosen for and a sweep (SWEEP), and a look the other way (VIEW_TURNS: the
+    base turned, a sweep).  A drive or a turn that fails fails the exploration (no next viewpoint)."""
+
+    def execute(self, room, *, max_views=6):
         rig = self.rig
         from ..evaluator import room_of
         from .base_motion import standoff_poses
@@ -135,109 +171,53 @@ class ExploreRoomPolicy(AtomicPolicy):
             # the viewpoints are checked in the posture the drives carry the load in (as navigate_place does)
             from ..skill_jobs.carry import carry_posture
             carry_posture(rig, min_bottom_z=None)
-        poses = standoff_poses(rig, room)
-        if not poses:
+        # one goal set: the room's spots and its furniture's stand-offs (1116 T26 two_bedrooms: the base gets
+        # into bedroom_0_0 only by its door, 59 of its 1780 free cells, where none of the ring spots lies but
+        # furniture stand-offs do)
+        furn = sorted({k.split(":", 1)[1] for k in targets if k.startswith("furniture:")})
+        cands = list(dict.fromkeys(list(standoff_poses(rig, room)) + [p for f in furn for p in standoff_poses(rig, f)]))
+        if not cands:
             raise SkillFailure(f"explore {room}: no free viewpoint")
-        # the viewpoints are one goal set: those the base can get to from here (one field over all of them,
-        # skills.base_reachable, as navigate_place has it), not tried in turn -- 1116 T26 two_bedrooms drove
-        # to none of the 5 picked from every free pose (coverage 0)
-        ok = skills.base_reachable(rig, poses)
-        reach = [p for p, o in zip(poses, ok) if o]
-        rig.log("explore_goals", room=room, goals=len(poses), reachable=len(reach))
-        of = None
-        if not reach:
-            # a room the base gets into only a corner of (1116 T26 two_bedrooms: bedroom_0_0, 59 of its
-            # 1780 free cells reachable, in a strip by the door; none of its 83 ring spots there): the
-            # stand-offs of its furniture the base can get to and the furniture is in view from -- where
-            # navigate_place would stand to look at it (base_motion._in_view_poses)
-            from .base_motion import _in_view_poses
-            furn = sorted({k.split(":", 1)[1] for k in targets if k.startswith("furniture:")})
-            near = [(f, p) for f in furn for p in standoff_poses(rig, f)]
-            ok = skills.base_reachable(rig, [p for _, p in near]) if near else []
-            of = {}             # stand-off -> the furniture it is for
-            for f in furn:
-                for p in _in_view_poses(rig, f, [q for (g, q), o in zip(near, ok) if o and g == f]):
-                    of.setdefault(p, f)
-            reach = list(of)
-            rig.log("explore_goals", room=room, furniture_standoffs=len(near), reachable=sum(ok), in_view=len(reach))
-        if not reach:
-            raise SkillFailure(f"explore {room}: no base path to any of {len(poses)} viewpoints "
-                               "(even the column's inscribed circle cannot get there)")
+        ok = skills.base_reachable(rig, cands)
+        tw = _travel_tw(rig)
+        pred = {p: _predicted(rig, p, targets, tw) for p, o in zip(cands, ok) if o}
+        pred = {p: v for p, v in pred.items() if v}
+        rig.log("explore_goals", room=room, goals=len(cands), reachable=sum(ok), seeing=len(pred))
+        if not pred:
+            raise SkillFailure(f"explore {room}: no viewpoint the base can get to sees any of it "
+                               f"({sum(ok)} of {len(cands)} reachable)")
+        # the greedy cover, decided before the robot moves (docs rule 8)
+        chosen, covered = [], set()
+        x, y, _ = rig.base_pose()
+        while len(chosen) < max_views:
+            best = max(pred, key=lambda p: (len(set(pred[p]) - covered), -math.hypot(p[0] - x, p[1] - y)))
+            if not set(pred[best]) - covered:
+                break
+            chosen.append(best)
+            covered |= set(pred[best])
+            x, y = best[0], best[1]
+        rig.log("explore_views", room=room, views=[[round(v, 2) for v in p] for p in chosen],
+                predicted=len(covered), targets=len(targets))
         seen, viewed = set(), set()
-        visited = 0
 
-        def mark():
-            viewed.update(record_view(rig))
+        def mark(r, what):
+            viewed.update(record_view(r))
             for k, pts in targets.items():
-                if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
+                if k not in seen and any(project_to_head_camera(r, p, exclude=n)[0] for p, n in pts):
                     seen.add(k)
 
-        def look_around(aim=None):
-            for p, _ in targets.get(aim, ()):       # the furniture this view is for: the head at each layer
-                drive_head(rig, *look_angles(rig, p))
-                mark()
-            for turn in VIEW_TURNS:
-                if turn:
-                    bx, by, byaw = rig.base_pose()
-                    try:
-                        skills.straight_base_move(rig, (bx, by, byaw + turn), f"explore_{room}_turn")
-                    except SkillFailure:
-                        continue
-                for yaw in SWEEP_YAWS:
-                    drive_head(rig, yaw, SWEEP_PITCH, steps=SWEEP_STEPS)
-                    mark()
-
-        def go(pose):
-            try:
-                skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
-                return True
-            except SkillFailure as exc:
-                rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
-                return False
-
-        if of is None:
-            poses = reach
-            # farthest-point sampling over the reachable poses spreads the viewpoints
-            chosen = [poses[0]]
-            while len(chosen) < max_views:
-                best = max(poses, key=lambda p: min(math.hypot(p[0] - q[0], p[1] - q[1]) for q in chosen))
-                if min(math.hypot(best[0] - q[0], best[1] - q[1]) for q in chosen) < min_spacing:
-                    break
-                chosen.append(best)
-            # visit in a greedy nearest-next order
-            x, y, _ = rig.base_pose()
-            order, rest = [], list(chosen)
-            while rest:
-                nxt = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
-                order.append(nxt)
-                rest.remove(nxt)
-                x, y = nxt[0], nxt[1]
-            for pose in order:
-                if go(pose):
-                    visited += 1
-                    look_around()
-        else:
-            # from the furniture's stand-offs: the nearest stand-off of a piece not seen yet, each time, the
-            # head aimed at that piece first (where its in-view test aimed it) -- spread viewpoints left 3 of
-            # bedroom_0_0's 8 targets unseen (coverage 0.62), sweeps alone at its stand-offs 6 of 8 (0.38).
-            # One view per piece: one it is still not seen from is not driven to again.
-            tried, done = set(), set()
-            while visited < max_views and len(tried) < VIEW_TRIES * max_views:
-                x, y, _ = rig.base_pose()
-                rest = [p for p, f in of.items() if p not in tried and f not in done and "furniture:" + f not in seen]
-                if not rest:
-                    break
-                pose = min(rest, key=lambda p: math.hypot(p[0] - x, p[1] - y))
-                tried.add(pose)
-                if go(pose):
-                    visited += 1
-                    done.add(of[pose])
-                    look_around("furniture:" + of[pose])
-        drive_head(rig, 0.0, 0.0)
+        for i, pose in enumerate(chosen):
+            skills.navigate(rig, pose, label=f"explore_{room}", raise_load=rig.held is None)
+            aims = [aim_at(k, p) for k, p in pred[pose].items() if k not in seen]
+            look(rig, aims + list(SWEEP), label=f"explore_{room}_{i}", on_view=mark)
+            heading = rig.base_pose()[2]
+            for t, turn in enumerate(VIEW_TURNS[1:]):
+                look(rig, SWEEP, face=heading + turn, label=f"explore_{room}_{i}_back{t}", on_view=mark)
+        look(rig, HEAD_HOME, label=f"explore_{room}_home")
         cov = len(seen) / len(targets)
         memory(rig)["explored"][room] = max(cov, memory(rig)["explored"].get(room, 0.0))
         furniture = sorted(k.split(":", 1)[1] for k in seen if k.startswith("furniture:"))
-        rig.log("explore_result", room=room, coverage=round(cov, 3), views=visited, targets=len(targets),
+        rig.log("explore_result", room=room, coverage=round(cov, 3), views=len(chosen), targets=len(targets),
                 furniture=furniture)
         if cov < COVER_OK:
             raise SkillFailure(f"explore {room}: coverage {cov:.2f}")
@@ -271,15 +251,13 @@ def _board_blocks(cam, point, layers, thick=0.02):
 
 class ExploreFurniturePolicy(AtomicPolicy):
     """Look at every support layer of one piece of furniture (each shelf, the top,
-    a cabinet's inside shelves): sweep from where the robot stands when it is
-    already near, else from up to ``max_views`` stand-off poses the base can get to
-    and the furniture is in view from (navigate_place's goal set), aiming the head
-    at each layer not seen yet, and again with the torso lowered
-    (empty hand only) for the layers still hidden, e.g. a bottom shelf behind the
-    front edge of the shelf above it.  A layer is seen when the space just above
-    its board is in the head camera and no board of the furniture is in the way.
-    Succeeds only when every layer was seen; a closed cabinet door hides its
-    inside layers."""
+    a cabinet's inside shelves): a look at each layer not seen yet from where the robot stands when it is
+    already near, else from up to ``max_views`` stand-off poses the base can get to and the furniture is in
+    view from (navigate_place's goal set, base_motion._in_view_poses), at least ``min_spacing`` apart, and
+    again with the torso lowered (empty hand only) for the layers still hidden, e.g. a bottom shelf behind
+    the front edge of the shelf above it.  A layer is seen when the space just above its board is in the
+    head camera and no board of the furniture is in the way.  Succeeds only when every layer was seen; a
+    closed cabinet door hides its inside layers.  A drive that fails fails it (no next stand-off)."""
 
     def execute(self, furniture, *, max_views=3, min_spacing=0.4):
         rig = self.rig
@@ -292,37 +270,39 @@ class ExploreFurniturePolicy(AtomicPolicy):
         targets = {s_["name"]: _layer_point(s_) for s_ in layers}
         seen, objects = set(), set()
 
-        def sweep_once():
-            for name, p in targets.items():
-                if name in seen:
-                    continue
-                drive_head(rig, *look_angles(rig, p))
-                objects.update(record_view(rig))
-                cam = rig_head_pose(rig)[0]
-                seen.update(n for n, q in targets.items() if n not in seen
-                            and project_to_head_camera(rig, q, exclude=n)[0] and not _board_blocks(cam, q, layers))
+        def mark(r, what):
+            objects.update(record_view(r))
+            cam = rig_head_pose(r)[0]
+            seen.update(n for n, q in targets.items() if n not in seen
+                        and project_to_head_camera(r, q, exclude=n)[0] and not _board_blocks(cam, q, layers))
 
-        def sweep():
-            sweep_once()
+        def look_once(label):
+            aims = [aim_at(n, p) for n, p in targets.items() if n not in seen]
+            if aims:
+                look(rig, aims, label=label, on_view=mark)
+
+        def sweep(label):
+            look_once(label)
             if len(seen) == len(targets) or rig.held is not None:
                 return
+            # the crouch: posture skills, not migrated yet (9.3 step 5)
             idx = rig.kin.names.index("torso_lift_joint")
             q0 = min(max(float(rig.q()[idx]), float(rig.kin.lo[idx])), float(rig.kin.hi[idx]))   # measured: may sit past a limit
             try:
                 LowerTorsoPolicy(rig).execute()
-                sweep_once()
+                look_once(label + "_low")
             except SkillFailure as exc:
                 rig.log("explore_crouch_skip", reason=str(exc))
             finally:
-                drive_head(rig, 0.0, 0.0)
+                look(rig, HEAD_HOME, label=label + "_home")
                 SetTorsoHeightPolicy(rig).execute(q0)
 
         box = entity_footprint(rig, furniture)
         x, y, _ = rig.base_pose()
         here = math.hypot(max(box[0] - x, 0.0, x - box[2]), max(box[1] - y, 0.0, y - box[3])) <= NEAR_M
-        views, tries = [], 0
+        views = []
         if here:
-            sweep()
+            sweep(f"explore_{furniture}_here")
             views.append((x, y))
         if len(seen) < len(targets):
             if rig.held is not None:
@@ -331,7 +311,7 @@ class ExploreFurniturePolicy(AtomicPolicy):
                 carry_posture(rig, min_bottom_z=None)
             # the views are one goal set, as navigate_place has it: the stand-offs the base can get to (one
             # base_reachable field) the furniture is in view from (its top or any layer, the head aimed as look
-            # aims it: walls and furniture boxes; base_motion._in_view_poses), nearest first
+            # aims it: walls and furniture boxes), nearest first
             poses = standoff_poses(rig, furniture)
             ok = skills.base_reachable(rig, poses) if poses else []
             cands = _in_view_poses(rig, furniture, [p for p, o in zip(poses, ok) if o])
@@ -340,19 +320,14 @@ class ExploreFurniturePolicy(AtomicPolicy):
         else:
             cands = []
         for pose in cands:
-            if len(seen) == len(targets) or len(views) - here >= max_views or tries >= VIEW_TRIES * max_views:
+            if len(seen) == len(targets) or len(views) - here >= max_views:
                 break
             if any(math.hypot(pose[0] - vx, pose[1] - vy) < min_spacing for vx, vy in views):
                 continue
-            tries += 1
-            try:
-                skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=rig.held is None)
-            except SkillFailure as exc:
-                rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
-                continue
+            skills.navigate(rig, pose, label=f"explore_{furniture}", raise_load=rig.held is None)
             views.append(tuple(rig.base_pose()[:2]))
-            sweep()
-        drive_head(rig, 0.0, 0.0)
+            sweep(f"explore_{furniture}_{len(views)}")
+        look(rig, HEAD_HOME, label=f"explore_{furniture}_end")
         cov = len(seen) / len(targets)
         memory(rig)["explored"][furniture] = max(cov, memory(rig)["explored"].get(furniture, 0.0))
         missing = [n for n in targets if n not in seen]
@@ -406,7 +381,7 @@ class ViewSupportPolicy(AtomicPolicy):
                             raise_load=rig.held is None)
             # the pose the base reached: aim again from there
             cov, yaw, pitch = view_coverage(rig, s, tuple(rig.base_pose()), tw)
-        drive_head(rig, yaw, pitch)
+        look(rig, [("head", yaw, pitch, LOOK_STEPS)], label=f"view_{support}")
         record_view(rig)
         rig.log("view_support", support=support, pose=[round(v, 3) for v in rig.base_pose()],
                 coverage=round(cov, 3), head=[round(yaw, 3), round(pitch, 3)])
@@ -445,19 +420,20 @@ def _search_aims(support, base_xy):
 
 
 class SearchObjectPolicy(AtomicPolicy):
-    """Look for an object at candidate places in order of distance until it is
-    seen.  Candidates are the supports of the region (a room, or the robot's room), grouped by
-    furniture; navigate takes the base to a stand-off the furniture is in view from (base_motion._in_view_poses),
-    and there the head is aimed at every support, highest first, and along a long support at
-    several points (_search_aims), nearest first.  A piece of furniture counts as visited only when the
-    base got there and some aim point was in the head camera (walls and furniture boxes, no dynamic
-    occluders); the failure names the ones it could not get to or not see from where it stood."""
+    """Look for an object at candidate places in order of distance until it is seen.  Candidates are the
+    supports of the region (a room, or the robot's room), grouped by furniture.  Where to stand is decided
+    first, as one goal set: per piece, the first stand-off navigate_place would take -- one the base can get
+    to (one base_reachable field over all of them) the furniture is in view from (base_motion._in_view_poses);
+    a piece with none is not driven to and the failure names it.  At each piece a look per aim point (every
+    support, highest first; along a long one several points, _search_aims), until the object is seen.  A
+    drive that fails fails the search.  A piece counts as visited when some aim point was in the head camera
+    there (walls and furniture boxes, no dynamic occluders)."""
 
     def execute(self, name, region=None):
         rig = self.rig
         from ..evaluator import room_of
         from ..perception import project_from
-        from .base_motion import NavigateToPlacePolicy
+        from .base_motion import _in_view_poses, standoff_poses
         x, y, _ = rig.base_pose()
         room = region or room_of(rig.ann.rooms, (x, y))
         furniture = {}
@@ -471,30 +447,48 @@ class SearchObjectPolicy(AtomicPolicy):
             math.hypot((s["aabb_xy"][0] + s["aabb_xy"][2]) / 2 - x, (s["aabb_xy"][1] + s["aabb_xy"][3]) / 2 - y)
             for s in furniture[f]))
         named = {s.get("furniture") for s in rig.ann.supports}
-        visited, unreachable, unviewable = [], [], []
+        place = {f: (f if f in named else furniture[f][0]["name"]) for f in order}
+        if rig.held is not None:
+            # the stand-offs are checked in the posture the drives carry the load in (as navigate_place)
+            from ..skill_jobs.carry import carry_posture
+            carry_posture(rig, min_bottom_z=None)
+        stand = {f: standoff_poses(rig, place[f]) for f in order}
+        flat = [(f, p) for f in order for p in stand[f]]
+        ok = skills.base_reachable(rig, [p for _, p in flat]) if flat else []
+        goal, unreachable = {}, []
         for f in order:
-            try:
-                NavigateToPlacePolicy(rig).execute(f if f in named else furniture[f][0]["name"])
-            except SkillFailure as exc:
+            seeing = _in_view_poses(rig, place[f], [p for (g, p), o in zip(flat, ok) if o and g == f])
+            if seeing:
+                goal[f] = seeing[0]
+            else:
                 unreachable.append(f)
-                rig.log("search_skip", place=f, reason=str(exc))
+        rig.log("search_goals", obj=name, furniture=len(order), reachable_in_view=len(goal), none=unreachable)
+        visited, unviewable = [], []
+        for f in order:
+            if f not in goal:
                 continue
-            in_view = False
+            rig.caption = f"SEARCH {name}: {f}"
+            skills.navigate(rig, goal[f], label=f"search_{f}", raise_load=rig.held is None)
+            in_view, found = [False], [None]
+
+            def check(r, p):
+                record_view(r)
+                in_view[0] = in_view[0] or project_from(r, *rig_head_pose(r), p)[0]
+                if project_to_head_camera(r, r.geo.centre(name, r.state()), exclude=name)[0]:
+                    found[0] = True
+
             for s in sorted(furniture[f], key=lambda s: -s["z"]):
                 for p in _search_aims(s, rig.base_pose()[:2]):
-                    yaw, pitch = look_angles(rig, p)
-                    drive_head(rig, yaw, pitch, steps=60)
-                    record_view(rig)
-                    in_view = in_view or project_from(rig, *rig_head_pose(rig), p)[0]
-                    c = rig.geo.centre(name, rig.state())
-                    if project_to_head_camera(rig, c, exclude=name)[0]:
-                        found = rig.geo.support_under(name, rig.state())
-                        found_on = found["name"] if found else None
+                    look(rig, [aim_at(s["name"], p, SEARCH_STEPS)], label=f"search_{f}",
+                         on_view=lambda r, what, p=p: check(r, p))
+                    if found[0]:
+                        sup = rig.geo.support_under(name, rig.state())
+                        found_on = sup["name"] if sup else None
                         memory(rig)["observed"][name] = rig.tick
                         visited.append(f)
                         rig.log("search_result", obj=name, found_on=found_on, visited=visited)
                         return {"found_on": found_on, "visited": visited}
-            if in_view:
+            if in_view[0]:
                 visited.append(f)
             else:
                 unviewable.append(f)
@@ -504,7 +498,7 @@ class SearchObjectPolicy(AtomicPolicy):
         if unviewable:
             why += f"; not in view from where the base stood: {unviewable}"
         if unreachable:
-            why += f"; no base path to: {unreachable}"
+            why += f"; no stand-off the base can get to sees: {unreachable}"
         raise SkillFailure(why)
 
 
@@ -604,12 +598,7 @@ class InspectReceptaclePolicy(AtomicPolicy):
             inside = objects_on_support(rig, receptacle if kind != "appliance" else receptacle + "/top", st)
         else:
             raise SkillFailure(f"inspect {receptacle}: unsupported receptacle kind {kind}")
-        yaw, pitch = look_angles(rig, p)
-        if abs(yaw) >= HEAD_LIMITS["head_yaw_joint"][1] - 0.02:
-            from .base_motion import FaceTargetPolicy
-            FaceTargetPolicy(rig).execute(receptacle)
-            yaw, pitch = look_angles(rig, p)
-        drive_head(rig, yaw, pitch)
+        look(rig, [aim_at(receptacle, p)], face=facing_for(rig, p), label=f"inspect_{receptacle}")
         ok, detail = project_to_head_camera(rig, p, exclude=receptacle)
         record_view(rig)
         visible = [n for n in inside if project_to_head_camera(rig, rig.geo.centre(n, rig.state()), exclude=n)[0]]

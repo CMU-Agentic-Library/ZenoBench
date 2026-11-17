@@ -33,6 +33,8 @@ from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
 
+COUNT_YAWS = (-0.9, -0.3, 0.3, 0.9)     # rad: the head yaws count looks along (inherited, unmeasured)
+
 
 def _park_diag():
     from ..planner import LAST_PARK_DIAG
@@ -301,17 +303,18 @@ class MeasureObjectPolicy(AtomicPolicy):
 
 class CountCategoryPolicy(AtomicPolicy):
     def execute(self, category):
-        from .perceive import drive_head
+        from .perceive import look
         rig = self.rig
         seen = set()
-        for yaw in (-0.9, -0.3, 0.3, 0.9):
-            drive_head(rig, yaw, 0.25, steps=60)
-            st = rig.state()
-            for n, o in rig.ann.objects.items():
-                tags = set(rig.ann.asset_of(o).get("tags", [])) | {o["asset"]}
-                if category in tags and project_to_head_camera(rig, rig.geo.centre(n, st), exclude=n)[0]:
+
+        def count(r, what):
+            st = r.state()
+            for n, o in r.ann.objects.items():
+                tags = set(r.ann.asset_of(o).get("tags", [])) | {o["asset"]}
+                if category in tags and project_to_head_camera(r, r.geo.centre(n, st), exclude=n)[0]:
                     seen.add(n)
-        drive_head(rig, 0.0, 0.0, steps=40)
+        look(rig, [("head", yaw, 0.25, 60) for yaw in COUNT_YAWS], label=f"count_{category}", on_view=count)
+        look(rig, [("head", 0.0, 0.0, 40)], label=f"count_{category}_home")
         _mem(rig, "counted")[category] = {"count": len(seen), "objects": sorted(seen)}
         for n in seen:
             memory(rig)["observed"][n] = rig.tick

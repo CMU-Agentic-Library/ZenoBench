@@ -138,7 +138,8 @@ def run_skill(rig, skill, args):
     from .rig import SkillFailure
     from .skill_jobs.base import RigBase
     from .skills import _at_park
-    _head_straight(rig, skill)
+    if skill.shape != "perceive":         # a look plans no arm motion: its head goes where it aims
+        _head_straight(rig, skill)
     state = observe(rig)
     job = skill.job(rig, args, state, skill)
     if skill.park != (job.problem is not None):

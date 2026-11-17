@@ -213,10 +213,9 @@ class FaceTargetPolicy(AtomicPolicy):
         delta = (bearing - yaw + 180) % 360 - 180
         if abs(delta) <= tolerance_deg:
             return yaw
-        if rig.held is None and rig.left_held is None:
-            if not rig.tuck():
-                raise SkillFailure(f"face {target}: cannot fold the arm before turning")
-        skills.straight_base_move(rig, (x, y, bearing), f"face {target}")
+        # navigate's plan to the same place at the new heading: an empty arm into its travel posture
+        # (free_leg to {fold, hang}, as rig.tuck did), the drive, the arrival anchor
+        skills.navigate(rig, (x, y, bearing), label=f"face {target}", raise_load=False)
         x2, y2, yaw2 = rig.base_pose()
         err = abs((bearing - yaw2 + 180) % 360 - 180)
         rig.log("face_result", target=target, yaw_deg=round(yaw2, 1), error_deg=round(err, 1))

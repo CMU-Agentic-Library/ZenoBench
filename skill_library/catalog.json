@@ -515,6 +515,16 @@
     "skill_id": "skill_001"
    },
    {
+    "name": "look",
+    "shape": "perceive",
+    "template": "plan_look",
+    "park": false,
+    "arrive": "fold_or_carry",
+    "travel": "fold_or_carry",
+    "job": "zeno_skills.skill_jobs.look:look_job",
+    "skill_id": "skill_011"
+   },
+   {
     "name": "pick",
     "shape": "pick_place",
     "template": "plan_pick",

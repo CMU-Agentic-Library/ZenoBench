@@ -16,7 +16,8 @@ thresholds, what a skill's hooks judge a pick / place / door by, and the executi
 Not here: execution parameters (speeds, smooth, steps_per_wp: Segment.info), search budgets and
 costs (park_search, skills), the task predicates' thresholds (predicates.py: the evaluation, not the
 motion), and the old code's own thresholds (skills, policies) -- those go with the migration of what
-uses them (the perception skills': 11-16, the last section)."""
+uses them (the perception skills': 11-16, the last section -- with their sweep's head angles and ticks: a look's
+plan takes them as aims, there is no Segment.info to hold them yet)."""
 
 from __future__ import annotations
 
@@ -256,3 +257,15 @@ COVER_MIN_CLEARANCE = _t("COVER_MIN_CLEARANCE", 0.3, "m", "inherited (5df416bf),
                          "much free height above them")
 COVER_OK = _t("COVER_OK", 0.75, "1", "inherited (5df416bf), unmeasured: the fraction of its targets a room "
               "exploration must see to succeed")
+VIEW_TURNS = _t("VIEW_TURNS", (0.0, 180.0), "deg", "inherited (5df416bf), unmeasured: the base headings, relative to "
+                "where it arrived, a room viewpoint sweeps from (look both ways)")
+SWEEP_YAWS = _t("SWEEP_YAWS", (-1.0, -0.5, 0.0, 0.5, 1.0), "rad", "inherited (5df416bf), unmeasured: the head yaws of "
+                "a room sweep...")
+SWEEP_PITCH = _t("SWEEP_PITCH", 0.3, "rad", "inherited (5df416bf), unmeasured: ...at this pitch (positive looks down)...")
+SWEEP_STEPS = _t("SWEEP_STEPS", 50, "ticks", "inherited (5df416bf), unmeasured: ...each reached in this many ticks")
+LOOK_STEPS = _t("LOOK_STEPS", 90, "ticks", "inherited (drive_head's default), unmeasured: a head segment aimed at a "
+                "point arrives in this many ticks at most")
+SEARCH_STEPS = _t("SEARCH_STEPS", 60, "ticks", "inherited (search's drive_head), unmeasured: ...one of search's")
+SEARCH_AIM_SPACING_M = _t("SEARCH_AIM_SPACING_M", 0.6, "m", "chosen (5e962d8f): search aims the head at points this far "
+                          "apart along a long support (one look at the centre of counter_2, 2.47 m long, left a pot "
+                          "at its end 52 deg off the axis)")
