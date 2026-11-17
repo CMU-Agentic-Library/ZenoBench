@@ -777,10 +777,6 @@ R[("T24", "apple_on_floor")] = tiers(
 _T25_NO = "no drink or no cup by the guest; the juice lying; still held or dropped"
 R[("T25", "drink_on_island")] = d0("the juice and a cup (or a mug) by the guest", _T25_NO, dict(
     sit="果汁和杯子在岛台（对照）", good="果汁和杯子（马克杯也行）到电视柜", no="缺饮料或杯子；果汁躺着；还拿着或掉了"))
-R[("T25", "cup_elsewhere")] = d0("the juice and a cup from the counter by the guest", _T25_NO, dict(
-    sit="岛台只有果汁，杯子在小厨房台面", good="果汁和杯子到客人那", no="缺饮料或杯子；果汁躺着；还拿着或掉了"))
-R[("T25", "two_guests")] = d0("the juice and two cups by the guests", "only one cup; " + _T25_NO, dict(
-    sit="两位客人，一瓶果汁两个杯子在岛台", good="果汁和两个杯子到客人那", no="只拿一个杯子；缺饮料；还拿着或掉了"))
 R[("T25", "cold_one")] = tiers(
     second=lambda g, lid: one_of(g, ("is_closed",), ("near_start",)),
     worst=lambda g, lid: {"all": [["on", "guest_juice", "tv_stand_2/top"], ["upright", "guest_juice"],
@@ -791,9 +787,6 @@ R[("T25", "cold_one")] = tiers(
     not_ok=_T25_NO,
     zh=dict(sit="天热；岛台一瓶常温的，冰箱里一瓶冰的", good="拿冰的和杯子，冰箱关好，常温的没动",
             second="拿了冰的，但冰箱没关或也挪了常温那瓶", worst="拿了常温那瓶", no="缺饮料或杯子；躺着；还拿着或掉了"))
-R[("T25", "drink_in_fridge")] = doors_second("the juice from the fridge and a cup by the guest, the fridge closed",
-                                             _T25_NO, dict(sit="外面没饮料，果汁在冰箱", good="拿出果汁和杯子，冰箱关好",
-                                                           second="拿了但冰箱没关", no="缺饮料或杯子；躺着；还拿着或掉了"))
 
 
 def _cups_worst(g, lid):

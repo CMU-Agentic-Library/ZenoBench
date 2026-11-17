@@ -22,7 +22,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | approach | kitchen_island/top | 43 | 17 | 28% | other 16, IK / reach / base pose 1 | T08 | 0 | approach kitchen_island/top: parked but IK fails at [7.564, 1.565, 0.96] |
 | place | book_red | 8 | 17 | 68% | carry slip 7, placement result 5, IK / reach / base pose 3 | T14 | 5 | flat_turn: book_red slipped out of the hand while carrying it |
 | drop | rubber_duck | 23 | 15 | 39% | carry slip 7, IK / reach / base pose 4, other 4 | T12 | 1 | no IK for drop_prelift |
-| place | cup_counter_b | 27 | 14 | 34% | carry slip 10, placement result 3, other 1 | T04 | 4 | place_above: cup_counter_b slipped out of the hand while carrying it |
+| place | cup_counter_b | 27 | 14 | 34% | carry slip 10, placement result 3, other 1 | T04 | 3 | place_above: cup_counter_b slipped out of the hand while carrying it |
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 8 | pick breakfast_spoon: not held (lift -0.001 m) |
 | hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 1 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
 | pick | wooden_block_b | 80 | 11 | 12% | grasp miss 10, IK / reach / base pose 1 | T02 T08 | 6 | pick wooden_block_b: not held (lift 0.000 m) |
@@ -58,7 +58,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 
 | skill | object | variants |
 |---|---|---|
-| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
 | close | kitchen_cabinet_4 | T02/block_put_away, T04/no_cup_in_cabinets, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/no_pot, T18/bowls_apart, T18/door_stuck, T20/x6_gd_bottle_put_away, T21/tissue_put_away, T25/cups_for_two, T28/where_his_cup_is, T30/bowl_put_away |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | empty_can | T29/several |
@@ -74,14 +74,14 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | lift | takeout_tray | T10/after_dinner_clear |
 | measure | example_spoon | T13/copy_the_setting |
 | measure | toy_bin_small_2 | T12/bins_capacity |
-| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
 | pick | blue_book | T14/whose_book |
 | pick | bought_apple | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_juice | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
 | pick | bowl_2 | T13/finish_the_table |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
-| pick | cold_juice | T25/cold_one, T25/drink_in_fridge |
+| pick | cold_juice | T25/cold_one |
 | pick | desk_mug | T14/homework_stays |
 | pick | dinner_bowl_1 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | pick | dinner_bowl_2 | T18/bowls_apart, T18/door_stuck |
@@ -97,9 +97,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | glass_box | T18/bowl_in_use, T18/one_bowl |
 | pick | glass_food_container | T07/vessel_decides_appliance |
 | pick | green_book_case | T14/no_second_red_book |
-| pick | guest_cup | T25/cold_one, T25/drink_in_fridge, T25/two_guests |
-| pick | guest_cup_2 | T25/two_guests |
-| pick | guest_juice | T25/cup_elsewhere, T25/cups_for_two, T25/little_guest, T25/two_guests |
+| pick | guest_cup | T25/cold_one |
+| pick | guest_juice | T25/cups_for_two, T25/little_guest |
 | pick | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
 | pick | hw_notebook | T29/homework_on_table |
 | pick | hw_pencil | T29/homework_on_table |
@@ -163,7 +162,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | bought_juice | T22/basket_in_use, T22/basket_out_of_reach, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
 | place | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
 | place | bowl_2 | T13/finish_the_table |
-| place | cold_juice | T25/cold_one, T25/drink_in_fridge |
+| place | cold_juice | T25/cold_one |
 | place | desk_mug | T14/homework_stays |
 | place | dinner_bowl_1 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | place | dinner_bowl_2 | T18/bowls_apart, T18/door_stuck |
@@ -176,9 +175,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | glass_box | T18/bowl_in_use, T18/one_bowl |
 | place | glass_food_container | T07/vessel_decides_appliance |
 | place | green_book_case | T14/no_second_red_book |
-| place | guest_cup | T25/cold_one, T25/drink_in_fridge, T25/two_guests |
-| place | guest_cup_2 | T25/two_guests |
-| place | guest_juice | T25/cup_elsewhere, T25/cups_for_two, T25/little_guest, T25/two_guests |
+| place | guest_cup | T25/cold_one |
+| place | guest_juice | T25/cups_for_two, T25/little_guest |
 | place | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
 | place | hw_notebook | T29/homework_on_table |
 | place | hw_pencil | T29/homework_on_table |

@@ -1,6 +1,6 @@
 {
- "routes": 286,
- "ok": 286,
+ "routes": 283,
+ "ok": 283,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2862,18 +2862,6 @@
   },
   {
    "task": "T25_drink_for_guest",
-   "layout": "cup_elsewhere",
-   "steps": 11,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright guest_juice"
-   ],
-   "problems": [],
-   "variant": "cup_elsewhere"
-  },
-  {
-   "task": "T25_drink_for_guest",
    "layout": "cold_one",
    "steps": 15,
    "atoms_checked": 5,
@@ -2883,18 +2871,6 @@
    ],
    "problems": [],
    "variant": "cold_one"
-  },
-  {
-   "task": "T25_drink_for_guest",
-   "layout": "drink_in_fridge",
-   "steps": 17,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright cold_juice"
-   ],
-   "problems": [],
-   "variant": "drink_in_fridge"
   },
   {
    "task": "T25_drink_for_guest",
@@ -2943,18 +2919,6 @@
    ],
    "problems": [],
    "variant": "cups_for_two"
-  },
-  {
-   "task": "T25_drink_for_guest",
-   "layout": "two_guests",
-   "steps": 14,
-   "atoms_checked": 3,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright guest_juice"
-   ],
-   "problems": [],
-   "variant": "two_guests"
   },
   {
    "task": "T25_drink_for_guest",

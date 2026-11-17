@@ -82,6 +82,7 @@ T04 `x6_gd_cup_in_cabinets`、T05 `check_desk_first`、T12 `castle_stays`、T14 
 | T24 | `apple_in_use`（新加） | 苹果在西边餐桌 (-7.70, 8.05) 爷爷的碗和杯旁；香蕉在东边餐桌 (3.30, 7.10)；指令点名苹果 | 找苹果 → 看两张餐桌 → 香蕉送书桌 | 低 | 未跑 |
 | T24 | `apple_on_floor`（新加，condition `resource_broken`） | 苹果在厨房地上 (-0.85, 7.70)；橙子在东边餐桌 (3.30, 7.10) | 看餐桌 → 找苹果（厨房） → 橙子送书桌 | 苹果在地上滚不滚 | 未跑 |
 | T24 | 删掉 no_apples_for_him、fruit_out_of_view、two_kids（用户要求） | | | | 不用跑 |
+| T25 | 删掉 cup_elsewhere、drink_in_fridge、two_guests（用户要求，不是替换）；其余不变 | | | | 不用跑 |
 
 ## 我这边的约定
 

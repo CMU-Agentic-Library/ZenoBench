@@ -1,7 +1,7 @@
 {
- "variants": 164,
- "episodes": 1640,
- "static_ok": 1640,
+ "variants": 161,
+ "episodes": 1610,
+ "static_ok": 1610,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -101,8 +101,8 @@
    "static_ok": 50
   },
   "T25_drink_for_guest": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 40,
+   "static_ok": 40
   },
   "T26_kids_things_to_room": {
    "episodes": 60,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 126
+  "task": 123
  },
- "tasks_sha1": "e5d60b9d3d6890b3489498b9afe59236da54d45f"
+ "tasks_sha1": "37e6a05e04cae7d8110abcdaf7ec559c083ce20f"
 }

@@ -52,6 +52,9 @@
 | T24 | where_is_he | 可互换（送的位置） | 孩子在哪张书桌按作业本决定 |
 | T24 | apple_in_use（新加） | 被占用 | 唯一的苹果爷爷正在吃 → 香蕉 |
 | T24 | apple_on_floor（新加） | 损坏 | 苹果掉地上脏了 → 橙子 |
+| T25 | cold_one | 能力不足（此时不合适） | 天热，常温果汁不合适 → 冰箱里冰的那瓶 |
+| T25 | cups_for_two | 缺失 | 普通杯子不够两个 → 餐厅的马克杯补 |
+| T25 | little_guest | 能力不足（不合适） | 瓷杯给小朋友不合适 → 塑料杯 |
 
 T15 整个换成了新任务“盖锅盖”（T15_cover_the_pot）：lid_by_pot（对照）、lid_elsewhere（锅盖在别处，去找）、no_lid、lid_in_use。T16 整个换成了新任务“装零食盒”（T16_pack_snack_box）：box_on_counter（对照）、box_in_cabinet（去柜子里找）、no_box、box_in_use。
 

@@ -1,15 +1,15 @@
 {
  "summary": {
   "scope": {
-   "layouts": 256,
-   "variants": 134,
+   "layouts": 253,
+   "variants": 131,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 52,
-   "goal_not_met": 95,
+   "goal_not_met": 94,
    "not_observed": 64,
-   "resource_missing": 41,
+   "resource_missing": 39,
    "argument_mismatch": 4
   },
   "control_route_passes": [
@@ -113,7 +113,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 345,
+  "geometric_atoms_unchecked": 342,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -362,17 +362,10 @@
     "guest_cup",
     "guest_juice"
    ],
-   "T25 cup_elsewhere": [
-    "guest_juice"
-   ],
    "T25 cups_for_two": [
     "guest_juice",
     "stock_cup_1",
     "stock_cup_2"
-   ],
-   "T25 drink_in_fridge": [
-    "cold_juice",
-    "guest_cup"
    ],
    "T25 drink_on_island": [
     "guest_cup",
@@ -382,11 +375,6 @@
     "guest_cup",
     "guest_juice",
     "kid_cup"
-   ],
-   "T25 two_guests": [
-    "guest_cup",
-    "guest_cup_2",
-    "guest_juice"
    ],
    "T26 bear_to_bed": [
     "kids_basket",
@@ -4229,19 +4217,6 @@
   },
   {
    "task": "T25_drink_for_guest",
-   "variant": "cup_elsewhere",
-   "layout": "cup_elsewhere",
-   "steps": 11,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright guest_juice"
-   ],
-   "control_route": "resource_missing",
-   "other_layouts": {},
-   "other_variants_passing": []
-  },
-  {
-   "task": "T25_drink_for_guest",
    "variant": "cold_one",
    "layout": "cold_one",
    "steps": 15,
@@ -4251,24 +4226,7 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {},
-   "other_variants_passing": [
-    "drink_in_fridge"
-   ]
-  },
-  {
-   "task": "T25_drink_for_guest",
-   "variant": "drink_in_fridge",
-   "layout": "drink_in_fridge",
-   "steps": 17,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright cold_juice"
-   ],
-   "control_route": "resource_missing",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "cold_one"
-   ]
+   "other_variants_passing": []
   },
   {
    "task": "T25_drink_for_guest",
@@ -4336,19 +4294,6 @@
     "cups_for_two__none_one_inside": "goal_not_met",
     "cups_for_two__none_two_inside": "resource_missing"
    },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T25_drink_for_guest",
-   "variant": "two_guests",
-   "layout": "two_guests",
-   "steps": 14,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright guest_juice"
-   ],
-   "control_route": "goal_not_met",
-   "other_layouts": {},
    "other_variants_passing": []
   },
   {

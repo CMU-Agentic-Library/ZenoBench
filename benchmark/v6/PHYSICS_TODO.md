@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1640 episodes remain (1230 of the 123 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1610 episodes remain (1200 of the 120 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -139,11 +139,8 @@
 | T24 | apple_in_use | task | 0/0 of 10 | - |
 | T24 | apple_on_floor | task | 0/0 of 10 | - |
 | T25 | drink_on_island | control | 0/0 of 10 | - |
-| T25 | cup_elsewhere | task | 0/0 of 10 | - |
 | T25 | cold_one | task | 0/0 of 10 | - |
-| T25 | drink_in_fridge | task | 0/0 of 10 | - |
 | T25 | cups_for_two | task | 0/0 of 10 | low cabinet doors |
-| T25 | two_guests | task | 0/0 of 10 | - |
 | T25 | little_guest | task | 0/0 of 10 | - |
 | T26 | car_in_living_room | control | 0/0 of 10 | - |
 | T26 | whose | task | 0/0 of 10 | - |
