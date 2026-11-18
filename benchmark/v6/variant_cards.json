@@ -24488,11 +24488,10 @@
   "variant": "two_kids",
   "category": "task",
   "seeds": [
-   12,
    13,
-   14,
+   15,
    16,
-   17
+   18
   ],
   "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
   "initial_conditions": {
@@ -24555,8 +24554,8 @@
   },
   "control": "apple_on_table",
   "oracle_route": "v6_two_kids__apple_banana",
-  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
-  "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+  "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T24_snack_for_kid/two_kids__apple_snacks": {
@@ -24565,9 +24564,7 @@
   "seeds": [
    10,
    11,
-   15,
-   18,
-   19
+   14
   ],
   "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
   "initial_conditions": {
@@ -24630,8 +24627,101 @@
   },
   "control": "apple_on_table",
   "oracle_route": "v6_two_kids__apple_snacks",
-  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
-  "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+  "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/two_kids__desk3_covered": {
+  "variant": "two_kids",
+  "category": "task",
+  "seeds": [
+   12,
+   17,
+   19
+  ],
+  "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "homework_3",
+    "hw3_book_green_10",
+    "hw3_book_green_11",
+    "hw3_book_green_12",
+    "hw3_book_green_13",
+    "hw3_book_green_14",
+    "hw3_book_green_8",
+    "hw3_book_green_9",
+    "hw3_book_red_15",
+    "hw3_book_red_17",
+    "hw3_book_red_19",
+    "hw3_book_red_2",
+    "hw3_book_red_21",
+    "hw3_book_red_4",
+    "hw3_book_red_6",
+    "hw3_notebook_1",
+    "hw3_notebook_16",
+    "hw3_notebook_20",
+    "hw3_notebook_3",
+    "hw3_notebook_5",
+    "hw3_notebook_7",
+    "snack_apple",
+    "snack_banana"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "snack_apple",
+      "desk_1/top"
+     ],
+     [
+      "on_any",
+      "snack_banana",
+      [
+       "desk_3/top",
+       "bookcase_4/top"
+      ]
+     ]
+    ],
+    [
+     [
+      "on",
+      "snack_banana",
+      "desk_1/top"
+     ],
+     [
+      "on_any",
+      "snack_apple",
+      [
+       "desk_3/top",
+       "bookcase_4/top"
+      ]
+     ]
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_two_kids__desk3_covered",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+  "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T25_drink_for_guest/drink_on_island": {

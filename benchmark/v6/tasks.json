@@ -243554,15 +243554,15 @@
       "snack_banana"
      ],
      "since": "v6",
-     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
+     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
      "v6": {
       "family": "two_kids",
       "case": "apple_banana",
-      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
-      "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+      "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
+      "factor": "what there is to share and where it can go (seed: an apple and a banana; or an apple and a box of snacks; or an apple and a banana, the bedroom desk covered in homework)",
       "derived_from": "bare"
      },
      "move": {},
@@ -243784,12 +243784,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_banana",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -243799,12 +243812,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ]
            ],
@@ -243824,12 +243850,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_box",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -243839,12 +243878,75 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
              ]
             ]
            ],
@@ -243857,7 +243959,7 @@
           }
          }
         },
-        "why": "one thing to eat on each kid's desk",
+        "why": "one thing to eat by each kid's homework, not on it: on his desk, or on the bookcase beside a desk that has no room",
         "raw": "best"
        },
        {
@@ -243874,6 +243976,398 @@
               "desk_1/top"
              ],
              [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one of them set on the homework, or on the bookcase beside a desk with room",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
               "on",
               "snack_banana",
               "desk_1/top"
@@ -243916,6 +244410,54 @@
              [
               "on",
               "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
               "desk_1/top"
              ]
             ],
@@ -243944,11 +244486,75 @@
              "right"
             ]
            ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
           }
          }
         },
-        "why": "both to the same kid",
-        "raw": "second"
+        "why": "both a step down, or both to the same kid",
+        "raw": "worst"
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
@@ -244045,15 +244651,15 @@
       "snack_box"
      ],
      "since": "v6",
-     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
+     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
      "v6": {
       "family": "two_kids",
       "case": "apple_snacks",
-      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
-      "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+      "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
+      "factor": "what there is to share and where it can go (seed: an apple and a banana; or an apple and a box of snacks; or an apple and a banana, the bedroom desk covered in homework)",
       "derived_from": "bare"
      },
      "move": {},
@@ -244275,12 +244881,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_banana",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -244290,12 +244909,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ]
            ],
@@ -244315,12 +244947,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_box",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -244330,12 +244975,75 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
              ]
             ]
            ],
@@ -244348,7 +245056,7 @@
           }
          }
         },
-        "why": "one thing to eat on each kid's desk",
+        "why": "one thing to eat by each kid's homework, not on it: on his desk, or on the bookcase beside a desk that has no room",
         "raw": "best"
        },
        {
@@ -244365,6 +245073,398 @@
               "desk_1/top"
              ],
              [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one of them set on the homework, or on the bookcase beside a desk with room",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
               "on",
               "snack_banana",
               "desk_1/top"
@@ -244407,6 +245507,54 @@
              [
               "on",
               "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
               "desk_1/top"
              ]
             ],
@@ -244435,11 +245583,1447 @@
              "right"
             ]
            ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
           }
          }
         },
-        "why": "both to the same kid",
+        "why": "both a step down, or both to the same kid",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "two_kids__desk3_covered": {
+     "conditions": [
+      "count_from_scene",
+      "multi_object_goal"
+     ],
+     "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
+     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的。",
+     "add": {
+      "snack_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_banana": {
+       "asset": "banana",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        7.095
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_1": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        5.951,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_2": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        6.188,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_3": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        6.424,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_4": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        6.661,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_5": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        6.898,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_6": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        7.135,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_7": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        7.371,
+        -5.272
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_8": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        5.958,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_9": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        6.193,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_10": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        6.427,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_11": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        6.661,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_12": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        6.895,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_13": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        7.13,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_green_14": {
+       "asset": "book_green",
+       "support": "desk_3/top",
+       "xy": [
+        7.364,
+        -5.488
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_15": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        5.962,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_16": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        6.195,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_17": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        6.428,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework_3": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        6.661,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_19": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        6.894,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_notebook_20": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        7.127,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw3_book_red_21": {
+       "asset": "book_red",
+       "support": "desk_3/top",
+       "xy": [
+        7.36,
+        -5.705
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "snack_apple",
+         "desk_1/top"
+        ],
+        [
+         "on_any",
+         "snack_banana",
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
+        ]
+       ],
+       [
+        [
+         "on",
+         "snack_banana",
+         "desk_1/top"
+        ],
+        [
+         "on_any",
+         "snack_apple",
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
+        ]
+       ]
+      ]
+     },
+     "watch": [
+      "snack_apple",
+      "snack_banana",
+      "hw3_notebook_1",
+      "hw3_book_red_2",
+      "hw3_notebook_3",
+      "hw3_book_red_4",
+      "hw3_notebook_5",
+      "hw3_book_red_6",
+      "hw3_notebook_7",
+      "hw3_book_green_8",
+      "hw3_book_green_9",
+      "hw3_book_green_10",
+      "hw3_book_green_11",
+      "hw3_book_green_12",
+      "hw3_book_green_13",
+      "hw3_book_green_14",
+      "hw3_book_red_15",
+      "hw3_notebook_16",
+      "hw3_book_red_17",
+      "homework_3",
+      "hw3_book_red_19",
+      "hw3_notebook_20",
+      "hw3_book_red_21"
+     ],
+     "since": "v6",
+     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+     "v6": {
+      "family": "two_kids",
+      "case": "desk3_covered",
+      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+      "rationale": "one snack for each kid, each set down by his homework without covering it: on the desk, or on the bookcase beside a desk that has no room",
+      "control": "apple_on_table",
+      "contrast": null,
+      "factor": "what there is to share and where it can go (seed: an apple and a banana; or an apple and a box of snacks; or an apple and a banana, the bedroom desk covered in homework)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "homework"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.805,
+         -6.0347,
+         -0.595,
+         -5.8654
+        ],
+        "dx": [
+         -0.59,
+         0.55
+        ],
+        "dy": [
+         -0.28,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "snack_banana"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.8518,
+         7.0527,
+         3.0442,
+         7.1373
+        ],
+        "dx": [
+         -0.05,
+         0.78
+        ],
+        "dy": [
+         -1.54,
+         0.8
+        ],
+        "pick": [
+         "snack_banana"
+        ]
+       },
+       {
+        "names": [
+         "snack_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.9171,
+         6.663,
+         2.9789,
+         6.727
+        ],
+        "dx": [
+         -0.11,
+         0.85
+        ],
+        "dy": [
+         -1.15,
+         1.21
+        ],
+        "pick": [
+         "snack_apple"
+        ]
+       }
+      ],
+      "static": {
+       "desk_3/top": [
+        [
+         5.846,
+         -5.3567,
+         6.056,
+         -5.1874
+        ],
+        [
+         6.068,
+         -5.3557,
+         6.308,
+         -5.1883
+        ],
+        [
+         6.319,
+         -5.3567,
+         6.529,
+         -5.1874
+        ],
+        [
+         6.541,
+         -5.3557,
+         6.781,
+         -5.1883
+        ],
+        [
+         6.793,
+         -5.3567,
+         7.003,
+         -5.1874
+        ],
+        [
+         7.015,
+         -5.3557,
+         7.255,
+         -5.1883
+        ],
+        [
+         7.266,
+         -5.3567,
+         7.476,
+         -5.1874
+        ],
+        [
+         5.8479,
+         -5.5795,
+         6.0681,
+         -5.3965
+        ],
+        [
+         6.0829,
+         -5.5795,
+         6.303,
+         -5.3965
+        ],
+        [
+         6.3169,
+         -5.5795,
+         6.537,
+         -5.3965
+        ],
+        [
+         6.5509,
+         -5.5795,
+         6.771,
+         -5.3965
+        ],
+        [
+         6.7849,
+         -5.5795,
+         7.005,
+         -5.3965
+        ],
+        [
+         7.0199,
+         -5.5795,
+         7.2401,
+         -5.3965
+        ],
+        [
+         7.2539,
+         -5.5795,
+         7.4741,
+         -5.3965
+        ],
+        [
+         5.842,
+         -5.7887,
+         6.082,
+         -5.6213
+        ],
+        [
+         6.09,
+         -5.7896,
+         6.3,
+         -5.6204
+        ],
+        [
+         6.308,
+         -5.7887,
+         6.548,
+         -5.6213
+        ],
+        [
+         6.556,
+         -5.7896,
+         6.766,
+         -5.6204
+        ],
+        [
+         6.774,
+         -5.7887,
+         7.014,
+         -5.6213
+        ],
+        [
+         7.022,
+         -5.7896,
+         7.232,
+         -5.6204
+        ],
+        [
+         7.24,
+         -5.7887,
+         7.48,
+         -5.6213
+        ]
+       ],
+       "desk_1/top": [
+        [
+         -1.279,
+         -5.978,
+         -1.217,
+         -5.914
+        ]
+       ]
+      },
+      "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one thing to eat by each kid's homework, not on it: on his desk, or on the bookcase beside a desk that has no room",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one of them set on the homework, or on the bookcase beside a desk with room",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both a step down, or both to the same kid",
+        "raw": "worst"
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
@@ -244475,7 +247059,8 @@
     "where_is_he__study": "v6_where_is_he__study",
     "where_is_he__bedroom": "v6_where_is_he__bedroom",
     "two_kids__apple_banana": "v6_two_kids__apple_banana",
-    "two_kids__apple_snacks": "v6_two_kids__apple_snacks"
+    "two_kids__apple_snacks": "v6_two_kids__apple_snacks",
+    "two_kids__desk3_covered": "v6_two_kids__desk3_covered"
    },
    "routes": {
     "nominal": {
@@ -245129,6 +247714,94 @@
      ],
      "kind": "v6_oracle",
      "variant": "two_kids__apple_snacks"
+    },
+    "v6_two_kids__desk3_covered": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_apple",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_3/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_3/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_banana"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_4/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_banana",
+        "receptacle": "bookcase_4/top",
+        "hint_xy": [
+         7.0,
+         -6.76
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "two_kids__desk3_covered"
     }
    },
    "vary": {},
@@ -245661,26 +248334,28 @@
      "control": "apple_on_table",
      "layouts": [
       "two_kids__apple_banana",
-      "two_kids__apple_snacks"
+      "two_kids__apple_snacks",
+      "two_kids__desk3_covered"
      ],
-     "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
+     "factor": "what there is to share and where it can go (seed: an apple and a banana; or an apple and a box of snacks; or an apple and a banana, the bedroom desk covered in homework)",
      "seeds": {
       "10": "two_kids__apple_snacks",
       "11": "two_kids__apple_snacks",
-      "12": "two_kids__apple_banana",
+      "12": "two_kids__desk3_covered",
       "13": "two_kids__apple_banana",
-      "14": "two_kids__apple_banana",
-      "15": "two_kids__apple_snacks",
+      "14": "two_kids__apple_snacks",
+      "15": "two_kids__apple_banana",
       "16": "two_kids__apple_banana",
-      "17": "two_kids__apple_banana",
-      "18": "two_kids__apple_snacks",
-      "19": "two_kids__apple_snacks"
+      "17": "two_kids__desk3_covered",
+      "18": "two_kids__apple_banana",
+      "19": "two_kids__desk3_covered"
      },
      "scoring": {
       "D": 1,
       "ideal_by_layout": {
        "two_kids__apple_banana": true,
-       "two_kids__apple_snacks": true
+       "two_kids__apple_snacks": true,
+       "two_kids__desk3_covered": true
       },
       "tiers": [
        {
@@ -245697,12 +248372,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_banana",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -245712,12 +248400,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ]
            ],
@@ -245737,12 +248438,25 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_box",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
              ]
             ],
             [
@@ -245752,12 +248466,75 @@
               "desk_1/top"
              ],
              [
-              "on_any",
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
               "snack_apple",
               [
-               "desk_3/top",
-               "bookcase_4/top"
-              ]
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
              ]
             ]
            ],
@@ -245770,7 +248547,7 @@
           }
          }
         },
-        "why": "one thing to eat on each kid's desk"
+        "why": "one thing to eat by each kid's homework, not on it: on his desk, or on the bookcase beside a desk that has no room"
        },
        {
         "name": "second",
@@ -245786,6 +248563,397 @@
               "desk_1/top"
              ],
              [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_box",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework_3"
+              ],
+              0.0
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_apple",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "snack_banana",
+              [
+               "homework"
+              ],
+              0.0
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one of them set on the homework, or on the bookcase beside a desk with room"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
               "on",
               "snack_banana",
               "desk_1/top"
@@ -245828,6 +248996,54 @@
              [
               "on",
               "snack_box",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "bookcase_4/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
               "desk_1/top"
              ]
             ],
@@ -245856,21 +249072,74 @@
              "right"
             ]
            ]
+          },
+          "two_kids__desk3_covered": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_apple",
+              "desk_3/top"
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
           }
          }
         },
-        "why": "both to the same kid"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "two_kids__apple_banana": "n/a",
-          "two_kids__apple_snacks": "n/a"
-         }
-        },
-        "why": "-"
+        "why": "both a step down, or both to the same kid"
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped"

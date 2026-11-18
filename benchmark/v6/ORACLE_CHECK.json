@@ -1,6 +1,6 @@
 {
- "routes": 306,
- "ok": 306,
+ "routes": 307,
+ "ok": 307,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -3132,6 +3132,16 @@
    "task": "T24_snack_for_kid",
    "layout": "two_kids__apple_snacks",
    "steps": 10,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "two_kids"
+  },
+  {
+   "task": "T24_snack_for_kid",
+   "layout": "two_kids__desk3_covered",
+   "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],

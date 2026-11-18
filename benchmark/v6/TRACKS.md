@@ -145,7 +145,7 @@ Removed with the injected action failures: 121 variants (17 had nothing else, 46
 | T24 | dinner_soon | Task-Level | - | preference_allocation | 2 |
 | T24 | fruit_out_of_view | Task-Level | - | not_in_view; resource_absent | 2 |
 | T24 | where_is_he | Task-Level | - | referent_clue | 2 |
-| T24 | two_kids | Task-Level | - | count_from_scene; multi_object_goal | 2 |
+| T24 | two_kids | Task-Level | - | count_from_scene; multi_object_goal | 3 |
 | T25 | drink_on_island | Control | - | - | 1 |
 | T25 | cup_elsewhere | Task-Level | - | not_in_view | 1 |
 | T25 | cold_one | Task-Level | - | preference_allocation | 1 |

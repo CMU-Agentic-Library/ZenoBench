@@ -585,6 +585,29 @@ def t23():
 
 # ================================================================== T24 something to eat for the kid
 AT_DESK3 = [DESK3, "bookcase_4/top"]       # by the bedroom desk: the desk or the bookcase beside it
+SHELF4 = "bookcase_4/top"
+# two_kids desk3_covered (11-18, user): the bedroom kid's homework over the whole bedroom desk (x 5.834..7.488,
+# y -5.789..-5.188, the robot at its front, y > -5.188) in three rows of seven, ~4 cm between the rows and ~1.3 cm
+# between the books (the 6 cm apple fits nowhere); his things go on the bookcase beside it (its west edge reachable)
+_ROWS3 = ((-5.272, ("notebook", "book_red", "notebook", "book_red", "notebook", "book_red", "notebook")),
+          (-5.488, ("book_green",) * 7),
+          (-5.705, ("book_red", "notebook", "book_red", "notebook", "book_red", "notebook", "book_red")))
+_W3 = {"notebook": 0.21, "book_red": 0.24, "book_green": 0.22}
+
+
+def _desk3_spread():
+    out, k = {}, 0
+    for y, row in _ROWS3:
+        gap = (7.488 - 5.834 - sum(_W3[a] for a in row)) / (len(row) + 1)
+        x = 5.834 + gap
+        for a in row:
+            k += 1
+            out["homework_3" if k == 18 else f"hw3_{a}_{k}"] = on(a, DESK3, round(x + _W3[a] / 2, 3), y)
+            x += _W3[a] + gap
+    return out
+
+
+HOMEWORK3_SPREAD = _desk3_spread()
 
 
 def t24():
@@ -622,11 +645,22 @@ def t24():
     # an apple (ideal, to be found); or it is empty and the only fruit is a banana on the kitchen counter (absent)
     LT["fruit_out_of_view__apple_in_basket"] = cost_tiers([(at(AP), 0), (at("home_basket"), 2)])
     LT["fruit_out_of_view__basket_empty"] = cost_tiers([(at(BA), 0), (at("home_basket"), 2)])
-    # two_kids (11-17, user): one each -- an apple and a banana; or only an apple and a box of snacks (absent)
+    # two_kids (11-17, user): one each -- an apple and a banana; or only an apple and a box of snacks (absent);
+    # 11-18 (user): scored by where each thing is set down -- on the kid's own desk beside his homework; one step
+    # down: on the homework, or (the bedroom kid) on the bookcase beside his desk; both to one kid the worst.  Seed
+    # desk3_covered: the bedroom desk all homework, so the bookcase is his best spot (occupied)
     each = lambda a, b: [[["on", a, DESK], ["on_any", b, AT_DESK3]], [["on", b, DESK], ["on_any", a, AT_DESK3]]]  # noqa: E731
     same = lambda a, b: [[["on", a, DESK], ["on", b, DESK]], [["on_any", a, AT_DESK3], ["on_any", b, AT_DESK3]]]  # noqa: E731
+
+    def kids_tiers(a, b, hw3_names, covered):
+        study = lambda x: [([["on", x, DESK], ["clear_of", x, ["homework"], 0.0]], 0), ([["on", x, DESK]], 1)]  # noqa: E731
+        bed = lambda y: (([] if covered else [([["on", y, DESK3], ["clear_of", y, hw3_names, 0.0]], 0)])  # noqa: E731
+                         + [([["on", y, SHELF4]], 0 if covered else 1), ([["on", y, DESK3]], 1)])
+        opts = [(gs + gb, cs + cb) for x, y in ((a, b), (b, a)) for gs, cs in study(x) for gb, cb in bed(y)]
+        return cost_tiers(opts + [(g, 3) for g in same(a, b)])
     for case, (a, b) in (("apple_banana", (AP, BA)), ("apple_snacks", (AP, SN))):
-        LT[f"two_kids__{case}"] = cost_tiers([(g, 0) for g in each(a, b)] + [(g, 2) for g in same(a, b)])
+        LT[f"two_kids__{case}"] = kids_tiers(a, b, ["homework_3"], False)
+    LT["two_kids__desk3_covered"] = kids_tiers(AP, BA, sorted(HOMEWORK3_SPREAD), True)
     fams = {
         "no_apples_for_him": fam(
             "apple_on_table", ["resource_in_use"],
@@ -683,14 +717,21 @@ def t24():
             instruction_zh="孩子写作业饿了，给他拿点吃的。"),
         "two_kids": fam(
             "apple_on_table", ["count_from_scene", "multi_object_goal"],
-            "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
+            "what there is to share and where it can go (seed: an apple and a banana; or an apple and a box of "
+            "snacks; or an apple and a banana, the bedroom desk covered in homework)",
             "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two "
-            "fruits, or one fruit and a box of snacks)",
-            "one snack for each kid: as many as there are kids doing homework, one to each desk",
-            {case: dict(add={AP: on("apple", T2, 3.30, 6.70), b: on(asset, T2, 3.30, 7.10), **hw, **hw3},
-                        watch=[AP, b], goal={"all": [H], "any": each(AP, b)},
-                        route=fetch(AP, DESK, [-1.10, -5.95]) + fetch(b, DESK3, [6.20, -5.50]))
-             for case, b, asset in (("apple_banana", BA, "banana"), ("apple_snacks", SN, "snack_carton"))},
+            "fruits, or one fruit and a box of snacks); the bedroom desk may be all homework",
+            "one snack for each kid, each set down by his homework without covering it: on the desk, or on the "
+            "bookcase beside a desk that has no room",
+            {**{case: dict(add={AP: on("apple", T2, 3.30, 6.70), b: on(asset, T2, 3.30, 7.10), **hw, **hw3},
+                           watch=[AP, b], goal={"all": [H], "any": each(AP, b)},
+                           route=fetch(AP, DESK, [-1.10, -5.95]) + fetch(b, DESK3, [6.20, -5.50]))
+                for case, b, asset in (("apple_banana", BA, "banana"), ("apple_snacks", SN, "snack_carton"))},
+             "desk3_covered": dict(add={AP: on("apple", T2, 3.30, 6.70), BA: on("banana", T2, 3.30, 7.10), **hw,
+                                        **HOMEWORK3_SPREAD},
+                                   watch=[AP, BA, *HOMEWORK3_SPREAD], goal={"all": [H], "any": each(AP, BA)},
+                                   route=fetch(AP, DESK, [-1.10, -5.95]) + [nav(DESK3), look(DESK3)]
+                                   + fetch(BA, SHELF4, [7.00, -6.76]))},
             instruction="The kids are doing homework and are hungry. Bring them something to eat.",
             instruction_zh="孩子们在写作业，饿了，给他们拿点吃的。"),
     }

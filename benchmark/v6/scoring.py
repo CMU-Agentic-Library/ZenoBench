@@ -749,8 +749,10 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              ("fruit_out_of_view", {"best": "the fruit found (the apple in the basket, else the banana) on the desk",
                                     "second": "the empty fruit basket brought instead", "worst": "-"},
               "nothing to eat on the kid's desk; still held or dropped"),
-             ("two_kids", {"best": "one thing to eat on each kid's desk", "second": "both to the same kid",
-                           "worst": "-"},
+             ("two_kids", {"best": "one thing to eat by each kid's homework, not on it: on his desk, or on the "
+                                   "bookcase beside a desk that has no room",
+                           "second": "one of them set on the homework, or on the bookcase beside a desk with room",
+                           "worst": "both a step down, or both to the same kid"},
               "a kid gets nothing and a thing left on the table; still held or dropped"))},
          **{("T23", d): _layout_tiers(d, w, no) for d, w, no in (
              ("by_kind", {"best": "the spoon to the kitchen, the block with the toys: the toy box, or the tray beside "

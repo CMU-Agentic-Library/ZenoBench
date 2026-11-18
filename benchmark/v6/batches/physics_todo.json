@@ -8486,8 +8486,8 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "two_kids__apple_banana",
-"route": "v6_two_kids__apple_banana",
+"variant": "two_kids__desk3_covered",
+"route": "v6_two_kids__desk3_covered",
 "family": "two_kids"
 },
 {
@@ -8500,15 +8500,15 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "two_kids__apple_banana",
-"route": "v6_two_kids__apple_banana",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "two_kids__apple_snacks",
-"route": "v6_two_kids__apple_snacks",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
@@ -8521,22 +8521,22 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
+"variant": "two_kids__desk3_covered",
+"route": "v6_two_kids__desk3_covered",
+"family": "two_kids"
+},
+{
+"task": "T24_snack_for_kid",
+"seed": 18,
 "variant": "two_kids__apple_banana",
 "route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
-"seed": 18,
-"variant": "two_kids__apple_snacks",
-"route": "v6_two_kids__apple_snacks",
-"family": "two_kids"
-},
-{
-"task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "two_kids__apple_snacks",
-"route": "v6_two_kids__apple_snacks",
+"variant": "two_kids__desk3_covered",
+"route": "v6_two_kids__desk3_covered",
 "family": "two_kids"
 },
 {

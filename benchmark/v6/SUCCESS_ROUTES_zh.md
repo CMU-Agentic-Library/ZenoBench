@@ -10047,7 +10047,7 @@
 
 ### two_kids（Task）
 
-**情况**：“孩子们在写作业”：两张书桌都有作业，两样吃的 → 一人一样（两样都给同一个孩子最不好）
+**情况**：“孩子们在写作业”：两张书桌都有作业，两样吃的 → 一人一样，按放的位置打分：放在自己书桌上作业旁边最好；压在作业上、或书桌有空却放到旁边书架上降一档；两样都降一档或都给同一个孩子最不好
 
 **指令**：孩子们在写作业，饿了，给他们拿点吃的。
 
@@ -10055,24 +10055,43 @@
 
 - **好（1.0）**：
 
+  - 摆法 `desk3_covered`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_banana` 在 `bookcase_4/top` 上
+      - 第 2 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `bookcase_4/top` 上
   - 摆法 `apple_banana`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `snack_apple` 在 `desk_1/top` 上
-        - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_banana` 在 `desk_3/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework_3`
       - 第 2 组：
         - `snack_banana` 在 `desk_1/top` 上
-        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_banana` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `desk_3/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework_3`
   - 摆法 `apple_snacks`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `snack_apple` 在 `desk_1/top` 上
-        - `snack_box` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_box` 在 `desk_3/top` 上
+        - `snack_box` 离这些东西都至少 0 cm：`homework_3`
       - 第 2 组：
         - `snack_box` 在 `desk_1/top` 上
-        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_box` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `desk_3/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework_3`
 - **次好（0.6）**：
 
   - 摆法 `apple_banana`：
@@ -10080,8 +10099,108 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `snack_apple` 在 `desk_1/top` 上
-        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_banana` 在 `bookcase_4/top` 上
       - 第 2 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_banana` 在 `desk_3/top` 上
+      - 第 3 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_3/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework_3`
+      - 第 4 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `bookcase_4/top` 上
+      - 第 5 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 6 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在 `desk_3/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework_3`
+  - 摆法 `desk3_covered`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_banana` 在 `desk_3/top` 上
+      - 第 2 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `bookcase_4/top` 上
+      - 第 3 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_banana` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 4 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在 `bookcase_4/top` 上
+  - 摆法 `apple_snacks`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_box` 在 `bookcase_4/top` 上
+      - 第 2 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework`
+        - `snack_box` 在 `desk_3/top` 上
+      - 第 3 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_box` 在 `desk_3/top` 上
+        - `snack_box` 离这些东西都至少 0 cm：`homework_3`
+      - 第 4 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_box` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `bookcase_4/top` 上
+      - 第 5 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_box` 离这些东西都至少 0 cm：`homework`
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 6 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_apple` 在 `desk_3/top` 上
+        - `snack_apple` 离这些东西都至少 0 cm：`homework_3`
+- **最不好（0.3）**：
+
+  - 摆法 `apple_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `bookcase_4/top` 上
+      - 第 2 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_3/top` 上
+      - 第 3 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在 `bookcase_4/top` 上
+      - 第 4 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 5 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_1/top` 上
+      - 第 6 组：
+        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+  - 摆法 `desk3_covered`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_3/top` 上
+      - 第 2 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 3 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_1/top` 上
+      - 第 4 组：
         - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
         - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
   - 摆法 `apple_snacks`：
@@ -10089,13 +10208,22 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `snack_apple` 在 `desk_1/top` 上
-        - `snack_box` 在 `desk_1/top` 上
+        - `snack_box` 在 `bookcase_4/top` 上
       - 第 2 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_box` 在 `desk_3/top` 上
+      - 第 3 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_apple` 在 `bookcase_4/top` 上
+      - 第 4 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_apple` 在 `desk_3/top` 上
+      - 第 5 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_box` 在 `desk_1/top` 上
+      - 第 6 组：
         - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
         - `snack_box` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
-- **最不好（0.3）**：
-
-    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **不行（0）**：有孩子没拿到、东西留在桌上；还拿着或掉了
 
 
@@ -10103,6 +10231,7 @@
 
 - 摆法 `apple_banana`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
 - 摆法 `apple_snacks`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_box)` → 8. `pick(object=snack_box)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_box, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
+- 摆法 `desk3_covered`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=desk_3/top)` → 8. `look(target=desk_3/top)` → 9. `navigate(destination=snack_banana)` → 10. `pick(object=snack_banana)` → 11. `navigate(destination=bookcase_4/top)` → 12. `place(object=snack_banana, receptacle=bookcase_4/top, hint_xy=[7.0, -6.76])`
 
 ---
 

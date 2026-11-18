@@ -131,7 +131,7 @@ KIND = {
     ("T24", "dinner_soon"): {"*": "看着像但不能用"},
     ("T24", "fruit_out_of_view"): {"apple_in_basket": None, "basket_empty": "缺失"},
     ("T24", "where_is_he"): {"*": "去处替换"},
-    ("T24", "two_kids"): {"apple_banana": None, "apple_snacks": "缺失"},
+    ("T24", "two_kids"): {"apple_banana": None, "apple_snacks": "缺失", "desk3_covered": "被占用"},
     ("T22", "tray_elsewhere"): {"basket_missing": "缺失", "orange_in_it": "缺失", "books_on_it": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},

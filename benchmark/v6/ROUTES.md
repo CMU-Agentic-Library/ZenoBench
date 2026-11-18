@@ -465,6 +465,7 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `where_is_he__bedroom` (v6_where_is_he__bedroom, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) look(desk_1/top) navigate(desk_3/top) place(snack_apple,desk_3/top,[6.194, -5.349])
 * `two_kids__apple_banana` (v6_two_kids__apple_banana, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_banana) pick(snack_banana) navigate(desk_3/top) place(snack_banana,desk_3/top,[6.194, -5.329])
 * `two_kids__apple_snacks` (v6_two_kids__apple_snacks, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_box) pick(snack_box) navigate(desk_3/top) place(snack_box,desk_3/top,[6.194, -5.329])
+* `two_kids__desk3_covered` (v6_two_kids__desk3_covered, 12 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(desk_3/top) look(desk_3/top) navigate(snack_banana) pick(snack_banana) navigate(bookcase_4/top) place(snack_banana,bookcase_4/top,[7.0, -6.76])
 
 ## T25_drink_for_guest
 
