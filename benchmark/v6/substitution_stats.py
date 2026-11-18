@@ -87,6 +87,10 @@ KIND = {
     ("T14", "homework_stays"): {"*": "被占用"},
     ("T14", "whose_book"): {"*": "去处替换"},
     ("T14", "next_in_series"): {"*": "看着像但不能用"},
+    ("T15", "lid_by_pot"): {"*": None},
+    ("T15", "lid_elsewhere"): {"dining": None, "covering_bowl": "被占用"},
+    ("T15", "no_lid"): {"*": "缺失"},
+    ("T15", "lid_in_use"): {"*": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

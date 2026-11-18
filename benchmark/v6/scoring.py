@@ -586,6 +586,27 @@ def _pot_in_use(task: dict) -> dict:
          "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"}],
         "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"}
 
+# T15 (11-17, user): per-seed tiers; the plate is the stand-in when the lid is gone or in use (ideal absent)
+_P15 = [[["covered", "handled_cooking_pot", p]] for p in ("plate_counter_a", "plate_counter_b")]
+_H15 = [["hand_empty", "right"]]
+LAYOUT_TIERS[("T15", "*")] = {
+    "lid_elsewhere__dining": {"best": {"all": [["covered", "handled_cooking_pot", "pot_lid"], *_H15]}, "second": NA,
+                              "worst": NA, "_ideal": True},
+    "lid_elsewhere__covering_bowl": {
+        "best": {"any": _P15, "all": [["near_start", "pot_lid", 0.03], ["near_start", "covered_bowl", 0.03], *_H15]},
+        "second": {"all": [["covered", "handled_cooking_pot", "pot_lid"], ["upright", "covered_bowl"], *_H15]},
+        "worst": NA, "_ideal": False},
+    "no_lid": {"best": {"any": _P15, "all": _H15}, "second": NA,
+               "worst": {"all": [["covered", "handled_cooking_pot", "cover_book"], *_H15]}, "_ideal": False},
+    "lid_in_use": {"best": {"any": _P15, "all": [["covered", "stew_pot", "pot_lid"], ["upright", "stew_pot"], *_H15]},
+                   "second": NA,
+                   "worst": {"all": [["covered", "handled_cooking_pot", "pot_lid"], ["upright", "stew_pot"], *_H15]},
+                   "_ideal": False}}
+_T15_WHY = {"best": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left "
+                    "on the stew or on someone's bowl)",
+            "second": "the lid taken off someone's bowl for the pot",
+            "worst": "the pot covered with the book, or the lid taken off the stew"}
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              "best": "three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its "
@@ -621,6 +642,10 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
          # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
          # worst
+         **{("T15", d): _layout_tiers(d, _T15_WHY, no) for d, no in (
+             ("lid_elsewhere", "the pot not covered; the lid not found; someone's bowl tipped; still held"),
+             ("no_lid", "the pot not covered; still held or dropped"),
+             ("lid_in_use", "the soup not covered; the stew pot tipped; still held or dropped"))},
          ("T14", "stack_them_stably"): _layout_tiers("stack_them_stably", {
              "best": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a "
                      "lower shelf or the bedside bookcase's top), the kid's things untouched",
@@ -818,6 +843,9 @@ NOT_OK_ZH = {
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T15", "lid_elsewhere"): "没盖；没找到锅盖；碰翻了别人的碗；还拿着",
+    ("T15", "no_lid"): "没盖；还拿着或掉了",
+    ("T15", "lid_in_use"): "汤锅没盖；炖菜的锅碰倒了；还拿着或掉了",
     ("T14", "stack_them_stably"): "有书留在桌上或别处；书掉地上；还拿着或掉了",
     ("T11", "fruit_plate_for_guests"): "什么都没端过去；水果掉了；还拿着",
     ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",

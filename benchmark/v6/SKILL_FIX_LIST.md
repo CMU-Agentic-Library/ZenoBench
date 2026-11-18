@@ -133,7 +133,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | pen | T05/all_pens, T05/check_desk_first, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | pick | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | pick | pencil_2 | T05/all_pens |
-| pick | plate_counter_a | T13/copy_the_setting, T15/lid_in_use, T15/no_lid |
+| pick | plate_counter_a | T13/copy_the_setting, T15/lid_elsewhere, T15/lid_in_use, T15/no_lid |
 | pick | red_book_2 | T14/next_in_series |
 | pick | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
 | pick | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |

@@ -51,9 +51,9 @@
   ],
   "routes_between_layouts": {
    "passes": 109,
-   "goal_not_met": 161,
+   "goal_not_met": 162,
    "not_observed": 20,
-   "argument_mismatch": 76,
+   "argument_mismatch": 75,
    "resource_missing": 122
   },
   "universal_fixed_sequence": [
@@ -3652,22 +3652,25 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "lid_elsewhere__counter": "argument_mismatch"
+    "lid_elsewhere__covering_bowl": "goal_not_met"
    },
    "other_variants_passing": []
   },
   {
    "task": "T15_cover_the_pot",
    "variant": "lid_elsewhere",
-   "layout": "lid_elsewhere__counter",
-   "steps": 9,
+   "layout": "lid_elsewhere__covering_bowl",
+   "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
     "lid_elsewhere__dining": "argument_mismatch"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "no_lid",
+    "lid_in_use"
+   ]
   },
   {
    "task": "T15_cover_the_pot",
@@ -3679,6 +3682,7 @@
    "control_route": "resource_missing",
    "other_layouts": {},
    "other_variants_passing": [
+    "lid_elsewhere__covering_bowl",
     "lid_in_use"
    ]
   },
@@ -3694,6 +3698,7 @@
    "control_route": "not_observed",
    "other_layouts": {},
    "other_variants_passing": [
+    "lid_elsewhere__covering_bowl",
     "no_lid"
    ]
   },
@@ -5710,7 +5715,7 @@
    "variant": "lid_elsewhere",
    "candidates": [
     "lid_elsewhere__dining",
-    "lid_elsewhere__counter",
+    "lid_elsewhere__covering_bowl",
     "lid_by_pot"
    ],
    "passes_all": []
@@ -8662,12 +8667,12 @@
    "variant": "lid_elsewhere",
    "layouts": [
     "lid_elsewhere__dining",
-    "lid_elsewhere__counter"
+    "lid_elsewhere__covering_bowl"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {

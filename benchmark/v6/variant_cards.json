@@ -18170,11 +18170,11 @@
   },
   "control": "lid_by_pot",
   "oracle_route": "v6_lid_elsewhere__dining",
-  "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
-  "rationale": "the lid named is in the house: find it and cover the pot with it",
+  "challenge": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
+  "rationale": "find the lid; when it is free cover the pot with it, when it covers someone's food leave it and use a plate",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T15_cover_the_pot/lid_elsewhere__counter": {
+ "T15_cover_the_pot/lid_elsewhere__covering_bowl": {
   "variant": "lid_elsewhere",
   "category": "task",
   "seeds": [
@@ -18190,9 +18190,13 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "plate_counter_a",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "bowl_spoon",
+    "covered_bowl"
+   ],
    "removed": [],
    "conditions": [
     "not_in_view"
@@ -18201,11 +18205,32 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
+   "any": [
+    [
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_a"
+     ]
+    ],
+    [
+     [
+      "covered",
+      "handled_cooking_pot",
+      "plate_counter_b"
+     ]
+    ]
+   ],
    "all": [
     [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
+     "near_start",
+     "pot_lid",
+     0.03
+    ],
+    [
+     "near_start",
+     "covered_bowl",
+     0.03
     ],
     [
      "hand_empty",
@@ -18214,9 +18239,9 @@
    ]
   },
   "control": "lid_by_pot",
-  "oracle_route": "v6_lid_elsewhere__counter",
-  "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
-  "rationale": "the lid named is in the house: find it and cover the pot with it",
+  "oracle_route": "v6_lid_elsewhere__covering_bowl",
+  "challenge": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
+  "rationale": "find the lid; when it is free cover the pot with it, when it covers someone's food leave it and use a plate",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T15_cover_the_pot/no_lid": {

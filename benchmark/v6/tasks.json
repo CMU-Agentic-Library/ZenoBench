@@ -192003,15 +192003,15 @@
       "pot_lid"
      ],
      "since": "v6",
-     "note": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
+     "note": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
      "v6": {
       "family": "lid_elsewhere",
       "case": "dining",
-      "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
-      "rationale": "the lid named is in the house: find it and cover the pot with it",
+      "challenge": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
+      "rationale": "find the lid; when it is free cover the pot with it, when it covers someone's food leave it and use a plate",
       "control": "lid_by_pot",
       "contrast": null,
-      "factor": "where the lid was put (seed: the dining table or the kitchen counter)",
+      "factor": "what the lid is doing (seed: left on the dining table; or covering someone's unfinished bowl there, plates on the kitchen counter)",
       "derived_from": "bare"
      },
      "layout": {
@@ -192105,25 +192105,76 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the lid found and the pot covered with it",
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": {
+           "all": [
+            [
+             "covered",
+             "handled_cooking_pot",
+             "pot_lid"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_elsewhere__covering_bowl": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "near_start",
+             "pot_lid",
+             0.03
+            ],
+            [
+             "near_start",
+             "covered_bowl",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)",
         "raw": "best"
        }
       ],
-      "not_ok": "the pot not covered; the lid not found; still held",
+      "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
       "top": "ideal"
      }
     },
-    "lid_elsewhere__counter": {
+    "lid_elsewhere__covering_bowl": {
      "conditions": [
       "not_in_view"
      ],
      "move": {
       "pot_lid": {
-       "support": "kitchen_counter_2/top",
+       "support": null,
+       "z": 0.94,
        "xy": [
-        -0.104,
-        7.169
+        3.7,
+        6.3
        ],
        "yaw_deg": 0.0
       },
@@ -192134,14 +192185,63 @@
         1.725
        ],
        "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.324,
+        8.429
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "covered_bowl": {
+       "asset": "oatmeal_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.52
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
+      "any": [
+       [
+        [
+         "covered",
+         "handled_cooking_pot",
+         "plate_counter_a"
+        ]
+       ],
+       [
+        [
+         "covered",
+         "handled_cooking_pot",
+         "plate_counter_b"
+        ]
+       ]
+      ],
       "all": [
        [
-        "covered",
-        "handled_cooking_pot",
-        "pot_lid"
+        "near_start",
+        "pot_lid",
+        0.03
+       ],
+       [
+        "near_start",
+        "covered_bowl",
+        0.03
        ],
        [
         "hand_empty",
@@ -192151,57 +192251,72 @@
      },
      "watch": [
       "handled_cooking_pot",
-      "pot_lid"
+      "pot_lid",
+      "covered_bowl",
+      "plate_counter_a",
+      "plate_counter_b"
      ],
      "since": "v6",
-     "note": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
+     "note": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
      "v6": {
       "family": "lid_elsewhere",
-      "case": "counter",
-      "challenge": "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
-      "rationale": "the lid named is in the house: find it and cover the pot with it",
+      "case": "covering_bowl",
+      "challenge": "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of oatmeal someone has not finished",
+      "rationale": "find the lid; when it is free cover the pot with it, when it covers someone's food leave it and use a plate",
       "control": "lid_by_pot",
       "contrast": null,
-      "factor": "where the lid was put (seed: the dining table or the kitchen counter)",
+      "factor": "what the lid is doing (seed: left on the dining table; or covering someone's unfinished bowl there, plates on the kitchen counter)",
       "derived_from": "bare"
      },
      "layout": {
       "clusters": [
        {
         "names": [
+         "bowl_spoon",
+         "covered_bowl",
          "pot_lid"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.575,
+         6.175,
+         3.825,
+         6.5404
+        ],
+        "dy": [
+         -0.66,
+         1.4
+        ]
+       },
+       {
+        "names": [
+         "plate_counter_a"
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.229,
-         7.044,
-         0.021,
-         7.294
+         -0.448,
+         8.3049,
+         -0.2,
+         8.5531
         ],
         "dx": [
-         -0.28,
-         0.21
+         -0.06,
+         0.44
         ],
         "dy": [
-         -0.06,
-         2.13
+         -1.32,
+         0.87
         ],
         "pick": [
-         "pot_lid"
+         "plate_counter_a"
         ],
         "search": [
-         "pot_lid"
+         "plate_counter_a"
         ]
        }
       ],
       "static": {
        "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
         [
          -0.1165,
          7.8786,
@@ -192220,9 +192335,57 @@
          0.0735,
          8.0449
         ]
+       ],
+       "dining_table_2/top": [
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
        ]
       },
       "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
        "kitchen_counter_2/top": [
         [
          0,
@@ -192253,24 +192416,102 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "pot_lid"
+        "plate_counter_a"
        ],
        "look": []
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the lid found and the pot covered with it",
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": {
+           "all": [
+            [
+             "covered",
+             "handled_cooking_pot",
+             "pot_lid"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_elsewhere__covering_bowl": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "near_start",
+             "pot_lid",
+             0.03
+            ],
+            [
+             "near_start",
+             "covered_bowl",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": "n/a",
+          "lid_elsewhere__covering_bowl": {
+           "all": [
+            [
+             "covered",
+             "handled_cooking_pot",
+             "pot_lid"
+            ],
+            [
+             "upright",
+             "covered_bowl"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the lid taken off someone's bowl for the pot",
+        "raw": "second"
        }
       ],
-      "not_ok": "the pot not covered; the lid not found; still held",
-      "top": "ideal"
+      "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
+      "top": "moderate"
      }
     },
     "no_lid": {
@@ -192491,8 +192732,35 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "no lid in the house: the pot covered with a plate",
+        "goal": {
+         "by_layout": {
+          "no_lid": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)",
         "raw": "best"
        },
        {
@@ -192515,12 +192783,12 @@
           }
          }
         },
-        "why": "the pot covered with the book (no cover for food)",
+        "why": "the pot covered with the book, or the lid taken off the stew",
         "raw": "worst"
        }
       ],
       "not_ok": "the pot not covered; still held or dropped",
-      "top": "ideal"
+      "top": "moderate"
      }
     },
     "lid_in_use": {
@@ -192711,8 +192979,44 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the soup covered with a plate, the lid left on the stew",
+        "goal": {
+         "by_layout": {
+          "lid_in_use": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "covered",
+             "stew_pot",
+             "pot_lid"
+            ],
+            [
+             "upright",
+             "stew_pot"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)",
         "raw": "best"
        },
        {
@@ -192739,12 +193043,12 @@
           }
          }
         },
-        "why": "the lid taken off the stew and put on the soup",
+        "why": "the pot covered with the book, or the lid taken off the stew",
         "raw": "worst"
        }
       ],
       "not_ok": "the soup not covered; the stew pot tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate"
      }
     }
    },
@@ -192769,7 +193073,7 @@
    "oracle": {
     "lid_by_pot": "nominal",
     "lid_elsewhere__dining": "v6_lid_elsewhere__dining",
-    "lid_elsewhere__counter": "v6_lid_elsewhere__counter",
+    "lid_elsewhere__covering_bowl": "v6_lid_elsewhere__covering_bowl",
     "no_lid": "v6_no_lid",
     "lid_in_use": "v6_lid_in_use"
    },
@@ -192881,7 +193185,7 @@
      "kind": "v6_oracle",
      "variant": "lid_elsewhere__dining"
     },
-    "v6_lid_elsewhere__counter": {
+    "v6_lid_elsewhere__covering_bowl": {
      "steps": [
       {
        "skill": "navigate",
@@ -192908,22 +193212,34 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "pot_lid"
+       }
+      },
+      {
        "skill": "search",
        "args": {
-        "object": "pot_lid",
+        "object": "plate_counter_a",
         "region": "kitchen_0_1"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "pot_lid"
+        "destination": "plate_counter_a"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "pot_lid"
+        "object": "plate_counter_a"
        }
       },
       {
@@ -192936,12 +193252,12 @@
        "skill": "cover",
        "args": {
         "container": "handled_cooking_pot",
-        "lid": "pot_lid"
+        "lid": "plate_counter_a"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "lid_elsewhere__counter"
+     "variant": "lid_elsewhere__covering_bowl"
     },
     "v6_no_lid": {
      "steps": [
@@ -193121,32 +193437,132 @@
      "control": "lid_by_pot",
      "layouts": [
       "lid_elsewhere__dining",
-      "lid_elsewhere__counter"
+      "lid_elsewhere__covering_bowl"
      ],
-     "factor": "where the lid was put (seed: the dining table or the kitchen counter)",
+     "factor": "what the lid is doing (seed: left on the dining table; or covering someone's unfinished bowl there, plates on the kitchen counter)",
      "seeds": {
-      "10": "lid_elsewhere__counter",
+      "10": "lid_elsewhere__covering_bowl",
       "11": "lid_elsewhere__dining",
-      "12": "lid_elsewhere__counter",
+      "12": "lid_elsewhere__covering_bowl",
       "13": "lid_elsewhere__dining",
       "14": "lid_elsewhere__dining",
-      "15": "lid_elsewhere__counter",
-      "16": "lid_elsewhere__counter",
-      "17": "lid_elsewhere__counter",
+      "15": "lid_elsewhere__covering_bowl",
+      "16": "lid_elsewhere__covering_bowl",
+      "17": "lid_elsewhere__covering_bowl",
       "18": "lid_elsewhere__dining",
       "19": "lid_elsewhere__dining"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "lid_elsewhere__dining": true,
+       "lid_elsewhere__covering_bowl": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the lid found and the pot covered with it"
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": {
+           "all": [
+            [
+             "covered",
+             "handled_cooking_pot",
+             "pot_lid"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "lid_elsewhere__covering_bowl": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "near_start",
+             "pot_lid",
+             0.03
+            ],
+            [
+             "near_start",
+             "covered_bowl",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": "n/a",
+          "lid_elsewhere__covering_bowl": {
+           "all": [
+            [
+             "covered",
+             "handled_cooking_pot",
+             "pot_lid"
+            ],
+            [
+             "upright",
+             "covered_bowl"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the lid taken off someone's bowl for the pot"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "lid_elsewhere__dining": "n/a",
+          "lid_elsewhere__covering_bowl": "n/a"
+         }
+        },
+        "why": "the pot covered with the book, or the lid taken off the stew"
        }
       ],
-      "not_ok": "the pot not covered; the lid not found; still held"
+      "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
+      "D_by_layout": {
+       "lid_elsewhere__dining": 0,
+       "lid_elsewhere__covering_bowl": 1
+      },
+      "top_by_layout": {
+       "lid_elsewhere__dining": "ideal",
+       "lid_elsewhere__covering_bowl": "moderate"
+      }
      }
     },
     "no_lid": {
@@ -193170,12 +193586,52 @@
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "no_lid": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "no lid in the house: the pot covered with a plate"
+        "goal": {
+         "by_layout": {
+          "no_lid": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_lid": "n/a"
+         }
+        },
+        "why": "the lid taken off someone's bowl for the pot"
        },
        {
         "name": "worst",
@@ -193197,10 +193653,16 @@
           }
          }
         },
-        "why": "the pot covered with the book (no cover for food)"
+        "why": "the pot covered with the book, or the lid taken off the stew"
        }
       ],
-      "not_ok": "the pot not covered; still held or dropped"
+      "not_ok": "the pot not covered; still held or dropped",
+      "D_by_layout": {
+       "no_lid": 1
+      },
+      "top_by_layout": {
+       "no_lid": "moderate"
+      }
      }
     },
     "lid_in_use": {
@@ -193224,12 +193686,61 @@
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "lid_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the soup covered with a plate, the lid left on the stew"
+        "goal": {
+         "by_layout": {
+          "lid_in_use": {
+           "any": [
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_a"
+             ]
+            ],
+            [
+             [
+              "covered",
+              "handled_cooking_pot",
+              "plate_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "covered",
+             "stew_pot",
+             "pot_lid"
+            ],
+            [
+             "upright",
+             "stew_pot"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "lid_in_use": "n/a"
+         }
+        },
+        "why": "the lid taken off someone's bowl for the pot"
        },
        {
         "name": "worst",
@@ -193255,10 +193766,16 @@
           }
          }
         },
-        "why": "the lid taken off the stew and put on the soup"
+        "why": "the pot covered with the book, or the lid taken off the stew"
        }
       ],
-      "not_ok": "the soup not covered; the stew pot tipped; still held or dropped"
+      "not_ok": "the soup not covered; the stew pot tipped; still held or dropped",
+      "D_by_layout": {
+       "lid_in_use": 1
+      },
+      "top_by_layout": {
+       "lid_in_use": "moderate"
+      }
      }
     }
    },

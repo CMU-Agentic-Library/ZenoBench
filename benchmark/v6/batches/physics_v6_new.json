@@ -3292,8 +3292,8 @@
 {
 "task": "T15_cover_the_pot",
 "seed": 10,
-"variant": "lid_elsewhere__counter",
-"route": "v6_lid_elsewhere__counter",
+"variant": "lid_elsewhere__covering_bowl",
+"route": "v6_lid_elsewhere__covering_bowl",
 "family": "lid_elsewhere"
 },
 {
@@ -3306,8 +3306,8 @@
 {
 "task": "T15_cover_the_pot",
 "seed": 12,
-"variant": "lid_elsewhere__counter",
-"route": "v6_lid_elsewhere__counter",
+"variant": "lid_elsewhere__covering_bowl",
+"route": "v6_lid_elsewhere__covering_bowl",
 "family": "lid_elsewhere"
 },
 {
@@ -3327,22 +3327,22 @@
 {
 "task": "T15_cover_the_pot",
 "seed": 15,
-"variant": "lid_elsewhere__counter",
-"route": "v6_lid_elsewhere__counter",
+"variant": "lid_elsewhere__covering_bowl",
+"route": "v6_lid_elsewhere__covering_bowl",
 "family": "lid_elsewhere"
 },
 {
 "task": "T15_cover_the_pot",
 "seed": 16,
-"variant": "lid_elsewhere__counter",
-"route": "v6_lid_elsewhere__counter",
+"variant": "lid_elsewhere__covering_bowl",
+"route": "v6_lid_elsewhere__covering_bowl",
 "family": "lid_elsewhere"
 },
 {
 "task": "T15_cover_the_pot",
 "seed": 17,
-"variant": "lid_elsewhere__counter",
-"route": "v6_lid_elsewhere__counter",
+"variant": "lid_elsewhere__covering_bowl",
+"route": "v6_lid_elsewhere__covering_bowl",
 "family": "lid_elsewhere"
 },
 {

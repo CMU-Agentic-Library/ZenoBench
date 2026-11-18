@@ -919,15 +919,28 @@ def t15():
                    pick(PLATES[0])] + cover(PLATES[0])
     STEW = "stew_pot"
     fams = {
+        # 11-17 (user): the seed changes what the lid is doing -- left free on the dining table (find it, ideal), or
+        # there but covering someone's unfinished bowl of oatmeal (a spoon beside it): leave it, cover with a plate
         "lid_elsewhere": fam(
-            "lid_by_pot", ["not_in_view"], "where the lid was put (seed: the dining table or the kitchen counter)",
-            "the lid is not by the stove: someone put it on the dining table or on the kitchen counter, out of view",
-            "the lid named is in the house: find it and cover the pot with it",
-            {c: dict(move={LID: pose}, goal={"all": [["covered", POT, LID], H]}, watch=[POT, LID],
-                     route=[look(STOVE), look(ISL), S("search", object=LID, region=region), nav(LID), pick(LID)]
-                     + cover(LID))
-             for c, pose, region in (("dining", P(T2, 3.70, 6.30), "dining_room_0_1"),
-                                     ("counter", P(COUNTER, -0.10, 7.30), "kitchen_0_1"))}),
+            "lid_by_pot", ["not_in_view"], "what the lid is doing (seed: left on the dining table; or covering "
+            "someone's unfinished bowl there, plates on the kitchen counter)",
+            "the lid is not by the stove: it lies on the dining table, out of view -- free, or covering a bowl of "
+            "oatmeal someone has not finished",
+            "find the lid; when it is free cover the pot with it, when it covers someone's food leave it and use a "
+            "plate",
+            {"dining": dict(move={LID: P(T2, 3.70, 6.30)}, goal={"all": [["covered", POT, LID], H]}, watch=[POT, LID],
+                            route=[look(STOVE), look(ISL), S("search", object=LID, region="dining_room_0_1"),
+                                   nav(LID), pick(LID)] + cover(LID)),
+             "covering_bowl": dict(
+                 add={"covered_bowl": on("oatmeal_bowl", T2, 3.70, 6.30),
+                      "bowl_spoon": on("breakfast_spoon", T2, 3.70, 6.52)},
+                 move={LID: {"support": None, "z": 0.94, "xy": [3.70, 6.30], "yaw_deg": 0.0}},
+                 goal={"any": by_plate["any"], "all": [["near_start", LID, 0.03], ["near_start", "covered_bowl", 0.03],
+                                                       H]},
+                 watch=[POT, LID, "covered_bowl", *PLATES],
+                 route=[look(STOVE), look(ISL), S("search", object=LID, region="dining_room_0_1"), look(LID),
+                        S("search", object=PLATES[0], region="kitchen_0_1"), nav(PLATES[0]), pick(PLATES[0])]
+                 + cover(PLATES[0]))}),
         "no_lid": fam(
             "lid_by_pot", ["resource_absent", "not_in_view"], "the layout only",
             "there is no pot lid in the house; plates stand on the kitchen counter; a book lies on the island",

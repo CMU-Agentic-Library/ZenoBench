@@ -2269,9 +2269,9 @@
   },
   {
    "task": "T15_cover_the_pot",
-   "layout": "lid_elsewhere__counter",
-   "steps": 9,
-   "atoms_checked": 2,
+   "layout": "lid_elsewhere__covering_bowl",
+   "steps": 11,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

@@ -299,7 +299,7 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Task-Level
 
 * `lid_elsewhere__dining` (v6_lid_elsewhere__dining, 9 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) search(pot_lid,dining_room_0_1) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid)
-* `lid_elsewhere__counter` (v6_lid_elsewhere__counter, 9 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) search(pot_lid,kitchen_0_1) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid)
+* `lid_elsewhere__covering_bowl` (v6_lid_elsewhere__covering_bowl, 11 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) explore_room(dining_room_0_1) look(pot_lid) search(plate_counter_a,kitchen_0_1) navigate(plate_counter_a) pick(plate_counter_a) navigate(handled_cooking_pot) cover(handled_cooking_pot,plate_counter_a)
 * `no_lid` (v6_no_lid, 9 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) search(plate_counter_a,kitchen_0_1) navigate(plate_counter_a) pick(plate_counter_a) navigate(handled_cooking_pot) cover(handled_cooking_pot,plate_counter_a)
 * `lid_in_use` (v6_lid_in_use, 9 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) search(plate_counter_a,kitchen_0_1) navigate(plate_counter_a) pick(plate_counter_a) navigate(handled_cooking_pot) cover(handled_cooking_pot,plate_counter_a)
 

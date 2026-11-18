@@ -7559,6 +7559,8 @@
 
 ### lid_by_pot（对照）
 
+**情况**：锅盖在灶边岛台上 → 盖好
+
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -7574,23 +7576,47 @@
 
 ### lid_elsewhere（Task）
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**情况**：锅盖不在灶边，在餐桌上 → 找到；空着就拿来盖；正扣在别人没吃完的燕麦碗上就别动，用厨房台面的盘子盖（最好的替代算好；把锅盖从碗上拿走降一档）
+
+**成功条件**（D 按摆法：`dining` D = 0、理想物在，`covering_bowl` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - 手里空着
-- **不行（0）**：没盖；没找到锅盖；还拿着
+  - 摆法 `dining`：
+    - `handled_cooking_pot` 盖着 `pot_lid`
+    - 手里空着
+  - 摆法 `covering_bowl`：
+    - `pot_lid`、`covered_bowl` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `handled_cooking_pot` 盖着 `plate_counter_a`
+      - 第 2 组：
+        - `handled_cooking_pot` 盖着 `plate_counter_b`
+- **次好（0.6）**：
+
+  - 摆法 `dining`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `covering_bowl`：
+    - `handled_cooking_pot` 盖着 `pot_lid`
+    - `covered_bowl` 立着
+    - 手里空着
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：没盖；没找到锅盖；碰翻了别人的碗；还拿着
 
 
 **参考调用顺序**：
 
 - 摆法 `dining`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `search(object=pot_lid, region=dining_room_0_1)` → 6. `navigate(destination=pot_lid)` → 7. `pick(object=pot_lid)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `cover(container=handled_cooking_pot, lid=pot_lid)`
-- 摆法 `counter`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `search(object=pot_lid, region=kitchen_0_1)` → 6. `navigate(destination=pot_lid)` → 7. `pick(object=pot_lid)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `cover(container=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `covering_bowl`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `explore_room(room=dining_room_0_1)` → 6. `look(target=pot_lid)` → 7. `search(object=plate_counter_a, region=kitchen_0_1)` → 8. `navigate(destination=plate_counter_a)` → 9. `pick(object=plate_counter_a)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `cover(container=handled_cooking_pot, lid=plate_counter_a)`
 
 ### no_lid（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**情况**：家里没有锅盖；厨房台面有盘子，岛台上有本书 → 用盘子盖（最好的替代算好；用书盖降一档）
+
+**成功条件**（D 按摆法：`no_lid` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7600,6 +7626,9 @@
       - `handled_cooking_pot` 盖着 `plate_counter_a`
     - 第 2 组：
       - `handled_cooking_pot` 盖着 `plate_counter_b`
+- **次好（0.6）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **最不好（0.3）**：
 
   - `handled_cooking_pot` 盖着 `cover_book`
@@ -7613,7 +7642,9 @@
 
 ### lid_in_use（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**情况**：锅盖盖在右边灶眼的炖菜上 → 别动它，用盘子盖汤（拿炖菜的锅盖降一档）
+
+**成功条件**（D 按摆法：`lid_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7625,6 +7656,9 @@
       - `handled_cooking_pot` 盖着 `plate_counter_a`
     - 第 2 组：
       - `handled_cooking_pot` 盖着 `plate_counter_b`
+- **次好（0.6）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **最不好（0.3）**：
 
   - `handled_cooking_pot` 盖着 `pot_lid`
