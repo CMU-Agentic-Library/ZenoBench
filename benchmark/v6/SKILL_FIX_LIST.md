@@ -89,6 +89,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | bowl_2 | T13/finish_the_table |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | pick | cold_juice | T25/cold_one, T25/drink_in_fridge |
+| pick | cold_soda | T25/cold_one, T25/drink_in_fridge |
 | pick | desk_book_blue | T14/stack_them_stably |
 | pick | desk_book_green | T14/stack_them_stably |
 | pick | desk_mug | T14/homework_stays |
@@ -174,6 +175,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | bought_snack | T22/by_kind, T22/eat_now, T22/two_spots |
 | place | bowl_2 | T13/finish_the_table |
 | place | cold_juice | T25/cold_one, T25/drink_in_fridge |
+| place | cold_soda | T25/cold_one, T25/drink_in_fridge |
 | place | desk_book_green | T14/stack_them_stably |
 | place | desk_mug | T14/homework_stays |
 | place | dinner_bowl_1 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |

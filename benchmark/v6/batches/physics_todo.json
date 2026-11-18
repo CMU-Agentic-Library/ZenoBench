@@ -8612,211 +8612,211 @@
 {
 "task": "T25_drink_for_guest",
 "seed": 10,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__sponge_cup",
+"route": "v6_cup_elsewhere__sponge_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 11,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__only_mugs",
+"route": "v6_cup_elsewhere__only_mugs",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 12,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__sponge_cup",
+"route": "v6_cup_elsewhere__sponge_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 13,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__counter_cup",
+"route": "v6_cup_elsewhere__counter_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 14,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__only_mugs",
+"route": "v6_cup_elsewhere__only_mugs",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 15,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__counter_cup",
+"route": "v6_cup_elsewhere__counter_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 16,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__only_mugs",
+"route": "v6_cup_elsewhere__only_mugs",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 17,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__counter_cup",
+"route": "v6_cup_elsewhere__counter_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 18,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__sponge_cup",
+"route": "v6_cup_elsewhere__sponge_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 19,
-"variant": "cup_elsewhere",
-"route": "v6_cup_elsewhere",
+"variant": "cup_elsewhere__counter_cup",
+"route": "v6_cup_elsewhere__counter_cup",
 "family": "cup_elsewhere"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 10,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_soda",
+"route": "v6_cold_one__cold_soda",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 11,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_soda",
+"route": "v6_cold_one__cold_soda",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 12,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_soda",
+"route": "v6_cold_one__cold_soda",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 13,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_juice",
+"route": "v6_cold_one__cold_juice",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 14,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_juice",
+"route": "v6_cold_one__cold_juice",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 15,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_soda",
+"route": "v6_cold_one__cold_soda",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 16,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_soda",
+"route": "v6_cold_one__cold_soda",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 17,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_juice",
+"route": "v6_cold_one__cold_juice",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 18,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_juice",
+"route": "v6_cold_one__cold_juice",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 19,
-"variant": "cold_one",
-"route": "v6_cold_one",
+"variant": "cold_one__cold_juice",
+"route": "v6_cold_one__cold_juice",
 "family": "cold_one"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 10,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__juice",
+"route": "v6_drink_in_fridge__juice",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 11,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__soda_only",
+"route": "v6_drink_in_fridge__soda_only",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 12,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__soda_only",
+"route": "v6_drink_in_fridge__soda_only",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 13,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__soda_only",
+"route": "v6_drink_in_fridge__soda_only",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 14,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__juice",
+"route": "v6_drink_in_fridge__juice",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 15,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__juice",
+"route": "v6_drink_in_fridge__juice",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 16,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__soda_only",
+"route": "v6_drink_in_fridge__soda_only",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 17,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__juice",
+"route": "v6_drink_in_fridge__juice",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 18,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__juice",
+"route": "v6_drink_in_fridge__juice",
 "family": "drink_in_fridge"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 19,
-"variant": "drink_in_fridge",
-"route": "v6_drink_in_fridge",
+"variant": "drink_in_fridge__soda_only",
+"route": "v6_drink_in_fridge__soda_only",
 "family": "drink_in_fridge"
 },
 {
@@ -8892,71 +8892,71 @@
 {
 "task": "T25_drink_for_guest",
 "seed": 10,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__one_cup",
+"route": "v6_two_guests__one_cup",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 11,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__one_cup",
+"route": "v6_two_guests__one_cup",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 12,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__one_cup",
+"route": "v6_two_guests__one_cup",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 13,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__one_cup",
+"route": "v6_two_guests__one_cup",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 14,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__two_cups",
+"route": "v6_two_guests__two_cups",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 15,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__two_cups",
+"route": "v6_two_guests__two_cups",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 16,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__one_cup",
+"route": "v6_two_guests__one_cup",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 17,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__two_cups",
+"route": "v6_two_guests__two_cups",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 18,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__two_cups",
+"route": "v6_two_guests__two_cups",
 "family": "two_guests"
 },
 {
 "task": "T25_drink_for_guest",
 "seed": 19,
-"variant": "two_guests",
-"route": "v6_two_guests",
+"variant": "two_guests__two_cups",
+"route": "v6_two_guests__two_cups",
 "family": "two_guests"
 },
 {

@@ -1,32 +1,32 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 226 个摆法，其中 154 个要做替换，72 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 30.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 241 个摆法，其中 160 个要做替换，81 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 32.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 33 | +2.2 |
-| 被占用 | 34 | +3.2 |
-| 能力不足 | 22 | -8.8 |
-| 看着像但不能用 | 29 | -1.8 |
-| 去处替换 | 36 | +5.2 |
+| 缺失 | 38 | +6.0 |
+| 被占用 | 34 | +2.0 |
+| 能力不足 | 22 | -10.0 |
+| 看着像但不能用 | 30 | -2.0 |
+| 去处替换 | 36 | +4.0 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 112 |
+| 在 | 118 |
 | 不在 | 42 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 17 | 16 |
+| 缺失 | 22 | 16 |
 | 被占用 | 19 | 15 |
 | 能力不足 | 16 | 6 |
-| 看着像但不能用 | 29 | 0 |
+| 看着像但不能用 | 30 | 0 |
 | 去处替换 | 31 | 5 |
 
 ## 每个摆法
@@ -259,3 +259,18 @@
 | T24 | two_kids | apple_banana | 不用替换 | 在 | 1 |
 | T24 | two_kids | apple_snacks | 缺失 | 在 | 1 |
 | T24 | two_kids | desk3_covered | 被占用 | 在 | 1 |
+| T25 | drink_on_island | — | 不用替换 | 在 | 0 |
+| T25 | cup_elsewhere | counter_cup | 不用替换 | 在 | 0 |
+| T25 | cup_elsewhere | only_mugs | 缺失 | 在 | 0 |
+| T25 | cup_elsewhere | sponge_cup | 看着像但不能用 | 在 | 1 |
+| T25 | cold_one | cold_juice | 不用替换 | 在 | 1 |
+| T25 | cold_one | cold_soda | 缺失 | 在 | 1 |
+| T25 | drink_in_fridge | juice | 不用替换 | 在 | 1 |
+| T25 | drink_in_fridge | soda_only | 缺失 | 在 | 1 |
+| T25 | cups_for_two | one_there | 不用替换 | 在 | 1 |
+| T25 | cups_for_two | none_one_inside | 缺失 | 在 | 1 |
+| T25 | cups_for_two | none_two_inside | 不用替换 | 在 | 1 |
+| T25 | cups_for_two | two_there | 不用替换 | 在 | 1 |
+| T25 | two_guests | two_cups | 不用替换 | 在 | 0 |
+| T25 | two_guests | one_cup | 缺失 | 在 | 0 |
+| T25 | little_guest | — | 不用替换 | 在 | 1 |

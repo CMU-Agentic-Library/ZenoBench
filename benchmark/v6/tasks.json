@@ -249357,9 +249357,10 @@
       "top": "ideal"
      }
     },
-    "cup_elsewhere": {
+    "cup_elsewhere__counter_cup": {
      "conditions": [
-      "not_in_view"
+      "not_in_view",
+      "resource_absent"
      ],
      "move": {
       "cup_counter_b": {
@@ -249417,15 +249418,15 @@
       "cup_counter_b"
      ],
      "since": "v6",
-     "note": "the juice on the island, no cup there; cups stand on the kitchen counter in the small kitchen",
+     "note": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
      "v6": {
       "family": "cup_elsewhere",
-      "case": null,
-      "challenge": "the juice on the island, no cup there; cups stand on the kitchen counter in the small kitchen",
-      "rationale": "a drink is served with a cup: find one",
+      "case": "counter_cup",
+      "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+      "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's cup holds the dish sponge, the other ordinary cups gone)",
       "derived_from": "bare"
      },
      "layout": {
@@ -249566,8 +249567,117 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the juice and a cup from the counter by the guest",
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "cup_counter_b",
+               "cup_kitchen_cabinet",
+               "cup_side_table",
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__only_mugs": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "near_start",
+              "cup_counter_b",
+              0.03
+             ],
+             [
+              "inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is no clean cup (the sponge cup left alone)",
         "raw": "best"
        }
       ],
@@ -249575,9 +249685,793 @@
       "top": "ideal"
      }
     },
-    "cold_one": {
+    "cup_elsewhere__only_mugs": {
      "conditions": [
-      "preference_allocation"
+      "not_in_view",
+      "resource_absent"
+     ],
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.815
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        1
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "since": "v6",
+     "note": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+     "v6": {
+      "family": "cup_elsewhere",
+      "case": "only_mugs",
+      "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+      "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's cup holds the dish sponge, the other ordinary cups gone)",
+      "derived_from": "bare"
+     },
+     "move": {
+      "mug_shelf": {
+       "support": "large_shelf_6/top",
+       "xy": [
+        5.09,
+        8.545
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.786,
+         7.329,
+         1.844
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         -0.26,
+         0.13
+        ],
+        "pick": [
+         "guest_juice"
+        ]
+       },
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "large_shelf_6/top",
+        "box": [
+         5.0437,
+         8.4817,
+         5.1363,
+         8.6083
+        ],
+        "dx": [
+         -0.08,
+         0.14
+        ],
+        "dy": [
+         -0.94,
+         0.69
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ],
+       "large_shelf_6/top": [
+        [
+         0,
+         -1,
+         4.95,
+         7.525,
+         9.169,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         7.525,
+         4.95,
+         5.144,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "mug_shelf"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "cup_counter_b",
+               "cup_kitchen_cabinet",
+               "cup_side_table",
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__only_mugs": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "near_start",
+              "cup_counter_b",
+              0.03
+             ],
+             [
+              "inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is no clean cup (the sponge cup left alone)",
+        "raw": "best"
+       }
+      ],
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "cup_elsewhere__sponge_cup": {
+     "conditions": [
+      "not_in_view",
+      "resource_absent"
+     ],
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.45,
+        8.2
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_shelf": {
+       "support": "large_shelf_6/top",
+       "xy": [
+        5.09,
+        8.545
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.815
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 1.015,
+       "xy": [
+        -0.45,
+        8.2
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter",
+         "cup_counter_b"
+        ],
+        "tv_stand_2/top",
+        1
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "cup_counter_b",
+      "cup_sponge",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "since": "v6",
+     "note": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+     "v6": {
+      "family": "cup_elsewhere",
+      "case": "sponge_cup",
+      "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+      "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's cup holds the dish sponge, the other ordinary cups gone)",
+      "derived_from": "bare"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "cup_counter_b",
+         "cup_sponge"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.5038,
+         8.1452,
+         -0.3962,
+         8.2548
+        ],
+        "dy": [
+         -1.16,
+         1.17
+        ],
+        "search": [
+         "cup_counter_b"
+        ]
+       },
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.786,
+         7.329,
+         1.844
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         -0.26,
+         0.13
+        ],
+        "pick": [
+         "guest_juice"
+        ]
+       },
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "large_shelf_6/top",
+        "box": [
+         5.0437,
+         8.4817,
+         5.1363,
+         8.6083
+        ],
+        "dx": [
+         -0.08,
+         0.14
+        ],
+        "dy": [
+         -0.94,
+         0.69
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ],
+       "large_shelf_6/top": [
+        [
+         0,
+         -1,
+         4.95,
+         7.525,
+         9.169,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         7.525,
+         4.95,
+         5.144,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "cup_counter_b",
+        "mug_shelf"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "cup_counter_b",
+               "cup_kitchen_cabinet",
+               "cup_side_table",
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__only_mugs": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "near_start",
+              "cup_counter_b",
+              0.03
+             ],
+             [
+              "inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is no clean cup (the sponge cup left alone)",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": "n/a",
+          "cup_elsewhere__only_mugs": "n/a",
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "on",
+              "cup_counter_b",
+              "tv_stand_2/top"
+             ],
+             [
+              "not inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the sponge taken out of its cup and that cup brought",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": "n/a",
+          "cup_elsewhere__only_mugs": "n/a",
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "on",
+              "cup_counter_b",
+              "tv_stand_2/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the cup with the dish sponge in it brought",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "cold_one__cold_juice": {
+     "conditions": [
+      "preference_allocation",
+      "resource_absent"
      ],
      "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
      "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的。",
@@ -249656,15 +250550,15 @@
       "guest_cup"
      ],
      "since": "v6",
-     "note": "a bottle on the island at room temperature, another one in the fridge; it is a hot day",
+     "note": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
      "v6": {
       "family": "cold_one",
-      "case": null,
-      "challenge": "a bottle on the island at room temperature, another one in the fridge; it is a hot day",
-      "rationale": "on a hot day the cold one: open the fridge for it, close it again",
+      "case": "cold_juice",
+      "challenge": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
+      "rationale": "on a hot day the cold one, juice or not: open the fridge for it, close it again",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what is cold in the fridge (seed: a bottle of the same juice; or only a can of soda)",
       "derived_from": "bare"
      },
      "move": {},
@@ -249764,7 +250658,7 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "cold_one": {
+          "cold_one__cold_juice": {
            "all": [
             [
              "on",
@@ -249774,6 +250668,52 @@
             [
              "upright",
              "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "near_start",
+              "guest_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
             ],
             [
              "count_on_at_least",
@@ -249820,7 +250760,38 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "cold_one": {
+          "cold_one__cold_juice": {
+           "all": [
+            [
+             "on",
+             "guest_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "guest_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
            "all": [
             [
              "on",
@@ -249861,10 +250832,375 @@
       "top": "ideal"
      }
     },
-    "drink_in_fridge": {
+    "cold_one__cold_soda": {
+     "conditions": [
+      "preference_allocation",
+      "resource_absent"
+     ],
+     "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
+     "instruction_zh": "天很热，客人在客厅坐着，给他拿点喝的。",
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "guest_cup": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.54,
+        1.855
+       ],
+       "yaw_deg": 0.0
+      },
+      "cold_soda": {
+       "asset": "soda_can",
+       "support": "breakfast_fridge/inside_shelf",
+       "xy": [
+        5.9,
+        3.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "cold_soda",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "cold_soda"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "guest_cup",
+         "cup_counter_b",
+         "cup_kitchen_cabinet",
+         "cup_side_table",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        1
+       ],
+       [
+        "near_start",
+        "guest_juice",
+        0.03
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "cold_soda",
+      "guest_cup"
+     ],
+     "since": "v6",
+     "note": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
+     "v6": {
+      "family": "cold_one",
+      "case": "cold_soda",
+      "challenge": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
+      "rationale": "on a hot day the cold one, juice or not: open the fridge for it, close it again",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "what is cold in the fridge (seed: a bottle of the same juice; or only a can of soda)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.771,
+         7.329,
+         1.829
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         -0.24,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "guest_cup"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.4862,
+         1.8002,
+         7.5938,
+         1.9098
+        ],
+        "dx": [
+         -0.93,
+         0.65
+        ],
+        "dy": [
+         -0.27,
+         0.06
+        ],
+        "pick": [
+         "guest_cup"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the cold juice from the fridge and a cup by the guest, the fridge closed, the warm bottle left",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "cold_one__cold_juice": {
+           "all": [
+            [
+             "on",
+             "cold_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "near_start",
+              "guest_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "near_start",
+              "guest_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the cold one, but the fridge left open or the warm bottle moved too",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "cold_one__cold_juice": {
+           "all": [
+            [
+             "on",
+             "guest_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "guest_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
+           "all": [
+            [
+             "on",
+             "guest_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "guest_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the room-temperature bottle brought on a hot day",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "drink_in_fridge__juice": {
      "conditions": [
       "storage_place",
-      "not_in_view"
+      "not_in_view",
+      "resource_absent"
      ],
      "add": {
       "guest_cup": {
@@ -249926,15 +251262,15 @@
       "guest_cup"
      ],
      "since": "v6",
-     "note": "a cup on the island, nothing to drink out; the juice is in the fridge",
+     "note": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
      "v6": {
       "family": "drink_in_fridge",
-      "case": null,
-      "challenge": "a cup on the island, nothing to drink out; the juice is in the fridge",
-      "rationale": "drinks are kept in the fridge: open it, take the juice, close it",
+      "case": "juice",
+      "challenge": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+      "rationale": "drinks are kept in the fridge: open it, take what there is to drink, close it",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what drink the fridge holds (seed: the juice; or only a can of soda)",
       "derived_from": "bare"
      },
      "move": {},
@@ -250014,7 +251350,7 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "drink_in_fridge": {
+          "drink_in_fridge__juice": {
            "all": [
             [
              "on",
@@ -250024,6 +251360,263 @@
             [
              "upright",
              "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "drink_in_fridge__soda_only": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the task done, but a door left open",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "drink_in_fridge__soda_only": {
+     "conditions": [
+      "storage_place",
+      "not_in_view",
+      "resource_absent"
+     ],
+     "add": {
+      "guest_cup": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.54,
+        1.855
+       ],
+       "yaw_deg": 0.0
+      },
+      "cold_soda": {
+       "asset": "soda_can",
+       "support": "breakfast_fridge/inside_shelf",
+       "xy": [
+        5.9,
+        3.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "cold_soda",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "cold_soda"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "guest_cup",
+         "cup_counter_b",
+         "cup_kitchen_cabinet",
+         "cup_side_table",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        1
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "cold_soda",
+      "guest_cup"
+     ],
+     "since": "v6",
+     "note": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+     "v6": {
+      "family": "drink_in_fridge",
+      "case": "soda_only",
+      "challenge": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+      "rationale": "drinks are kept in the fridge: open it, take what there is to drink, close it",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "what drink the fridge holds (seed: the juice; or only a can of soda)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_cup"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.4862,
+         1.8002,
+         7.5938,
+         1.9098
+        ],
+        "dx": [
+         -0.93,
+         0.65
+        ],
+        "dy": [
+         -0.27,
+         0.06
+        ],
+        "pick": [
+         "guest_cup"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice from the fridge and a cup by the guest, the fridge closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "drink_in_fridge__juice": {
+           "all": [
+            [
+             "on",
+             "cold_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "drink_in_fridge__soda_only": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
             ],
             [
              "count_on_at_least",
@@ -252868,10 +254461,11 @@
       "top": "ideal"
      }
     },
-    "two_guests": {
+    "two_guests__two_cups": {
      "conditions": [
       "count_from_scene",
-      "multi_object_goal"
+      "multi_object_goal",
+      "resource_absent"
      ],
      "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
      "instruction_zh": "两位客人在客厅坐着，给他们拿点喝的。",
@@ -252942,15 +254536,15 @@
       "guest_cup_2"
      ],
      "since": "v6",
-     "note": "two guests; one bottle of juice and two cups on the island",
+     "note": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
      "v6": {
       "family": "two_guests",
-      "case": null,
-      "challenge": "two guests; one bottle of juice and two cups on the island",
-      "rationale": "one cup per guest: both cups with the bottle",
+      "case": "two_cups",
+      "challenge": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+      "rationale": "one cup per guest: both cups with the bottle; with one cup, a mug for the other guest",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "how many cups there are (seed: two on the island; or one, the house's other ordinary cups gone, mugs in the dining room)",
       "derived_from": "bare"
      },
      "move": {},
@@ -253051,6 +254645,239 @@
          1.515,
          6.54,
          8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": null,
+        "why": "the juice and two cups by the guests",
+        "raw": "best"
+       }
+      ],
+      "not_ok": "only one cup; no drink or no cup by the guest; the juice lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "two_guests__one_cup": {
+     "conditions": [
+      "count_from_scene",
+      "multi_object_goal",
+      "resource_absent"
+     ],
+     "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
+     "instruction_zh": "两位客人在客厅坐着，给他们拿点喝的。",
+     "remove": [
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table"
+     ],
+     "add": {
+      "guest_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.815
+       ],
+       "yaw_deg": 0.0
+      },
+      "guest_cup": {
+       "asset": "breakfast_cup",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.54,
+        1.855
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "guest_juice",
+        "tv_stand_2/top"
+       ],
+       [
+        "upright",
+        "guest_juice"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "guest_cup",
+         "mug_dining_cabinet",
+         "mug_shelf",
+         "mug_counter"
+        ],
+        "tv_stand_2/top",
+        2
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "guest_juice",
+      "guest_cup",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "since": "v6",
+     "note": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+     "v6": {
+      "family": "two_guests",
+      "case": "one_cup",
+      "challenge": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+      "rationale": "one cup per guest: both cups with the bottle; with one cup, a mug for the other guest",
+      "control": "drink_on_island",
+      "contrast": null,
+      "factor": "how many cups there are (seed: two on the island; or one, the house's other ordinary cups gone, mugs in the dining room)",
+      "derived_from": "bare"
+     },
+     "move": {
+      "mug_shelf": {
+       "support": "large_shelf_6/top",
+       "xy": [
+        5.09,
+        8.545
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "guest_cup"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.4862,
+         1.8002,
+         7.5938,
+         1.9098
+        ],
+        "dx": [
+         -0.93,
+         0.65
+        ],
+        "dy": [
+         -0.27,
+         0.06
+        ],
+        "pick": [
+         "guest_cup"
+        ]
+       },
+       {
+        "names": [
+         "guest_juice"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.271,
+         1.786,
+         7.329,
+         1.844
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ],
+        "dy": [
+         -0.26,
+         0.13
+        ],
+        "pick": [
+         "guest_juice"
+        ]
+       },
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "large_shelf_6/top",
+        "box": [
+         5.0437,
+         8.4817,
+         5.1363,
+         8.6083
+        ],
+        "dx": [
+         -0.08,
+         0.14
+        ],
+        "dy": [
+         -0.94,
+         0.69
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ],
+       "large_shelf_6/top": [
+        [
+         0,
+         -1,
+         4.95,
+         7.525,
+         9.169,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         7.525,
+         4.95,
+         5.144,
          0.2
         ]
        ]
@@ -253365,14 +255192,19 @@
    "nominal": "nominal",
    "oracle": {
     "drink_on_island": "nominal",
-    "cup_elsewhere": "v6_cup_elsewhere",
-    "cold_one": "v6_cold_one",
-    "drink_in_fridge": "v6_drink_in_fridge",
+    "cup_elsewhere__counter_cup": "v6_cup_elsewhere__counter_cup",
+    "cup_elsewhere__only_mugs": "v6_cup_elsewhere__only_mugs",
+    "cup_elsewhere__sponge_cup": "v6_cup_elsewhere__sponge_cup",
+    "cold_one__cold_juice": "v6_cold_one__cold_juice",
+    "cold_one__cold_soda": "v6_cold_one__cold_soda",
+    "drink_in_fridge__juice": "v6_drink_in_fridge__juice",
+    "drink_in_fridge__soda_only": "v6_drink_in_fridge__soda_only",
     "cups_for_two__one_there": "v6_cups_for_two__one_there",
     "cups_for_two__none_one_inside": "v6_cups_for_two__none_one_inside",
     "cups_for_two__none_two_inside": "v6_cups_for_two__none_two_inside",
     "cups_for_two__two_there": "v6_cups_for_two__two_there",
-    "two_guests": "v6_two_guests",
+    "two_guests__two_cups": "v6_two_guests__two_cups",
+    "two_guests__one_cup": "v6_two_guests__one_cup",
     "little_guest": "v6_little_guest"
    },
    "routes": {
@@ -253454,7 +255286,7 @@
       }
      ]
     },
-    "v6_cup_elsewhere": {
+    "v6_cup_elsewhere__counter_cup": {
      "steps": [
       {
        "skill": "navigate",
@@ -253535,9 +255367,188 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "cup_elsewhere"
+     "variant": "cup_elsewhere__counter_cup"
     },
-    "v6_cold_one": {
+    "v6_cup_elsewhere__only_mugs": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug_shelf",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.544,
+         0.371
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cup_elsewhere__only_mugs"
+    },
+    "v6_cup_elsewhere__sponge_cup": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "cup_counter_b",
+        "region": "kitchen_0_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug_shelf",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.544,
+         0.371
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cup_elsewhere__sponge_cup"
+    },
+    "v6_cold_one__cold_juice": {
      "steps": [
       {
        "skill": "navigate",
@@ -253642,9 +255653,116 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "cold_one"
+     "variant": "cold_one__cold_juice"
     },
-    "v6_drink_in_fridge": {
+    "v6_cold_one__cold_soda": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cold_soda"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cold_soda"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cold_soda",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_cup",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.544,
+         0.371
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cold_one__cold_soda"
+    },
+    "v6_drink_in_fridge__juice": {
      "steps": [
       {
        "skill": "navigate",
@@ -253761,7 +255879,126 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "drink_in_fridge"
+     "variant": "drink_in_fridge__juice"
+    },
+    "v6_drink_in_fridge__soda_only": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cold_soda"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cold_soda"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cold_soda",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_cup",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.544,
+         0.371
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "drink_in_fridge__soda_only"
     },
     "v6_cups_for_two__one_there": {
      "steps": [
@@ -254238,7 +256475,7 @@
      "kind": "v6_oracle",
      "variant": "cups_for_two__two_there"
     },
-    "v6_two_guests": {
+    "v6_two_guests__two_cups": {
      "steps": [
       {
        "skill": "navigate",
@@ -254341,7 +256578,119 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "two_guests"
+     "variant": "two_guests__two_cups"
+    },
+    "v6_two_guests__one_cup": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_juice",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.3,
+         0.36
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "guest_cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "guest_cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "guest_cup",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.544,
+         0.371
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug_shelf",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.804,
+         0.371
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "two_guests__one_cup"
     },
     "v6_little_guest": {
      "steps": [
@@ -254472,52 +256821,258 @@
      "origin": "v6",
      "control": "drink_on_island",
      "layouts": [
-      "cup_elsewhere"
+      "cup_elsewhere__counter_cup",
+      "cup_elsewhere__only_mugs",
+      "cup_elsewhere__sponge_cup"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's cup holds the dish sponge, the other ordinary cups gone)",
      "seeds": {
-      "10": "cup_elsewhere",
-      "11": "cup_elsewhere",
-      "12": "cup_elsewhere",
-      "13": "cup_elsewhere",
-      "14": "cup_elsewhere",
-      "15": "cup_elsewhere",
-      "16": "cup_elsewhere",
-      "17": "cup_elsewhere",
-      "18": "cup_elsewhere",
-      "19": "cup_elsewhere"
+      "10": "cup_elsewhere__sponge_cup",
+      "11": "cup_elsewhere__only_mugs",
+      "12": "cup_elsewhere__sponge_cup",
+      "13": "cup_elsewhere__counter_cup",
+      "14": "cup_elsewhere__only_mugs",
+      "15": "cup_elsewhere__counter_cup",
+      "16": "cup_elsewhere__only_mugs",
+      "17": "cup_elsewhere__counter_cup",
+      "18": "cup_elsewhere__sponge_cup",
+      "19": "cup_elsewhere__counter_cup"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "cup_elsewhere__counter_cup": true,
+       "cup_elsewhere__only_mugs": true,
+       "cup_elsewhere__sponge_cup": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the juice and a cup from the counter by the guest"
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "cup_counter_b",
+               "cup_kitchen_cabinet",
+               "cup_side_table",
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__only_mugs": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "count_on_at_least",
+              [
+               "mug_dining_cabinet",
+               "mug_shelf",
+               "mug_counter"
+              ],
+              "tv_stand_2/top",
+              1
+             ],
+             [
+              "near_start",
+              "cup_counter_b",
+              0.03
+             ],
+             [
+              "inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is no clean cup (the sponge cup left alone)"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": "n/a",
+          "cup_elsewhere__only_mugs": "n/a",
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "on",
+              "cup_counter_b",
+              "tv_stand_2/top"
+             ],
+             [
+              "not inside",
+              "cup_sponge",
+              "cup_counter_b"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the sponge taken out of its cup and that cup brought"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "cup_elsewhere__counter_cup": "n/a",
+          "cup_elsewhere__only_mugs": "n/a",
+          "cup_elsewhere__sponge_cup": {
+           "any": [
+            [
+             [
+              "on",
+              "guest_juice",
+              "tv_stand_2/top"
+             ],
+             [
+              "upright",
+              "guest_juice"
+             ],
+             [
+              "on",
+              "cup_counter_b",
+              "tv_stand_2/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the cup with the dish sponge in it brought"
        }
       ],
-      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped"
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "cup_elsewhere__counter_cup": 0,
+       "cup_elsewhere__only_mugs": 0,
+       "cup_elsewhere__sponge_cup": 1
+      },
+      "top_by_layout": {
+       "cup_elsewhere__counter_cup": "ideal",
+       "cup_elsewhere__only_mugs": "ideal",
+       "cup_elsewhere__sponge_cup": "ideal"
+      }
      }
     },
     "cold_one": {
      "origin": "v6",
      "control": "drink_on_island",
      "layouts": [
-      "cold_one"
+      "cold_one__cold_juice",
+      "cold_one__cold_soda"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what is cold in the fridge (seed: a bottle of the same juice; or only a can of soda)",
      "seeds": {
-      "10": "cold_one",
-      "11": "cold_one",
-      "12": "cold_one",
-      "13": "cold_one",
-      "14": "cold_one",
-      "15": "cold_one",
-      "16": "cold_one",
-      "17": "cold_one",
-      "18": "cold_one",
-      "19": "cold_one"
+      "10": "cold_one__cold_soda",
+      "11": "cold_one__cold_soda",
+      "12": "cold_one__cold_soda",
+      "13": "cold_one__cold_juice",
+      "14": "cold_one__cold_juice",
+      "15": "cold_one__cold_soda",
+      "16": "cold_one__cold_soda",
+      "17": "cold_one__cold_juice",
+      "18": "cold_one__cold_juice",
+      "19": "cold_one__cold_juice"
      },
      "scoring": {
       "D": 1,
@@ -254533,7 +257088,7 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "cold_one": {
+          "cold_one__cold_juice": {
            "all": [
             [
              "on",
@@ -254543,6 +257098,52 @@
             [
              "upright",
              "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ],
+           "any": [
+            [
+             [
+              "near_start",
+              "guest_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ]
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
             ],
             [
              "count_on_at_least",
@@ -254588,7 +257189,38 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "cold_one": {
+          "cold_one__cold_juice": {
+           "all": [
+            [
+             "on",
+             "guest_juice",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "guest_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "cold_one__cold_soda": {
            "all": [
             [
              "on",
@@ -254631,20 +257263,21 @@
      "origin": "v6",
      "control": "drink_on_island",
      "layouts": [
-      "drink_in_fridge"
+      "drink_in_fridge__juice",
+      "drink_in_fridge__soda_only"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what drink the fridge holds (seed: the juice; or only a can of soda)",
      "seeds": {
-      "10": "drink_in_fridge",
-      "11": "drink_in_fridge",
-      "12": "drink_in_fridge",
-      "13": "drink_in_fridge",
-      "14": "drink_in_fridge",
-      "15": "drink_in_fridge",
-      "16": "drink_in_fridge",
-      "17": "drink_in_fridge",
-      "18": "drink_in_fridge",
-      "19": "drink_in_fridge"
+      "10": "drink_in_fridge__juice",
+      "11": "drink_in_fridge__soda_only",
+      "12": "drink_in_fridge__soda_only",
+      "13": "drink_in_fridge__soda_only",
+      "14": "drink_in_fridge__juice",
+      "15": "drink_in_fridge__juice",
+      "16": "drink_in_fridge__soda_only",
+      "17": "drink_in_fridge__juice",
+      "18": "drink_in_fridge__juice",
+      "19": "drink_in_fridge__soda_only"
      },
      "scoring": {
       "D": 1,
@@ -254660,7 +257293,7 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "drink_in_fridge": {
+          "drink_in_fridge__juice": {
            "all": [
             [
              "on",
@@ -254670,6 +257303,37 @@
             [
              "upright",
              "cold_juice"
+            ],
+            [
+             "count_on_at_least",
+             [
+              "guest_cup",
+              "cup_counter_b",
+              "cup_kitchen_cabinet",
+              "cup_side_table",
+              "mug_dining_cabinet",
+              "mug_shelf",
+              "mug_counter"
+             ],
+             "tv_stand_2/top",
+             1
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "drink_in_fridge__soda_only": {
+           "all": [
+            [
+             "on",
+             "cold_soda",
+             "tv_stand_2/top"
+            ],
+            [
+             "upright",
+             "cold_soda"
             ],
             [
              "count_on_at_least",
@@ -255202,20 +257866,21 @@
      "origin": "v6",
      "control": "drink_on_island",
      "layouts": [
-      "two_guests"
+      "two_guests__two_cups",
+      "two_guests__one_cup"
      ],
-     "factor": "the seed's layout only",
+     "factor": "how many cups there are (seed: two on the island; or one, the house's other ordinary cups gone, mugs in the dining room)",
      "seeds": {
-      "10": "two_guests",
-      "11": "two_guests",
-      "12": "two_guests",
-      "13": "two_guests",
-      "14": "two_guests",
-      "15": "two_guests",
-      "16": "two_guests",
-      "17": "two_guests",
-      "18": "two_guests",
-      "19": "two_guests"
+      "10": "two_guests__one_cup",
+      "11": "two_guests__one_cup",
+      "12": "two_guests__one_cup",
+      "13": "two_guests__one_cup",
+      "14": "two_guests__two_cups",
+      "15": "two_guests__two_cups",
+      "16": "two_guests__one_cup",
+      "17": "two_guests__two_cups",
+      "18": "two_guests__two_cups",
+      "19": "two_guests__two_cups"
      },
      "scoring": {
       "D": 0,
@@ -255340,14 +258005,16 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "not_in_view",
+      "resource_absent"
      ]
     },
     "cold_one": {
      "category": "task",
      "local": [],
      "longer": [
-      "preference_allocation"
+      "preference_allocation",
+      "resource_absent"
      ]
     },
     "drink_in_fridge": {
@@ -255355,6 +258022,7 @@
      "local": [],
      "longer": [
       "not_in_view",
+      "resource_absent",
       "storage_place"
      ]
     },
@@ -255373,7 +258041,8 @@
      "local": [],
      "longer": [
       "count_from_scene",
-      "multi_object_goal"
+      "multi_object_goal",
+      "resource_absent"
      ]
     },
     "little_guest": {

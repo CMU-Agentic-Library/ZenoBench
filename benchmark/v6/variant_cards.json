@@ -24790,19 +24790,13 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T25_drink_for_guest/cup_elsewhere": {
+ "T25_drink_for_guest/cup_elsewhere__counter_cup": {
   "variant": "cup_elsewhere",
   "category": "task",
   "seeds": [
-   10,
-   11,
-   12,
    13,
-   14,
    15,
-   16,
    17,
-   18,
    19
   ],
   "instruction": "A guest is sitting in the living room. Bring him something to drink.",
@@ -24817,7 +24811,8 @@
    ],
    "removed": [],
    "conditions": [
-    "not_in_view"
+    "not_in_view",
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -24853,22 +24848,145 @@
    ]
   },
   "control": "drink_on_island",
-  "oracle_route": "v6_cup_elsewhere",
-  "challenge": "the juice on the island, no cup there; cups stand on the kitchen counter in the small kitchen",
-  "rationale": "a drink is served with a cup: find one",
+  "oracle_route": "v6_cup_elsewhere__counter_cup",
+  "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+  "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T25_drink_for_guest/cold_one": {
-  "variant": "cold_one",
+ "T25_drink_for_guest/cup_elsewhere__only_mugs": {
+  "variant": "cup_elsewhere",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   16
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "mug_shelf"
+   ],
+   "added": [
+    "guest_juice"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "not_in_view",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cup_elsewhere__only_mugs",
+  "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+  "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cup_elsewhere__sponge_cup": {
+  "variant": "cup_elsewhere",
   "category": "task",
   "seeds": [
    10,
-   11,
    12,
+   18
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug_shelf"
+   ],
+   "added": [
+    "cup_sponge",
+    "guest_juice"
+   ],
+   "removed": [
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "not_in_view",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter",
+      "cup_counter_b"
+     ],
+     "tv_stand_2/top",
+     1
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cup_elsewhere__sponge_cup",
+  "challenge": "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+  "rationale": "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cold_one__cold_juice": {
+  "variant": "cold_one",
+  "category": "task",
+  "seeds": [
    13,
    14,
-   15,
-   16,
    17,
    18,
    19
@@ -24885,7 +25003,8 @@
    ],
    "removed": [],
    "conditions": [
-    "preference_allocation"
+    "preference_allocation",
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -24931,25 +25050,94 @@
    ]
   },
   "control": "drink_on_island",
-  "oracle_route": "v6_cold_one",
-  "challenge": "a bottle on the island at room temperature, another one in the fridge; it is a hot day",
-  "rationale": "on a hot day the cold one: open the fridge for it, close it again",
+  "oracle_route": "v6_cold_one__cold_juice",
+  "challenge": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
+  "rationale": "on a hot day the cold one, juice or not: open the fridge for it, close it again",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T25_drink_for_guest/drink_in_fridge": {
-  "variant": "drink_in_fridge",
+ "T25_drink_for_guest/cold_one__cold_soda": {
+  "variant": "cold_one",
   "category": "task",
   "seeds": [
    10,
    11,
    12,
-   13,
+   15,
+   16
+  ],
+  "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "cold_soda",
+    "guest_cup",
+    "guest_juice"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cold_soda",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "cold_soda"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
+    ],
+    [
+     "near_start",
+     "guest_juice",
+     0.03
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cold_one__cold_soda",
+  "challenge": "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; it is a hot day",
+  "rationale": "on a hot day the cold one, juice or not: open the fridge for it, close it again",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/drink_in_fridge__juice": {
+  "variant": "drink_in_fridge",
+  "category": "task",
+  "seeds": [
+   10,
    14,
    15,
-   16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "A guest is sitting in the living room. Bring him something to drink.",
   "initial_conditions": {
@@ -24963,7 +25151,8 @@
    "removed": [],
    "conditions": [
     "storage_place",
-    "not_in_view"
+    "not_in_view",
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -25004,9 +25193,78 @@
    ]
   },
   "control": "drink_on_island",
-  "oracle_route": "v6_drink_in_fridge",
-  "challenge": "a cup on the island, nothing to drink out; the juice is in the fridge",
-  "rationale": "drinks are kept in the fridge: open it, take the juice, close it",
+  "oracle_route": "v6_drink_in_fridge__juice",
+  "challenge": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+  "rationale": "drinks are kept in the fridge: open it, take what there is to drink, close it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/drink_in_fridge__soda_only": {
+  "variant": "drink_in_fridge",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   13,
+   16,
+   19
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "cold_soda",
+    "guest_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cold_soda",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "cold_soda"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "cup_counter_b",
+      "cup_kitchen_cabinet",
+      "cup_side_table",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     1
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_drink_in_fridge__soda_only",
+  "challenge": "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+  "rationale": "drinks are kept in the fridge: open it, take what there is to drink, close it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T25_drink_for_guest/cups_for_two__one_there": {
@@ -25392,17 +25650,12 @@
   "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T25_drink_for_guest/two_guests": {
+ "T25_drink_for_guest/two_guests__two_cups": {
   "variant": "two_guests",
   "category": "task",
   "seeds": [
-   10,
-   11,
-   12,
-   13,
    14,
    15,
-   16,
    17,
    18,
    19
@@ -25420,7 +25673,8 @@
    "removed": [],
    "conditions": [
     "count_from_scene",
-    "multi_object_goal"
+    "multi_object_goal",
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -25458,9 +25712,77 @@
    ]
   },
   "control": "drink_on_island",
-  "oracle_route": "v6_two_guests",
-  "challenge": "two guests; one bottle of juice and two cups on the island",
-  "rationale": "one cup per guest: both cups with the bottle",
+  "oracle_route": "v6_two_guests__two_cups",
+  "challenge": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+  "rationale": "one cup per guest: both cups with the bottle; with one cup, a mug for the other guest",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/two_guests__one_cup": {
+  "variant": "two_guests",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   16
+  ],
+  "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "mug_shelf"
+   ],
+   "added": [
+    "guest_cup",
+    "guest_juice"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "cup_kitchen_cabinet",
+    "cup_side_table"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "guest_cup",
+      "mug_dining_cabinet",
+      "mug_shelf",
+      "mug_counter"
+     ],
+     "tv_stand_2/top",
+     2
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_two_guests__one_cup",
+  "challenge": "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+  "rationale": "one cup per guest: both cups with the bottle; with one cup, a mug for the other guest",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T25_drink_for_guest/little_guest": {

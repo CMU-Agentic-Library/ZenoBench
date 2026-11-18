@@ -10260,26 +10260,70 @@
 
 ### cup_elsewhere（Task）
 
-**情况**：岛台上只有果汁 → 想到要配杯子，去小厨房台面找
+**情况**：岛台上只有果汁 → 想到要配杯子，找一个能用来喝的：小厨房台面的杯子；没有普通杯子就用马克杯；台面那个杯子里放着洗碗海绵时用马克杯（拿出海绵用那个杯子次好，连海绵一起拿最不好）
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`counter_cup` D = 0、理想物在，`only_mugs` D = 0、理想物在，`sponge_cup` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `guest_juice` 在 `tv_stand_2/top` 上
-  - `guest_juice` 立着
-  - 这 6 件中至少 1 件还在 `tv_stand_2/top` 上：`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
+  - 摆法 `counter_cup`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - `guest_juice` 立着
+        - 这 6 件中至少 1 件还在 `tv_stand_2/top` 上：`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+  - 摆法 `sponge_cup`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - `guest_juice` 立着
+        - 这 3 件中至少 1 件还在 `tv_stand_2/top` 上：`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+        - `cup_counter_b` 没被挪动（离开局位置不超过 3 cm）
+        - `cup_sponge` 在 `cup_counter_b` 里
+  - 摆法 `only_mugs`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - `guest_juice` 立着
+        - 这 3 件中至少 1 件还在 `tv_stand_2/top` 上：`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+- **次好（0.6）**：
+
+  - 摆法 `counter_cup`、`only_mugs`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `sponge_cup`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - `guest_juice` 立着
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
+        - `cup_sponge` 不在 `cup_counter_b` 里
+- **最不好（0.3）**：
+
+  - 摆法 `counter_cup`、`only_mugs`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `sponge_cup`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 在 `tv_stand_2/top` 上
+        - `guest_juice` 立着
+        - `cup_counter_b` 在 `tv_stand_2/top` 上
 - **不行（0）**：缺饮料或杯子；果汁躺着；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=cup_counter_b, region=kitchen_0_1)` → 8. `navigate(destination=cup_counter_b)` → 9. `pick(object=cup_counter_b)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cup_counter_b, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `counter_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=cup_counter_b, region=kitchen_0_1)` → 8. `navigate(destination=cup_counter_b)` → 9. `pick(object=cup_counter_b)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cup_counter_b, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `only_mugs`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=mug_shelf, region=dining_room_0_1)` → 8. `navigate(destination=mug_shelf)` → 9. `pick(object=mug_shelf)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=mug_shelf, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `sponge_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `search(object=cup_counter_b, region=kitchen_0_1)` → 8. `look(target=kitchen_counter_2/top)` → 9. `search(object=mug_shelf, region=dining_room_0_1)` → 10. `navigate(destination=mug_shelf)` → 11. `pick(object=mug_shelf)` → 12. `navigate(destination=tv_stand_2/top)` → 13. `place(object=mug_shelf, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cold_one（Task）
 
-**情况**：“天很热”：岛台上一瓶常温的，冰箱里一瓶冰的 → 拿冰箱那瓶（开门、关门）
+**情况**：“天很热”：岛台上一瓶常温的，冰箱里一瓶冰的 → 拿冰箱那瓶（开门、关门）；冰箱里没有果汁只有冰汽水时拿汽水
 
 **指令**：天很热，客人在客厅坐着，给他拿点喝的。
 
@@ -10287,23 +10331,42 @@
 
 - **好（1.0）**：
 
-  - `cold_juice` 在 `tv_stand_2/top` 上
-  - `cold_juice` 立着
-  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
-  - `breakfast_fridge` 关着
-  - 手里空着
+  - 摆法 `cold_juice`：
+    - `cold_juice` 在 `tv_stand_2/top` 上
+    - `cold_juice` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
+    - `breakfast_fridge` 关着
+    - 手里空着
+  - 摆法 `cold_soda`：
+    - `cold_soda` 在 `tv_stand_2/top` 上
+    - `cold_soda` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
+    - `breakfast_fridge` 关着
+    - 手里空着
 - **次好（0.6）**：
 
-  - `cold_juice` 在 `tv_stand_2/top` 上
-  - `cold_juice` 立着
-  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
-    - 第 2 组：
-      - `breakfast_fridge` 关着
+  - 摆法 `cold_juice`：
+    - `cold_juice` 在 `tv_stand_2/top` 上
+    - `cold_juice` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `breakfast_fridge` 关着
+  - 摆法 `cold_soda`：
+    - `cold_soda` 在 `tv_stand_2/top` 上
+    - `cold_soda` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `guest_juice` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `breakfast_fridge` 关着
 - **最不好（0.3）**：
 
   - `guest_juice` 在 `tv_stand_2/top` 上
@@ -10315,33 +10378,48 @@
 
 **参考调用顺序**：
 
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_juice)` → 6. `pick(object=cold_juice)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 10. `navigate(destination=breakfast_fridge)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=guest_cup)` → 13. `pick(object=guest_cup)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `cold_juice`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_juice)` → 6. `pick(object=cold_juice)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 10. `navigate(destination=breakfast_fridge)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=guest_cup)` → 13. `pick(object=guest_cup)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `cold_soda`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=breakfast_fridge/inside_shelf)` → 4. `look(target=breakfast_fridge/inside_shelf)` → 5. `navigate(destination=cold_soda)` → 6. `pick(object=cold_soda)` → 7. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=cold_soda, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 10. `navigate(destination=breakfast_fridge)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=guest_cup)` → 13. `pick(object=guest_cup)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### drink_in_fridge（Task）
 
-**情况**：外面没有饮料 → 想到饮料在冰箱里
+**情况**：外面没有饮料 → 想到饮料在冰箱里，有什么喝的拿什么
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cold_juice` 在 `tv_stand_2/top` 上
-  - `cold_juice` 立着
-  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - `breakfast_fridge` 关着
-  - 手里空着
+  - 摆法 `juice`：
+    - `cold_juice` 在 `tv_stand_2/top` 上
+    - `cold_juice` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `breakfast_fridge` 关着
+    - 手里空着
+  - 摆法 `soda_only`：
+    - `cold_soda` 在 `tv_stand_2/top` 上
+    - `cold_soda` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - `breakfast_fridge` 关着
+    - 手里空着
 - **次好（0.6）**：
 
-  - `cold_juice` 在 `tv_stand_2/top` 上
-  - `cold_juice` 立着
-  - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
+  - 摆法 `juice`：
+    - `cold_juice` 在 `tv_stand_2/top` 上
+    - `cold_juice` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
+  - 摆法 `soda_only`：
+    - `cold_soda` 在 `tv_stand_2/top` 上
+    - `cold_soda` 立着
+    - 这 7 件中至少 1 件还在 `tv_stand_2/top` 上：`guest_cup`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
 - **不行（0）**：缺饮料或杯子；躺着；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=breakfast_fridge/inside_shelf)` → 6. `look(target=breakfast_fridge/inside_shelf)` → 7. `navigate(destination=cold_juice)` → 8. `pick(object=cold_juice)` → 9. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 12. `navigate(destination=breakfast_fridge)` → 13. `close(articulated=breakfast_fridge)` → 14. `navigate(destination=guest_cup)` → 15. `pick(object=guest_cup)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `juice`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=breakfast_fridge/inside_shelf)` → 6. `look(target=breakfast_fridge/inside_shelf)` → 7. `navigate(destination=cold_juice)` → 8. `pick(object=cold_juice)` → 9. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cold_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 12. `navigate(destination=breakfast_fridge)` → 13. `close(articulated=breakfast_fridge)` → 14. `navigate(destination=guest_cup)` → 15. `pick(object=guest_cup)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
+- 摆法 `soda_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=breakfast_fridge/inside_shelf)` → 6. `look(target=breakfast_fridge/inside_shelf)` → 7. `navigate(destination=cold_soda)` → 8. `pick(object=cold_soda)` → 9. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 10. `navigate(destination=tv_stand_2/top)` → 11. `place(object=cold_soda, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 12. `navigate(destination=breakfast_fridge)` → 13. `close(articulated=breakfast_fridge)` → 14. `navigate(destination=guest_cup)` → 15. `pick(object=guest_cup)` → 16. `navigate(destination=tv_stand_2/top)` → 17. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])`
 
 ### cups_for_two（Task）
 
@@ -10485,7 +10563,7 @@
 
 ### two_guests（Task）
 
-**情况**：“两位客人” → 两个杯子
+**情况**：“两位客人” → 两个杯子；岛台只有一个、家里也没有别的普通杯子时，用餐厅的马克杯补
 
 **指令**：两位客人在客厅坐着，给他们拿点喝的。
 
@@ -10493,16 +10571,23 @@
 
 - **好（1.0）**：
 
-  - `guest_juice` 在 `tv_stand_2/top` 上
-  - `guest_juice` 立着
-  - 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
-  - 手里空着
+  - 摆法 `two_cups`：
+    - `guest_juice` 在 `tv_stand_2/top` 上
+    - `guest_juice` 立着
+    - 这 8 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`guest_cup_2`、`cup_counter_b`、`cup_kitchen_cabinet`、`cup_side_table`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
+  - 摆法 `one_cup`：
+    - `guest_juice` 在 `tv_stand_2/top` 上
+    - `guest_juice` 立着
+    - 这 4 件中至少 2 件还在 `tv_stand_2/top` 上：`guest_cup`、`mug_dining_cabinet`、`mug_shelf`、`mug_counter`
+    - 手里空着
 - **不行（0）**：只拿一个杯子；缺饮料；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 11. `navigate(destination=guest_cup_2)` → 12. `pick(object=guest_cup_2)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.804, 0.371])`
+- 摆法 `two_cups`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 11. `navigate(destination=guest_cup_2)` → 12. `pick(object=guest_cup_2)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=guest_cup_2, receptacle=tv_stand_2/top, hint_xy=[7.804, 0.371])`
+- 摆法 `one_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=guest_juice)` → 4. `pick(object=guest_juice)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=guest_juice, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.36])` → 7. `navigate(destination=guest_cup)` → 8. `pick(object=guest_cup)` → 9. `navigate(destination=tv_stand_2/top)` → 10. `place(object=guest_cup, receptacle=tv_stand_2/top, hint_xy=[7.544, 0.371])` → 11. `search(object=mug_shelf, region=dining_room_0_1)` → 12. `navigate(destination=mug_shelf)` → 13. `pick(object=mug_shelf)` → 14. `navigate(destination=tv_stand_2/top)` → 15. `place(object=mug_shelf, receptacle=tv_stand_2/top, hint_xy=[7.804, 0.371])`
 
 ### little_guest（Task）
 

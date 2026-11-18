@@ -774,39 +774,75 @@ def t25():
         for k in range(take, need):
             out += [S("search", object="mug_shelf", region="dining_room_0_1")] + fetch("mug_shelf", TV, [hints[k], 0.36])
         return out
+    # 11-18 (user): every design but the control and little_guest gets a seed where the thing is substituted
+    from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
+    LT = LAYOUT_TIERS.setdefault(("T25", "*"), {})
+    PLAIN = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"]      # the house's ordinary cups
+    CB, SP = "cup_counter_b", "cup_sponge"
+    drink = [["on", J, TV], ["upright", J]]
+    mug_route = [S("search", object="mug_shelf", region="dining_room_0_1")] + fetch("mug_shelf", TV, [7.55, 0.36])
+    # cup_elsewhere: a cup on the counter (find it); no ordinary cup in the house, a mug (absent); the counter's
+    # cup holds the dish sponge, the other ordinary cups gone (looks right, isn't): a mug; the sponge taken out
+    # and that cup used is second; the cup with the sponge in it brought the worst
+    LT["cup_elsewhere__counter_cup"] = cost_tiers([(drink + [["count_on_at_least", HOUSE_CUPS, TV, 1]], 0)])
+    LT["cup_elsewhere__only_mugs"] = cost_tiers([(drink + [["count_on_at_least", MUGS, TV, 1]], 0)])
+    LT["cup_elsewhere__sponge_cup"] = cost_tiers(
+        [(drink + [["count_on_at_least", MUGS, TV, 1], ["near_start", CB, 0.03], ["inside", SP, CB]], 0),
+         (drink + [["on", CB, TV], ["not inside", SP, CB]], 1), (drink + [["on", CB, TV]], 2)])
     fams = {
         "cup_elsewhere": fam(
-            "drink_on_island", ["not_in_view"], "the seed's layout only",
-            "the juice on the island, no cup there; cups stand on the kitchen counter in the small kitchen",
-            "a drink is served with a cup: find one",
-            {"": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80)}, watch=[J, "cup_counter_b"],
-                      # the cup at the counter's front edge: 18 cm deep under the wall cabinet no arm reached it
-                      move={"cup_counter_b": P(COUNTER, -0.45, 8.20)},
-                      goal={"all": serve(J, ()) + [H]},
-                      route=fetch(J, TV, [7.30, 0.36]) + [S("search", object="cup_counter_b", region="kitchen_0_1")]
-                      + fetch("cup_counter_b", TV, [7.55, 0.36]))}),
+            "drink_on_island", ["not_in_view", "resource_absent"],
+            "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's "
+            "cup holds the dish sponge, the other ordinary cups gone)",
+            "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe "
+            "holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
+            "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+            {"counter_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80)}, watch=[J, CB],
+                                 # the cup at the counter's front edge: 18 cm deep under the wall cabinet no arm
+                                 # reached it
+                                 move={CB: P(COUNTER, -0.45, 8.20)},
+                                 goal={"all": serve(J, ()) + [H]},
+                                 route=fetch(J, TV, [7.30, 0.36]) + [S("search", object=CB, region="kitchen_0_1")]
+                                 + fetch(CB, TV, [7.55, 0.36])),
+             "only_mugs": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80)}, remove=PLAIN, watch=[J, *MUGS],
+                               goal={"all": drink + [["count_on_at_least", MUGS, TV, 1], H]},
+                               route=fetch(J, TV, [7.30, 0.36]) + mug_route),
+             "sponge_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80),
+                                     SP: {"asset": "kitchen_sponge", "support": None, "z": 1.015,
+                                          "xy": [-0.45, 8.20], "yaw_deg": 0.0}},
+                                remove=["cup_kitchen_cabinet", "cup_side_table"], move={CB: P(COUNTER, -0.45, 8.20)},
+                                watch=[J, CB, SP, *MUGS],
+                                goal={"all": drink + [["count_on_at_least", MUGS + [CB], TV, 1], H]},
+                                route=fetch(J, TV, [7.30, 0.36]) + [S("search", object=CB, region="kitchen_0_1"),
+                                                                    look(COUNTER)] + mug_route)}),
         "cold_one": fam(
-            "drink_on_island", ["preference_allocation"], "the seed's layout only",
-            "a bottle on the island at room temperature, another one in the fridge; it is a hot day",
-            "on a hot day the cold one: open the fridge for it, close it again",
-            {"": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80), CUP: on("breakfast_cup", ISL, 7.55, 1.80),
-                           "cold_juice": in_fridge("cold_juice")},
-                      watch=[J, "cold_juice", CUP],
-                      goal={"all": serve("cold_juice") + [["near_start", J, 0.03], ["is_closed", FR], H]},
-                      route=[nav(FR), S("open", articulated=FR), nav("cold_juice"), pick("cold_juice"),
-                             S("retreat", obstacle=FR, distance_m=0.3), S("close", articulated=FR), nav(TV),
-                             place("cold_juice", TV, [7.30, 0.36])] + fetch(CUP, TV, [7.55, 0.36]))},
+            "drink_on_island", ["preference_allocation", "resource_absent"],
+            "what is cold in the fridge (seed: a bottle of the same juice; or only a can of soda)",
+            "a bottle on the island at room temperature; in the fridge another juice or (no juice) a can of soda; "
+            "it is a hot day",
+            "on a hot day the cold one, juice or not: open the fridge for it, close it again",
+            {case: dict(add={J: on("juice_bottle", ISL, 7.30, 1.80), CUP: on("breakfast_cup", ISL, 7.55, 1.80),
+                             cold: {**in_fridge(cold), "asset": asset}},
+                        watch=[J, cold, CUP],
+                        goal={"all": serve(cold) + [["near_start", J, 0.03], ["is_closed", FR], H]},
+                        route=[nav(FR), S("open", articulated=FR), nav(cold), pick(cold),
+                               S("retreat", obstacle=FR, distance_m=0.3), S("close", articulated=FR), nav(TV),
+                               place(cold, TV, [7.30, 0.36])] + fetch(CUP, TV, [7.55, 0.36]))
+             for case, cold, asset in (("cold_juice", "cold_juice", "juice_bottle"),
+                                       ("cold_soda", "cold_soda", "soda_can"))},
             instruction="It's a hot day. A guest is sitting in the living room; bring him something to drink.",
             instruction_zh="天很热，客人在客厅坐着，给他拿点喝的。"),
         "drink_in_fridge": fam(
-            "drink_on_island", ["storage_place", "not_in_view"], "the seed's layout only",
-            "a cup on the island, nothing to drink out; the juice is in the fridge",
-            "drinks are kept in the fridge: open it, take the juice, close it",
-            {"": dict(add={CUP: on("breakfast_cup", ISL, 7.55, 1.80), "cold_juice": in_fridge("cold_juice")},
-                      watch=["cold_juice", CUP], goal={"all": serve("cold_juice") + [["is_closed", FR], H]},
-                      route=[look(ISL), nav(FR), S("open", articulated=FR), nav("cold_juice"), pick("cold_juice"),
-                             S("retreat", obstacle=FR, distance_m=0.3), S("close", articulated=FR), nav(TV),
-                             place("cold_juice", TV, [7.30, 0.36])] + fetch(CUP, TV, [7.55, 0.36]))}),
+            "drink_on_island", ["storage_place", "not_in_view", "resource_absent"],
+            "what drink the fridge holds (seed: the juice; or only a can of soda)",
+            "a cup on the island, nothing to drink out; the juice (or, no juice, a can of soda) is in the fridge",
+            "drinks are kept in the fridge: open it, take what there is to drink, close it",
+            {case: dict(add={CUP: on("breakfast_cup", ISL, 7.55, 1.80), cold: {**in_fridge(cold), "asset": asset}},
+                        watch=[cold, CUP], goal={"all": serve(cold) + [["is_closed", FR], H]},
+                        route=[look(ISL), nav(FR), S("open", articulated=FR), nav(cold), pick(cold),
+                               S("retreat", obstacle=FR, distance_m=0.3), S("close", articulated=FR), nav(TV),
+                               place(cold, TV, [7.30, 0.36])] + fetch(CUP, TV, [7.55, 0.36]))
+             for case, cold, asset in (("juice", "cold_juice", "juice_bottle"), ("soda_only", "cold_soda", "soda_can"))}),
         "cups_for_two": fam(
             "drink_on_island", ["count_from_scene", "item_put_away", "resource_absent", "dependent_decisions"],
             "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, "
@@ -830,14 +866,22 @@ def t25():
                         "each, ordinary cups where possible; what is already on their table need not be brought again.",
             instruction_zh="两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。"),
         "two_guests": fam(
-            "drink_on_island", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
-            "two guests; one bottle of juice and two cups on the island",
-            "one cup per guest: both cups with the bottle",
-            {"": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80), CUP: on("breakfast_cup", ISL, 7.55, 1.80),
-                           "guest_cup_2": on("breakfast_cup", ISL, 7.80, 1.80)},
-                      watch=[J, CUP, "guest_cup_2"], goal={"all": serve(J, (CUP, "guest_cup_2"), 2) + [H]},
-                      route=fetch(J, TV, [7.30, 0.36]) + fetch(CUP, TV, [7.55, 0.36])
-                      + fetch("guest_cup_2", TV, [7.80, 0.36]))},
+            "drink_on_island", ["count_from_scene", "multi_object_goal", "resource_absent"],
+            "how many cups there are (seed: two on the island; or one, the house's other ordinary cups gone, mugs "
+            "in the dining room)",
+            "two guests; one bottle of juice and two cups on the island, or one cup and no other ordinary cup",
+            "one cup per guest: both cups with the bottle; with one cup, a mug for the other guest",
+            {"two_cups": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80), CUP: on("breakfast_cup", ISL, 7.55, 1.80),
+                                   "guest_cup_2": on("breakfast_cup", ISL, 7.80, 1.80)},
+                              watch=[J, CUP, "guest_cup_2"], goal={"all": serve(J, (CUP, "guest_cup_2"), 2) + [H]},
+                              route=fetch(J, TV, [7.30, 0.36]) + fetch(CUP, TV, [7.55, 0.36])
+                              + fetch("guest_cup_2", TV, [7.80, 0.36])),
+             "one_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80), CUP: on("breakfast_cup", ISL, 7.55, 1.80)},
+                             remove=PLAIN, watch=[J, CUP, *MUGS],
+                             goal={"all": drink + [["count_on_at_least", [CUP] + MUGS, TV, 2], H]},
+                             route=fetch(J, TV, [7.30, 0.36]) + fetch(CUP, TV, [7.55, 0.36])
+                             + [S("search", object="mug_shelf", region="dining_room_0_1")]
+                             + fetch("mug_shelf", TV, [7.80, 0.36]))},
             instruction="Two guests are sitting in the living room. Bring them something to drink.",
             instruction_zh="两位客人在客厅坐着，给他们拿点喝的。"),
         "little_guest": fam(

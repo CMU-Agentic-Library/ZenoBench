@@ -737,6 +737,12 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
                                       "tipped; still held"),
              ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
              ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         ("T25", "cup_elsewhere"): _layout_tiers("cup_elsewhere", {
+             "best": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is "
+                     "no clean cup (the sponge cup left alone)",
+             "second": "the sponge taken out of its cup and that cup brought",
+             "worst": "the cup with the dish sponge in it brought"},
+             "no drink or no cup by the guest; the juice lying; still held or dropped"),
          **{("T24", d): _layout_tiers(d, w, no) for d, w, no in (
              ("no_apples_for_him", {"best": "something nobody is eating on the desk: the apple when free, else the "
                                             "banana from the basket, someone's plate left alone",
@@ -1001,6 +1007,7 @@ NOT_OK_ZH = {
     ("T24", "dinner_soon"): "书桌上没有能吃的；还拿着或掉了",
     ("T24", "fruit_out_of_view"): "书桌上没有能吃的；还拿着或掉了",
     ("T24", "two_kids"): "有孩子没拿到、东西留在桌上；还拿着或掉了",
+    ("T25", "cup_elsewhere"): "缺饮料或杯子；果汁躺着；还拿着或掉了",
     ("T23", "by_kind"): "有东西还在地上；还拿着",
     ("T23", "belongs_on_floor"): "积木还在地上或没放进容器；还拿着",
     ("T23", "dropped_out_of_view"): "没找到；还在地上；还拿着或掉了",
