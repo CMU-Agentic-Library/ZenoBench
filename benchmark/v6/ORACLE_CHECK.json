@@ -1,6 +1,6 @@
 {
- "routes": 297,
- "ok": 297,
+ "routes": 302,
+ "ok": 302,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2930,7 +2930,7 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "by_kind",
+   "layout": "by_kind__toy_box",
    "steps": 13,
    "atoms_checked": 3,
    "atoms_geometric": 0,
@@ -2940,7 +2940,17 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "belongs_on_floor",
+   "layout": "by_kind__bin_full",
+   "steps": 15,
+   "atoms_checked": 27,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "by_kind"
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "layout": "belongs_on_floor__no_toy_box",
    "steps": 7,
    "atoms_checked": 4,
    "atoms_geometric": 0,
@@ -2950,7 +2960,17 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "dropped_out_of_view",
+   "layout": "belongs_on_floor__bin_full",
+   "steps": 8,
+   "atoms_checked": 28,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "belongs_on_floor"
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "layout": "dropped_out_of_view__counter_full",
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
@@ -2960,9 +2980,19 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "only_this_room",
-   "steps": 7,
-   "atoms_checked": 3,
+   "layout": "dropped_out_of_view__no_room_for_plate",
+   "steps": 8,
+   "atoms_checked": 2,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "dropped_out_of_view"
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "layout": "only_this_room__cabinet_room",
+   "steps": 11,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -2970,8 +3000,28 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "dropped_in_two_rooms",
+   "layout": "only_this_room__cabinet_full",
+   "steps": 11,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "only_this_room"
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "layout": "dropped_in_two_rooms__shelf_room",
    "steps": 13,
+   "atoms_checked": 3,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "dropped_in_two_rooms"
+  },
+  {
+   "task": "T23_pick_up_dropped",
+   "layout": "dropped_in_two_rooms__shelf_full",
+   "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],

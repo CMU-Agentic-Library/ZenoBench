@@ -652,6 +652,33 @@ _T15_WHY = {"best": "the best the seed offers: the lid when it is free, else a p
             "second": "the lid taken off someone's bowl for the pot",
             "worst": "the pot covered with the book, or the lid taken off the stew"}
 
+def cost_tiers(options, faults=(), hand=True):
+    """11-17: levels by counting faults.  ``options``: [(atoms, cost)] -- the ways to do it, each with its own cost
+    (a substitute costs 1, a poorer one more); ``faults``: [(atoms that hold when it is done right, cost)].  The
+    totals the seed can reach are ranked: the lowest is best, the next second, the rest worst (user 11-17: the best
+    a seed offers is always the best tier, whether or not the ideal is there).  ``_ideal``: the lowest total is 0
+    (the ideal thing is in the scene).  The tiers are judged best first, so a goal only has to hold for its total."""
+    from itertools import combinations
+    by_total = {}
+    for atoms, cost in options:
+        for k in range(len(faults) + 1):
+            for dropped in combinations(range(len(faults)), k):
+                total = cost + sum(faults[i][1] for i in dropped)
+                kept = [a for i, (fa, _) in enumerate(faults) if i not in dropped for a in fa]
+                grp = list(atoms) + kept
+                if grp not in by_total.setdefault(total, []):
+                    by_total[total].append(grp)
+    totals = sorted(by_total)
+    ranks = [totals[:1], totals[1:2], totals[2:]]
+    out = {}
+    for name, ts in zip(("best", "second", "worst"), ranks):
+        g = [grp for tt in ts for grp in by_total[tt]]
+        out[name] = {"any": g, "all": [["hand_empty", "right"]] if hand else []} if g else NA
+    out["_ideal"] = bool(totals) and totals[0] == 0
+    return out
+
+
+
 # designs whose tiers are built from their layouts' goals
 BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              "best": "three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its "
@@ -710,6 +737,36 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
                                       "tipped; still held"),
              ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
              ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         **{("T23", d): _layout_tiers(d, w, no) for d, w, no in (
+             ("by_kind", {"best": "the spoon to the kitchen, the block with the toys: the toy box, or the tray beside "
+                                  "the full toy bin",
+                          "second": "the blocks taken out of the full bin to fit this one",
+                          "worst": "the block off the floor but not with the toys"},
+              "a dropped thing left on the floor; still held"),
+             ("belongs_on_floor", {"best": "the block in the tray (no toy box, or the toy bin full), the waste bin and "
+                                           "the laundry basket left where they are",
+                                   "second": "the bin or the basket nudged; or the blocks taken out of the full bin "
+                                             "to fit this one",
+                                   "worst": "the block in the laundry basket, or the bin or the basket lifted off "
+                                            "the floor"},
+              "the block left on the floor or not in a container; still held"),
+             ("dropped_out_of_view", {"best": "found, and put on another kitchen worktop (the island or the other "
+                                              "kitchen's counter)",
+                                      "second": "on the small kitchen's counter after moving dishes to make room",
+                                      "worst": "on the counter on top of the dishes"},
+              "not found; left on the floor; still held or dropped"),
+             ("only_this_room", {"best": "the cup with his cups in cabinet 4 -- or, the cabinet full, in the other low "
+                                         "cabinet or on a worktop; doors closed, the car left",
+                                 "second": "a door left open; the cup elsewhere in the kitchen though his cabinet has "
+                                           "room; or squeezed into the full cabinet",
+                                 "worst": "the living-room car picked up too (not in the kitchen)"},
+              "the cup left on the floor or out of the kitchen's places; still held"),
+             ("dropped_in_two_rooms", {"best": "the spoon to the kitchen, the book on his bookcase -- or, the bookcase "
+                                               "full, on another bookcase or a desk, his books left as they are",
+                                       "second": "the book on another bookcase or a desk though his has room; or "
+                                                 "pushed into his full bookcase",
+                                       "worst": "the book off the floor but on a table or a kitchen top"},
+              "a dropped thing left on the floor; still held"))},
          ("T22", "eat_now"): _layout_tiers("eat_now", _T22_WHY, "the snacks left on the dining table; the juice "
                                                               "not put away or lying; still held or dropped"),
          **{("T16", d): _layout_tiers(d, _T16_WHY, no) for d, no in (
@@ -923,6 +980,11 @@ NOT_OK_ZH = {
     ("T19", "x6_gd_can_put_away"): "罐子或泡沫块没进回收箱；还拿着或掉了",
     ("T17", "h_task_lid_elsewhere"): "积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着",
     ("T17", "hide_both"): "积木一眼能看到；藏进微波炉或冰箱；还拿着",
+    ("T23", "by_kind"): "有东西还在地上；还拿着",
+    ("T23", "belongs_on_floor"): "积木还在地上或没放进容器；还拿着",
+    ("T23", "dropped_out_of_view"): "没找到；还在地上；还拿着或掉了",
+    ("T23", "only_this_room"): "杯子还在地上或放到厨房以外；还拿着",
+    ("T23", "dropped_in_two_rooms"): "有一样还在地上；还拿着",
     ("T22", "eat_now"): "零食留在餐桌上；果汁没收或躺着；还拿着或掉了",
     ("T16", "box_in_cabinet"): "没找到盒子；苹果没装好放到书桌；还拿着或掉了",
     ("T16", "no_box"): "苹果没装；还拿着或掉了",

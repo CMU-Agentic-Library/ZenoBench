@@ -2834,31 +2834,7 @@ def container_tiers(both_in, levels, keep, hand=("hand_empty", "right")):
     return {r: ({"any": g, "all": [list(hand)]} if g else NA) for r, g in groups.items()}
 
 
-def cost_tiers(options, faults=(), hand=True):
-    """11-17: levels by counting faults.  ``options``: [(atoms, cost)] -- the ways to do it, each with its own cost
-    (a substitute costs 1, a poorer one more); ``faults``: [(atoms that hold when it is done right, cost)].  The
-    totals the seed can reach are ranked: the lowest is best, the next second, the rest worst (user 11-17: the best
-    a seed offers is always the best tier, whether or not the ideal is there).  ``_ideal``: the lowest total is 0
-    (the ideal thing is in the scene).  The tiers are judged best first, so a goal only has to hold for its total."""
-    from itertools import combinations
-    from benchmark.v6.scoring import NA
-    by_total = {}
-    for atoms, cost in options:
-        for k in range(len(faults) + 1):
-            for dropped in combinations(range(len(faults)), k):
-                total = cost + sum(faults[i][1] for i in dropped)
-                kept = [a for i, (fa, _) in enumerate(faults) if i not in dropped for a in fa]
-                grp = list(atoms) + kept
-                if grp not in by_total.setdefault(total, []):
-                    by_total[total].append(grp)
-    totals = sorted(by_total)
-    ranks = [totals[:1], totals[1:2], totals[2:]]
-    out = {}
-    for name, ts in zip(("best", "second", "worst"), ranks):
-        g = [grp for tt in ts for grp in by_total[tt]]
-        out[name] = {"any": g, "all": [["hand_empty", "right"]] if hand else []} if g else NA
-    out["_ideal"] = bool(totals) and totals[0] == 0
-    return out
+from benchmark.v6.scoring import cost_tiers  # noqa: E402  (moved there 11-17: new_tasks_v6 uses it too)
 
 
 def T03_long(t):

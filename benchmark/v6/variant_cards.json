@@ -23020,20 +23020,15 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/by_kind": {
+ "T23_pick_up_dropped/by_kind__toy_box": {
   "variant": "by_kind",
   "category": "task",
   "seeds": [
-   10,
-   11,
    12,
    13,
-   14,
    15,
    16,
-   17,
-   18,
-   19
+   18
   ],
   "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
   "initial_conditions": {
@@ -23080,24 +23075,19 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_by_kind",
-  "challenge": "a spoon and a toy block on the kitchen floor; the kid's toy box stands in the living room",
-  "rationale": "each thing goes back where its kind belongs: the spoon to the counter, the block to the toy box",
+  "oracle_route": "v6_by_kind__toy_box",
+  "challenge": "a spoon and a toy block on the kitchen floor; the kid's toys are kept in the toy box, or in a small bin already full of blocks",
+  "rationale": "each thing goes back where its kind belongs: the spoon to the counter, the block with the toys -- into the tray beside the toy bin when the bin is full",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/belongs_on_floor": {
-  "variant": "belongs_on_floor",
+ "T23_pick_up_dropped/by_kind__bin_full": {
+  "variant": "by_kind",
   "category": "task",
   "seeds": [
    10,
    11,
-   12,
-   13,
    14,
-   15,
-   16,
    17,
-   18,
    19
   ],
   "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
@@ -23110,13 +23100,39 @@
    ],
    "moved": [],
    "added": [
+    "bin_block_1",
+    "bin_block_10",
+    "bin_block_11",
+    "bin_block_12",
+    "bin_block_13",
+    "bin_block_14",
+    "bin_block_15",
+    "bin_block_16",
+    "bin_block_17",
+    "bin_block_18",
+    "bin_block_19",
+    "bin_block_2",
+    "bin_block_20",
+    "bin_block_21",
+    "bin_block_22",
+    "bin_block_23",
+    "bin_block_24",
+    "bin_block_3",
+    "bin_block_4",
+    "bin_block_5",
+    "bin_block_6",
+    "bin_block_7",
+    "bin_block_8",
+    "bin_block_9",
+    "dropped_block",
     "dropped_spoon",
-    "kitchen_bin",
-    "laundry_basket"
+    "spare_tray",
+    "toy_bin"
    ],
    "removed": [],
    "conditions": [
-    "goal_items_unstated"
+    "storage_place",
+    "multi_object_goal"
    ],
    "initial_checks": []
   },
@@ -23131,6 +23147,183 @@
       "kitchen_counter_1/top",
       "kitchen_island/top"
      ]
+    ],
+    [
+     "inside",
+     "dropped_block",
+     "spare_tray"
+    ],
+    [
+     "fully_inside",
+     "bin_block_1",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_2",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_3",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_4",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_5",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_6",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_7",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_8",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_9",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_10",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_11",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_12",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_13",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_14",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_15",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_16",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_17",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_18",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_19",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_20",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_21",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_22",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_23",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_24",
+     "toy_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_by_kind__bin_full",
+  "challenge": "a spoon and a toy block on the kitchen floor; the kid's toys are kept in the toy box, or in a small bin already full of blocks",
+  "rationale": "each thing goes back where its kind belongs: the spoon to the counter, the block with the toys -- into the tray beside the toy bin when the bin is full",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/belongs_on_floor__no_toy_box": {
+  "variant": "belongs_on_floor",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   16,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_block",
+    "kitchen_bin",
+    "laundry_basket",
+    "spare_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "container_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "dropped_block",
+     "spare_tray"
     ],
     [
      "near_start",
@@ -23149,24 +23342,306 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_belongs_on_floor",
-  "challenge": "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
-  "rationale": "only what fell is picked up: the bin and the basket belong on the floor and stay",
+  "oracle_route": "v6_belongs_on_floor__no_toy_box",
+  "challenge": "the kid's toy block fell on the kitchen floor beside the waste bin and the laundry basket, which live on the floor; no toy box, or his toy bin full",
+  "rationale": "only what fell is picked up (the bin and the basket stay); the block goes in the tray, not in the laundry basket next to it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/dropped_out_of_view": {
+ "T23_pick_up_dropped/belongs_on_floor__bin_full": {
+  "variant": "belongs_on_floor",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   15,
+   17
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "bin_block_1",
+    "bin_block_10",
+    "bin_block_11",
+    "bin_block_12",
+    "bin_block_13",
+    "bin_block_14",
+    "bin_block_15",
+    "bin_block_16",
+    "bin_block_17",
+    "bin_block_18",
+    "bin_block_19",
+    "bin_block_2",
+    "bin_block_20",
+    "bin_block_21",
+    "bin_block_22",
+    "bin_block_23",
+    "bin_block_24",
+    "bin_block_3",
+    "bin_block_4",
+    "bin_block_5",
+    "bin_block_6",
+    "bin_block_7",
+    "bin_block_8",
+    "bin_block_9",
+    "dropped_block",
+    "kitchen_bin",
+    "laundry_basket",
+    "spare_tray",
+    "toy_bin"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "container_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "dropped_block",
+     "spare_tray"
+    ],
+    [
+     "fully_inside",
+     "bin_block_1",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_2",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_3",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_4",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_5",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_6",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_7",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_8",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_9",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_10",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_11",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_12",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_13",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_14",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_15",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_16",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_17",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_18",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_19",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_20",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_21",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_22",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_23",
+     "toy_bin"
+    ],
+    [
+     "fully_inside",
+     "bin_block_24",
+     "toy_bin"
+    ],
+    [
+     "near_start",
+     "kitchen_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "laundry_basket",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_belongs_on_floor__bin_full",
+  "challenge": "the kid's toy block fell on the kitchen floor beside the waste bin and the laundry basket, which live on the floor; no toy box, or his toy bin full",
+  "rationale": "only what fell is picked up (the bin and the basket stay); the block goes in the tray, not in the laundry basket next to it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_out_of_view__counter_full": {
   "variant": "dropped_out_of_view",
   "category": "task",
   "seeds": [
    10,
    11,
    12,
+   16,
+   18
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "counter_bowl_1",
+    "counter_bowl_10",
+    "counter_bowl_2",
+    "counter_bowl_3",
+    "counter_bowl_4",
+    "counter_bowl_5",
+    "counter_bowl_6",
+    "counter_bowl_7",
+    "counter_bowl_8",
+    "counter_bowl_9",
+    "counter_plate_n1",
+    "counter_plate_n2",
+    "counter_plate_n3",
+    "counter_plate_s1",
+    "counter_plate_s2",
+    "counter_plate_s3",
+    "counter_plate_w1",
+    "counter_plate_w2",
+    "counter_plate_w3",
+    "counter_plate_w4",
+    "counter_plate_w5",
+    "counter_plate_w6",
+    "counter_plate_w7",
+    "dropped_spoon"
+   ],
+   "removed": [
+    "cup_counter_b",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_counter"
+   ],
+   "conditions": [
+    "not_in_view",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "dropped_spoon",
+     [
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_dropped_out_of_view__counter_full",
+  "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
+  "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_out_of_view__no_room_for_plate": {
+  "variant": "dropped_out_of_view",
+  "category": "task",
+  "seeds": [
    13,
    14,
    15,
-   16,
    17,
-   18,
    19
   ],
   "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
@@ -23179,11 +23654,40 @@
    ],
    "moved": [],
    "added": [
-    "dropped_spoon"
+    "counter_bowl_1",
+    "counter_bowl_10",
+    "counter_bowl_2",
+    "counter_bowl_3",
+    "counter_bowl_4",
+    "counter_bowl_5",
+    "counter_bowl_6",
+    "counter_bowl_7",
+    "counter_bowl_8",
+    "counter_bowl_9",
+    "counter_cup_w2",
+    "counter_cup_w4",
+    "counter_cup_w6",
+    "counter_plate_n1",
+    "counter_plate_n2",
+    "counter_plate_n3",
+    "counter_plate_s1",
+    "counter_plate_s2",
+    "counter_plate_s3",
+    "counter_plate_w1",
+    "counter_plate_w3",
+    "counter_plate_w5",
+    "counter_plate_w7",
+    "dropped_plate"
    ],
-   "removed": [],
+   "removed": [
+    "cup_counter_b",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_counter"
+   ],
    "conditions": [
-    "not_in_view"
+    "not_in_view",
+    "storage_place"
    ],
    "initial_checks": []
   },
@@ -23192,9 +23696,8 @@
    "all": [
     [
      "on_any",
-     "dropped_spoon",
+     "dropped_plate",
      [
-      "kitchen_counter_2/top",
       "kitchen_counter_1/top",
       "kitchen_island/top"
      ]
@@ -23206,25 +23709,20 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_out_of_view",
-  "challenge": "the spoon fell and slid into the dining room next door, out of view from the kitchen",
-  "rationale": "look around until the dropped thing is found, then put it back on the counter",
+  "oracle_route": "v6_dropped_out_of_view__no_room_for_plate",
+  "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
+  "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/only_this_room": {
+ "T23_pick_up_dropped/only_this_room__cabinet_room": {
   "variant": "only_this_room",
   "category": "task",
   "seeds": [
-   10,
    11,
-   12,
-   13,
    14,
    15,
-   16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
   "initial_conditions": {
@@ -23236,12 +23734,15 @@
    ],
    "moved": [],
    "added": [
-    "dropped_spoon",
+    "dropped_cup",
+    "kid_cup_1",
+    "kid_cup_2",
     "living_car"
    ],
    "removed": [],
    "conditions": [
-    "referent_clue"
+    "referent_clue",
+    "storage_place"
    ],
    "initial_checks": []
   },
@@ -23249,13 +23750,17 @@
   "goal_constraints": {
    "all": [
     [
-     "on_any",
-     "dropped_spoon",
-     [
-      "kitchen_counter_2/top",
-      "kitchen_counter_1/top",
-      "kitchen_island/top"
-     ]
+     "on",
+     "dropped_cup",
+     "kitchen_cabinet_4/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
     ],
     [
      "near_start",
@@ -23269,23 +23774,90 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_only_this_room",
-  "challenge": "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
-  "rationale": "the instruction names the kitchen: pick up the spoon, leave the car in the living room",
+  "oracle_route": "v6_only_this_room__cabinet_room",
+  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
+  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/dropped_in_two_rooms": {
+ "T23_pick_up_dropped/only_this_room__cabinet_full": {
+  "variant": "only_this_room",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   16,
+   19
+  ],
+  "instruction": "Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_cup",
+    "kid_cup_1",
+    "kid_cup_2",
+    "kid_cup_3",
+    "living_car",
+    "stored_pot_1",
+    "stored_pot_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "dropped_cup",
+     [
+      "kitchen_counter_2/top",
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "near_start",
+     "living_car",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_only_this_room__cabinet_full",
+  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
+  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_in_two_rooms__shelf_room": {
   "variant": "dropped_in_two_rooms",
   "category": "task",
   "seeds": [
    10,
-   11,
    12,
-   13,
-   14,
    15,
-   16,
-   17,
    18,
    19
   ],
@@ -23299,14 +23871,18 @@
    ],
    "moved": [],
    "added": [
-    "dropped_pencil",
+    "dropped_book",
     "dropped_spoon",
-    "homework"
+    "kid_book_shelf_1_1a",
+    "kid_book_shelf_1_2a",
+    "kid_book_shelf_1_3a",
+    "kid_book_shelf_1_4a"
    ],
    "removed": [],
    "conditions": [
     "goal_items_unstated",
-    "not_in_view"
+    "not_in_view",
+    "storage_place"
    ],
    "initial_checks": []
   },
@@ -23324,8 +23900,132 @@
     ],
     [
      "on_any",
-     "dropped_pencil",
+     "dropped_book",
      [
+      "bookcase_2/shelf_0",
+      "bookcase_2/shelf_1",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_dropped_in_two_rooms__shelf_room",
+  "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
+  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_in_two_rooms__shelf_full": {
+  "variant": "dropped_in_two_rooms",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   16,
+   17
+  ],
+  "instruction": "Some things fell on the floor around the house. Please pick them up and put them where they belong.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_book",
+    "dropped_spoon",
+    "kid_book_shelf_0_1a",
+    "kid_book_shelf_0_1b",
+    "kid_book_shelf_0_2a",
+    "kid_book_shelf_0_2b",
+    "kid_book_shelf_0_3a",
+    "kid_book_shelf_0_3b",
+    "kid_book_shelf_0_4a",
+    "kid_book_shelf_0_4b",
+    "kid_book_shelf_1_1a",
+    "kid_book_shelf_1_1b",
+    "kid_book_shelf_1_2a",
+    "kid_book_shelf_1_2b",
+    "kid_book_shelf_1_3a",
+    "kid_book_shelf_1_3b",
+    "kid_book_shelf_1_4a",
+    "kid_book_shelf_1_4b",
+    "kid_book_top_1a",
+    "kid_book_top_1b",
+    "kid_book_top_2a",
+    "kid_book_top_2b",
+    "kid_book_top_3a",
+    "kid_book_top_3b",
+    "kid_book_top_4a",
+    "kid_book_top_4b"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "dropped_spoon",
+     [
+      "kitchen_counter_2/top",
+      "kitchen_counter_1/top",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     "on_any",
+     "dropped_book",
+     [
+      "bookcase_1/shelf_0",
+      "bookcase_1/shelf_1",
+      "bookcase_1/top",
+      "bookcase_3/shelf_0",
+      "bookcase_3/shelf_1",
+      "bookcase_3/top",
+      "bookcase_4/shelf_0",
+      "bookcase_4/shelf_1",
+      "bookcase_4/top",
+      "large_shelf_1/shelf_0",
+      "large_shelf_1/shelf_1",
+      "large_shelf_1/shelf_2",
+      "large_shelf_1/shelf_3",
+      "large_shelf_1/shelf_4",
+      "large_shelf_2/shelf_0",
+      "large_shelf_2/shelf_1",
+      "large_shelf_2/shelf_2",
+      "large_shelf_2/shelf_3",
+      "large_shelf_3/shelf_0",
+      "large_shelf_3/shelf_1",
+      "large_shelf_3/shelf_2",
+      "large_shelf_3/shelf_3",
+      "large_shelf_4/shelf_0",
+      "large_shelf_4/shelf_1",
+      "large_shelf_4/shelf_2",
+      "large_shelf_4/shelf_3",
+      "large_shelf_4/shelf_4",
+      "large_shelf_5/shelf_0",
+      "large_shelf_5/shelf_1",
+      "large_shelf_5/shelf_2",
+      "large_shelf_5/shelf_3",
+      "large_shelf_6/shelf_0",
+      "large_shelf_6/shelf_1",
+      "large_shelf_6/shelf_2",
+      "large_shelf_6/shelf_3",
+      "large_shelf_6/top",
       "desk_1/top",
       "desk_3/top"
      ]
@@ -23337,9 +24037,9 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_in_two_rooms",
-  "challenge": "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
-  "rationale": "more than one thing fell, in different rooms: look through the house, put each back (the spoon on the counter, the pencil on the desk with the notebook)",
+  "oracle_route": "v6_dropped_in_two_rooms__shelf_full",
+  "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
+  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T24_snack_for_kid/apple_on_table": {

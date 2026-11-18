@@ -1,33 +1,33 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 203 个摆法，其中 138 个要做替换，65 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 27.6 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 214 个摆法，其中 146 个要做替换，68 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 29.2 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 30 | +2.4 |
-| 被占用 | 31 | +3.4 |
-| 能力不足 | 17 | -10.6 |
-| 看着像但不能用 | 27 | -0.6 |
-| 去处替换 | 33 | +5.4 |
+| 缺失 | 31 | +1.8 |
+| 被占用 | 32 | +2.8 |
+| 能力不足 | 22 | -7.2 |
+| 看着像但不能用 | 27 | -2.2 |
+| 去处替换 | 34 | +4.8 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 96 |
+| 在 | 104 |
 | 不在 | 42 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 14 | 16 |
-| 被占用 | 16 | 15 |
-| 能力不足 | 11 | 6 |
+| 缺失 | 15 | 16 |
+| 被占用 | 17 | 15 |
+| 能力不足 | 16 | 6 |
 | 看着像但不能用 | 27 | 0 |
-| 去处替换 | 28 | 5 |
+| 去处替换 | 29 | 5 |
 
 ## 每个摆法
 
@@ -236,3 +236,14 @@
 | T22 | tray_elsewhere | orange_in_it | 缺失 | 在 | 1 |
 | T22 | tray_elsewhere | books_on_it | 被占用 | 在 | 1 |
 | T22 | tray_elsewhere | — | 缺失 | 在 | 1 |
+| T23 | spoon_on_floor | — | 不用替换 | 在 | 0 |
+| T23 | by_kind | toy_box | 去处替换 | 在 | 1 |
+| T23 | by_kind | bin_full | 能力不足 | 在 | 1 |
+| T23 | belongs_on_floor | no_toy_box | 缺失 | 在 | 1 |
+| T23 | belongs_on_floor | bin_full | 能力不足 | 在 | 1 |
+| T23 | dropped_out_of_view | counter_full | 被占用 | 在 | 1 |
+| T23 | dropped_out_of_view | no_room_for_plate | 能力不足 | 在 | 1 |
+| T23 | only_this_room | cabinet_room | 不用替换 | 在 | 1 |
+| T23 | only_this_room | cabinet_full | 能力不足 | 在 | 1 |
+| T23 | dropped_in_two_rooms | shelf_room | 不用替换 | 在 | 1 |
+| T23 | dropped_in_two_rooms | shelf_full | 能力不足 | 在 | 1 |
