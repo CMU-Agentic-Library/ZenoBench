@@ -21986,20 +21986,15 @@
   "rationale": "each item where its kind is kept: the juice in the fridge, the apple in the fruit basket, the snack box in the cabinet with the other snacks",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T22_put_away_shopping/eat_now": {
+ "T22_put_away_shopping/eat_now__desk_free": {
   "variant": "eat_now",
   "category": "task",
   "seeds": [
    10,
-   11,
    12,
-   13,
    14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
   "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away. The kid says he wants the snacks now; he is doing homework in the study.",
   "initial_conditions": {
@@ -22059,9 +22054,221 @@
    ]
   },
   "control": "juice_on_table",
-  "oracle_route": "v6_eat_now",
-  "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
-  "rationale": "the snacks are not put away but brought to the kid; the juice goes into the fridge",
+  "oracle_route": "v6_eat_now__desk_free",
+  "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
+  "rationale": "the snacks are not put away but brought to the kid, set down where they leave his homework as it is (the free corner when the desk is covered); the juice goes into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/eat_now__desk_corner": {
+  "variant": "eat_now",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   17,
+   18,
+   19
+  ],
+  "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away. The kid says he wants the snacks now; he is doing homework in the study.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_juice",
+    "bought_snack",
+    "homework",
+    "hw_book_green_1",
+    "hw_book_green_2",
+    "hw_book_green_3",
+    "hw_book_green_4",
+    "hw_book_green_5",
+    "hw_book_green_6",
+    "hw_book_red",
+    "hw_book_red_2",
+    "hw_notebook_1",
+    "hw_notebook_2",
+    "hw_notebook_3",
+    "hw_notebook_4",
+    "hw_notebook_5",
+    "hw_notebook_6",
+    "hw_notebook_7",
+    "hw_paperback",
+    "hw_pen",
+    "hw_pencil"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on_any",
+     "bought_juice",
+     [
+      "breakfast_fridge/inside_shelf",
+      "kitchen_cabinet_4/inside_shelf",
+      "kitchen_cabinet_6/inside_shelf",
+      "kitchen_counter_1/top",
+      "kitchen_counter_2/top"
+     ]
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "on",
+     "bought_snack",
+     "desk_1/top"
+    ],
+    [
+     "clear_of",
+     "bought_snack",
+     [
+      "homework",
+      "hw_book_green_1",
+      "hw_book_green_2",
+      "hw_book_green_3",
+      "hw_book_green_4",
+      "hw_book_green_5",
+      "hw_book_green_6",
+      "hw_book_red",
+      "hw_book_red_2",
+      "hw_notebook_1",
+      "hw_notebook_2",
+      "hw_notebook_3",
+      "hw_notebook_4",
+      "hw_notebook_5",
+      "hw_notebook_6",
+      "hw_notebook_7",
+      "hw_paperback",
+      "hw_pen",
+      "hw_pencil"
+     ],
+     0.0
+    ],
+    [
+     "near_start",
+     "homework",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_green_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_red",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_book_red_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_6",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_notebook_7",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_paperback",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_pen",
+     0.03
+    ],
+    [
+     "near_start",
+     "hw_pencil",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_eat_now__desk_corner",
+  "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
+  "rationale": "the snacks are not put away but brought to the kid, set down where they leave his homework as it is (the free corner when the desk is covered); the juice goes into the fridge",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T22_put_away_shopping/not_shopping": {

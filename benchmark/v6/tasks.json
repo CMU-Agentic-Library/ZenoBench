@@ -221124,7 +221124,7 @@
       "top": "ideal"
      }
     },
-    "eat_now": {
+    "eat_now__desk_free": {
      "conditions": [
       "preference_allocation"
      ],
@@ -221204,15 +221204,15 @@
       "bought_snack"
      ],
      "since": "v6",
-     "note": "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
+     "note": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
      "v6": {
       "family": "eat_now",
-      "case": null,
-      "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
-      "rationale": "the snacks are not put away but brought to the kid; the juice goes into the fridge",
+      "case": "desk_free",
+      "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
+      "rationale": "the snacks are not put away but brought to the kid, set down where they leave his homework as it is (the free corner when the desk is covered); the juice goes into the fridge",
       "control": "juice_on_table",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "how much of the desk is free (seed: room beside the homework; or the homework spread over all of it but one small corner)",
       "derived_from": "bare"
      },
      "move": {},
@@ -221369,8 +221369,212 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the snacks to the kid in the study, the juice away, doors closed",
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "clear_of",
+             "bought_snack",
+             [
+              "homework",
+              "hw_book_green_1",
+              "hw_book_green_2",
+              "hw_book_green_3",
+              "hw_book_green_4",
+              "hw_book_green_5",
+              "hw_book_green_6",
+              "hw_book_red",
+              "hw_book_red_2",
+              "hw_notebook_1",
+              "hw_notebook_2",
+              "hw_notebook_3",
+              "hw_notebook_4",
+              "hw_notebook_5",
+              "hw_notebook_6",
+              "hw_notebook_7",
+              "hw_paperback",
+              "hw_pen",
+              "hw_pencil"
+             ],
+             0.0
+            ],
+            [
+             "near_start",
+             "homework",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_7",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_paperback",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pen",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pencil",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on his desk where they leave his homework as it is (the free corner when the homework covers the desk), the juice away, doors closed",
         "raw": "best"
        },
        {
@@ -221378,7 +221582,7 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "eat_now": {
+          "eat_now__desk_free": {
            "all": [
             [
              "on_any",
@@ -221405,18 +221609,183 @@
              "right"
             ]
            ]
-          }
-         }
-        },
-        "why": "the same, a door left open",
-        "raw": "second"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "eat_now": {
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ],
+             [
+              "near_start",
+              "homework",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_7",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_paperback",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pencil",
+              0.03
+             ]
+            ]
+           ],
            "all": [
             [
              "on_any",
@@ -221436,25 +221805,1139 @@
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "bought_snack",
-             "dining_table_2/top"
-            ],
-            [
-             "not on_floor",
-             "bought_snack"
             ]
            ]
           }
          }
         },
-        "why": "the juice away, but the snacks put away too (the kid wanted them now)",
+        "why": "a door left open; or his homework pushed aside to make room for the snacks",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "on_any",
+             "bought_snack",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "bought_snack",
+              [
+               "breakfast_fridge/inside_shelf",
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top",
+               "kitchen_island/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on top of his homework, or put away in the kitchen (he wanted them now)",
         "raw": "worst"
        }
       ],
-      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
+      "not_ok": "the snacks left on the dining table; the juice not put away or lying; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "eat_now__desk_corner": {
+     "conditions": [
+      "preference_allocation"
+     ],
+     "instruction": "I just got back from the shop and left the shopping on the dining table. Please put it away. The kid says he wants the snacks now; he is doing homework in the study.",
+     "instruction_zh": "我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。",
+     "add": {
+      "bought_juice": {
+       "asset": "juice_bottle",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "bought_snack": {
+       "asset": "snack_carton",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.995
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_1": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -1.29,
+        -6.245
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_red": {
+       "asset": "book_red",
+       "support": "desk_1/top",
+       "xy": [
+        -1.055,
+        -6.244
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_2": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.815,
+        -6.245
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_3": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.585,
+        -6.245
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_paperback": {
+       "asset": "paperback_book",
+       "support": "desk_1/top",
+       "xy": [
+        -0.37,
+        -6.221
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_pen": {
+       "asset": "pen",
+       "support": "desk_1/top",
+       "xy": [
+        -0.255,
+        -6.245
+       ],
+       "yaw_deg": 90.0
+      },
+      "hw_pencil": {
+       "asset": "pencil",
+       "support": "desk_1/top",
+       "xy": [
+        -0.4,
+        -6.136
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_1": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -1.295,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_2": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -1.07,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_3": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -0.845,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_4": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -0.62,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_5": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -0.395,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_green_6": {
+       "asset": "book_green",
+       "support": "desk_1/top",
+       "xy": [
+        -0.17,
+        -6.02
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_book_red_2": {
+       "asset": "book_red",
+       "support": "desk_1/top",
+       "xy": [
+        -1.29,
+        -5.794
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -1.05,
+        -5.795
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_4": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.825,
+        -5.795
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_5": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.6,
+        -5.795
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_6": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.375,
+        -5.795
+       ],
+       "yaw_deg": 0.0
+      },
+      "hw_notebook_7": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.15,
+        -5.795
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on_any",
+        "bought_juice",
+        [
+         "breakfast_fridge/inside_shelf",
+         "kitchen_cabinet_4/inside_shelf",
+         "kitchen_cabinet_6/inside_shelf",
+         "kitchen_counter_1/top",
+         "kitchen_counter_2/top"
+        ]
+       ],
+       [
+        "upright",
+        "bought_juice"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "on",
+        "bought_snack",
+        "desk_1/top"
+       ],
+       [
+        "clear_of",
+        "bought_snack",
+        [
+         "homework",
+         "hw_book_green_1",
+         "hw_book_green_2",
+         "hw_book_green_3",
+         "hw_book_green_4",
+         "hw_book_green_5",
+         "hw_book_green_6",
+         "hw_book_red",
+         "hw_book_red_2",
+         "hw_notebook_1",
+         "hw_notebook_2",
+         "hw_notebook_3",
+         "hw_notebook_4",
+         "hw_notebook_5",
+         "hw_notebook_6",
+         "hw_notebook_7",
+         "hw_paperback",
+         "hw_pen",
+         "hw_pencil"
+        ],
+        0.0
+       ],
+       [
+        "near_start",
+        "homework",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_3",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_4",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_5",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_green_6",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_red",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_book_red_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_3",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_4",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_5",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_6",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_notebook_7",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_paperback",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_pen",
+        0.03
+       ],
+       [
+        "near_start",
+        "hw_pencil",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "bought_juice",
+      "bought_snack",
+      "hw_notebook_1",
+      "hw_book_red",
+      "hw_notebook_2",
+      "hw_notebook_3",
+      "hw_paperback",
+      "hw_pen",
+      "hw_pencil",
+      "hw_book_green_1",
+      "hw_book_green_2",
+      "hw_book_green_3",
+      "hw_book_green_4",
+      "hw_book_green_5",
+      "hw_book_green_6",
+      "hw_book_red_2",
+      "homework",
+      "hw_notebook_4",
+      "hw_notebook_5",
+      "hw_notebook_6",
+      "hw_notebook_7"
+     ],
+     "since": "v6",
+     "note": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
+     "v6": {
+      "family": "eat_now",
+      "case": "desk_corner",
+      "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his homework covers the desk but for one small corner",
+      "rationale": "the snacks are not put away but brought to the kid, set down where they leave his homework as it is (the free corner when the desk is covered); the juice goes into the fridge",
+      "control": "juice_on_table",
+      "contrast": null,
+      "factor": "how much of the desk is free (seed: room beside the homework; or the homework spread over all of it but one small corner)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "bought_snack"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.918,
+         6.94,
+         2.978,
+         7.05
+        ],
+        "dx": [
+         -0.12,
+         0.85
+        ],
+        "dy": [
+         -1.43,
+         0.89
+        ],
+        "pick": [
+         "bought_snack"
+        ]
+       },
+       {
+        "names": [
+         "bought_juice"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.919,
+         6.666,
+         2.977,
+         6.724
+        ],
+        "dx": [
+         -0.12,
+         0.85
+        ],
+        "dy": [
+         -1.16,
+         1.22
+        ],
+        "pick": [
+         "bought_juice"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "clear_of",
+             "bought_snack",
+             [
+              "homework",
+              "hw_book_green_1",
+              "hw_book_green_2",
+              "hw_book_green_3",
+              "hw_book_green_4",
+              "hw_book_green_5",
+              "hw_book_green_6",
+              "hw_book_red",
+              "hw_book_red_2",
+              "hw_notebook_1",
+              "hw_notebook_2",
+              "hw_notebook_3",
+              "hw_notebook_4",
+              "hw_notebook_5",
+              "hw_notebook_6",
+              "hw_notebook_7",
+              "hw_paperback",
+              "hw_pen",
+              "hw_pencil"
+             ],
+             0.0
+            ],
+            [
+             "near_start",
+             "homework",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_7",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_paperback",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pen",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pencil",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on his desk where they leave his homework as it is (the free corner when the homework covers the desk), the juice away, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ],
+             [
+              "near_start",
+              "homework",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_7",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_paperback",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or his homework pushed aside to make room for the snacks",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "on_any",
+             "bought_snack",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "bought_snack",
+              [
+               "breakfast_fridge/inside_shelf",
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top",
+               "kitchen_island/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on top of his homework, or put away in the kitchen (he wanted them now)",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "the snacks left on the dining table; the juice not put away or lying; still held or dropped",
       "top": "ideal"
      }
     },
@@ -224897,7 +226380,8 @@
    "oracle": {
     "juice_on_table": "nominal",
     "by_kind": "v6_by_kind",
-    "eat_now": "v6_eat_now",
+    "eat_now__desk_free": "v6_eat_now__desk_free",
+    "eat_now__desk_corner": "v6_eat_now__desk_corner",
     "basket_missing": "v6_basket_missing",
     "not_shopping": "v6_not_shopping",
     "two_spots": "v6_two_spots",
@@ -225115,7 +226599,7 @@
      "kind": "v6_oracle",
      "variant": "by_kind"
     },
-    "v6_eat_now": {
+    "v6_eat_now__desk_free": {
      "steps": [
       {
        "skill": "navigate",
@@ -225207,7 +226691,113 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "eat_now"
+     "variant": "eat_now__desk_free"
+    },
+    "v6_eat_now__desk_corner": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_juice"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_juice"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_juice",
+        "receptacle": "breakfast_fridge/inside_shelf",
+        "hint_xy": [
+         5.9,
+         3.12
+        ]
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bought_snack"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bought_snack"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bought_snack",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.14,
+         -6.22
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "eat_now__desk_corner"
     },
     "v6_basket_missing": {
      "steps": [
@@ -226490,36 +228080,245 @@
      "origin": "v6",
      "control": "juice_on_table",
      "layouts": [
-      "eat_now"
+      "eat_now__desk_free",
+      "eat_now__desk_corner"
      ],
-     "factor": "the seed's layout only",
+     "factor": "how much of the desk is free (seed: room beside the homework; or the homework spread over all of it but one small corner)",
      "seeds": {
-      "10": "eat_now",
-      "11": "eat_now",
-      "12": "eat_now",
-      "13": "eat_now",
-      "14": "eat_now",
-      "15": "eat_now",
-      "16": "eat_now",
-      "17": "eat_now",
-      "18": "eat_now",
-      "19": "eat_now"
+      "10": "eat_now__desk_free",
+      "11": "eat_now__desk_corner",
+      "12": "eat_now__desk_free",
+      "13": "eat_now__desk_corner",
+      "14": "eat_now__desk_free",
+      "15": "eat_now__desk_free",
+      "16": "eat_now__desk_free",
+      "17": "eat_now__desk_corner",
+      "18": "eat_now__desk_corner",
+      "19": "eat_now__desk_corner"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "eat_now__desk_free": true,
+       "eat_now__desk_corner": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the snacks to the kid in the study, the juice away, doors closed"
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "is_closed",
+             "breakfast_fridge"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_4"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "on",
+             "bought_snack",
+             "desk_1/top"
+            ],
+            [
+             "clear_of",
+             "bought_snack",
+             [
+              "homework",
+              "hw_book_green_1",
+              "hw_book_green_2",
+              "hw_book_green_3",
+              "hw_book_green_4",
+              "hw_book_green_5",
+              "hw_book_green_6",
+              "hw_book_red",
+              "hw_book_red_2",
+              "hw_notebook_1",
+              "hw_notebook_2",
+              "hw_notebook_3",
+              "hw_notebook_4",
+              "hw_notebook_5",
+              "hw_notebook_6",
+              "hw_notebook_7",
+              "hw_paperback",
+              "hw_pen",
+              "hw_pencil"
+             ],
+             0.0
+            ],
+            [
+             "near_start",
+             "homework",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_green_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_book_red_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_1",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_2",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_3",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_4",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_5",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_6",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_notebook_7",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_paperback",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pen",
+             0.03
+            ],
+            [
+             "near_start",
+             "hw_pencil",
+             0.03
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on his desk where they leave his homework as it is (the free corner when the homework covers the desk), the juice away, doors closed"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "eat_now": {
+          "eat_now__desk_free": {
            "all": [
             [
              "on_any",
@@ -226546,17 +228345,183 @@
              "right"
             ]
            ]
-          }
-         }
-        },
-        "why": "the same, a door left open"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "eat_now": {
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "is_closed",
+              "breakfast_fridge"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ]
+            ],
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ],
+             [
+              "clear_of",
+              "bought_snack",
+              [
+               "homework",
+               "hw_book_green_1",
+               "hw_book_green_2",
+               "hw_book_green_3",
+               "hw_book_green_4",
+               "hw_book_green_5",
+               "hw_book_green_6",
+               "hw_book_red",
+               "hw_book_red_2",
+               "hw_notebook_1",
+               "hw_notebook_2",
+               "hw_notebook_3",
+               "hw_notebook_4",
+               "hw_notebook_5",
+               "hw_notebook_6",
+               "hw_notebook_7",
+               "hw_paperback",
+               "hw_pen",
+               "hw_pencil"
+              ],
+              0.0
+             ],
+             [
+              "near_start",
+              "homework",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_green_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_book_red_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_3",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_4",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_5",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_6",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_notebook_7",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_paperback",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pen",
+              0.03
+             ],
+             [
+              "near_start",
+              "hw_pencil",
+              0.03
+             ]
+            ]
+           ],
            "all": [
             [
              "on_any",
@@ -226576,24 +228541,105 @@
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "bought_snack",
-             "dining_table_2/top"
-            ],
-            [
-             "not on_floor",
-             "bought_snack"
             ]
            ]
           }
          }
         },
-        "why": "the juice away, but the snacks put away too (the kid wanted them now)"
+        "why": "a door left open; or his homework pushed aside to make room for the snacks"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "eat_now__desk_free": {
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "on_any",
+             "bought_snack",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "eat_now__desk_corner": {
+           "any": [
+            [
+             [
+              "on",
+              "bought_snack",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "bought_snack",
+              [
+               "breakfast_fridge/inside_shelf",
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_counter_1/top",
+               "kitchen_counter_2/top",
+               "kitchen_island/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on_any",
+             "bought_juice",
+             [
+              "breakfast_fridge/inside_shelf",
+              "kitchen_cabinet_4/inside_shelf",
+              "kitchen_cabinet_6/inside_shelf",
+              "kitchen_counter_1/top",
+              "kitchen_counter_2/top"
+             ]
+            ],
+            [
+             "upright",
+             "bought_juice"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks on top of his homework, or put away in the kitchen (he wanted them now)"
        }
       ],
-      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
+      "not_ok": "the snacks left on the dining table; the juice not put away or lying; still held or dropped"
      }
     },
     "not_shopping": {

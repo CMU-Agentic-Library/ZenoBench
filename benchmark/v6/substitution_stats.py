@@ -115,6 +115,7 @@ KIND = {
     ("T21", "which_table"): {"*": "去处替换"},
     ("T21", "no_tissue"): {"*": "缺失"},
     ("T21", "the_kids_side"): {"*": "去处替换"},
+    ("T22", "eat_now"): {"desk_free": "去处替换", "desk_corner": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

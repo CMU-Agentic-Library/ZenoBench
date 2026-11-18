@@ -7422,71 +7422,71 @@
 {
 "task": "T22_put_away_shopping",
 "seed": 10,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_free",
+"route": "v6_eat_now__desk_free",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 11,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_corner",
+"route": "v6_eat_now__desk_corner",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 12,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_free",
+"route": "v6_eat_now__desk_free",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 13,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_corner",
+"route": "v6_eat_now__desk_corner",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 14,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_free",
+"route": "v6_eat_now__desk_free",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 15,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_free",
+"route": "v6_eat_now__desk_free",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 16,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_free",
+"route": "v6_eat_now__desk_free",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 17,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_corner",
+"route": "v6_eat_now__desk_corner",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 18,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_corner",
+"route": "v6_eat_now__desk_corner",
 "family": "eat_now"
 },
 {
 "task": "T22_put_away_shopping",
 "seed": 19,
-"variant": "eat_now",
-"route": "v6_eat_now",
+"variant": "eat_now__desk_corner",
+"route": "v6_eat_now__desk_corner",
 "family": "eat_now"
 },
 {

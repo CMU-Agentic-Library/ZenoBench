@@ -619,6 +619,34 @@ _T16_WHY = {"best": "the best the seed offers: the apple in the snack box on his
                     "cabinet closed), else in the bowl, the box's contents untouched",
             "second": "a door left open; or the snacks taken out of the full box to fit the apple",
             "worst": "the apple in the big storage bin, or squeezed into the box on top of his things"}
+# T22 eat_now (11-17, user): scored by where the snacks are set down (what is substituted is the place): on the
+# desk beside his homework; when the homework covers the desk, the one free corner -- the homework moved to make
+# room a level down, the snacks on top of it or put away in the kitchen the worst.  The juice away in every level
+_J22 = [["on_any", "bought_juice", ["breakfast_fridge/inside_shelf", "kitchen_cabinet_4/inside_shelf", "kitchen_cabinet_6/inside_shelf",
+                                    "kitchen_counter_1/top", "kitchen_counter_2/top"]], ["upright", "bought_juice"]]
+_C22 = [["is_closed", "breakfast_fridge"], ["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
+def _hw22():
+    from benchmark.v6.new_tasks_v6 import HOMEWORK_SPREAD
+    return sorted(HOMEWORK_SPREAD)
+
+
+_HW22 = _hw22()
+_DESK22 = [["on", "bought_snack", "desk_1/top"]]
+_FREE22 = [*_DESK22, ["clear_of", "bought_snack", _HW22, 0.0]]
+_STAYS22 = [["near_start", n, 0.03] for n in _HW22]
+_AWAY22 = [["on_any", "bought_snack", ["breakfast_fridge/inside_shelf", "kitchen_cabinet_4/inside_shelf",
+                                       "kitchen_cabinet_6/inside_shelf", "kitchen_counter_1/top",
+                                       "kitchen_counter_2/top", "kitchen_island/top"]]]
+LAYOUT_TIERS[("T22", "*")] = {
+    "eat_now__desk_free": {"best": {"all": [*_J22, *_C22, *_DESK22, *_H15]}, "second": {"all": [*_J22, *_DESK22, *_H15]},
+                           "worst": {"all": [*_J22, *_AWAY22, *_H15]}, "_ideal": True},
+    "eat_now__desk_corner": {"best": {"all": [*_J22, *_C22, *_FREE22, *_STAYS22, *_H15]},
+                             "second": {"any": [[*_C22, *_FREE22], [*_FREE22, *_STAYS22]], "all": [*_J22, *_H15]},
+                             "worst": {"any": [_DESK22, _AWAY22], "all": [*_J22, *_H15]}, "_ideal": True}}
+_T22_WHY = {"best": "the snacks on his desk where they leave his homework as it is (the free corner when the "
+                    "homework covers the desk), the juice away, doors closed",
+            "second": "a door left open; or his homework pushed aside to make room for the snacks",
+            "worst": "the snacks on top of his homework, or put away in the kitchen (he wanted them now)"}
 _T15_WHY = {"best": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left "
                     "on the stew or on someone's bowl)",
             "second": "the lid taken off someone's bowl for the pot",
@@ -682,6 +710,8 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
                                       "tipped; still held"),
              ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
              ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         ("T22", "eat_now"): _layout_tiers("eat_now", _T22_WHY, "the snacks left on the dining table; the juice "
+                                                              "not put away or lying; still held or dropped"),
          **{("T16", d): _layout_tiers(d, _T16_WHY, no) for d, no in (
              ("box_in_cabinet", "the box not found; the apple not packed on the desk; still held or dropped"),
              ("no_box", "the apple not packed; still held or dropped"),
@@ -893,6 +923,7 @@ NOT_OK_ZH = {
     ("T19", "x6_gd_can_put_away"): "罐子或泡沫块没进回收箱；还拿着或掉了",
     ("T17", "h_task_lid_elsewhere"): "积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着",
     ("T17", "hide_both"): "积木一眼能看到；藏进微波炉或冰箱；还拿着",
+    ("T22", "eat_now"): "零食留在餐桌上；果汁没收或躺着；还拿着或掉了",
     ("T16", "box_in_cabinet"): "没找到盒子；苹果没装好放到书桌；还拿着或掉了",
     ("T16", "no_box"): "苹果没装；还拿着或掉了",
     ("T16", "box_in_use"): "把孩子的东西倒出来；苹果没装；还拿着或掉了",

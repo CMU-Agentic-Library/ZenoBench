@@ -1,6 +1,6 @@
 {
- "routes": 296,
- "ok": 296,
+ "routes": 297,
+ "ok": 297,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2835,12 +2835,25 @@
   },
   {
    "task": "T22_put_away_shopping",
-   "layout": "eat_now",
+   "layout": "eat_now__desk_free",
    "steps": 13,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright bought_juice"
+   ],
+   "problems": [],
+   "variant": "eat_now"
+  },
+  {
+   "task": "T22_put_away_shopping",
+   "layout": "eat_now__desk_corner",
+   "steps": 15,
+   "atoms_checked": 25,
+   "atoms_geometric": 2,
+   "geometric_atoms": [
+    "upright bought_juice",
+    "clear_of bought_snack ['homework', 'hw_book_green_1', 'hw_book_green_2', 'hw_book_green_3', 'hw_book_green_4', 'hw_book_green_5', 'hw_book_green_6', 'hw_book_red', 'hw_book_red_2', 'hw_notebook_1', 'hw_notebook_2', 'hw_notebook_3', 'hw_notebook_4', 'hw_notebook_5', 'hw_notebook_6', 'hw_notebook_7', 'hw_paperback', 'hw_pen', 'hw_pencil'] 0.0"
    ],
    "problems": [],
    "variant": "eat_now"

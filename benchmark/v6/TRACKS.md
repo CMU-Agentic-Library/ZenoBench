@@ -130,7 +130,7 @@ Removed with the injected action failures: 121 variants (17 had nothing else, 46
 | T21 | the_kids_side | Task-Level | - | referent_clue | 2 |
 | T22 | juice_on_table | Control | - | - | 1 |
 | T22 | by_kind | Task-Level | - | multi_object_goal; storage_place | 1 |
-| T22 | eat_now | Task-Level | - | preference_allocation | 1 |
+| T22 | eat_now | Task-Level | - | preference_allocation | 2 |
 | T22 | not_shopping | Task-Level | - | goal_items_unstated | 1 |
 | T22 | two_spots | Task-Level | - | goal_items_unstated; not_in_view | 1 |
 | T22 | tray_elsewhere | Action + Task | move what fills the destination to a legal place, then place | container_absent; dependent_decisions; not_in_view; storage_place | 3 |

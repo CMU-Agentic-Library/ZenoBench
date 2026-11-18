@@ -189,6 +189,25 @@ def t21():
 
 
 # ================================================================== T22 put the shopping away
+# eat_now desk_corner (11-17, user): the kid's homework spread over the study desk (x -1.41..-0.03, y -6.33..-5.71,
+# the robot at its front, y < -6.33) in three rows, 5 cm apart (the 6 x 11 cm carton fits nowhere between them), a
+# pencil in the first strip; the only free spot is the front corner at the east end (x -0.25..-0.03, y -6.33..-6.16)
+_NB, _RED, _GRN = "notebook", "book_red", "book_green"
+HOMEWORK_SPREAD = {
+    # front row (back edges at y -6.161)
+    "hw_notebook_1": on(_NB, DESK, -1.290, -6.245), "hw_book_red": on(_RED, DESK, -1.055, -6.244),
+    "hw_notebook_2": on(_NB, DESK, -0.815, -6.245), "hw_notebook_3": on(_NB, DESK, -0.585, -6.245),
+    "hw_paperback": on("paperback_book", DESK, -0.370, -6.221), "hw_pen": on("pen", DESK, -0.255, -6.245, 90.0),
+    "hw_pencil": on("pencil", DESK, -0.400, -6.136),
+    # middle row: six green books (y -6.112..-5.929)
+    **{f"hw_book_green_{k + 1}": on(_GRN, DESK, x, -6.020)
+       for k, x in enumerate((-1.295, -1.070, -0.845, -0.620, -0.395, -0.170))},
+    # back row (front edges at y -5.879, flush with the back edge)
+    "hw_book_red_2": on(_RED, DESK, -1.290, -5.794), "homework": on(_NB, DESK, -1.050, -5.795),
+    **{f"hw_notebook_{k + 4}": on(_NB, DESK, x, -5.795) for k, x in enumerate((-0.825, -0.600, -0.375, -0.150))}}
+DESK_CORNER = (-0.14, -6.22)
+
+
 def t22():
     J, A, SN = "bought_juice", "bought_apple", "bought_snack"
     BASKET = "home_basket"
@@ -236,14 +255,28 @@ def t22():
                       route=fridge([J], JY, JX) + into(A, BASKET) + snack_away())},
             instruction="I just got back from the shop; the juice, an apple and some snacks are on the dining table. Put each where things of its kind are kept, and close any door you open.",
             instruction_zh="我刚买东西回来，果汁、苹果和零食都在餐桌上。每样都收到平时放同类东西的地方，开过的门记得关上。"),
+        # 11-17 (user): what is substituted is where the snacks are set down -- scored by the place (per-seed tiers
+        # in scoring.LAYOUT_TIERS): the desk has room beside the homework (ideal), or the homework, books and
+        # pencils cover the desk but for one small corner at its front (the study has no other top)
         "eat_now": fam(
-            "juice_on_table", ["preference_allocation"], "the seed's layout only",
-            "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
-            "the snacks are not put away but brought to the kid; the juice goes into the fridge",
-            {"": dict(add={J: on("juice_bottle", T2, 3.30, 6.70), SN: on("snack_carton", T2, 3.30, 7.00),
-                           "homework": on("notebook", DESK, -0.70, -5.95)},
-                      watch=[J, SN], goal={"all": jgoal + [["on", SN, DESK], H]},
-                      route=fridge([J], JY, JX) + fetch(SN, DESK, [-1.10, -5.95]))},
+            "juice_on_table", ["preference_allocation"],
+            "how much of the desk is free (seed: room beside the homework; or the homework spread over all of it "
+            "but one small corner)",
+            "juice and a box of snacks; the kid doing homework in the study wants the snacks now; on one seed his "
+            "homework covers the desk but for one small corner",
+            "the snacks are not put away but brought to the kid, set down where they leave his homework as it is "
+            "(the free corner when the desk is covered); the juice goes into the fridge",
+            {"desk_free": dict(add={J: on("juice_bottle", T2, 3.30, 6.70), SN: on("snack_carton", T2, 3.30, 7.00),
+                                    "homework": on("notebook", DESK, -0.70, -5.95)},
+                               watch=[J, SN], goal={"all": jgoal + [["on", SN, DESK], H]},
+                               route=fridge([J], JY, JX) + fetch(SN, DESK, [-1.10, -5.95])),
+             "desk_corner": dict(add={J: on("juice_bottle", T2, 3.30, 6.70), SN: on("snack_carton", T2, 3.30, 7.00),
+                                      **HOMEWORK_SPREAD},
+                                 watch=[J, SN, *HOMEWORK_SPREAD],
+                                 goal={"all": jgoal + [["on", SN, DESK], ["clear_of", SN, sorted(HOMEWORK_SPREAD), 0.0],
+                                                       *[["near_start", n, 0.03] for n in sorted(HOMEWORK_SPREAD)], H]},
+                                 route=fridge([J], JY, JX) + [nav(DESK), look(DESK)]
+                                 + fetch(SN, DESK, list(DESK_CORNER)))},
             instruction="I just got back from the shop and left the shopping on the dining table. Please put it "
                         "away. The kid says he wants the snacks now; he is doing homework in the study.",
             instruction_zh="我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。"),

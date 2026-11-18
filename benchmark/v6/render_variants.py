@@ -284,7 +284,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             ok = [e for e in eyes if room_of(cfg["base"], e) == room]
             return next((e for e in ok if robot_clear(e, c)), ok[0] if ok else eyes[0]), c
         if span > 0.9:                           # a long table from above, slightly tilted
-            eye = [c[0] + 0.25, c[1] - 0.05, c[2] + 0.75 * span + 0.3]
+            eye = [c[0] + 0.25, c[1] - 0.05, c[2] + 1.0 * span + 0.4]     # 11-17: the whole top in frame
             return (eye if _clear(rig.world, eye, c) and robot_clear(eye, c) else around(c, 0.8, 0.75 * span)), c
         return around(c, 0.9, 0.8), c
 

@@ -8948,7 +8948,7 @@
 
 ### eat_now（Task）
 
-**情况**：“孩子说零食现在就要吃，他在书房写作业” → 零食送书桌，果汁进冰箱
+**情况**：“孩子说零食现在就要吃，他在书房写作业” → 零食送到书桌，果汁收好；按零食放在哪打分（替换的是安放的位置）：书桌上不碰作业算好；书桌被作业摊满、只剩前排东头一角时，放进那一角算好（挪开作业腾地方降一档；压在作业上或收回厨房最不好）
 
 **指令**：我刚买东西回来，放在餐桌上了，帮我收好。孩子说零食现在就要吃，他在书房写作业。
 
@@ -8956,32 +8956,87 @@
 
 - **好（1.0）**：
 
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `breakfast_fridge` 关着
-  - `kitchen_cabinet_4` 关着
-  - `kitchen_cabinet_6` 关着
-  - `bought_snack` 在 `desk_1/top` 上
-  - 手里空着
+  - 摆法 `desk_corner`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - `breakfast_fridge` 关着
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - `bought_snack` 在 `desk_1/top` 上
+    - `bought_snack` 离这些东西都至少 0 cm：`homework`、`hw_book_green_1`、`hw_book_green_2`、`hw_book_green_3`、`hw_book_green_4`、`hw_book_green_5`、`hw_book_green_6`、`hw_book_red`、`hw_book_red_2`、`hw_notebook_1`、`hw_notebook_2`、`hw_notebook_3`、`hw_notebook_4`、`hw_notebook_5`、`hw_notebook_6`、`hw_notebook_7`、`hw_paperback`、`hw_pen`、`hw_pencil`
+    - `homework`、`hw_book_green_1`、`hw_book_green_2`、`hw_book_green_3`、`hw_book_green_4`、`hw_book_green_5`、`hw_book_green_6`、`hw_book_red`、`hw_book_red_2`、`hw_notebook_1`、`hw_notebook_2`、`hw_notebook_3`、`hw_notebook_4`、`hw_notebook_5`、`hw_notebook_6`、`hw_notebook_7`、`hw_paperback`、`hw_pen`、`hw_pencil` 没被挪动（离开局位置不超过 3 cm）
+    - 手里空着
+  - 摆法 `desk_free`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - `breakfast_fridge` 关着
+    - `kitchen_cabinet_4` 关着
+    - `kitchen_cabinet_6` 关着
+    - `bought_snack` 在 `desk_1/top` 上
+    - 手里空着
 - **次好（0.6）**：
 
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - `bought_snack` 在 `desk_1/top` 上
-  - 手里空着
+  - 摆法 `desk_free`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - `bought_snack` 在 `desk_1/top` 上
+    - 手里空着
+  - 摆法 `desk_corner`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `breakfast_fridge` 关着
+        - `kitchen_cabinet_4` 关着
+        - `kitchen_cabinet_6` 关着
+        - `bought_snack` 在 `desk_1/top` 上
+        - `bought_snack` 离这些东西都至少 0 cm：`homework`、`hw_book_green_1`、`hw_book_green_2`、`hw_book_green_3`、`hw_book_green_4`、`hw_book_green_5`、`hw_book_green_6`、`hw_book_red`、`hw_book_red_2`、`hw_notebook_1`、`hw_notebook_2`、`hw_notebook_3`、`hw_notebook_4`、`hw_notebook_5`、`hw_notebook_6`、`hw_notebook_7`、`hw_paperback`、`hw_pen`、`hw_pencil`
+      - 第 2 组：
+        - `bought_snack` 在 `desk_1/top` 上
+        - `bought_snack` 离这些东西都至少 0 cm：`homework`、`hw_book_green_1`、`hw_book_green_2`、`hw_book_green_3`、`hw_book_green_4`、`hw_book_green_5`、`hw_book_green_6`、`hw_book_red`、`hw_book_red_2`、`hw_notebook_1`、`hw_notebook_2`、`hw_notebook_3`、`hw_notebook_4`、`hw_notebook_5`、`hw_notebook_6`、`hw_notebook_7`、`hw_paperback`、`hw_pen`、`hw_pencil`
+        - `homework` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_1` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_2` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_3` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_4` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_5` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_green_6` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_red` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_book_red_2` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_1` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_2` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_3` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_4` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_5` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_6` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_notebook_7` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_paperback` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_pen` 没被挪动（离开局位置不超过 3 cm）
+        - `hw_pencil` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
-  - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
-  - `bought_juice` 立着
-  - 手里空着
-  - `["not on", "bought_snack", "dining_table_2/top"]`
-  - `bought_snack` 不在地上
-- **不行（0）**：有东西留在桌上；果汁躺着；还拿着或掉了
+  - 摆法 `desk_free`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - `bought_snack` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
+    - 手里空着
+  - 摆法 `desk_corner`：
+    - `bought_juice` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`
+    - `bought_juice` 立着
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `bought_snack` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `bought_snack` 在其中任一处上：`breakfast_fridge/inside_shelf`、`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_counter_1/top`、`kitchen_counter_2/top`、`kitchen_island/top`
+- **不行（0）**：零食留在餐桌上；果汁没收或躺着；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_snack)` → 11. `pick(object=bought_snack)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=bought_snack, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `desk_free`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=bought_snack)` → 11. `pick(object=bought_snack)` → 12. `navigate(destination=desk_1/top)` → 13. `place(object=bought_snack, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `desk_corner`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `navigate(destination=dining_table_2/top)` → 4. `look(target=dining_table_2/top)` → 5. `navigate(destination=bought_juice)` → 6. `pick(object=bought_juice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=bought_juice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.12])` → 9. `close(articulated=breakfast_fridge)` → 10. `navigate(destination=desk_1/top)` → 11. `look(target=desk_1/top)` → 12. `navigate(destination=bought_snack)` → 13. `pick(object=bought_snack)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=bought_snack, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
 
 ### not_shopping（Task）
 
