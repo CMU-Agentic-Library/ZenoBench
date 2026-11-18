@@ -11536,7 +11536,7 @@
    18,
    19
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11585,7 +11585,7 @@
    14,
    15
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11635,7 +11635,7 @@
    13,
    18
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11686,7 +11686,7 @@
    17,
    19
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11744,7 +11744,7 @@
    18,
    19
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11799,7 +11799,7 @@
    11,
    12
   ],
-  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11856,7 +11856,7 @@
    15,
    17
   ],
-  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11913,7 +11913,7 @@
    16,
    19
   ],
-  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11970,7 +11970,7 @@
    14,
    18
   ],
-  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -12027,7 +12027,7 @@
    10,
    13
   ],
-  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C).",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -12087,7 +12087,7 @@
    16,
    19
   ],
-  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -12154,7 +12154,7 @@
    17,
    18
   ],
-  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

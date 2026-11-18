@@ -353,42 +353,49 @@ _T06_NO = {"display_row": "two blocks only (the third not found); stacked instea
            "seen_from_bed": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a "
                             "thing tipped; still held or dropped"}
 
-# T07 microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
-# stove (in part or whole) is the second tier, as is the microwave door left open; both, the worst.  The stove left
-# on is not ok (user 11-11).  heated_by: episode.heat_log
-_HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["hand_empty", "right"]]
+# T07 (11-17, user): the instruction no longer says "the stove off, the microwave door closed"; by common sense an
+# appliance left on is not ok and the microwave door left open costs a level, in every design.
+# microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
+# stove (in part or whole) is the second tier, as is the door left open; both, the worst (user 11-11).
+# heated_by: episode.heat_log
+_HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"],
+        ["hand_empty", "right"]]
+_SHUT = ["is_closed", "kitchen_microwave"]
 _NO_STOVE = ["not heated_by", "oatmeal", "kitchen_stove", 0.5]
 SCORING[("T07", "microwave_works")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, ["is_closed", "kitchen_microwave"], _NO_STOVE]},
-     "why": "warmed to 40 C in the microwave only, the stove off, the microwave door closed"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": _HOT, "any": [[["is_closed", "kitchen_microwave"]], [_NO_STOVE]]},
-     "why": "warmed on the stove (in part or whole) though the microwave works, the stove off; or in the microwave "
-            "with its door left open"},
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT, _NO_STOVE]},
+     "why": "warmed to 40 C in the microwave only, both off, the microwave door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": _HOT, "any": [[_SHUT], [_NO_STOVE]]},
+     "why": "warmed on the stove (in part or whole) though the microwave works; or in the microwave with its door "
+            "left open"},
     {"name": "worst", "score": 0.3, "goal": {"all": _HOT},
      "why": "warmed partly on the stove and the microwave door left open"}],
-    "not_ok": "below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+    "not_ok": "below 40 C; the stove or the microwave left on; the bowl tipped; still held or dropped"}
 
 # T07 microwave_broken: the microwave does not heat, the stove is the way (no cost for it).  The microwave door
-# left open after trying it is the second tier, 0.6 as elsewhere (user 11-11)
+# left open after trying it is the second tier (user 11-11)
 SCORING[("T07", "microwave_broken")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT]},
+     "why": "warmed to 40 C on the stove, both off, the microwave door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": _HOT},
      "why": "warmed on the stove and switched off, but the microwave door left open after trying it"}],
-    "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or "
-              "dropped"}
+    "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl "
+              "tipped; still held or dropped"}
 
-# T07 microwave_holds_pot: the soup pot fills the microwave, both burners free.  Taking the pot out and using the
-# microwave, or leaving it and using the stove, are both best; the microwave door left open the second tier; the
-# pot on the floor not ok (user 11-11)
+# T07 microwave_holds_pot: someone's soup pot (with its lid) fills the microwave, both burners free.  11-17 (user,
+# as in T03): leaving the pot and using the stove is best; taking the pot out to use the microwave moves someone
+# else's things, one level down, as is the door left open; both, the worst; the pot on the floor not ok
+_POT_STAYS = [["near_start", "handled_cooking_pot", 0.03], ["near_start", "pot_lid", 0.03]]
+_POT_OK = [["not on_floor", "handled_cooking_pot"], ["upright", "handled_cooking_pot"]]
 SCORING[("T07", "microwave_holds_pot")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "warmed to 40 C, in the microwave after taking the pot out or on the stove with the pot left in; the "
-            "stove off, the microwave door closed, the pot not on the floor"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
-     "why": "warmed either way, but the microwave door left open"}],
-    "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT, *_POT_STAYS]},
+     "why": "warmed to 40 C on the stove, the soup pot left in the microwave, both off, the door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": [*_HOT, *_POT_OK], "any": [[_SHUT], _POT_STAYS]},
+     "why": "the pot taken out (standing, not on the floor) to use the microwave; or the door left open"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [*_HOT, *_POT_OK]},
+     "why": "the pot taken out and the door left open"}],
+    "not_ok": "the pot put on the floor or tipped; below 40 C; an appliance left on; the bowl tipped; still held or "
+              "dropped"}
 
 
 def _vessel_decides_appliance(task: dict) -> dict:
@@ -763,9 +770,9 @@ NOT_OK_ZH = {
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
     ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子、电视柜上的东西；放到别处（餐桌、茶几等）；还拿着或掉了",
     ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了",
-    ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
-    ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
-    ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
+    ("T07", "microwave_works"): "没热到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",
+    ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶或微波炉没关；碗打翻；还拿着或掉了",
+    ("T07", "microwave_holds_pot"): "汤锅放在地上或打翻；没到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
     ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",

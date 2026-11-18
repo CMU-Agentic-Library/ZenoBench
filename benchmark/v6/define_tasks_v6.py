@@ -1400,11 +1400,9 @@ def T07(t):
         "vessel_decides_appliance": dict(
             base="microwave_works", control="microwave_works", conditions=["appliance_compatibility"],
             remove=clear_stove,
-            instruction="Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in "
-                        "the microwave or on the burner. Afterwards the stove must be off and the microwave door "
-                        "closed.",
-            instruction_zh="把剩饭热一下当早饭（至少 40 度），注意装剩饭的容器适不适合进微波炉或放到灶上。"
-                           "做完后灶台要关火，微波炉门要关好。",
+            # 11-17 (user): no hint at the container or the appliances
+            instruction="Warm up the leftovers for breakfast (at least 40 C).",
+            instruction_zh="把剩饭热一下当早饭（至少 40 度）。",
             factor="which container the leftovers are in (seed: a ceramic bowl or a glass box -> microwave; the "
                    "metal pot, a steel lunch box or a foil tray -> stove)",
             challenge="both appliances work; the leftovers come in one of five containers: ceramic and glass do not "
@@ -1416,8 +1414,8 @@ def T07(t):
             conditions=["appliance_compatibility", "multi_object_goal"], remove=clear_stove,
             thermal_override={BOWL: dict(MICRO, cooling_rate_c_per_s=0.2), SOUP: dict(STOVE, cooling_rate_c_per_s=0.2)},
             instruction="Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both "
-                        "to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
-            instruction_zh="早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
+                        "to at least 40 C.",
+            instruction_zh="早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。",
             goal={"all": [["temperature_at_least", BOWL, 40], ["temperature_at_least", SOUP, 40], *done]},
             watch=[BOWL, SOUP],
             factor="where the pot of soup is (seed: the dining table or the kitchen counter)",
@@ -3230,6 +3228,9 @@ TASK_TEXT = {
     # 11-17 (user): the instruction names the ideal (a glass) and the purpose (tea); a mug is the substitute
     "T04_cup_or_mug_to_cabinet": ("A guest is coming for tea. Set out a glass at the drinks spot on the low wall "
                                   "cabinet.", "有客人要来喝茶，在靠墙矮柜上的饮品角摆一个玻璃杯。"),
+    # 11-17 (user): "afterwards the stove off and the microwave door closed" named the stove (the fallback when the
+    # microwave fails) -- dropped; appliances left on / the door left open are scored by common sense
+    "T07_heat_oatmeal": ("Warm up the leftover oatmeal for breakfast (at least 40 C).", "把剩下的燕麦粥热一下当早饭（至少 40 度）。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
     "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),
