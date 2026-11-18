@@ -41,6 +41,8 @@ def test_every_design_scored_and_tiers_sound():
                 known = _objects(t, lid) | _names(own) | {"right", "left"}
                 for tier in sc["tiers"]:
                     g = tier_goal(tier, dict(t, goal=own), lid)
+                    if g == "n/a":               # 11-17: a level this seed cannot offer
+                        continue
                     for a in _flat(g):
                         p = a[0][4:] if a[0].startswith("not ") else a[0]
                         assert p in GOAL_PREDICATES or p in REGISTRY, (lid, tier["name"], p)

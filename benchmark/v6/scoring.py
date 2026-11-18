@@ -22,6 +22,11 @@ Decisions are reviewed one design at a time with the user; benchmark/v6/SCORING_
 from __future__ import annotations
 
 TIER_NAMES = ("best", "second", "worst")
+# 11-17 meeting: the four levels.  A level is fixed by what was chosen, never by what the scene offers: with the
+# ideal missing a moderate substitute stays moderate (0.6), it is not promoted
+LEVEL = {"best": "ideal", "second": "moderate", "worst": "bad", "not_ok": "else"}
+NA = "n/a"      # a by_layout tier goal: this level does not exist in the layout (nothing there would earn it)
+LAYOUT_TIERS: dict = {}   # (task prefix, design) -> {case: {tier: goal or NA}}, filled by define_tasks_v6
 
 
 def only(why: str, not_ok: str) -> dict:
@@ -59,40 +64,29 @@ SCORING: dict[tuple[str, str], dict] = {
          "why": "the guests' table, squeezed against the dishes, nothing moved or tipped"}],
         "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held"},
     # T01 which_book: three books (the island's, the guest's in the room the instruction names, one in the
-    # other room); the guest's book is the point.  No middle tier: the wrong book is not the task done
+    # other room); the guest's book is the point.  11-17 (user): a substitution -- a wrong book brought instead is
+    # the second tier, the guest's book with another one brought along or moved the worst
     ("T01", "which_book"): {"D": 1, "tiers": [
         {"name": "best", "score": 1.0, "goal": None,
          "why": "only the guest's book on a dining table, the other two untouched"},
+        {"name": "second", "score": 0.6,
+         "goal": {"all": [["not on_any", "paperback_book", ["dining_table_2/top", "dining_table_1/top"]],
+                          ["hand_empty", "right"]],
+                  "any": [[["on_any", "book_island", ["dining_table_2/top", "dining_table_1/top"]]],
+                          [["on_any", "book_other", ["dining_table_2/top", "dining_table_1/top"]]]]},
+         "why": "a wrong book (the island's or the other room's) brought instead of the guest's"},
         {"name": "worst", "score": 0.3, "goal": {"drop": ["near_start"]},
          "why": "the guest's book on a dining table, but another book brought along or moved too"}],
-        "not_ok": "the guest's book not on a dining table (the wrong book, or none); still held"},
+        "not_ok": "no book on a dining table; still held"},
     # T02 clear (control): two free blocks on the island; either on the other is the same
     ("T02", "clear"): only("one block on the other, the hand empty", "no stack, or a block dropped"),
     # T03 large_only (control): the wide bin on the TV stand is the only open container
     ("T03", "large_only"): only("the rolling pin and the spoon both in the wide bin",
                                 "one left out, put in a cabinet or drawer instead, still held or dropped"),
-    # T03 utensils_apart: the spoon out of view in another room, the wide bin in the bedroom the only open
-    # container; carrying the bin over first is fine (the goal only asks for the contents)
-    ("T03", "utensils_apart"): only("the rolling pin and the spoon both in the wide bin, the hand empty",
-                                    "one left out (the spoon not found); in a cabinet, drawer or on a table; "
-                                    "still held or dropped"),
-    # T04 cup_available (control): a glass cup and a mug side by side on the island; a mug is a cup too (no_cup
-    # tests the mug as the stand-in), so either one, or both, is the task done
-    ("T04", "cup_available"): only("the glass cup or a mug upright on the low cabinet's drinks corner, the hand empty",
-                                   "lying or upside down; on another cabinet, counter or table; still held or dropped"),
-    # T04 no_cup: no glass cup; the mug (island, TV stand or dining table) or any other mug in the house
-    ("T04", "no_cup"): only("any mug upright on the drinks corner, the hand empty (the detour is SPL's business)",
-                            "a non-cup (the juice bottle) instead; lying or upside down; elsewhere; no cup found; "
-                            "still held or dropped"),
     # T05 e1_pencil_asked (control): the pen removed, the pencil on the bedroom bookcase
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
     # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
-    ("T05", "no_pen_pencil_away"): only("the pencil on the study desk, the hand empty",
-                                        "the pencil not found; left elsewhere; something else brought instead; "
-                                        "still held or dropped"),
-    # T05 all_pens: 2-4 pens and pencils over the house, the count unstated; missing one is the task not done.
-    # Something else brought along does not cost
     ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
                               "do not cost)",
                               "one or more missed (stopped before every place was checked); elsewhere; still held "
@@ -218,134 +212,72 @@ def _tower_for_kid(design: str):
     return build
 
 
-# T02 block_put_away: two blocks on the island (A 5 mm over the edge, no base), the third in one of two closed
-# low cabinets; the instruction asks to close the doors after the search
-BLOCK_PUT_AWAY = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "three blocks in one tower on the island, the base 5 cm from the edge, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["away_from_edge"]},
-     "why": "the tower done and the doors closed, but on the edge (block A used as the base where it lay)"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["away_from_edge", "is_closed"]},
-     "why": "the tower done, but a cabinet door left open (the instruction asks to close them)"}],
-    "not_ok": "two blocks only (the third not found); no stack; a block dropped"}
-SCORING[("T02", "block_put_away")] = BLOCK_PUT_AWAY
-
-# T03 small_bin_or_bedroom_bin: a small bin (two toy blocks in it) that holds the spoon but not the 22 cm rolling
-# pin, near or beside the wide bin in the bedroom.  ``inside`` is lenient (the centre within the rim, at most 3 cm
-# above it): a pin slanted into the small bin can count, one lying across its rim with its centre too high
-# cannot; the mug never counts (user 11-11)
-_P, _S, _W, _SB = "rolling_pin", "breakfast_spoon", "wide_storage_bin", "small_storage_bin"
-_BLOCKS_IN = [["inside", "small_bin_block_1", _SB], ["inside", "small_bin_block_2", _SB]]
-SCORING[("T03", "small_bin_or_bedroom_bin")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "both in the wide bin in the bedroom, the small bin's blocks untouched"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["inside", _P, _SB], ["inside", _S, _SB], *_BLOCKS_IN, ["hand_empty", "right"]]},
-     "why": "both in the small bin (the pin slanted in, sticking out), its blocks still in it: put away after a "
-            "fashion"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["hand_empty", "right"]],
-              "any": [[["inside", _P, _W], ["inside", _S, _W]], [["inside", _P, _SB], ["inside", _S, _SB]]]},
-     "why": "both in one bin, but the small bin's blocks taken out or moved"}],
-    "not_ok": "the spoon and the pin in different containers; in the mug; one left out; the small bin itself put "
-              "into the wide one; still held"}
+def _layout_tiers(design: str, whys: dict, not_ok: str):
+    """11-17: a design whose seeds change the substitution: each level's goal per layout (define_tasks_v6.LAYOUT_TIERS,
+    NA where the layout cannot offer that level); per_layout leaves those out and sets the seed's D and top."""
+    def build(task: dict) -> dict:
+        per = next((v for (tid, d), v in LAYOUT_TIERS.items() if task["task_id"].startswith(tid) and d == design), None)
+        if per is None:                  # tiers kept per layout id for the whole task (T04: v5 layouts have no case)
+            per = next((v for (tid, d), v in LAYOUT_TIERS.items() if task["task_id"].startswith(tid) and d == "*"), None)
+        if per is None:                  # not built in this process (tests read tasks.json): what was written there
+            import copy
+            out = copy.deepcopy(task["v6_variants"][design]["scoring"])
+            out.pop("D_by_layout", None), out.pop("top_by_layout", None)
+            out.pop("_seed_summary", None)
+            return out
+        lays = task["v6_variants"][design]["layouts"]
+        case = lambda lid: lid.split("__", 1)[1] if "__" in lid else ""  # noqa: E731
+        ideal = {lid: (per.get(lid) or per[case(lid)]).get("_ideal") for lid in lays}
+        return {"D": 1, **({"ideal_by_layout": ideal} if any(v is not None for v in ideal.values()) else {}), "tiers": [
+            {"name": n, "score": sc, "goal": {"by_layout": {lid: (per.get(lid) or per[case(lid)])[n] for lid in lays}},
+             "why": whys[n]}
+            for n, sc in (("best", 1.0), ("second", 0.6), ("worst", 0.3))], "not_ok": not_ok}
+    return build
 
 
-# T03 which_bin_by_contents: two wide bins of one make, the toy bin (toy_storage_bin, two blocks) and the kitchen
-# bin (wide_storage_bin, two spoons).  The wrong bin with nothing disturbed is the worst tier (user 11-11);
-# carrying the kitchen bin over and filling it there is the best tier (the goal only asks for the contents)
-_TOY = "toy_storage_bin"
-_WHICH_KEPT = [["inside", "toy_bin_block_1", _TOY], ["inside", "toy_bin_block_2", _TOY],
-               ["inside", "spoon_counter", _W], ["inside", "spoon_side_table", _W]]
-SCORING[("T03", "which_bin_by_contents")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "both in the kitchen bin, the toys and the spoons left where they were"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["inside", _P, _W], ["inside", _S, _W], ["hand_empty", "right"]]},
-     "why": "both in the kitchen bin, but a block or a spoon taken out or moved to another bin"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["inside", _P, _TOY], ["inside", _S, _TOY], *_WHICH_KEPT, ["hand_empty", "right"]]},
-     "why": "both in the toy bin (the wrong bin, not looked into), nothing disturbed"}],
-    "not_ok": "the toy bin with its contents disturbed; the two in different bins; one left out; still held or "
-              "dropped"}
+# T02 block_put_away (11-17, substitution): the third wooden block in a closed low cabinet or not in the house, a
+# substitute toy in view; A at the edge (no base).  Levels count the faults
+_BPA = _layout_tiers("block_put_away", {
+    "best": "three wooden blocks in one tower on the island, the base 5 cm from the edge, every cabinet door closed",
+    "second": "one fault: a substitute toy (toy block or duck) as the third level, or the base at the edge (block A "
+              "used as the base where it lay); doors closed",
+    "worst": "two faults (a substitute and the base at the edge), the dish sponge as the third level, or a cabinet "
+             "door left open"},
+    "two levels only (no third piece); no stack; a block dropped")
 
+# T03 (11-17, user): the container decides the level, the same in every seed -- the wide bin (the kitchen bin)
+# ideal, a basket or a tray moderate, the small bin (pin slanted), the fruit basket, the toy bin or a full bin bad;
+# moving someone else's things (blocks, fruit, spoons, toys) costs a level.  Per-seed goals in LAYOUT_TIERS
+_T03_WHY = {"best": "both in the wide bin (the proper storage bin), nothing of anyone else's moved",
+            "second": "both in a substitute that holds them (a storage basket or a tray), nothing moved; or in the "
+                      "wide bin with someone else's things moved",
+            "worst": "both in a container that does not do (the small bin with the pin slanted, the fruit basket, "
+                     "the toy bin, a bin already full), or in a substitute with things moved"}
+_T03_NO = "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped"
 
-def _no_bin_substitute(task: dict) -> dict:
-    """T03 no_bin_substitute: no wide bin; the substitute (basket or tray, seed) in another room; the small bin
-    (two blocks) holds the pin only slanted; the fruit basket holds an apple and an orange.  The fruit basket,
-    fruit in it or taken out, is the worst tier (user 11-11)."""
-    lays = task["v6_variants"]["no_bin_substitute"]["layouts"]
-    both = lambda c: [["inside", _P, c], ["inside", _S, c]]
-    fruit = [["inside", "apple", "fruit_basket"], ["inside", "orange", "fruit_basket"]]
-    second, worst = {}, {}
-    for lid in lays:
-        x = next(a[2] for a in task["variants"][lid]["goal"]["all"] if a[:2] == ["inside", _P])
-        second[lid] = {"all": [["hand_empty", "right"]],
-                       "any": [both(x), both(_SB) + [["inside", "small_bin_block_1", _SB],
-                                                     ["inside", "small_bin_block_2", _SB]] + fruit]}
-        worst[lid] = {"all": [["hand_empty", "right"]], "any": [both(_SB), both("fruit_basket")]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "both in the substitute (basket or tray), the fruit and the small bin's blocks untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "both in the substitute but the fruit or the blocks disturbed; or both in the small bin (the pin "
-                "slanted in), its blocks still in it, the fruit untouched"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "both in the small bin with its blocks taken out (or the fruit disturbed); or both in the fruit "
-                "basket, with the fruit in it or taken out"}],
-        "not_ok": "the two in different containers; one left out; in a cabinet or drawer; still held or dropped"}
+# T05 (11-17, user): the seed changes what is free to use (a pen, a pencil, a notebook may be in use on someone's
+# list or notebook); levels by cost_tiers, the seed's best always 1.0
+_T05_WHY = {"best": "the best the seed offers: what was asked for when it is free, else the stand-in, nothing "
+                    "anyone is using taken, nothing extra moved, doors closed, the mug where it belongs",
+            "second": "one step down: a stand-in where the asked-for thing was free, something extra moved or "
+                      "brought, a door left open, the mug in the kitchen but not on a counter",
+            "worst": "further down: taking what someone is using, the red book for a notebook, several faults"}
+_T05_NO = "nothing to write with on the desk (or no notebook); one errand only; still held or dropped"
 
-# T04 clear_the_drinks_spot: the oatmeal bowl and the pot lid fill the drinks spot; tidy them to the kitchen and set
-# out a cup.  Off the cabinet but outside the kitchen is the worst tier (user 11-11).  For now the fridge and the
-# kitchen cabinets' insides are not kitchen spots in the goal (they fall to the worst tier)
-_SPOT = "kitchen_cabinet_6/top"
-_CUP_ON_SPOT = [[["on", x, _SPOT], ["upright", x]]
-                for x in ("cup_counter_b", "mug", "mug_dining_cabinet", "mug_shelf", "mug_counter")]
-SCORING[("T04", "clear_the_drinks_spot")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the bowl and the lid back in the kitchen (island, stove or a counter), the bowl upright, a cup upright "
-            "on the drinks spot"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["not on", "oatmeal", _SPOT], ["not on", "pot_lid", _SPOT], ["upright", "oatmeal"],
-                      ["hand_empty", "right"]], "any": _CUP_ON_SPOT},
-     "why": "the spot cleared and a cup set out, but the bowl or the lid left outside the kitchen (the dining "
-            "table, the coffee table, another cabinet)"}],
-    "not_ok": "only one of the two taken off the cabinet (the cup squeezed in); pushed aside on the cabinet; the "
-              "bowl tipped; no cup set out, or lying; still held or dropped"}
-
-# T04 two_guests: one glass cup (island), the mug in another room; any two of the cup and the mugs count (two mugs
-# too, user 11-11).  Touching or closer than 3 cm, against "not touching each other", is the worst tier
-SCORING[("T04", "two_guests")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "two cups (the glass cup and a mug, or two mugs) upright on the drinks spot, at least 3 cm apart"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["clear_of"]},
-     "why": "two cups upright on the spot, but touching or closer than 3 cm (the instruction says apart)"}],
-    "not_ok": "one cup only (the second not found); a non-cup (the juice bottle) for the second; lying or upside "
-              "down; elsewhere; still held or dropped"}
-
-# T04 x6_gd_cup_in_cabinets: a cup without a handle asked for, the glass cup in one of two closed low cabinets, the
-# mug in plain view.  A door left open is the second tier, the mug (a handle) the worst (user 11-11)
-SCORING[("T04", "x6_gd_cup_in_cabinets")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the glass cup upright on the drinks spot, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
-     "why": "the glass cup upright on the spot, but a cabinet door left open"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["hand_empty", "right"]], "any": [g for g in _CUP_ON_SPOT if g[0][1] != "cup_counter_b"]},
-     "why": "a mug (with a handle) set out instead: the visible substitute ended the search"}],
-    "not_ok": "no cup set out (the glass cup not found); lying or upside down; elsewhere; still held or dropped"}
+# T04 (11-17, user): the instruction names a glass for tea; levels count faults (define_tasks_v6.cost_tiers): the
+# cup (the glass 0, a mug 1, the kid's plastic cup 2; for iced lemonade the plastic cup 1 and the mug 2), the place
+# (the drinks spot 0, the other low cabinet 1, another top 2), things disturbed, an open cabinet door
+_T04_WHY = {"best": "no fault: the glass (two apart for two guests) upright where it belongs, nothing disturbed, "
+                    "doors closed",
+            "second": "one fault: a mug for the glass (iced: the kid's cup), the other low cabinet for the spot, the "
+                      "kid's things moved, two touching, or a door left open",
+            "worst": "two faults or more: the kid's plastic cup (iced: a mug), another top, the bowl or lid left "
+                     "outside the kitchen, or several faults together"}
+_T04_NO = "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped"
 
 # T05 check_desk_first: a pen asked for; on the desk the pen already (stop) or only a pencil (fetch the pen).
 # Extra moves are the second tier; the pencil left standing in for the pen the worst (user 11-11)
-SCORING[("T05", "check_desk_first")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, nothing else moved: stopped at once when the pen was there, fetched it when only "
-            "the pencil was"},
-    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, but wasted moves: the pen shifted, the pencil taken away, moved or brought too"},
-    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", "desk_1/top"], ["hand_empty", "right"]]},
-     "why": "no pen on the desk, the pencil there in its place (stopped at the pencil)"}],
-    "not_ok": "neither the pen nor the pencil on the desk; still held or dropped"}
+# T05 check_desk_first: 11-17 per-seed tiers (_layout_tiers)
 
 
 def _homework_ready(task: dict) -> dict:
@@ -385,133 +317,86 @@ SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
 # SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
 # for the pen (the mug anywhere off the desk), the worst (user 11-11)
 _MUG, _DESK = "used_mug", "desk_1/top"
-SCORING[("T05", "errand_combined")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "the pen on the desk, the mug upright on a kitchen counter"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": [["on", "pen", _DESK], ["on_any", _MUG, ["kitchen_island/top", "kitchen_stove/top",
-                                                               "kitchen_counter_1/top", "kitchen_counter_2/top"]],
-                      ["upright", _MUG], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, the mug upright in the kitchen but not on a counter (the island or the stove)"},
-    {"name": "worst", "score": 0.3,
-     "goal": {"all": [["not on", _MUG, _DESK], ["upright", _MUG], ["hand_empty", "right"]],
-              "any": [[["on", "pen", _DESK]], [["on", "pencil", _DESK]]]},
-     "why": "the mug taken off the desk but left outside the kitchen; or the pencil brought for the pen"}],
-    "not_ok": "one errand only (no pen or pencil on the desk, or the mug still on it); the mug lying; still held or "
-              "dropped"}
+# T05 errand_combined: 11-17 per-seed tiers (_layout_tiers)
 
 # T05 x6_gd_pen_or_pencil_cabinets: a pen asked for, a pencil in one closed low cabinet and the pen in the other.  A
 # door left open or the pencil brought along is the second tier; the pencil for the pen the worst (user 11-11)
 _CLOSED = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
-SCORING[("T05", "x6_gd_pen_or_pencil_cabinets")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0,
-     "goal": {"all": [["on", "pen", _DESK], ["not on", "pencil", _DESK], *_CLOSED, ["hand_empty", "right"]]},
-     "why": "the pen on the desk, the pencil left behind, both cabinet doors closed"},
-    {"name": "second", "score": 0.6, "goal": {"all": [["on", "pen", _DESK], ["hand_empty", "right"]]},
-     "why": "the pen on the desk, but a cabinet door left open or the pencil brought along too"},
-    {"name": "worst", "score": 0.3, "goal": {"all": [["on", "pencil", _DESK], ["hand_empty", "right"]]},
-     "why": "only the pencil on the desk (the pencil for the pen), doors open or closed"}],
-    "not_ok": "no pen or pencil on the desk; still held or dropped"}
+# T05 x6_gd_pen_or_pencil_cabinets: 11-17 per-seed tiers (_layout_tiers)
 
-# T06 display_row: three blocks in a row on the low cabinet, squared, at the front, apart.  Not squared is the
-# second tier; touching or at the back (squared or not) the worst (user 11-11)
-SCORING[("T06", "display_row")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["squared"]},
-     "why": "all three at the front and apart, but one or more askew"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["squared", "front_visible", "clear_of"]},
-     "why": "all three on the cabinet, but touching or at the back"}],
-    "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or "
-              "dropped"}
+# T06 (11-17, user): the seed changes the stand-in -- the low cabinet full (display_row: the whole row on the TV
+# stand or the other low cabinet), the TV stand full too (display_spot_or_tv: the other low cabinet), the bedside
+# bookcase hidden by the kid's things (seen_from_bed: the wall shelf in view).  Levels count faults
+# (define_tasks_v6.cost_tiers); the best a seed offers is the best tier
+_T06_WHY = {
+    "display_row": {"best": "the best the seed offers: all three in one row, squared, at the front, apart, on the low "
+                            "cabinet when it has room, else on the TV stand or the other low cabinet; the family's "
+                            "things untouched",
+                    "second": "one step down: the row on another top though the low cabinet was free, a block askew, "
+                              "or the row split over two tops",
+                    "worst": "further down: touching or at the back, crammed onto the full cabinet, the family's "
+                             "things moved, or several faults"},
+    "display_spot_or_tv": {"best": "the best the seed offers, in view from the room and 2 cm from the edge: the "
+                                   "cabinet front when free, else the TV stand or the other low cabinet (the other "
+                                   "low cabinet when the TV stand is full too); nothing moved",
+                           "second": "one step down: another top though the cabinet front was free",
+                           "worst": "on one of the display tops but hidden behind the boxes or at the edge"},
+    "seen_from_bed": {"best": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's "
+                              "things untouched",
+                      "second": "on another bedroom top (the desk, the wall shelf) though the bookcase had room; or "
+                                "the kid's things moved to make room on the top (still standing)",
+                      "worst": "the kid's things moved to make room on the full top"}}
 
+_T06_NO = {"display_row": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still "
+                          "held or dropped",
+           "display_spot_or_tv": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining "
+                                 "table, coffee table); still held or dropped",
+           "seen_from_bed": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held "
+                            "or dropped"}
 
-def _display_spot_or_tv(task: dict) -> dict:
-    """T06 display_spot_or_tv: the boxes and the bottle on the low cabinet, along the back (front_free*: the cabinet
-    front is the spot) or in the front row (front_taken*: the TV stand or the other low cabinet).  front_free with the
-    block elsewhere in view is the second tier (no second tier for front_taken: its best is already the fallback);
-    the block on one of the three but hidden or at the edge, the worst (user 11-11)."""
-    lays = task["v6_variants"]["display_spot_or_tv"]["layouts"]
-    A, sups = "wooden_block_a", ("kitchen_cabinet_6/top", "tv_stand_2/top", "kitchen_cabinet_4/top")
-    second, worst = {}, {}
-    for lid in lays:
-        g = task["variants"][lid]["goal"]
-        stay = [a for a in g["all"] if a[0] in ("near_start", "upright", "hand_empty")]
-        shown = lambda sup: [["on", A, sup], ["front_visible", A], ["away_from_edge", A, 0.02]]  # noqa: E731
-        second[lid] = g if g.get("any") else {"all": stay, "any": [shown(sups[1]), shown(sups[2])]}
-        worst[lid] = {"all": stay, "any": [[["on", A, sup]] for sup in sups]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "front free: on the cabinet front in view; front taken: on the TV stand or the other low cabinet in "
-                "view; 2 cm from the edge, the boxes and the bottle untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "front free: on the TV stand or the other low cabinet in view, the preferred cabinet front unused"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "on one of the three, the boxes untouched, but hidden from the room (behind the boxes) or at the edge"}],
-        "not_ok": "a box or the bottle moved or tipped; elsewhere (dining table, coffee table); still held or dropped"}
-
-
-def _seen_from_bed(task: dict) -> dict:
-    """T06 seen_from_bed: the block on the bedside bookcase where the kid sees it from the pillow, the kid's cereal
-    boxes (middle or corner) left standing.  Moving the boxes (not forbidden) or another bedroom surface in view is
-    the second tier; on the bookcase hidden behind the boxes the worst (user 11-11)."""
-    lays = task["v6_variants"]["seen_from_bed"]["layouts"]
-    second, worst = {}, {}
-    for lid in lays:
-        g = task["variants"][lid]["goal"]["all"]
-        on = next(a for a in g if a[0] == "on")
-        vis = next(a for a in g if a[0] == "visible_from")
-        upright = [a for a in g if a[0] == "upright"]
-        kept = [a for a in g if a[0] == "near_start"] + upright
-        hand = [["hand_empty", "right"]]
-        second[lid] = {"all": hand, "any": [[on, vis, *upright], [vis, *kept]]}
-        worst[lid] = {"all": [on, *kept, *hand]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "on the bedside bookcase in view of the pillow, the boxes untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "in view of the pillow, but the boxes moved to make room (still standing), or on another bedroom "
-                "surface the kid sees, the boxes untouched"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"}],
-        "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"}
-
-# T07 microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
-# stove (in part or whole) is the second tier, as is the microwave door left open; both, the worst.  The stove left
-# on is not ok (user 11-11).  heated_by: episode.heat_log
-_HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["hand_empty", "right"]]
+# T07 (11-17, user): the instruction no longer says "the stove off, the microwave door closed"; by common sense an
+# appliance left on is not ok and the microwave door left open costs a level, in every design.
+# microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
+# stove (in part or whole) is the second tier, as is the door left open; both, the worst (user 11-11).
+# heated_by: episode.heat_log
+_HOT = [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["not heating", "kitchen_microwave"],
+        ["hand_empty", "right"]]
+_SHUT = ["is_closed", "kitchen_microwave"]
 _NO_STOVE = ["not heated_by", "oatmeal", "kitchen_stove", 0.5]
 SCORING[("T07", "microwave_works")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, ["is_closed", "kitchen_microwave"], _NO_STOVE]},
-     "why": "warmed to 40 C in the microwave only, the stove off, the microwave door closed"},
-    {"name": "second", "score": 0.6,
-     "goal": {"all": _HOT, "any": [[["is_closed", "kitchen_microwave"]], [_NO_STOVE]]},
-     "why": "warmed on the stove (in part or whole) though the microwave works, the stove off; or in the microwave "
-            "with its door left open"},
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT, _NO_STOVE]},
+     "why": "warmed to 40 C in the microwave only, both off, the microwave door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": _HOT, "any": [[_SHUT], [_NO_STOVE]]},
+     "why": "warmed on the stove (in part or whole) though the microwave works; or in the microwave with its door "
+            "left open"},
     {"name": "worst", "score": 0.3, "goal": {"all": _HOT},
      "why": "warmed partly on the stove and the microwave door left open"}],
-    "not_ok": "below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+    "not_ok": "below 40 C; the stove or the microwave left on; the bowl tipped; still held or dropped"}
 
 # T07 microwave_broken: the microwave does not heat, the stove is the way (no cost for it).  The microwave door
-# left open after trying it is the second tier, 0.6 as elsewhere (user 11-11)
+# left open after trying it is the second tier (user 11-11)
 SCORING[("T07", "microwave_broken")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "warmed to 40 C on the stove, the stove off, the microwave door closed"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT]},
+     "why": "warmed to 40 C on the stove, both off, the microwave door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": _HOT},
      "why": "warmed on the stove and switched off, but the microwave door left open after trying it"}],
-    "not_ok": "gave up after the microwave failed (below 40 C); the stove left on; the bowl tipped; still held or "
-              "dropped"}
+    "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl "
+              "tipped; still held or dropped"}
 
-# T07 microwave_holds_pot: the soup pot fills the microwave, both burners free.  Taking the pot out and using the
-# microwave, or leaving it and using the stove, are both best; the microwave door left open the second tier; the
-# pot on the floor not ok (user 11-11)
+# T07 microwave_holds_pot: someone's soup pot (with its lid) fills the microwave, both burners free.  11-17 (user,
+# as in T03): leaving the pot and using the stove is best; taking the pot out to use the microwave moves someone
+# else's things, one level down, as is the door left open; both, the worst; the pot on the floor not ok
+_POT_STAYS = [["near_start", "handled_cooking_pot", 0.03], ["near_start", "pot_lid", 0.03]]
+_POT_OK = [["not on_floor", "handled_cooking_pot"], ["upright", "handled_cooking_pot"]]
 SCORING[("T07", "microwave_holds_pot")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "warmed to 40 C, in the microwave after taking the pot out or on the stove with the pot left in; the "
-            "stove off, the microwave door closed, the pot not on the floor"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["is_closed"]},
-     "why": "warmed either way, but the microwave door left open"}],
-    "not_ok": "the pot put on the floor; below 40 C; the stove left on; the bowl tipped; still held or dropped"}
+    {"name": "best", "score": 1.0, "goal": {"all": [*_HOT, _SHUT, *_POT_STAYS]},
+     "why": "warmed to 40 C on the stove, the soup pot left in the microwave, both off, the door closed"},
+    {"name": "second", "score": 0.6, "goal": {"all": [*_HOT, *_POT_OK], "any": [[_SHUT], _POT_STAYS]},
+     "why": "the pot taken out (standing, not on the floor) to use the microwave; or the door left open"},
+    {"name": "worst", "score": 0.3, "goal": {"all": [*_HOT, *_POT_OK]},
+     "why": "the pot taken out and the door left open"}],
+    "not_ok": "the pot put on the floor or tipped; below 40 C; an appliance left on; the bowl tipped; still held or "
+              "dropped"}
 
 
 def _vessel_decides_appliance(task: dict) -> dict:
@@ -565,11 +450,12 @@ SCORING[("T08", "sponge_on_island")] = {"D": 1, "tiers": [
      "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
      "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"}],
     "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"}
-# T08 far_sponge_tv: the sponge on the TV stand or the dining table, found first; tiers as the control (back where it
-# was found is elsewhere too: the instruction says the island)
-SCORING[("T08", "far_sponge_tv")] = {**SCORING[("T08", "sponge_on_island")],
-                                     "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still "
-                                               "held or dropped on the floor"}
+# T08 far_sponge_tv (11-17, user): per-seed tiers (define_tasks_v6 LAYOUT_TIERS): the sponge to find, the kid's
+# foam cube beside it (wiping with it the worst), or only the spare sponge (the best the seed offers)
+_T08_SPONGE_WHY = {"best": "the best the seed offers: the island wiped with the sponge (the spare when the usual "
+                           "one is gone), the sponge back on the island, the kid's cube untouched",
+                   "second": "one step down: the sponge left elsewhere, or the kid's cube moved",
+                   "worst": "the island wiped with the kid's foam cube (the real sponge never taken)"}
 
 
 def _wipe_and_sort(task: dict) -> dict:
@@ -639,6 +525,13 @@ def _which_surface(task: dict) -> dict:
         "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"}
 
 
+_T09_WHY = {"best": "the best the seed offers (what is asked for when it is there, else the stand-in: the plate "
+                    "for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 "
+                    "C, stirred, covered, the stove off, the fridge closed",
+            "second": "one side step missed: not stirred, not covered, or the fridge left open",
+            "worst": "two side steps or more missed; or the tomato taken from someone's lunch plate"}
+
+
 def _soup_steps(design: str, not_ok: str, slips=("stirred", "covered")):
     """T09: the soup's side steps (stir, cover) are tiers: one missed is the second tier, both the worst; the
     tomatoes in the pot at 60 C and the stove off are the task (user 11-11)."""
@@ -693,15 +586,123 @@ def _pot_in_use(task: dict) -> dict:
          "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"}],
         "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"}
 
+# T15 (11-17, user): per-seed tiers; the plate is the stand-in when the lid is gone or in use (ideal absent)
+_P15 = [[["covered", "handled_cooking_pot", p]] for p in ("plate_counter_a", "plate_counter_b")]
+_H15 = [["hand_empty", "right"]]
+LAYOUT_TIERS[("T15", "*")] = {
+    "lid_elsewhere__dining": {"best": {"all": [["covered", "handled_cooking_pot", "pot_lid"], *_H15]}, "second": NA,
+                              "worst": NA, "_ideal": True},
+    "lid_elsewhere__covering_bowl": {
+        "best": {"any": _P15, "all": [["near_start", "pot_lid", 0.03], ["near_start", "covered_bowl", 0.03], *_H15]},
+        "second": {"all": [["covered", "handled_cooking_pot", "pot_lid"], ["upright", "covered_bowl"], *_H15]},
+        "worst": NA, "_ideal": False},
+    "no_lid": {"best": {"any": _P15, "all": _H15}, "second": NA,
+               "worst": {"all": [["covered", "handled_cooking_pot", "cover_book"], *_H15]}, "_ideal": False},
+    "lid_in_use": {"best": {"any": _P15, "all": [["covered", "stew_pot", "pot_lid"], ["upright", "stew_pot"], *_H15]},
+                   "second": NA,
+                   "worst": {"all": [["covered", "handled_cooking_pot", "pot_lid"], ["upright", "stew_pot"], *_H15]},
+                   "_ideal": False}}
+_SNACKS = [["inside", n, "snack_box"] for n in ("box_banana", "box_orange_1", "box_orange_2", "box_orange_3")]
+_THINGS = [["inside", n, "snack_box"] for n in ("box_crayon_1", "box_crayon_2", "box_block")]
+_BOWL16 = [["inside", "school_apple", "spare_bowl"], ["on", "spare_bowl", "desk_1/top"]]
+_BOX16 = [["inside", "school_apple", "snack_box"], ["on", "snack_box", "desk_1/top"]]
+LAYOUT_TIERS[("T16", "*")] = {
+    "box_in_cabinet__in_cabinet": {"best": {"all": [*_BOX16, ["is_closed", "kitchen_cabinet_6"], *_H15]},
+                                   "second": {"all": [*_BOX16, *_H15]}, "worst": NA, "_ideal": True},
+    "box_in_cabinet__box_full": {"best": {"all": [*_BOWL16, *_SNACKS, *_H15]}, "second": {"all": [*_BOX16, *_H15]},
+                                 "worst": NA, "_ideal": False},
+    "no_box": {"best": {"all": [*_BOWL16, *_H15]}, "second": NA,
+               "worst": {"all": [["inside", "school_apple", "big_bin"], *_H15]}, "_ideal": False},
+    "box_in_use": {"best": {"all": [*_BOWL16, *_THINGS, *_H15]}, "second": NA,
+                   "worst": {"all": [*_BOX16, *_THINGS, *_H15]}, "_ideal": False}}
+_T16_WHY = {"best": "the best the seed offers: the apple in the snack box on his desk when the box is free (the "
+                    "cabinet closed), else in the bowl, the box's contents untouched",
+            "second": "a door left open; or the snacks taken out of the full box to fit the apple",
+            "worst": "the apple in the big storage bin, or squeezed into the box on top of his things"}
+# T22 eat_now (11-17, user): scored by where the snacks are set down (what is substituted is the place): on the
+# desk beside his homework; when the homework covers the desk, the one free corner -- the homework moved to make
+# room a level down, the snacks on top of it or put away in the kitchen the worst.  The juice away in every level
+_J22 = [["on_any", "bought_juice", ["breakfast_fridge/inside_shelf", "kitchen_cabinet_4/inside_shelf", "kitchen_cabinet_6/inside_shelf",
+                                    "kitchen_counter_1/top", "kitchen_counter_2/top"]], ["upright", "bought_juice"]]
+_C22 = [["is_closed", "breakfast_fridge"], ["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
+def _hw22():
+    from benchmark.v6.new_tasks_v6 import HOMEWORK_SPREAD
+    return sorted(HOMEWORK_SPREAD)
+
+
+_HW22 = _hw22()
+_DESK22 = [["on", "bought_snack", "desk_1/top"]]
+_FREE22 = [*_DESK22, ["clear_of", "bought_snack", _HW22, 0.0]]
+_STAYS22 = [["near_start", n, 0.03] for n in _HW22]
+_AWAY22 = [["on_any", "bought_snack", ["breakfast_fridge/inside_shelf", "kitchen_cabinet_4/inside_shelf",
+                                       "kitchen_cabinet_6/inside_shelf", "kitchen_counter_1/top",
+                                       "kitchen_counter_2/top", "kitchen_island/top"]]]
+LAYOUT_TIERS[("T22", "*")] = {
+    "eat_now__desk_free": {"best": {"all": [*_J22, *_C22, *_DESK22, *_H15]}, "second": {"all": [*_J22, *_DESK22, *_H15]},
+                           "worst": {"all": [*_J22, *_AWAY22, *_H15]}, "_ideal": True},
+    "eat_now__desk_corner": {"best": {"all": [*_J22, *_C22, *_FREE22, *_STAYS22, *_H15]},
+                             "second": {"any": [[*_C22, *_FREE22], [*_FREE22, *_STAYS22]], "all": [*_J22, *_H15]},
+                             "worst": {"any": [_DESK22, _AWAY22], "all": [*_J22, *_H15]}, "_ideal": True}}
+_T22_WHY = {"best": "the snacks on his desk where they leave his homework as it is (the free corner when the "
+                    "homework covers the desk), the juice away, doors closed",
+            "second": "a door left open; or his homework pushed aside to make room for the snacks",
+            "worst": "the snacks on top of his homework, or put away in the kitchen (he wanted them now)"}
+_T15_WHY = {"best": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left "
+                    "on the stew or on someone's bowl)",
+            "second": "the lid taken off someone's bowl for the pot",
+            "worst": "the pot covered with the book, or the lid taken off the stew"}
+
+def cost_tiers(options, faults=(), hand=True):
+    """11-17: levels by counting faults.  ``options``: [(atoms, cost)] -- the ways to do it, each with its own cost
+    (a substitute costs 1, a poorer one more); ``faults``: [(atoms that hold when it is done right, cost)].  The
+    totals the seed can reach are ranked: the lowest is best, the next second, the rest worst (user 11-17: the best
+    a seed offers is always the best tier, whether or not the ideal is there).  ``_ideal``: the lowest total is 0
+    (the ideal thing is in the scene).  The tiers are judged best first, so a goal only has to hold for its total."""
+    from itertools import combinations
+    by_total = {}
+    for atoms, cost in options:
+        for k in range(len(faults) + 1):
+            for dropped in combinations(range(len(faults)), k):
+                total = cost + sum(faults[i][1] for i in dropped)
+                kept = [a for i, (fa, _) in enumerate(faults) if i not in dropped for a in fa]
+                grp = list(atoms) + kept
+                if grp not in by_total.setdefault(total, []):
+                    by_total[total].append(grp)
+    totals = sorted(by_total)
+    ranks = [totals[:1], totals[1:2], totals[2:]]
+    out = {}
+    for name, ts in zip(("best", "second", "worst"), ranks):
+        g = [grp for tt in ts for grp in by_total[tt]]
+        out[name] = {"any": g, "all": [["hand_empty", "right"]] if hand else []} if g else NA
+    out["_ideal"] = bool(totals) and totals[0] == 0
+    return out
+
+
+
 # designs whose tiers are built from their layouts' goals
-BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
+BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
+             "best": "three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its "
+                     "things, nothing moved",
+             "second": "the tower on the other dining table (west dining room), 10 cm clear, nothing moved: a "
+                       "dining table, not the kid's",
+             "worst": "the tower on a top that is no dining table (island, desk), or squeezed among the things on a "
+                      "table or at its edge, nothing moved"},
+             "two blocks only; a thing on a table moved to make room; nothing stacked"),
+         ("T02", "block_put_away"): _BPA,
          ("T02", "tower_for_kid_duck"): _tower_for_kid("tower_for_kid_duck"),
          ("T02", "third_toy_elsewhere"): _third_toy_elsewhere, ("T02", "crowded_use_another"): _crowded_use_another, ("T01", "no_room_fallback"): _no_room_fallback, ("T01", "reader_seat"): _reader_seat,
-         ("T03", "no_bin_substitute"): _no_bin_substitute,
-         ("T05", "homework_ready"): _homework_ready,
-         ("T06", "display_spot_or_tv"): _display_spot_or_tv,
-         ("T06", "seen_from_bed"): _seen_from_bed,
+         **{("T04", d): _layout_tiers(d, _T04_WHY, _T04_NO) for d in (
+             "cup_available", "no_cup", "two_guests", "x6_gd_cup_in_cabinets", "clear_the_drinks_spot")},
+         **{("T03", d): _layout_tiers(d, _T03_WHY, _T03_NO) for d in (
+             "small_bin_or_bedroom_bin", "which_bin_by_contents", "no_bin_substitute", "utensils_apart")},
+         **{("T05", d): _layout_tiers(d, _T05_WHY, _T05_NO) for d in (
+             "no_pen_pencil_away", "check_desk_first", "homework_ready", "errand_combined",
+             "x6_gd_pen_or_pencil_cabinets")},
+         **{("T06", d): _layout_tiers(d, _T06_WHY[d], _T06_NO[d]) for d in _T06_WHY},
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,
+         ("T08", "far_sponge_tv"): _layout_tiers("far_sponge_tv", _T08_SPONGE_WHY,
+                                                 "the sponge not found; not wiped (or not all of it); the sponge "
+                                                 "still held or dropped on the floor"),
          ("T08", "wipe_and_sort"): _wipe_and_sort,
          ("T08", "which_surface"): _which_surface,
          ("T09", "lid_off"): _soup_steps("lid_off", "one tomato only; below 60 C; the stove left on; a tomato out of "
@@ -709,21 +710,173 @@ BUILT = {("T02", "tower_for_kid"): _tower_for_kid("tower_for_kid"),
          # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
          # second tier too
          ("T09", "pot_in_use"): _pot_in_use,
-         # the second tomato left on the dining table or the wall cabinet: tiers as the control
-         ("T09", "x6_gd_tomato_elsewhere"): _soup_steps("x6_gd_tomato_elsewhere", "one tomato only (the other not "
-                                                        "found); below 60 C; the stove left on; a tomato out of the "
-                                                        "pot; still held or dropped"),
-         # the pot on the dining table (lid on the stove), a bowl and a mug by the tomatoes: tiers as the control;
-         # the bowl or the mug for the pot is not ok (the tomatoes not in the pot)
-         ("T09", "pot_in_dining_room"): _soup_steps("pot_in_dining_room", "the bowl or the mug used for the pot; the "
-                                                    "pot not found; one tomato only; below 60 C; the stove left on; "
-                                                    "still held or dropped"),
-         # three tomatoes, the third in the closed fridge or on the island; the fridge door is a side step too
-         ("T09", "tomato_in_fridge"): _soup_steps("tomato_in_fridge", "two tomatoes only (the third not found); "
-                                                  "below 60 C; the stove left on; a tomato out of the pot; still held "
-                                                  "or dropped", slips=("stirred", "covered", "is_closed")),
-         ("T09", "lid_on_spoon_away"): _soup_steps("lid_on_spoon_away", "one tomato only; below 60 C; the stove "
-                                                   "left on; a tomato out of the pot; still held or dropped")}
+         # 11-17 (user): per-seed tiers (define_tasks_v6 LAYOUT_TIERS): the stand-in the seed offers (the plate for
+         # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
+         # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
+         # worst
+         **{("T20", d): _layout_tiers(d, {
+             "best": "the breakfast bottle standing on the dining table, the bottle in use and the stock left alone",
+             "second": "lying on the table; or another bottle brought instead (the one in use, one from the stock), "
+                       "or the stock disturbed",
+             "worst": "lying on the table and the stock disturbed"}, no) for d, no in (
+             ("m_bottle_on_tv_stand", "no bottle back on the breakfast table; still held or dropped"),
+             ("x6_gd_bottle_put_away", "the bottle not on the breakfast table; still held or dropped"))},
+         **{("T19", d): _layout_tiers(d, {
+             "best": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, "
+                     "doors closed",
+             "second": "a door left open; or the can in use or the unopened juice moved (not recycled)",
+             "worst": "the can someone is drinking from, or the full juice bottle, recycled too"}, no) for d, no in (
+             ("m_can_in_dining_room", "the can or the cube not in the recycling bin; still held or dropped"),
+             ("x6_gd_can_put_away", "the can or the cube not in the recycling bin; still held or dropped"))},
+         **{("T17", d): _layout_tiers(d, {
+             "best": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the "
+                     "stew); with no lid at hand anywhere out of sight but not in an appliance",
+             "second": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
+             "worst": "a block dropped into the pot of soup"}, no) for d, no in (
+             ("h_task_lid_elsewhere", "a block in plain sight; hidden in the microwave or the fridge; the stew "
+                                      "tipped; still held"),
+             ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
+             ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         **{("T26", d): _layout_tiers(d, w, "a thing of his left in the living room or put elsewhere; still held or "
+                                         "dropped") for d, w in (
+             ("whose", {"best": "his picture book to his bookcase (the one by his bed when his is full), the novel "
+                                "left",
+                        "second": "his book in his room but not on a bookcase, or the books on the full one moved, or "
+                                  "the grown-up's novel taken too",
+                        "worst": "two of those slips"}),
+             ("scattered", {"best": "all three in what holds his toys (the basket; or, no basket, his toy bin)",
+                            "second": "one of them only on his bookcase or other furniture in his room",
+                            "worst": "two or more of them not in the bin"}),
+             ("where_in_room", {"best": "the car in the toy basket (no basket: onto his bookcase), the book on his "
+                                        "bookcase",
+                                "second": "one of them in the wrong spot in his room (the car on a shelf with the "
+                                          "basket there, the book in the basket or on other furniture)",
+                                "worst": "both a step down, or one into the waste bin"}),
+             ("bear_to_bed", {"best": "the teddy on his bed or the bookcase by it (a lower level when its top is "
+                                      "covered)",
+                              "second": "the teddy in the toy basket, on his other bookcase, or the books on the top "
+                                        "moved",
+                              "worst": "two of those slips"}))},
+         **{(tid, d): _layout_tiers(d, w, no) for tid, d, w, no in (
+             ("T27", "two_leftovers", {"best": "the leftovers in the fridge (the soup too, unless someone is eating "
+                                               "it), the door closed",
+                                       "second": "the door left open", "worst": "the soup taken from someone eating"},
+              "a leftover not in the fridge; tipped; still held or dropped"),
+             ("T27", "fridge_out_of_view", {"best": "the rice in the fridge's free part, the stored food left, the "
+                                                    "door closed",
+                                            "second": "the door left open, or the stored food moved",
+                                            "worst": "both"},
+              "the rice not in the fridge; tipped; still held or dropped"),
+             ("T28", "where_his_cup_is", {"best": "his cup by his bed (with no cup of his, a cup of the house), "
+                                                  "the rest left, the door closed",
+                                          "second": "his cup, but the cabinet left open or other cups moved",
+                                          "worst": "a cup that is not his though his is there"},
+                                          "no cup by his bed; lying; still held or dropped"),
+             ("T28", "cup_out_of_view", {"best": "his cup found and by his bed (a lower level or the desk when the "
+                                                 "top is covered)",
+                                         "second": "the books on the top moved to make room", "worst": "-"},
+              "no cup by his bed; lying; still held or dropped"),
+             ("T29", "homework_on_table", {"best": "the homework on a free desk (the study desk; covered: his own "
+                                                   "desk or bookcase)",
+                                           "second": "on top of the books on the covered desk, or the books moved",
+                                           "worst": "off the table but not on a desk"},
+              "homework left on the table; still held or dropped"))},
+         ("T25", "cup_elsewhere"): _layout_tiers("cup_elsewhere", {
+             "best": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when the only "
+                     "cup holds the kid's blocks (that cup left alone)",
+             "second": "the blocks taken out of the cup and that cup brought",
+             "worst": "the cup brought with the blocks in it"},
+             "no drink or no cup by the guest; the juice lying; still held or dropped"),
+         **{("T24", d): _layout_tiers(d, w, no) for d, w, no in (
+             ("no_apples_for_him", {"best": "something nobody is eating on the desk: the apple when free, else the "
+                                            "banana from the basket, someone's plate left alone",
+                                    "second": "the banana, and someone's apple taken too",
+                                    "worst": "someone's apple from their plate"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("dinner_soon", {"best": "the fruit on the desk, not the snacks", "second": "the fruit and the snacks",
+                              "worst": "the snacks only (dinner in half an hour)"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("fruit_out_of_view", {"best": "the fruit found (the apple in the basket, else the banana) on the desk",
+                                    "second": "the empty fruit basket brought instead", "worst": "-"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("two_kids", {"best": "one thing to eat by each kid's homework, not on it: on his desk, or on the "
+                                   "bookcase beside a desk that has no room",
+                           "second": "one of them set on the homework, or on the bookcase beside a desk with room",
+                           "worst": "both a step down, or both to the same kid"},
+              "a kid gets nothing and a thing left on the table; still held or dropped"))},
+         **{("T23", d): _layout_tiers(d, w, no) for d, w, no in (
+             ("by_kind", {"best": "the spoon to the kitchen, the block with the toys: the toy box, or the tray beside "
+                                  "the full toy bin",
+                          "second": "the blocks taken out of the full bin to fit this one",
+                          "worst": "the block off the floor but not with the toys"},
+              "a dropped thing left on the floor; still held"),
+             ("belongs_on_floor", {"best": "the block in the tray (no toy box, or the toy bin full), the waste bin and "
+                                           "the laundry basket left where they are",
+                                   "second": "the bin or the basket nudged; or the blocks taken out of the full bin "
+                                             "to fit this one",
+                                   "worst": "the block in the laundry basket, or the bin or the basket lifted off "
+                                            "the floor"},
+              "the block left on the floor or not in a container; still held"),
+             ("dropped_out_of_view", {"best": "found, and put on another kitchen worktop (the island or the other "
+                                              "kitchen's counter)",
+                                      "second": "on the small kitchen's counter after moving dishes to make room",
+                                      "worst": "on the counter on top of the dishes"},
+              "not found; left on the floor; still held or dropped"),
+             ("only_this_room", {"best": "the cup with his cups in cabinet 4 -- or, the cabinet full, in the other low "
+                                         "cabinet or on a worktop; doors closed, the car left",
+                                 "second": "a door left open; the cup elsewhere in the kitchen though his cabinet has "
+                                           "room; or squeezed into the full cabinet",
+                                 "worst": "the living-room car picked up too (not in the kitchen)"},
+              "the cup left on the floor or out of the kitchen's places; still held"),
+             ("dropped_in_two_rooms", {"best": "the spoon to the kitchen, the book on his bookcase -- or, the bookcase "
+                                               "full, on another bookcase or a desk, his books left as they are",
+                                       "second": "the book on another bookcase or a desk though his has room; or "
+                                                 "pushed into his full bookcase",
+                                       "worst": "the book off the floor but on a table or a kitchen top"},
+              "a dropped thing left on the floor; still held"))},
+         ("T22", "eat_now"): _layout_tiers("eat_now", _T22_WHY, "the snacks left on the dining table; the juice "
+                                                              "not put away or lying; still held or dropped"),
+         **{("T16", d): _layout_tiers(d, _T16_WHY, no) for d, no in (
+             ("box_in_cabinet", "the box not found; the apple not packed on the desk; still held or dropped"),
+             ("no_box", "the apple not packed; still held or dropped"),
+             ("box_in_use", "his things taken out of the box; the apple not packed; still held or dropped"))},
+         **{("T15", d): _layout_tiers(d, _T15_WHY, no) for d, no in (
+             ("lid_elsewhere", "the pot not covered; the lid not found; someone's bowl tipped; still held"),
+             ("no_lid", "the pot not covered; still held or dropped"),
+             ("lid_in_use", "the soup not covered; the stew pot tipped; still held or dropped"))},
+         ("T14", "stack_them_stably"): _layout_tiers("stack_them_stably", {
+             "best": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a "
+                     "lower shelf or the bedside bookcase's top), the kid's things untouched",
+             "second": "the pile on the top after moving the kid's things (still standing)",
+             "worst": "the books on a bookcase, but not one pile or not largest-first"},
+             "a book left on the desk or elsewhere; a book on the floor; still held or dropped"),
+         ("T11", "fruit_plate_for_guests"): _layout_tiers("fruit_plate_for_guests", {
+             "best": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) "
+                     "with the apple and the orange in front of the guests, the kid's homework untouched",
+             "second": "one fruit only on the tray; or the kid's homework taken off the small tray to use it",
+             "worst": "the fruit carried without a tray; or several faults"},
+             "nothing brought to the guests; fruit dropped; still held"),
+         ("T10", "trash_moved"): _layout_tiers("trash_moved", {
+             "best": "the can in the trash can that has room: the moved one (dining room); when the one by the island "
+                     "is full, the bathroom's, the full one untouched",
+             "second": "the can in the bathroom's, but the full one's cartons disturbed",
+             "worst": "-"}, "the can not in a trash can (left on the full one, another bin, left out); still held or "
+                            "dropped"),
+         ("T10", "x6_gd_can_put_away"): _layout_tiers("x6_gd_can_put_away", {
+             "best": "the empty can found and in the trash, the unopened can in the fridge untouched, every door "
+                     "closed",
+             "second": "a door left open; or the unopened can moved (not thrown)",
+             "worst": "the unopened can thrown away too, or several faults"},
+             "the empty can not found or not in the trash (only the fridge's can thrown); still held or dropped"),
+         **{("T09", d): _layout_tiers(d, _T09_WHY, no) for d, no in (
+             ("x6_gd_tomato_elsewhere", "one tomato only (the other not found); below 60 C; the stove left on; a "
+                                        "tomato out of the pot; still held or dropped"),
+             ("pot_in_dining_room", "the pot not found; a bowl or a mug used for the pot; one tomato only; below 60 "
+                                    "C; the stove left on; still held or dropped"),
+             ("tomato_in_fridge", "two tomatoes only (the third not found); the apple in the soup; below 60 C; the "
+                                  "stove left on; a tomato out of the pot; still held or dropped"),
+             ("lid_on_spoon_away", "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still "
+                                   "held or dropped"))}}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -737,8 +890,52 @@ def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | N
     return s
 
 
+SCORES = (1.0, 0.6, 0.3)
+
+
+def per_layout(s: dict, lid: str) -> dict:
+    """The design's scoring as one layout (seed) sees it: the levels that layout cannot offer (by_layout goal NA)
+    left out, ``D`` = 1 when more than one level is open there, else 0.  11-17 (user, over the meeting's "no
+    promotion"): the best a seed offers is always the best tier -- with only substitutes there, the best substitute
+    scores 1.0 and the rest follow in order (0.6, 0.3); ``raw`` keeps each tier's level by the design, ``top`` the
+    raw level of the best one (ideal: the ideal thing is in the scene)."""
+    import copy
+    tiers = [copy.deepcopy(t) for t in s["tiers"]
+             if not (isinstance(t.get("goal"), dict) and t["goal"].get("by_layout", {}).get(lid) == NA)]
+    top = LEVEL[tiers[0]["name"]] if tiers else None
+    if (s.get("ideal_by_layout") or {}).get(lid) is not None:  # cost_tiers ranks the seed's own totals
+        top = "ideal" if s["ideal_by_layout"][lid] else "moderate"
+    for i, t in enumerate(tiers):
+        t["raw"] = t["name"]
+        t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
+    out = {**copy.deepcopy(s), "tiers": tiers, "D": 1 if len(tiers) > 1 else 0, "top": top}
+    out.pop("D_by_layout", None)
+    out.pop("top_by_layout", None)
+    out.pop("ideal_by_layout", None)
+    return out
+
+
+IDEAL_CONFLICTS: list = []        # seeds whose ideal is there but whose best tier is not the ideal: to fix
+
+
+def with_ideal(task_id: str, design: str, lid: str, p: dict) -> dict:
+    """11-18 (user): the seed's ideal set by hand (ideals.IDEAL): ``top`` follows it (there: ideal; not there: the
+    best substitute's level, at most moderate), ``ideal_present`` and ``ideal_zh`` are kept on the seed."""
+    from benchmark.v6.ideals import ideal_of
+    got = ideal_of(task_id, design, lid)
+    present, zh = got if got else (True, None)
+    if present and p["top"] != "ideal":
+        IDEAL_CONFLICTS.append((task_id, design, lid, p["top"]))
+    p["top"] = "ideal" if present else (p["top"] if p["top"] not in (None, "ideal") else "moderate")
+    p["ideal_present"] = present
+    if zh:
+        p["ideal_zh"] = zh
+    return p
+
+
 def attach_scoring(out: dict) -> int:
-    """Copy each reviewed design's scoring onto its layouts; returns how many designs are reviewed."""
+    """Copy each reviewed design's scoring onto its layouts (per seed: per_layout); returns how many designs are
+    reviewed."""
     import copy
     n = 0
     for t in out["tasks"]:
@@ -748,8 +945,14 @@ def attach_scoring(out: dict) -> int:
                 continue
             n += 1
             info["scoring"] = copy.deepcopy(s)
+            per = {lid: per_layout(s, lid) for lid in info["layouts"]}
             for lid in info["layouts"]:
-                t["variants"][lid]["scoring"] = copy.deepcopy(s)
+                per[lid] = with_ideal(t["task_id"], design, lid, per[lid])
+            if any(p["top"] != "ideal" or p["D"] != s["D"] for p in per.values()):
+                info["scoring"]["D_by_layout"] = {lid: p["D"] for lid, p in per.items()}
+                info["scoring"]["top_by_layout"] = {lid: p["top"] for lid, p in per.items()}
+            for lid in info["layouts"]:
+                t["variants"][lid]["scoring"] = per[lid]
     return n
 
 
@@ -773,9 +976,12 @@ def score(scoring: dict | None, task: dict, layout: str | None, holds) -> dict |
     if not scoring:
         return None
     for tier in scoring["tiers"]:
-        if holds(tier_goal(tier, task, layout)):
-            return {"tier": tier["name"], "score": tier["score"], "D": scoring["D"]}
-    return {"tier": "not_ok", "score": 0.0, "D": scoring["D"]}
+        g = tier_goal(tier, task, layout)
+        if g == NA:                                   # the level does not exist in this layout
+            continue
+        if holds(g):
+            return {"tier": tier["name"], "level": LEVEL[tier["name"]], "score": tier["score"], "D": scoring["D"]}
+    return {"tier": "not_ok", "level": "else", "score": 0.0, "D": scoring["D"]}
 
 
 def check_spec(s: dict) -> list[str]:
@@ -813,17 +1019,17 @@ NOT_OK_ZH = {
     ("T01", "which_table"): "放到放玩具的那张桌（找错桌）；挪了或碰倒餐具；放在别处或还拿在手里",
     ("T01", "no_room_fallback"): "挪了或碰倒餐具、麦片腾地方；放在别处或还拿在手里",
     ("T01", "reader_seat"): "挪了或碰倒餐具；放在别处（包括另一张餐桌）或还拿在手里",
-    ("T01", "which_book"): "客人那本没到餐桌（拿错或没拿）；还拿在手里",
+    ("T01", "which_book"): "餐桌上一本书都没有；还拿在手里",
     ("T02", "clear"): "没叠上，或积木掉了",
     ("T02", "crowded_use_another"): "碗或擀面杖动了、碗倒了；没叠上",
     ("T02", "third_toy_elsewhere"): "只叠了两层（没找到第三件）；没叠上；塔不在岛台上",
-    ("T02", "tower_for_kid"): "只叠了两块（没找齐）；挪了桌上的东西；塔不在餐桌上；没叠上",
+    ("T02", "tower_for_kid"): "只有两块；为腾地方挪了桌上的东西；没叠",
     ("T02", "tower_for_kid_duck"): "只叠了两层；挪了桌上的东西；塔不在餐桌上；没叠上",
-    ("T02", "block_put_away"): "只叠了两块（没找到第三块）；没叠上；积木掉了",
+    ("T02", "block_put_away"): "只有两层（没有第三件）；没叠上；积木掉了",
     ("T03", "large_only"): "只收了一样；放进柜子、抽屉；还拿着或掉了",
-    ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；插进马克杯；只收了一样；把小箱子整个放进大箱子；还拿在手里",
+    ("T03", "small_bin_or_bedroom_bin"): "两样不在同一个容器；只收了一样；把小箱子整个放进大箱子；还拿在手里",
     ("T03", "no_bin_substitute"): "两样分在两个容器；只收了一样；放进柜子或抽屉；还拿着或掉了",
-    ("T03", "utensils_apart"): "只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
+    ("T03", "utensils_apart"): "两样不在同一个容器；只收了一样（勺子没找到）；放进柜子、抽屉或随手放桌上；还拿着或掉了",
     ("T04", "cup_available"): "杯子倒着或躺着；放到别的柜子、台面或餐桌；还拿着或掉了",
     ("T04", "no_cup"): "拿果汁瓶等不是杯子的东西顶替；马克杯倒着或躺着；放到别处；没找到杯子；还拿着或掉了",
     ("T04", "clear_the_drinks_spot"): "只拿走一样（硬塞杯子）；推到矮柜另一头；碗倒了；没放杯子或杯子倒着；还拿着或掉了",
@@ -839,25 +1045,61 @@ NOT_OK_ZH = {
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
-    ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了",
-    ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了",
-    ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
-    ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
-    ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",
+    ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子、电视柜上的东西；放到别处（餐桌、茶几等）；还拿着或掉了",
+    ("T06", "seen_from_bed"): "没放进卧室（比如留在客厅）；碰倒了孩子的东西；还拿着或掉了",
+    ("T07", "microwave_works"): "没热到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",
+    ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶或微波炉没关；碗打翻；还拿着或掉了",
+    ("T07", "microwave_holds_pot"): "汤锅放在地上或打翻；没到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
     ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",
-    ("T08", "far_sponge_tv"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
+    ("T08", "far_sponge_tv"): "没找到海绵（或备用海绵）；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "wipe_and_sort"): "还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上",
     ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",
     ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
-    ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T20", "m_bottle_on_tv_stand"): "没有瓶子回到餐桌；还拿着或掉了",
+    ("T20", "x6_gd_bottle_put_away"): "瓶子没回到餐桌；还拿着或掉了",
+    ("T19", "m_can_in_dining_room"): "罐子或泡沫块没进回收箱；还拿着或掉了",
+    ("T19", "x6_gd_can_put_away"): "罐子或泡沫块没进回收箱；还拿着或掉了",
+    ("T17", "h_task_lid_elsewhere"): "积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着",
+    ("T17", "hide_both"): "积木一眼能看到；藏进微波炉或冰箱；还拿着",
+    ("T24", "no_apples_for_him"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "dinner_soon"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "fruit_out_of_view"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "two_kids"): "有孩子没拿到、东西留在桌上；还拿着或掉了",
+    ("T25", "cup_elsewhere"): "缺饮料或杯子；果汁躺着；还拿着或掉了",
+    ("T27", "two_leftovers"): "有剩菜没进冰箱；倒了；还拿着或掉了",
+    ("T27", "fridge_out_of_view"): "剩饭没进冰箱；倒了；还拿着或掉了",
+    ("T28", "where_his_cup_is"): "床边没杯子；躺着；还拿着或掉了",
+    ("T28", "cup_out_of_view"): "床边没杯子；躺着；还拿着或掉了",
+    ("T29", "homework_on_table"): "作业还在桌上；还拿着或掉了",
+    ("T26", "whose"): "图画书没拿回或放到别处；还拿着或掉了",
+    ("T26", "scattered"): "有一样没拿回他房间或还在地上；还拿着或掉了",
+    ("T26", "where_in_room"): "有一样没拿回他房间；还拿着或掉了",
+    ("T26", "bear_to_bed"): "熊没拿回他房间；还拿着或掉了",
+    ("T23", "by_kind"): "有东西还在地上；还拿着",
+    ("T23", "belongs_on_floor"): "积木还在地上或没放进容器；还拿着",
+    ("T23", "dropped_out_of_view"): "没找到；还在地上；还拿着或掉了",
+    ("T23", "only_this_room"): "杯子还在地上或放到厨房以外；还拿着",
+    ("T23", "dropped_in_two_rooms"): "有一样还在地上；还拿着",
+    ("T22", "eat_now"): "零食留在餐桌上；果汁没收或躺着；还拿着或掉了",
+    ("T16", "box_in_cabinet"): "没找到盒子；苹果没装好放到书桌；还拿着或掉了",
+    ("T16", "no_box"): "苹果没装；还拿着或掉了",
+    ("T16", "box_in_use"): "把孩子的东西倒出来；苹果没装；还拿着或掉了",
+    ("T15", "lid_elsewhere"): "没盖；没找到锅盖；碰翻了别人的碗；还拿着",
+    ("T15", "no_lid"): "没盖；还拿着或掉了",
+    ("T15", "lid_in_use"): "汤锅没盖；炖菜的锅碰倒了；还拿着或掉了",
+    ("T14", "stack_them_stably"): "有书留在桌上或别处；书掉地上；还拿着或掉了",
+    ("T11", "fruit_plate_for_guests"): "什么都没端过去；水果掉了；还拿着",
+    ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",
+    ("T10", "x6_gd_can_put_away"): "空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了",
     ("T09", "x6_gd_tomato_elsewhere"): "只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_dining_room"): "用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了",
-    ("T03", "which_bin_by_contents"): "放进玩具箱且动了里面的积木或勺子；两样分在两个箱子；只收了一样；还拿着或掉了",
+    ("T03", "which_bin_by_contents"): "两样分在两个箱子；只收了一样；还拿着或掉了",
 }
 
 

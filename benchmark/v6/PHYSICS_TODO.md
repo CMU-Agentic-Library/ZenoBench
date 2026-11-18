@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1570 episodes remain (1130 of the 113 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1550 episodes remain (1110 of the 111 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -27,7 +27,7 @@
 | T04 | cup_available | control | 0/0 of 10 | - |
 | T04 | no_cup | task | 0/0 of 10 | - |
 | T04 | clear_the_drinks_spot | task | 0/0 of 10 | - |
-| T04 | two_guests | task | 0/0 of 10 | - |
+| T04 | two_guests | task | 0/0 of 10 | low cabinet doors |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
 | T05 | no_pen_pencil_away | task | 0/0 of 10 | - |
@@ -63,7 +63,7 @@
 | T10 | trash_moved | task | 0/0 of 10 | - |
 | T10 | after_dinner_clear | task | 0/0 of 10 | - |
 | T10 | guests_coming | task | 0/0 of 10 | - |
-| T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
+| T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
 | T11 | leave_one_for_kid | task | 0/0 of 10 | - |
@@ -100,7 +100,7 @@
 | T19 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors |
 | T20 | bottle_on_cabinet | control | 0/0 of 10 | juice bottle grasp |
 | T20 | m_bottle_on_tv_stand | task | 0/0 of 10 | juice bottle grasp |
-| T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp, low cabinet doors |
+| T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp |
 | T14 | e1_book_ready | control | 0/0 of 10 | - |
 | T14 | within_kids_reach | task | 0/0 of 10 | - |
 | T14 | stack_them_stably | task | 0/0 of 10 | - |
@@ -108,10 +108,8 @@
 | T14 | whose_book | task | 0/0 of 10 | - |
 | T14 | next_in_series | task | 0/0 of 10 | - |
 | T21 | tissue_on_tv_stand | control | 0/0 of 10 | - |
-| T21 | tissue_out_of_view | task | 0/0 of 10 | - |
 | T21 | which_table | task | 0/0 of 10 | - |
 | T21 | no_tissue | task | 0/0 of 10 | - |
-| T21 | tissue_put_away | task | 0/0 of 10 | low cabinet doors |
 | T21 | the_kids_side | task | 0/0 of 10 | - |
 | T22 | juice_on_table | control | 0/0 of 10 | - |
 | T22 | by_kind | task | 0/0 of 10 | low cabinet doors |
@@ -123,7 +121,7 @@
 | T23 | by_kind | task | 0/0 of 10 | - |
 | T23 | belongs_on_floor | task | 0/0 of 10 | - |
 | T23 | dropped_out_of_view | task | 0/0 of 10 | - |
-| T23 | only_this_room | task | 0/0 of 10 | - |
+| T23 | only_this_room | task | 0/0 of 10 | low cabinet doors |
 | T23 | dropped_in_two_rooms | task | 0/0 of 10 | - |
 | T24 | apple_on_table | control | 0/0 of 10 | - |
 | T24 | no_apples_for_him | task | 0/0 of 10 | - |

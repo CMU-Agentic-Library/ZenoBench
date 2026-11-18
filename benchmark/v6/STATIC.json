@@ -1,7 +1,7 @@
 {
- "variants": 157,
- "episodes": 1570,
- "static_ok": 1570,
+ "variants": 155,
+ "episodes": 1550,
+ "static_ok": 1550,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -85,8 +85,8 @@
    "static_ok": 60
   },
   "T21_bring_tissues": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T22_put_away_shopping": {
    "episodes": 60,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 119
+  "task": 117
  },
- "tasks_sha1": "f340a7b5560a6a1723c6e6a57eaea5a206f586f5"
+ "tasks_sha1": "5f1b3471085dc43dced7bc051146a0caea622509"
 }

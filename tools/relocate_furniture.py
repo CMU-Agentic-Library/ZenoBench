@@ -69,6 +69,21 @@ MOVES = {
         "kind": "static", "to": (2.10, -4.88), "facing": 180, "from_facing": 0},
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243": {
         "kind": "static", "to": (1.00, -0.43), "facing": 0, "from_facing": 270},
+    # 11-17 (user): bedroom_0_0 was closed off from its west door -- the bed's comforter 12 cm from the cell shelf,
+    # the bed 14 cm from the north wall.  The bed (every piece of it) 0.6 m east, the cell shelf into the south-west
+    # corner: a 0.7 m way from the door south along the west wall, round the bed's south end to its east side
+    **{prim: {"kind": "static", "to": (round(cx + 0.6, 3), cy), "facing": 0, "from_facing": 0}
+       for prim, (cx, cy) in {
+           "BedFactory_9973537_spawn_asset_6907525": (3.2725, -9.776),
+           "BlanketFactory_9973537_spawn_asset_6907525": (3.102, -9.7125),
+           "BoxComforterFactory_9973537_spawn_asset_6907525": (2.9075, -9.716),
+           "MattressFactory_9973537_spawn_asset_6907525": (3.2725, -9.7745),
+           "PillowFactory_9973537_spawn_asset_6907525": (3.701, -9.02),
+           "PillowFactory_9973537_spawn_asset_6907525_001": (2.7745, -9.052),
+           "PillowFactory_9973537_spawn_asset_6907525_002": (3.5085, -9.5285),
+           "TowelFactory_9973537_spawn_asset_6907525": (3.796, -10.2575)}.items()},
+    "CellShelfFactory_4389409_spawn_asset_1252056": {"kind": "static", "to": (1.26, -12.235), "facing": 0,
+                                                     "from_facing": 0},
 }
 # objects that sat on a moved cabinet and go somewhere else: name -> (dx, dy)
 # offset on top of another moved piece.  The breakfast bowl stood on the
