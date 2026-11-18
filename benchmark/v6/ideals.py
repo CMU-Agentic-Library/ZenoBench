@@ -1,5 +1,6 @@
 """11-18 (user): every scored seed's ideal, set by hand -- what the ideal outcome is and whether the ideal thing (or
-place) can be used in that seed.  ``True``: it is there and free, the best tier is the ideal; ``False``: missing,
+place) can be used in that seed.  (user 11-18: kept as it is -- when the ideal is not there, what would be second, the best
+substitute, is that seed's ideal and the best tier.)  ``True``: it is there and free, the best tier is the ideal; ``False``: missing,
 taken or too small, the best substitute is the best tier (11-17: it still scores 1.0) and the seed's ``top`` is
 moderate.  Seeds not listed here ask for no substitution: the ideal is there (the design's best tier).
 
