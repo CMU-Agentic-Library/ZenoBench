@@ -111,6 +111,10 @@ KIND = {
     ("T20", "bottle_on_cabinet"): {"*": None},
     ("T20", "m_bottle_on_tv_stand"): {"m_bottle_on_tv_stand": None, "bottle_in_use": "被占用"},
     ("T20", "x6_gd_bottle_put_away"): {"*": "看着像但不能用"},
+    ("T21", "tissue_on_tv_stand"): {"*": None},
+    ("T21", "which_table"): {"*": "去处替换"},
+    ("T21", "no_tissue"): {"*": "缺失"},
+    ("T21", "the_kids_side"): {"*": "去处替换"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

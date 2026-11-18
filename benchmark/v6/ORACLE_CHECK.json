@@ -1,6 +1,6 @@
 {
- "routes": 299,
- "ok": 299,
+ "routes": 296,
+ "ok": 296,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2761,16 +2761,6 @@
   },
   {
    "task": "T21_bring_tissues",
-   "layout": "tissue_out_of_view",
-   "steps": 5,
-   "atoms_checked": 2,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_out_of_view"
-  },
-  {
-   "task": "T21_bring_tissues",
    "layout": "which_table__east",
    "steps": 8,
    "atoms_checked": 2,
@@ -2798,26 +2788,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "no_tissue"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_put_away__in_4",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_put_away"
-  },
-  {
-   "task": "T21_bring_tissues",
-   "layout": "tissue_put_away__in_6",
-   "steps": 18,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "tissue_put_away"
   },
   {
    "task": "T21_bring_tissues",

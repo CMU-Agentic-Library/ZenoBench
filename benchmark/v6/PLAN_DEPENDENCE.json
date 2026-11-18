@@ -1,14 +1,14 @@
 {
  "summary": {
   "scope": {
-   "layouts": 269,
-   "variants": 127,
+   "layouts": 266,
+   "variants": 125,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 54,
    "goal_not_met": 96,
-   "not_observed": 65,
+   "not_observed": 62,
    "resource_missing": 49,
    "argument_mismatch": 5
   },
@@ -54,7 +54,7 @@
    "passes": 112,
    "goal_not_met": 163,
    "not_observed": 24,
-   "argument_mismatch": 70,
+   "argument_mismatch": 68,
    "resource_missing": 123
   },
   "universal_fixed_sequence": [
@@ -74,7 +74,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 86,
+  "multi_layout_variants": 85,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -111,7 +111,6 @@
    "T18 one_bowl",
    "T19 x6_gd_can_put_away",
    "T21 the_kids_side",
-   "T21 tissue_put_away",
    "T21 which_table",
    "T22 tray_elsewhere",
    "T24 where_is_he",
@@ -4255,17 +4254,6 @@
   },
   {
    "task": "T21_bring_tissues",
-   "variant": "tissue_out_of_view",
-   "layout": "tissue_out_of_view",
-   "steps": 5,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {},
-   "other_variants_passing": []
-  },
-  {
-   "task": "T21_bring_tissues",
    "variant": "which_table",
    "layout": "which_table__east",
    "steps": 8,
@@ -4276,8 +4264,6 @@
     "which_table__west": "goal_not_met"
    },
    "other_variants_passing": [
-    "tissue_put_away__in_4",
-    "tissue_put_away__in_6",
     "the_kids_side__kid_north",
     "the_kids_side__kid_south"
    ]
@@ -4304,32 +4290,6 @@
    "geometric_atoms": [],
    "control_route": "resource_missing",
    "other_layouts": {},
-   "other_variants_passing": []
-  },
-  {
-   "task": "T21_bring_tissues",
-   "variant": "tissue_put_away",
-   "layout": "tissue_put_away__in_4",
-   "steps": 18,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {
-    "tissue_put_away__in_6": "argument_mismatch"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T21_bring_tissues",
-   "variant": "tissue_put_away",
-   "layout": "tissue_put_away__in_6",
-   "steps": 18,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {
-    "tissue_put_away__in_4": "argument_mismatch"
-   },
    "other_variants_passing": []
   },
   {
@@ -5957,16 +5917,6 @@
    "candidates": [
     "which_table__east",
     "which_table__west",
-    "tissue_on_tv_stand"
-   ],
-   "passes_all": []
-  },
-  {
-   "task": "T21_bring_tissues",
-   "variant": "tissue_put_away",
-   "candidates": [
-    "tissue_put_away__in_4",
-    "tissue_put_away__in_6",
     "tissue_on_tv_stand"
    ],
    "passes_all": []
@@ -9018,19 +8968,6 @@
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
    "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
-  },
-  {
-   "task": "T21_bring_tissues",
-   "variant": "tissue_put_away",
-   "layouts": [
-    "tissue_put_away__in_4",
-    "tissue_put_away__in_6"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
    "hidden_state_branch": true
   },
   {

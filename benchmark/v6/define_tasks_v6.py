@@ -3157,6 +3157,9 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    # 11-17 (user): only the designs that ask for a substitution stay in T21
+    ("T21_bring_tissues", "tissue_out_of_view"): "removed (user 11-17): only a search, no substitution",
+    ("T21_bring_tissues", "tissue_put_away"): "removed (user 11-17): only a search behind doors, no substitution",
     ("T12_tidy_toys", "h_mixed_everywhere_ik"): "the same design as toys_everywhere (its injected failures are gone), "
                                                 "now seeds of bins_capacity",
     ("T12_tidy_toys", "h_action_grasp_and_ik"): "the same design as toys_everywhere (its injected failures are gone), "
