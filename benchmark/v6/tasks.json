@@ -208053,8 +208053,8 @@
        ]
       ]
      },
-     "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
-     "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
+     "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
+     "instruction_zh": "有人把早餐桌上的果汁瓶拿走，随手收起来了。把它放回餐桌上，立着放。",
      "failures": [
       {
        "id": "resource_bottle_put_away",
@@ -208467,8 +208467,8 @@
        ]
       ]
      },
-     "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
-     "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
+     "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
+     "instruction_zh": "有人把早餐桌上的果汁瓶拿走，随手收起来了。把它放回餐桌上，立着放。",
      "add": {
       "stock_juice_1": {
        "asset": "juice_bottle",

@@ -20249,7 +20249,7 @@
    17,
    19
   ],
-  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+  "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {
    "scene": "tasks/organize_utility_items",
    "start": null,
@@ -20321,7 +20321,7 @@
    16,
    18
   ],
-  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+  "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {
    "scene": "tasks/organize_utility_items",
    "start": null,

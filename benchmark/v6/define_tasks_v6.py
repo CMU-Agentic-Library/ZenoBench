@@ -2639,7 +2639,9 @@ def T20(t):
     i = at(base, "pick", object=J)
 
     # 11-17 (user): no hint at the cabinets or the doors (the task's words); a door left open costs a level
-    instr = t["instruction"]
+    instr = ("Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the "
+             "dining table, standing up.")
+    instr_zh = "有人把早餐桌上的果汁瓶拿走，随手收起来了。把它放回餐桌上，立着放。"   # 11-17 (user): put away, not put down
     LT = LAYOUT_TIERS.setdefault(("T20", "*"), {})
     TABLE = "dining_table_2/top"
     stand = [["on", J, TABLE], ["upright", J]]
@@ -2674,7 +2676,7 @@ def T20(t):
         "bottle_in_use": bottle_in_use,
         "x6_gd_bottle_put_away": dict(
             base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
-            instruction_zh=t["instruction_zh"],
+            instruction_zh=instr_zh,
             factor="what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new "
                    "bottles of the same juice in cabinet 4)",
             remove=["plate_inside_kitchen_cabinet"],
