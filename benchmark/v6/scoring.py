@@ -324,68 +324,34 @@ _MUG, _DESK = "used_mug", "desk_1/top"
 _CLOSED = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
 # T05 x6_gd_pen_or_pencil_cabinets: 11-17 per-seed tiers (_layout_tiers)
 
-# T06 display_row: three blocks in a row on the low cabinet, squared, at the front, apart.  Not squared is the
-# second tier; touching or at the back (squared or not) the worst (user 11-11)
-SCORING[("T06", "display_row")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "all three on the cabinet, squared to its edge, at the front, at least 3 cm apart"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["squared"]},
-     "why": "all three at the front and apart, but one or more askew"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["squared", "front_visible", "clear_of"]},
-     "why": "all three on the cabinet, but touching or at the back"}],
-    "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or "
-              "dropped"}
-
-
-def _display_spot_or_tv(task: dict) -> dict:
-    """T06 display_spot_or_tv: the boxes and the bottle on the low cabinet, along the back (front_free*: the cabinet
-    front is the spot) or in the front row (front_taken*: the TV stand or the other low cabinet).  front_free with the
-    block elsewhere in view is the second tier (no second tier for front_taken: its best is already the fallback);
-    the block on one of the three but hidden or at the edge, the worst (user 11-11)."""
-    lays = task["v6_variants"]["display_spot_or_tv"]["layouts"]
-    A, sups = "wooden_block_a", ("kitchen_cabinet_6/top", "tv_stand_2/top", "kitchen_cabinet_4/top")
-    second, worst = {}, {}
-    for lid in lays:
-        g = task["variants"][lid]["goal"]
-        stay = [a for a in g["all"] if a[0] in ("near_start", "upright", "hand_empty")]
-        shown = lambda sup: [["on", A, sup], ["front_visible", A], ["away_from_edge", A, 0.02]]  # noqa: E731
-        second[lid] = g if g.get("any") else {"all": stay, "any": [shown(sups[1]), shown(sups[2])]}
-        worst[lid] = {"all": stay, "any": [[["on", A, sup]] for sup in sups]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "front free: on the cabinet front in view; front taken: on the TV stand or the other low cabinet in "
-                "view; 2 cm from the edge, the boxes and the bottle untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "front free: on the TV stand or the other low cabinet in view, the preferred cabinet front unused"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "on one of the three, the boxes untouched, but hidden from the room (behind the boxes) or at the edge"}],
-        "not_ok": "a box or the bottle moved or tipped; elsewhere (dining table, coffee table); still held or dropped"}
-
-
-def _seen_from_bed(task: dict) -> dict:
-    """T06 seen_from_bed: the block on the bedside bookcase where the kid sees it from the pillow, the kid's cereal
-    boxes (middle or corner) left standing.  Moving the boxes (not forbidden) or another bedroom surface in view is
-    the second tier; on the bookcase hidden behind the boxes the worst (user 11-11)."""
-    lays = task["v6_variants"]["seen_from_bed"]["layouts"]
-    second, worst = {}, {}
-    for lid in lays:
-        g = task["variants"][lid]["goal"]["all"]
-        on = next(a for a in g if a[0] == "on")
-        vis = next(a for a in g if a[0] == "visible_from")
-        upright = [a for a in g if a[0] == "upright"]
-        kept = [a for a in g if a[0] == "near_start"] + upright
-        hand = [["hand_empty", "right"]]
-        second[lid] = {"all": hand, "any": [[on, vis, *upright], [vis, *kept]]}
-        worst[lid] = {"all": [on, *kept, *hand]}
-    return {"D": 1, "tiers": [
-        {"name": "best", "score": 1.0, "goal": None,
-         "why": "on the bedside bookcase in view of the pillow, the boxes untouched"},
-        {"name": "second", "score": 0.6, "goal": {"by_layout": second},
-         "why": "in view of the pillow, but the boxes moved to make room (still standing), or on another bedroom "
-                "surface the kid sees, the boxes untouched"},
-        {"name": "worst", "score": 0.3, "goal": {"by_layout": worst},
-         "why": "on the bedside bookcase, the boxes untouched, but hidden behind them"}],
-        "not_ok": "out of the kid's sight elsewhere (left in the living room); a box tipped; still held or dropped"}
+# T06 (11-17, user): the seed changes the stand-in -- the low cabinet full (display_row: the whole row on the TV
+# stand or the other low cabinet), the TV stand full too (display_spot_or_tv: the other low cabinet), the bedside
+# bookcase hidden by the kid's things (seen_from_bed: the wall shelf in view).  Levels count faults
+# (define_tasks_v6.cost_tiers); the best a seed offers is the best tier
+_T06_WHY = {
+    "display_row": {"best": "the best the seed offers: all three in one row, squared, at the front, apart, on the low "
+                            "cabinet when it has room, else on the TV stand or the other low cabinet; the family's "
+                            "things untouched",
+                    "second": "one step down: the row on another top though the low cabinet was free, a block askew, "
+                              "or the row split over two tops",
+                    "worst": "further down: touching or at the back, crammed onto the full cabinet, the family's "
+                             "things moved, or several faults"},
+    "display_spot_or_tv": {"best": "the best the seed offers, in view from the room and 2 cm from the edge: the "
+                                   "cabinet front when free, else the TV stand or the other low cabinet (the other "
+                                   "low cabinet when the TV stand is full too); nothing moved",
+                           "second": "one step down: another top though the cabinet front was free",
+                           "worst": "on one of the display tops but hidden behind the boxes or at the edge"},
+    "seen_from_bed": {"best": "the best the seed offers, seen from the pillow, the kid's things untouched: the bedside "
+                              "bookcase when part of it is in view, else the wall shelf's middle shelf",
+                      "second": "one step down: the wall shelf though the bookcase was in view, or the kid's things "
+                                "moved to make room (still standing)",
+                      "worst": "on the bedside bookcase, hidden behind the kid's things"}}
+_T06_NO = {"display_row": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still "
+                          "held or dropped",
+           "display_spot_or_tv": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining "
+                                 "table, coffee table); still held or dropped",
+           "seen_from_bed": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a "
+                            "thing tipped; still held or dropped"}
 
 # T07 microwave_works: the microwave works and the oatmeal's bowl suits it; the stove heats it too.  Heating on the
 # stove (in part or whole) is the second tier, as is the microwave door left open; both, the worst.  The stove left
@@ -623,8 +589,7 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          **{("T05", d): _layout_tiers(d, _T05_WHY, _T05_NO) for d in (
              "no_pen_pencil_away", "check_desk_first", "homework_ready", "errand_combined",
              "x6_gd_pen_or_pencil_cabinets")},
-         ("T06", "display_spot_or_tv"): _display_spot_or_tv,
-         ("T06", "seen_from_bed"): _seen_from_bed,
+         **{("T06", d): _layout_tiers(d, _T06_WHY[d], _T06_NO[d]) for d in _T06_WHY},
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,
          ("T08", "wipe_and_sort"): _wipe_and_sort,
          ("T08", "which_surface"): _which_surface,
@@ -796,8 +761,8 @@ NOT_OK_ZH = {
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
-    ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了",
-    ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了",
+    ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子、电视柜上的东西；放到别处（餐桌、茶几等）；还拿着或掉了",
+    ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了",
     ("T07", "microwave_works"): "没热到 40 度；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶台没关火；碗打翻；还拿着或掉了",
     ("T07", "microwave_holds_pot"): "汤锅放在地上；没到 40 度；灶台没关火；碗打翻；还拿着或掉了",

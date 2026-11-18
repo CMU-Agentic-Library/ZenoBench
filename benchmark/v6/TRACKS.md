@@ -55,7 +55,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T05 | errand_combined | Task-Level | - | errands_combined | 2 |
 | T05 | x6_gd_pen_or_pencil_cabinets | Task-Level | - | no_pen | 2 |
 | T06 | free | Control | - | - | 1 |
-| T06 | display_row | Task-Level | - | arrangement | 2 |
+| T06 | display_row | Task-Level | - | arrangement; infeasible_fallback | 2 |
 | T06 | display_spot_or_tv | Task-Level | - | infeasible_fallback; spot_quality | 4 |
 | T06 | seen_from_bed | Task-Level | - | not_in_view; viewer_place | 2 |
 | T07 | microwave_works | Control | - | - | 1 |

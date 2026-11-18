@@ -1211,7 +1211,7 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "display_row__island_floor",
+   "layout": "display_row__cab_free",
    "steps": 19,
    "atoms_checked": 4,
    "atoms_geometric": 9,
@@ -1231,10 +1231,10 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "display_row__spread",
-   "steps": 19,
-   "atoms_checked": 4,
-   "atoms_geometric": 9,
+   "layout": "display_row__cab_short",
+   "steps": 21,
+   "atoms_checked": 10,
+   "atoms_geometric": 15,
    "geometric_atoms": [
     "squared wooden_block_a",
     "squared wooden_block_b",
@@ -1244,7 +1244,13 @@
     "front_visible floor_block",
     "clear_of wooden_block_a ['wooden_block_b', 'floor_block'] 0.03",
     "clear_of wooden_block_b ['wooden_block_a', 'floor_block'] 0.03",
-    "clear_of floor_block ['wooden_block_a', 'wooden_block_b'] 0.03"
+    "clear_of floor_block ['wooden_block_a', 'wooden_block_b'] 0.03",
+    "upright fam_fruit_basket",
+    "upright fam_cereal",
+    "upright fam_bin",
+    "upright fam_juice",
+    "upright fam_soda_1",
+    "upright fam_soda_2"
    ],
    "problems": [],
    "variant": "display_row"
@@ -1287,19 +1293,23 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "display_spot_or_tv__front_taken_block_away",
-   "steps": 9,
-   "atoms_checked": 7,
-   "atoms_geometric": 8,
+   "layout": "display_spot_or_tv__front_taken_tv_full",
+   "steps": 11,
+   "atoms_checked": 12,
+   "atoms_geometric": 12,
    "geometric_atoms": [
+    "front_visible wooden_block_a",
+    "away_from_edge wooden_block_a 0.02",
     "upright clutter_cereal_a",
     "upright clutter_cereal_b",
     "upright juice_bottle",
     "upright clutter_cereal_c",
-    "front_visible wooden_block_a",
-    "away_from_edge wooden_block_a 0.02",
-    "front_visible wooden_block_a",
-    "away_from_edge wooden_block_a 0.02"
+    "upright tv_thing_1",
+    "upright tv_thing_2",
+    "upright tv_thing_3",
+    "upright tv_thing_4",
+    "upright tv_thing_5",
+    "upright tv_thing_6"
    ],
    "problems": [],
    "variant": "display_spot_or_tv"
@@ -1338,14 +1348,15 @@
   },
   {
    "task": "T06_block_destination_occupied",
-   "layout": "seen_from_bed__boxes_corner",
-   "steps": 8,
-   "atoms_checked": 4,
-   "atoms_geometric": 3,
+   "layout": "seen_from_bed__bookcase_full",
+   "steps": 10,
+   "atoms_checked": 5,
+   "atoms_geometric": 4,
    "geometric_atoms": [
     "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
-    "upright bedside_box_1",
-    "upright bedside_box_2"
+    "upright bedside_teddy_1",
+    "upright bedside_teddy_2",
+    "upright bedside_snacks"
    ],
    "problems": [],
    "variant": "seen_from_bed"

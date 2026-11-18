@@ -1168,93 +1168,160 @@ def T06(t):
     A, B = "wooden_block_a", "wooden_block_b"
     base = OR(t, "free")                                 # look, nav A, pick A, nav cab6, place A cab6
     F, CAB, ISL = "floor_block", "kitchen_cabinet_6/top", "kitchen_island/top"
-    # display_row: three blocks squared in a row at the front of the cabinet top, apart
-    row_goal = {"all": [*[["on", x, CAB] for x in (A, B, F)], *[["squared", x] for x in (A, B, F)],
-                        *[["front_visible", x] for x in (A, B, F)],
-                        ["clear_of", A, [B, F], 0.03], ["clear_of", B, [A, F], 0.03], ["clear_of", F, [A, B], 0.03],
-                        ["hand_empty", "right"]]}
-    row_xy = {A: [3.32, 0.45], B: [3.50, 0.45], F: [3.68, 0.45]}
+    TV, CAB4 = "tv_stand_2/top", "kitchen_cabinet_4/top"
+    LT = LAYOUT_TIERS.setdefault(("T06", "*"), {})
+    # display_row: three blocks squared in a row at the front of a display top, apart.  11-17 (user): the seed
+    # changes whether the low wall cabinet has room for the row -- empty (cab_free, ideal), or the family's things
+    # leave room for two blocks only (cab_short: static check, scratchpad row.py), so the whole row goes on the TV
+    # stand or the other low cabinet (the best this seed offers)
+    BLOCKS = (A, B, F)
+    row_on = lambda sup: [*[["on", x, sup] for x in BLOCKS]]  # noqa: E731
+    row_any = [["on_any", x, [CAB, TV, CAB4]] for x in BLOCKS]          # split over the display tops
+    squared = [["squared", x] for x in BLOCKS]
+    front_apart = [*[["front_visible", x] for x in BLOCKS],
+                   ["clear_of", A, [B, F], 0.03], ["clear_of", B, [A, F], 0.03], ["clear_of", F, [A, B], 0.03]]
+    row_goal = lambda sup, extra=(): {"all": [*row_on(sup), *squared, *front_apart, *extra,  # noqa: E731
+                                              ["hand_empty", "right"]]}
+    ROW_XY = {CAB: {A: [3.32, 0.45], B: [3.50, 0.45], F: [3.68, 0.45]},
+              TV: {A: [7.30, 0.45], B: [7.48, 0.45], F: [7.66, 0.45]}}
 
-    def row_route(where):
-        out = [look(ISL)]
+    def row_route(where, sup=CAB):
+        out = [look(ISL)] + ([nav(CAB), look(CAB)] if sup != CAB else [])
         for x, region in where:
-            out += ([S("search", object=x, region=region)] if region else []) + [nav(x), pick(x), nav(CAB),
-                                                                                place(x, CAB, row_xy[x]),
-                                                                                S("square", object=x)]   # edges along the cabinet's
+            out += ([S("search", object=x, region=region)] if region else []) + [nav(x), pick(x), nav(sup),
+                                                                                place(x, sup, ROW_XY[sup][x]),
+                                                                                S("square", object=x)]   # edges along the top's
         return out
-    row_cases = {"island_floor": dict(route=row_route([(A, None), (B, None), (F, "living_room_0_0")])),
-                 "spread": dict(move={B: P("dining_table_2/top", 3.7, 6.3), F: P("kitchen_counter_2/top", -0.1, 7.3)},
-                                route=row_route([(A, None), (B, "dining_room_0_1"), (F, "kitchen_0_1")]))}
+    # the family's things on the low cabinet (cab_short): a fruit basket, a cereal box, a snack carton, a small bin,
+    # the juice and two soda cans; the one gap left at the front is 13 cm wide and 10 cm deep
+    FAMILY = {"fam_fruit_basket": ("fruit_basket", 3.333, 0.36, 90.0), "fam_cereal": ("cereal_box", 3.525, 0.36, 90.0),
+              "fam_bin": ("small_storage_bin", 3.71, 0.315, 90.0), "fam_juice": ("juice_bottle", 3.62, 0.485, 0.0),
+              "fam_soda_1": ("soda_can", 3.69, 0.485, 0.0), "fam_soda_2": ("soda_can", 3.762, 0.485, 0.0)}
+    fam_stay = [*[["near_start", n, 0.03] for n in FAMILY], *[["upright", n] for n in FAMILY]]
+    spread = {B: P("dining_table_2/top", 3.7, 6.3), F: P("kitchen_counter_2/top", -0.1, 7.3)}
+    row_cases = {
+        "cab_free": dict(move=spread, goal=row_goal(CAB),
+                         route=row_route([(A, None), (B, "dining_room_0_1"), (F, "kitchen_0_1")])),
+        "cab_short": dict(add={n: {"asset": a, **P(CAB, x, y, yaw)} for n, (a, x, y, yaw) in FAMILY.items()},
+                          goal=row_goal(TV, fam_stay), watch=[*BLOCKS, *FAMILY],
+                          route=row_route([(A, None), (B, None), (F, "living_room_0_0")], sup=TV))}
+    LT["display_row__cab_free"] = cost_tiers(
+        [(row_on(CAB), 0), (row_on(TV), 1), (row_on(CAB4), 1), (row_any, 2)], [(squared, 1), (front_apart, 2)])
+    LT["display_row__cab_short"] = cost_tiers(
+        [(row_on(TV) + fam_stay, 1), (row_on(CAB4) + fam_stay, 1), (row_any + fam_stay, 2),
+         (row_on(TV), 3), (row_on(CAB4), 3), (row_any, 4)],
+        [(squared, 1), (front_apart, 2)])
     # display_spot_or_tv: the cabinet top holds the family's cereal boxes and juice, not to be moved; the block goes
-    # on the cabinet where it can be seen, or, if the boxes leave no visible place there, on the TV stand.  Seed:
-    # the boxes stand in the front row (display_hidden's layout: the TV stand) or along the back (the cabinet).
+    # on the cabinet where it can be seen, or, if the boxes leave no visible place there, elsewhere in view.  11-17
+    # (user): the seed changes what the stand-in is -- the boxes along the back (the cabinet front, ideal), in the
+    # front row with the TV stand free (the TV stand), or in the front row with the TV stand full of the family's
+    # baskets and bins too (the other low cabinet: static check, no 4 cm spot on the TV stand)
     hidden = copy.deepcopy(t["variants"]["display_hidden"])
     on_cab = [*hidden["move"], *hidden["add"]]                           # cereal a, b, c and the juice bottle
     shown = lambda sup: [["on", A, sup], ["front_visible", A], ["away_from_edge", A, 0.02]]  # noqa: E731
     stay = [*[["near_start", n, 0.02] for n in on_cab], *[["upright", n] for n in on_cab], ["hand_empty", "right"]]
     back = {n: {**m, "xy": [m["xy"][0], 0.28]} for n, m in hidden["move"].items()}
     back_add = {n: {**m, "xy": [m["xy"][0], 0.28]} for n, m in hidden["add"].items()}
-    other_display = {"any": [shown(sup) for sup in ("tv_stand_2/top", "kitchen_cabinet_4/top")], "all": stay}
+    other_display = {"any": [shown(sup) for sup in (TV, CAB4)], "all": stay}
+    TV_FULL = [("wide_storage_bin", 6.816, 0.3625, 0.0), ("fruit_basket", 7.134, 0.3625, 0.0),
+               ("small_storage_bin", 7.367, 0.40, 90.0), ("fruit_basket", 7.60, 0.3625, 0.0),
+               ("wide_storage_bin", 7.918, 0.3625, 0.0), ("fruit_basket", 8.217, 0.3625, 90.0)]
+    tv_add = {f"tv_thing_{i + 1}": {"asset": a, **P(TV, x, y, yaw)} for i, (a, x, y, yaw) in enumerate(TV_FULL)}
+    tv_stay = [*[["near_start", n, 0.03] for n in tv_add], *[["upright", n] for n in tv_add]]
     spot_cases = {
         "front_taken": dict(move=hidden["move"], add=hidden["add"], goal=other_display,
-                            route=[look(ISL), look(CAB), nav(A), pick(A), nav("tv_stand_2/top"),
-                                   place(A, "tv_stand_2/top")]),
+                            route=[look(ISL), look(CAB), nav(A), pick(A), nav(TV), place(A, TV)]),
         "front_free": dict(move=back, add=back_add, goal={"all": shown(CAB) + stay},
                            route=[look(ISL), look(CAB), nav(A), pick(A), nav(CAB), place(A, CAB, [3.433, 0.465])]),
+        # the TV stand full too, the block on the dining table (to be found): the other low cabinet is what is left
+        "front_taken_tv_full": dict(
+            move={**hidden["move"], A: P("dining_table_2/top", 3.7, 6.3)}, add={**hidden["add"], **tv_add},
+            goal={"all": shown(CAB4) + stay + tv_stay}, watch=[A, B, *on_cab, *tv_add],
+            route=[look(ISL), look(CAB), nav(TV), look(TV), S("search", object=A, region="dining_room_0_1"), nav(A),
+                   pick(A), nav(CAB4), place(A, CAB4, [1.40, 0.42])]),
         # the block is not at hand (occupied_block_away's design): find it, then judge the cabinet as above
-        "front_taken_block_away": dict(
-            move={**hidden["move"], A: P("dining_table_2/top", 3.7, 6.3)}, add=hidden["add"], goal=other_display,
-            route=[look(ISL), look(CAB), S("search", object=A, region="dining_room_0_1"), nav(A), pick(A),
-                   nav("tv_stand_2/top"), place(A, "tv_stand_2/top")]),
         "front_free_block_away": dict(
             move={**back, A: P("bookcase_2/top", 1.0, -0.43)}, add=back_add, goal={"all": shown(CAB) + stay},
             route=[look(ISL), look(CAB), S("search", object=A, region="bedroom_0_1"), nav(A), pick(A), nav(CAB),
                    place(A, CAB, [3.433, 0.465])])}
+    anywhere = [[["on", A, sup]] for sup in (CAB, TV, CAB4)]           # on a display top, hidden or at the edge
+    for case in ("front_free", "front_free_block_away"):
+        LT[f"display_spot_or_tv__{case}"] = cost_tiers(
+            [(shown(CAB) + stay, 0), (shown(TV) + stay, 1), (shown(CAB4) + stay, 1), *[(g + stay, 3) for g in anywhere]],
+            hand=False)
+    LT["display_spot_or_tv__front_taken"] = cost_tiers(
+        [(shown(TV) + stay, 1), (shown(CAB4) + stay, 1), *[(g + stay, 3) for g in anywhere]], hand=False)
+    LT["display_spot_or_tv__front_taken_tv_full"] = cost_tiers(
+        [(shown(CAB4) + stay + tv_stay, 1), (shown(TV) + stay + tv_stay, 2),
+         *[(g + stay + tv_stay, 3) for g in anywhere]], hand=False)
     # seen_from_bed: the kid wants to see the block from bed.  The bedside bookcase is the surface in view of the
-    # pillow (farther, lower furniture is hidden by the bed itself); the kid's cereal boxes stand on it, and the
-    # part of the top behind them cannot be seen from the pillow.  Which part that is depends on where the boxes
-    # stand (seed).  visible_from checks the line of sight from the kid's eye at the end.
+    # pillow (farther, lower furniture is hidden by the bed itself).  11-17 (user): the seed changes the stand-in --
+    # the kid's cereal boxes in the middle of the bookcase top (the half facing the pillow is free, ideal), or the
+    # kid's teddies and a snack carton lined along the bed side of the top, so nothing on it can be seen from the
+    # pillow (static check, scratchpad bed_vis.py): the wall shelf (large_shelf_4, its middle shelves) is in view
+    # over the teddies.  visible_from checks the line of sight from the kid's eye at the end
     BED = "bookcase_3/top"
+    SHELVES = ("large_shelf_4/shelf_2", "large_shelf_4/shelf_3")
     EYE = [0.0, -4.6, 1.2]                               # the kid's eye, head on the pillow
-    BOX_ROWS = {"boxes_middle": ([(2.10, -5.0145), (2.10, -4.8895), (2.10, -4.7645)], [1.88, -4.88]),
-                "boxes_corner": ([(1.85, -5.0145), (1.85, -4.8895)], [2.15, -4.74])}
+    seen = ["visible_from", A, EYE, 0.5]
+    BED_THINGS = {"boxes_middle": {f"bedside_box_{i + 1}": ("cereal_box", 2.10, y, 0.0)
+                                   for i, y in enumerate((-5.0145, -4.8895, -4.7645))},
+                  "bookcase_full": {"bedside_teddy_1": ("teddy_bear", 1.85, -4.765, 0.0),
+                                    "bedside_teddy_2": ("teddy_bear", 1.85, -4.927, 0.0),
+                                    "bedside_snacks": ("snack_carton", 1.85, -5.040, 90.0)}}
     bed_cases = {}
-    for case, (row, spot) in BOX_ROWS.items():
-        names = [f"bedside_box_{i + 1}" for i in range(len(row))]
+    for case, things in BED_THINGS.items():
+        names = list(things)
+        kept = [*[["near_start", n, 0.05] for n in names], *[["upright", n] for n in names]]
+        upright = [["upright", n] for n in names]
+        on_shelf = [([["on", A, sh], seen] + kept, 1) for sh in SHELVES]
+        if case == "boxes_middle":
+            goal = {"all": [["on", A, BED], seen, *kept, ["hand_empty", "right"]]}
+            tail = [nav(BED), look(BED), place(A, BED, [1.88, -4.88])]
+            LT[f"seen_from_bed__{case}"] = cost_tiers(
+                [([["on", A, BED], seen] + kept, 0), ([["on", A, BED], seen] + upright, 1), *on_shelf,
+                 ([["on", A, BED]] + kept, 3)])
+        else:
+            goal = {"all": [["on", A, SHELVES[0]], seen, *kept, ["hand_empty", "right"]]}
+            tail = [nav(BED), look(BED), nav(SHELVES[0]), look(SHELVES[0]), place(A, SHELVES[0], [3.60, -5.11])]
+            LT[f"seen_from_bed__{case}"] = cost_tiers(
+                [*on_shelf, ([["on", A, BED], seen] + upright, 2), ([["on", A, BED]] + kept, 3)])
         bed_cases[case] = dict(
-            add={n: {"asset": "cereal_box", "support": BED, "xy": list(xy), "yaw_deg": 0.0} for n, xy in zip(names, row)},
-            goal={"all": [["on", A, BED], ["visible_from", A, EYE, 0.5], *[["near_start", n, 0.05] for n in names],
-                          *[["upright", n] for n in names], ["hand_empty", "right"]]},
-            watch=[A, B, *names],
-            route=[look(ISL), nav(A), pick(A), S("explore_room", room="bedroom_0_1"), nav(BED), look(BED),
-                   place(A, BED, spot)])
+            add={n: {"asset": a, **P(BED, x, y, yaw)} for n, (a, x, y, yaw) in things.items()},
+            goal=goal, watch=[A, B, *names],
+            route=[look(ISL), nav(A), pick(A), S("explore_room", room="bedroom_0_1")] + tail)
     return {
         "display_row": dict(
-            base="free", control="free", conditions=["arrangement"],
-            instruction="Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its "
-                        "edge, at the front where they can be seen, not touching each other.",
-            instruction_zh="把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。",
-            goal=row_goal, watch=[A, B, F],
-            factor="where the blocks are (seed: two on the island and one on the living-room floor, or spread over "
-                   "the island, the dining table and the kitchen counter)",
-            challenge="three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
-            rationale="fetch the blocks one by one and compose the row: each placement has to leave room and spacing "
-                      "for the next, squared and at the front",
+            base="free", control="free", conditions=["arrangement", "infeasible_fallback"],
+            instruction="Put the three toy blocks on display in a row, best on top of the low wall cabinet: squared "
+                        "to its edge, at the front where they can be seen, not touching each other.",
+            instruction_zh="把三块积木排成一排摆出来展示，最好放在靠墙矮柜顶上：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。",
+            watch=list(BLOCKS), keep_design=[CAB],
+            factor="whether the low wall cabinet has room for the row (seed: empty, the blocks spread over the "
+                   "island, the dining table and the kitchen counter; or the family's things leave room for two "
+                   "blocks only, the blocks on the island and the living-room floor)",
+            challenge="three blocks, some out of view, to be arranged together on one display top; on one seed the "
+                      "low cabinet's free gap holds two blocks apart, not three",
+            rationale="fetch the blocks one by one and compose the row on a top that has room for all three: the "
+                      "low cabinet when it is free, else the TV stand or the other low cabinet; a row split over two "
+                      "tops is one level down",
             cases=row_cases),
         "display_spot_or_tv": dict(
             base="display_hidden", control="free", conditions=["infeasible_fallback", "spot_quality"],
             instruction="Put the toy block on display where it can be seen from the room, best on top of the low "
                         "wall cabinet. Leave the boxes and the bottle on the cabinet where they are.",
             instruction_zh="把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。",
-            watch=[A, B, *on_cab],
-            factor="where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back), "
-                   "and whether the block is at hand on the island or has to be found (dining table, bedroom bookcase)",
+            watch=[A, B, *on_cab], keep_design=[CAB, TV],
+            factor="where the boxes and the bottle stand on the cabinet top (seed: along the back, or in the front "
+                   "row), whether the TV stand is free or full of the family's baskets, and whether the block is at "
+                   "hand on the island or has to be found (dining table, bedroom bookcase)",
             challenge="three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the "
                       "free space behind them cannot be seen from the room) or along the back (the front is free); "
-                      "the instruction forbids moving them and names no other place",
-            rationale="judge the cabinet top from the room: if the front is free, put the block there (elsewhere "
-                      "then fails); if the boxes fill the front row, moving one is ruled out, so find another place "
-                      "seen from the room (the TV stand, or the other low cabinet)",
+                      "the instruction forbids moving them and names no other place; on one seed the TV stand is "
+                      "full as well",
+            rationale="judge the cabinet top from the room: if the front is free, put the block there; if the boxes "
+                      "fill the front row, find another place seen from the room -- the TV stand, or the other low "
+                      "cabinet when the TV stand is full",
             cases=spot_cases),
         "seen_from_bed": dict(
             base="free", control="free", conditions=["viewer_place", "not_in_view"],
@@ -1262,15 +1329,15 @@ def T06(t):
                         "somewhere the kid can see from the bed.",
             instruction_zh="孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
             keep_design=[BED],
-            viewer={"eye": EYE, "label": "躺在床上看", "targets": [BED]},
-            factor="where the kid's boxes stand on the bedside bookcase (seed: in the middle of the top, or in the "
-                   "corner on the bed side)",
+            viewer={"eye": EYE, "label": "躺在床上看", "targets": [BED, SHELVES[0]]},
+            factor="what stands on the bedside bookcase (seed: the kid's cereal boxes in the middle of the top, or "
+                   "the kid's teddies and snacks lined along its bed side)",
             challenge="the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the "
-                      "pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from "
-                      "the pillow) is out of sight",
-            rationale="judge from where the kid lies: put the block on the part of the bedside top that faces the "
-                      "pillow, not behind the boxes; which part that is changes with where the boxes stand; the "
-                      "boxes stay",
+                      "pillow, unless the kid's things along its bed side hide all of its top; the wall shelf "
+                      "beyond is in view over them",
+            rationale="judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the "
+                      "boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the "
+                      "kid's things stay",
             cases=bed_cases),
     }
 

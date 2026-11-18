@@ -3980,50 +3980,525 @@
 
 **情况**：三块积木要在靠墙矮柜顶排成一排展示：摆正、放在前面看得见的地方、彼此别挨着；积木散在不同地方 → 一块块拿来，每放一块都要给下一块留位置
 
-**指令**：把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。
+**指令**：把三块积木排成一排摆出来展示，最好放在靠墙矮柜顶上：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`cab_free` D = 1、理想物在，`cab_short` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-  - `floor_block` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
-  - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
-  - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
-  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
-  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
-  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
-  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
-  - 手里空着
+  - 摆法 `cab_free`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+        - `floor_block` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+  - 摆法 `cab_short`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
 - **次好（0.6）**：
 
-  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-  - `floor_block` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
-  - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
-  - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
-  - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
-  - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
-  - 手里空着
+  - 摆法 `cab_free`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+        - `floor_block` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 2 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 3 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+  - 摆法 `cab_short`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 3 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
 - **最不好（0.3）**：
 
-  - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-  - `floor_block` 在 `kitchen_cabinet_6/top` 上
-  - 手里空着
+  - 摆法 `cab_free`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+        - `floor_block` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 2 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 3 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 4 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 5 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+        - `floor_block` 在 `kitchen_cabinet_6/top` 上
+      - 第 6 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 7 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 8 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 9 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+      - 第 10 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+      - 第 11 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 12 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+  - 摆法 `cab_short`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 2 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 3 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 4 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 5 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 6 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+      - 第 7 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+      - 第 8 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 9 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 10 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 11 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 12 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `fam_fruit_basket` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_cereal` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_bin` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_1` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_soda_2` 没被挪动（离开局位置不超过 3 cm）
+        - `fam_fruit_basket` 立着
+        - `fam_cereal` 立着
+        - `fam_bin` 立着
+        - `fam_juice` 立着
+        - `fam_soda_1` 立着
+        - `fam_soda_2` 立着
+      - 第 13 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 14 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 15 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+        - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+        - `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+        - `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
+      - 第 16 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_b` 在 `tv_stand_2/top` 上
+        - `floor_block` 在 `tv_stand_2/top` 上
+      - 第 17 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_b` 在 `kitchen_cabinet_4/top` 上
+        - `floor_block` 在 `kitchen_cabinet_4/top` 上
+      - 第 18 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+        - `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+        - `floor_block` 摆正（和台面边平行，偏差不超过 5°）
+      - 第 19 组：
+        - `wooden_block_a` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `wooden_block_b` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
+        - `floor_block` 在其中任一处上：`kitchen_cabinet_6/top`、`tv_stand_2/top`、`kitchen_cabinet_4/top`
 - **不行（0）**：只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `island_floor`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `square(object=wooden_block_a)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 12. `square(object=wooden_block_b)` → 13. `explore_room(room=living_room_0_0)` → 14. `navigate(destination=floor_block)` → 15. `look(target=floor_block)` → 16. `pick(object=floor_block)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])` → 19. `square(object=floor_block)`
-- 摆法 `spread`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `square(object=wooden_block_a)` → 8. `search(object=wooden_block_b, region=dining_room_0_1)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=kitchen_cabinet_6/top)` → 12. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 13. `square(object=wooden_block_b)` → 14. `search(object=floor_block, region=kitchen_0_1)` → 15. `navigate(destination=floor_block)` → 16. `pick(object=floor_block)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])` → 19. `square(object=floor_block)`
+- 摆法 `cab_free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 7. `square(object=wooden_block_a)` → 8. `search(object=wooden_block_b, region=dining_room_0_1)` → 9. `navigate(destination=wooden_block_b)` → 10. `pick(object=wooden_block_b)` → 11. `navigate(destination=kitchen_cabinet_6/top)` → 12. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 13. `square(object=wooden_block_b)` → 14. `search(object=floor_block, region=kitchen_0_1)` → 15. `navigate(destination=floor_block)` → 16. `pick(object=floor_block)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])` → 19. `square(object=floor_block)`
+- 摆法 `cab_short`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=wooden_block_a)` → 6. `pick(object=wooden_block_a)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=wooden_block_a, receptacle=tv_stand_2/top, hint_xy=[7.3, 0.45])` → 9. `square(object=wooden_block_a)` → 10. `navigate(destination=wooden_block_b)` → 11. `pick(object=wooden_block_b)` → 12. `navigate(destination=tv_stand_2/top)` → 13. `place(object=wooden_block_b, receptacle=tv_stand_2/top, hint_xy=[7.48, 0.45])` → 14. `square(object=wooden_block_b)` → 15. `explore_room(room=living_room_0_0)` → 16. `navigate(destination=floor_block)` → 17. `look(target=floor_block)` → 18. `pick(object=floor_block)` → 19. `navigate(destination=tv_stand_2/top)` → 20. `place(object=floor_block, receptacle=tv_stand_2/top, hint_xy=[7.66, 0.45])` → 21. `square(object=floor_block)`
 
 ### display_spot_or_tv（Task）
 
@@ -4031,78 +4506,290 @@
 
 **指令**：把积木摆出来展示，要从房间里看得见，最好摆在靠墙矮柜顶上。柜顶上的盒子和瓶子都别挪。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`front_taken` D = 1、理想物不在，`front_free` D = 1、理想物在，`front_taken_tv_full` D = 1、理想物不在，`front_free_block_away` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
+  - 摆法 `front_taken_tv_full`：
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+        - `tv_thing_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_2` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_3` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_4` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_5` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_6` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_1` 立着
+        - `tv_thing_2` 立着
+        - `tv_thing_3` 立着
+        - `tv_thing_4` 立着
+        - `tv_thing_5` 立着
+        - `tv_thing_6` 立着
   - 摆法 `front_free`、`front_free_block_away`：
-    - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-    - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-    - `wooden_block_a` 离台面边缘至少 2 cm
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-    - 手里空着
-  - 摆法 `front_taken`、`front_taken_block_away`：
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+  - 摆法 `front_taken`：
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_a` 在 `tv_stand_2/top` 上
         - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
         - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
       - 第 2 组：
         - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
         - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
         - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
 - **次好（0.6）**：
 
+  - 摆法 `front_taken`：
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+      - 第 2 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+      - 第 3 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+  - 摆法 `front_taken_tv_full`：
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+        - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+        - `tv_thing_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_2` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_3` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_4` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_5` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_6` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_1` 立着
+        - `tv_thing_2` 立着
+        - `tv_thing_3` 立着
+        - `tv_thing_4` 立着
+        - `tv_thing_5` 立着
+        - `tv_thing_6` 立着
   - 摆法 `front_free`、`front_free_block_away`：
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-    - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_a` 在 `tv_stand_2/top` 上
         - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
         - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
       - 第 2 组：
         - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
         - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
         - `wooden_block_a` 离台面边缘至少 2 cm
-  - 摆法 `front_taken`、`front_taken_block_away`：
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-    - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `wooden_block_a` 在 `tv_stand_2/top` 上
-        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-        - `wooden_block_a` 离台面边缘至少 2 cm
-      - 第 2 组：
-        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
-        - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-        - `wooden_block_a` 离台面边缘至少 2 cm
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
 - **最不好（0.3）**：
 
-  - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
-  - `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle`、`clutter_cereal_c` 立着
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-    - 第 2 组：
-      - `wooden_block_a` 在 `tv_stand_2/top` 上
-    - 第 3 组：
-      - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
-- **不行（0）**：挪了或碰倒盒子、瓶子；放到别处（餐桌、茶几等）；还拿着或掉了
+  - 摆法 `front_taken`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `front_taken_tv_full`：
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+        - `tv_thing_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_2` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_3` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_4` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_5` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_6` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_1` 立着
+        - `tv_thing_2` 立着
+        - `tv_thing_3` 立着
+        - `tv_thing_4` 立着
+        - `tv_thing_5` 立着
+        - `tv_thing_6` 立着
+      - 第 2 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+        - `tv_thing_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_2` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_3` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_4` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_5` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_6` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_1` 立着
+        - `tv_thing_2` 立着
+        - `tv_thing_3` 立着
+        - `tv_thing_4` 立着
+        - `tv_thing_5` 立着
+        - `tv_thing_6` 立着
+      - 第 3 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+        - `tv_thing_1` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_2` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_3` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_4` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_5` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_6` 没被挪动（离开局位置不超过 3 cm）
+        - `tv_thing_1` 立着
+        - `tv_thing_2` 立着
+        - `tv_thing_3` 立着
+        - `tv_thing_4` 立着
+        - `tv_thing_5` 立着
+        - `tv_thing_6` 立着
+  - 摆法 `front_free`、`front_free_block_away`：
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+      - 第 2 组：
+        - `wooden_block_a` 在 `tv_stand_2/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+      - 第 3 组：
+        - `wooden_block_a` 在 `kitchen_cabinet_4/top` 上
+        - `clutter_cereal_a` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_b` 没被挪动（离开局位置不超过 2 cm）
+        - `juice_bottle` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_c` 没被挪动（离开局位置不超过 2 cm）
+        - `clutter_cereal_a` 立着
+        - `clutter_cereal_b` 立着
+        - `juice_bottle` 立着
+        - `clutter_cereal_c` 立着
+        - 手里空着
+- **不行（0）**：挪了或碰倒盒子、瓶子、电视柜上的东西；放到别处（餐桌、茶几等）；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `front_taken`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=wooden_block_a)` → 6. `pick(object=wooden_block_a)` → 7. `navigate(destination=tv_stand_2/top)` → 8. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
 - 摆法 `front_free`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=wooden_block_a)` → 6. `pick(object=wooden_block_a)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
-- 摆法 `front_taken_block_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `search(object=wooden_block_a, region=dining_room_0_1)` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=tv_stand_2/top)` → 9. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`
+- 摆法 `front_taken_tv_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `look(target=tv_stand_2/top)` → 7. `search(object=wooden_block_a, region=dining_room_0_1)` → 8. `navigate(destination=wooden_block_a)` → 9. `pick(object=wooden_block_a)` → 10. `navigate(destination=kitchen_cabinet_4/top)` → 11. `place(object=wooden_block_a, receptacle=kitchen_cabinet_4/top, hint_xy=[1.4, 0.42])`
 - 摆法 `front_free_block_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6/top)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `search(object=wooden_block_a, region=bedroom_0_1)` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
 
 ### seen_from_bed（Task）
@@ -4111,22 +4798,43 @@
 
 **指令**：孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`boxes_middle` D = 1、理想物在，`bookcase_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `boxes_middle`：
-    - `wooden_block_a` 在 `bookcase_3/top` 上
-    - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
     - 手里空着
-  - 摆法 `boxes_corner`：
-    - `wooden_block_a` 在 `bookcase_3/top` 上
-    - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-    - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-    - `bedside_box_1`、`bedside_box_2` 立着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+  - 摆法 `bookcase_full`：
     - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+      - 第 2 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
 - **次好（0.6）**：
 
   - 摆法 `boxes_middle`：
@@ -4139,6 +4847,7 @@
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
       - 第 2 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
         - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
@@ -4146,39 +4855,55 @@
         - `bedside_box_1` 立着
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
-  - 摆法 `boxes_corner`：
+      - 第 3 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
+        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+  - 摆法 `bookcase_full`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_a` 在 `bookcase_3/top` 上
         - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-      - 第 2 组：
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
 - **最不好（0.3）**：
 
   - 摆法 `boxes_middle`：
-    - `wooden_block_a` 在 `bookcase_3/top` 上
-    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-    - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
     - 手里空着
-  - 摆法 `boxes_corner`：
-    - `wooden_block_a` 在 `bookcase_3/top` 上
-    - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-    - `bedside_box_1`、`bedside_box_2` 立着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+  - 摆法 `bookcase_full`：
     - 手里空着
-- **不行（0）**：放在别处、从床上看不见（比如留在客厅）；碰倒了盒子；还拿着或掉了
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+- **不行（0）**：放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `boxes_middle`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
-- 摆法 `boxes_corner`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[2.15, -4.74])`
+- 摆法 `bookcase_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `navigate(destination=large_shelf_4/shelf_2)` → 9. `look(target=large_shelf_4/shelf_2)` → 10. `place(object=wooden_block_a, receptacle=large_shelf_4/shelf_2, hint_xy=[3.6, -5.11])`
 
 ---
 

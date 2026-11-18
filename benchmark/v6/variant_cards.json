@@ -10601,7 +10601,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/display_row__island_floor": {
+ "T06_block_destination_occupied/display_row__cab_free": {
   "variant": "display_row",
   "category": "task",
   "seeds": [
@@ -10611,115 +10611,7 @@
    18,
    19
   ],
-  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal",
-    "pot_lid",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "arrangement"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "wooden_block_b",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "on",
-     "floor_block",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "squared",
-     "wooden_block_a"
-    ],
-    [
-     "squared",
-     "wooden_block_b"
-    ],
-    [
-     "squared",
-     "floor_block"
-    ],
-    [
-     "front_visible",
-     "wooden_block_a"
-    ],
-    [
-     "front_visible",
-     "wooden_block_b"
-    ],
-    [
-     "front_visible",
-     "floor_block"
-    ],
-    [
-     "clear_of",
-     "wooden_block_a",
-     [
-      "wooden_block_b",
-      "floor_block"
-     ],
-     0.03
-    ],
-    [
-     "clear_of",
-     "wooden_block_b",
-     [
-      "wooden_block_a",
-      "floor_block"
-     ],
-     0.03
-    ],
-    [
-     "clear_of",
-     "floor_block",
-     [
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
-     0.03
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "free",
-  "oracle_route": "v6_display_row__island_floor",
-  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
-  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T06_block_destination_occupied/display_row__spread": {
-  "variant": "display_row",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   13,
-   15,
-   16
-  ],
-  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
+  "instruction": "Put the three toy blocks on display in a row, best on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -10733,7 +10625,8 @@
    "added": [],
    "removed": [],
    "conditions": [
-    "arrangement"
+    "arrangement",
+    "infeasible_fallback"
    ],
    "initial_checks": []
   },
@@ -10813,9 +10706,179 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v6_display_row__spread",
-  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
-  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
+  "oracle_route": "v6_display_row__cab_free",
+  "challenge": "three blocks, some out of view, to be arranged together on one display top; on one seed the low cabinet's free gap holds two blocks apart, not three",
+  "rationale": "fetch the blocks one by one and compose the row on a top that has room for all three: the low cabinet when it is free, else the TV stand or the other low cabinet; a row split over two tops is one level down",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/display_row__cab_short": {
+  "variant": "display_row",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   15,
+   16
+  ],
+  "instruction": "Put the three toy blocks on display in a row, best on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "fam_bin",
+    "fam_cereal",
+    "fam_fruit_basket",
+    "fam_juice",
+    "fam_soda_1",
+    "fam_soda_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "arrangement",
+    "infeasible_fallback"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "tv_stand_2/top"
+    ],
+    [
+     "on",
+     "wooden_block_b",
+     "tv_stand_2/top"
+    ],
+    [
+     "on",
+     "floor_block",
+     "tv_stand_2/top"
+    ],
+    [
+     "squared",
+     "wooden_block_a"
+    ],
+    [
+     "squared",
+     "wooden_block_b"
+    ],
+    [
+     "squared",
+     "floor_block"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "front_visible",
+     "wooden_block_b"
+    ],
+    [
+     "front_visible",
+     "floor_block"
+    ],
+    [
+     "clear_of",
+     "wooden_block_a",
+     [
+      "wooden_block_b",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "wooden_block_b",
+     [
+      "wooden_block_a",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "floor_block",
+     [
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_fruit_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_cereal",
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_juice",
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_soda_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "fam_soda_2",
+     0.03
+    ],
+    [
+     "upright",
+     "fam_fruit_basket"
+    ],
+    [
+     "upright",
+     "fam_cereal"
+    ],
+    [
+     "upright",
+     "fam_bin"
+    ],
+    [
+     "upright",
+     "fam_juice"
+    ],
+    [
+     "upright",
+     "fam_soda_1"
+    ],
+    [
+     "upright",
+     "fam_soda_2"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_display_row__cab_short",
+  "challenge": "three blocks, some out of view, to be arranged together on one display top; on one seed the low cabinet's free gap holds two blocks apart, not three",
+  "rationale": "fetch the blocks one by one and compose the row on a top that has room for all three: the low cabinet when it is free, else the TV stand or the other low cabinet; a row split over two tops is one level down",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/display_spot_or_tv__front_taken": {
@@ -10930,8 +10993,8 @@
   },
   "control": "free",
   "oracle_route": "v6_display_spot_or_tv__front_taken",
-  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
-  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place; on one seed the TV stand is full as well",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there; if the boxes fill the front row, find another place seen from the room -- the TV stand, or the other low cabinet when the TV stand is full",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/display_spot_or_tv__front_free": {
@@ -11026,11 +11089,11 @@
   },
   "control": "free",
   "oracle_route": "v6_display_spot_or_tv__front_free",
-  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
-  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place; on one seed the TV stand is full as well",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there; if the boxes fill the front row, find another place seen from the room -- the TV stand, or the other low cabinet when the TV stand is full",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/display_spot_or_tv__front_taken_block_away": {
+ "T06_block_destination_occupied/display_spot_or_tv__front_taken_tv_full": {
   "variant": "display_spot_or_tv",
   "category": "task",
   "seeds": [
@@ -11051,7 +11114,13 @@
     "wooden_block_b"
    ],
    "added": [
-    "clutter_cereal_c"
+    "clutter_cereal_c",
+    "tv_thing_1",
+    "tv_thing_2",
+    "tv_thing_3",
+    "tv_thing_4",
+    "tv_thing_5",
+    "tv_thing_6"
    ],
    "removed": [],
    "conditions": [
@@ -11062,41 +11131,21 @@
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "any": [
+   "all": [
     [
-     [
-      "on",
-      "wooden_block_a",
-      "tv_stand_2/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_a"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_a",
-      0.02
-     ]
+     "on",
+     "wooden_block_a",
+     "kitchen_cabinet_4/top"
     ],
     [
-     [
-      "on",
-      "wooden_block_a",
-      "kitchen_cabinet_4/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_a"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_a",
-      0.02
-     ]
-    ]
-   ],
-   "all": [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "away_from_edge",
+     "wooden_block_a",
+     0.02
+    ],
     [
      "near_start",
      "clutter_cereal_a",
@@ -11136,13 +11185,67 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "near_start",
+     "tv_thing_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_thing_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_thing_3",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_thing_4",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_thing_5",
+     0.03
+    ],
+    [
+     "near_start",
+     "tv_thing_6",
+     0.03
+    ],
+    [
+     "upright",
+     "tv_thing_1"
+    ],
+    [
+     "upright",
+     "tv_thing_2"
+    ],
+    [
+     "upright",
+     "tv_thing_3"
+    ],
+    [
+     "upright",
+     "tv_thing_4"
+    ],
+    [
+     "upright",
+     "tv_thing_5"
+    ],
+    [
+     "upright",
+     "tv_thing_6"
     ]
    ]
   },
   "control": "free",
-  "oracle_route": "v6_display_spot_or_tv__front_taken_block_away",
-  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
-  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+  "oracle_route": "v6_display_spot_or_tv__front_taken_tv_full",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place; on one seed the TV stand is full as well",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there; if the boxes fill the front row, find another place seen from the room -- the TV stand, or the other low cabinet when the TV stand is full",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/display_spot_or_tv__front_free_block_away": {
@@ -11236,8 +11339,8 @@
   },
   "control": "free",
   "oracle_route": "v6_display_spot_or_tv__front_free_block_away",
-  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place",
-  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (elsewhere then fails); if the boxes fill the front row, moving one is ruled out, so find another place seen from the room (the TV stand, or the other low cabinet)",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names no other place; on one seed the TV stand is full as well",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there; if the boxes fill the front row, find another place seen from the room -- the TV stand, or the other low cabinet when the TV stand is full",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/seen_from_bed__boxes_middle": {
@@ -11325,11 +11428,11 @@
   },
   "control": "free",
   "oracle_route": "v6_seen_from_bed__boxes_middle",
-  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
-  "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
+  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
+  "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/seen_from_bed__boxes_corner": {
+ "T06_block_destination_occupied/seen_from_bed__bookcase_full": {
   "variant": "seen_from_bed",
   "category": "task",
   "seeds": [
@@ -11350,8 +11453,9 @@
     "wooden_block_b"
    ],
    "added": [
-    "bedside_box_1",
-    "bedside_box_2"
+    "bedside_snacks",
+    "bedside_teddy_1",
+    "bedside_teddy_2"
    ],
    "removed": [],
    "conditions": [
@@ -11366,7 +11470,7 @@
     [
      "on",
      "wooden_block_a",
-     "bookcase_3/top"
+     "large_shelf_4/shelf_2"
     ],
     [
      "visible_from",
@@ -11380,21 +11484,30 @@
     ],
     [
      "near_start",
-     "bedside_box_1",
+     "bedside_teddy_1",
      0.05
     ],
     [
      "near_start",
-     "bedside_box_2",
+     "bedside_teddy_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_snacks",
      0.05
     ],
     [
      "upright",
-     "bedside_box_1"
+     "bedside_teddy_1"
     ],
     [
      "upright",
-     "bedside_box_2"
+     "bedside_teddy_2"
+    ],
+    [
+     "upright",
+     "bedside_snacks"
     ],
     [
      "hand_empty",
@@ -11403,9 +11516,9 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v6_seen_from_bed__boxes_corner",
-  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
-  "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
+  "oracle_route": "v6_seen_from_bed__bookcase_full",
+  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
+  "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/microwave_works": {

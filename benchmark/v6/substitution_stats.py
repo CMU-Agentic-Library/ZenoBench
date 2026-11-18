@@ -38,6 +38,11 @@ KIND = {
     ("T05", "homework_ready"): {"single": "看着像但不能用", "several": "看着像但不能用", "notebook_in_use": "被占用"},
     ("T05", "errand_combined"): {"pen_bedroom": None, "pen_in_use": "被占用"},
     ("T05", "x6_gd_pen_or_pencil_cabinets"): {"pen_in_4": "看着像但不能用", "pen_in_use": "被占用"},
+    ("T06", "free"): {"*": None},
+    ("T06", "display_row"): {"cab_free": None, "cab_short": "能力不足"},
+    ("T06", "display_spot_or_tv"): {"front_free": None, "front_free_block_away": None, "front_taken": "去处替换",
+                                    "front_taken_tv_full": "去处替换"},
+    ("T06", "seen_from_bed"): {"boxes_middle": None, "bookcase_full": "去处替换"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

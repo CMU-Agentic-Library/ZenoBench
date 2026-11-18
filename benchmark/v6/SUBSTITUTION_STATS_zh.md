@@ -1,23 +1,23 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 51 个摆法，其中 41 个要做替换，10 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 8.2 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 60 个摆法，其中 45 个要做替换，15 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 9.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 16 | +7.8 |
-| 被占用 | 11 | +2.8 |
-| 能力不足 | 4 | -4.2 |
-| 看着像但不能用 | 7 | -1.2 |
-| 去处替换 | 3 | -5.2 |
+| 缺失 | 16 | +7.0 |
+| 被占用 | 11 | +2.0 |
+| 能力不足 | 5 | -4.0 |
+| 看着像但不能用 | 7 | -2.0 |
+| 去处替换 | 6 | -3.0 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
 | 在 | 18 |
-| 不在 | 23 |
+| 不在 | 27 |
 
 ## 类别 × 理想物在不在
 
@@ -25,9 +25,9 @@
 |---|---|---|
 | 缺失 | 6 | 10 |
 | 被占用 | 2 | 9 |
-| 能力不足 | 2 | 2 |
+| 能力不足 | 2 | 3 |
 | 看着像但不能用 | 7 | 0 |
-| 去处替换 | 1 | 2 |
+| 去处替换 | 1 | 5 |
 
 ## 每个摆法
 
@@ -84,3 +84,12 @@
 | T05 | errand_combined | pen_in_use | 被占用 | 不在 | 1 |
 | T05 | x6_gd_pen_or_pencil_cabinets | pen_in_4 | 看着像但不能用 | 在 | 1 |
 | T05 | x6_gd_pen_or_pencil_cabinets | pen_in_use | 被占用 | 不在 | 1 |
+| T06 | free | — | 不用替换 | 在 | 0 |
+| T06 | display_row | cab_free | 不用替换 | 在 | 1 |
+| T06 | display_row | cab_short | 能力不足 | 不在 | 1 |
+| T06 | display_spot_or_tv | front_taken | 去处替换 | 不在 | 1 |
+| T06 | display_spot_or_tv | front_free | 不用替换 | 在 | 1 |
+| T06 | display_spot_or_tv | front_taken_tv_full | 去处替换 | 不在 | 1 |
+| T06 | display_spot_or_tv | front_free_block_away | 不用替换 | 在 | 1 |
+| T06 | seen_from_bed | boxes_middle | 不用替换 | 在 | 1 |
+| T06 | seen_from_bed | bookcase_full | 去处替换 | 不在 | 1 |
