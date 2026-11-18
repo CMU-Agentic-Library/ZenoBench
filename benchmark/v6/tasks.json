@@ -185831,14 +185831,124 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "bowl, cup (or a mug) and spoon together on the dining table, upright",
+        "goal": {
+         "by_layout": {
+          "dishes_on_tv_stand": {
+           "all": [
+            [
+             "on",
+             "bowl",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "bowl"
+            ],
+            [
+             "on",
+             "cup",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "cup"
+            ],
+            [
+             "grouped",
+             [
+              "bowl",
+              "cup",
+              "spoon"
+             ],
+             "dining_table_2/top",
+             0.5
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "bowl, cup and spoon together on the dining table, upright",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "dishes_on_tv_stand": {
+           "any": [
+            [
+             [
+              "on",
+              "cup",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "cup"
+             ],
+             [
+              "grouped",
+              [
+               "bowl",
+               "cup",
+               "spoon"
+              ],
+              "dining_table_2/top",
+              0.5
+             ]
+            ],
+            [
+             [
+              "on",
+              "mug",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "mug"
+             ],
+             [
+              "grouped",
+              [
+               "bowl",
+               "mug",
+               "spoon"
+              ],
+              "dining_table_2/top",
+              0.5
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on",
+             "bowl",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "bowl"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the mug for the cup though the cup is there",
+        "raw": "second"
        }
       ],
       "not_ok": "a piece missing; tipped; still held or dropped",
@@ -190906,13 +191016,122 @@
       "19": "dishes_on_tv_stand"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "bowl, cup (or a mug) and spoon together on the dining table, upright"
+        "goal": {
+         "by_layout": {
+          "dishes_on_tv_stand": {
+           "all": [
+            [
+             "on",
+             "bowl",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "bowl"
+            ],
+            [
+             "on",
+             "cup",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "cup"
+            ],
+            [
+             "grouped",
+             [
+              "bowl",
+              "cup",
+              "spoon"
+             ],
+             "dining_table_2/top",
+             0.5
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "bowl, cup and spoon together on the dining table, upright"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "dishes_on_tv_stand": {
+           "any": [
+            [
+             [
+              "on",
+              "cup",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "cup"
+             ],
+             [
+              "grouped",
+              [
+               "bowl",
+               "cup",
+               "spoon"
+              ],
+              "dining_table_2/top",
+              0.5
+             ]
+            ],
+            [
+             [
+              "on",
+              "mug",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "mug"
+             ],
+             [
+              "grouped",
+              [
+               "bowl",
+               "mug",
+               "spoon"
+              ],
+              "dining_table_2/top",
+              0.5
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "on",
+             "bowl",
+             "dining_table_2/top"
+            ],
+            [
+             "upright",
+             "bowl"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the mug for the cup though the cup is there"
        }
       ],
       "not_ok": "a piece missing; tipped; still held or dropped"

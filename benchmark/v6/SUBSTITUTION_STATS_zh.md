@@ -1,33 +1,33 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 117 个摆法，其中 75 个要做替换，42 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 15.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 140 个摆法，其中 94 个要做替换，46 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 18.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 21 | +6.0 |
-| 被占用 | 17 | +2.0 |
-| 能力不足 | 9 | -6.0 |
-| 看着像但不能用 | 13 | -2.0 |
-| 去处替换 | 15 | +0.0 |
+| 缺失 | 23 | +4.2 |
+| 被占用 | 20 | +1.2 |
+| 能力不足 | 15 | -3.8 |
+| 看着像但不能用 | 16 | -2.8 |
+| 去处替换 | 20 | +1.2 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 42 |
+| 在 | 61 |
 | 不在 | 33 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 7 | 14 |
-| 被占用 | 6 | 11 |
-| 能力不足 | 5 | 4 |
-| 看着像但不能用 | 13 | 0 |
-| 去处替换 | 11 | 4 |
+| 缺失 | 9 | 14 |
+| 被占用 | 9 | 11 |
+| 能力不足 | 11 | 4 |
+| 看着像但不能用 | 16 | 0 |
+| 去处替换 | 16 | 4 |
 
 ## 每个摆法
 
@@ -150,3 +150,26 @@
 | T11 | leave_one_for_kid | all_three | 去处替换 | 在 | 1 |
 | T11 | fruit_plate_for_guests | tray_in_study | 不用替换 | 在 | 1 |
 | T11 | fruit_plate_for_guests | tray_in_use | 被占用 | 不在 | 1 |
+| T12 | toys_out | — | 不用替换 | 在 | 0 |
+| T12 | duck_in_study | — | 不用替换 | 在 | 0 |
+| T12 | duck_in_study | alt_dining_table_2 | 不用替换 | 在 | 0 |
+| T12 | bins_capacity | side_left_full | 能力不足 | 在 | 1 |
+| T12 | bins_capacity | side_right_full | 能力不足 | 在 | 1 |
+| T12 | bins_capacity | apart_full_on_tv | 能力不足 | 在 | 1 |
+| T12 | bins_capacity | apart_empty_on_desk | 能力不足 | 在 | 1 |
+| T12 | bins_capacity | half_bin_and_tray | 能力不足 | 在 | 1 |
+| T12 | bins_capacity | half_bin_and_tray_duck_dining | 能力不足 | 在 | 1 |
+| T12 | find_all_toys | car_duck | 看着像但不能用 | 在 | 1 |
+| T12 | find_all_toys | car_duck_bear | 看着像但不能用 | 在 | 1 |
+| T12 | find_all_toys | all_four | 看着像但不能用 | 在 | 1 |
+| T12 | castle_stays | tall_two_loose | 被占用 | 在 | 1 |
+| T12 | castle_stays | short_one_loose | 被占用 | 在 | 1 |
+| T12 | castle_stays | tall_none_loose | 被占用 | 在 | 1 |
+| T13 | dishes_on_tv_stand | — | 不用替换 | 在 | 1 |
+| T13 | no_cup | — | 缺失 | 在 | 0 |
+| T13 | copy_the_setting | bowl_cup | 去处替换 | 在 | 1 |
+| T13 | copy_the_setting | plate_bowl_mug_left | 去处替换 | 在 | 1 |
+| T13 | copy_the_setting | no_cup | 缺失 | 在 | 1 |
+| T13 | finish_the_table | adult_seat | 去处替换 | 在 | 1 |
+| T13 | finish_the_table | kid_seat | 去处替换 | 在 | 1 |
+| T13 | finish_the_table | adult_and_kid | 去处替换 | 在 | 1 |

@@ -7350,9 +7350,16 @@
 
 **情况**：碗和杯子在电视柜，勺子在餐桌 → 摆到勺子旁
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
+
+  - `bowl` 在 `dining_table_2/top` 上
+  - `bowl`、`cup` 立着
+  - `cup` 在 `dining_table_2/top` 上
+  - bowl、cup、spoon 在 `dining_table_2/top` 上摆在一起（彼此不超过 50 cm）
+  - 手里空着
+- **次好（0.6）**：
 
   - `bowl` 在 `dining_table_2/top` 上
   - `bowl` 立着
