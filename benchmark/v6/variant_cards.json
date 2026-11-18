@@ -20519,12 +20519,13 @@
   "rationale": "weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a low shelf (below 0.8 m), not back with its set",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/stack_them_stably__red_blue": {
+ "T14_shelve_the_book/stack_them_stably__room": {
   "variant": "stack_them_stably",
   "category": "task",
   "seeds": [
-   11,
-   13,
+   12,
+   14,
+   15,
    16,
    19
   ],
@@ -20553,7 +20554,9 @@
      "book_red",
      [
       "bookcase_2/top",
-      "bookcase_3/top"
+      "bookcase_3/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0"
      ]
     ],
     [
@@ -20568,16 +20571,18 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__red_blue",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+  "oracle_route": "v6_stack_them_stably__room",
+  "challenge": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
   "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T14_shelve_the_book/stack_them_stably__green_paperback": {
+ "T14_shelve_the_book/stack_them_stably__narrow_top": {
   "variant": "stack_them_stably",
   "category": "task",
   "seeds": [
-   14,
+   10,
+   11,
+   13,
    17,
    18
   ],
@@ -20588,7 +20593,12 @@
    "moved": [],
    "added": [
     "desk_book_green",
-    "desk_paperback_book"
+    "desk_paperback_book",
+    "kid_bin_1",
+    "kid_bin_2",
+    "kid_car",
+    "kid_duck",
+    "kid_teddy"
    ],
    "removed": [
     "book_red"
@@ -20606,7 +20616,8 @@
      "on_any",
      "desk_book_green",
      [
-      "bookcase_2/top",
+      "bookcase_2/shelf_1",
+      "bookcase_2/shelf_0",
       "bookcase_3/top"
      ]
     ],
@@ -20616,58 +20627,49 @@
      "desk_book_green"
     ],
     [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__green_paperback",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
-  "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T14_shelve_the_book/stack_them_stably__blue_green": {
-  "variant": "stack_them_stably",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   15
-  ],
-  "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
-  "initial_conditions": {
-   "scene": "tasks/shelve_books",
-   "start": null,
-   "moved": [],
-   "added": [
-    "desk_book_blue",
-    "desk_book_green"
-   ],
-   "removed": [
-    "book_red"
-   ],
-   "conditions": [
-    "subgoal_order",
-    "multi_object_goal"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on_any",
-     "desk_book_green",
-     [
-      "bookcase_2/top",
-      "bookcase_3/top"
-     ]
+     "near_start",
+     "kid_bin_1",
+     0.03
     ],
     [
-     "on_top_of",
-     "desk_book_blue",
-     "desk_book_green"
+     "near_start",
+     "kid_bin_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_teddy",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_duck",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_car",
+     0.03
+    ],
+    [
+     "upright",
+     "kid_bin_1"
+    ],
+    [
+     "upright",
+     "kid_bin_2"
+    ],
+    [
+     "upright",
+     "kid_teddy"
+    ],
+    [
+     "upright",
+     "kid_duck"
+    ],
+    [
+     "upright",
+     "kid_car"
     ],
     [
      "hand_empty",
@@ -20676,8 +20678,8 @@
    ]
   },
   "control": "e1_book_ready",
-  "oracle_route": "v6_stack_them_stably__blue_green",
-  "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+  "oracle_route": "v6_stack_them_stably__narrow_top",
+  "challenge": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
   "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

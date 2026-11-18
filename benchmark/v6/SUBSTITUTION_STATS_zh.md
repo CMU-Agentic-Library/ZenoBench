@@ -1,33 +1,33 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 140 个摆法，其中 94 个要做替换，46 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 18.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 152 个摆法，其中 104 个要做替换，48 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 20.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 23 | +4.2 |
-| 被占用 | 20 | +1.2 |
-| 能力不足 | 15 | -3.8 |
-| 看着像但不能用 | 16 | -2.8 |
-| 去处替换 | 20 | +1.2 |
+| 缺失 | 23 | +2.2 |
+| 被占用 | 21 | +0.2 |
+| 能力不足 | 16 | -4.8 |
+| 看着像但不能用 | 19 | -1.8 |
+| 去处替换 | 25 | +4.2 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 61 |
-| 不在 | 33 |
+| 在 | 70 |
+| 不在 | 34 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
 | 缺失 | 9 | 14 |
-| 被占用 | 9 | 11 |
-| 能力不足 | 11 | 4 |
-| 看着像但不能用 | 16 | 0 |
-| 去处替换 | 16 | 4 |
+| 被占用 | 10 | 11 |
+| 能力不足 | 11 | 5 |
+| 看着像但不能用 | 19 | 0 |
+| 去处替换 | 21 | 4 |
 
 ## 每个摆法
 
@@ -173,3 +173,15 @@
 | T13 | finish_the_table | adult_seat | 去处替换 | 在 | 1 |
 | T13 | finish_the_table | kid_seat | 去处替换 | 在 | 1 |
 | T13 | finish_the_table | adult_and_kid | 去处替换 | 在 | 1 |
+| T14 | e1_book_ready | — | 不用替换 | 在 | 1 |
+| T14 | within_kids_reach | set_on_large_shelf_4 | 去处替换 | 在 | 1 |
+| T14 | within_kids_reach | set_on_large_shelf_5 | 去处替换 | 在 | 1 |
+| T14 | stack_them_stably | room | 不用替换 | 在 | 1 |
+| T14 | stack_them_stably | narrow_top | 能力不足 | 不在 | 1 |
+| T14 | homework_stays | — | 被占用 | 在 | 1 |
+| T14 | whose_book | blue_book | 去处替换 | 在 | 1 |
+| T14 | whose_book | paperback | 去处替换 | 在 | 1 |
+| T14 | whose_book | both | 去处替换 | 在 | 1 |
+| T14 | next_in_series | on_bookcase | 看着像但不能用 | 在 | 1 |
+| T14 | next_in_series | on_other_bookcase | 看着像但不能用 | 在 | 1 |
+| T14 | next_in_series | on_tall_shelf | 看着像但不能用 | 在 | 1 |

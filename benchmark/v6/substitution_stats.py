@@ -81,6 +81,12 @@ KIND = {
     ("T13", "no_cup"): {"*": "缺失"},
     ("T13", "copy_the_setting"): {"bowl_cup": "去处替换", "plate_bowl_mug_left": "去处替换", "no_cup": "缺失"},
     ("T13", "finish_the_table"): {"*": "去处替换"},
+    ("T14", "e1_book_ready"): {"*": None},
+    ("T14", "within_kids_reach"): {"*": "去处替换"},
+    ("T14", "stack_them_stably"): {"room": None, "narrow_top": "能力不足"},
+    ("T14", "homework_stays"): {"*": "被占用"},
+    ("T14", "whose_book"): {"*": "去处替换"},
+    ("T14", "next_in_series"): {"*": "看着像但不能用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

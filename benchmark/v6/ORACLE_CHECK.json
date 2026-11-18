@@ -1,6 +1,6 @@
 {
- "routes": 298,
- "ok": 298,
+ "routes": 297,
+ "ok": 297,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2631,7 +2631,7 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "stack_them_stably__red_blue",
+   "layout": "stack_them_stably__room",
    "steps": 10,
    "atoms_checked": 3,
    "atoms_geometric": 0,
@@ -2641,21 +2641,17 @@
   },
   {
    "task": "T14_shelve_the_book",
-   "layout": "stack_them_stably__green_paperback",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "stack_them_stably"
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "layout": "stack_them_stably__blue_green",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
+   "layout": "stack_them_stably__narrow_top",
+   "steps": 11,
+   "atoms_checked": 8,
+   "atoms_geometric": 5,
+   "geometric_atoms": [
+    "upright kid_bin_1",
+    "upright kid_bin_2",
+    "upright kid_teddy",
+    "upright kid_duck",
+    "upright kid_car"
+   ],
    "problems": [],
    "variant": "stack_them_stably"
   },

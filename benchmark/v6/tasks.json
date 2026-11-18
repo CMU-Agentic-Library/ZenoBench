@@ -206309,7 +206309,7 @@
       "top": "ideal"
      }
     },
-    "stack_them_stably__red_blue": {
+    "stack_them_stably__room": {
      "move": {
       "book_red": {
        "asset": "book_red",
@@ -206346,7 +206346,9 @@
         "book_red",
         [
          "bookcase_2/top",
-         "bookcase_3/top"
+         "bookcase_3/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0"
         ]
        ],
        [
@@ -206365,15 +206367,18 @@
       "desk_book_blue"
      ],
      "since": "v6",
-     "note": "two books of different sizes on the desk; one pile on the bookcase",
+     "keep_design": [
+      "bookcase_2/top"
+     ],
+     "note": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
      "v6": {
       "family": "stack_them_stably",
-      "case": "red_blue",
-      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+      "case": "room",
+      "challenge": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
       "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
+      "factor": "whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it leave a gap too narrow for the bigger book, green + paperback)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
@@ -206441,111 +206446,100 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "one pile on the bookcase, largest at the bottom",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue": {
-           "all": [
+          "stack_them_stably__room": {
+           "any": [
             [
-             "on_any",
-             "book_red",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_3/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_book_blue",
+              "book_red"
              ]
-            ],
-            [
-             "not on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "book_red"
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "stack_them_stably__green_paperback": {
-           "all": [
+          "stack_them_stably__narrow_top": {
+           "any": [
             [
-             "on_any",
-             "desk_book_green",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "desk_book_green",
+              [
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "near_start",
+              "kid_bin_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_bin_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_teddy",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_duck",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_car",
+              0.03
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
              ]
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
-            ],
-            [
-             "hand_empty",
-             "right"
             ]
-           ]
-          },
-          "stack_them_stably__blue_green": {
+           ],
            "all": [
-            [
-             "on_any",
-             "desk_book_green",
-             [
-              "bookcase_2/top",
-              "bookcase_3/top"
-             ]
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
             [
              "hand_empty",
              "right"
@@ -206554,15 +206548,103 @@
           }
          }
         },
-        "why": "the books on the bookcase, but not one pile or not largest-first",
-        "raw": "worst"
+        "why": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a lower shelf or the bedside bookcase's top), the kid's things untouched",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "stack_them_stably__room": {
+           "any": [
+            [
+             [
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ],
+             [
+              "on_any",
+              "desk_book_blue",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "stack_them_stably__narrow_top": {
+           "any": [
+            [
+             [
+              "on",
+              "desk_book_green",
+              "bookcase_2/top"
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the pile on the top after moving the kid's things (still standing)",
+        "raw": "second"
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
       "top": "ideal"
      }
     },
-    "stack_them_stably__green_paperback": {
+    "stack_them_stably__narrow_top": {
      "move": {},
      "conditions": [
       "subgoal_order",
@@ -206591,6 +206673,51 @@
         -6.281
        ],
        "yaw_deg": 90.0
+      },
+      "kid_bin_1": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.818,
+        -0.532
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_bin_2": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.818,
+        -0.33
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_teddy": {
+       "asset": "teddy_bear",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.118,
+        -0.33
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_duck": {
+       "asset": "rubber_duck",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.118,
+        -0.52
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_car": {
+       "asset": "toy_car",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.262,
+        -0.45
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -206599,7 +206726,8 @@
         "on_any",
         "desk_book_green",
         [
-         "bookcase_2/top",
+         "bookcase_2/shelf_1",
+         "bookcase_2/shelf_0",
          "bookcase_3/top"
         ]
        ],
@@ -206609,6 +206737,51 @@
         "desk_book_green"
        ],
        [
+        "near_start",
+        "kid_bin_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "kid_bin_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "kid_teddy",
+        0.03
+       ],
+       [
+        "near_start",
+        "kid_duck",
+        0.03
+       ],
+       [
+        "near_start",
+        "kid_car",
+        0.03
+       ],
+       [
+        "upright",
+        "kid_bin_1"
+       ],
+       [
+        "upright",
+        "kid_bin_2"
+       ],
+       [
+        "upright",
+        "kid_teddy"
+       ],
+       [
+        "upright",
+        "kid_duck"
+       ],
+       [
+        "upright",
+        "kid_car"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -206616,18 +206789,26 @@
      },
      "watch": [
       "desk_paperback_book",
-      "desk_book_green"
+      "desk_book_green",
+      "kid_bin_1",
+      "kid_bin_2",
+      "kid_teddy",
+      "kid_duck",
+      "kid_car"
      ],
      "since": "v6",
-     "note": "two books of different sizes on the desk; one pile on the bookcase",
+     "keep_design": [
+      "bookcase_2/top"
+     ],
+     "note": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
      "v6": {
       "family": "stack_them_stably",
-      "case": "green_paperback",
-      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
+      "case": "narrow_top",
+      "challenge": "two books of different sizes on the desk; one pile on the bookcase; on one seed the top has only a 13 cm gap, too narrow for the bigger book",
       "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
       "control": "e1_book_ready",
       "contrast": null,
-      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
+      "factor": "whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it leave a gap too narrow for the bigger book, green + paperback)",
       "derived_from": "e1_book_ready"
      },
      "layout": {
@@ -206695,111 +206876,100 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "one pile on the bookcase, largest at the bottom",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue": {
-           "all": [
+          "stack_them_stably__room": {
+           "any": [
             [
-             "on_any",
-             "book_red",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_3/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_book_blue",
+              "book_red"
              ]
-            ],
-            [
-             "not on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "book_red"
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "stack_them_stably__green_paperback": {
-           "all": [
+          "stack_them_stably__narrow_top": {
+           "any": [
             [
-             "on_any",
-             "desk_book_green",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "desk_book_green",
+              [
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "near_start",
+              "kid_bin_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_bin_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_teddy",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_duck",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_car",
+              0.03
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
              ]
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
-            ],
-            [
-             "hand_empty",
-             "right"
             ]
-           ]
-          },
-          "stack_them_stably__blue_green": {
+           ],
            "all": [
-            [
-             "on_any",
-             "desk_book_green",
-             [
-              "bookcase_2/top",
-              "bookcase_3/top"
-             ]
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
             [
              "hand_empty",
              "right"
@@ -206808,149 +206978,7 @@
           }
          }
         },
-        "why": "the books on the bookcase, but not one pile or not largest-first",
-        "raw": "worst"
-       }
-      ],
-      "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-      "top": "ideal"
-     }
-    },
-    "stack_them_stably__blue_green": {
-     "move": {},
-     "conditions": [
-      "subgoal_order",
-      "multi_object_goal"
-     ],
-     "instruction": "The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the biggest at the bottom and the smallest on top.",
-     "instruction_zh": "孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
-     "remove": [
-      "book_red"
-     ],
-     "add": {
-      "desk_book_blue": {
-       "asset": "book_blue",
-       "support": "desk_1/top",
-       "xy": [
-        -1.2,
-        -6.291
-       ],
-       "yaw_deg": 90.0
-      },
-      "desk_book_green": {
-       "asset": "book_green",
-       "support": "desk_1/top",
-       "xy": [
-        -0.9,
-        -6.281
-       ],
-       "yaw_deg": 90.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on_any",
-        "desk_book_green",
-        [
-         "bookcase_2/top",
-         "bookcase_3/top"
-        ]
-       ],
-       [
-        "on_top_of",
-        "desk_book_blue",
-        "desk_book_green"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "desk_book_blue",
-      "desk_book_green"
-     ],
-     "since": "v6",
-     "note": "two books of different sizes on the desk; one pile on the bookcase",
-     "v6": {
-      "family": "stack_them_stably",
-      "case": "blue_green",
-      "challenge": "two books of different sizes on the desk; one pile on the bookcase",
-      "rationale": "the order follows from the sizes: the larger at the bottom, the smaller on top, so the top book does not overhang the one below",
-      "control": "e1_book_ready",
-      "contrast": null,
-      "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
-      "derived_from": "e1_book_ready"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "desk_book_blue",
-         "desk_book_green"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.2699,
-         -6.391,
-         -0.8085,
-         -6.1709
-        ],
-        "dx": [
-         -0.12,
-         0.77
-        ],
-        "pick": [
-         "desk_book_blue",
-         "desk_book_green"
-        ]
-       }
-      ],
-      "static": {},
-      "reach": {
-       "desk_1/top": [
-        [
-         0,
-         1,
-         -0.025,
-         -6.326,
-         -5.812,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         -1.408,
-         -6.326,
-         -5.709,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -6.326,
-         -1.408,
-         -0.025,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 1,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "one pile on the bookcase, largest at the bottom",
+        "why": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a lower shelf or the bedside bookcase's top), the kid's things untouched",
         "raw": "best"
        },
        {
@@ -206958,102 +206986,78 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue": {
-           "all": [
+          "stack_them_stably__room": {
+           "any": [
             [
-             "on_any",
-             "book_red",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ],
+             [
+              "on_any",
+              "desk_book_blue",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
              ]
-            ],
-            [
-             "not on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "book_red"
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "stack_them_stably__green_paperback": {
-           "all": [
+          "stack_them_stably__narrow_top": {
+           "any": [
             [
-             "on_any",
-             "desk_book_green",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on",
+              "desk_book_green",
+              "bookcase_2/top"
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
              ]
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
-            ],
-            [
-             "hand_empty",
-             "right"
             ]
-           ]
-          },
-          "stack_them_stably__blue_green": {
+           ],
            "all": [
-            [
-             "on_any",
-             "desk_book_green",
-             [
-              "bookcase_2/top",
-              "bookcase_3/top"
-             ]
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
             [
              "hand_empty",
              "right"
@@ -207062,12 +207066,59 @@
           }
          }
         },
-        "why": "the books on the bookcase, but not one pile or not largest-first",
+        "why": "the pile on the top after moving the kid's things (still standing)",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "stack_them_stably__room": "n/a",
+          "stack_them_stably__narrow_top": {
+           "any": [
+            [
+             [
+              "on_any",
+              "desk_paperback_book",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ],
+             [
+              "on_any",
+              "desk_book_green",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the books on a bookcase, but not one pile or not largest-first",
         "raw": "worst"
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-      "top": "ideal"
+      "top": "moderate"
      }
     },
     "homework_stays": {
@@ -211010,9 +211061,8 @@
     "e1_book_ready": "v5_e1_book_ready",
     "within_kids_reach__set_on_large_shelf_4": "v6_within_kids_reach__set_on_large_shelf_4",
     "within_kids_reach__set_on_large_shelf_5": "v6_within_kids_reach__set_on_large_shelf_5",
-    "stack_them_stably__red_blue": "v6_stack_them_stably__red_blue",
-    "stack_them_stably__green_paperback": "v6_stack_them_stably__green_paperback",
-    "stack_them_stably__blue_green": "v6_stack_them_stably__blue_green",
+    "stack_them_stably__room": "v6_stack_them_stably__room",
+    "stack_them_stably__narrow_top": "v6_stack_them_stably__narrow_top",
     "homework_stays": "v6_homework_stays",
     "whose_book__blue_book": "v6_whose_book__blue_book",
     "whose_book__paperback": "v6_whose_book__paperback",
@@ -211223,7 +211273,7 @@
      "kind": "v6_oracle",
      "variant": "within_kids_reach__set_on_large_shelf_5"
     },
-    "v6_stack_them_stably__red_blue": {
+    "v6_stack_them_stably__room": {
      "steps": [
       {
        "skill": "navigate",
@@ -211293,9 +211343,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "stack_them_stably__red_blue"
+     "variant": "stack_them_stably__room"
     },
-    "v6_stack_them_stably__green_paperback": {
+    "v6_stack_them_stably__narrow_top": {
      "steps": [
       {
        "skill": "navigate",
@@ -211307,6 +211357,12 @@
        "skill": "look",
        "args": {
         "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
        }
       },
       {
@@ -211324,14 +211380,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/top"
+        "destination": "bookcase_2/shelf_1"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "desk_book_green",
-        "receptacle": "bookcase_2/top",
+        "receptacle": "bookcase_2/shelf_1",
         "hint_xy": [
          1.0,
          -0.45
@@ -211353,7 +211409,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/top"
+        "destination": "bookcase_2/shelf_1"
        }
       },
       {
@@ -211365,79 +211421,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "stack_them_stably__green_paperback"
-    },
-    "v6_stack_them_stably__blue_green": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "desk_1/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_book_green"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "desk_book_green"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "desk_book_green",
-        "receptacle": "bookcase_2/top",
-        "hint_xy": [
-         1.0,
-         -0.45
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_book_blue"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "desk_book_blue"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "stack",
-       "args": {
-        "object": "desk_book_blue",
-        "base": "desk_book_green"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "stack_them_stably__blue_green"
+     "variant": "stack_them_stably__narrow_top"
     },
     "v6_homework_stays": {
      "steps": [
@@ -212238,133 +212222,126 @@
      "origin": "v6",
      "control": "e1_book_ready",
      "layouts": [
-      "stack_them_stably__red_blue",
-      "stack_them_stably__green_paperback",
-      "stack_them_stably__blue_green"
+      "stack_them_stably__room",
+      "stack_them_stably__narrow_top"
      ],
-     "factor": "which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
+     "factor": "whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it leave a gap too narrow for the bigger book, green + paperback)",
      "seeds": {
-      "10": "stack_them_stably__blue_green",
-      "11": "stack_them_stably__red_blue",
-      "12": "stack_them_stably__blue_green",
-      "13": "stack_them_stably__red_blue",
-      "14": "stack_them_stably__green_paperback",
-      "15": "stack_them_stably__blue_green",
-      "16": "stack_them_stably__red_blue",
-      "17": "stack_them_stably__green_paperback",
-      "18": "stack_them_stably__green_paperback",
-      "19": "stack_them_stably__red_blue"
+      "10": "stack_them_stably__narrow_top",
+      "11": "stack_them_stably__narrow_top",
+      "12": "stack_them_stably__room",
+      "13": "stack_them_stably__narrow_top",
+      "14": "stack_them_stably__room",
+      "15": "stack_them_stably__room",
+      "16": "stack_them_stably__room",
+      "17": "stack_them_stably__narrow_top",
+      "18": "stack_them_stably__narrow_top",
+      "19": "stack_them_stably__room"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "stack_them_stably__room": true,
+       "stack_them_stably__narrow_top": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "one pile on the bookcase, largest at the bottom"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
         "goal": {
          "by_layout": {
-          "stack_them_stably__red_blue": {
-           "all": [
+          "stack_them_stably__room": {
+           "any": [
             [
-             "on_any",
-             "book_red",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_3/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_book_blue",
+              "book_red"
              ]
-            ],
-            [
-             "not on",
-             "book_red",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "book_red"
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "stack_them_stably__green_paperback": {
-           "all": [
+          "stack_them_stably__narrow_top": {
+           "any": [
             [
-             "on_any",
-             "desk_book_green",
              [
-              "bookcase_2/top",
-              "bookcase_3/top"
+              "on_any",
+              "desk_book_green",
+              [
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top"
+              ]
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "near_start",
+              "kid_bin_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_bin_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_teddy",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_duck",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_car",
+              0.03
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
              ]
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
-            [
-             "not on",
-             "desk_paperback_book",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_paperback_book"
-            ],
-            [
-             "hand_empty",
-             "right"
             ]
-           ]
-          },
-          "stack_them_stably__blue_green": {
+           ],
            "all": [
-            [
-             "on_any",
-             "desk_book_green",
-             [
-              "bookcase_2/top",
-              "bookcase_3/top"
-             ]
-            ],
-            [
-             "not on",
-             "desk_book_blue",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_blue"
-            ],
-            [
-             "not on",
-             "desk_book_green",
-             "desk_1/top"
-            ],
-            [
-             "not on_floor",
-             "desk_book_green"
-            ],
             [
              "hand_empty",
              "right"
@@ -212373,10 +212350,151 @@
           }
          }
         },
-        "why": "the books on the bookcase, but not one pile or not largest-first"
+        "why": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a lower shelf or the bedside bookcase's top), the kid's things untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "stack_them_stably__room": {
+           "any": [
+            [
+             [
+              "on_any",
+              "book_red",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ],
+             [
+              "on_any",
+              "desk_book_blue",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "stack_them_stably__narrow_top": {
+           "any": [
+            [
+             [
+              "on",
+              "desk_book_green",
+              "bookcase_2/top"
+             ],
+             [
+              "on_top_of",
+              "desk_paperback_book",
+              "desk_book_green"
+             ],
+             [
+              "upright",
+              "kid_bin_1"
+             ],
+             [
+              "upright",
+              "kid_bin_2"
+             ],
+             [
+              "upright",
+              "kid_teddy"
+             ],
+             [
+              "upright",
+              "kid_duck"
+             ],
+             [
+              "upright",
+              "kid_car"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the pile on the top after moving the kid's things (still standing)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "stack_them_stably__room": "n/a",
+          "stack_them_stably__narrow_top": {
+           "any": [
+            [
+             [
+              "on_any",
+              "desk_paperback_book",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ],
+             [
+              "on_any",
+              "desk_book_green",
+              [
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0",
+               "bookcase_3/top",
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the books on a bookcase, but not one pile or not largest-first"
        }
       ],
-      "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped"
+      "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
+      "D_by_layout": {
+       "stack_them_stably__room": 1,
+       "stack_them_stably__narrow_top": 1
+      },
+      "top_by_layout": {
+       "stack_them_stably__room": "ideal",
+       "stack_them_stably__narrow_top": "moderate"
+      }
      }
     },
     "homework_stays": {

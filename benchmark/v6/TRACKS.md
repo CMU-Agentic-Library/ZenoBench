@@ -120,7 +120,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T20 | x6_gd_bottle_put_away | Task-Level | - | resource | 2 |
 | T14 | e1_book_ready | Control | - | - | 1 |
 | T14 | within_kids_reach | Task-Level | - | agent_ability | 2 |
-| T14 | stack_them_stably | Task-Level | - | multi_object_goal; subgoal_order | 3 |
+| T14 | stack_them_stably | Task-Level | - | multi_object_goal; subgoal_order | 2 |
 | T14 | homework_stays | Task-Level | - | category_rule; multi_object_goal | 1 |
 | T14 | whose_book | Task-Level | - | referent_clue; storage_place | 3 |
 | T14 | next_in_series | Task-Level | - | not_in_view; referent_clue | 3 |

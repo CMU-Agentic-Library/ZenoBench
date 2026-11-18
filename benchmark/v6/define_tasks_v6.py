@@ -2200,22 +2200,42 @@ def T14(t):
     # stack_them_stably: every book from the desk onto the bookcase in one pile, the largest at the bottom.
     # Two books per seed (11-15): a third book onto the second found no edge spot in every run (the edge
     # place needs an overhang off a small, raised book); one book onto another went through.
+    # 11-17 (user): the seed changes where the pile can go -- the bookcase top free (room, ideal), or the kid's
+    # things on it leaving a 13 cm gap: the paperback fits, the green book (18 x 22 cm) does not (static check), so
+    # the pile goes on a lower shelf or the bedside bookcase's top (the stand-in)
+    LT = LAYOUT_TIERS.setdefault(("T14", "*"), {})
+    KID_TOP = {"kid_bin_1": ("small_storage_bin", 0.818, -0.532), "kid_bin_2": ("small_storage_bin", 0.818, -0.33),
+               "kid_teddy": ("teddy_bear", 1.118, -0.33), "kid_duck": ("rubber_duck", 1.118, -0.52),
+               "kid_car": ("toy_car", 1.262, -0.45)}
+    SHELVES = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0"]
     stack_cases = {}
-    for c, books in (("red_blue", ("book_red", "book_blue")),
-                     ("green_paperback", ("paperback_book", "book_green")),
-                     ("blue_green", ("book_blue", "book_green"))):
+    for c, books in (("room", ("book_red", "book_blue")), ("narrow_top", ("paperback_book", "book_green"))):
         names = {a: ("book_red" if a == "book_red" else f"desk_{a}") for a in books}
         add = {names[a]: on_desk(a, x) for a, x in zip(books, (-1.20, -0.90, -0.60)) if a != "book_red"}
         move = {B: on_desk("book_red", -0.90 if books[1] == "book_red" else -1.20)} if "book_red" in books else {}
         order = sorted(books, key=lambda a: -SIZE[a])
         rm = [] if "book_red" in books else [B]
-        route = [look(DESK)] + shelve(names[order[0]], CASE, [1.00, -0.45])
+        pile = [["on_top_of", names[hi], names[lo]] for lo, hi in zip(order, order[1:])]
+        shelved = [["on_any", names[a], SHELVES] for a in books]
+        if c == "room":
+            where, hint, kept = [CASE, "bookcase_3/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"], CASE, []
+            LT[f"stack_them_stably__{c}"] = cost_tiers([([["on_any", names[order[0]], where]] + pile, 0),
+                                                        (shelved, 2)])
+        else:
+            add.update({n: {"asset": a, **P(CASE, x, y)} for n, (a, x, y) in KID_TOP.items()})
+            where, hint = ["bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top"], "bookcase_2/shelf_1"
+            kept = [*[["near_start", n, 0.03] for n in KID_TOP], *[["upright", n] for n in KID_TOP]]
+            LT[f"stack_them_stably__{c}"] = cost_tiers(
+                [([["on_any", names[order[0]], where]] + pile + kept, 1),
+                 ([["on", names[order[0]], CASE]] + pile + [["upright", n] for n in KID_TOP], 2), (shelved, 3)])
+        route = [look(DESK), S("explore_room", room="bedroom_0_1")] if c != "room" else [look(DESK)]
+        route += shelve(names[order[0]], hint, [1.00, -0.45])
         for lo, hi in zip(order, order[1:]):
-            route += [nav(names[hi]), pick(names[hi]), nav(CASE), S("stack", object=names[hi], base=names[lo])]
+            route += [nav(names[hi]), pick(names[hi]), nav(hint), S("stack", object=names[hi], base=names[lo])]
         stack_cases[c] = dict(
-            add=add, move=move, remove=rm, watch=[names[a] for a in books],
-            goal={"all": [["on_any", names[order[0]], [CASE, "bookcase_3/top"]]]
-                  + [["on_top_of", names[hi], names[lo]] for lo, hi in zip(order, order[1:])] + [["hand_empty", "right"]]},
+            add=add, move=move, remove=rm, watch=[names[a] for a in books] + list(KID_TOP if c != "room" else []),
+            goal={"all": [["on_any", names[order[0]], where]] + pile + kept + [["hand_empty", "right"]]},
             route=route)
     # homework_stays: tidy the desk; the finished book to the bookcase, the used mug to the kitchen, the homework
     # (an open notebook and a pencil) stays for tomorrow
@@ -2282,8 +2302,11 @@ def T14(t):
             instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the "
                         "biggest at the bottom and the smallest on top.",
             instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
-            factor="which two books are on the desk (seed: red + blue, green + paperback, blue + green)",
-            challenge="two books of different sizes on the desk; one pile on the bookcase",
+            keep_design=[CASE],
+            factor="whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it "
+                   "leave a gap too narrow for the bigger book, green + paperback)",
+            challenge="two books of different sizes on the desk; one pile on the bookcase; on one seed the top has "
+                      "only a 13 cm gap, too narrow for the bigger book",
             rationale="the order follows from the sizes: the larger at the bottom, the smaller on top, so the top "
                       "book does not overhang the one below",
             cases=stack_cases),

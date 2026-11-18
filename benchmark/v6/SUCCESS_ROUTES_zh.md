@@ -7348,7 +7348,7 @@
 
 ### dishes_on_tv_stand（对照）
 
-**情况**：碗和杯子在电视柜，勺子在餐桌 → 摆到勺子旁
+**情况**：碗和杯子在电视柜，勺子在餐桌 → 摆到勺子旁（杯子在却用马克杯降一档）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -8237,57 +8237,72 @@
 
 ### stack_them_stably（Task）
 
-**情况**：“把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面”：两本大小不同的书 → 比较书的大小，大的在下
+**情况**：“把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面” → 比较大小，大的在下；书架顶被孩子的东西占得只剩 13 cm 宽的空、放不下大书时，摞到书架下层或床头矮书架顶（最好的替代算好；挪孩子的东西腾地方降一档）
 
 **指令**：孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`room` D = 1、理想物在，`narrow_top` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `red_blue`：
-    - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `desk_book_blue` 叠在 `book_red` 上
+  - 摆法 `room`：
     - 手里空着
-  - 摆法 `blue_green`：
-    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `desk_book_blue` 叠在 `desk_book_green` 上
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+        - `desk_book_blue` 叠在 `book_red` 上
+  - 摆法 `narrow_top`：
     - 手里空着
-  - 摆法 `green_paperback`：
-    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `desk_paperback_book` 叠在 `desk_book_green` 上
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `desk_book_green` 在其中任一处上：`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`
+        - `desk_paperback_book` 叠在 `desk_book_green` 上
+        - `kid_bin_1` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_bin_2` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_bin_1` 立着
+        - `kid_bin_2` 立着
+        - `kid_teddy` 立着
+        - `kid_duck` 立着
+        - `kid_car` 立着
+- **次好（0.6）**：
+
+  - 摆法 `narrow_top`：
     - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `desk_book_green` 在 `bookcase_2/top` 上
+        - `desk_paperback_book` 叠在 `desk_book_green` 上
+        - `kid_bin_1` 立着
+        - `kid_bin_2` 立着
+        - `kid_teddy` 立着
+        - `kid_duck` 立着
+        - `kid_car` 立着
+  - 摆法 `room`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `desk_book_blue` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
 - **最不好（0.3）**：
 
-  - 摆法 `red_blue`：
-    - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `["not on", "book_red", "desk_1/top"]`
-    - `book_red` 不在地上
-    - `["not on", "desk_book_blue", "desk_1/top"]`
-    - `desk_book_blue` 不在地上
+  - 摆法 `room`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `narrow_top`：
     - 手里空着
-  - 摆法 `blue_green`：
-    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `["not on", "desk_book_blue", "desk_1/top"]`
-    - `desk_book_blue` 不在地上
-    - `["not on", "desk_book_green", "desk_1/top"]`
-    - `desk_book_green` 不在地上
-    - 手里空着
-  - 摆法 `green_paperback`：
-    - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`
-    - `["not on", "desk_book_green", "desk_1/top"]`
-    - `desk_book_green` 不在地上
-    - `["not on", "desk_paperback_book", "desk_1/top"]`
-    - `desk_paperback_book` 不在地上
-    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `desk_paperback_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
 - **不行（0）**：有书留在桌上或别处；书掉地上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-- 摆法 `red_blue`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=book_red)`
-- 摆法 `green_paperback`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_paperback_book)` → 8. `pick(object=desk_paperback_book)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_paperback_book, base=desk_book_green)`
-- 摆法 `blue_green`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=desk_book_green)` → 4. `pick(object=desk_book_green)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=desk_book_green, receptacle=bookcase_2/top, hint_xy=[1.0, -0.45])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=desk_book_green)`
+- 摆法 `room`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=book_red)`
+- 摆法 `narrow_top`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=desk_book_green)` → 5. `pick(object=desk_book_green)` → 6. `navigate(destination=bookcase_2/shelf_1)` → 7. `place(object=desk_book_green, receptacle=bookcase_2/shelf_1, hint_xy=[1.0, -0.45])` → 8. `navigate(destination=desk_paperback_book)` → 9. `pick(object=desk_paperback_book)` → 10. `navigate(destination=bookcase_2/shelf_1)` → 11. `stack(object=desk_paperback_book, base=desk_book_green)`
 
 ### homework_stays（Task）
 
