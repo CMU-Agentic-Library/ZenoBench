@@ -207676,7 +207676,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)",
         "raw": "second"
        }
       ],
@@ -208006,7 +208006,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)",
         "raw": "second"
        }
       ],
@@ -208070,15 +208070,15 @@
       }
      ],
      "since": "v6",
-     "note": "the bottle was put away in one of the two low cabinets",
+     "note": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
      "v6": {
       "family": "x6_gd_bottle_put_away",
       "case": "in_cabinet_4",
-      "challenge": "the bottle was put away in one of the two low cabinets",
+      "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
       "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
       "control": "bottle_on_cabinet",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new bottles of the same juice in cabinet 4)",
       "derived_from": "bottle_on_cabinet"
      },
      "layout": {
@@ -208128,7 +208128,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208139,6 +208139,21 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
              ],
              [
               "is_closed",
@@ -208188,7 +208203,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208199,6 +208214,78 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
              ]
             ]
            ],
@@ -208211,7 +208298,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)",
         "raw": "second"
        },
        {
@@ -208251,7 +208338,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208266,6 +208353,39 @@
              [
               "is_closed",
               "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
              ]
             ],
             [
@@ -208293,7 +208413,7 @@
       "top": "ideal"
      }
     },
-    "x6_gd_bottle_put_away__in_cabinet_6": {
+    "x6_gd_bottle_put_away__stock_bottles": {
      "move": {
       "juice_bottle": {
        "support": "kitchen_cabinet_6/inside_shelf",
@@ -208329,35 +208449,71 @@
        [
         "is_closed",
         "kitchen_cabinet_4"
+       ],
+       [
+        "near_start",
+        "stock_juice_1",
+        0.03
+       ],
+       [
+        "near_start",
+        "stock_juice_2",
+        0.03
+       ],
+       [
+        "near_start",
+        "stock_juice_3",
+        0.03
        ]
       ]
      },
      "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
      "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
-     "failures": [
-      {
-       "id": "resource_bottle_put_away",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "juice_bottle",
-         "kitchen_cabinet_6/inside_shelf"
-        ]
-       ]
+     "add": {
+      "stock_juice_1": {
+       "asset": "juice_bottle",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.28,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_juice_2": {
+       "asset": "juice_bottle",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "stock_juice_3": {
+       "asset": "juice_bottle",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.52,
+        0.42
+       ],
+       "yaw_deg": 0.0
       }
+     },
+     "watch": [
+      "juice_bottle",
+      "stock_juice_1",
+      "stock_juice_2",
+      "stock_juice_3"
      ],
      "since": "v6",
-     "note": "the bottle was put away in one of the two low cabinets",
+     "note": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
      "v6": {
       "family": "x6_gd_bottle_put_away",
-      "case": "in_cabinet_6",
-      "challenge": "the bottle was put away in one of the two low cabinets",
+      "case": "stock_bottles",
+      "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
       "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
       "control": "bottle_on_cabinet",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new bottles of the same juice in cabinet 4)",
       "derived_from": "bottle_on_cabinet"
      },
      "layout": {
@@ -208407,7 +208563,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208418,6 +208574,21 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
              ],
              [
               "is_closed",
@@ -208467,7 +208638,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208478,6 +208649,78 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
              ]
             ]
            ],
@@ -208490,7 +208733,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)",
         "raw": "second"
        },
        {
@@ -208530,7 +208773,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -208545,6 +208788,39 @@
              [
               "is_closed",
               "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
              ]
             ],
             [
@@ -208599,7 +208875,7 @@
     "m_bottle_on_tv_stand": "v5_m_bottle_on_tv_stand",
     "bottle_in_use": "v6_bottle_in_use",
     "x6_gd_bottle_put_away__in_cabinet_4": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__in_cabinet_6": "v6_x6_gd_bottle_put_away__in_cabinet_6"
+    "x6_gd_bottle_put_away__stock_bottles": "v6_x6_gd_bottle_put_away__stock_bottles"
    },
    "routes": {
     "nominal": {
@@ -208853,7 +209129,7 @@
      "kind": "v6_oracle",
      "variant": "x6_gd_bottle_put_away__in_cabinet_4"
     },
-    "v6_x6_gd_bottle_put_away__in_cabinet_6": {
+    "v6_x6_gd_bottle_put_away__stock_bottles": {
      "steps": [
       {
        "skill": "navigate",
@@ -208963,7 +209239,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_bottle_put_away__in_cabinet_6"
+     "variant": "x6_gd_bottle_put_away__stock_bottles"
     }
    },
    "vary": {
@@ -209217,7 +209493,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead"
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)"
        },
        {
         "name": "worst",
@@ -209239,26 +209515,26 @@
      "control": "bottle_on_cabinet",
      "layouts": [
       "x6_gd_bottle_put_away__in_cabinet_4",
-      "x6_gd_bottle_put_away__in_cabinet_6"
+      "x6_gd_bottle_put_away__stock_bottles"
      ],
-     "factor": "which closed place holds the item",
+     "factor": "what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new bottles of the same juice in cabinet 4)",
      "seeds": {
-      "10": "x6_gd_bottle_put_away__in_cabinet_6",
+      "10": "x6_gd_bottle_put_away__stock_bottles",
       "11": "x6_gd_bottle_put_away__in_cabinet_4",
       "12": "x6_gd_bottle_put_away__in_cabinet_4",
       "13": "x6_gd_bottle_put_away__in_cabinet_4",
-      "14": "x6_gd_bottle_put_away__in_cabinet_6",
-      "15": "x6_gd_bottle_put_away__in_cabinet_6",
-      "16": "x6_gd_bottle_put_away__in_cabinet_6",
+      "14": "x6_gd_bottle_put_away__stock_bottles",
+      "15": "x6_gd_bottle_put_away__stock_bottles",
+      "16": "x6_gd_bottle_put_away__stock_bottles",
       "17": "x6_gd_bottle_put_away__in_cabinet_4",
-      "18": "x6_gd_bottle_put_away__in_cabinet_6",
+      "18": "x6_gd_bottle_put_away__stock_bottles",
       "19": "x6_gd_bottle_put_away__in_cabinet_4"
      },
      "scoring": {
       "D": 1,
       "ideal_by_layout": {
        "x6_gd_bottle_put_away__in_cabinet_4": true,
-       "x6_gd_bottle_put_away__in_cabinet_6": true
+       "x6_gd_bottle_put_away__stock_bottles": true
       },
       "tiers": [
        {
@@ -209295,7 +209571,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -209306,6 +209582,21 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
              ],
              [
               "is_closed",
@@ -209354,7 +209645,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -209365,6 +209656,78 @@
              [
               "upright",
               "juice_bottle"
+             ],
+             [
+              "near_start",
+              "stock_juice_1",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_2",
+              0.03
+             ],
+             [
+              "near_start",
+              "stock_juice_3",
+              0.03
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
              ]
             ]
            ],
@@ -209377,7 +209740,7 @@
           }
          }
         },
-        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead"
+        "why": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new one from the stock)"
        },
        {
         "name": "worst",
@@ -209416,7 +209779,7 @@
             ]
            ]
           },
-          "x6_gd_bottle_put_away__in_cabinet_6": {
+          "x6_gd_bottle_put_away__stock_bottles": {
            "any": [
             [
              [
@@ -209431,6 +209794,39 @@
              [
               "is_closed",
               "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_1",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_1"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_2",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_2"
+             ]
+            ],
+            [
+             [
+              "on",
+              "stock_juice_3",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "stock_juice_3"
              ]
             ],
             [

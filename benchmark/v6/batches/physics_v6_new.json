@@ -4202,8 +4202,8 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 10,
-"variant": "x6_gd_bottle_put_away__in_cabinet_6",
-"route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+"variant": "x6_gd_bottle_put_away__stock_bottles",
+"route": "v6_x6_gd_bottle_put_away__stock_bottles",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4230,22 +4230,22 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 14,
-"variant": "x6_gd_bottle_put_away__in_cabinet_6",
-"route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+"variant": "x6_gd_bottle_put_away__stock_bottles",
+"route": "v6_x6_gd_bottle_put_away__stock_bottles",
 "family": "x6_gd_bottle_put_away"
 },
 {
 "task": "T20_juice_back_to_table",
 "seed": 15,
-"variant": "x6_gd_bottle_put_away__in_cabinet_6",
-"route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+"variant": "x6_gd_bottle_put_away__stock_bottles",
+"route": "v6_x6_gd_bottle_put_away__stock_bottles",
 "family": "x6_gd_bottle_put_away"
 },
 {
 "task": "T20_juice_back_to_table",
 "seed": 16,
-"variant": "x6_gd_bottle_put_away__in_cabinet_6",
-"route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+"variant": "x6_gd_bottle_put_away__stock_bottles",
+"route": "v6_x6_gd_bottle_put_away__stock_bottles",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4258,8 +4258,8 @@
 {
 "task": "T20_juice_back_to_table",
 "seed": 18,
-"variant": "x6_gd_bottle_put_away__in_cabinet_6",
-"route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
+"variant": "x6_gd_bottle_put_away__stock_bottles",
+"route": "v6_x6_gd_bottle_put_away__stock_bottles",
 "family": "x6_gd_bottle_put_away"
 },
 {

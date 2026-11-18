@@ -8355,43 +8355,99 @@
 
 ### x6_gd_bottle_put_away（Task）
 
-**情况**：指令只说放回餐桌立着放 → 瓶子被收进了两个矮柜之一，逐个找，门关好（门没关降一档）
+**情况**：指令只说放回餐桌立着放 → 瓶子被收进了两个矮柜之一，逐个找，门关好（门没关降一档）；另一个柜里并排放着三瓶新的同款果汁（囤货），不是早餐那瓶（拿新的降一档）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `juice_bottle` 在 `dining_table_2/top` 上
-      - `juice_bottle` 立着
-      - `kitchen_cabinet_6` 关着
-      - `kitchen_cabinet_4` 关着
+  - 摆法 `in_cabinet_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `stock_bottles`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
+        - `stock_juice_1` 没被挪动（离开局位置不超过 3 cm）
+        - `stock_juice_2` 没被挪动（离开局位置不超过 3 cm）
+        - `stock_juice_3` 没被挪动（离开局位置不超过 3 cm）
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
 - **次好（0.6）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `juice_bottle` 在 `dining_table_2/top` 上
-      - `juice_bottle` 立着
+  - 摆法 `stock_bottles`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
+        - `stock_juice_1` 没被挪动（离开局位置不超过 3 cm）
+        - `stock_juice_2` 没被挪动（离开局位置不超过 3 cm）
+        - `stock_juice_3` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `stock_juice_1` 在 `dining_table_2/top` 上
+        - `stock_juice_1` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `stock_juice_2` 在 `dining_table_2/top` 上
+        - `stock_juice_2` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 4 组：
+        - `stock_juice_3` 在 `dining_table_2/top` 上
+        - `stock_juice_3` 立着
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `in_cabinet_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
 - **最不好（0.3）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `juice_bottle` 在 `dining_table_2/top` 上
-      - `kitchen_cabinet_6` 关着
-      - `kitchen_cabinet_4` 关着
-    - 第 2 组：
-      - `juice_bottle` 在 `dining_table_2/top` 上
+  - 摆法 `in_cabinet_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 2 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+  - 摆法 `stock_bottles`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 2 组：
+        - `stock_juice_1` 在 `dining_table_2/top` 上
+        - `stock_juice_1` 立着
+      - 第 3 组：
+        - `stock_juice_2` 在 `dining_table_2/top` 上
+        - `stock_juice_2` 立着
+      - 第 4 组：
+        - `stock_juice_3` 在 `dining_table_2/top` 上
+        - `stock_juice_3` 立着
+      - 第 5 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
 - **不行（0）**：瓶子没回到餐桌；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `in_cabinet_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
-- 摆法 `in_cabinet_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])` → 17. `navigate(destination=kitchen_cabinet_6)` → 18. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `stock_bottles`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=juice_bottle)` → 13. `pick(object=juice_bottle)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=dining_table_2/top)` → 16. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])` → 17. `navigate(destination=kitchen_cabinet_6)` → 18. `close(articulated=kitchen_cabinet_6)`
 
 ---
 

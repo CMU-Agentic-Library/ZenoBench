@@ -284,6 +284,11 @@
    "T19 x6_gd_can_put_away": [
     "full_juice"
    ],
+   "T20 x6_gd_bottle_put_away": [
+    "stock_juice_1",
+    "stock_juice_2",
+    "stock_juice_3"
+   ],
    "T21 no_tissue": [
     "spare_sponge"
    ],
@@ -4056,7 +4061,7 @@
    },
    "other_variants_passing": [
     "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__in_cabinet_6"
+    "x6_gd_bottle_put_away__stock_bottles"
    ]
   },
   {
@@ -4070,14 +4075,14 @@
    ],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_bottle_put_away__in_cabinet_6": "argument_mismatch"
+    "x6_gd_bottle_put_away__stock_bottles": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T20_juice_back_to_table",
    "variant": "x6_gd_bottle_put_away",
-   "layout": "x6_gd_bottle_put_away__in_cabinet_6",
+   "layout": "x6_gd_bottle_put_away__stock_bottles",
    "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [
@@ -5888,7 +5893,7 @@
    "variant": "x6_gd_bottle_put_away",
    "candidates": [
     "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__in_cabinet_6",
+    "x6_gd_bottle_put_away__stock_bottles",
     "bottle_on_cabinet"
    ],
    "passes_all": []
@@ -8886,7 +8891,7 @@
    "variant": "x6_gd_bottle_put_away",
    "layouts": [
     "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__in_cabinet_6"
+    "x6_gd_bottle_put_away__stock_bottles"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,

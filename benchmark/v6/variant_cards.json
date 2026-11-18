@@ -20307,11 +20307,11 @@
   },
   "control": "bottle_on_cabinet",
   "oracle_route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-  "challenge": "the bottle was put away in one of the two low cabinets",
+  "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
   "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T20_juice_back_to_table/x6_gd_bottle_put_away__in_cabinet_6": {
+ "T20_juice_back_to_table/x6_gd_bottle_put_away__stock_bottles": {
   "variant": "x6_gd_bottle_put_away",
   "category": "task",
   "seeds": [
@@ -20328,30 +20328,18 @@
    "moved": [
     "juice_bottle"
    ],
-   "added": [],
+   "added": [
+    "stock_juice_1",
+    "stock_juice_2",
+    "stock_juice_3"
+   ],
    "removed": [
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "juice_bottle",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_bottle_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -20374,12 +20362,27 @@
     [
      "is_closed",
      "kitchen_cabinet_4"
+    ],
+    [
+     "near_start",
+     "stock_juice_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "stock_juice_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "stock_juice_3",
+     0.03
     ]
    ]
   },
   "control": "bottle_on_cabinet",
-  "oracle_route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-  "challenge": "the bottle was put away in one of the two low cabinets",
+  "oracle_route": "v6_x6_gd_bottle_put_away__stock_bottles",
+  "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
   "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

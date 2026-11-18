@@ -2644,8 +2644,11 @@ def T20(t):
     TABLE = "dining_table_2/top"
     stand = [["on", J, TABLE], ["upright", J]]
     closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
-    for c in ("in_cabinet_4", "in_cabinet_6"):
-        LT[f"x6_gd_bottle_put_away__{c}"] = cost_tiers([(stand, 0), ([["on", J, TABLE]], 2)], [(closed, 1)])
+    STOCK = ["stock_juice_1", "stock_juice_2", "stock_juice_3"]
+    LT["x6_gd_bottle_put_away__in_cabinet_4"] = cost_tiers([(stand, 0), ([["on", J, TABLE]], 2)], [(closed, 1)])
+    LT["x6_gd_bottle_put_away__stock_bottles"] = cost_tiers(
+        [(stand + [["near_start", n, 0.03] for n in STOCK], 0), ([["on", J, TABLE]], 2),
+         *[([["on", n, TABLE], ["upright", n]], 1) for n in STOCK]], [(closed, 1)])
     # m_bottle_on_tv_stand's second seed (merged, MERGE): the breakfast bottle on the low cabinet top; the same
     # juice stands on the TV stand beside a poured cup, someone drinking in the living room (in use)
     LJ, LC = "living_juice", "living_cup"
@@ -2672,9 +2675,11 @@ def T20(t):
         "x6_gd_bottle_put_away": dict(
             base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
             instruction_zh=t["instruction_zh"],
-            factor="which closed place holds the item",
+            factor="what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new "
+                   "bottles of the same juice in cabinet 4)",
             remove=["plate_inside_kitchen_cabinet"],
-            challenge="the bottle was put away in one of the two low cabinets",
+            challenge="the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a "
+                      "stock of new bottles of the same juice",
             rationale="a disjunction over closed places: inspect them (reference route: the worse order), take the "
                       "bottle, close both doors",
             cases={"in_cabinet_4": dict(move={J: {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0}},
@@ -2682,11 +2687,15 @@ def T20(t):
                                                             fid="resource_bottle_put_away")],
                                         route=open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")]
                                         + open_explore("kitchen_cabinet_4") + take("kitchen_cabinet_4") + tail),
-                   "in_cabinet_6": dict(move={J: {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}},
-                                        failures=[f_initial("resource", [["on", J, "kitchen_cabinet_6/inside_shelf"]],
-                                                            fid="resource_bottle_put_away")],
-                                        route=open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")]
-                                        + open_explore("kitchen_cabinet_6") + take("kitchen_cabinet_6") + tail)}),
+                   # 11-17 (user): the breakfast bottle alone in cabinet 6; cabinet 4 holds a stock of three new
+                   # bottles of the same juice side by side: they look the same, they are not the one from the table
+                   "stock_bottles": dict(
+                       move={J: {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}},
+                       add={n: {"asset": "juice_bottle", "support": "kitchen_cabinet_4/inside_shelf", "xy": [x, 0.42],
+                                "yaw_deg": 0.0} for n, x in zip(STOCK, (1.28, 1.40, 1.52))},
+                       goal={"all": [*goal["all"], *[["near_start", n, 0.03] for n in STOCK]]}, watch=[J, *STOCK],
+                       route=open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")]
+                       + open_explore("kitchen_cabinet_6") + take("kitchen_cabinet_6") + tail)}),
     }
 
 
