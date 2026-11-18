@@ -187,7 +187,9 @@ def main():
                 kind = kinds.get(base, kinds.get(lid, kinds.get("*")))
                 top = (sc.get("top_by_layout") or {}).get(lid) or "ideal"
                 d = (sc.get("D_by_layout") or {}).get(lid, sc.get("D"))
-                rows.append((t["task_id"][:3], design, case, kind, top, d))
+                seed_sc = t["variants"][lid].get("scoring") or {}
+                best = next((x.get("why", "") for x in seed_sc.get("tiers", [])), "")
+                rows.append((t["task_id"][:3], design, case, kind, top, d, seed_sc.get("ideal_zh") or "按指令（" + best + "）"))
     sub = [r for r in rows if r[3]]
     by_kind = Counter(r[3] for r in sub)
     by_top = Counter(r[4] for r in sub)
@@ -204,8 +206,9 @@ def main():
     out += [f"| {k} | {present[k]} |" for k in ("在", "不在")]
     out += ["", "## 类别 × 理想物在不在", "", "| 类别 | 在 | 不在 |", "|---|---|---|"]
     out += [f"| {k} | {by_both[(k, 'ideal')]} | {by_both[(k, 'moderate')] + by_both[(k, 'bad')]} |" for k in KINDS]
-    out += ["", "## 每个摆法", "", "| 任务 | 变体 | 摆法 | 类别 | 理想物 | D |", "|---|---|---|---|---|---|"]
-    out += [f"| {a} | {b} | {c or '—'} | {k or '不用替换'} | {IDEAL_ZH[top]} | {d} |" for a, b, c, k, top, d in rows]
+    out += ["", "## 每个摆法（理想：ideals.py 里逐个定的；没列的摆法不用替换，理想就是最好那档）", "",
+            "| 任务 | 变体 | 摆法 | 类别 | 理想 | 理想物 | D |", "|---|---|---|---|---|---|---|"]
+    out += [f"| {a} | {b} | {c or '—'} | {k or '不用替换'} | {z} | {IDEAL_ZH[top]} | {d} |" for a, b, c, k, top, d, z in rows]
     (HERE / "SUBSTITUTION_STATS_zh.md").write_text("\n".join(out) + "\n")
     print(f"wrote SUBSTITUTION_STATS_zh.md: {len(rows)} seeds, {len(sub)} with a substitution; "
           + ", ".join(f"{k} {by_kind[k]}" for k in KINDS))

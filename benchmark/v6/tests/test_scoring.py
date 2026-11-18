@@ -29,9 +29,9 @@ def test_in_tasks_json(key):
     got = dict(info.get("scoring") or {})
     got.pop("D_by_layout", None), got.pop("top_by_layout", None)     # 11-17: per-seed summaries
     assert got == spec
-    from benchmark.v6.scoring import per_layout
+    from benchmark.v6.scoring import per_layout, with_ideal
     for lid in info["layouts"]:
-        assert t["variants"][lid]["scoring"] == per_layout(spec, lid)
+        assert t["variants"][lid]["scoring"] == with_ideal(t["task_id"], key[1], lid, per_layout(spec, lid))
         for tier in spec["tiers"]:
             g = tier["goal"]
             if g and "by_layout" in g:
@@ -57,3 +57,23 @@ def test_drop_tier():
 def test_not_ok_in_chinese(key):
     from benchmark.v6.scoring import NOT_OK_ZH
     assert key in NOT_OK_ZH
+
+
+def test_every_substitution_seed_has_its_ideal():
+    """11-18 (user): every seed that asks for a substitution has its ideal set by hand (ideals.IDEAL), and where the
+    ideal is there the best tier is the ideal"""
+    from benchmark.v6.ideals import ideal_of
+    from benchmark.v6.substitution_stats import KIND
+    doc = json.loads((Path(__file__).resolve().parents[1] / "tasks.json").read_text())
+    missing = []
+    for t in doc["tasks"]:
+        for d, info in t["v6_variants"].items():
+            kinds = next((k for (tid, dd), k in KIND.items() if t["task_id"].startswith(tid) and dd == d), {})
+            for lid in info["layouts"]:
+                case = lid.split("__", 1)[1] if "__" in lid else ""
+                if kinds.get(case, kinds.get(lid, kinds.get("*"))) and ideal_of(t["task_id"], d, lid) is None:
+                    missing.append(lid)
+                sc = t["variants"][lid].get("scoring")
+                if sc and sc.get("ideal_present"):
+                    assert sc["top"] == "ideal", lid
+    assert missing == []

@@ -915,6 +915,24 @@ def per_layout(s: dict, lid: str) -> dict:
     return out
 
 
+IDEAL_CONFLICTS: list = []        # seeds whose ideal is there but whose best tier is not the ideal: to fix
+
+
+def with_ideal(task_id: str, design: str, lid: str, p: dict) -> dict:
+    """11-18 (user): the seed's ideal set by hand (ideals.IDEAL): ``top`` follows it (there: ideal; not there: the
+    best substitute's level, at most moderate), ``ideal_present`` and ``ideal_zh`` are kept on the seed."""
+    from benchmark.v6.ideals import ideal_of
+    got = ideal_of(task_id, design, lid)
+    present, zh = got if got else (True, None)
+    if present and p["top"] != "ideal":
+        IDEAL_CONFLICTS.append((task_id, design, lid, p["top"]))
+    p["top"] = "ideal" if present else (p["top"] if p["top"] not in (None, "ideal") else "moderate")
+    p["ideal_present"] = present
+    if zh:
+        p["ideal_zh"] = zh
+    return p
+
+
 def attach_scoring(out: dict) -> int:
     """Copy each reviewed design's scoring onto its layouts (per seed: per_layout); returns how many designs are
     reviewed."""
@@ -928,6 +946,8 @@ def attach_scoring(out: dict) -> int:
             n += 1
             info["scoring"] = copy.deepcopy(s)
             per = {lid: per_layout(s, lid) for lid in info["layouts"]}
+            for lid in info["layouts"]:
+                per[lid] = with_ideal(t["task_id"], design, lid, per[lid])
             if any(p["top"] != "ideal" or p["D"] != s["D"] for p in per.values()):
                 info["scoring"]["D_by_layout"] = {lid: p["D"] for lid, p in per.items()}
                 info["scoring"]["top_by_layout"] = {lid: p["top"] for lid, p in per.items()}

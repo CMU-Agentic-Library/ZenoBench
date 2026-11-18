@@ -455,7 +455,8 @@
        }
       ],
       "not_ok": "the book anywhere else (coffee table, island, counter, floor) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_a": {
@@ -808,7 +809,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_b": {
@@ -1161,7 +1163,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_c": {
@@ -1514,7 +1517,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_a_flat": {
@@ -1868,7 +1872,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_b_flat": {
@@ -2222,7 +2227,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "table_seats__seats_c_flat": {
@@ -2576,7 +2582,8 @@
        }
       ],
       "not_ok": "on the other, unset dining table (dining_table_1); a dish moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__near_a": {
@@ -2964,7 +2971,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__near_b": {
@@ -3352,7 +3360,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__far_a": {
@@ -3735,7 +3744,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__far_b": {
@@ -4118,7 +4128,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__near_a_flat": {
@@ -4507,7 +4518,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__near_b_flat": {
@@ -4896,7 +4908,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__far_a_flat": {
@@ -5280,7 +5293,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__far_b_flat": {
@@ -5664,7 +5678,8 @@
        }
       ],
       "not_ok": "the toy table (the wrong table); a dish moved or tipped; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__seats_b": {
@@ -7399,7 +7414,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__seats_c": {
@@ -9134,7 +9150,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__full_a": {
@@ -10924,7 +10941,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__seats_b_flat": {
@@ -12660,7 +12678,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__seats_c_flat": {
@@ -14396,7 +14415,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_room_fallback__full_a_flat": {
@@ -16187,7 +16207,8 @@
        }
       ],
       "not_ok": "a dish or the cereal moved or tipped to make room; anywhere else or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_1": {
@@ -17638,7 +17659,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_2": {
@@ -19089,7 +19111,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_3": {
@@ -20540,7 +20563,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_1_flat": {
@@ -21992,7 +22016,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_2_flat": {
@@ -23444,7 +23469,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "reader_seat__mug_3_flat": {
@@ -24896,7 +24922,8 @@
        }
       ],
       "not_ok": "a dish moved or tipped; anywhere else (the other dining table too) or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_book__living": {
@@ -25235,7 +25262,9 @@
        }
       ],
       "not_ok": "no book on a dining table; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "指令要的那本书（旁边有本像的）"
      }
     },
     "which_book__bedroom": {
@@ -25574,7 +25603,9 @@
        }
       ],
       "not_ok": "no book on a dining table; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "指令要的那本书（旁边有本像的）"
      }
     }
    },
@@ -30740,7 +30771,8 @@
        }
       ],
       "not_ok": "no stack, or a block dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "crowded_use_another__tight_tv": {
@@ -31222,7 +31254,9 @@
        }
       ],
       "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "碗旁那块积木 B（被占着，用别屋的积木）"
      }
     },
     "crowded_use_another__tight_dining": {
@@ -31738,7 +31772,9 @@
        }
       ],
       "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "碗旁那块积木 B（被占着，用别屋的积木）"
      }
     },
     "crowded_use_another__loose": {
@@ -32238,7 +32274,8 @@
        }
       ],
       "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "third_toy_elsewhere__duck": {
@@ -32830,7 +32867,9 @@
        }
       ],
       "not_ok": "two levels only (the third toy not found); no stack; the tower not on the island",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块积木（没有，去别屋拿小鸭）"
      }
     },
     "third_toy_elsewhere__toy_block": {
@@ -33482,7 +33521,9 @@
        }
       ],
       "not_ok": "two levels only (the third toy not found); no stack; the tower not on the island",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块积木（没有，去别屋拿玩具积木）"
      }
     },
     "tower_for_kid__counter": {
@@ -36147,7 +36188,8 @@
        }
       ],
       "not_ok": "two blocks only; a thing on a table moved to make room; nothing stacked",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "tower_for_kid__study": {
@@ -38786,7 +38828,8 @@
        }
       ],
       "not_ok": "two blocks only; a thing on a table moved to make room; nothing stacked",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "tower_for_kid__near_full": {
@@ -41173,7 +41216,9 @@
        }
       ],
       "not_ok": "two blocks only; a thing on a table moved to make room; nothing stacked",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "近处那张餐桌（摆满了，用另一张餐桌）"
      }
     },
     "tower_for_kid__both_full": {
@@ -42802,7 +42847,9 @@
        }
       ],
       "not_ok": "two blocks only; a thing on a table moved to make room; nothing stacked",
-      "top": "bad"
+      "top": "bad",
+      "ideal_present": false,
+      "ideal_zh": "餐桌（两张都满，只能放别的台面）"
      }
     },
     "tower_for_kid_duck__counter": {
@@ -43286,7 +43333,9 @@
        }
       ],
       "not_ok": "two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块积木（没有，用小鸭放最上面）"
      }
     },
     "tower_for_kid_duck__study": {
@@ -43744,7 +43793,9 @@
        }
       ],
       "not_ok": "two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块积木（没有，用小鸭放最上面）"
      }
     },
     "block_put_away__in_4": {
@@ -46208,7 +46259,9 @@
        }
       ],
       "not_ok": "two levels only (no third piece); no stack; a block dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "第三块木块（收在 4 号矮柜里）"
      }
     },
     "block_put_away__in_6": {
@@ -48672,7 +48725,9 @@
        }
       ],
       "not_ok": "two levels only (no third piece); no stack; a block dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "第三块木块（收在 6 号矮柜里）"
      }
     },
     "block_put_away__gone_toy_block": {
@@ -50810,7 +50865,9 @@
        }
       ],
       "not_ok": "two levels only (no third piece); no stack; a block dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块木块（家里没有了，用玩具积木代）"
      }
     },
     "block_put_away__gone_duck": {
@@ -52868,7 +52925,9 @@
        }
       ],
       "not_ok": "two levels only (no third piece); no stack; a block dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三块木块（家里没有了，用小鸭代）"
      }
     }
    },
@@ -54936,7 +54995,17 @@
         "why": "tight: B pulled out from beside the bowl and stacked anyway (against the instruction), the bowl and the pin unmoved, the bowl upright"
        }
       ],
-      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack"
+      "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack",
+      "D_by_layout": {
+       "crowded_use_another__tight_tv": 1,
+       "crowded_use_another__tight_dining": 1,
+       "crowded_use_another__loose": 1
+      },
+      "top_by_layout": {
+       "crowded_use_another__tight_tv": "moderate",
+       "crowded_use_another__tight_dining": "moderate",
+       "crowded_use_another__loose": "ideal"
+      }
      }
     },
     "third_toy_elsewhere": {
@@ -55202,7 +55271,15 @@
         "why": "three levels with the kitchen sponge (no toy, a dish sponge) for the third"
        }
       ],
-      "not_ok": "two levels only (the third toy not found); no stack; the tower not on the island"
+      "not_ok": "two levels only (the third toy not found); no stack; the tower not on the island",
+      "D_by_layout": {
+       "third_toy_elsewhere__duck": 1,
+       "third_toy_elsewhere__toy_block": 1
+      },
+      "top_by_layout": {
+       "third_toy_elsewhere__duck": "moderate",
+       "third_toy_elsewhere__toy_block": "moderate"
+      }
      }
     },
     "tower_for_kid": {
@@ -57332,7 +57409,15 @@
         "why": "the three-level tower on a dining table, nothing moved, but at the edge or against the bin or the cereal: easy to knock over"
        }
       ],
-      "not_ok": "two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked"
+      "not_ok": "two pieces only (the third not found); a thing on the table moved; the tower not on a dining table; nothing stacked",
+      "D_by_layout": {
+       "tower_for_kid_duck__counter": 1,
+       "tower_for_kid_duck__study": 1
+      },
+      "top_by_layout": {
+       "tower_for_kid_duck__counter": "moderate",
+       "tower_for_kid_duck__study": "moderate"
+      }
      }
     },
     "block_put_away": {
@@ -59721,7 +59806,8 @@
        }
       ],
       "not_ok": "one left out, put in a cabinet or drawer instead, still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "small_bin_or_bedroom_bin__wide_in_bedroom": {
@@ -60178,7 +60264,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "宽储物箱（在卧室）"
      }
     },
     "small_bin_or_bedroom_bin__basket_in_bedroom": {
@@ -60602,7 +60690,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "宽储物箱（没有，用卧室的收纳筐）"
      }
     },
     "which_bin_by_contents__toys_near": {
@@ -61227,7 +61317,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "装玩具的那个箱子"
      }
     },
     "which_bin_by_contents__kitchen_bin_full": {
@@ -61903,7 +61995,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "厨房用品箱（满了）"
      }
     },
     "no_bin_substitute__basket": {
@@ -62583,7 +62677,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "储物箱（没有，用收纳筐）"
      }
     },
     "no_bin_substitute__tray": {
@@ -63311,7 +63407,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "储物箱（没有，用托盘）"
      }
     },
     "utensils_apart__bin_free": {
@@ -63603,7 +63701,8 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "utensils_apart__bin_full_tray": {
@@ -64367,7 +64466,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "空的收纳箱（满了，用托盘）"
      }
     },
     "utensils_apart__bin_full_basket": {
@@ -65087,7 +65188,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "空的收纳箱（满了，用收纳筐）"
      }
     },
     "utensils_apart__bin_full_fruit": {
@@ -65736,7 +65839,9 @@
        }
       ],
       "not_ok": "the two in different containers; one left out; in a cabinet, drawer or on a table; still held or dropped",
-      "top": "bad"
+      "top": "bad",
+      "ideal_present": false,
+      "ideal_zh": "空的收纳箱（满了，只有果篮）"
      }
     }
    },
@@ -68633,7 +68738,8 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_cup": {
@@ -68984,7 +69090,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玻璃杯（没有，用马克杯）"
      }
     },
     "no_cup_mug_away": {
@@ -69289,7 +69397,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玻璃杯（没有，用收起来的马克杯）"
      }
     },
     "no_cup_mug_away__alt_dining_table_2": {
@@ -69632,7 +69742,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玻璃杯（没有，用餐桌上的马克杯）"
      }
     },
     "no_cup_kid": {
@@ -70006,7 +70118,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玻璃杯（没有，只有孩子的塑料杯）"
      }
     },
     "clear_the_drinks_spot__spot_dishes": {
@@ -75247,7 +75361,8 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "clear_the_drinks_spot__spot_kid_toys": {
@@ -80455,7 +80570,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "放饮料的老地方"
      }
     },
     "two_guests__glass_in_cabinet": {
@@ -82941,7 +83058,8 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_guests__mug": {
@@ -84626,7 +84744,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个玻璃杯（只有一个，补马克杯）"
      }
     },
     "two_guests__kid_cup": {
@@ -86028,7 +86148,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个玻璃杯（只有一个，补塑料杯）"
      }
     },
     "x6_gd_cup_in_cabinets__cup_in_4": {
@@ -86617,7 +86739,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "玻璃杯（在另一个矮柜里）"
      }
     },
     "x6_gd_cup_in_cabinets__plastic_only": {
@@ -87197,7 +87321,9 @@
        }
       ],
       "not_ok": "no cup set out; lying or upside down; a non-cup (the juice bottle); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玻璃杯（没有，只有塑料杯）"
      }
     }
    },
@@ -96637,7 +96763,8 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "e1_pencil_asked": {
@@ -96769,7 +96896,8 @@
        }
       ],
       "not_ok": "the pencil elsewhere; something else brought instead; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_pen_pencil_in_use": {
@@ -97088,7 +97216,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "铅笔（奶奶正用着，用卧室的笔）"
      }
     },
     "check_desk_first__pen_on_desk": {
@@ -97424,7 +97554,8 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "check_desk_first__pencil_on_desk": {
@@ -97808,7 +97939,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "书桌上已有的铅笔"
      }
     },
     "check_desk_first__pen_in_use": {
@@ -98196,7 +98329,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "笔（正被用着）"
      }
     },
     "all_pens__two": {
@@ -98420,7 +98555,8 @@
        }
       ],
       "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "all_pens__three": {
@@ -98713,7 +98849,8 @@
        }
       ],
       "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "all_pens__four": {
@@ -99100,7 +99237,8 @@
        }
       ],
       "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "homework_ready__single": {
@@ -99833,7 +99971,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子的作业本"
      }
     },
     "homework_ready__several": {
@@ -100697,7 +100837,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子的作业本"
      }
     },
     "homework_ready__notebook_in_use": {
@@ -101469,7 +101611,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "作业本（正被用着）"
      }
     },
     "pens_per_notebook__notebooks_2": {
@@ -101847,7 +101991,8 @@
        }
       ],
       "not_ok": "fewer than the notebooks; elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "pens_per_notebook__notebooks_3": {
@@ -102255,7 +102400,8 @@
        }
       ],
       "not_ok": "fewer than the notebooks; elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "errand_combined__pen_bedroom": {
@@ -102868,7 +103014,8 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "errand_combined__pen_in_use": {
@@ -103558,7 +103705,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "笔（正被用着）"
      }
     },
     "x6_gd_pen_or_pencil_cabinets__pen_in_4": {
@@ -103912,7 +104061,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "笔（在矮柜里）"
      }
     },
     "x6_gd_pen_or_pencil_cabinets__pen_in_use": {
@@ -104357,7 +104508,9 @@
        }
       ],
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "笔（正被用着）"
      }
     }
    },
@@ -107998,7 +108151,8 @@
        }
       ],
       "not_ok": "elsewhere (coffee table, dining table, left on the island); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "display_row__cab_free": {
@@ -111022,7 +111176,8 @@
        }
       ],
       "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "display_row__cab_short": {
@@ -114013,7 +114168,9 @@
        }
       ],
       "not_ok": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "矮柜顶一排摆开（太短，放不下）"
      }
     },
     "display_spot_or_tv__front_taken": {
@@ -115208,7 +115365,9 @@
        }
       ],
       "not_ok": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining table, coffee table); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "矮柜正面那块地方（被占了）"
      }
     },
     "display_spot_or_tv__front_free": {
@@ -116994,7 +117153,8 @@
        }
       ],
       "not_ok": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining table, coffee table); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "display_spot_or_tv__front_taken_tv_full": {
@@ -118945,7 +119105,9 @@
        }
       ],
       "not_ok": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining table, coffee table); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "矮柜正面那块地方（被占了，电视柜也满）"
      }
     },
     "display_spot_or_tv__front_free_block_away": {
@@ -120760,7 +120922,8 @@
        }
       ],
       "not_ok": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining table, coffee table); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "seen_from_bed__boxes_middle": {
@@ -121872,7 +122035,8 @@
        }
       ],
       "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "seen_from_bed__bookcase_full": {
@@ -123109,7 +123273,9 @@
        }
       ],
       "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "床头书架顶（被孩子的东西占满，放下层）"
      }
     }
    },
@@ -128971,7 +129137,15 @@
         "why": "the kid's things moved to make room on the full top"
        }
       ],
-      "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped"
+      "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
+      "D_by_layout": {
+       "seen_from_bed__boxes_middle": 1,
+       "seen_from_bed__bookcase_full": 1
+      },
+      "top_by_layout": {
+       "seen_from_bed__boxes_middle": "ideal",
+       "seen_from_bed__bookcase_full": "moderate"
+      }
      }
     }
    },
@@ -129304,7 +129478,8 @@
        }
       ],
       "not_ok": "below 40 C; the stove or the microwave left on; the bowl tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "microwave_broken": {
@@ -129522,7 +129697,9 @@
        }
       ],
       "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "微波炉（坏了，用灶台）"
      }
     },
     "broken_oatmeal_away": {
@@ -129698,7 +129875,9 @@
        }
       ],
       "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "微波炉（坏了，用灶台）"
      }
     },
     "microwave_holds_pot": {
@@ -130032,7 +130211,9 @@
        }
       ],
       "not_ok": "the pot put on the floor or tipped; below 40 C; an appliance left on; the bowl tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "微波炉（里面放着锅，用灶台）"
      }
     },
     "broken_oatmeal_away__alt_dining_table_2": {
@@ -130241,7 +130422,9 @@
        }
       ],
       "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "微波炉（坏了，用灶台）"
      }
     },
     "vessel_decides_appliance__in_ceramic_bowl": {
@@ -130863,7 +131046,8 @@
        }
       ],
       "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "vessel_decides_appliance__in_glass_box": {
@@ -131485,7 +131669,8 @@
        }
       ],
       "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "vessel_decides_appliance__in_pot": {
@@ -132088,7 +132273,9 @@
        }
       ],
       "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "按容器选对的电器"
      }
     },
     "vessel_decides_appliance__in_steel_box": {
@@ -132710,7 +132897,9 @@
        }
       ],
       "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "按容器选对的电器"
      }
     },
     "vessel_decides_appliance__in_foil_tray": {
@@ -133332,7 +133521,9 @@
        }
       ],
       "not_ok": "gave up when the wrong appliance did not warm it (below 40 C); an appliance left on; the container tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "按容器选对的电器"
      }
     },
     "two_portions__dining": {
@@ -133761,7 +133952,8 @@
        }
       ],
       "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_portions__counter": {
@@ -134182,7 +134374,8 @@
        }
       ],
       "not_ok": "one of the two below 40 C at the end (not warmed, or gone cold); an appliance left on; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     }
    },
@@ -135567,7 +135760,17 @@
         "why": "warmed on the stove and switched off, but the microwave door left open after trying it"
        }
       ],
-      "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl tipped; still held or dropped"
+      "not_ok": "gave up after the microwave failed (below 40 C); the stove or the microwave left on; the bowl tipped; still held or dropped",
+      "D_by_layout": {
+       "microwave_broken": 1,
+       "broken_oatmeal_away": 1,
+       "broken_oatmeal_away__alt_dining_table_2": 1
+      },
+      "top_by_layout": {
+       "microwave_broken": "moderate",
+       "broken_oatmeal_away": "moderate",
+       "broken_oatmeal_away__alt_dining_table_2": "moderate"
+      }
      }
     },
     "microwave_holds_pot": {
@@ -135720,7 +135923,13 @@
         "why": "the pot taken out and the door left open"
        }
       ],
-      "not_ok": "the pot put on the floor or tipped; below 40 C; an appliance left on; the bowl tipped; still held or dropped"
+      "not_ok": "the pot put on the floor or tipped; below 40 C; an appliance left on; the bowl tipped; still held or dropped",
+      "D_by_layout": {
+       "microwave_holds_pot": 1
+      },
+      "top_by_layout": {
+       "microwave_holds_pot": "moderate"
+      }
      }
     },
     "vessel_decides_appliance": {
@@ -136573,7 +136782,8 @@
        }
       ],
       "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "far_sponge_tv": {
@@ -136849,7 +137059,8 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "far_sponge_foam_cube": {
@@ -137284,7 +137495,9 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "海绵（在电视柜上，岛台上有个像的泡沫块）"
      }
     },
     "far_sponge_spare_only": {
@@ -137585,7 +137798,9 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "常用海绵（没有，用托盘里的备用海绵）"
      }
     },
     "wipe_and_sort__blocks": {
@@ -138185,7 +138400,8 @@
        }
       ],
       "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "wipe_and_sort__duck": {
@@ -138788,7 +139004,8 @@
        }
       ],
       "not_ok": "a toy left on the island; not wiped (or not all of it); the can, mug, oatmeal or juice tipped; the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "return_sponge_home__dining": {
@@ -139089,7 +139306,8 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "return_sponge_home__study": {
@@ -139355,7 +139573,8 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "return_sponge_home__far_dining": {
@@ -139650,7 +139869,8 @@
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_surface__island": {
@@ -139954,7 +140174,8 @@
        }
       ],
       "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_surface__dining": {
@@ -140322,7 +140543,8 @@
        }
       ],
       "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     }
    },
@@ -142305,7 +142527,8 @@
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "lid_on_spoon_away": {
@@ -142863,7 +143086,8 @@
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "pot_in_use__in_use": {
@@ -143551,7 +143775,9 @@
        }
       ],
       "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "灶上那口锅（装着昨天的汤，用空锅）"
      }
     },
     "pot_in_use__free": {
@@ -144271,7 +144497,8 @@
        }
       ],
       "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "tomato_in_fridge__in_fridge": {
@@ -145304,7 +145531,8 @@
        }
       ],
       "not_ok": "two tomatoes only (the third not found); the apple in the soup; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "tomato_in_fridge__big_tomato": {
@@ -146347,7 +146575,9 @@
        }
       ],
       "not_ok": "two tomatoes only (the third not found); the apple in the soup; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "第三颗小番茄（没有，用大番茄）"
      }
     },
     "x6_gd_tomato_elsewhere__dining": {
@@ -147682,7 +147912,8 @@
        }
       ],
       "not_ok": "one tomato only (the other not found); below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "x6_gd_tomato_elsewhere__on_plate": {
@@ -149100,7 +149331,9 @@
        }
       ],
       "not_ok": "one tomato only (the other not found); below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "番茄（在别人盘子里）"
      }
     },
     "lid_missing": {
@@ -149629,7 +149862,9 @@
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "锅盖（没有，用同样大的盘子盖）"
      }
     },
     "pot_in_dining_room__pot_away": {
@@ -150245,7 +150480,8 @@
        }
       ],
       "not_ok": "the pot not found; a bowl or a mug used for the pot; one tomato only; below 60 C; the stove left on; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "pot_in_dining_room__spare_pot": {
@@ -150908,7 +151144,9 @@
        }
       ],
       "not_ok": "the pot not found; a bowl or a mug used for the pot; one tomato only; below 60 C; the stove left on; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "常用的汤锅（不在，用备用锅）"
      }
     }
    },
@@ -153555,7 +153793,15 @@
         "why": "the soup in the empty pot but neither stirred nor covered; or the tomatoes cooked in yesterday's soup"
        }
       ],
-      "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped"
+      "not_ok": "the full pot tipped; one tomato only; below 60 C; the stove left on; still held or dropped",
+      "D_by_layout": {
+       "pot_in_use__in_use": 1,
+       "pot_in_use__free": 1
+      },
+      "top_by_layout": {
+       "pot_in_use__in_use": "moderate",
+       "pot_in_use__free": "ideal"
+      }
      }
     },
     "tomato_in_fridge": {
@@ -156100,7 +156346,8 @@
        }
       ],
       "not_ok": "the can not in the trash can (another bin, left out); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "can_in_dining_room": {
@@ -156245,7 +156492,8 @@
        }
       ],
       "not_ok": "the can not in the trash can (another bin, left out); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "can_in_dining_room__alt_tv_stand_2": {
@@ -156358,7 +156606,8 @@
        }
       ],
       "not_ok": "the can not in the trash can (another bin, left out); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "keep_kids_can__kid_desk": {
@@ -156694,7 +156943,9 @@
        }
       ],
       "not_ok": "the kid's can thrown away or tipped; the other can not in the trash; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "喝完的那罐扔掉，孩子的不动"
      }
     },
     "keep_kids_can__kid_island": {
@@ -157030,7 +157281,9 @@
        }
       ],
       "not_ok": "the kid's can thrown away or tipped; the other can not in the trash; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "喝完的那罐扔掉，孩子的不动"
      }
     },
     "trash_moved__dining": {
@@ -157260,7 +157513,8 @@
        }
       ],
       "not_ok": "the can not in a trash can (left on the full one, another bin, left out); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "trash_moved__trash_full": {
@@ -157599,7 +157853,9 @@
        }
       ],
       "not_ok": "the can not in a trash can (left on the full one, another bin, left out); still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "垃圾桶（满了）"
      }
     },
     "after_dinner_clear__rubbish_leftovers": {
@@ -157977,7 +158233,9 @@
        }
       ],
       "not_ok": "an item left on the table or put in a wrong kind of place (leftovers in the trash, the mug in the trash); the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "after_dinner_clear__leftovers_mug": {
@@ -158363,7 +158621,9 @@
        }
       ],
       "not_ok": "an item left on the table or put in a wrong kind of place (leftovers in the trash, the mug in the trash); the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "after_dinner_clear__rubbish_mug": {
@@ -158745,7 +159005,9 @@
        }
       ],
       "not_ok": "an item left on the table or put in a wrong kind of place (leftovers in the trash, the mug in the trash); the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "guests_coming__can_mug_block": {
@@ -159201,7 +159463,9 @@
        }
       ],
       "not_ok": "the can not in the trash; something left lying about; the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "guests_coming__can_block": {
@@ -159632,7 +159896,9 @@
        }
       ],
       "not_ok": "the can not in the trash; something left lying about; the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "guests_coming__can_mug": {
@@ -160079,7 +160345,9 @@
        }
       ],
       "not_ok": "the can not in the trash; something left lying about; the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样东西各回各处"
      }
     },
     "x6_gd_can_put_away__in_cabinet": {
@@ -160322,7 +160590,8 @@
        }
       ],
       "not_ok": "the empty can not found or not in the trash (only the fridge's can thrown); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "x6_gd_can_put_away__fridge_drink": {
@@ -160648,7 +160917,9 @@
        }
       ],
       "not_ok": "the empty can not found or not in the trash (only the fridge's can thrown); still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "喝完的那罐（冰箱里有罐没开的）"
      }
     }
    },
@@ -163484,7 +163755,8 @@
        }
       ],
       "not_ok": "the apple left on the table or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "basket_missing": {
@@ -163722,7 +163994,9 @@
        }
       ],
       "not_ok": "the apple left on the table or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮（没有，用托盘）"
      }
     },
     "basket_gone_bowl_there": {
@@ -164020,7 +164294,9 @@
        }
       ],
       "not_ok": "the apple left on the table or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮（没有，原处是个用过的碗）"
      }
     },
     "leave_one_for_kid__apple_orange": {
@@ -164535,7 +164811,9 @@
        }
       ],
       "not_ok": "nothing for the kid; fruit left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "留一个给孩子，其余拿走"
      }
     },
     "leave_one_for_kid__orange_banana": {
@@ -165028,7 +165306,9 @@
        }
       ],
       "not_ok": "nothing for the kid; fruit left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "留一个给孩子，其余拿走"
      }
     },
     "leave_one_for_kid__all_three": {
@@ -165573,7 +165853,9 @@
        }
       ],
       "not_ok": "nothing for the kid; fruit left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "留一个给孩子，其余拿走"
      }
     },
     "fruit_plate_for_guests__tray_in_study": {
@@ -166183,7 +166465,8 @@
        }
       ],
       "not_ok": "nothing brought to the guests; fruit dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "fruit_plate_for_guests__tray_in_use": {
@@ -166812,7 +167095,9 @@
        }
       ],
       "not_ok": "nothing brought to the guests; fruit dropped; still held",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "托盘（正被用着）"
      }
     }
    },
@@ -167740,7 +168025,15 @@
         "why": "the apple dropped into the used breakfast bowl standing where the basket was"
        }
       ],
-      "not_ok": "the apple left on the table or put elsewhere; still held or dropped"
+      "not_ok": "the apple left on the table or put elsewhere; still held or dropped",
+      "D_by_layout": {
+       "basket_missing": 1,
+       "basket_gone_bowl_there": 1
+      },
+      "top_by_layout": {
+       "basket_missing": "moderate",
+       "basket_gone_bowl_there": "moderate"
+      }
      }
     },
     "leave_one_for_kid": {
@@ -168460,7 +168753,8 @@
        }
       ],
       "not_ok": "a toy left out; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "duck_in_study": {
@@ -168571,7 +168865,8 @@
        }
       ],
       "not_ok": "a toy left out; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "duck_in_study__alt_dining_table_2": {
@@ -168714,7 +169009,8 @@
        }
       ],
       "not_ok": "a toy left out; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bins_capacity__side_left_full": {
@@ -170640,7 +170936,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "bins_capacity__side_right_full": {
@@ -172566,7 +172864,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "bins_capacity__apart_full_on_tv": {
@@ -174544,7 +174844,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "bins_capacity__apart_empty_on_desk": {
@@ -176475,7 +176777,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "bins_capacity__half_bin_and_tray": {
@@ -178149,7 +178453,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "bins_capacity__half_bin_and_tray_duck_dining": {
@@ -179852,7 +180158,9 @@
        }
       ],
       "not_ok": "a toy left out; a bin tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "能装下所有玩具的收纳筐（没有，分到放得下的箱子里）"
      }
     },
     "find_all_toys__car_duck": {
@@ -180278,7 +180586,9 @@
        }
       ],
       "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "所有玩具（有像玩具的别的东西）"
      }
     },
     "find_all_toys__car_duck_bear": {
@@ -180701,7 +181011,9 @@
        }
       ],
       "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "所有玩具（有像玩具的别的东西）"
      }
     },
     "find_all_toys__all_four": {
@@ -181218,7 +181530,9 @@
        }
       ],
       "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "所有玩具（有像玩具的别的东西）"
      }
     },
     "castle_stays__tall_two_loose": {
@@ -181551,7 +181865,9 @@
        }
       ],
       "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "散玩具进筐，城堡不动"
      }
     },
     "castle_stays__short_one_loose": {
@@ -181846,7 +182162,9 @@
        }
       ],
       "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "散玩具进筐，城堡不动"
      }
     },
     "castle_stays__tall_none_loose": {
@@ -182147,7 +182465,9 @@
        }
       ],
       "not_ok": "the castle left taken apart or knocked down; the car or the duck left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "散玩具进筐，城堡不动"
      }
     }
    },
@@ -185257,7 +185577,23 @@
         "why": "the toys in the bins, but blocks pushed out of the full bin"
        }
       ],
-      "not_ok": "a toy left out; a bin tipped; still held or dropped"
+      "not_ok": "a toy left out; a bin tipped; still held or dropped",
+      "D_by_layout": {
+       "bins_capacity__side_left_full": 1,
+       "bins_capacity__side_right_full": 1,
+       "bins_capacity__apart_full_on_tv": 1,
+       "bins_capacity__apart_empty_on_desk": 1,
+       "bins_capacity__half_bin_and_tray": 1,
+       "bins_capacity__half_bin_and_tray_duck_dining": 1
+      },
+      "top_by_layout": {
+       "bins_capacity__side_left_full": "moderate",
+       "bins_capacity__side_right_full": "moderate",
+       "bins_capacity__apart_full_on_tv": "moderate",
+       "bins_capacity__apart_empty_on_desk": "moderate",
+       "bins_capacity__half_bin_and_tray": "moderate",
+       "bins_capacity__half_bin_and_tray_duck_dining": "moderate"
+      }
      }
     },
     "find_all_toys": {
@@ -185952,7 +186288,8 @@
        }
       ],
       "not_ok": "a piece missing; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_cup": {
@@ -186125,7 +186462,9 @@
        }
       ],
       "not_ok": "a piece missing; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "杯子（没有，用马克杯）"
      }
     },
     "copy_the_setting__bowl_cup": {
@@ -186720,7 +187059,9 @@
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "照样摆的那几样"
      }
     },
     "copy_the_setting__plate_bowl_mug_left": {
@@ -187417,7 +187758,9 @@
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "照样摆的那几样"
      }
     },
     "copy_the_setting__no_cup": {
@@ -187985,7 +188328,9 @@
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "杯子（没有，用马克杯）"
      }
     },
     "finish_the_table__adult_seat": {
@@ -188575,7 +188920,9 @@
        }
       ],
       "not_ok": "an empty place left unset or half set; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "缺的那份摆齐"
      }
     },
     "finish_the_table__kid_seat": {
@@ -189248,7 +189595,9 @@
        }
       ],
       "not_ok": "an empty place left unset or half set; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "缺的那份摆齐"
      }
     },
     "finish_the_table__adult_and_kid": {
@@ -189933,7 +190282,9 @@
        }
       ],
       "not_ok": "an empty place left unset or half set; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "缺的那份摆齐"
      }
     }
    },
@@ -191165,7 +191516,13 @@
         "why": "bowl, the mug and spoon together on the dining table"
        }
       ],
-      "not_ok": "a piece missing; tipped; still held or dropped"
+      "not_ok": "a piece missing; tipped; still held or dropped",
+      "D_by_layout": {
+       "no_cup": 0
+      },
+      "top_by_layout": {
+       "no_cup": "moderate"
+      }
      }
     },
     "copy_the_setting": {
@@ -191497,7 +191854,17 @@
         "why": "laid out like the example, but the example place moved or taken apart"
        }
       ],
-      "not_ok": "a piece missing; the wrong place; tipped; still held or dropped"
+      "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
+      "D_by_layout": {
+       "copy_the_setting__bowl_cup": 1,
+       "copy_the_setting__plate_bowl_mug_left": 1,
+       "copy_the_setting__no_cup": 1
+      },
+      "top_by_layout": {
+       "copy_the_setting__bowl_cup": "ideal",
+       "copy_the_setting__plate_bowl_mug_left": "ideal",
+       "copy_the_setting__no_cup": "moderate"
+      }
      }
     },
     "finish_the_table": {
@@ -191960,7 +192327,8 @@
        }
       ],
       "not_ok": "the pot not covered; the lid dropped or still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "lid_elsewhere__dining": {
@@ -192161,7 +192529,8 @@
        }
       ],
       "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "lid_elsewhere__covering_bowl": {
@@ -192511,7 +192880,9 @@
        }
       ],
       "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "锅盖（盖着别的碗，用盘子）"
      }
     },
     "no_lid": {
@@ -192788,7 +193159,9 @@
        }
       ],
       "not_ok": "the pot not covered; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "锅盖（没有，用盘子）"
      }
     },
     "lid_in_use": {
@@ -193048,7 +193421,9 @@
        }
       ],
       "not_ok": "the soup not covered; the stew pot tipped; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "锅盖（正盖着别的锅，用盘子）"
      }
     }
    },
@@ -194048,7 +194423,8 @@
        }
       ],
       "not_ok": "the apple not in the box on the desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "box_in_cabinet__in_cabinet": {
@@ -194324,7 +194700,8 @@
        }
       ],
       "not_ok": "the box not found; the apple not packed on the desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "box_in_cabinet__box_full": {
@@ -194746,7 +195123,9 @@
        }
       ],
       "not_ok": "the box not found; the apple not packed on the desk; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "饭盒（满了）"
      }
     },
     "no_box": {
@@ -195076,7 +195455,9 @@
        }
       ],
       "not_ok": "the apple not packed; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "饭盒（没有）"
      }
     },
     "box_in_use": {
@@ -195450,7 +195831,9 @@
        }
       ],
       "not_ok": "his things taken out of the box; the apple not packed; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "饭盒（正被用着）"
      }
     }
    },
@@ -196658,7 +197041,8 @@
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "h_task_lid_elsewhere": {
@@ -196991,7 +197375,8 @@
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; the stew tipped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "hide_both__tv_stand": {
@@ -197422,7 +197807,8 @@
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "hide_both__two_pots": {
@@ -197937,7 +198323,9 @@
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "能藏住的地方（两口锅一样）"
      }
     },
     "hide_lid_in_use": {
@@ -198314,7 +198702,9 @@
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; the stew tipped; still held",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "锅盖（盖着炖菜，用盘子）"
      }
     },
     "hide_somewhere__pot_ready": {
@@ -198594,7 +198984,8 @@
        }
       ],
       "not_ok": "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "hide_somewhere__lid_away": {
@@ -198891,7 +199282,9 @@
        }
       ],
       "not_ok": "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "带盖的空锅（盖子不在，用盘子盖）"
      }
     }
    },
@@ -200371,7 +200764,8 @@
        }
       ],
       "not_ok": "fewer than two bowls or spoons on the table; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bowls_apart": {
@@ -200637,7 +201031,8 @@
        }
       ],
       "not_ok": "fewer than two bowls or spoons on the table; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "one_bowl__glass_box": {
@@ -200931,7 +201326,9 @@
        }
       ],
       "not_ok": "only one bowl on the table; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个碗（只有一个，用玻璃盒）"
      }
     },
     "one_bowl__mug": {
@@ -201229,7 +201626,9 @@
        }
       ],
       "not_ok": "only one bowl on the table; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个碗（只有一个，用马克杯）"
      }
     },
     "bowl_in_use__tomatoes": {
@@ -201564,7 +201963,9 @@
        }
       ],
       "not_ok": "the leftovers tipped out; fewer than two on the table; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个干净碗（一个装着剩番茄，用玻璃盒）"
      }
     },
     "bowl_in_use__oatmeal": {
@@ -201867,7 +202268,9 @@
        }
       ],
       "not_ok": "the leftovers tipped out; fewer than two on the table; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个干净碗（一个装着燕麦，用玻璃盒）"
      }
     },
     "door_stuck": {
@@ -202093,7 +202496,9 @@
        }
       ],
       "not_ok": "fewer than two bowls or spoons on the table; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "柜子里的碗（门卡住）"
      }
     }
    },
@@ -203706,7 +204111,15 @@
         "why": "a plate as the second (soup spills)"
        }
       ],
-      "not_ok": "only one bowl on the table; a bowl dropped; still held"
+      "not_ok": "only one bowl on the table; a bowl dropped; still held",
+      "D_by_layout": {
+       "one_bowl__glass_box": 1,
+       "one_bowl__mug": 1
+      },
+      "top_by_layout": {
+       "one_bowl__glass_box": "moderate",
+       "one_bowl__mug": "moderate"
+      }
      }
     },
     "bowl_in_use": {
@@ -203784,7 +204197,15 @@
         "why": "the bowl with the leftover tomatoes put on the table too"
        }
       ],
-      "not_ok": "the leftovers tipped out; fewer than two on the table; still held"
+      "not_ok": "the leftovers tipped out; fewer than two on the table; still held",
+      "D_by_layout": {
+       "bowl_in_use__tomatoes": 1,
+       "bowl_in_use__oatmeal": 1
+      },
+      "top_by_layout": {
+       "bowl_in_use__tomatoes": "moderate",
+       "bowl_in_use__oatmeal": "moderate"
+      }
      }
     },
     "door_stuck": {
@@ -203816,7 +204237,13 @@
         "why": "the bowls from the other low cabinet set with the spoons, its door closed"
        }
       ],
-      "not_ok": "fewer than two bowls or spoons on the table; still held"
+      "not_ok": "fewer than two bowls or spoons on the table; still held",
+      "D_by_layout": {
+       "door_stuck": 0
+      },
+      "top_by_layout": {
+       "door_stuck": "moderate"
+      }
      }
     }
    },
@@ -203992,7 +204419,8 @@
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "lookalike_bin": {
@@ -204331,7 +204759,9 @@
        }
       ],
       "not_ok": "split between the bins; the toy bin's blocks taken out; one left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "回收箱（旁边有个像的箱子）"
      }
     },
     "m_can_in_dining_room": {
@@ -204541,7 +204971,8 @@
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "lookalike_bin__alt_tv_stand_2": {
@@ -204855,7 +205286,9 @@
        }
       ],
       "not_ok": "split between the bins; the toy bin's blocks taken out; one left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "回收箱（旁边有个像的箱子）"
      }
     },
     "can_in_use": {
@@ -205210,7 +205643,9 @@
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "喝完的那罐（旁边那罐有人在喝）"
      }
     },
     "x6_gd_can_put_away__in_4": {
@@ -205472,7 +205907,8 @@
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "x6_gd_can_put_away__juice_full": {
@@ -205811,7 +206247,9 @@
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "喝完的罐（旁边果汁是满的）"
      }
     }
    },
@@ -207458,7 +207896,8 @@
        }
       ],
       "not_ok": "the bottle not on the breakfast table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "m_bottle_on_tv_stand": {
@@ -207681,7 +208120,8 @@
        }
       ],
       "not_ok": "no bottle back on the breakfast table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bottle_in_use": {
@@ -208011,7 +208451,9 @@
        }
       ],
       "not_ok": "no bottle back on the breakfast table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "早饭那瓶（另一瓶有人在用）"
      }
     },
     "x6_gd_bottle_put_away__on_tv_stand": {
@@ -208498,7 +208940,9 @@
        }
       ],
       "not_ok": "the bottle not on the breakfast table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "早饭那瓶"
      }
     },
     "x6_gd_bottle_put_away__in_bedroom": {
@@ -208996,7 +209440,9 @@
        }
       ],
       "not_ok": "the bottle not on the breakfast table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "早饭那瓶"
      }
     }
    },
@@ -210062,7 +210508,8 @@
        }
       ],
       "not_ok": "the book left on the desk or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "within_kids_reach__set_on_large_shelf_4": {
@@ -210425,7 +210872,9 @@
        }
       ],
       "not_ok": "the book left on the desk, on the floor or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子够得着的那层"
      }
     },
     "within_kids_reach__set_on_large_shelf_5": {
@@ -210788,7 +211237,9 @@
        }
       ],
       "not_ok": "the book left on the desk, on the floor or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子够得着的那层"
      }
     },
     "stack_them_stably__room": {
@@ -211123,7 +211574,8 @@
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "stack_them_stably__narrow_top": {
@@ -211600,7 +212052,9 @@
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-      "top": "moderate"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "宽的台面（太窄，放别处）"
      }
     },
     "homework_stays": {
@@ -211933,7 +212387,9 @@
        }
       ],
       "not_ok": "the book or the mug left on the desk; the mug tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "书上架、杯子回厨房，作业不动"
      }
     },
     "whose_book__blue_book": {
@@ -212426,7 +212882,9 @@
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他的书"
      }
     },
     "whose_book__paperback": {
@@ -212976,7 +213434,9 @@
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他的书"
      }
     },
     "whose_book__both": {
@@ -213500,7 +213960,9 @@
        }
       ],
       "not_ok": "a book left on the desk or elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他的书"
      }
     },
     "next_in_series__on_bookcase": {
@@ -214171,7 +214633,9 @@
        }
       ],
       "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "同一套书的下一本"
      }
     },
     "next_in_series__on_other_bookcase": {
@@ -214831,7 +215295,9 @@
        }
       ],
       "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "同一套书的下一本"
      }
     },
     "next_in_series__on_tall_shelf": {
@@ -215514,7 +215980,9 @@
        }
       ],
       "not_ok": "the next book not brought (none on the desk); the red book left out; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "同一套书的下一本"
      }
     }
    },
@@ -218203,7 +218671,8 @@
        }
       ],
       "not_ok": "nothing to wipe with on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__east": {
@@ -218438,7 +218907,9 @@
        }
       ],
       "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "洒了汤的那张桌"
      }
     },
     "which_table__west": {
@@ -218642,7 +219113,9 @@
        }
       ],
       "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "洒了汤的那张桌"
      }
     },
     "no_tissue": {
@@ -218878,7 +219351,9 @@
        }
       ],
       "not_ok": "nothing to wipe with on the table; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "纸巾（没有，用干海绵）"
      }
     },
     "the_kids_side__kid_north": {
@@ -219148,7 +219623,9 @@
        }
       ],
       "not_ok": "the tissues not on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子那一侧"
      }
     },
     "the_kids_side__kid_south": {
@@ -219418,7 +219895,9 @@
        }
       ],
       "not_ok": "the tissues not on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "孩子那一侧"
      }
     }
    },
@@ -219868,7 +220347,13 @@
         "why": "the dry sponge (the stand-in) on the dining table"
        }
       ],
-      "not_ok": "nothing to wipe with on the table; still held or dropped"
+      "not_ok": "nothing to wipe with on the table; still held or dropped",
+      "D_by_layout": {
+       "no_tissue": 0
+      },
+      "top_by_layout": {
+       "no_tissue": "moderate"
+      }
      }
     },
     "the_kids_side": {
@@ -220202,7 +220687,8 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "by_kind": {
@@ -221121,7 +221607,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "每样各放各处"
      }
     },
     "eat_now__desk_free": {
@@ -221906,7 +222394,9 @@
        }
       ],
       "not_ok": "the snacks left on the dining table; the juice not put away or lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他书桌上作业旁边"
      }
     },
     "eat_now__desk_corner": {
@@ -222938,7 +223428,9 @@
        }
       ],
       "not_ok": "the snacks left on the dining table; the juice not put away or lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他书桌上作业旁边（只剩一角空着）"
      }
     },
     "basket_missing": {
@@ -223569,7 +224061,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮（没有，用岛台上的托盘）"
      }
     },
     "not_shopping": {
@@ -223846,7 +224340,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "只收买回来的东西"
      }
     },
     "two_spots": {
@@ -224746,7 +225242,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "冰的进冰箱，常温的进柜子"
      }
     },
     "tray_elsewhere__orange_in_it": {
@@ -225429,7 +225927,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮（没有，用托盘，托盘里有个橙子）"
      }
     },
     "tray_elsewhere__books_on_it": {
@@ -226334,7 +226834,9 @@
        }
       ],
       "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮（没有，用托盘，托盘上压着书）"
      }
     }
    },
@@ -229725,7 +230227,17 @@
         "why": "the apple in the tray, but the books cleared off it left lying about (not shelved), or a door open too"
        }
       ],
-      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped"
+      "not_ok": "an item left on the table or not put away; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "tray_elsewhere__orange_in_it": 1,
+       "tray_elsewhere__books_on_it": 1,
+       "basket_missing": 1
+      },
+      "top_by_layout": {
+       "tray_elsewhere__orange_in_it": "moderate",
+       "tray_elsewhere__books_on_it": "moderate",
+       "basket_missing": "moderate"
+      }
      }
     }
    },
@@ -229865,7 +230377,8 @@
        }
       ],
       "not_ok": "a dropped thing left on the floor or put in a wrong kind of place; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "by_kind__toy_box": {
@@ -230208,7 +230721,9 @@
        }
       ],
       "not_ok": "a dropped thing left on the floor; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "勺子回厨房、积木进玩具箱"
      }
     },
     "by_kind__bin_full": {
@@ -231029,7 +231544,9 @@
        }
       ],
       "not_ok": "a dropped thing left on the floor; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具盒（满了，用旁边托盘）"
      }
     },
     "belongs_on_floor__no_toy_box": {
@@ -232078,7 +232595,9 @@
        }
       ],
       "not_ok": "the block left on the floor or not in a container; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具箱（没有，用托盘）"
      }
     },
     "belongs_on_floor__bin_full": {
@@ -233522,7 +234041,9 @@
        }
       ],
       "not_ok": "the block left on the floor or not in a container; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具盒（满了，用旁边托盘）"
      }
     },
     "dropped_out_of_view__counter_full": {
@@ -234171,7 +234692,9 @@
        }
       ],
       "not_ok": "not found; left on the floor; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "小厨房台面（摆满了，放别的台面）"
      }
     },
     "dropped_out_of_view__no_room_for_plate": {
@@ -234820,7 +235343,9 @@
        }
       ],
       "not_ok": "not found; left on the floor; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "小厨房台面（空隙放不下盘子，放别的台面）"
      }
     },
     "only_this_room__cabinet_room": {
@@ -235421,7 +235946,8 @@
        }
       ],
       "not_ok": "the cup left on the floor or out of the kitchen's places; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "only_this_room__cabinet_full": {
@@ -236056,7 +236582,9 @@
        }
       ],
       "not_ok": "the cup left on the floor or out of the kitchen's places; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "他的杯子柜（满了，放另一个矮柜或台面）"
      }
     },
     "dropped_in_two_rooms__shelf_room": {
@@ -236611,7 +237139,8 @@
        }
       ],
       "not_ok": "a dropped thing left on the floor; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "dropped_in_two_rooms__shelf_full": {
@@ -237537,7 +238066,9 @@
        }
       ],
       "not_ok": "a dropped thing left on the floor; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "他的书架（每层都满，放别的书架或书桌）"
      }
     }
    },
@@ -238752,7 +239283,15 @@
         "why": "the block off the floor but not with the toys"
        }
       ],
-      "not_ok": "a dropped thing left on the floor; still held"
+      "not_ok": "a dropped thing left on the floor; still held",
+      "D_by_layout": {
+       "by_kind__toy_box": 1,
+       "by_kind__bin_full": 1
+      },
+      "top_by_layout": {
+       "by_kind__toy_box": "ideal",
+       "by_kind__bin_full": "moderate"
+      }
      }
     },
     "belongs_on_floor": {
@@ -239670,7 +240209,15 @@
         "why": "the block in the laundry basket, or the bin or the basket lifted off the floor"
        }
       ],
-      "not_ok": "the block left on the floor or not in a container; still held"
+      "not_ok": "the block left on the floor or not in a container; still held",
+      "D_by_layout": {
+       "belongs_on_floor__no_toy_box": 1,
+       "belongs_on_floor__bin_full": 1
+      },
+      "top_by_layout": {
+       "belongs_on_floor__no_toy_box": "moderate",
+       "belongs_on_floor__bin_full": "moderate"
+      }
      }
     },
     "dropped_out_of_view": {
@@ -239896,7 +240443,15 @@
         "why": "on the counter on top of the dishes"
        }
       ],
-      "not_ok": "not found; left on the floor; still held or dropped"
+      "not_ok": "not found; left on the floor; still held or dropped",
+      "D_by_layout": {
+       "dropped_out_of_view__counter_full": 1,
+       "dropped_out_of_view__no_room_for_plate": 1
+      },
+      "top_by_layout": {
+       "dropped_out_of_view__counter_full": "moderate",
+       "dropped_out_of_view__no_room_for_plate": "moderate"
+      }
      }
     },
     "only_this_room": {
@@ -240410,7 +240965,15 @@
         "why": "the living-room car picked up too (not in the kitchen)"
        }
       ],
-      "not_ok": "the cup left on the floor or out of the kitchen's places; still held"
+      "not_ok": "the cup left on the floor or out of the kitchen's places; still held",
+      "D_by_layout": {
+       "only_this_room__cabinet_room": 1,
+       "only_this_room__cabinet_full": 1
+      },
+      "top_by_layout": {
+       "only_this_room__cabinet_room": "ideal",
+       "only_this_room__cabinet_full": "moderate"
+      }
      }
     },
     "dropped_in_two_rooms": {
@@ -240828,7 +241391,15 @@
         "why": "the book off the floor but on a table or a kitchen top"
        }
       ],
-      "not_ok": "a dropped thing left on the floor; still held"
+      "not_ok": "a dropped thing left on the floor; still held",
+      "D_by_layout": {
+       "dropped_in_two_rooms__shelf_room": 1,
+       "dropped_in_two_rooms__shelf_full": 1
+      },
+      "top_by_layout": {
+       "dropped_in_two_rooms__shelf_room": "ideal",
+       "dropped_in_two_rooms__shelf_full": "moderate"
+      }
      }
     }
    },
@@ -241086,7 +241657,8 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_apples_for_him__apple_free": {
@@ -241325,7 +241897,8 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "no_apples_for_him__apple_in_use": {
@@ -241731,7 +242304,9 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "苹果（在别人盘子里，用果篮的香蕉）"
      }
     },
     "dinner_soon__apple": {
@@ -242095,7 +242670,9 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "水果（不是零食）"
      }
     },
     "dinner_soon__banana": {
@@ -242440,7 +243017,9 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "水果（不是零食）"
      }
     },
     "fruit_out_of_view__apple_in_basket": {
@@ -242723,7 +243302,8 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "fruit_out_of_view__basket_empty": {
@@ -243076,7 +243656,9 @@
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果篮里的水果（空了，用台面上的香蕉）"
      }
     },
     "where_is_he__study": {
@@ -243267,7 +243849,9 @@
        }
       ],
       "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有作业的那张书桌"
      }
     },
     "where_is_he__bedroom": {
@@ -243461,7 +244045,9 @@
        }
       ],
       "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有作业的那张书桌"
      }
     },
     "two_kids__apple_banana": {
@@ -244558,7 +245144,8 @@
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_kids__apple_snacks": {
@@ -245655,7 +246242,9 @@
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两样水果（只有一个苹果，另一样用零食）"
      }
     },
     "two_kids__desk3_covered": {
@@ -247027,7 +247616,9 @@
        }
       ],
       "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "卧室那个孩子的书桌（摊满作业，放旁边矮书架）"
      }
     }
    },
@@ -247994,7 +248585,7 @@
       },
       "top_by_layout": {
        "no_apples_for_him__apple_free": "ideal",
-       "no_apples_for_him__apple_in_use": "ideal"
+       "no_apples_for_him__apple_in_use": "moderate"
       }
      }
     },
@@ -248293,7 +248884,15 @@
         "why": "-"
        }
       ],
-      "not_ok": "nothing to eat on the kid's desk; still held or dropped"
+      "not_ok": "nothing to eat on the kid's desk; still held or dropped",
+      "D_by_layout": {
+       "fruit_out_of_view__apple_in_basket": 1,
+       "fruit_out_of_view__basket_empty": 1
+      },
+      "top_by_layout": {
+       "fruit_out_of_view__apple_in_basket": "ideal",
+       "fruit_out_of_view__basket_empty": "moderate"
+      }
      }
     },
     "where_is_he": {
@@ -249142,7 +249741,17 @@
         "why": "both a step down, or both to the same kid"
        }
       ],
-      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped"
+      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
+      "D_by_layout": {
+       "two_kids__apple_banana": 1,
+       "two_kids__apple_snacks": 1,
+       "two_kids__desk3_covered": 1
+      },
+      "top_by_layout": {
+       "two_kids__apple_banana": "ideal",
+       "two_kids__apple_snacks": "moderate",
+       "two_kids__desk3_covered": "moderate"
+      }
      }
     }
    },
@@ -249354,7 +249963,8 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cup_elsewhere__counter_cup": {
@@ -249692,7 +250302,8 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cup_elsewhere__only_mugs": {
@@ -250009,7 +250620,9 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "普通杯子（没有，用马克杯）"
      }
     },
     "cup_elsewhere__blocks_in_cup": {
@@ -250529,7 +251142,9 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "台面那个杯子（装着积木，用马克杯）"
      }
     },
     "cold_one__cold_juice": {
@@ -250893,7 +251508,8 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cold_one__cold_soda": {
@@ -251257,7 +251873,9 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "冰果汁（没有，用冰汽水）"
      }
     },
     "drink_in_fridge__juice": {
@@ -251483,7 +252101,8 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "drink_in_fridge__soda_only": {
@@ -251709,7 +252328,9 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "果汁（冰箱里没有，用汽水）"
      }
     },
     "cups_for_two__one_there": {
@@ -252432,7 +253053,8 @@
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cups_for_two__none_one_inside": {
@@ -253129,7 +253751,9 @@
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个普通杯子（柜里只有一个，补马克杯）"
      }
     },
     "cups_for_two__none_two_inside": {
@@ -253786,7 +254410,8 @@
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cups_for_two__two_there": {
@@ -254522,7 +255147,8 @@
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_guests__two_cups": {
@@ -254731,7 +255357,8 @@
        }
       ],
       "not_ok": "only one cup; no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_guests__one_cup": {
@@ -254964,7 +255591,9 @@
        }
       ],
       "not_ok": "only one cup; no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "两个杯子（只有一个，补马克杯）"
      }
     },
     "little_guest": {
@@ -255214,7 +255843,8 @@
        }
       ],
       "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     }
    },
@@ -257133,8 +257763,8 @@
       },
       "top_by_layout": {
        "cup_elsewhere__counter_cup": "ideal",
-       "cup_elsewhere__only_mugs": "ideal",
-       "cup_elsewhere__blocks_in_cup": "ideal"
+       "cup_elsewhere__only_mugs": "moderate",
+       "cup_elsewhere__blocks_in_cup": "moderate"
       }
      }
     },
@@ -257340,7 +257970,15 @@
         "why": "the room-temperature bottle brought on a hot day"
        }
       ],
-      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped"
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "cold_one__cold_juice": 1,
+       "cold_one__cold_soda": 1
+      },
+      "top_by_layout": {
+       "cold_one__cold_juice": "ideal",
+       "cold_one__cold_soda": "moderate"
+      }
      }
     },
     "drink_in_fridge": {
@@ -257444,7 +258082,15 @@
         "why": "the task done, but a door left open"
        }
       ],
-      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped"
+      "not_ok": "no drink or no cup by the guest; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "drink_in_fridge__juice": 1,
+       "drink_in_fridge__soda_only": 1
+      },
+      "top_by_layout": {
+       "drink_in_fridge__juice": "ideal",
+       "drink_in_fridge__soda_only": "moderate"
+      }
      }
     },
     "cups_for_two": {
@@ -257943,7 +258589,19 @@
         "why": "more than two, or two slips at once"
        }
       ],
-      "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped"
+      "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "cups_for_two__one_there": 1,
+       "cups_for_two__none_one_inside": 1,
+       "cups_for_two__none_two_inside": 1,
+       "cups_for_two__two_there": 1
+      },
+      "top_by_layout": {
+       "cups_for_two__one_there": "ideal",
+       "cups_for_two__none_one_inside": "moderate",
+       "cups_for_two__none_two_inside": "ideal",
+       "cups_for_two__two_there": "ideal"
+      }
      }
     },
     "two_guests": {
@@ -257976,7 +258634,15 @@
         "why": "the juice and two cups by the guests"
        }
       ],
-      "not_ok": "only one cup; no drink or no cup by the guest; the juice lying; still held or dropped"
+      "not_ok": "only one cup; no drink or no cup by the guest; the juice lying; still held or dropped",
+      "D_by_layout": {
+       "two_guests__two_cups": 0,
+       "two_guests__one_cup": 0
+      },
+      "top_by_layout": {
+       "two_guests__two_cups": "ideal",
+       "two_guests__one_cup": "moderate"
+      }
      }
     },
     "little_guest": {
@@ -258284,7 +258950,8 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "whose__shelf_room": {
@@ -258883,7 +259550,8 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "whose__shelf_full": {
@@ -260170,7 +260838,9 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "他的书架（每层都满，放床边那个书架）"
      }
     },
     "scattered__basket": {
@@ -260495,7 +261165,8 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "scattered__no_basket": {
@@ -261238,7 +261909,9 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具筐（没有，用书架上的小玩具盒）"
      }
     },
     "where_in_room__basket": {
@@ -261833,7 +262506,8 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "where_in_room__waste_bin": {
@@ -262455,7 +263129,9 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具筐（没有，原处是垃圾桶；小车放书架）"
      }
     },
     "bear_to_bed__top_free": {
@@ -262846,7 +263522,8 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bear_to_bed__top_covered": {
@@ -263380,7 +264057,9 @@
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "床边书架顶（摆满书，放下一层）"
      }
     },
     "two_bedrooms__room_east": {
@@ -263449,7 +264128,9 @@
        }
       ],
       "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有他玩具筐的那间"
      }
     },
     "two_bedrooms__room_south": {
@@ -263518,7 +264199,9 @@
        }
       ],
       "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有他玩具筐的那间"
      }
     }
    },
@@ -265089,7 +265772,15 @@
         "why": "two of those slips"
        }
       ],
-      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped"
+      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
+      "D_by_layout": {
+       "whose__shelf_room": 1,
+       "whose__shelf_full": 1
+      },
+      "top_by_layout": {
+       "whose__shelf_room": "ideal",
+       "whose__shelf_full": "moderate"
+      }
      }
     },
     "scattered": {
@@ -265553,7 +266244,7 @@
       },
       "top_by_layout": {
        "scattered__basket": "ideal",
-       "scattered__no_basket": "ideal"
+       "scattered__no_basket": "moderate"
       }
      }
     },
@@ -265964,7 +266655,15 @@
         "why": "both a step down, or one into the waste bin"
        }
       ],
-      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped"
+      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
+      "D_by_layout": {
+       "where_in_room__basket": 1,
+       "where_in_room__waste_bin": 1
+      },
+      "top_by_layout": {
+       "where_in_room__basket": "ideal",
+       "where_in_room__waste_bin": "moderate"
+      }
      }
     },
     "bear_to_bed": {
@@ -266238,7 +266937,15 @@
         "why": "two of those slips"
        }
       ],
-      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped"
+      "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
+      "D_by_layout": {
+       "bear_to_bed__top_free": 1,
+       "bear_to_bed__top_covered": 1
+      },
+      "top_by_layout": {
+       "bear_to_bed__top_free": "ideal",
+       "bear_to_bed__top_covered": "moderate"
+      }
      }
     },
     "two_bedrooms": {
@@ -266490,7 +267197,8 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; a dish tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_is_leftover": {
@@ -266781,7 +267489,9 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; a dish tipped; still held or dropped; the bowl someone eats from tipped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "只有剩饭（旁边空外卖盒像剩菜）"
      }
     },
     "two_leftovers__soup_at_seat": {
@@ -267179,7 +267889,9 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "剩饭进冰箱（汤有人在吃，不收）"
      }
     },
     "two_leftovers__soup_on_table": {
@@ -267516,7 +268228,8 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "two_leftovers__soup_on_stove": {
@@ -267851,7 +268564,8 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "still_eating": {
@@ -268139,7 +268853,9 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; a dish tipped; still held or dropped; the bowl someone eats from tipped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "只有剩饭（那碗有人在吃）"
      }
     },
     "fridge_out_of_view__fridge_free": {
@@ -268419,7 +269135,8 @@
        }
       ],
       "not_ok": "the rice not in the fridge; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "fridge_out_of_view__fridge_crowded": {
@@ -268807,7 +269524,9 @@
        }
       ],
       "not_ok": "the rice not in the fridge; tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "冰箱层板（左半边占了，右边还空着）"
      }
     },
     "fruit_stays_out": {
@@ -269114,7 +269833,8 @@
        }
       ],
       "not_ok": "a leftover not in the fridge; a dish tipped; still held or dropped; the bowl someone eats from tipped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     }
    },
@@ -270751,7 +271471,8 @@
        }
       ],
       "not_ok": "the cup not by his bed; the cup lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_bed__east": {
@@ -270911,7 +271632,9 @@
        }
       ],
       "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有小熊那张床的床边"
      }
     },
     "which_bed__south": {
@@ -271088,7 +271811,9 @@
        }
       ],
       "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "有小熊那张床的床边"
      }
     },
     "where_his_cup_is__on_counter": {
@@ -271913,7 +272638,8 @@
        }
       ],
       "not_ok": "no cup by his bed; lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "where_his_cup_is__in_cabinet": {
@@ -272719,7 +273445,8 @@
        }
       ],
       "not_ok": "no cup by his bed; lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "where_his_cup_is__no_kid_cup": {
@@ -273222,7 +273949,9 @@
        }
       ],
       "not_ok": "no cup by his bed; lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "他的塑料杯（家里没有，用家里的杯子）"
      }
     },
     "cup_out_of_view__cup_found": {
@@ -273466,7 +274195,8 @@
        }
       ],
       "not_ok": "no cup by his bed; lying; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "cup_out_of_view__side_covered": {
@@ -273868,7 +274598,9 @@
        }
       ],
       "not_ok": "no cup by his bed; lying; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "床边书架顶（摆满书，放下一层或书桌）"
      }
     },
     "already_there__his_cup": {
@@ -274066,7 +274798,8 @@
        }
       ],
       "not_ok": "the cup taken away from his bed; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "already_there__wrong_cup": {
@@ -274365,7 +275098,9 @@
        }
       ],
       "not_ok": "the cup taken away from his bed; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "他的塑料杯（床边那个是瓷杯）"
      }
     }
    },
@@ -275696,7 +276431,17 @@
         "why": "a cup that is not his though his is there"
        }
       ],
-      "not_ok": "no cup by his bed; lying; still held or dropped"
+      "not_ok": "no cup by his bed; lying; still held or dropped",
+      "D_by_layout": {
+       "where_his_cup_is__on_counter": 1,
+       "where_his_cup_is__in_cabinet": 1,
+       "where_his_cup_is__no_kid_cup": 1
+      },
+      "top_by_layout": {
+       "where_his_cup_is__on_counter": "ideal",
+       "where_his_cup_is__in_cabinet": "ideal",
+       "where_his_cup_is__no_kid_cup": "moderate"
+      }
      }
     },
     "cup_out_of_view": {
@@ -275868,7 +276613,7 @@
       },
       "top_by_layout": {
        "cup_out_of_view__cup_found": "ideal",
-       "cup_out_of_view__side_covered": "ideal"
+       "cup_out_of_view__side_covered": "moderate"
       }
      }
     },
@@ -276170,7 +276915,8 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "belongs_on_table": {
@@ -276478,7 +277224,8 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "belongs_on_table__no_toy_box": {
@@ -276832,7 +277579,9 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具箱（没有，用托盘）"
      }
     },
     "homework_on_table__desk_free": {
@@ -277319,7 +278068,8 @@
        }
       ],
       "not_ok": "homework left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "homework_on_table__desk_covered": {
@@ -278303,7 +279053,9 @@
        }
       ],
       "not_ok": "homework left on the table; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "书房书桌（摊满别人的书，放他卧室书桌）"
      }
     },
     "several__toy_box": {
@@ -278871,7 +279623,8 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "several__bin_full": {
@@ -279880,7 +280633,9 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "玩具箱（没有，玩具盒满了，用旁边托盘）"
      }
     },
     "nothing_to_clear": {
@@ -280139,7 +280894,8 @@
        }
       ],
       "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "which_table__east": {
@@ -280398,7 +281154,9 @@
        }
       ],
       "not_ok": "the meal table's toy left there; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "要吃饭的那张桌"
      }
     },
     "which_table__west": {
@@ -280657,7 +281415,9 @@
        }
       ],
       "not_ok": "the meal table's toy left there; still held or dropped",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "要吃饭的那张桌"
      }
     }
    },
@@ -281549,7 +282309,17 @@
         "why": "the set bowl or spoon taken off the table too"
        }
       ],
-      "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped"
+      "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
+      "D_by_layout": {
+       "belongs_on_table": 1,
+       "belongs_on_table__no_toy_box": 1,
+       "nothing_to_clear": 1
+      },
+      "top_by_layout": {
+       "belongs_on_table": "ideal",
+       "belongs_on_table__no_toy_box": "moderate",
+       "nothing_to_clear": "ideal"
+      }
      }
     },
     "homework_on_table": {
@@ -282098,7 +282868,15 @@
         "why": "off the table but not on a desk"
        }
       ],
-      "not_ok": "homework left on the table; still held or dropped"
+      "not_ok": "homework left on the table; still held or dropped",
+      "D_by_layout": {
+       "homework_on_table__desk_free": 1,
+       "homework_on_table__desk_covered": 1
+      },
+      "top_by_layout": {
+       "homework_on_table__desk_free": "ideal",
+       "homework_on_table__desk_covered": "moderate"
+      }
      }
     },
     "several": {
@@ -282393,7 +283171,15 @@
         "why": "everything off the table, but not each to its place"
        }
       ],
-      "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped"
+      "not_ok": "the thing left on the table; a setting piece tipped; still held or dropped",
+      "D_by_layout": {
+       "several__toy_box": 1,
+       "several__bin_full": 1
+      },
+      "top_by_layout": {
+       "several__toy_box": "ideal",
+       "several__bin_full": "moderate"
+      }
      }
     },
     "which_table": {
@@ -282649,7 +283435,8 @@
        }
       ],
       "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "how_many__three_bowls": {
@@ -282898,7 +283685,8 @@
        }
       ],
       "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "how_many__two_bowls": {
@@ -283163,7 +283951,9 @@
        }
       ],
       "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "三个碗（只有两个，补马克杯）"
      }
     },
     "bowls_in_cabinet__two_inside": {
@@ -283556,7 +284346,8 @@
        }
       ],
       "not_ok": "fewer than three; dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bowls_in_cabinet__one_inside": {
@@ -283955,7 +284746,9 @@
        }
       ],
       "not_ok": "fewer than three; dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "三个碗（只有两个，补马克杯）"
      }
     },
     "clean_one": {
@@ -284193,7 +284986,9 @@
        }
       ],
       "not_ok": "nothing brought; dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "干净的碗（旁边那碗装着燕麦）"
      }
     },
     "bowl_put_away__bowl_inside": {
@@ -284332,7 +285127,8 @@
        }
       ],
       "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true
      }
     },
     "bowl_put_away__mug_inside": {
@@ -284492,7 +285288,9 @@
        }
       ],
       "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "碗（家里没有，柜里只有盘子和马克杯，用马克杯）"
      }
     },
     "no_bowl": {
@@ -284666,7 +285464,9 @@
        }
       ],
       "not_ok": "nothing brought; dropped; still held",
-      "top": "ideal"
+      "top": "moderate",
+      "ideal_present": false,
+      "ideal_zh": "碗（没有，用马克杯）"
      }
     },
     "bowl_not_plate": {
@@ -284867,7 +285667,9 @@
        }
       ],
       "not_ok": "nothing brought; dropped; still held",
-      "top": "ideal"
+      "top": "ideal",
+      "ideal_present": true,
+      "ideal_zh": "干净的碗（旁边是盘子）"
      }
     }
    },
@@ -285847,7 +286649,15 @@
         "why": "three bowls on the island (three spoons at the table)"
        }
       ],
-      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held"
+      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
+      "D_by_layout": {
+       "how_many__three_bowls": 0,
+       "how_many__two_bowls": 0
+      },
+      "top_by_layout": {
+       "how_many__three_bowls": "ideal",
+       "how_many__two_bowls": "moderate"
+      }
      }
     },
     "bowls_in_cabinet": {
@@ -286005,7 +286815,15 @@
         "why": "the mug used though a third bowl was in the cabinet"
        }
       ],
-      "not_ok": "fewer than three; dropped; still held"
+      "not_ok": "fewer than three; dropped; still held",
+      "D_by_layout": {
+       "bowls_in_cabinet__two_inside": 1,
+       "bowls_in_cabinet__one_inside": 1
+      },
+      "top_by_layout": {
+       "bowls_in_cabinet__two_inside": "ideal",
+       "bowls_in_cabinet__one_inside": "moderate"
+      }
      }
     },
     "bowl_put_away": {
@@ -286089,7 +286907,15 @@
         "why": "the task done, but a door left open"
        }
       ],
-      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held"
+      "not_ok": "fewer bowls than needed on the island; a bowl dropped; still held",
+      "D_by_layout": {
+       "bowl_put_away__bowl_inside": 1,
+       "bowl_put_away__mug_inside": 1
+      },
+      "top_by_layout": {
+       "bowl_put_away__bowl_inside": "ideal",
+       "bowl_put_away__mug_inside": "moderate"
+      }
      }
     },
     "no_bowl": {
@@ -286143,7 +286969,13 @@
         "why": "the plate brought (soup does not stay on it)"
        }
       ],
-      "not_ok": "nothing brought; dropped; still held"
+      "not_ok": "nothing brought; dropped; still held",
+      "D_by_layout": {
+       "no_bowl": 1
+      },
+      "top_by_layout": {
+       "no_bowl": "moderate"
+      }
      }
     },
     "bowl_not_plate": {
