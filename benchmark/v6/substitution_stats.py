@@ -115,7 +115,12 @@ KIND = {
     ("T21", "which_table"): {"*": "去处替换"},
     ("T21", "no_tissue"): {"*": "缺失"},
     ("T21", "the_kids_side"): {"*": "去处替换"},
+    ("T22", "juice_on_table"): {"*": None},
+    ("T22", "by_kind"): {"*": "去处替换"},
     ("T22", "eat_now"): {"desk_free": "去处替换", "desk_corner": "被占用"},
+    ("T22", "not_shopping"): {"*": "看着像但不能用"},
+    ("T22", "two_spots"): {"*": "去处替换"},
+    ("T22", "tray_elsewhere"): {"basket_missing": "缺失", "orange_in_it": "缺失", "books_on_it": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }
