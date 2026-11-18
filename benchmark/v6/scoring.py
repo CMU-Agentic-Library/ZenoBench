@@ -621,6 +621,12 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
          # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
          # worst
+         ("T11", "fruit_plate_for_guests"): _layout_tiers("fruit_plate_for_guests", {
+             "best": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) "
+                     "with the apple and the orange in front of the guests, the kid's homework untouched",
+             "second": "one fruit only on the tray; or the kid's homework taken off the small tray to use it",
+             "worst": "the fruit carried without a tray; or several faults"},
+             "nothing brought to the guests; fruit dropped; still held"),
          ("T10", "trash_moved"): _layout_tiers("trash_moved", {
              "best": "the can in the trash can that has room: the moved one (dining room); when the one by the island "
                      "is full, the bathroom's, the full one untouched",
@@ -806,6 +812,7 @@ NOT_OK_ZH = {
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T11", "fruit_plate_for_guests"): "什么都没端过去；水果掉了；还拿着",
     ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",
     ("T10", "x6_gd_can_put_away"): "空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了",
     ("T09", "x6_gd_tomato_elsewhere"): "只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",

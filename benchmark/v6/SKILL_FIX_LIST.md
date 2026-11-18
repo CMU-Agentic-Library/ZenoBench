@@ -80,6 +80,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | measure | toy_bin_small_2 | T12/bins_capacity |
 | open | breakfast_fridge | T09/tomato_in_fridge, T09/x6_gd_tomato_elsewhere, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
 | pick | big_tomato | T09/tomato_in_fridge |
+| pick | big_tray | T11/fruit_plate_for_guests |
 | pick | blue_book | T14/whose_book |
 | pick | bought_apple | T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_juice | T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
@@ -163,6 +164,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | tray_book_3 | T22/tray_elsewhere |
 | pick | tray_book_4 | T22/tray_elsewhere |
 | pick | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
+| place | big_tray | T11/fruit_plate_for_guests |
 | place | blue_book | T14/whose_book |
 | place | bought_apple | T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | place | bought_juice | T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |

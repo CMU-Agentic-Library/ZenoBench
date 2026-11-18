@@ -5602,7 +5602,7 @@
 
 ### lid_on_spoon_away（Action + Task）
 
-**情况**：锅盖盖着，勺子也不在 → 揭盖；找勺子
+**情况**：锅盖盖着，勺子不在 → 揭盖、找勺子；或家里没有锅盖，岛台上有个同样大的早餐盘 → 用盘子盖锅（最好的替代算好）
 
 **成功条件**（D 按摆法：`lid_on_spoon_away` D = 1、理想物在，`lid_missing` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -5759,7 +5759,7 @@
 
 ### tomato_in_fridge（Action + Task）
 
-**情况**：汤要用三颗小番茄；岛台上只有两颗，第三颗收在关着的冰箱里（指令没说在哪） → 数一数不够，想到食材放在冰箱，开冰箱拿出来再关好（Action），而不是满屋找（Task）；三颗都在岛台上时去开冰箱是白跑
+**情况**：汤要用三颗小番茄；岛台上两颗 → 开冰箱拿第三颗，关好门；冰箱里没有小番茄、只有一个大番茄（和一个苹果）时用大番茄（最好的替代算好；拿苹果凑数不行）
 
 **指令**：午饭用三颗小番茄做番茄汤：放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
 
@@ -5951,7 +5951,7 @@
 
 ### x6_gd_tomato_elsewhere（Task）
 
-**情况**：一颗番茄在岛台，另一颗不在 → 先放一颗，再去找另一颗
+**情况**：一颗番茄在岛台，另一颗在餐桌：落在桌上就去拿；放在别人午饭的盘子里（旁边有勺子）就别动，用冰箱里那颗（拿盘子里的算差）
 
 **成功条件**（D 按摆法：`dining` D = 1、理想物在，`on_plate` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -6213,7 +6213,7 @@
 
 ### pot_in_dining_room（Task）
 
-**情况**：番茄旁边有碗和马克杯，锅却不在灶上，而在隔壁餐厅的餐桌上（锅盖在灶上）；指令和任务本身一样 → 不能就近用碗或杯，要去餐厅把锅拿回炉眼上，再做汤
+**情况**：锅不在灶上（锅盖在灶上），指令只说"锅" → 平时的锅在隔壁餐桌就去拿回来；平时的锅不在了，岛台上有一口同款空锅就用它（最好的替代算好）
 
 **成功条件**（D 按摆法：`pot_away` D = 1、理想物在，`spare_pot` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -6376,7 +6376,7 @@
 
 ### trash_moved（Task）
 
-**情况**：罐子在岛台上，但垃圾桶今天不在岛台旁边的老地方 → 拿起罐子去找垃圾桶（找的是目的地，不是东西）
+**情况**：罐子在岛台上，垃圾桶不在老地方就去找；岛台旁的垃圾桶塞满了（零食盒冒出桶口）就用卫生间的垃圾桶（最好的替代算好）
 
 **成功条件**（D 按摆法：`dining` D = 0、理想物在，`trash_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -6587,7 +6587,7 @@
 
 ### x6_gd_can_put_away（Task）
 
-**情况**：指令只说空易拉罐在厨房里被误收起来了、要开门才能找到；它在靠墙矮柜、微波炉或冰箱里 → 逐个打开找，扔进垃圾桶，打开的门都关好
+**情况**：指令只说空易拉罐在厨房里被误收起来了 → 打开带门的地方找，扔掉，门都关好（门没关降一档）；冰箱里饮料旁边那罐是没喝的，别扔（两罐都扔算差）
 
 **指令**：厨房里有个空易拉罐被人误收起来了，找出来扔进垃圾桶。
 
@@ -6821,52 +6821,81 @@
 
 ### fruit_plate_for_guests（Task）
 
-**情况**：指令只说“客人在客厅看电视，用托盘端点水果过去”，没说托盘在哪 → 找到托盘，先把空托盘放到电视柜，再把苹果和橙子一个个放上去（一只手端装满的托盘容易掉，子目标顺序决定能不能做成）
+**情况**：指令只说“客人在客厅看电视，用托盘端点水果过去”，没说托盘在哪 → 找到托盘，先把空托盘放到电视柜，再把苹果和橙子一个个放上去；书桌上的小托盘装着孩子的作业时别动，用餐桌上的大托盘（最好的替代算好；把孩子的东西拿下来用小托盘降一档）
 
 **指令**：客人在客厅看电视，用托盘给他们端点水果过去。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`tray_in_study` D = 1、理想物在，`tray_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `apple` 在 `fruit_tray` 里
-  - `lunch_orange` 在 `fruit_tray` 里
-  - `apple` 不在地上
-  - `lunch_orange` 不在地上
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `fruit_tray` 在 `tv_stand_2/top` 上
-    - 第 2 组：
-      - `fruit_tray` 在 `tv_stand_1/top` 上
+  - 摆法 `tray_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `big_tray` 里
+        - `lunch_orange` 在 `big_tray` 里
+        - `big_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+        - `kid_notebook` 没被挪动（离开局位置不超过 3 cm）
+        - `kid_pencil` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `tray_in_study`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `fruit_tray` 里
+        - `lunch_orange` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
 - **次好（0.6）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `fruit_tray` 在 `tv_stand_2/top` 上
-      - `apple` 在 `fruit_tray` 里
-    - 第 2 组：
-      - `fruit_tray` 在 `tv_stand_2/top` 上
-      - `lunch_orange` 在 `fruit_tray` 里
-    - 第 3 组：
-      - `fruit_tray` 在 `tv_stand_1/top` 上
-      - `apple` 在 `fruit_tray` 里
-    - 第 4 组：
-      - `fruit_tray` 在 `tv_stand_1/top` 上
-      - `lunch_orange` 在 `fruit_tray` 里
+  - 摆法 `tray_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `fruit_tray` 里
+        - `lunch_orange` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+      - 第 2 组：
+        - `apple` 在 `big_tray` 里
+        - `big_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+      - 第 3 组：
+        - `lunch_orange` 在 `big_tray` 里
+        - `big_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+  - 摆法 `tray_in_study`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+      - 第 2 组：
+        - `lunch_orange` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
 - **最不好（0.3）**：
 
-  - `apple` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
-  - `lunch_orange` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
-  - 手里空着
+  - 摆法 `tray_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+      - 第 2 组：
+        - `lunch_orange` 在 `fruit_tray` 里
+        - `fruit_tray` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+      - 第 3 组：
+        - `apple` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+        - `lunch_orange` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+  - 摆法 `tray_in_study`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `apple` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
+        - `lunch_orange` 在其中任一处上：`tv_stand_2/top`、`tv_stand_1/top`
 - **不行（0）**：什么都没端过去；水果掉了；还拿着
 
 
 **参考调用顺序**：
 
 - 摆法 `tray_in_study`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=living_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
-- 摆法 `tray_by_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=fruit_tray, region=dining_room_0_1)` → 4. `navigate(destination=fruit_tray)` → 5. `pick(object=fruit_tray)` → 6. `navigate(destination=tv_stand_2/top)` → 7. `place(object=fruit_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 8. `navigate(destination=apple)` → 9. `pick(object=apple)` → 10. `navigate(destination=fruit_tray)` → 11. `place(object=apple, receptacle=fruit_tray)` → 12. `navigate(destination=lunch_orange)` → 13. `pick(object=lunch_orange)` → 14. `navigate(destination=fruit_tray)` → 15. `place(object=lunch_orange, receptacle=fruit_tray)`
+- 摆法 `tray_in_use`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=big_tray)` → 4. `pick(object=big_tray)` → 5. `navigate(destination=tv_stand_2/top)` → 6. `place(object=big_tray, receptacle=tv_stand_2/top, hint_xy=[7.5, 0.36])` → 7. `navigate(destination=apple)` → 8. `pick(object=apple)` → 9. `navigate(destination=big_tray)` → 10. `place(object=apple, receptacle=big_tray)` → 11. `navigate(destination=lunch_orange)` → 12. `pick(object=lunch_orange)` → 13. `navigate(destination=big_tray)` → 14. `place(object=lunch_orange, receptacle=big_tray)`
 
 ---
 

@@ -2593,14 +2593,39 @@ def T11(t):
     # fruit_plate_for_guests: the tray has to end on the TV stand with the fruit on it; carried empty first and
     # filled there, no loaded tray is ever lifted
     plate_cases = {}
-    for c, tray_at, region in (("tray_in_study", {"support": DESK, "xy": [-0.90, -6.00], "yaw_deg": 0.0}, "living_room_0_1"),
-                               ("tray_by_table", {"support": "cell_shelf_4/top", "xy": [4.30, 4.42], "yaw_deg": 0.0},
-                                "dining_room_0_1")):
-        plate_cases[c] = dict(
-            add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", **tray_at}},
-            route=[look(DINING), S("search", object=TRAY, region=region), nav(TRAY), pick(TRAY),
-                   nav("tv_stand_2/top"), place(TRAY, "tv_stand_2/top", [7.50, 0.36])]
-            + [st for f in (X, OR) for st in (nav(f), pick(f), nav(TRAY), place(f, TRAY))])
+    TV = "tv_stand_2/top"
+
+    def serve(tray, region):
+        return ([S("search", object=tray, region=region)] if region else []) + [
+            nav(tray), pick(tray), nav(TV), place(tray, TV, [7.50, 0.36])] + [
+            st for f in (X, OR) for st in (nav(f), pick(f), nav(tray), place(f, tray))]
+    plate_cases["tray_in_study"] = dict(
+        add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", "support": DESK, "xy": [-0.90, -6.00],
+                                      "yaw_deg": 0.0}},
+        route=[look(DINING)] + serve(TRAY, "living_room_0_1"))
+    # tray_in_use (11-17, user): the small tray on the study desk holds the kid's homework (a notebook, a pencil);
+    # a bigger serving tray stands on the dining table (the stand-in)
+    BIG, KN, KP = "big_tray", "kid_notebook", "kid_pencil"
+    kid_stays = [["near_start", KN, 0.03], ["near_start", KP, 0.03]]
+    plate_cases["tray_in_use"] = dict(
+        add={OR: fruit_at[OR], TRAY: {"asset": "shallow_sorting_tray", "support": DESK, "xy": [-0.90, -6.00],
+                                      "yaw_deg": 0.0},
+             KN: {"asset": "notebook", "support": None, "z": 0.705, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
+             KP: {"asset": "pencil", "support": None, "z": 0.736, "xy": [-0.90, -6.00], "yaw_deg": 0.0},
+             BIG: {"asset": "serving_tray", **P(DINING, 3.55, 6.55)}},
+        goal={"all": [["inside", X, BIG], ["inside", OR, BIG], ["on", BIG, TV], *kid_stays, ["hand_empty", "right"]]},
+        watch=[X, OR, TRAY, BIG, KN, KP],
+        route=[look(DINING)] + serve(BIG, None))
+    LT = LAYOUT_TIERS.setdefault(("T11", "*"), {})
+    on_tv = lambda tr: [["on_any", tr, [TV, "tv_stand_1/top"]]]  # noqa: E731
+    full = lambda tr: [["inside", X, tr], ["inside", OR, tr]] + on_tv(tr)  # noqa: E731
+    one = lambda tr: [[["inside", f, tr]] + on_tv(tr) for f in (X, OR)]  # noqa: E731
+    bare = [["on_any", X, [TV, "tv_stand_1/top"]], ["on_any", OR, [TV, "tv_stand_1/top"]]]
+    LT["fruit_plate_for_guests__tray_in_study"] = cost_tiers(
+        [(full(TRAY), 0), *[(g, 1) for g in one(TRAY)], (bare, 2)])
+    LT["fruit_plate_for_guests__tray_in_use"] = cost_tiers(
+        [(full(BIG) + kid_stays, 1), (full(TRAY), 2), *[(g, 2) for g in one(BIG)], *[(g, 3) for g in one(TRAY)],
+         (bare, 3)])
     return {
         "leave_one_for_kid": dict(
             base="fruits_on_table", control="fruits_on_table",
@@ -2624,7 +2649,8 @@ def T11(t):
                           ["hand_empty", "right"]],
                   "any": [[["on", TRAY, "tv_stand_2/top"]], [["on", TRAY, "tv_stand_1/top"]]]},
             watch=[X, OR, TRAY],
-            factor="where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+            factor="whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a "
+                   "bigger serving tray on the dining table)",
             challenge="the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in "
                       "front of the guests with the fruit on it",
             rationale="order the subgoals so that each step is feasible: one hand cannot carry a loaded tray "

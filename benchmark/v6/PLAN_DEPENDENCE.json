@@ -51,10 +51,10 @@
   ],
   "routes_between_layouts": {
    "passes": 109,
-   "goal_not_met": 160,
+   "goal_not_met": 161,
    "not_observed": 20,
-   "argument_mismatch": 78,
-   "resource_missing": 125
+   "argument_mismatch": 76,
+   "resource_missing": 126
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -223,6 +223,10 @@
    ],
    "T10 keep_kids_can": [
     "kids_can"
+   ],
+   "T11 fruit_plate_for_guests": [
+    "kid_notebook",
+    "kid_pencil"
    ],
    "T12 castle_stays": [
     "castle_block_1",
@@ -3245,20 +3249,20 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "fruit_plate_for_guests__tray_by_table": "argument_mismatch"
+    "fruit_plate_for_guests__tray_in_use": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T11_collect_fruits",
    "variant": "fruit_plate_for_guests",
-   "layout": "fruit_plate_for_guests__tray_by_table",
-   "steps": 15,
+   "layout": "fruit_plate_for_guests__tray_in_use",
+   "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "fruit_plate_for_guests__tray_in_study": "argument_mismatch"
+    "fruit_plate_for_guests__tray_in_study": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -5630,7 +5634,7 @@
    "variant": "fruit_plate_for_guests",
    "candidates": [
     "fruit_plate_for_guests__tray_in_study",
-    "fruit_plate_for_guests__tray_by_table",
+    "fruit_plate_for_guests__tray_in_use",
     "fruits_on_table"
    ],
    "passes_all": []
@@ -8286,12 +8290,12 @@
    "variant": "fruit_plate_for_guests",
    "layouts": [
     "fruit_plate_for_guests__tray_in_study",
-    "fruit_plate_for_guests__tray_by_table"
+    "fruit_plate_for_guests__tray_in_use"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {

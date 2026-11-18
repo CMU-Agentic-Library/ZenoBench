@@ -15370,7 +15370,7 @@
   "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T11_collect_fruits/fruit_plate_for_guests__tray_by_table": {
+ "T11_collect_fruits/fruit_plate_for_guests__tray_in_use": {
   "variant": "fruit_plate_for_guests",
   "category": "task",
   "seeds": [
@@ -15389,7 +15389,10 @@
     "fruit_basket"
    ],
    "added": [
+    "big_tray",
     "fruit_tray",
+    "kid_notebook",
+    "kid_pencil",
     "lunch_orange"
    ],
    "removed": [
@@ -15407,45 +15410,36 @@
     [
      "inside",
      "apple",
-     "fruit_tray"
+     "big_tray"
     ],
     [
      "inside",
      "lunch_orange",
-     "fruit_tray"
+     "big_tray"
     ],
     [
-     "not on_floor",
-     "apple"
+     "on",
+     "big_tray",
+     "tv_stand_2/top"
     ],
     [
-     "not on_floor",
-     "lunch_orange"
+     "near_start",
+     "kid_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "kid_pencil",
+     0.03
     ],
     [
      "hand_empty",
      "right"
     ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "fruit_tray",
-      "tv_stand_2/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "fruit_tray",
-      "tv_stand_1/top"
-     ]
-    ]
    ]
   },
   "control": "fruits_on_table",
-  "oracle_route": "v6_fruit_plate_for_guests__tray_by_table",
+  "oracle_route": "v6_fruit_plate_for_guests__tray_in_use",
   "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
   "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"

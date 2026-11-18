@@ -68,6 +68,10 @@ KIND = {
     ("T10", "after_dinner_clear"): {"*": "去处替换"},
     ("T10", "guests_coming"): {"*": "去处替换"},
     ("T10", "x6_gd_can_put_away"): {"in_cabinet": None, "fridge_drink": "看着像但不能用"},
+    ("T11", "fruits_on_table"): {"*": None},
+    ("T11", "basket_missing"): {"basket_missing": "缺失", "basket_gone_bowl_there": "看着像但不能用"},
+    ("T11", "leave_one_for_kid"): {"*": "去处替换"},
+    ("T11", "fruit_plate_for_guests"): {"tray_in_study": None, "tray_in_use": "被占用"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

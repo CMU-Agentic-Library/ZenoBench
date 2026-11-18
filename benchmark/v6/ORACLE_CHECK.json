@@ -1951,9 +1951,9 @@
   },
   {
    "task": "T11_collect_fruits",
-   "layout": "fruit_plate_for_guests__tray_by_table",
-   "steps": 15,
-   "atoms_checked": 7,
+   "layout": "fruit_plate_for_guests__tray_in_use",
+   "steps": 14,
+   "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

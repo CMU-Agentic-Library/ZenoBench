@@ -165680,7 +165680,7 @@
       "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
       "control": "fruits_on_table",
       "contrast": null,
-      "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
       "derived_from": "fruits_on_table"
      },
      "layout": {
@@ -165898,8 +165898,81 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the tray with the apple and the orange in front of the guests",
+        "goal": {
+         "by_layout": {
+          "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "near_start",
+              "kid_notebook",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) with the apple and the orange in front of the guests, the kid's homework untouched",
         "raw": "best"
        },
        {
@@ -165908,124 +165981,108 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           }
          }
         },
-        "why": "the tray in front of the guests with one fruit only",
+        "why": "one fruit only on the tray; or the kid's homework taken off the small tray to use it",
         "raw": "second"
        },
        {
@@ -166034,47 +166091,85 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
@@ -166083,7 +166178,7 @@
           }
          }
         },
-        "why": "the fruit carried to the guests without the tray",
+        "why": "the fruit carried without a tray; or several faults",
         "raw": "worst"
        }
       ],
@@ -166091,7 +166186,7 @@
       "top": "ideal"
      }
     },
-    "fruit_plate_for_guests__tray_by_table": {
+    "fruit_plate_for_guests__tray_in_use": {
      "move": {
       "apple": {
        "support": "dining_table_2/top",
@@ -166122,40 +166217,31 @@
        [
         "inside",
         "apple",
-        "fruit_tray"
+        "big_tray"
        ],
        [
         "inside",
         "lunch_orange",
-        "fruit_tray"
+        "big_tray"
        ],
        [
-        "not on_floor",
-        "apple"
+        "on",
+        "big_tray",
+        "tv_stand_2/top"
        ],
        [
-        "not on_floor",
-        "lunch_orange"
+        "near_start",
+        "kid_notebook",
+        0.03
+       ],
+       [
+        "near_start",
+        "kid_pencil",
+        0.03
        ],
        [
         "hand_empty",
         "right"
-       ]
-      ],
-      "any": [
-       [
-        [
-         "on",
-         "fruit_tray",
-         "tv_stand_2/top"
-        ]
-       ],
-       [
-        [
-         "on",
-         "fruit_tray",
-         "tv_stand_1/top"
-        ]
        ]
       ]
      },
@@ -166164,7 +166250,10 @@
      "watch": [
       "apple",
       "lunch_orange",
-      "fruit_tray"
+      "fruit_tray",
+      "big_tray",
+      "kid_notebook",
+      "kid_pencil"
      ],
      "add": {
       "lunch_orange": {
@@ -166178,10 +166267,39 @@
       },
       "fruit_tray": {
        "asset": "shallow_sorting_tray",
-       "support": "cell_shelf_4/top",
+       "support": "desk_1/top",
        "xy": [
-        4.296,
-        4.451
+        -0.9,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_notebook": {
+       "asset": "notebook",
+       "support": null,
+       "z": 0.705,
+       "xy": [
+        -0.9,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "kid_pencil": {
+       "asset": "pencil",
+       "support": null,
+       "z": 0.736,
+       "xy": [
+        -0.9,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "big_tray": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        6.55
        ],
        "yaw_deg": 0.0
       }
@@ -166190,12 +166308,12 @@
      "note": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
      "v6": {
       "family": "fruit_plate_for_guests",
-      "case": "tray_by_table",
+      "case": "tray_in_use",
       "challenge": "the apple and an orange on the dining table, a small tray elsewhere; the tray is to end in front of the guests with the fruit on it",
       "rationale": "order the subgoals so that each step is feasible: one hand cannot carry a loaded tray safely, so the empty tray goes to the TV stand first and the fruit is put on it there (filling it beside the fruit and then lifting it risks dropping the fruit)",
       "control": "fruits_on_table",
       "contrast": null,
-      "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+      "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
       "derived_from": "fruits_on_table"
      },
      "layout": {
@@ -166218,50 +166336,48 @@
        },
        {
         "names": [
-         "fruit_tray"
+         "fruit_tray",
+         "kid_notebook",
+         "kid_pencil"
         ],
-        "support": "cell_shelf_4/top",
+        "support": "desk_1/top",
         "box": [
-         4.161,
-         4.351,
-         4.431,
-         4.551
+         -1.035,
+         -6.1,
+         -0.765,
+         -5.9
         ],
         "dx": [
-         -0.75,
-         0.77
+         -0.36,
+         0.73
         ],
         "dy": [
-         -0.12,
-         0.06
-        ],
-        "pick": [
-         "fruit_tray"
-        ],
-        "search": [
-         "fruit_tray"
+         -0.21,
+         0.18
         ]
        },
        {
         "names": [
+         "big_tray",
          "lunch_orange"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.596,
+         3.34,
          5.6279,
-         3.664,
-         5.6921
+         3.76,
+         6.7291
         ],
         "dx": [
-         -0.79,
-         0.16
+         -0.54,
+         0.06
         ],
         "dy": [
          -0.12,
-         2.25
+         1.21
         ],
         "pick": [
+         "big_tray",
          "lunch_orange"
         ]
        },
@@ -166338,21 +166454,29 @@
          0.2
         ]
        ],
-       "cell_shelf_4/top": [
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
         [
          0,
          -1,
-         3.396,
-         4.314,
-         4.622,
+         -1.408,
+         -6.326,
+         -5.709,
          0.2
         ],
         [
          1,
-         1,
-         4.622,
-         3.396,
-         5.162,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
          0.2
         ]
        ],
@@ -166393,9 +166517,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "fruit_tray"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -166405,8 +166527,81 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the tray with the apple and the orange in front of the guests",
+        "goal": {
+         "by_layout": {
+          "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "near_start",
+              "kid_notebook",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) with the apple and the orange in front of the guests, the kid's homework untouched",
         "raw": "best"
        },
        {
@@ -166415,124 +166610,108 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           }
          }
         },
-        "why": "the tray in front of the guests with one fruit only",
+        "why": "one fruit only on the tray; or the kid's homework taken off the small tray to use it",
         "raw": "second"
        },
        {
@@ -166541,47 +166720,85 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
@@ -166590,12 +166807,12 @@
           }
          }
         },
-        "why": "the fruit carried to the guests without the tray",
+        "why": "the fruit carried without a tray; or several faults",
         "raw": "worst"
        }
       ],
       "not_ok": "nothing brought to the guests; fruit dropped; still held",
-      "top": "ideal"
+      "top": "moderate"
      }
     }
    },
@@ -166637,7 +166854,7 @@
     "leave_one_for_kid__orange_banana": "v6_leave_one_for_kid__orange_banana",
     "leave_one_for_kid__all_three": "v6_leave_one_for_kid__all_three",
     "fruit_plate_for_guests__tray_in_study": "v6_fruit_plate_for_guests__tray_in_study",
-    "fruit_plate_for_guests__tray_by_table": "v6_fruit_plate_for_guests__tray_by_table"
+    "fruit_plate_for_guests__tray_in_use": "v6_fruit_plate_for_guests__tray_in_use"
    },
    "routes": {
     "nominal": {
@@ -167225,7 +167442,7 @@
      "kind": "v6_oracle",
      "variant": "fruit_plate_for_guests__tray_in_study"
     },
-    "v6_fruit_plate_for_guests__tray_by_table": {
+    "v6_fruit_plate_for_guests__tray_in_use": {
      "steps": [
       {
        "skill": "navigate",
@@ -167240,22 +167457,15 @@
        }
       },
       {
-       "skill": "search",
-       "args": {
-        "object": "fruit_tray",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
-        "destination": "fruit_tray"
+        "destination": "big_tray"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "fruit_tray"
+        "object": "big_tray"
        }
       },
       {
@@ -167267,7 +167477,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "fruit_tray",
+        "object": "big_tray",
         "receptacle": "tv_stand_2/top",
         "hint_xy": [
          7.5,
@@ -167290,14 +167500,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "fruit_tray"
+        "destination": "big_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "apple",
-        "receptacle": "fruit_tray"
+        "receptacle": "big_tray"
        }
       },
       {
@@ -167315,19 +167525,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "fruit_tray"
+        "destination": "big_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "lunch_orange",
-        "receptacle": "fruit_tray"
+        "receptacle": "big_tray"
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "fruit_plate_for_guests__tray_by_table"
+     "variant": "fruit_plate_for_guests__tray_in_use"
     }
    },
    "vary": {
@@ -167773,29 +167983,106 @@
      "control": "fruits_on_table",
      "layouts": [
       "fruit_plate_for_guests__tray_in_study",
-      "fruit_plate_for_guests__tray_by_table"
+      "fruit_plate_for_guests__tray_in_use"
      ],
-     "factor": "where the tray is (seed: on the study desk, or on the shelf beside the dining table)",
+     "factor": "whether the tray is free (seed: empty on the study desk; or holding the kid's homework there, a bigger serving tray on the dining table)",
      "seeds": {
-      "10": "fruit_plate_for_guests__tray_by_table",
-      "11": "fruit_plate_for_guests__tray_by_table",
+      "10": "fruit_plate_for_guests__tray_in_use",
+      "11": "fruit_plate_for_guests__tray_in_use",
       "12": "fruit_plate_for_guests__tray_in_study",
-      "13": "fruit_plate_for_guests__tray_by_table",
+      "13": "fruit_plate_for_guests__tray_in_use",
       "14": "fruit_plate_for_guests__tray_in_study",
       "15": "fruit_plate_for_guests__tray_in_study",
       "16": "fruit_plate_for_guests__tray_in_study",
-      "17": "fruit_plate_for_guests__tray_by_table",
+      "17": "fruit_plate_for_guests__tray_in_use",
       "18": "fruit_plate_for_guests__tray_in_study",
-      "19": "fruit_plate_for_guests__tray_by_table"
+      "19": "fruit_plate_for_guests__tray_in_use"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "fruit_plate_for_guests__tray_in_study": true,
+       "fruit_plate_for_guests__tray_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the tray with the apple and the orange in front of the guests"
+        "goal": {
+         "by_layout": {
+          "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "near_start",
+              "kid_notebook",
+              0.03
+             ],
+             [
+              "near_start",
+              "kid_pencil",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) with the apple and the orange in front of the guests, the kid's homework untouched"
        },
        {
         "name": "second",
@@ -167803,124 +168090,108 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "apple",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "big_tray"
+             ],
+             [
+              "on_any",
+              "big_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
              "hand_empty",
              "right"
-            ]
-           ],
-           "any": [
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_2/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "apple",
-              "fruit_tray"
-             ]
-            ],
-            [
-             [
-              "on",
-              "fruit_tray",
-              "tv_stand_1/top"
-             ],
-             [
-              "inside",
-              "lunch_orange",
-              "fruit_tray"
-             ]
             ]
            ]
           }
          }
         },
-        "why": "the tray in front of the guests with one fruit only"
+        "why": "one fruit only on the tray; or the kid's homework taken off the small tray to use it"
        },
        {
         "name": "worst",
@@ -167928,47 +168199,85 @@
         "goal": {
          "by_layout": {
           "fruit_plate_for_guests__tray_in_study": {
+           "any": [
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "fruit_plate_for_guests__tray_by_table": {
+          "fruit_plate_for_guests__tray_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "apple",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "inside",
+              "lunch_orange",
+              "fruit_tray"
+             ],
+             [
+              "on_any",
+              "fruit_tray",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "apple",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ],
+             [
+              "on_any",
+              "lunch_orange",
+              [
+               "tv_stand_2/top",
+               "tv_stand_1/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on_any",
-             "apple",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
-            [
-             "on_any",
-             "lunch_orange",
-             [
-              "tv_stand_2/top",
-              "tv_stand_1/top"
-             ]
-            ],
             [
              "hand_empty",
              "right"
@@ -167977,10 +168286,18 @@
           }
          }
         },
-        "why": "the fruit carried to the guests without the tray"
+        "why": "the fruit carried without a tray; or several faults"
        }
       ],
-      "not_ok": "nothing brought to the guests; fruit dropped; still held"
+      "not_ok": "nothing brought to the guests; fruit dropped; still held",
+      "D_by_layout": {
+       "fruit_plate_for_guests__tray_in_study": 1,
+       "fruit_plate_for_guests__tray_in_use": 1
+      },
+      "top_by_layout": {
+       "fruit_plate_for_guests__tray_in_study": "ideal",
+       "fruit_plate_for_guests__tray_in_use": "moderate"
+      }
      }
     }
    },

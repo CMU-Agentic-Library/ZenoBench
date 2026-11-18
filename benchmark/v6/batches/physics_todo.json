@@ -4202,15 +4202,15 @@
 {
 "task": "T11_collect_fruits",
 "seed": 10,
-"variant": "fruit_plate_for_guests__tray_by_table",
-"route": "v6_fruit_plate_for_guests__tray_by_table",
+"variant": "fruit_plate_for_guests__tray_in_use",
+"route": "v6_fruit_plate_for_guests__tray_in_use",
 "family": "fruit_plate_for_guests"
 },
 {
 "task": "T11_collect_fruits",
 "seed": 11,
-"variant": "fruit_plate_for_guests__tray_by_table",
-"route": "v6_fruit_plate_for_guests__tray_by_table",
+"variant": "fruit_plate_for_guests__tray_in_use",
+"route": "v6_fruit_plate_for_guests__tray_in_use",
 "family": "fruit_plate_for_guests"
 },
 {
@@ -4223,8 +4223,8 @@
 {
 "task": "T11_collect_fruits",
 "seed": 13,
-"variant": "fruit_plate_for_guests__tray_by_table",
-"route": "v6_fruit_plate_for_guests__tray_by_table",
+"variant": "fruit_plate_for_guests__tray_in_use",
+"route": "v6_fruit_plate_for_guests__tray_in_use",
 "family": "fruit_plate_for_guests"
 },
 {
@@ -4251,8 +4251,8 @@
 {
 "task": "T11_collect_fruits",
 "seed": 17,
-"variant": "fruit_plate_for_guests__tray_by_table",
-"route": "v6_fruit_plate_for_guests__tray_by_table",
+"variant": "fruit_plate_for_guests__tray_in_use",
+"route": "v6_fruit_plate_for_guests__tray_in_use",
 "family": "fruit_plate_for_guests"
 },
 {
@@ -4265,8 +4265,8 @@
 {
 "task": "T11_collect_fruits",
 "seed": 19,
-"variant": "fruit_plate_for_guests__tray_by_table",
-"route": "v6_fruit_plate_for_guests__tray_by_table",
+"variant": "fruit_plate_for_guests__tray_in_use",
+"route": "v6_fruit_plate_for_guests__tray_in_use",
 "family": "fruit_plate_for_guests"
 },
 {
