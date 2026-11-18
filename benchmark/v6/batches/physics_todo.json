@@ -8192,211 +8192,211 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_in_use",
+"route": "v6_no_apples_for_him__apple_in_use",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 11,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_in_use",
+"route": "v6_no_apples_for_him__apple_in_use",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_in_use",
+"route": "v6_no_apples_for_him__apple_in_use",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 13,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_in_use",
+"route": "v6_no_apples_for_him__apple_in_use",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_free",
+"route": "v6_no_apples_for_him__apple_free",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_free",
+"route": "v6_no_apples_for_him__apple_free",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 16,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_free",
+"route": "v6_no_apples_for_him__apple_free",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_in_use",
+"route": "v6_no_apples_for_him__apple_in_use",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 18,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_free",
+"route": "v6_no_apples_for_him__apple_free",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "no_apples_for_him",
-"route": "v6_no_apples_for_him",
+"variant": "no_apples_for_him__apple_free",
+"route": "v6_no_apples_for_him__apple_free",
 "family": "no_apples_for_him"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__apple",
+"route": "v6_dinner_soon__apple",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 11,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__banana",
+"route": "v6_dinner_soon__banana",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__banana",
+"route": "v6_dinner_soon__banana",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 13,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__banana",
+"route": "v6_dinner_soon__banana",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__banana",
+"route": "v6_dinner_soon__banana",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__apple",
+"route": "v6_dinner_soon__apple",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 16,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__apple",
+"route": "v6_dinner_soon__apple",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__apple",
+"route": "v6_dinner_soon__apple",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 18,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__apple",
+"route": "v6_dinner_soon__apple",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "dinner_soon",
-"route": "v6_dinner_soon",
+"variant": "dinner_soon__banana",
+"route": "v6_dinner_soon__banana",
 "family": "dinner_soon"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__basket_empty",
+"route": "v6_fruit_out_of_view__basket_empty",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 11,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__apple_in_basket",
+"route": "v6_fruit_out_of_view__apple_in_basket",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__apple_in_basket",
+"route": "v6_fruit_out_of_view__apple_in_basket",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 13,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__apple_in_basket",
+"route": "v6_fruit_out_of_view__apple_in_basket",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__basket_empty",
+"route": "v6_fruit_out_of_view__basket_empty",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__basket_empty",
+"route": "v6_fruit_out_of_view__basket_empty",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 16,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__basket_empty",
+"route": "v6_fruit_out_of_view__basket_empty",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__basket_empty",
+"route": "v6_fruit_out_of_view__basket_empty",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 18,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__apple_in_basket",
+"route": "v6_fruit_out_of_view__apple_in_basket",
 "family": "fruit_out_of_view"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "fruit_out_of_view",
-"route": "v6_fruit_out_of_view",
+"variant": "fruit_out_of_view__apple_in_basket",
+"route": "v6_fruit_out_of_view__apple_in_basket",
 "family": "fruit_out_of_view"
 },
 {
@@ -8472,71 +8472,71 @@
 {
 "task": "T24_snack_for_kid",
 "seed": 10,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 11,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 12,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 13,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 14,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 15,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 16,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 17,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_banana",
+"route": "v6_two_kids__apple_banana",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 18,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {
 "task": "T24_snack_for_kid",
 "seed": 19,
-"variant": "two_kids",
-"route": "v6_two_kids",
+"variant": "two_kids__apple_snacks",
+"route": "v6_two_kids__apple_snacks",
 "family": "two_kids"
 },
 {

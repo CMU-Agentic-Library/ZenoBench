@@ -141,11 +141,11 @@ Removed with the injected action failures: 121 variants (17 had nothing else, 46
 | T23 | only_this_room | Task-Level | - | referent_clue; storage_place | 2 |
 | T23 | dropped_in_two_rooms | Task-Level | - | goal_items_unstated; not_in_view; storage_place | 2 |
 | T24 | apple_on_table | Control | - | - | 1 |
-| T24 | no_apples_for_him | Task-Level | - | preference_allocation | 1 |
-| T24 | dinner_soon | Task-Level | - | preference_allocation | 1 |
-| T24 | fruit_out_of_view | Task-Level | - | not_in_view | 1 |
+| T24 | no_apples_for_him | Task-Level | - | resource_in_use | 2 |
+| T24 | dinner_soon | Task-Level | - | preference_allocation | 2 |
+| T24 | fruit_out_of_view | Task-Level | - | not_in_view; resource_absent | 2 |
 | T24 | where_is_he | Task-Level | - | referent_clue | 2 |
-| T24 | two_kids | Task-Level | - | count_from_scene; multi_object_goal | 1 |
+| T24 | two_kids | Task-Level | - | count_from_scene; multi_object_goal | 2 |
 | T25 | drink_on_island | Control | - | - | 1 |
 | T25 | cup_elsewhere | Task-Level | - | not_in_view | 1 |
 | T25 | cold_one | Task-Level | - | preference_allocation | 1 |

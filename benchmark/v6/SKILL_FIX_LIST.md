@@ -139,9 +139,9 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | plate_counter_a | T13/copy_the_setting, T15/lid_elsewhere, T15/lid_in_use, T15/no_lid |
 | pick | red_book_2 | T14/next_in_series |
 | pick | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
-| pick | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |
-| pick | snack_banana | T24/no_apples_for_him, T24/two_kids |
-| pick | snack_box | T16/box_in_cabinet |
+| pick | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/no_apples_for_him, T24/two_kids, T24/where_is_he |
+| pick | snack_banana | T24/dinner_soon, T24/fruit_out_of_view, T24/no_apples_for_him, T24/two_kids |
+| pick | snack_box | T16/box_in_cabinet, T24/two_kids |
 | pick | soup_bowl_1 | T30/bowl_not_plate, T30/bowl_put_away, T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |
@@ -220,9 +220,9 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | plate_counter_a | T13/copy_the_setting |
 | place | red_book_2 | T14/next_in_series |
 | place | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
-| place | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/two_kids, T24/where_is_he |
-| place | snack_banana | T24/no_apples_for_him, T24/two_kids |
-| place | snack_box | T16/box_in_cabinet |
+| place | snack_apple | T24/dinner_soon, T24/fruit_out_of_view, T24/no_apples_for_him, T24/two_kids, T24/where_is_he |
+| place | snack_banana | T24/dinner_soon, T24/fruit_out_of_view, T24/no_apples_for_him, T24/two_kids |
+| place | snack_box | T16/box_in_cabinet, T24/two_kids |
 | place | soup_bowl_1 | T30/bowl_not_plate, T30/bowl_put_away, T30/bowls_in_cabinet, T30/how_many |
 | place | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |
 | place | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |

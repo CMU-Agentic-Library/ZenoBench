@@ -9894,35 +9894,53 @@
 
 ### no_apples_for_him（Task）
 
-**情况**：“他不爱吃苹果”：苹果和香蕉 → 拿香蕉
+**情况**：任务原话（不说不爱吃苹果）：苹果没人用就送苹果；苹果在餐桌一个座位的盘子里、旁边有勺子和杯子（有人在吃）时，送岛台果篮里的香蕉（香蕉和苹果都送降一档；只拿别人盘子里的苹果最不好）
 
-**指令**：孩子在书房写作业饿了，给他拿点吃的。他不爱吃苹果。
-
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`apple_free` D = 0、理想物在，`apple_in_use` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `snack_banana` 在 `desk_1/top` 上
-  - `["not on", "snack_apple", "desk_1/top"]`
-  - 手里空着
+  - 摆法 `apple_free`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+  - 摆法 `apple_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 没被挪动（离开局位置不超过 3 cm）
+        - `seat_plate` 没被挪动（离开局位置不超过 3 cm）
 - **次好（0.6）**：
 
-  - `snack_banana` 在 `desk_1/top` 上
-  - 手里空着
+  - 摆法 `apple_free`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `apple_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_banana` 在 `desk_1/top` 上
 - **最不好（0.3）**：
 
-  - `snack_apple` 在 `desk_1/top` 上
-  - 手里空着
-- **不行（0）**：什么都没拿；还拿着或掉了
+  - 摆法 `apple_free`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `apple_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+- **不行（0）**：书桌上没有能吃的；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_banana)` → 4. `pick(object=snack_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `apple_free`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `apple_in_use`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `navigate(destination=snack_banana)` → 6. `pick(object=snack_banana)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### dinner_soon（Task）
 
-**情况**：“还有半小时就吃晚饭了”：苹果和零食盒 → 拿苹果，零食别送过去
+**情况**：“还有半小时就吃晚饭了”：水果和零食盒 → 送水果，零食别送（水果零食都送降一档；只送零食最不好）
 
 **指令**：孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。
 
@@ -9930,40 +9948,78 @@
 
 - **好（1.0）**：
 
-  - `snack_apple` 在 `desk_1/top` 上
-  - `["not on", "snack_box", "desk_1/top"]`
-  - 手里空着
+  - 摆法 `apple`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `["not on", "snack_box", "desk_1/top"]`
+  - 摆法 `banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `["not on", "snack_box", "desk_1/top"]`
 - **次好（0.6）**：
 
-  - `snack_apple` 在 `desk_1/top` 上
-  - 手里空着
+  - 摆法 `apple`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+  - 摆法 `banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_banana` 在 `desk_1/top` 上
 - **最不好（0.3）**：
 
-  - `snack_box` 在 `desk_1/top` 上
   - 手里空着
-- **不行（0）**：什么都没拿；还拿着或掉了
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `snack_box` 在 `desk_1/top` 上
+- **不行（0）**：书桌上没有能吃的；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `apple`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `banana`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_banana)` → 4. `pick(object=snack_banana)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### fruit_out_of_view（Task）
 
-**情况**：餐桌上没吃的，果篮在卧室书架上 → 找到果篮拿苹果
+**情况**：餐桌上没吃的，果篮在卧室书架上 → 找到果篮拿苹果；果篮是空的时，接着找，厨房台面上有根香蕉（拿空果篮充数最不好）
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `snack_apple` 在 `desk_1/top` 上
+  - 摆法 `apple_in_basket`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+  - 摆法 `basket_empty`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_banana` 在 `desk_1/top` 上
+- **次好（0.6）**：
+
   - 手里空着
-- **不行（0）**：没找到；还拿着或掉了
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `home_basket` 在 `desk_1/top` 上
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：书桌上没有能吃的；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=home_basket, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=snack_apple)` → 7. `pick(object=snack_apple)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `apple_in_basket`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=home_basket, region=bedroom_0_1)` → 4. `navigate(destination=bookcase_2/top)` → 5. `look(target=bookcase_2/top)` → 6. `navigate(destination=snack_apple)` → 7. `pick(object=snack_apple)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
+- 摆法 `basket_empty`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `search(object=home_basket, region=bedroom_0_1)` → 4. `look(target=bookcase_2/top)` → 5. `search(object=snack_banana, region=kitchen_0_1)` → 6. `navigate(destination=snack_banana)` → 7. `pick(object=snack_banana)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=snack_banana, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])`
 
 ### where_is_he（Task）
 
@@ -9991,7 +10047,7 @@
 
 ### two_kids（Task）
 
-**情况**：“孩子们在写作业”：两张书桌都有作业，苹果和香蕉 → 一人一个
+**情况**：“孩子们在写作业”：两张书桌都有作业，两样吃的 → 一人一样（两样都给同一个孩子最不好）
 
 **指令**：孩子们在写作业，饿了，给他们拿点吃的。
 
@@ -9999,25 +10055,54 @@
 
 - **好（1.0）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `snack_apple` 在 `desk_1/top` 上
-      - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
-    - 第 2 组：
-      - `snack_banana` 在 `desk_1/top` 上
-      - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+  - 摆法 `apple_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+      - 第 2 组：
+        - `snack_banana` 在 `desk_1/top` 上
+        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+  - 摆法 `apple_snacks`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_box` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+      - 第 2 组：
+        - `snack_box` 在 `desk_1/top` 上
+        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+- **次好（0.6）**：
+
+  - 摆法 `apple_banana`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_banana` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_banana` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+  - 摆法 `apple_snacks`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `snack_apple` 在 `desk_1/top` 上
+        - `snack_box` 在 `desk_1/top` 上
+      - 第 2 组：
+        - `snack_apple` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
+        - `snack_box` 在其中任一处上：`desk_3/top`、`bookcase_4/top`
 - **最不好（0.3）**：
 
-  - `snack_apple` 在其中任一处上：`desk_1/top`、`desk_3/top`、`bookcase_4/top`
-  - `snack_banana` 在其中任一处上：`desk_1/top`、`desk_3/top`、`bookcase_4/top`
-  - 手里空着
-- **不行（0）**：有孩子没拿到且水果留在桌上；还拿着或掉了
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：有孩子没拿到、东西留在桌上；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
+- 摆法 `apple_banana`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_banana)` → 8. `pick(object=snack_banana)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_banana, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
+- 摆法 `apple_snacks`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=snack_apple)` → 4. `pick(object=snack_apple)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=snack_apple, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 7. `navigate(destination=snack_box)` → 8. `pick(object=snack_box)` → 9. `navigate(destination=desk_3/top)` → 10. `place(object=snack_box, receptacle=desk_3/top, hint_xy=[6.194, -5.329])`
 
 ---
 

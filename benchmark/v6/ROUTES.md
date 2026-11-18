@@ -455,12 +455,16 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Task-Level
 
-* `no_apples_for_him` (v6_no_apples_for_him, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
-* `dinner_soon` (v6_dinner_soon, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
-* `fruit_out_of_view` (v6_fruit_out_of_view, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) search(home_basket,bedroom_0_1) navigate(bookcase_2/top) look(bookcase_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
+* `no_apples_for_him__apple_free` (v6_no_apples_for_him__apple_free, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
+* `no_apples_for_him__apple_in_use` (v6_no_apples_for_him__apple_in_use, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(kitchen_island/top) look(kitchen_island/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
+* `dinner_soon__apple` (v6_dinner_soon__apple, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
+* `dinner_soon__banana` (v6_dinner_soon__banana, 6 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
+* `fruit_out_of_view__apple_in_basket` (v6_fruit_out_of_view__apple_in_basket, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) search(home_basket,bedroom_0_1) navigate(bookcase_2/top) look(bookcase_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
+* `fruit_out_of_view__basket_empty` (v6_fruit_out_of_view__basket_empty, 9 steps): navigate(dining_table_2/top) look(dining_table_2/top) search(home_basket,bedroom_0_1) look(bookcase_2/top) search(snack_banana,kitchen_0_1) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.248, -5.946])
 * `where_is_he__study` (v6_where_is_he__study, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_3/top) look(desk_3/top) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946])
 * `where_is_he__bedroom` (v6_where_is_he__bedroom, 8 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) look(desk_1/top) navigate(desk_3/top) place(snack_apple,desk_3/top,[6.194, -5.349])
-* `two_kids` (v6_two_kids, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_banana) pick(snack_banana) navigate(desk_3/top) place(snack_banana,desk_3/top,[6.194, -5.329])
+* `two_kids__apple_banana` (v6_two_kids__apple_banana, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_banana) pick(snack_banana) navigate(desk_3/top) place(snack_banana,desk_3/top,[6.194, -5.329])
+* `two_kids__apple_snacks` (v6_two_kids__apple_snacks, 10 steps): navigate(dining_table_2/top) look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.248, -5.946]) navigate(snack_box) pick(snack_box) navigate(desk_3/top) place(snack_box,desk_3/top,[6.194, -5.329])
 
 ## T25_drink_for_guest
 

@@ -241089,28 +241089,17 @@
       "top": "ideal"
      }
     },
-    "no_apples_for_him": {
+    "no_apples_for_him__apple_free": {
      "conditions": [
-      "preference_allocation"
+      "resource_in_use"
      ],
-     "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; he doesn't like apples.",
-     "instruction_zh": "孩子在书房写作业饿了，给他拿点吃的。他不爱吃苹果。",
      "add": {
       "snack_apple": {
        "asset": "apple",
        "support": "dining_table_2/top",
        "xy": [
-        3.3,
-        6.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "snack_banana": {
-       "asset": "banana",
-       "support": "dining_table_2/top",
-       "xy": [
         2.948,
-        7.095
+        6.695
        ],
        "yaw_deg": 0.0
       },
@@ -241128,11 +241117,6 @@
       "all": [
        [
         "on",
-        "snack_banana",
-        "desk_1/top"
-       ],
-       [
-        "not on",
         "snack_apple",
         "desk_1/top"
        ],
@@ -241143,19 +241127,18 @@
       ]
      },
      "watch": [
-      "snack_apple",
-      "snack_banana"
+      "snack_apple"
      ],
      "since": "v6",
-     "note": "an apple and a banana on the table; the kid does not like apples",
+     "note": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
      "v6": {
       "family": "no_apples_for_him",
-      "case": null,
-      "challenge": "an apple and a banana on the table; the kid does not like apples",
-      "rationale": "choose by what the kid likes: the banana",
+      "case": "apple_free",
+      "challenge": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
+      "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
       "derived_from": "bare"
      },
      "move": {},
@@ -241183,23 +241166,346 @@
        },
        {
         "names": [
-         "snack_apple",
-         "snack_banana"
+         "snack_apple"
         ],
         "support": "dining_table_2/top",
         "box": [
-         2.8518,
-         6.668,
-         3.3309,
-         7.1373
+         2.9171,
+         6.663,
+         2.9789,
+         6.727
         ],
         "dx": [
-         -0.05,
-         0.49
+         -0.11,
+         0.85
         ],
         "dy": [
-         -1.16,
-         0.8
+         -1.15,
+         1.21
+        ],
+        "pick": [
+         "snack_apple"
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -1.279,
+         -5.978,
+         -1.217,
+         -5.914
+        ]
+       ]
+      },
+      "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 0,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "no_apples_for_him__apple_free": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_apples_for_him__apple_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "snack_apple",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_plate",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone",
+        "raw": "best"
+       }
+      ],
+      "not_ok": "nothing to eat on the kid's desk; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "no_apples_for_him__apple_in_use": {
+     "conditions": [
+      "resource_in_use"
+     ],
+     "add": {
+      "seat_plate": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "seat_spoon": {
+       "asset": "breakfast_spoon",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        6.9
+       ],
+       "yaw_deg": 0.0
+      },
+      "seat_cup": {
+       "asset": "breakfast_cup",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.52,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_apple": {
+       "asset": "apple",
+       "support": null,
+       "z": 0.858,
+       "xy": [
+        3.3,
+        6.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "home_basket": {
+       "asset": "fruit_basket",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.78
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_banana": {
+       "asset": "banana",
+       "support": null,
+       "z": 0.881,
+       "xy": [
+        7.1,
+        1.78
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "snack_banana",
+        "desk_1/top"
+       ],
+       [
+        "near_start",
+        "snack_apple",
+        0.03
+       ],
+       [
+        "near_start",
+        "seat_plate",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "snack_apple",
+      "snack_banana",
+      "seat_plate",
+      "seat_spoon",
+      "seat_cup"
+     ],
+     "since": "v6",
+     "note": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
+     "v6": {
+      "family": "no_apples_for_him",
+      "case": "apple_in_use",
+      "challenge": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
+      "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
+      "control": "apple_on_table",
+      "contrast": null,
+      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "homework"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.805,
+         -6.0347,
+         -0.595,
+         -5.8654
+        ],
+        "dx": [
+         -0.59,
+         0.55
+        ],
+        "dy": [
+         -0.28,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "seat_cup",
+         "seat_plate",
+         "seat_spoon",
+         "snack_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.176,
+         6.576,
+         3.5738,
+         6.9205
+        ],
+        "dx": [
+         -0.37,
+         0.25
+        ],
+        "dy": [
+         -1.07,
+         1.02
+        ]
+       },
+       {
+        "names": [
+         "home_basket",
+         "snack_banana"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.9544,
+         1.6538,
+         7.2455,
+         1.9062
+        ],
+        "dx": [
+         -0.4,
+         1.0
+        ],
+        "dy": [
+         -0.12,
+         0.06
         ],
         "pick": [
          "snack_banana"
@@ -241276,6 +241582,32 @@
          3.839,
          0.2
         ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
        ]
       },
       "start": {
@@ -241290,8 +241622,55 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the banana on the desk",
+        "goal": {
+         "by_layout": {
+          "no_apples_for_him__apple_free": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_apples_for_him__apple_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "snack_apple",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_plate",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone",
         "raw": "best"
        },
        {
@@ -241299,13 +241678,18 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "no_apples_for_him": {
-           "all": [
+          "no_apples_for_him__apple_free": "n/a",
+          "no_apples_for_him__apple_in_use": {
+           "any": [
             [
-             "on",
-             "snack_banana",
-             "desk_1/top"
-            ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -241314,7 +241698,7 @@
           }
          }
         },
-        "why": "the banana, and the apple brought too",
+        "why": "the banana, and someone's apple taken too",
         "raw": "second"
        },
        {
@@ -241322,13 +241706,18 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "no_apples_for_him": {
-           "all": [
+          "no_apples_for_him__apple_free": "n/a",
+          "no_apples_for_him__apple_in_use": {
+           "any": [
             [
-             "on",
-             "snack_apple",
-             "desk_1/top"
-            ],
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -241337,7 +241726,7 @@
           }
          }
         },
-        "why": "the apple only (he does not like it)",
+        "why": "someone's apple from their plate",
         "raw": "worst"
        }
       ],
@@ -241345,7 +241734,7 @@
       "top": "ideal"
      }
     },
-    "dinner_soon": {
+    "dinner_soon__apple": {
      "conditions": [
       "preference_allocation"
      ],
@@ -241403,15 +241792,15 @@
       "snack_box"
      ],
      "since": "v6",
-     "note": "an apple and a box of snacks on the table; dinner is in half an hour",
+     "note": "a fruit and a box of snacks on the table; dinner is in half an hour",
      "v6": {
       "family": "dinner_soon",
-      "case": null,
-      "challenge": "an apple and a box of snacks on the table; dinner is in half an hour",
+      "case": "apple",
+      "challenge": "a fruit and a box of snacks on the table; dinner is in half an hour",
       "rationale": "with dinner close, the fruit, not the snacks",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "which fruit is beside the snacks (seed: an apple; or a banana)",
       "derived_from": "bare"
      },
      "move": {},
@@ -241565,8 +241954,55 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the apple on the desk",
+        "goal": {
+         "by_layout": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit on the desk, not the snacks",
         "raw": "best"
        },
        {
@@ -241574,13 +242010,34 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "dinner_soon": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
            "all": [
             [
-             "on",
-             "snack_apple",
-             "desk_1/top"
-            ],
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -241589,7 +242046,7 @@
           }
          }
         },
-        "why": "the apple, and the snack box too",
+        "why": "the fruit and the snacks",
         "raw": "second"
        },
        {
@@ -241597,13 +242054,34 @@
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "dinner_soon": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
            "all": [
             [
-             "on",
-             "snack_box",
-             "desk_1/top"
-            ],
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -241612,7 +242090,7 @@
           }
          }
         },
-        "why": "the snack box only (dinner in half an hour)",
+        "why": "the snacks only (dinner in half an hour)",
         "raw": "worst"
        }
       ],
@@ -241620,9 +242098,355 @@
       "top": "ideal"
      }
     },
-    "fruit_out_of_view": {
+    "dinner_soon__banana": {
      "conditions": [
-      "not_in_view"
+      "preference_allocation"
+     ],
+     "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
+     "instruction_zh": "孩子在书房写作业饿了，给他拿点吃的。还有半小时就吃晚饭了。",
+     "add": {
+      "snack_banana": {
+       "asset": "banana",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_box": {
+       "asset": "snack_carton",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        7.1
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "snack_banana",
+        "desk_1/top"
+       ],
+       [
+        "not on",
+        "snack_box",
+        "desk_1/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "snack_banana",
+      "snack_box"
+     ],
+     "since": "v6",
+     "note": "a fruit and a box of snacks on the table; dinner is in half an hour",
+     "v6": {
+      "family": "dinner_soon",
+      "case": "banana",
+      "challenge": "a fruit and a box of snacks on the table; dinner is in half an hour",
+      "rationale": "with dinner close, the fruit, not the snacks",
+      "control": "apple_on_table",
+      "contrast": null,
+      "factor": "which fruit is beside the snacks (seed: an apple; or a banana)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "homework"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.805,
+         -6.0347,
+         -0.595,
+         -5.8654
+        ],
+        "dx": [
+         -0.59,
+         0.55
+        ],
+        "dy": [
+         -0.28,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "snack_banana",
+         "snack_box"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.8518,
+         6.6527,
+         3.33,
+         7.155
+        ],
+        "dx": [
+         -0.05,
+         0.49
+        ],
+        "dy": [
+         -1.14,
+         0.79
+        ],
+        "pick": [
+         "snack_banana"
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -1.3442,
+         -5.9883,
+         -1.1518,
+         -5.9037
+        ]
+       ]
+      },
+      "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit on the desk, not the snacks",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit and the snacks",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the snacks only (dinner in half an hour)",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "nothing to eat on the kid's desk; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "fruit_out_of_view__apple_in_basket": {
+     "conditions": [
+      "not_in_view",
+      "resource_absent"
      ],
      "add": {
       "home_basket": {
@@ -241654,20 +242478,33 @@
        "yaw_deg": 0.0
       }
      },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "snack_apple",
+        "desk_1/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
      "watch": [
       "snack_apple",
       "home_basket"
      ],
      "since": "v6",
-     "note": "no food on the dining table; the fruit basket with an apple is on the bedroom bookcase",
+     "note": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
      "v6": {
       "family": "fruit_out_of_view",
-      "case": null,
-      "challenge": "no food on the dining table; the fruit basket with an apple is on the bedroom bookcase",
-      "rationale": "find where food is kept (the fruit basket), take something from it",
+      "case": "apple_in_basket",
+      "challenge": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
+      "rationale": "find where food is kept (the fruit basket) and take something from it; when it is empty, look on for other fruit (the banana on the kitchen counter)",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what the fruit basket holds (seed: an apple; or nothing, a banana on the kitchen counter)",
       "derived_from": "bare"
      },
      "move": {},
@@ -241794,14 +242631,448 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the apple from the basket on the study desk",
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit found (the apple in the basket, else the banana) on the desk",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the empty fruit basket brought instead",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "nothing to eat on the kid's desk; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "fruit_out_of_view__basket_empty": {
+     "conditions": [
+      "not_in_view",
+      "resource_absent"
+     ],
+     "add": {
+      "home_basket": {
+       "asset": "fruit_basket",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.92,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_banana": {
+       "asset": "banana",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.4,
+        8.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "snack_banana",
+        "desk_1/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "snack_banana",
+      "home_basket"
+     ],
+     "since": "v6",
+     "note": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
+     "v6": {
+      "family": "fruit_out_of_view",
+      "case": "basket_empty",
+      "challenge": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
+      "rationale": "find where food is kept (the fruit basket) and take something from it; when it is empty, look on for other fruit (the banana on the kitchen counter)",
+      "control": "apple_on_table",
+      "contrast": null,
+      "factor": "what the fruit basket holds (seed: an apple; or nothing, a banana on the kitchen counter)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "home_basket"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.7745,
+         -0.5563,
+         1.0655,
+         -0.3037
+        ],
+        "dx": [
+         -0.05,
+         0.21
+        ],
+        "dy": [
+         -0.05,
+         0.05
+        ],
+        "search": [
+         "home_basket"
+        ]
+       },
+       {
+        "names": [
+         "homework"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.805,
+         -6.0347,
+         -0.595,
+         -5.8654
+        ],
+        "dx": [
+         -0.59,
+         0.55
+        ],
+        "dy": [
+         -0.28,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "snack_banana"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4962,
+         8.6577,
+         -0.3038,
+         8.7423
+        ],
+        "dy": [
+         -1.67,
+         0.68
+        ],
+        "pick": [
+         "snack_banana"
+        ],
+        "search": [
+         "snack_banana"
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
+       "desk_1/top": [
+        [
+         -1.3442,
+         -5.9883,
+         -1.1518,
+         -5.9037
+        ]
+       ]
+      },
+      "reach": {
+       "bookcase_2/top": [
+        [
+         0,
+         1,
+         1.295,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         0.705,
+         -0.619,
+         -0.335,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -0.619,
+         0.705,
+         1.295,
+         0.2
+        ]
+       ],
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "home_basket",
+        "snack_banana"
+       ],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit found (the apple in the basket, else the banana) on the desk",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the empty fruit basket brought instead",
+        "raw": "second"
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped",
@@ -242193,7 +243464,7 @@
       "top": "ideal"
      }
     },
-    "two_kids": {
+    "two_kids__apple_banana": {
      "conditions": [
       "count_from_scene",
       "multi_object_goal"
@@ -242283,15 +243554,15 @@
       "snack_banana"
      ],
      "since": "v6",
-     "note": "two kids' homework, on the study desk and on the bedroom desk; an apple and a banana on the table",
+     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
      "v6": {
       "family": "two_kids",
-      "case": null,
-      "challenge": "two kids' homework, on the study desk and on the bedroom desk; an apple and a banana on the table",
+      "case": "apple_banana",
+      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
       "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "the seed's layout only",
+      "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
       "derived_from": "bare"
      },
      "move": {},
@@ -242502,35 +243773,82 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "one fruit on each kid's desk",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
-          "two_kids": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
-             "on_any",
-             "snack_apple",
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
              [
-              "desk_1/top",
-              "desk_3/top",
-              "bookcase_4/top"
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
              ]
             ],
             [
-             "on_any",
-             "snack_banana",
              [
-              "desk_1/top",
-              "desk_3/top",
-              "bookcase_4/top"
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
              ]
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -242539,11 +243857,592 @@
           }
          }
         },
-        "why": "both fruits brought, but to the same kid",
-        "raw": "worst"
+        "why": "one thing to eat on each kid's desk",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both to the same kid",
+        "raw": "second"
        }
       ],
-      "not_ok": "a kid gets nothing and a fruit left on the table; still held or dropped",
+      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
+      "top": "ideal"
+     }
+    },
+    "two_kids__apple_snacks": {
+     "conditions": [
+      "count_from_scene",
+      "multi_object_goal"
+     ],
+     "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
+     "instruction_zh": "孩子们在写作业，饿了，给他们拿点吃的。",
+     "add": {
+      "snack_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        6.695
+       ],
+       "yaw_deg": 0.0
+      },
+      "snack_box": {
+       "asset": "snack_carton",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.948,
+        7.095
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework": {
+       "asset": "notebook",
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -5.95
+       ],
+       "yaw_deg": 0.0
+      },
+      "homework_3": {
+       "asset": "notebook",
+       "support": "desk_3/top",
+       "xy": [
+        6.6,
+        -5.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "snack_apple",
+         "desk_1/top"
+        ],
+        [
+         "on_any",
+         "snack_box",
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
+        ]
+       ],
+       [
+        [
+         "on",
+         "snack_box",
+         "desk_1/top"
+        ],
+        [
+         "on_any",
+         "snack_apple",
+         [
+          "desk_3/top",
+          "bookcase_4/top"
+         ]
+        ]
+       ]
+      ]
+     },
+     "watch": [
+      "snack_apple",
+      "snack_box"
+     ],
+     "since": "v6",
+     "note": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
+     "v6": {
+      "family": "two_kids",
+      "case": "apple_snacks",
+      "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
+      "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+      "control": "apple_on_table",
+      "contrast": null,
+      "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "homework"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.805,
+         -6.0347,
+         -0.595,
+         -5.8654
+        ],
+        "dx": [
+         -0.59,
+         0.55
+        ],
+        "dy": [
+         -0.28,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "homework_3"
+        ],
+        "support": "desk_3/top",
+        "box": [
+         6.495,
+         -5.5846,
+         6.705,
+         -5.4154
+        ],
+        "dx": [
+         -0.65,
+         0.77
+        ],
+        "dy": [
+         -0.19,
+         0.21
+        ]
+       },
+       {
+        "names": [
+         "snack_box"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.918,
+         7.04,
+         2.978,
+         7.15
+        ],
+        "dx": [
+         -0.12,
+         0.85
+        ],
+        "dy": [
+         -1.53,
+         0.79
+        ],
+        "pick": [
+         "snack_box"
+        ]
+       },
+       {
+        "names": [
+         "snack_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         2.9171,
+         6.663,
+         2.9789,
+         6.727
+        ],
+        "dx": [
+         -0.11,
+         0.85
+        ],
+        "dy": [
+         -1.15,
+         1.21
+        ],
+        "pick": [
+         "snack_apple"
+        ]
+       }
+      ],
+      "static": {
+       "desk_1/top": [
+        [
+         -1.279,
+         -5.978,
+         -1.217,
+         -5.914
+        ]
+       ],
+       "desk_3/top": [
+        [
+         6.164,
+         -5.384,
+         6.224,
+         -5.274
+        ]
+       ]
+      },
+      "reach": {
+       "desk_1/top": [
+        [
+         0,
+         1,
+         -0.025,
+         -6.326,
+         -5.812,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         -1.408,
+         -6.326,
+         -5.709,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         -6.326,
+         -1.408,
+         -0.025,
+         0.2
+        ]
+       ],
+       "desk_3/top": [
+        [
+         0,
+         1,
+         7.488,
+         -5.789,
+         -5.188,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         5.834,
+         -5.689,
+         -5.188,
+         0.2
+        ],
+        [
+         1,
+         1,
+         -5.188,
+         5.834,
+         7.488,
+         0.2
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one thing to eat on each kid's desk",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both to the same kid",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped",
       "top": "ideal"
      }
     }
@@ -242567,12 +244466,16 @@
    "nominal": "nominal",
    "oracle": {
     "apple_on_table": "nominal",
-    "no_apples_for_him": "v6_no_apples_for_him",
-    "dinner_soon": "v6_dinner_soon",
-    "fruit_out_of_view": "v6_fruit_out_of_view",
+    "no_apples_for_him__apple_free": "v6_no_apples_for_him__apple_free",
+    "no_apples_for_him__apple_in_use": "v6_no_apples_for_him__apple_in_use",
+    "dinner_soon__apple": "v6_dinner_soon__apple",
+    "dinner_soon__banana": "v6_dinner_soon__banana",
+    "fruit_out_of_view__apple_in_basket": "v6_fruit_out_of_view__apple_in_basket",
+    "fruit_out_of_view__basket_empty": "v6_fruit_out_of_view__basket_empty",
     "where_is_he__study": "v6_where_is_he__study",
     "where_is_he__bedroom": "v6_where_is_he__bedroom",
-    "two_kids": "v6_two_kids"
+    "two_kids__apple_banana": "v6_two_kids__apple_banana",
+    "two_kids__apple_snacks": "v6_two_kids__apple_snacks"
    },
    "routes": {
     "nominal": {
@@ -242624,54 +244527,7 @@
       }
      ]
     },
-    "v6_no_apples_for_him": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "snack_banana"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "snack_banana"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "snack_banana",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.248,
-         -5.946
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "no_apples_for_him"
-    },
-    "v6_dinner_soon": {
+    "v6_no_apples_for_him__apple_free": {
      "steps": [
       {
        "skill": "navigate",
@@ -242716,9 +244572,162 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "dinner_soon"
+     "variant": "no_apples_for_him__apple_free"
     },
-    "v6_fruit_out_of_view": {
+    "v6_no_apples_for_him__apple_in_use": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_banana"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_banana",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "no_apples_for_him__apple_in_use"
+    },
+    "v6_dinner_soon__apple": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_apple",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "dinner_soon__apple"
+    },
+    "v6_dinner_soon__banana": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_banana"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_banana",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "dinner_soon__banana"
+    },
+    "v6_fruit_out_of_view__apple_in_basket": {
      "steps": [
       {
        "skill": "navigate",
@@ -242782,7 +244791,74 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "fruit_out_of_view"
+     "variant": "fruit_out_of_view__apple_in_basket"
+    },
+    "v6_fruit_out_of_view__basket_empty": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "home_basket",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "snack_banana",
+        "region": "kitchen_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_banana"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_banana"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_banana",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "fruit_out_of_view__basket_empty"
     },
     "v6_where_is_he__study": {
      "steps": [
@@ -242902,7 +244978,7 @@
      "kind": "v6_oracle",
      "variant": "where_is_he__bedroom"
     },
-    "v6_two_kids": {
+    "v6_two_kids__apple_banana": {
      "steps": [
       {
        "skill": "navigate",
@@ -242976,7 +245052,83 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "two_kids"
+     "variant": "two_kids__apple_banana"
+    },
+    "v6_two_kids__apple_snacks": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_apple",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -1.248,
+         -5.946
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_box"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_box"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_3/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_box",
+        "receptacle": "desk_3/top",
+        "hint_xy": [
+         6.194,
+         -5.329
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "two_kids__apple_snacks"
     }
    },
    "vary": {},
@@ -243031,42 +245183,99 @@
      "origin": "v6",
      "control": "apple_on_table",
      "layouts": [
-      "no_apples_for_him"
+      "no_apples_for_him__apple_free",
+      "no_apples_for_him__apple_in_use"
      ],
-     "factor": "the seed's layout only",
+     "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
      "seeds": {
-      "10": "no_apples_for_him",
-      "11": "no_apples_for_him",
-      "12": "no_apples_for_him",
-      "13": "no_apples_for_him",
-      "14": "no_apples_for_him",
-      "15": "no_apples_for_him",
-      "16": "no_apples_for_him",
-      "17": "no_apples_for_him",
-      "18": "no_apples_for_him",
-      "19": "no_apples_for_him"
+      "10": "no_apples_for_him__apple_in_use",
+      "11": "no_apples_for_him__apple_in_use",
+      "12": "no_apples_for_him__apple_in_use",
+      "13": "no_apples_for_him__apple_in_use",
+      "14": "no_apples_for_him__apple_free",
+      "15": "no_apples_for_him__apple_free",
+      "16": "no_apples_for_him__apple_free",
+      "17": "no_apples_for_him__apple_in_use",
+      "18": "no_apples_for_him__apple_free",
+      "19": "no_apples_for_him__apple_free"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "no_apples_for_him__apple_free": true,
+       "no_apples_for_him__apple_in_use": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the banana on the desk"
+        "goal": {
+         "by_layout": {
+          "no_apples_for_him__apple_free": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "no_apples_for_him__apple_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "snack_apple",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_plate",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "no_apples_for_him": {
-           "all": [
+          "no_apples_for_him__apple_free": "n/a",
+          "no_apples_for_him__apple_in_use": {
+           "any": [
             [
-             "on",
-             "snack_banana",
-             "desk_1/top"
-            ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -243075,20 +245284,25 @@
           }
          }
         },
-        "why": "the banana, and the apple brought too"
+        "why": "the banana, and someone's apple taken too"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "no_apples_for_him": {
-           "all": [
+          "no_apples_for_him__apple_free": "n/a",
+          "no_apples_for_him__apple_in_use": {
+           "any": [
             [
-             "on",
-             "snack_apple",
-             "desk_1/top"
-            ],
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -243097,52 +245311,133 @@
           }
          }
         },
-        "why": "the apple only (he does not like it)"
+        "why": "someone's apple from their plate"
        }
       ],
-      "not_ok": "nothing to eat on the kid's desk; still held or dropped"
+      "not_ok": "nothing to eat on the kid's desk; still held or dropped",
+      "D_by_layout": {
+       "no_apples_for_him__apple_free": 0,
+       "no_apples_for_him__apple_in_use": 1
+      },
+      "top_by_layout": {
+       "no_apples_for_him__apple_free": "ideal",
+       "no_apples_for_him__apple_in_use": "ideal"
+      }
      }
     },
     "dinner_soon": {
      "origin": "v6",
      "control": "apple_on_table",
      "layouts": [
-      "dinner_soon"
+      "dinner_soon__apple",
+      "dinner_soon__banana"
      ],
-     "factor": "the seed's layout only",
+     "factor": "which fruit is beside the snacks (seed: an apple; or a banana)",
      "seeds": {
-      "10": "dinner_soon",
-      "11": "dinner_soon",
-      "12": "dinner_soon",
-      "13": "dinner_soon",
-      "14": "dinner_soon",
-      "15": "dinner_soon",
-      "16": "dinner_soon",
-      "17": "dinner_soon",
-      "18": "dinner_soon",
-      "19": "dinner_soon"
+      "10": "dinner_soon__apple",
+      "11": "dinner_soon__banana",
+      "12": "dinner_soon__banana",
+      "13": "dinner_soon__banana",
+      "14": "dinner_soon__banana",
+      "15": "dinner_soon__apple",
+      "16": "dinner_soon__apple",
+      "17": "dinner_soon__apple",
+      "18": "dinner_soon__apple",
+      "19": "dinner_soon__banana"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "dinner_soon__apple": true,
+       "dinner_soon__banana": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the apple on the desk"
+        "goal": {
+         "by_layout": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "not on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit on the desk, not the snacks"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "dinner_soon": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
            "all": [
             [
-             "on",
-             "snack_apple",
-             "desk_1/top"
-            ],
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -243151,20 +245446,41 @@
           }
          }
         },
-        "why": "the apple, and the snack box too"
+        "why": "the fruit and the snacks"
        },
        {
         "name": "worst",
         "score": 0.3,
         "goal": {
          "by_layout": {
-          "dinner_soon": {
+          "dinner_soon__apple": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
            "all": [
             [
-             "on",
-             "snack_box",
-             "desk_1/top"
-            ],
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "dinner_soon__banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -243173,7 +245489,7 @@
           }
          }
         },
-        "why": "the snack box only (dinner in half an hour)"
+        "why": "the snacks only (dinner in half an hour)"
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped"
@@ -243183,29 +245499,125 @@
      "origin": "v6",
      "control": "apple_on_table",
      "layouts": [
-      "fruit_out_of_view"
+      "fruit_out_of_view__apple_in_basket",
+      "fruit_out_of_view__basket_empty"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what the fruit basket holds (seed: an apple; or nothing, a banana on the kitchen counter)",
      "seeds": {
-      "10": "fruit_out_of_view",
-      "11": "fruit_out_of_view",
-      "12": "fruit_out_of_view",
-      "13": "fruit_out_of_view",
-      "14": "fruit_out_of_view",
-      "15": "fruit_out_of_view",
-      "16": "fruit_out_of_view",
-      "17": "fruit_out_of_view",
-      "18": "fruit_out_of_view",
-      "19": "fruit_out_of_view"
+      "10": "fruit_out_of_view__basket_empty",
+      "11": "fruit_out_of_view__apple_in_basket",
+      "12": "fruit_out_of_view__apple_in_basket",
+      "13": "fruit_out_of_view__apple_in_basket",
+      "14": "fruit_out_of_view__basket_empty",
+      "15": "fruit_out_of_view__basket_empty",
+      "16": "fruit_out_of_view__basket_empty",
+      "17": "fruit_out_of_view__basket_empty",
+      "18": "fruit_out_of_view__apple_in_basket",
+      "19": "fruit_out_of_view__apple_in_basket"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "fruit_out_of_view__apple_in_basket": true,
+       "fruit_out_of_view__basket_empty": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the apple from the basket on the study desk"
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the fruit found (the apple in the basket, else the banana) on the desk"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "fruit_out_of_view__basket_empty": {
+           "any": [
+            [
+             [
+              "on",
+              "home_basket",
+              "desk_1/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the empty fruit basket brought instead"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "fruit_out_of_view__apple_in_basket": "n/a",
+          "fruit_out_of_view__basket_empty": "n/a"
+         }
+        },
+        "why": "-"
        }
       ],
       "not_ok": "nothing to eat on the kid's desk; still held or dropped"
@@ -243248,55 +245660,108 @@
      "origin": "v6",
      "control": "apple_on_table",
      "layouts": [
-      "two_kids"
+      "two_kids__apple_banana",
+      "two_kids__apple_snacks"
      ],
-     "factor": "the seed's layout only",
+     "factor": "what there is to share (seed: an apple and a banana; or an apple and a box of snacks)",
      "seeds": {
-      "10": "two_kids",
-      "11": "two_kids",
-      "12": "two_kids",
-      "13": "two_kids",
-      "14": "two_kids",
-      "15": "two_kids",
-      "16": "two_kids",
-      "17": "two_kids",
-      "18": "two_kids",
-      "19": "two_kids"
+      "10": "two_kids__apple_snacks",
+      "11": "two_kids__apple_snacks",
+      "12": "two_kids__apple_banana",
+      "13": "two_kids__apple_banana",
+      "14": "two_kids__apple_banana",
+      "15": "two_kids__apple_snacks",
+      "16": "two_kids__apple_banana",
+      "17": "two_kids__apple_banana",
+      "18": "two_kids__apple_snacks",
+      "19": "two_kids__apple_snacks"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "two_kids__apple_banana": true,
+       "two_kids__apple_snacks": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "one fruit on each kid's desk"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
         "goal": {
          "by_layout": {
-          "two_kids": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ],
+            [
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
            "all": [
             [
-             "on_any",
-             "snack_apple",
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
              [
-              "desk_1/top",
-              "desk_3/top",
-              "bookcase_4/top"
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
              ]
             ],
             [
-             "on_any",
-             "snack_banana",
              [
-              "desk_1/top",
-              "desk_3/top",
-              "bookcase_4/top"
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ],
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
              ]
-            ],
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -243305,10 +245770,110 @@
           }
          }
         },
-        "why": "both fruits brought, but to the same kid"
+        "why": "one thing to eat on each kid's desk"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_banana",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_banana",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "two_kids__apple_snacks": {
+           "any": [
+            [
+             [
+              "on",
+              "snack_apple",
+              "desk_1/top"
+             ],
+             [
+              "on",
+              "snack_box",
+              "desk_1/top"
+             ]
+            ],
+            [
+             [
+              "on_any",
+              "snack_apple",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ],
+             [
+              "on_any",
+              "snack_box",
+              [
+               "desk_3/top",
+               "bookcase_4/top"
+              ]
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "both to the same kid"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "two_kids__apple_banana": "n/a",
+          "two_kids__apple_snacks": "n/a"
+         }
+        },
+        "why": "-"
        }
       ],
-      "not_ok": "a kid gets nothing and a fruit left on the table; still held or dropped"
+      "not_ok": "a kid gets nothing and a thing left on the table; still held or dropped"
      }
     }
    },
@@ -243324,7 +245889,7 @@
      "category": "task",
      "local": [],
      "longer": [
-      "preference_allocation"
+      "resource_in_use"
      ]
     },
     "dinner_soon": {
@@ -243338,7 +245903,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "not_in_view",
+      "resource_absent"
      ]
     },
     "where_is_he": {

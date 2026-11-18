@@ -24090,7 +24090,52 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T24_snack_for_kid/no_apples_for_him": {
+ "T24_snack_for_kid/no_apples_for_him__apple_free": {
+  "variant": "no_apples_for_him",
+  "category": "task",
+  "seeds": [
+   14,
+   15,
+   16,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_apple"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_no_apples_for_him__apple_free",
+  "challenge": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
+  "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/no_apples_for_him__apple_in_use": {
   "variant": "no_apples_for_him",
   "category": "task",
   "seeds": [
@@ -24098,26 +24143,25 @@
    11,
    12,
    13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
+   17
   ],
-  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; he doesn't like apples.",
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [],
    "added": [
+    "home_basket",
     "homework",
+    "seat_cup",
+    "seat_plate",
+    "seat_spoon",
     "snack_apple",
     "snack_banana"
    ],
    "removed": [],
    "conditions": [
-    "preference_allocation"
+    "resource_in_use"
    ],
    "initial_checks": []
   },
@@ -24130,9 +24174,14 @@
      "desk_1/top"
     ],
     [
-     "not on",
+     "near_start",
      "snack_apple",
-     "desk_1/top"
+     0.03
+    ],
+    [
+     "near_start",
+     "seat_plate",
+     0.03
     ],
     [
      "hand_empty",
@@ -24141,25 +24190,20 @@
    ]
   },
   "control": "apple_on_table",
-  "oracle_route": "v6_no_apples_for_him",
-  "challenge": "an apple and a banana on the table; the kid does not like apples",
-  "rationale": "choose by what the kid likes: the banana",
+  "oracle_route": "v6_no_apples_for_him__apple_in_use",
+  "challenge": "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
+  "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T24_snack_for_kid/dinner_soon": {
+ "T24_snack_for_kid/dinner_soon__apple": {
   "variant": "dinner_soon",
   "category": "task",
   "seeds": [
    10,
-   11,
-   12,
-   13,
-   14,
    15,
    16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
   "initial_conditions": {
@@ -24197,23 +24241,69 @@
    ]
   },
   "control": "apple_on_table",
-  "oracle_route": "v6_dinner_soon",
-  "challenge": "an apple and a box of snacks on the table; dinner is in half an hour",
+  "oracle_route": "v6_dinner_soon__apple",
+  "challenge": "a fruit and a box of snacks on the table; dinner is in half an hour",
   "rationale": "with dinner close, the fruit, not the snacks",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T24_snack_for_kid/fruit_out_of_view": {
-  "variant": "fruit_out_of_view",
+ "T24_snack_for_kid/dinner_soon__banana": {
+  "variant": "dinner_soon",
   "category": "task",
   "seeds": [
-   10,
    11,
    12,
    13,
    14,
-   15,
-   16,
-   17,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_banana",
+    "snack_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_banana",
+     "desk_1/top"
+    ],
+    [
+     "not on",
+     "snack_box",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_dinner_soon__banana",
+  "challenge": "a fruit and a box of snacks on the table; dinner is in half an hour",
+  "rationale": "with dinner close, the fruit, not the snacks",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/fruit_out_of_view__apple_in_basket": {
+  "variant": "fruit_out_of_view",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   13,
    18,
    19
   ],
@@ -24229,7 +24319,8 @@
    ],
    "removed": [],
    "conditions": [
-    "not_in_view"
+    "not_in_view",
+    "resource_absent"
    ],
    "initial_checks": []
   },
@@ -24248,9 +24339,56 @@
    ]
   },
   "control": "apple_on_table",
-  "oracle_route": "v6_fruit_out_of_view",
-  "challenge": "no food on the dining table; the fruit basket with an apple is on the bedroom bookcase",
-  "rationale": "find where food is kept (the fruit basket), take something from it",
+  "oracle_route": "v6_fruit_out_of_view__apple_in_basket",
+  "challenge": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
+  "rationale": "find where food is kept (the fruit basket) and take something from it; when it is empty, look on for other fruit (the banana on the kitchen counter)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/fruit_out_of_view__basket_empty": {
+  "variant": "fruit_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   14,
+   15,
+   16,
+   17
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "home_basket",
+    "homework",
+    "snack_banana"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view",
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_banana",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_fruit_out_of_view__basket_empty",
+  "challenge": "no food on the dining table; the fruit basket is on the bedroom bookcase, with an apple in it or empty",
+  "rationale": "find where food is kept (the fruit basket) and take something from it; when it is empty, look on for other fruit (the banana on the kitchen counter)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T24_snack_for_kid/where_is_he__study": {
@@ -24346,20 +24484,15 @@
   "rationale": "the kid is where his homework is: bring the food to that desk",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T24_snack_for_kid/two_kids": {
+ "T24_snack_for_kid/two_kids__apple_banana": {
   "variant": "two_kids",
   "category": "task",
   "seeds": [
-   10,
-   11,
    12,
    13,
    14,
-   15,
    16,
-   17,
-   18,
-   19
+   17
   ],
   "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
   "initial_conditions": {
@@ -24421,8 +24554,83 @@
    ]
   },
   "control": "apple_on_table",
-  "oracle_route": "v6_two_kids",
-  "challenge": "two kids' homework, on the study desk and on the bedroom desk; an apple and a banana on the table",
+  "oracle_route": "v6_two_kids__apple_banana",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
+  "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/two_kids__apple_snacks": {
+  "variant": "two_kids",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   18,
+   19
+  ],
+  "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "homework_3",
+    "snack_apple",
+    "snack_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "snack_apple",
+      "desk_1/top"
+     ],
+     [
+      "on_any",
+      "snack_box",
+      [
+       "desk_3/top",
+       "bookcase_4/top"
+      ]
+     ]
+    ],
+    [
+     [
+      "on",
+      "snack_box",
+      "desk_1/top"
+     ],
+     [
+      "on_any",
+      "snack_apple",
+      [
+       "desk_3/top",
+       "bookcase_4/top"
+      ]
+     ]
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_two_kids__apple_snacks",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; two things to eat on the table (two fruits, or one fruit and a box of snacks)",
   "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

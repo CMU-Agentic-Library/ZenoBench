@@ -737,6 +737,21 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
                                       "tipped; still held"),
              ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
              ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         **{("T24", d): _layout_tiers(d, w, no) for d, w, no in (
+             ("no_apples_for_him", {"best": "something nobody is eating on the desk: the apple when free, else the "
+                                            "banana from the basket, someone's plate left alone",
+                                    "second": "the banana, and someone's apple taken too",
+                                    "worst": "someone's apple from their plate"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("dinner_soon", {"best": "the fruit on the desk, not the snacks", "second": "the fruit and the snacks",
+                              "worst": "the snacks only (dinner in half an hour)"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("fruit_out_of_view", {"best": "the fruit found (the apple in the basket, else the banana) on the desk",
+                                    "second": "the empty fruit basket brought instead", "worst": "-"},
+              "nothing to eat on the kid's desk; still held or dropped"),
+             ("two_kids", {"best": "one thing to eat on each kid's desk", "second": "both to the same kid",
+                           "worst": "-"},
+              "a kid gets nothing and a thing left on the table; still held or dropped"))},
          **{("T23", d): _layout_tiers(d, w, no) for d, w, no in (
              ("by_kind", {"best": "the spoon to the kitchen, the block with the toys: the toy box, or the tray beside "
                                   "the full toy bin",
@@ -980,6 +995,10 @@ NOT_OK_ZH = {
     ("T19", "x6_gd_can_put_away"): "罐子或泡沫块没进回收箱；还拿着或掉了",
     ("T17", "h_task_lid_elsewhere"): "积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着",
     ("T17", "hide_both"): "积木一眼能看到；藏进微波炉或冰箱；还拿着",
+    ("T24", "no_apples_for_him"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "dinner_soon"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "fruit_out_of_view"): "书桌上没有能吃的；还拿着或掉了",
+    ("T24", "two_kids"): "有孩子没拿到、东西留在桌上；还拿着或掉了",
     ("T23", "by_kind"): "有东西还在地上；还拿着",
     ("T23", "belongs_on_floor"): "积木还在地上或没放进容器；还拿着",
     ("T23", "dropped_out_of_view"): "没找到；还在地上；还拿着或掉了",
