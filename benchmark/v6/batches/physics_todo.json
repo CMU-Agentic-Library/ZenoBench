@@ -2809,8 +2809,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 11,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_tv",
+"route": "hard_search_approach",
 "family": "far_sponge_tv"
 },
 {
@@ -2823,50 +2823,50 @@
 {
 "task": "T08_wipe_island",
 "seed": 13,
-"variant": "far_sponge_tv",
-"route": "hard_search_approach",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "family": "far_sponge_tv"
 },
 {
 "task": "T08_wipe_island",
 "seed": 14,
-"variant": "far_sponge_tv",
-"route": "hard_search_approach",
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
 "family": "far_sponge_tv"
 },
 {
 "task": "T08_wipe_island",
 "seed": 15,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "family": "far_sponge_tv"
 },
 {
 "task": "T08_wipe_island",
 "seed": 16,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
-"family": "far_sponge_tv"
-},
-{
-"task": "T08_wipe_island",
-"seed": 17,
 "variant": "far_sponge_tv",
 "route": "hard_search_approach",
 "family": "far_sponge_tv"
 },
 {
 "task": "T08_wipe_island",
+"seed": 17,
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
+"family": "far_sponge_tv"
+},
+{
+"task": "T08_wipe_island",
 "seed": 18,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "family": "far_sponge_tv"
 },
 {
 "task": "T08_wipe_island",
 "seed": 19,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
 "family": "far_sponge_tv"
 },
 {

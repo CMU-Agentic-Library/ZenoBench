@@ -12307,10 +12307,9 @@
   "category": "task",
   "seeds": [
    10,
+   11,
    12,
-   13,
-   14,
-   17
+   16
   ],
   "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
   "initial_conditions": {
@@ -12355,15 +12354,13 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/far_sponge_tv__alt_dining_table_2": {
+ "T08_wipe_island/far_sponge_foam_cube": {
   "variant": "far_sponge_tv",
   "category": "task",
   "seeds": [
-   11,
+   13,
    15,
-   16,
-   18,
-   19
+   18
   ],
   "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
   "initial_conditions": {
@@ -12376,11 +12373,12 @@
    "moved": [
     "kitchen_sponge"
    ],
-   "added": [],
+   "added": [
+    "foam_cube_toy"
+   ],
    "removed": [],
    "conditions": [
-    "start_elsewhere",
-    "tool_away_from_surface"
+    "unsuitable_at_hand"
    ],
    "initial_checks": []
   },
@@ -12397,15 +12395,73 @@
      "kitchen_island/top"
     ],
     [
+     "near_start",
+     "foam_cube_toy",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "sponge_on_island",
-  "oracle_route": "v6_far_sponge_tv__alt_dining_table_2",
-  "challenge": "the robot starts in the dining room; the sponge is on the TV stand (here the kitchen_sponge is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_far_sponge_foam_cube",
+  "challenge": "the kid's blue foam cube lies on the island, like a sponge; the sponge is on the TV stand",
+  "rationale": "a toy is no sponge: find the real one, wipe, leave the cube",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/far_sponge_spare_only": {
+  "variant": "far_sponge_tv",
+  "category": "task",
+  "seeds": [
+   14,
+   17,
+   19
+  ],
+  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    4.24,
+    5.12,
+    120.0
+   ],
+   "moved": [],
+   "added": [
+    "spare_sponge",
+    "sponge_tray"
+   ],
+   "removed": [
+    "kitchen_sponge"
+   ],
+   "conditions": [
+    "missing_piece"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "on",
+     "spare_sponge",
+     "kitchen_island/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "sponge_on_island",
+  "oracle_route": "v6_far_sponge_spare_only",
+  "challenge": "the usual sponge is gone; the spare lies in its tray on the low wall cabinet",
+  "rationale": "the spare is the sponge there is: take it, wipe, leave it on the island",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T08_wipe_island/wipe_and_sort__blocks": {

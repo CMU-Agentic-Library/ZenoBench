@@ -49,6 +49,12 @@ KIND = {
     ("T07", "vessel_decides_appliance"): {"in_ceramic_bowl": None, "in_glass_box": None, "in_pot": "能力不足",
                                           "in_steel_box": "能力不足", "in_foil_tray": "能力不足"},
     ("T07", "two_portions"): {"*": None},
+    ("T08", "sponge_on_island"): {"*": None},
+    ("T08", "far_sponge_tv"): {"far_sponge_tv": None, "far_sponge_foam_cube": "看着像但不能用",
+                               "far_sponge_spare_only": "缺失"},
+    ("T08", "wipe_and_sort"): {"*": None},
+    ("T08", "return_sponge_home"): {"*": None},
+    ("T08", "which_surface"): {"*": None},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

@@ -2712,8 +2712,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 11,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_tv",
+"route": "hard_search_approach",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -2732,8 +2732,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 13,
-"variant": "far_sponge_tv",
-"route": "hard_search_approach",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -2742,8 +2742,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 14,
-"variant": "far_sponge_tv",
-"route": "hard_search_approach",
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -2752,8 +2752,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 15,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -2762,16 +2762,6 @@
 {
 "task": "T08_wipe_island",
 "seed": 16,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"category": "task",
-"v6_variant": "far_sponge_tv"
-},
-{
-"task": "T08_wipe_island",
-"seed": 17,
 "variant": "far_sponge_tv",
 "route": "hard_search_approach",
 "planner": "scripted",
@@ -2781,9 +2771,19 @@
 },
 {
 "task": "T08_wipe_island",
+"seed": 17,
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "far_sponge_tv"
+},
+{
+"task": "T08_wipe_island",
 "seed": 18,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_foam_cube",
+"route": "v6_far_sponge_foam_cube",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
@@ -2792,8 +2792,8 @@
 {
 "task": "T08_wipe_island",
 "seed": 19,
-"variant": "far_sponge_tv__alt_dining_table_2",
-"route": "v6_far_sponge_tv__alt_dining_table_2",
+"variant": "far_sponge_spare_only",
+"route": "v6_far_sponge_spare_only",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",

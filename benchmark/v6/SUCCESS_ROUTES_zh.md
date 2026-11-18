@@ -5238,25 +5238,70 @@
 
 **情况**：从餐厅出发，海绵不在岛台 → 先找海绵
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`far_sponge_tv` D = 1、理想物在，`far_sponge_foam_cube` D = 1、理想物在，`far_sponge_spare_only` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `kitchen_island/top` 擦过
-  - `kitchen_sponge` 在 `kitchen_island/top` 上
-  - 手里空着
+  - 摆法 `far_sponge_foam_cube`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+        - `foam_cube_toy` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `far_sponge_tv`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 摆法 `far_sponge_spare_only`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `spare_sponge` 在 `kitchen_island/top` 上
 - **次好（0.6）**：
 
-  - `kitchen_island/top` 擦过
-  - `kitchen_sponge` 不在地上
-  - 手里空着
-- **不行（0）**：没找到海绵；没擦或没擦完；海绵还拿着或掉在地上
+  - 摆法 `far_sponge_tv`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `kitchen_sponge` 不在地上
+  - 摆法 `far_sponge_spare_only`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `spare_sponge` 不在地上
+  - 摆法 `far_sponge_foam_cube`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+        - `kitchen_sponge` 在 `kitchen_island/top` 上
+      - 第 2 组：
+        - `kitchen_island/top` 擦过
+        - `["not near_start", "kitchen_sponge", 0.05]`
+        - `kitchen_sponge` 不在地上
+- **最不好（0.3）**：
+
+  - 摆法 `far_sponge_tv`、`far_sponge_spare_only`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `far_sponge_foam_cube`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kitchen_island/top` 擦过
+- **不行（0）**：没找到海绵（或备用海绵）；没擦或没擦完；海绵还拿着或掉在地上
 
 
 **参考调用顺序**：
 
 - 摆法 `far_sponge_tv`：1. `search(object=kitchen_sponge, region=living_room_0_0)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
-- 摆法 `alt_dining_table_2`：1. `search(object=kitchen_sponge, region=dining_room_0_1)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `far_sponge_foam_cube`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `search(object=kitchen_sponge, region=living_room_0_0)` → 4. `navigate(destination=kitchen_sponge)` → 5. `pick(object=kitchen_sponge)` → 6. `navigate(destination=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `far_sponge_spare_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=spare_sponge)` → 5. `pick(object=spare_sponge)` → 6. `navigate(destination=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=spare_sponge)` → 8. `place(object=spare_sponge, receptacle=kitchen_island/top)`
 
 ### wipe_and_sort（Task）
 

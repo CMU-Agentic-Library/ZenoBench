@@ -36,7 +36,7 @@ def test_missing_open_is_caught():
 
 
 def test_missing_walk_is_caught():
-    lid = "far_sponge_tv__alt_dining_table_2"
+    lid = "far_sponge_tv"
     steps = TASKS["T08"]["routes"][TASKS["T08"]["oracle"][lid]]["steps"]
     k = next(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
     p = broken("T08", lid, lambda i, s: i == k)

@@ -135868,30 +135868,165 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the island wiped, the sponge back on the island",
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ],
+             [
+              "near_start",
+              "foam_cube_toy",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "spare_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "wiped",
-           "kitchen_island/top"
-          ],
-          [
-           "not on_floor",
-           "kitchen_sponge"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not near_start",
+              "kitchen_sponge",
+              0.05
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "spare_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)",
+        "why": "one step down: the sponge left elsewhere, or the kid's cube moved",
         "raw": "second"
        }
       ],
@@ -135899,67 +136034,114 @@
       "top": "ideal"
      }
     },
-    "far_sponge_tv__alt_dining_table_2": {
-     "note": "the robot starts in the dining room; the sponge is on the TV stand (here the kitchen_sponge is on dining_table_2/top)",
-     "conditions": [
-      "start_elsewhere",
-      "tool_away_from_surface"
-     ],
+    "far_sponge_foam_cube": {
+     "move": {
+      "kitchen_sponge": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "start": [
       4.24,
       5.12,
       120.0
      ],
-     "move": {
-      "kitchen_sponge": {
-       "support": "dining_table_2/top",
+     "conditions": [
+      "unsuitable_at_hand"
+     ],
+     "add": {
+      "foam_cube_toy": {
+       "asset": "foam_cube",
+       "support": "kitchen_island/top",
        "xy": [
-        3.7,
-        6.3
+        8.164,
+        1.82
        ],
        "yaw_deg": 0.0
       }
      },
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "kitchen_island/top"
+       ],
+       [
+        "near_start",
+        "foam_cube_toy",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "kitchen_sponge",
+      "foam_cube_toy"
+     ],
      "since": "v6",
-     "condition_types": [
-      "search_target",
-      "search_tool"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
+     "note": "the kid's blue foam cube lies on the island, like a sponge; the sponge is on the TV stand",
      "v6": {
-      "family": "far_sponge_tv",
-      "case": "alt_dining_table_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the robot starts in the dining room; the sponge is on the TV stand (here the kitchen_sponge is on dining_table_2/top)",
-      "derived_from": "far_sponge_tv",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "far_sponge_foam_cube",
+      "case": null,
+      "challenge": "the kid's blue foam cube lies on the island, like a sponge; the sponge is on the TV stand",
+      "rationale": "a toy is no sponge: find the real one, wipe, leave the cube",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "far_sponge_tv"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "kitchen_sponge"
+         "foam_cube_toy"
         ],
-        "support": "dining_table_2/top",
+        "support": "kitchen_island/top",
         "box": [
-         3.655,
-         6.27,
-         3.745,
-         6.33
+         8.134,
+         1.79,
+         8.194,
+         1.85
         ],
         "dx": [
-         -0.85,
-         0.08
+         -1.58,
+         0.05
         ],
         "dy": [
-         -0.76,
-         1.61
+         -0.26,
+         0.12
+        ]
+       },
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.555,
+         0.35,
+         7.645,
+         0.41
+        ],
+        "dx": [
+         -0.9,
+         0.72
+        ],
+        "dy": [
+         -0.12,
+         0.09
         ],
         "pick": [
          "kitchen_sponge"
@@ -135970,74 +136152,120 @@
        }
       ],
       "static": {
-       "dining_table_2/top": [
+       "kitchen_island/top": [
         [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
         ],
         [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
         ],
         [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
+         7.2,
+         1.605,
+         7.24,
+         1.6451
         ],
         [
-         2.835,
-         6.405,
-         3.135,
-         6.795
+         7.05,
+         1.605,
+         7.09,
+         1.6451
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
         ]
        ]
       },
       "reach": {
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
+       "kitchen_island/top": [
         [
          0,
          -1,
-         2.788,
-         5.495,
-         7.955,
+         6.54,
+         1.515,
+         1.985,
          0.2
         ],
         [
          1,
          1,
-         7.955,
-         2.788,
-         3.839,
+         1.985,
+         6.54,
+         8.26,
          0.2
         ],
         [
          1,
          -1,
-         5.495,
-         2.788,
-         3.839,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ],
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
          0.2
         ]
        ]
       },
       "start": {
        "room": "dining_room_0_1",
-       "hide": [
-        "kitchen_sponge"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -136047,35 +136275,499 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the island wiped, the sponge back on the island",
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ],
+             [
+              "near_start",
+              "foam_cube_toy",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "spare_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched",
         "raw": "best"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "wiped",
-           "kitchen_island/top"
-          ],
-          [
-           "not on_floor",
-           "kitchen_sponge"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not near_start",
+              "kitchen_sponge",
+              0.05
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "spare_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)",
+        "why": "one step down: the sponge left elsewhere, or the kid's cube moved",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": "n/a",
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": "n/a"
+         }
+        },
+        "why": "the island wiped with the kid's foam cube (the real sponge never taken)",
+        "raw": "worst"
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
       "top": "ideal"
+     }
+    },
+    "far_sponge_spare_only": {
+     "move": {},
+     "start": [
+      4.24,
+      5.12,
+      120.0
+     ],
+     "conditions": [
+      "missing_piece"
+     ],
+     "remove": [
+      "kitchen_sponge"
+     ],
+     "add": {
+      "sponge_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 0.645,
+       "xy": [
+        1.45,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "spare_sponge",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "spare_sponge",
+      "sponge_tray"
+     ],
+     "since": "v6",
+     "note": "the usual sponge is gone; the spare lies in its tray on the low wall cabinet",
+     "v6": {
+      "family": "far_sponge_spare_only",
+      "case": null,
+      "challenge": "the usual sponge is gone; the spare lies in its tray on the low wall cabinet",
+      "rationale": "the spare is the sponge there is: take it, wipe, leave it on the island",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "far_sponge_tv"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "spare_sponge",
+         "sponge_tray"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.265,
+         0.32,
+         1.535,
+         0.52
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ],
+        "pick": [
+         "spare_sponge"
+        ]
+       }
+      ],
+      "static": {},
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "dining_room_0_1",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ],
+             [
+              "near_start",
+              "foam_cube_toy",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "spare_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not near_start",
+              "kitchen_sponge",
+              0.05
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "spare_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "one step down: the sponge left elsewhere, or the kid's cube moved",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
+      "top": "moderate"
      }
     },
     "wipe_and_sort__blocks": {
@@ -138843,7 +139535,8 @@
    "oracle": {
     "sponge_on_island": "nominal",
     "far_sponge_tv": "hard_search_approach",
-    "far_sponge_tv__alt_dining_table_2": "v6_far_sponge_tv__alt_dining_table_2",
+    "far_sponge_foam_cube": "v6_far_sponge_foam_cube",
+    "far_sponge_spare_only": "v6_far_sponge_spare_only",
     "wipe_and_sort__blocks": "v6_wipe_and_sort__blocks",
     "wipe_and_sort__duck": "v6_wipe_and_sort__duck",
     "return_sponge_home__dining": "v6_return_sponge_home__dining",
@@ -138962,15 +139655,26 @@
      ],
      "since": "v2"
     },
-    "v6_far_sponge_tv__alt_dining_table_2": {
+    "v6_far_sponge_foam_cube": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
       {
        "skill": "search",
        "args": {
         "object": "kitchen_sponge",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
+        "region": "living_room_0_0"
+       }
       },
       {
        "skill": "navigate",
@@ -139005,8 +139709,64 @@
        }
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "far_sponge_tv__alt_dining_table_2"
+     "kind": "v6_oracle",
+     "variant": "far_sponge_foam_cube"
+    },
+    "v6_far_sponge_spare_only": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spare_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "spare_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spare_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "far_sponge_spare_only"
     },
     "v6_wipe_and_sort__blocks": {
      "steps": [
@@ -139614,53 +140374,231 @@
      "control": "sponge_on_island",
      "layouts": [
       "far_sponge_tv",
-      "far_sponge_tv__alt_dining_table_2"
+      "far_sponge_foam_cube",
+      "far_sponge_spare_only"
      ],
      "seeds": {
       "10": "far_sponge_tv",
-      "11": "far_sponge_tv__alt_dining_table_2",
+      "11": "far_sponge_tv",
       "12": "far_sponge_tv",
-      "13": "far_sponge_tv",
-      "14": "far_sponge_tv",
-      "15": "far_sponge_tv__alt_dining_table_2",
-      "16": "far_sponge_tv__alt_dining_table_2",
-      "17": "far_sponge_tv",
-      "18": "far_sponge_tv__alt_dining_table_2",
-      "19": "far_sponge_tv__alt_dining_table_2"
+      "13": "far_sponge_foam_cube",
+      "14": "far_sponge_spare_only",
+      "15": "far_sponge_foam_cube",
+      "16": "far_sponge_tv",
+      "17": "far_sponge_spare_only",
+      "18": "far_sponge_foam_cube",
+      "19": "far_sponge_spare_only"
      },
-     "factor": "where the resource is to be found (seed extension)",
+     "factor": "what is at hand to wipe with (seed: the sponge on the TV stand; the kid's foam cube on the island, the sponge on the TV stand; or only the spare sponge in its tray)",
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "far_sponge_tv": true,
+       "far_sponge_foam_cube": true,
+       "far_sponge_spare_only": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the island wiped, the sponge back on the island"
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ],
+             [
+              "near_start",
+              "foam_cube_toy",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "spare_sponge",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
-         "all": [
-          [
-           "wiped",
-           "kitchen_island/top"
-          ],
-          [
-           "not on_floor",
-           "kitchen_sponge"
-          ],
-          [
-           "hand_empty",
-           "right"
-          ]
-         ]
+         "by_layout": {
+          "far_sponge_tv": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "on",
+              "kitchen_sponge",
+              "kitchen_island/top"
+             ]
+            ],
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not near_start",
+              "kitchen_sponge",
+              0.05
+             ],
+             [
+              "not on_floor",
+              "kitchen_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ],
+             [
+              "not on_floor",
+              "spare_sponge"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
         },
-        "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"
+        "why": "one step down: the sponge left elsewhere, or the kid's cube moved"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "far_sponge_tv": "n/a",
+          "far_sponge_foam_cube": {
+           "any": [
+            [
+             [
+              "wiped",
+              "kitchen_island/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "far_sponge_spare_only": "n/a"
+         }
+        },
+        "why": "the island wiped with the kid's foam cube (the real sponge never taken)"
        }
       ],
-      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor"
+      "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
+      "D_by_layout": {
+       "far_sponge_tv": 1,
+       "far_sponge_foam_cube": 1,
+       "far_sponge_spare_only": 1
+      },
+      "top_by_layout": {
+       "far_sponge_tv": "ideal",
+       "far_sponge_foam_cube": "ideal",
+       "far_sponge_spare_only": "moderate"
+      }
      }
     },
     "wipe_and_sort": {
@@ -140193,8 +141131,10 @@
      "category": "task",
      "local": [],
      "longer": [
+      "missing_piece",
       "start_elsewhere",
-      "tool_away_from_surface"
+      "tool_away_from_surface",
+      "unsuitable_at_hand"
      ]
     },
     "wipe_and_sort": {

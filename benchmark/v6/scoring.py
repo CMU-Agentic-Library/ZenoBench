@@ -449,11 +449,12 @@ SCORING[("T08", "sponge_on_island")] = {"D": 1, "tiers": [
      "goal": {"all": [["wiped", "kitchen_island/top"], ["not on_floor", "kitchen_sponge"], ["hand_empty", "right"]]},
      "why": "the island wiped, the sponge left elsewhere (a counter, by the sink)"}],
     "not_ok": "not wiped (or not all of it); the sponge still held or dropped on the floor"}
-# T08 far_sponge_tv: the sponge on the TV stand or the dining table, found first; tiers as the control (back where it
-# was found is elsewhere too: the instruction says the island)
-SCORING[("T08", "far_sponge_tv")] = {**SCORING[("T08", "sponge_on_island")],
-                                     "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still "
-                                               "held or dropped on the floor"}
+# T08 far_sponge_tv (11-17, user): per-seed tiers (define_tasks_v6 LAYOUT_TIERS): the sponge to find, the kid's
+# foam cube beside it (wiping with it the worst), or only the spare sponge (the best the seed offers)
+_T08_SPONGE_WHY = {"best": "the best the seed offers: the island wiped with the sponge (the spare when the usual "
+                           "one is gone), the sponge back on the island, the kid's cube untouched",
+                   "second": "one step down: the sponge left elsewhere, or the kid's cube moved",
+                   "worst": "the island wiped with the kid's foam cube (the real sponge never taken)"}
 
 
 def _wipe_and_sort(task: dict) -> dict:
@@ -598,6 +599,9 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              "x6_gd_pen_or_pencil_cabinets")},
          **{("T06", d): _layout_tiers(d, _T06_WHY[d], _T06_NO[d]) for d in _T06_WHY},
          ("T07", "vessel_decides_appliance"): _vessel_decides_appliance,
+         ("T08", "far_sponge_tv"): _layout_tiers("far_sponge_tv", _T08_SPONGE_WHY,
+                                                 "the sponge not found; not wiped (or not all of it); the sponge "
+                                                 "still held or dropped on the floor"),
          ("T08", "wipe_and_sort"): _wipe_and_sort,
          ("T08", "which_surface"): _which_surface,
          ("T09", "lid_off"): _soup_steps("lid_off", "one tomato only; below 60 C; the stove left on; a tomato out of "
@@ -776,7 +780,7 @@ NOT_OK_ZH = {
     ("T07", "vessel_decides_appliance"): "用错电器热不起来就放弃了（没到 40 度）；电器没关；容器打翻；还拿着或掉了",
     ("T07", "two_portions"): "结束时有一样不到 40 度（没热或凉了）；电器没关；打翻；还拿着或掉了",
     ("T08", "sponge_on_island"): "没擦或没擦完；海绵还拿着或掉在地上",
-    ("T08", "far_sponge_tv"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
+    ("T08", "far_sponge_tv"): "没找到海绵（或备用海绵）；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "wipe_and_sort"): "还有玩具留在岛台上；没擦或没擦完；碰倒了罐子、杯子、粥或果汁；海绵还拿着或掉在地上",
     ("T08", "return_sponge_home"): "没找到海绵；没擦或没擦完；海绵还拿着或掉在地上",
     ("T08", "which_surface"): "只擦了干净的那张；都没擦；海绵还拿着或掉在地上",

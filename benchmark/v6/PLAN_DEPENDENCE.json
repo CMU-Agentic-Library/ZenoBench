@@ -1,15 +1,15 @@
 {
  "summary": {
   "scope": {
-   "layouts": 267,
+   "layouts": 268,
    "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 53,
+   "passes": 54,
    "goal_not_met": 92,
-   "not_observed": 68,
-   "resource_missing": 48,
+   "not_observed": 67,
+   "resource_missing": 49,
    "argument_mismatch": 6
   },
   "control_route_passes": [
@@ -50,11 +50,11 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 107,
+   "passes": 109,
    "goal_not_met": 158,
    "not_observed": 21,
-   "argument_mismatch": 87,
-   "resource_missing": 117
+   "argument_mismatch": 85,
+   "resource_missing": 121
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -92,6 +92,7 @@
    "T06 display_spot_or_tv",
    "T06 seen_from_bed",
    "T07 two_portions",
+   "T08 far_sponge_tv",
    "T08 return_sponge_home",
    "T10 after_dinner_clear",
    "T10 trash_moved",
@@ -206,6 +207,9 @@
    ],
    "T06 seen_from_bed": [
     "bedside_snacks"
+   ],
+   "T08 far_sponge_tv": [
+    "spare_sponge"
    ],
    "T08 return_sponge_home": [
     "spare_sponge"
@@ -2679,20 +2683,36 @@
    "geometric_atoms": [],
    "control_route": "passes",
    "other_layouts": {
-    "far_sponge_tv__alt_dining_table_2": "argument_mismatch"
+    "far_sponge_foam_cube": "passes",
+    "far_sponge_spare_only": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T08_wipe_island",
    "variant": "far_sponge_tv",
-   "layout": "far_sponge_tv__alt_dining_table_2",
-   "steps": 6,
+   "layout": "far_sponge_foam_cube",
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "not_observed",
+   "control_route": "passes",
    "other_layouts": {
-    "far_sponge_tv": "argument_mismatch"
+    "far_sponge_tv": "passes",
+    "far_sponge_spare_only": "resource_missing"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "far_sponge_tv",
+   "layout": "far_sponge_spare_only",
+   "steps": 8,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "resource_missing",
+   "other_layouts": {
+    "far_sponge_tv": "resource_missing",
+    "far_sponge_foam_cube": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -2786,7 +2806,8 @@
     "which_surface__dining": "goal_not_met"
    },
    "other_variants_passing": [
-    "far_sponge_tv"
+    "far_sponge_tv",
+    "far_sponge_foam_cube"
    ]
   },
   {
@@ -5438,7 +5459,8 @@
    "variant": "far_sponge_tv",
    "candidates": [
     "far_sponge_tv",
-    "far_sponge_tv__alt_dining_table_2",
+    "far_sponge_foam_cube",
+    "far_sponge_spare_only",
     "sponge_on_island"
    ],
    "passes_all": []
@@ -7915,13 +7937,39 @@
    "variant": "far_sponge_tv",
    "layouts": [
     "far_sponge_tv",
-    "far_sponge_tv__alt_dining_table_2"
+    "far_sponge_foam_cube"
    ],
    "start_room": "dining_room_0_1",
-   "same_before_key_observation": false,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "same_before_key_observation": true,
+   "route_a_on_b": "passes",
+   "route_b_on_a": "passes",
    "hidden_state_branch": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "far_sponge_tv",
+   "layouts": [
+    "far_sponge_tv",
+    "far_sponge_spare_only"
+   ],
+   "start_room": "dining_room_0_1",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "far_sponge_tv",
+   "layouts": [
+    "far_sponge_foam_cube",
+    "far_sponge_spare_only"
+   ],
+   "start_room": "dining_room_0_1",
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
   },
   {
    "task": "T08_wipe_island",

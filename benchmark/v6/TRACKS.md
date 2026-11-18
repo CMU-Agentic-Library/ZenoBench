@@ -64,7 +64,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T07 | vessel_decides_appliance | Task-Level | - | appliance_compatibility | 5 |
 | T07 | two_portions | Task-Level | - | appliance_compatibility; multi_object_goal | 2 |
 | T08 | sponge_on_island | Control | - | - | 1 |
-| T08 | far_sponge_tv | Task-Level | - | start_elsewhere; tool_away_from_surface | 2 |
+| T08 | far_sponge_tv | Task-Level | - | missing_piece; start_elsewhere; tool_away_from_surface; unsuitable_at_hand | 3 |
 | T08 | wipe_and_sort | Task-Level | - | category_rule; not_in_view | 2 |
 | T08 | return_sponge_home | Task-Level | - | not_in_view; storage_place | 3 |
 | T08 | which_surface | Task-Level | - | referent_clue | 2 |

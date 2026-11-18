@@ -1493,7 +1493,40 @@ def T08(t):
             + ([S("wipe", surface=ISL, tool=X), place(X, ISL)] if used == ISL else
                [nav(DINING), look(DINING), S("approach", target=DINING), S("wipe", surface=DINING, tool=X),
                 nav(ISL), place(X, ISL)]))
+    # far_sponge_tv (11-17, user): the seed changes what is at hand -- the sponge on the TV stand (to find, ideal),
+    # the kid's blue foam cube on the island beside it (looks like a sponge, is a toy: the real one is on the TV
+    # stand), or the usual sponge gone, the spare in its tray on the low wall cabinet (the stand-in).  Merged into
+    # far_sponge_tv (MERGE); wiping with the cube is judged by the real sponge never leaving its place
+    LT = LAYOUT_TIERS.setdefault(("T08", "*"), {})
+    CUBE, SPARE = "foam_cube_toy", "spare_sponge"
+    wiped = [["wiped", ISL]]
+    back = lambda x: [["on", x, ISL]]  # noqa: E731
+    left = lambda x: [["not on_floor", x]]  # noqa: E731
+    cube_stays = [["near_start", CUBE, 0.03]]
+    used = [["not near_start", X, 0.05]]
+    LT["far_sponge_tv"] = cost_tiers([(wiped + back(X), 0), (wiped + left(X), 1)])
+    LT["far_sponge_foam_cube"] = cost_tiers([(wiped + back(X) + cube_stays, 0), (wiped + back(X), 1),
+                                             (wiped + used + left(X), 1), (wiped, 2)])
+    LT["far_sponge_spare_only"] = cost_tiers([(wiped + back(SPARE), 1), (wiped + left(SPARE), 2)])
+    fetch_wipe = lambda x, region: [look(ISL), S("search", object=x, region=region), nav(x), pick(x), nav(ISL),  # noqa: E731
+                                    S("approach", target=ISL), S("wipe", surface=ISL, tool=x), place(x, ISL)]
+    tray_only = {k: copy.deepcopy(v) for k, v in tray.items()}
+    sponge_fams = {
+        "far_sponge_foam_cube": dict(
+            base="far_sponge_tv", control="sponge_on_island", conditions=["unsuitable_at_hand"],
+            add={CUBE: {"asset": "foam_cube", **P(ISL, 8.164, 1.82)}},
+            goal={"all": [*wiped, *back(X), *cube_stays, ["hand_empty", "right"]]}, watch=[X, CUBE],
+            challenge="the kid's blue foam cube lies on the island, like a sponge; the sponge is on the TV stand",
+            rationale="a toy is no sponge: find the real one, wipe, leave the cube",
+            cases={"": dict(route=fetch_wipe(X, "living_room_0_0"))}),
+        "far_sponge_spare_only": dict(
+            base="far_sponge_tv", control="sponge_on_island", conditions=["missing_piece"], remove=[X],
+            add=tray_only, goal={"all": [*wiped, *back(SPARE), ["hand_empty", "right"]]}, watch=[SPARE, TRAY],
+            challenge="the usual sponge is gone; the spare lies in its tray on the low wall cabinet",
+            rationale="the spare is the sponge there is: take it, wipe, leave it on the island",
+            cases={"": dict(route=fetch_wipe(SPARE, "living_room_0_0"))})}
     return {
+        **sponge_fams,
         "wipe_and_sort": dict(
             base="island_cluttered", control="sponge_on_island", conditions=["category_rule", "not_in_view"],
             instruction="Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box "
@@ -3044,7 +3077,6 @@ SEED_EXT = {
     # the TV stand is T06's other display place and kitchen cabinet 4 another low wall cabinet: the kid's bookcase
     ('T06_block_destination_occupied', 'occupied_block_away'): 4,
     ('T07_heat_oatmeal', 'broken_oatmeal_away'): 0,
-    ('T08_wipe_island', 'far_sponge_tv'): 0,
     ('T08_wipe_island', 'h_dynamic_sponge_taken'): 0,
     ('T09_tomato_soup', 'h_dynamic_spoon_taken'): 0,
     ('T09_tomato_soup', 'lid_on_spoon_away'): 0,
@@ -3064,6 +3096,7 @@ SEED_EXT = {
 MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_kid"],
          ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen_pencil_in_use"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
+         ("T08_wipe_island", "far_sponge_tv"): ["far_sponge_foam_cube", "far_sponge_spare_only"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
          ("T27_leftovers_to_fridge", "which_is_leftover"): ["fruit_stays_out", "still_eating"],
@@ -3077,6 +3110,9 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                                                          "view; or only the kid's plastic cup)",
                 ("T07_heat_oatmeal", "microwave_broken"): "where the oatmeal is (seed: by the microwave, or elsewhere "
                                                           "and to be found first)",
+                ("T08_wipe_island", "far_sponge_tv"): "what is at hand to wipe with (seed: the sponge on the TV "
+                                                      "stand; the kid's foam cube on the island, the sponge on the "
+                                                      "TV stand; or only the spare sponge in its tray)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
                                                           "a used breakfast bowl)",
                 ("T12_tidy_toys", "bins_capacity"): "which containers there are and how full (seed: two small bins, "
