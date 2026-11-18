@@ -108,6 +108,9 @@ KIND = {
     ("T19", "m_can_in_dining_room"): {"m_can_in_dining_room": None, "can_in_use": "被占用"},
     ("T19", "lookalike_bin"): {"*": "看着像但不能用"},
     ("T19", "x6_gd_can_put_away"): {"in_4": None, "juice_full": "看着像但不能用"},
+    ("T20", "bottle_on_cabinet"): {"*": None},
+    ("T20", "m_bottle_on_tv_stand"): {"m_bottle_on_tv_stand": None, "bottle_in_use": "被占用"},
+    ("T20", "x6_gd_bottle_put_away"): {"*": None},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

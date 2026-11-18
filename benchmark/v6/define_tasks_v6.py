@@ -2638,16 +2638,40 @@ def T20(t):
     base = OR(t, "bottle_on_cabinet")           # nav cab6 top, look, nav bottle, pick, nav dining, place
     i = at(base, "pick", object=J)
 
-    # the bowl needs more room than the cabinet top has left: the other low cabinet
-    instr = ("Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, "
-             "standing up, and close the cabinets again.")
+    # 11-17 (user): no hint at the cabinets or the doors (the task's words); a door left open costs a level
+    instr = t["instruction"]
+    LT = LAYOUT_TIERS.setdefault(("T20", "*"), {})
+    TABLE = "dining_table_2/top"
+    stand = [["on", J, TABLE], ["upright", J]]
+    closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    for c in ("in_cabinet_4", "in_cabinet_6"):
+        LT[f"x6_gd_bottle_put_away__{c}"] = cost_tiers([(stand, 0), ([["on", J, TABLE]], 2)], [(closed, 1)])
+    # m_bottle_on_tv_stand's second seed (merged, MERGE): the breakfast bottle on the low cabinet top; the same
+    # juice stands on the TV stand beside a poured cup, someone drinking in the living room (in use)
+    LJ, LC = "living_juice", "living_cup"
+    in_use_stays = [["near_start", LJ, 0.03], ["near_start", LC, 0.03]]
+    LT["m_bottle_on_tv_stand"] = cost_tiers([(stand, 0), ([["on", J, TABLE]], 1)])
+    LT["bottle_in_use"] = cost_tiers([(stand + in_use_stays, 0), ([["on", LJ, TABLE], ["upright", LJ]], 1),
+                                      ([["on", J, TABLE]] + in_use_stays, 1)])
+    bottle_in_use = dict(
+        base="bottle_on_cabinet", control="bottle_on_cabinet", conditions=["resource_in_use"],
+        add={LJ: {"asset": "juice_bottle", **P("tv_stand_2/top", 7.60, 0.36)},
+             LC: {"asset": "breakfast_cup", **P("tv_stand_2/top", 7.75, 0.36)}},
+        goal={"all": [*stand, *in_use_stays, ["hand_empty", "right"]]}, watch=[J, LJ, LC],
+        challenge="the breakfast bottle stands on the low cabinet top; the same juice stands on the TV stand beside a "
+                  "poured cup (someone is drinking it)",
+        rationale="the bottle taken from the breakfast table is the one put down on the cabinet; the living room's is "
+                  "in use: leave it",
+        cases={"": dict(route=RT(t, t["oracle"]["bottle_on_cabinet"]))})
     goal = copy.deepcopy(t["goal"])
     goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
     tail = base[i + 1:]
     take = lambda art: [nav(J), pick(J), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
     return {
+        "bottle_in_use": bottle_in_use,
         "x6_gd_bottle_put_away": dict(
-            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal, instruction_zh="有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
+            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
+            instruction_zh=t["instruction_zh"],
             factor="which closed place holds the item",
             remove=["plate_inside_kitchen_cabinet"],
             challenge="the bottle was put away in one of the two low cabinets",
@@ -3331,7 +3355,6 @@ SEED_EXT = {
     ('T19_recycling', 'h_action_grasp_and_miss'): 1,
     ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
     ('T19_recycling', 'lookalike_bin'): 1,
-    ('T20_juice_back_to_table', 'm_bottle_on_tv_stand'): 4,     # not 0: the dining table is where it goes
 }
 
 
@@ -3342,6 +3365,7 @@ MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_ki
          ("T09_tomato_soup", "lid_on_spoon_away"): ["lid_missing"],
          ("T17_hide_and_seek_block", "h_task_lid_elsewhere"): ["hide_lid_in_use"],
          ("T19_recycling", "m_can_in_dining_room"): ["can_in_use"],
+         ("T20_juice_back_to_table", "m_bottle_on_tv_stand"): ["bottle_in_use"],
          ("T08_wipe_island", "far_sponge_tv"): ["far_sponge_foam_cube", "far_sponge_spare_only"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
@@ -3367,6 +3391,9 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                                                                      "burner, a plate on the island)",
                 ("T19_recycling", "m_can_in_dining_room"): "what is on the dining table (seed: the finished can "
                                                            "alone; or beside a can at someone's seat, still in use)",
+                ("T20_juice_back_to_table", "m_bottle_on_tv_stand"): "where the breakfast bottle is (seed: on "
+                                                                     "the TV stand; or on the low cabinet, the same "
+                                                                     "juice in use on the TV stand)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
                                                           "a used breakfast bowl)",
                 ("T12_tidy_toys", "bins_capacity"): "which containers there are and how full (seed: two small bins, "

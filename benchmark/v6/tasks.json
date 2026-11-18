@@ -207555,35 +207555,54 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the breakfast table",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
           "m_bottle_on_tv_stand": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "m_bottle_on_tv_stand__alt_bookcase_2": {
-           "all": [
+          "bottle_in_use": {
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -207592,40 +207611,156 @@
           }
          }
         },
-        "why": "the bottle on the table, but lying",
-        "raw": "worst"
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "m_bottle_on_tv_stand": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "bottle_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "living_juice",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "living_juice"
+             ]
+            ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "raw": "second"
        }
       ],
-      "not_ok": "the bottle not on the breakfast table; still held or dropped",
+      "not_ok": "no bottle back on the breakfast table; still held or dropped",
       "top": "ideal"
      }
     },
-    "m_bottle_on_tv_stand__alt_bookcase_2": {
+    "bottle_in_use": {
      "move": {
       "juice_bottle": {
-       "support": "bookcase_2/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
-        1.0,
-        -0.43
+        3.68,
+        0.36
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "add": {
+      "living_juice": {
+       "asset": "juice_bottle",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "living_cup": {
+       "asset": "breakfast_cup",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.75,
+        0.36
        ],
        "yaw_deg": 0.0
       }
      },
      "conditions": [
-      "not_in_view"
+      "resource_in_use"
      ],
-     "difficulty": "medium",
+     "goal": {
+      "all": [
+       [
+        "on",
+        "juice_bottle",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "near_start",
+        "living_juice",
+        0.03
+       ],
+       [
+        "near_start",
+        "living_cup",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "juice_bottle",
+      "living_juice",
+      "living_cup"
+     ],
      "since": "v6",
-     "note": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
+     "note": "the breakfast bottle stands on the low cabinet top; the same juice stands on the TV stand beside a poured cup (someone is drinking it)",
      "v6": {
-      "family": "m_bottle_on_tv_stand",
-      "case": "alt_bookcase_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
-      "derived_from": "m_bottle_on_tv_stand",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "bottle_in_use",
+      "case": null,
+      "challenge": "the breakfast bottle stands on the low cabinet top; the same juice stands on the TV stand beside a poured cup (someone is drinking it)",
+      "rationale": "the bottle taken from the breakfast table is the one put down on the cabinet; the living room's is in use: leave it",
+      "control": "bottle_on_cabinet",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "bottle_on_cabinet"
      },
      "layout": {
       "clusters": [
@@ -207633,72 +207768,114 @@
         "names": [
          "juice_bottle"
         ],
-        "support": "bookcase_2/top",
+        "support": "kitchen_cabinet_6/top",
         "box": [
-         0.971,
-         -0.459,
-         1.029,
-         -0.401
+         3.651,
+         0.331,
+         3.709,
+         0.389
         ],
         "dx": [
-         -0.25,
-         0.25
+         -0.43,
+         0.07
         ],
         "dy": [
-         -0.14,
-         0.15
+         -0.12,
+         0.12
         ],
         "pick": [
          "juice_bottle"
+        ]
+       },
+       {
+        "names": [
+         "living_cup",
+         "living_juice"
         ],
-        "search": [
-         "juice_bottle"
+        "support": "tv_stand_2/top",
+        "box": [
+         7.571,
+         0.3052,
+         7.8038,
+         0.4148
+        ],
+        "dx": [
+         -0.91,
+         0.56
+        ],
+        "dy": [
+         -0.08,
+         0.08
         ]
        }
       ],
       "static": {
-       "bookcase_2/top": [
+       "kitchen_cabinet_6/top": [
         [
-         0.7993,
-         -0.5765,
-         1.1294,
-         -0.2791
+         3.4054,
+         0.3164,
+         3.5926,
+         0.4018
         ]
        ]
       },
       "reach": {
-       "bookcase_2/top": [
+       "kitchen_cabinet_6/top": [
         [
          0,
          1,
-         1.295,
-         -0.619,
-         -0.335,
+         3.798,
+         0.36,
+         0.52,
          0.2
         ],
         [
          0,
          -1,
-         0.705,
-         -0.619,
-         -0.335,
+         3.202,
+         0.307,
+         0.52,
          0.2
         ],
         [
          1,
+         1,
+         0.52,
+         3.202,
+         3.798,
+         0.2
+        ]
+       ],
+       "tv_stand_2/top": [
+        [
+         0,
+         1,
+         8.375,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         0,
          -1,
-         -0.619,
-         0.705,
-         1.295,
+         6.644,
+         0.312,
+         0.514,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.514,
+         6.644,
+         8.375,
          0.2
         ]
        ]
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "juice_bottle"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -207708,35 +207885,54 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the breakfast table",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
           "m_bottle_on_tv_stand": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "m_bottle_on_tv_stand__alt_bookcase_2": {
-           "all": [
+          "bottle_in_use": {
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -207745,11 +207941,76 @@
           }
          }
         },
-        "why": "the bottle on the table, but lying",
-        "raw": "worst"
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "m_bottle_on_tv_stand": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "bottle_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "living_juice",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "living_juice"
+             ]
+            ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
+        "raw": "second"
        }
       ],
-      "not_ok": "the bottle not on the breakfast table; still held or dropped",
+      "not_ok": "no bottle back on the breakfast table; still held or dropped",
       "top": "ideal"
      }
     },
@@ -207792,8 +208053,8 @@
        ]
       ]
      },
-     "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
-     "instruction_zh": "有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
+     "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+     "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
      "failures": [
       {
        "id": "resource_bottle_put_away",
@@ -207836,8 +208097,69 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the table, the cabinet doors closed",
+        "goal": {
+         "by_layout": {
+          "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed",
         "raw": "best"
        },
        {
@@ -207846,16 +208168,20 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -207863,16 +208189,20 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -207881,7 +208211,7 @@
           }
          }
         },
-        "why": "standing on the table, a door left open",
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
         "raw": "second"
        },
        {
@@ -207890,12 +208220,31 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -207903,12 +208252,31 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -207917,7 +208285,7 @@
           }
          }
         },
-        "why": "on the table but lying (doors open or closed)",
+        "why": "lying on the table with a door left open",
         "raw": "worst"
        }
       ],
@@ -207964,8 +208332,8 @@
        ]
       ]
      },
-     "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
-     "instruction_zh": "有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。",
+     "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+     "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
      "failures": [
       {
        "id": "resource_bottle_put_away",
@@ -208008,8 +208376,69 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the table, the cabinet doors closed",
+        "goal": {
+         "by_layout": {
+          "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed",
         "raw": "best"
        },
        {
@@ -208018,16 +208447,20 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -208035,16 +208468,20 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -208053,7 +208490,7 @@
           }
          }
         },
-        "why": "standing on the table, a door left open",
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead",
         "raw": "second"
        },
        {
@@ -208062,12 +208499,31 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -208075,12 +208531,31 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -208089,7 +208564,7 @@
           }
          }
         },
-        "why": "on the table but lying (doors open or closed)",
+        "why": "lying on the table with a door left open",
         "raw": "worst"
        }
       ],
@@ -208122,7 +208597,7 @@
    "oracle": {
     "bottle_on_cabinet": "nominal",
     "m_bottle_on_tv_stand": "v5_m_bottle_on_tv_stand",
-    "m_bottle_on_tv_stand__alt_bookcase_2": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
+    "bottle_in_use": "v6_bottle_in_use",
     "x6_gd_bottle_put_away__in_cabinet_4": "v6_x6_gd_bottle_put_away__in_cabinet_4",
     "x6_gd_bottle_put_away__in_cabinet_6": "v6_x6_gd_bottle_put_away__in_cabinet_6"
    },
@@ -208219,13 +208694,18 @@
      "kind": "v5_oracle",
      "variant": "m_bottle_on_tv_stand"
     },
-    "v6_m_bottle_on_tv_stand__alt_bookcase_2": {
+    "v6_bottle_in_use": {
      "steps": [
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "juice_bottle",
-        "region": "bedroom_0_1"
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {
@@ -208258,8 +208738,8 @@
        }
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "m_bottle_on_tv_stand__alt_bookcase_2"
+     "kind": "v6_oracle",
+     "variant": "bottle_in_use"
     },
     "v6_x6_gd_bottle_put_away__in_cabinet_4": {
      "steps": [
@@ -208592,55 +209072,79 @@
      "control": "bottle_on_cabinet",
      "layouts": [
       "m_bottle_on_tv_stand",
-      "m_bottle_on_tv_stand__alt_bookcase_2"
+      "bottle_in_use"
      ],
      "seeds": {
-      "10": "m_bottle_on_tv_stand__alt_bookcase_2",
+      "10": "bottle_in_use",
       "11": "m_bottle_on_tv_stand",
       "12": "m_bottle_on_tv_stand",
-      "13": "m_bottle_on_tv_stand__alt_bookcase_2",
+      "13": "bottle_in_use",
       "14": "m_bottle_on_tv_stand",
-      "15": "m_bottle_on_tv_stand__alt_bookcase_2",
-      "16": "m_bottle_on_tv_stand__alt_bookcase_2",
-      "17": "m_bottle_on_tv_stand__alt_bookcase_2",
+      "15": "bottle_in_use",
+      "16": "bottle_in_use",
+      "17": "bottle_in_use",
       "18": "m_bottle_on_tv_stand",
       "19": "m_bottle_on_tv_stand"
      },
-     "factor": "where the resource is to be found (seed extension)",
+     "factor": "where the breakfast bottle is (seed: on the TV stand; or on the low cabinet, the same juice in use on the TV stand)",
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "m_bottle_on_tv_stand": true,
+       "bottle_in_use": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the breakfast table"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
         "goal": {
          "by_layout": {
           "m_bottle_on_tv_stand": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "m_bottle_on_tv_stand__alt_bookcase_2": {
-           "all": [
+          "bottle_in_use": {
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -208649,10 +209153,85 @@
           }
          }
         },
-        "why": "the bottle on the table, but lying"
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "m_bottle_on_tv_stand": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "bottle_in_use": {
+           "any": [
+            [
+             [
+              "on",
+              "living_juice",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "living_juice"
+             ]
+            ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "near_start",
+              "living_juice",
+              0.03
+             ],
+             [
+              "near_start",
+              "living_cup",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "m_bottle_on_tv_stand": "n/a",
+          "bottle_in_use": "n/a"
+         }
+        },
+        "why": "lying on the table with a door left open"
        }
       ],
-      "not_ok": "the bottle not on the breakfast table; still held or dropped"
+      "not_ok": "no bottle back on the breakfast table; still held or dropped"
      }
     },
     "x6_gd_bottle_put_away": {
@@ -208677,12 +209256,77 @@
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "x6_gd_bottle_put_away__in_cabinet_4": true,
+       "x6_gd_bottle_put_away__in_cabinet_6": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the bottle standing on the table, the cabinet doors closed"
+        "goal": {
+         "by_layout": {
+          "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed"
        },
        {
         "name": "second",
@@ -208690,16 +209334,20 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -208707,16 +209355,20 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
+           "any": [
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "upright",
+              "juice_bottle"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
-            ],
-            [
-             "upright",
-             "juice_bottle"
-            ],
             [
              "hand_empty",
              "right"
@@ -208725,7 +209377,7 @@
           }
          }
         },
-        "why": "standing on the table, a door left open"
+        "why": "a door left open; lying on the table; or the bottle someone is drinking from brought instead"
        },
        {
         "name": "worst",
@@ -208733,12 +209385,31 @@
         "goal": {
          "by_layout": {
           "x6_gd_bottle_put_away__in_cabinet_4": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -208746,12 +209417,31 @@
            ]
           },
           "x6_gd_bottle_put_away__in_cabinet_6": {
-           "all": [
+           "any": [
             [
-             "on",
-             "juice_bottle",
-             "dining_table_2/top"
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
             ],
+            [
+             [
+              "on",
+              "juice_bottle",
+              "dining_table_2/top"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
@@ -208760,7 +209450,7 @@
           }
          }
         },
-        "why": "on the table but lying (doors open or closed)"
+        "why": "lying on the table with a door left open"
        }
       ],
       "not_ok": "the bottle not on the breakfast table; still held or dropped"
@@ -208790,7 +209480,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "not_in_view",
+      "resource_in_use"
      ]
     },
     "x6_gd_bottle_put_away": {

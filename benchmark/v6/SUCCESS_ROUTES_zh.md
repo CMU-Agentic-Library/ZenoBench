@@ -8305,52 +8305,87 @@
 
 ### m_bottle_on_tv_stand（Task）
 
-**情况**：瓶子在客厅看不到的地方 → 先找
+**情况**：瓶子在客厅看不到的地方 → 先找；早餐那瓶在靠墙柜顶，电视柜上另一瓶一样的果汁旁边有倒好的杯子（有人在喝）就别动（拿错那瓶降一档）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
-  - `juice_bottle` 立着
-  - 手里空着
+  - 摆法 `bottle_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
+        - `living_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `living_cup` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `m_bottle_on_tv_stand`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `juice_bottle` 立着
+- **次好（0.6）**：
+
+  - 摆法 `m_bottle_on_tv_stand`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+  - 摆法 `bottle_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `living_juice` 在 `dining_table_2/top` 上
+        - `living_juice` 立着
+      - 第 2 组：
+        - `juice_bottle` 在 `dining_table_2/top` 上
+        - `living_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `living_cup` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
-  - 手里空着
-- **不行（0）**：没放回餐桌；还拿着或掉了
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：没有瓶子回到餐桌；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `m_bottle_on_tv_stand`：1. `search(object=juice_bottle, region=living_room_0_0)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
-- 摆法 `alt_bookcase_2`：1. `search(object=juice_bottle, region=bedroom_0_1)` → 2. `navigate(destination=juice_bottle)` → 3. `pick(object=juice_bottle)` → 4. `navigate(destination=dining_table_2/top)` → 5. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
+- 摆法 `bottle_in_use`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=juice_bottle)` → 4. `pick(object=juice_bottle)` → 5. `navigate(destination=dining_table_2/top)` → 6. `place(object=juice_bottle, receptacle=dining_table_2/top, hint_xy=[2.948, 7.295])`
 
 ### x6_gd_bottle_put_away（Task）
 
-**情况**：瓶子被收进了两个矮柜之一 → 逐个找
-
-**指令**：有人把果汁瓶收进了厨房的一个矮柜里。把它拿回餐桌上立着放好，再把柜门关好。
+**情况**：指令只说放回餐桌立着放 → 瓶子被收进了两个矮柜之一，逐个找，门关好（门没关降一档）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
-  - `juice_bottle` 立着
   - 手里空着
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `juice_bottle` 在 `dining_table_2/top` 上
+      - `juice_bottle` 立着
+      - `kitchen_cabinet_6` 关着
+      - `kitchen_cabinet_4` 关着
 - **次好（0.6）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
-  - `juice_bottle` 立着
   - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `juice_bottle` 在 `dining_table_2/top` 上
+      - `juice_bottle` 立着
 - **最不好（0.3）**：
 
-  - `juice_bottle` 在 `dining_table_2/top` 上
   - 手里空着
-- **不行（0）**：没放回餐桌；还拿着或掉了
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `juice_bottle` 在 `dining_table_2/top` 上
+      - `kitchen_cabinet_6` 关着
+      - `kitchen_cabinet_4` 关着
+    - 第 2 组：
+      - `juice_bottle` 在 `dining_table_2/top` 上
+- **不行（0）**：瓶子没回到餐桌；还拿着或掉了
 
 
 **参考调用顺序**：

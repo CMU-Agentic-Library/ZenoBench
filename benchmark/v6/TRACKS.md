@@ -116,7 +116,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T19 | lookalike_bin | Task-Level | - | decoy_destination; item_out_of_view | 2 |
 | T19 | x6_gd_can_put_away | Task-Level | - | resource | 2 |
 | T20 | bottle_on_cabinet | Control | - | - | 1 |
-| T20 | m_bottle_on_tv_stand | Task-Level | - | not_in_view | 2 |
+| T20 | m_bottle_on_tv_stand | Task-Level | - | not_in_view; resource_in_use | 2 |
 | T20 | x6_gd_bottle_put_away | Task-Level | - | resource | 2 |
 | T14 | e1_book_ready | Control | - | - | 1 |
 | T14 | within_kids_reach | Task-Level | - | agent_ability | 2 |

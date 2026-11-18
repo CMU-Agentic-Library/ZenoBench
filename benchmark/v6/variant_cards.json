@@ -20178,7 +20178,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T20_juice_back_to_table/m_bottle_on_tv_stand__alt_bookcase_2": {
+ "T20_juice_back_to_table/bottle_in_use": {
   "variant": "m_bottle_on_tv_stand",
   "category": "task",
   "seeds": [
@@ -20195,10 +20195,13 @@
    "moved": [
     "juice_bottle"
    ],
-   "added": [],
+   "added": [
+    "living_cup",
+    "living_juice"
+   ],
    "removed": [],
    "conditions": [
-    "not_in_view"
+    "resource_in_use"
    ],
    "initial_checks": []
   },
@@ -20215,15 +20218,25 @@
      "juice_bottle"
     ],
     [
+     "near_start",
+     "living_juice",
+     0.03
+    ],
+    [
+     "near_start",
+     "living_cup",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "bottle_on_cabinet",
-  "oracle_route": "v6_m_bottle_on_tv_stand__alt_bookcase_2",
-  "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on bookcase_2/top)",
-  "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_bottle_in_use",
+  "challenge": "the breakfast bottle stands on the low cabinet top; the same juice stands on the TV stand beside a poured cup (someone is drinking it)",
+  "rationale": "the bottle taken from the breakfast table is the one put down on the cabinet; the living room's is in use: leave it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/x6_gd_bottle_put_away__in_cabinet_4": {
@@ -20236,7 +20249,7 @@
    17,
    19
   ],
-  "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
+  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {
    "scene": "tasks/organize_utility_items",
    "start": null,
@@ -20308,7 +20321,7 @@
    16,
    18
   ],
-  "instruction": "Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, standing up, and close the cabinets again.",
+  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {
    "scene": "tasks/organize_utility_items",
    "start": null,
