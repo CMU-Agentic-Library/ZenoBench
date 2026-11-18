@@ -1,5 +1,5 @@
 """Visual prompting for place (zeno_skills.visual_prompt, skill mark_spots, docs/skills/mark_spots.md):
-free spots beside each object, then spread over open space, projected with the rendering camera's own intrinsics and drawn as numbered discs;
+one free spot for each set of near objects, then open space, projected with the rendering camera's own intrinsics and drawn as numbered discs;
 the view that holds a whole support; the image reaching the observation once."""
 
 import math
@@ -16,55 +16,46 @@ FLOOR = [-50, -50, -1.0, 50, 50, 0.0]
 K = np.array([[100.0, 0.0, 320.0], [0.0, 100.0, 240.0], [0.0, 0.0, 1.0]])
 
 
-def test_one_spot_beside_each_object_then_another_side_then_open_space():
-    # a 2 x 1 m table, a mug and a plate 0.5 m apart; the held object 0.1 m across
+def _ok(p, taken, sep):
+    return all(math.dist(p, t) >= sep for t in taken)
+
+
+def test_one_spot_for_each_set_of_near_objects_the_most_inside_one():
+    # a 2 x 1 m table, a mug and a plate 0.3 m apart (gap); the held object 0.1 m across
     grid = [(round(x, 3), round(y, 3)) for x in np.arange(0.05, 2.0, 0.03) for y in np.arange(0.05, 1.0, 0.03)]
-    boxes = {"mug": [0.46, 0.46, 0.54, 0.54], "plate": [0.9, 0.4, 1.1, 0.6]}
+    boxes = {"mug": [0.46, 0.46, 0.54, 0.54], "plate": [0.84, 0.4, 1.04, 0.6]}
     free = [p for p in grid if all(VP.box_gap(VP.square(p, 0.05), b) >= 0.07 for b in boxes.values())]
-    rows = VP.beside(free, boxes, 0.05)
-    for n, b in boxes.items():                            # the nearest ring: 7 cm off, within the 4 cm band
-        gaps = [VP.box_gap(VP.square(p, 0.05), b) for p, _ in rows[n]]
-        assert rows[n] and min(gaps) >= 0.07 and max(gaps) <= min(gaps) + VP.SPOT_BESIDE_BAND
-    # the mug's best spot is the one farthest from the plate (beside the mug, not the plate)
-    best_mug = rows["mug"][0][0]
-    assert best_mug[0] < 0.5 and VP.box_gap(VP.square(best_mug, 0.05), boxes["plate"]) > 0.15
-    centres = {n: np.array([(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]) for n, b in boxes.items()}
-
-    def ok(p, taken, sep):
-        return all(math.dist(p, t) >= sep for t in taken)
-    out = VP.pick_spots(rows, centres, VP.thin(free), ok, k=8)
-    who = [w for _, w in out]
-    assert set(who[:2]) == {"mug", "plate"} and who[2:4] == ["mug", "plate"] and set(who[4:]) == {None}
-    for n in boxes:                                       # the two spots of one object on different sides of it
-        a, b = (np.asarray(p) - centres[n] for p, w in out if w == n)
-        assert float(a @ b) <= 0.0
+    sets = VP.near_sets(free, boxes, 0.05)
+    assert set(sets) == {(), ("mug",), ("plate",), ("mug", "plate")}       # between them: near both
+    for key, rows in sets.items():
+        p, margin = rows[0]
+        gaps = {n: VP.box_gap(VP.square(p, 0.05), b) for n, b in boxes.items()}
+        assert all((gaps[n] <= VP.SPOT_NEAR) == (n in key) for n in boxes)
+        assert margin == max(m for _, m in rows) and margin > 0.01             # the most inside, not on a border
+    out, missed = VP.pick_spots(sets, _ok, k=8)
+    keys = [w for _, w in out]
+    assert len(keys) == 4 and set(keys) == set(sets) and missed == []          # one per set, no more
     pts = [p for p, _ in out]
-    assert min(math.dist(a, b) for i, a in enumerate(pts) for b in pts[i + 1:]) >= 0.12
+    assert min(math.dist(a, b) for i, a in enumerate(pts) for b in pts[i + 1:]) >= VP.SPOT_SET_SEP
 
 
-def test_open_space_alone_starts_at_the_best_spot_and_spreads():
-    pts = [(x, y) for x in np.arange(0.0, 1.01, 0.05) for y in np.arange(0.0, 0.51, 0.05)]
-    out = VP.pick_spots({}, {}, pts, lambda p, taken, sep: all(math.dist(p, t) >= sep for t in taken), k=6)
-    assert out[0] == (pts[0], None) and len(out) == 6
-    xs = [p[0] for p, _ in out]
-    assert max(xs) - min(xs) > 0.9                       # both ends of the 1 m support, not one corner
-    assert VP.pick_spots({}, {}, [(0, 0), (0.05, 0)], lambda p, t, sep: not t, k=6) == [((0, 0), None)]
+def test_the_set_with_fewest_points_left_goes_first():
+    # the roomy spoon set (first by margin) has two points; the bowl set one, which the spoon's best would block
+    sets = {("spoon",): [((0.30, 0.0), 0.06), ((0.0, 0.3), 0.05)], ("bowl",): [((0.35, 0.0), 0.04)]}
+    out, missed = VP.pick_spots(sets, _ok, k=4, sep=0.12)
+    assert out == [((0.35, 0.0), ("bowl",)), ((0.0, 0.3), ("spoon",))] and missed == []
 
 
-def test_the_most_crowded_object_gets_its_spot_first():
-    # a roomy spoon (nearer, first in order) has spots on both sides; the bowl has one, which the spoon's
-    # clearest one would block: the bowl goes first and the spoon takes its other one
-    rows = {"spoon": [((0.30, 0.0), 0.2), ((0.0, 0.3), 0.1)], "bowl": [((0.35, 0.0), 0.1)]}
-    centres = {"spoon": np.array([0.15, 0.0]), "bowl": np.array([0.5, 0.0])}
+def test_a_set_with_no_room_left_gets_no_spot():
+    sets = {("bowl",): [((0.35, 0.0), 0.05)], ("spoon",): [((0.30, 0.0), 0.06)]}
+    out, missed = VP.pick_spots(sets, _ok, k=4, sep=0.12)
+    assert out == [((0.30, 0.0), ("spoon",))] and missed == [("bowl",)]
 
-    def ok(p, taken, sep):
-        return all(math.dist(p, t) >= sep for t in taken)
-    out = VP.pick_spots(rows, centres, [], ok, k=4)
-    assert out[:2] == [((0.35, 0.0), "bowl"), ((0.0, 0.3), "spoon")]
-    # a spot beside an object keeps sep_beside, one in open space sep_open
-    out = VP.pick_spots({"bowl": [((0.35, 0.0), 0.1)]}, {"bowl": np.array([0.5, 0.0])}, [(0.5, 0.15), (0.9, 0.0)],
-                        ok, k=4, sep_beside=0.12, sep_open=0.3)
-    assert [p for p, _ in out] == [(0.35, 0.0), (0.9, 0.0)]
+
+def test_at_most_k_spots_the_rest_missed():
+    sets = {(n,): [((float(i), 0.0), 0.05)] for i, n in enumerate("abcde")}
+    out, missed = VP.pick_spots(sets, _ok, k=3)
+    assert len(out) == 3 and len(missed) == 2
 
 
 def test_resolution_is_finer_near_and_from_above():
@@ -115,6 +106,17 @@ def test_discs_are_drawn_where_the_spots_project():
         assert (patch[..., 0] > 200).any() and (patch[..., 1] < 80).any()
     assert out[20, 20].sum() == 0                         # elsewhere untouched
     assert img.sum() == 0                                 # a new array
+
+
+def test_a_pin_lifts_the_disc_off_its_ground_mark():
+    img = np.zeros((480, 640, 3), np.uint8)
+    mark = [[[95.0, 198.0], [105.0, 198.0], [105.0, 202.0], [95.0, 202.0]]]
+    out = VP.draw_spots(img, [[100.0, 200.0]], mark)
+    r = VP.disc_radius(640)
+    top = round(200 - VP.PIN_LIFT * r)
+    assert out[200, 96, 0] > 200 and out[200, 96, 1] < 80               # the ground mark, filled
+    assert out[top, 100 - r + 2, 0] > 200                               # the disc, above it
+    assert out[(200 + top) // 2, 100].min() > 200                       # the white stem between
 
 
 def _view_rig(boxes=()):
@@ -237,38 +239,43 @@ def _mark_rig(monkeypatch, objects_at, z):
     return rig
 
 
-def test_mark_spots_numbers_spread_visible_spots_on_the_rendered_frame(monkeypatch):
-    out = VP.mark_spots(_mark_rig(monkeypatch, {}, 0.7), "held", "t/top")
+def _pin_at(img, u, v, r):
+    """A disc PIN_LIFT radii above (u, v): red left of its centre."""
+    top = int(round(v - VP.PIN_LIFT * r))
+    return img[top, int(round(u)) - r + 2, 0] > 200 and img[top, int(round(u)) - r + 2, 1] < 80
+
+
+def test_mark_spots_numbers_one_spot_per_case_on_the_rendered_frame(monkeypatch):
+    objs = {"mug": ((1.0, -0.3), 0.04), "cup": ((1.2, 0.4), 0.04)}
+    out = VP.mark_spots(_mark_rig(monkeypatch, objs, 0.9), "held", "t/top")
     spots = out["spots"]
-    assert 2 <= len(spots) <= VP.MAX_SPOTS and out["beside"] == [None] * len(spots) and len(out["images"]) == 1
-    assert min(math.dist(a, b) for i, a in enumerate(spots) for b in spots[i + 1:]) >= VP.SPOT_MIN_SEP
-    uv, z = VP.project(K, CAM_POS, CAM_R, [[x, y, 0.705] for x, y in spots])
+    near = [tuple(w) for w in out["near"]]
+    assert len(near) == len(set(near)) and {(), ("mug",), ("cup",)} <= set(near) and len(out["images"]) == 1
+    assert min(math.dist(a, b) for i, a in enumerate(spots) for b in spots[i + 1:]) >= VP.SPOT_SET_SEP
+    uv, z = VP.project(K, CAM_POS, CAM_R, [[x, y, 0.905] for x, y in spots])
     assert VP.in_image(uv, z, 640, 480, VP.SPOT_EDGE_FRAC * 640).all()
     assert list(uv[:, 0]) == sorted(uv[:, 0])            # numbered left to right
     r = VP.disc_radius(640)
     assert min(np.linalg.norm(a - b) for i, a in enumerate(uv) for b in uv[i + 1:]) >= VP.SPOT_PX_SEP * r
-    img = out["images"][0]
-    for u, v in uv.round().astype(int):                  # a red disc at each spot
-        assert img[v, u - r + 2, 0] > 200 and img[v, u - r + 2, 1] < 80
+    assert all(_pin_at(out["images"][0], u, v, r) for u, v in uv)
 
 
-def test_mark_spots_puts_a_spot_beside_each_object_on_the_support(monkeypatch):
+def test_mark_spots_puts_a_spot_by_each_object_on_the_support(monkeypatch):
     # two cups on the table (z 0.9: the test rig's objects rest at 0.9), one far off it
     objs = {"mug": ((1.0, -0.3), 0.04), "cup": ((1.2, 0.4), 0.04), "away": ((5.0, 5.0), 0.04)}
     out = VP.mark_spots(_mark_rig(monkeypatch, objs, 0.9), "held", "t/top")
-    who = out["beside"]
-    assert "mug" in who and "cup" in who and "away" not in who
-    for (x, y), w in zip(out["spots"], who):
-        if w is not None:
-            (cx, cy), h = objs[w]
-            gap = VP.box_gap(VP.square((x, y), 0.04), [cx - h, cy - h, cx + h, cy + h])
-            assert 0.0 < gap <= VP.SPOT_BESIDE_MAX
+    near = [tuple(w) for w in out["near"]]
+    assert ("mug",) in near and ("cup",) in near and () in near and not any("away" in w for w in near)
+    for (x, y), w in zip(out["spots"], out["near"]):
+        for n in w:
+            (cx, cy), h = objs[n]
+            assert 0.0 < VP.box_gap(VP.square((x, y), 0.04), [cx - h, cy - h, cx + h, cy + h]) <= VP.SPOT_NEAR
 
 
 def test_mark_spots_numbers_one_set_over_two_views(monkeypatch):
     # the second camera at the table's far side looking back (-x): each spot is numbered once, by the view
-    # that sees it finer, and drawn on each image it is on
-    rig = _mark_rig(monkeypatch, {}, 0.7)
+    # that sees it finer, and drawn on that image
+    rig = _mark_rig(monkeypatch, {"mug": ((0.8, 0.0), 0.04), "cup": ((1.45, 0.0), 0.04)}, 0.9)
     back = np.array([-_FWD[0], 0.0, _FWD[2]])
     R2 = np.column_stack([[0.0, 1.0, 0.0], np.cross(back, [0.0, 1.0, 0.0]), back])
     img = np.zeros((480, 640, 3), np.uint8)
@@ -276,11 +283,15 @@ def test_mark_spots_numbers_one_set_over_two_views(monkeypatch):
               {"image": img, "K": K, "pos": np.array([2.2, 0.0, 1.3]), "R_ros": R2}]
     out = VP.mark_spots(rig, "held", "t/top", frames=frames)
     spots = out["spots"]
-    assert len(out["images"]) == 2 and len(spots) >= 4
+    assert len(out["images"]) == 2 and len(spots) >= 3
     d0 = [math.dist(p, CAM_POS[:2]) for p in spots]
     d1 = [math.dist(p, (2.2, 0.0)) for p in spots]
     home = [0 if a <= b else 1 for a, b in zip(d0, d1)]
     assert home == sorted(home) and set(home) == {0, 1}   # the first view's spots first, then the second's
+    for v in (0, 1):                                      # each drawn on its own view only
+        mine = [p for p, h in zip(spots, home) if h == v]
+        uv, _ = VP.project(K, frames[v]["pos"], frames[v]["R_ros"], [[x, y, 0.905] for x, y in mine])
+        assert all(_pin_at(out["images"][v], a, b, VP.disc_radius(640)) for a, b in uv)
 
 
 def test_the_numbered_images_reach_the_next_observation_once():

@@ -278,18 +278,15 @@ COUNT_YAWS = _t("COUNT_YAWS", (-0.9, -0.3, 0.3, 0.9), "rad", "inherited (extra.C
                 "the head yaws count looks along, at pitch 0.25 rad")
 
 # --------------------------------------------------------------- visual prompting for place (visual_prompt: mark_spots, view_support)
-SPOT_BESIDE_BAND = _t("SPOT_BESIDE_BAND", 0.04, "m", "chosen (11-16): the spots beside an object are its nearest ring "
-                      "of free spots -- the held object put there (a square of its longer side) leaves at most this "
-                      "much more gap to the object's footprint than the nearest free spot does (free_spots keeps 7 cm "
-                      "and the any-yaw radius: a 20 cm book is >= 10.4 cm off its neighbour, 11-16 T01 had no spot "
-                      "beside anything under a fixed 10 cm)...")
-SPOT_BESIDE_MAX = _t("SPOT_BESIDE_MAX", 0.15, "m", "chosen (11-16): ...and at most this gap (the v6 near_any goals' "
-                     "15 cm: farther is not beside it)")
-MAX_SPOTS = _t("MAX_SPOTS", 12, "1", "chosen (11-16): spots numbered on one image -- one beside each object on the "
-               "support first (a dining table holds about ten), then a second side, then open space (6 before)")
-SPOT_MIN_SEP = _t("SPOT_MIN_SEP", 0.12, "m", "chosen (11-15): two spots at least this far apart -- an open-space spot "
-                  "also the held object's longer side; a spot beside an object not (11-16 T01: with a 20 cm book's "
-                  "20 cm the crowded bowl-and-mug seat had no spot left beside it)")
+SPOT_NEAR = _t("SPOT_NEAR", 0.15, "m", "chosen (11-16, the v6 near_any goals' 15 cm): an object is near a spot when the "
+               "held object put there (a square of its longer side) leaves at most this gap to its footprint; the spots "
+               "cover every set of near objects a free spot has (user 11-17: one spot for each case of each object "
+               "within / not within 15 cm, none where nothing fits)")
+MAX_SPOTS = _t("MAX_SPOTS", 16, "1", "chosen (11-17): spots numbered over the images at most -- one for each set of "
+               "near objects and no more (a dining table with three seats has about a dozen; 12 on 11-16, 6 before)")
+SPOT_SET_SEP = _t("SPOT_SET_SEP", 0.06, "m", "chosen (11-17): two spots at least this far apart (the discs kept apart on "
+                  "the image by SPOT_PX_SEP): at 12 cm, 11-17 T01's crowded seats had 9 of their 18 sets left without "
+                  "a spot, the bowl-and-mug one among them")
 SPOT_PX_SEP = _t("SPOT_PX_SEP", 2.4, "disc radii", "chosen (11-16): two discs' centres at least this many radii apart "
                  "on the image (11-15 T01: two discs drawn one over the other at the far end of the table)")
 SPOT_CELL = _t("SPOT_CELL", 0.06, "m", "chosen (11-15): the open-space spots come from free spots thinned to one per "

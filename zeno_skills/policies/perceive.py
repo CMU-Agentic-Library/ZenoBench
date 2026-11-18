@@ -342,7 +342,7 @@ class MarkSpotsPolicy(AtomicPolicy):
         mem = memory(rig)
         mem.pop("visual_prompt", None)
         out = mark_spots(rig, object, support, frames=mem.pop("view_frames", None))
-        rig.log("mark_spots", object=object, support=support, spots=out["spots"], beside=out.get("beside"),
+        rig.log("mark_spots", object=object, support=support, spots=out["spots"], near=out.get("near"),
                 images=len(out["images"]))
         if not out["spots"]:
             raise SkillFailure(f"mark spots on {support}: no free spot for {object} in view")

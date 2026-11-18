@@ -11,9 +11,10 @@ Two parts:
   (support_views: the view that resolves the most of its top, then one for what is still unseen -- a long
   table's far half; view_resolution, resolution; ViewSupportPolicy drives to each, stands up, aims the head
   and keeps the frame);
-* the spots: free spots in the nearest ring around each object on the support first (beside, pick_spots:
-  what a request like "next to the mug" needs), then open space, kept where some view sees them, numbered
-  once over all views and drawn as numbered discs on each frame they are in, projected with the rendering
+* the spots: one free spot for each set of objects on the support it is near (near_sets, pick_spots: each
+  case of each object within / not within 15 cm, what a request like "by the mug, not by the plates" needs,
+  the spot most inside its case), then open space, kept where some view sees them, numbered
+  once over all views and drawn as numbered discs on the frame that sees each finest, projected with the rendering
   camera's own intrinsics and the head chain's camera pose at the measured joints (camera_frame,
   head_camera_ros, project), so a disc sits where the spot is in the image.  The thresholds are in
   tolerances (one source).
@@ -26,11 +27,14 @@ import math
 import numpy as np
 
 from .perception import _segment_blocked, head_camera_pose, look_angles
-from .tolerances import (MAX_SPOTS, SPOT_BESIDE_BAND, SPOT_BESIDE_MAX, SPOT_CELL, SPOT_EDGE_FRAC, SPOT_MIN_SEP,
+from .tolerances import (MAX_SPOTS, SPOT_CELL, SPOT_EDGE_FRAC, SPOT_NEAR, SPOT_SET_SEP,
                          SPOT_PX_SEP, VIEW_AIM_FRACS, VIEW_FRUSTUM_MARGIN, VIEW_GRID_N, VIEW_KEEP_FRAC, VIEW_MAX,
                          VIEW_MIN_GAIN, VIEW_RES_MIN)
 
 DISC_PX = 7              # disc radius at a 640 px wide image (scaled with the width; 11 until 11-16: the user, smaller)
+PIN_LIFT = 2.2           # disc radii the disc sits above its spot, on a stem down to the spot's ground mark
+GROUND_R = 0.03          # m: radius of the ground mark, a circle on the support around the spot (its perspective
+                         # tells near from far: 11-17 T21, a spot behind the kid's cup looked beside it)
 DISC_RGB = (230, 30, 30)
 CAMERA_MOUNT = 0.04       # m: FirstPersonCamera ahead of stereo_camera_link (runtime.make_rig OffsetCfg pos)
 
@@ -72,9 +76,11 @@ def disc_radius(width):
     return max(5, round(DISC_PX * width / 640))
 
 
-def draw_spots(image, uv, radius_uv=None, labels=None):
-    """The frame with a numbered disc at each pixel of ``uv`` (and, when given, each spot's footprint as an
-    outline: ``radius_uv`` a list of polygons [M, 2]).  uint8 H x W x 3 in, a new array out."""
+def draw_spots(image, uv, ground=None, labels=None):
+    """The frame with a numbered disc for each pixel of ``uv``.  With ``ground`` (one polygon [M, 2] per spot: its
+    ground mark, a circle on the support as the camera sees it), a pin: the ground mark filled in, a stem up
+    from the spot, the disc PIN_LIFT radii above it -- so the disc does not cover where it stands.  uint8
+    H x W x 3 in, a new array out."""
     from PIL import Image, ImageDraw, ImageFont
     img = Image.fromarray(np.asarray(image, np.uint8)).convert("RGB")
     W = img.size[0]
@@ -82,9 +88,12 @@ def draw_spots(image, uv, radius_uv=None, labels=None):
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default(size=round(1.4 * r))      # a sized font: Pillow >= 10.1 (the image has 11.3)
     for i, (u, v) in enumerate(np.asarray(uv, float)):
-        if radius_uv is not None and radius_uv[i] is not None and len(radius_uv[i]) > 2:
-            poly = [tuple(map(float, p)) for p in radius_uv[i]]
-            draw.line(poly + [poly[0]], fill=(255, 255, 255), width=1)
+        if ground is not None and ground[i] is not None and len(ground[i]) > 2:
+            poly = [tuple(map(float, p)) for p in ground[i]]
+            draw.polygon(poly, fill=DISC_RGB, outline=(255, 255, 255))
+            top = v - PIN_LIFT * r
+            draw.line([(u, v), (u, top)], fill=(255, 255, 255), width=max(1, r // 5))
+            v = top
         draw.ellipse([u - r, v - r, u + r, v + r], fill=DISC_RGB, outline=(255, 255, 255), width=max(1, r // 5))
         text = str(labels[i] if labels is not None else i + 1)
         draw.text((u, v), text, fill=(255, 255, 255), font=font, anchor="mm")
@@ -251,71 +260,54 @@ def square(p, half):
     return [p[0] - half, p[1] - half, p[0] + half, p[1] + half]
 
 
-def beside(points, boxes, half, band=SPOT_BESIDE_BAND, most=SPOT_BESIDE_MAX):
-    """{object: [(point, clearance), ...] best first}: the ``points`` beside each object of ``boxes`` {name: xy box}
-    -- its nearest ring: the held object put there (a square of half-side ``half``: its yaw after the place is not
-    known) leaves at most ``band`` more gap to that object's box than the nearest point does, and at most
-    ``most`` -- ranked by their clearance, the gap to the nearest OTHER object (a spot by the mug that is not
-    also by the plate: what a request like "by the mug, not by the plates" tells apart), the larger first."""
+def near_sets(points, boxes, half, near=SPOT_NEAR):
+    """{the objects near a point (a sorted tuple; () for none): [(point, margin), ...] the most inside first}: each of
+    ``points`` by which objects of ``boxes`` {name: xy box} are near it -- the held object put there (a square of
+    half-side ``half``: its yaw after the place is not known) leaves at most ``near`` to the object's box (the
+    goal predicates' near_any measure) -- and its margin, how far it is from changing set: the least, over every
+    object, of the gap's distance to ``near`` (a spot 14.9 cm from the bowl is one turn of the book from not
+    being by it: 11-16 T01)."""
     out = {}
-    for n, b in boxes.items():
-        gaps = [(p, box_gap(square(p, half), b)) for p in points]
-        least = min((g for _, g in gaps), default=math.inf)
-        rows = []
-        for p, g in gaps:
-            if g <= min(least + band, most):
-                sq = square(p, half)
-                rows.append((p, min((box_gap(sq, o) for m, o in boxes.items() if m != n), default=math.inf)))
+    for p in points:
+        sq = square(p, half)
+        gaps = {n: box_gap(sq, b) for n, b in boxes.items()}
+        key = tuple(sorted(n for n, g in gaps.items() if g <= near))
+        margin = min((abs(near - g) for g in gaps.values()), default=math.inf)
+        out.setdefault(key, []).append((p, margin))
+    for rows in out.values():
         rows.sort(key=lambda r: -r[1])
-        out[n] = rows
     return out
 
 
-def pick_spots(beside_rows, centres, open_pool, ok, k=MAX_SPOTS, sep_beside=SPOT_MIN_SEP, sep_open=SPOT_MIN_SEP):
-    """Up to ``k`` spots: one beside each object, then one on another side of each (at least 90 deg around its
-    centre ``centres[name]`` from the first), then open space (``open_pool`` best first, farthest-point
-    sampling).  Beside an object the clearest of its points (``beside_rows``, best first) that may still be
-    taken; the first round goes to the object with the fewest such points left first (the nearer one, in
-    ``beside_rows``' order, on a tie) -- a crowded seat is served before its roomy neighbours take its room (11-16
-    T01: a spoon's spot left the bowl and the mug beside it none).  ``ok(p, taken, sep)``: whether ``p`` may join
-    ``taken`` (``sep`` m from each, and apart on the image); a spot beside an object keeps ``sep_beside`` from
-    the others, one in open space ``sep_open``.  Returns [(point, the object it is beside or None)]."""
-    taken, out, first = [], [], {}
+def _set_rank(key):
+    """Which sets of near objects win a tie: beside one object (what "next to the mug" asks), two (between them),
+    none (a neutral spot), then more."""
+    return {1: 0, 2: 1, 0: 2}.get(len(key), 3)
 
-    def add(p, who):
-        taken.append(p)
-        out.append((p, who))
-    left = list(beside_rows)
+
+def pick_spots(sets, ok, k=MAX_SPOTS, sep=SPOT_SET_SEP):
+    """Up to ``k`` spots: one for each set of near objects (``sets``: near_sets, () among them: by none of them, a
+    neutral spot) as far as they fit -- no more: two spots of one set differ in nothing a request about what is
+    near tells apart (11-17, the user: four open-space spots in T01 were all the same "by nothing").  Each round
+    serves the set with the fewest points left that may still be taken (``ok(p, taken, sep)``: ``sep`` m from
+    each taken one, and apart on the image; a tie by _set_rank, then the better margin) with its most inside one:
+    a crowded seat's small sets go before roomy ones take their room (11-17 T01: served in a fixed order, 9 of
+    18 sets were left without a spot).  A set with none left gets none.  Returns ([(point, its near set)], [the
+    sets left without a spot])."""
+    taken, out = [], []
+    left = sorted(sets, key=lambda g: (_set_rank(g), -sets[g][0][1]))
+    missed = []
     while left and len(out) < k:
-        free = {n: [p for p, _ in beside_rows[n] if ok(p, taken, sep_beside)] for n in left}
-        left = [n for n in left if free[n]]
+        free = {g: [p for p, _ in sets[g] if ok(p, taken, sep)] for g in left}
+        missed += [g for g in left if not free[g]]
+        left = [g for g in left if free[g]]
         if not left:
             break
-        n = min(left, key=lambda m: len(free[m]))          # min() keeps the first of a tie: the nearer object
-        add(free[n][0], n)
-        first[n] = free[n][0]
-        left.remove(n)
-    for n, rows in beside_rows.items():
-        if n not in first:
-            continue
-        c, f = np.asarray(centres[n], float), np.asarray(first[n], float) - centres[n]
-        for p, _ in rows:
-            v = np.asarray(p, float) - c
-            if len(out) < k and float(v @ f) <= 0.0 and ok(p, taken, sep_beside):
-                add(p, n)
-                break
-    pts = list(open_pool)
-    while len(out) < k and pts:
-        if taken:
-            d = [min(math.dist(p, t) for t in taken) for p in pts]
-            order = sorted(range(len(pts)), key=lambda i: -d[i])
-        else:
-            order = range(len(pts))
-        nxt = next((i for i in order if ok(pts[i], taken, sep_open)), None)
-        if nxt is None:
-            break
-        add(pts.pop(nxt), None)
-    return out
+        g = min(left, key=lambda h: len(free[h]))          # min() keeps the first of a tie (the rank order)
+        taken.append(free[g][0])
+        out.append((free[g][0], g))
+        left.remove(g)
+    return out, missed + left
 
 
 def _on_support(rig, st, s, skip):
@@ -335,15 +327,17 @@ def _on_support(rig, st, s, skip):
 def mark_spots(rig, name, support, frames=None):
     """The numbered spots for placing the held ``name`` on ``support`` in the head camera ``frames`` (the views
     view_support took: [{"image", "K", "pos", "R_ros"}]; None: the frame the camera renders now):
-    {"spots": [[x, y], ...] (spot i is disc i + 1 on every image it is drawn on), "beside": [the object each is
-    beside, or None], "images": [the drawn frame of each view]}.  Candidates: free_spots' (any yaw, finger
-    clearance first) in the nearest ring around an object on the support (all of them: beside) or in open space
-    (thinned), each one free_spots also takes as a hint itself, and in some view: in its image (not within
-    SPOT_EDGE_FRAC of the border), behind no furniture or other object from that camera.  Chosen by pick_spots:
-    one beside each object (the most crowded first), a second side, open space; a spot beside an object at least
-    SPOT_MIN_SEP from the others, one in open space also the object's longer side, and SPOT_PX_SEP disc radii
-    apart on every image both are on.  Numbered by the view that sees each
-    finest (the first view's first), left to right on it; drawn on every image it is on.  The robot's own arm
+    {"spots": [[x, y], ...] (spot i is disc i + 1), "near": [the objects near each (near_sets)], "images": [the
+    drawn frame of each view]}.  Candidates:
+    free_spots' (any yaw, finger clearance first) within SPOT_NEAR of an object on the support (all of them) or in
+    open space (thinned), each one free_spots also takes as a hint itself, and in some view: in its image (not
+    within SPOT_EDGE_FRAC of the border), behind no furniture or other object from that camera.  Chosen by
+    pick_spots: one for each set of near objects (each case of each object within / not within SPOT_NEAR that a
+    free spot has, the user 11-17; the set with the fewest points left first; a set with no room gets none), the
+    one most inside it, SPOT_SET_SEP from the others; nothing more.  Each is drawn on the view that sees it finest only (11-17 T01: kept apart on every image it was on, the
+    far view's few pixels for a crowded seat left its sets without a spot), SPOT_PX_SEP disc radii from the others
+    drawn there.  Numbered by the view that sees each
+    finest (the first view's first), left to right on it; drawn on that image.  The robot's own arm
     and load are not checked: a spot drawn on the held object is left as it is (the user, 11-15)."""
     from . import skills
     s = rig.ann.support(support)
@@ -358,10 +352,10 @@ def mark_spots(rig, name, support, frames=None):
     pool = [(round(x, 3), round(y, 3)) for x, y in skills.free_spots(rig, name, support, k=None)]
     counts["free"] = len(pool)
     objs = _on_support(rig, st, s, {name})
-    near = {p for rows in beside(pool, objs, half).values() for p, _ in rows}
+    near = {p for p in pool if any(box_gap(square(p, half), b) <= SPOT_NEAR for b in objs.values())}
     open_pool = thin(pool)
     pool = list(dict.fromkeys(open_pool + [p for p in pool if p in near]))     # (ordered, unique)
-    counts["objects"], counts["beside"], counts["candidates"] = len(objs), len(near), len(pool)
+    counts["objects"], counts["near"], counts["candidates"] = len(objs), len(near), len(pool)
     pool = [p for p in pool if skills.hint_spot_free(rig, name, s, p[0], p[1], st)]
     counts["as_hint"] = len(pool)
     z = s["z"] + 0.005
@@ -396,36 +390,40 @@ def mark_spots(rig, name, support, frames=None):
                 cams=[{"pos": np.round(fr["pos"], 3).tolist(), "size": list(fr["image"].shape[1::-1])} for fr in frames])
     r_px = [disc_radius(fr["image"].shape[1]) for fr in frames]
 
+    def home(p):                                   # the view that sees it finest (the first on a tie)
+        return max((v for v in range(len(frames)) if p in res_of[v]), key=lambda v: (res_of[v][p], -v))
+    home_of = {p: home(p) for p in pool} if frames else {}
+
     def ok(p, taken, sep):
         for t in taken:
             if math.dist(p, t) < sep:
                 return False
-            for v, m in enumerate(uv_of):
-                if p in m and t in m and float(np.linalg.norm(m[p] - m[t])) < SPOT_PX_SEP * r_px[v]:
-                    return False
+            v = home_of.get(p)                     # drawn on its own view only: apart there
+            if v is not None and home_of[t] == v and \
+                    float(np.linalg.norm(uv_of[v][p] - uv_of[v][t])) < SPOT_PX_SEP * r_px[v]:
+                return False
         return True
-    base = np.asarray(rig.base_pose()[:2], float)
-    centres = {n: np.array([(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]) for n, b in objs.items()}
-    order = sorted(objs, key=lambda n: float(np.linalg.norm(centres[n] - base)))     # the nearest object first
-    rows = beside(pool, {n: objs[n] for n in order}, half)
-    seen = set(pool)
-    chosen = pick_spots(rows, centres, [p for p in open_pool if p in seen], ok,
-                        sep_open=max(SPOT_MIN_SEP, max(size[0], size[1])))
+    sets = near_sets(pool, objs, half)
+    chosen, missed = pick_spots(sets, ok)
+    if hasattr(rig, "log"):
+        rig.log("mark_spots_sets", support=support, sets=len(sets), served=len(chosen),
+                missed=[list(m) for m in missed])
     if frames:
-        def home(p):                               # the view that sees it finest (the first on a tie)
-            return max((v for v in range(len(frames)) if p in res_of[v]), key=lambda v: (res_of[v][p], -v))
-        chosen.sort(key=lambda c: (home(c[0]), float(uv_of[home(c[0])][c[0]][0])))
+        chosen.sort(key=lambda c: (home_of[c[0]], float(uv_of[home_of[c[0]]][c[0]][0])))
     spots = [c[0] for c in chosen]
     images = []
-    ring = np.linspace(0, 2 * math.pi, 24, endpoint=False)
     for v, fr in enumerate(frames):
-        mine = [i for i, p in enumerate(spots) if p in uv_of[v]]
+        mine = [i for i, p in enumerate(spots) if home_of[p] == v]
         if not mine:
             images.append(np.asarray(fr["image"]).copy())
             continue
+        # pins: a GROUND_R mark on the support under each disc (not the held object's footprint: those outlines
+        # crowded a seat with several spots, 11-17)
         uv = np.array([uv_of[v][spots[i]] for i in mine])
-        outlines = [project(fr["K"], fr["pos"], fr["R_ros"],
-                            [[spots[i][0] + half * math.cos(a), spots[i][1] + half * math.sin(a), z] for a in ring])[0]
-                    for i in mine]
-        images.append(draw_spots(fr["image"], uv, outlines, labels=[i + 1 for i in mine]))
-    return {"spots": [list(p) for p in spots], "beside": [c[1] for c in chosen], "images": images}
+        ring = np.linspace(0, 2 * math.pi, 16, endpoint=False)
+        marks = [project(fr["K"], fr["pos"], fr["R_ros"], [[spots[i][0] + GROUND_R * math.cos(a),
+                                                            spots[i][1] + GROUND_R * math.sin(a), z] for a in ring])[0]
+                 for i in mine]
+        images.append(draw_spots(fr["image"], uv, marks, labels=[i + 1 for i in mine]))
+    return {"spots": [list(p) for p in spots], "near": [list(c[1]) for c in chosen],
+            "images": images}
