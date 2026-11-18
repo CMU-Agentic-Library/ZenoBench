@@ -778,25 +778,27 @@ def t25():
     from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
     LT = LAYOUT_TIERS.setdefault(("T25", "*"), {})
     PLAIN = ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"]      # the house's ordinary cups
-    CB, SP = "cup_counter_b", "cup_sponge"
+    CB = "cup_counter_b"
+    BLOCKS = [f"cup_block_{k + 1}" for k in range(3)]     # the kid's wooden blocks kept in the counter's cup
     drink = [["on", J, TV], ["upright", J]]
     mug_route = [S("search", object="mug_shelf", region="dining_room_0_1")] + fetch("mug_shelf", TV, [7.55, 0.36])
     # cup_elsewhere: a cup on the counter (find it); no ordinary cup in the house, a mug (absent); the counter's
-    # cup holds the dish sponge, the other ordinary cups gone (looks right, isn't): a mug; the sponge taken out
-    # and that cup used is second; the cup with the sponge in it brought the worst
+    # cup holds the kid's three wooden blocks (its inside is 7 cm across: a sponge does not fit), the other
+    # ordinary cups gone (in use): a mug; the blocks taken out and that cup used is second; the cup brought with
+    # the blocks in it the worst
     LT["cup_elsewhere__counter_cup"] = cost_tiers([(drink + [["count_on_at_least", HOUSE_CUPS, TV, 1]], 0)])
     LT["cup_elsewhere__only_mugs"] = cost_tiers([(drink + [["count_on_at_least", MUGS, TV, 1]], 0)])
-    LT["cup_elsewhere__sponge_cup"] = cost_tiers(
-        [(drink + [["count_on_at_least", MUGS, TV, 1], ["near_start", CB, 0.03], ["inside", SP, CB]], 0),
-         (drink + [["on", CB, TV], ["not inside", SP, CB]], 1), (drink + [["on", CB, TV]], 2)])
+    LT["cup_elsewhere__blocks_in_cup"] = cost_tiers(
+        [(drink + [["count_on_at_least", MUGS, TV, 1], ["near_start", CB, 0.03]] + [["inside", b, CB] for b in BLOCKS], 0),
+         (drink + [["on", CB, TV]] + [["not inside", b, CB] for b in BLOCKS], 1), (drink + [["on", CB, TV]], 2)])
     fams = {
         "cup_elsewhere": fam(
             "drink_on_island", ["not_in_view", "resource_absent"],
             "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's "
-            "cup holds the dish sponge, the other ordinary cups gone)",
+            "cup holds the kid's blocks, the other ordinary cups gone)",
             "the juice on the island, no cup there; a cup on the kitchen counter in the small kitchen (maybe "
-            "holding the dish sponge), or no ordinary cup at all; mugs in the dining room",
-            "a drink is served with a cup: find one that is fit to drink from -- a mug when there is no clean cup",
+            "holding the kid's blocks), or no ordinary cup at all; mugs in the dining room",
+            "a drink is served with a cup: find one free to drink from -- a mug when the only cup is in use",
             {"counter_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80)}, watch=[J, CB],
                                  # the cup at the counter's front edge: 18 cm deep under the wall cabinet no arm
                                  # reached it
@@ -807,11 +809,11 @@ def t25():
              "only_mugs": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80)}, remove=PLAIN, watch=[J, *MUGS],
                                goal={"all": drink + [["count_on_at_least", MUGS, TV, 1], H]},
                                route=fetch(J, TV, [7.30, 0.36]) + mug_route),
-             "sponge_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80),
-                                     SP: {"asset": "kitchen_sponge", "support": None, "z": 1.015,
-                                          "xy": [-0.45, 8.20], "yaw_deg": 0.0}},
+             "blocks_in_cup": dict(add={J: on("juice_bottle", ISL, 7.30, 1.80),
+                                        **{b: {"asset": "wooden_block", "support": None, "z": round(1.019 + 0.041 * k, 3),
+                                               "xy": [-0.45, 8.20], "yaw_deg": 0.0} for k, b in enumerate(BLOCKS)}},
                                 remove=["cup_kitchen_cabinet", "cup_side_table"], move={CB: P(COUNTER, -0.45, 8.20)},
-                                watch=[J, CB, SP, *MUGS],
+                                watch=[J, CB, *BLOCKS, *MUGS],
                                 goal={"all": drink + [["count_on_at_least", MUGS + [CB], TV, 1], H]},
                                 route=fetch(J, TV, [7.30, 0.36]) + [S("search", object=CB, region="kitchen_0_1"),
                                                                     look(COUNTER)] + mug_route)}),
@@ -900,6 +902,12 @@ def t25():
 
 
 # ================================================================== T26 the kid's things back to his room
+# the top of the bookcase by bed 1 (bookcase_3/top, x 1.79..2.41, y -5.08..-4.68) covered with his books: three
+# red books turned 90 deg along the front, three paperbacks behind, ~2 cm apart (no 10 x 16 cm spot left)
+B3_TOP_BOOKS = {**{f"b3_book_{k + 1}": on("book_red", "bookcase_3/top", x, -4.80, 90.0)
+                   for k, x in enumerate((1.903, 2.100, 2.297))},
+                **{f"b3_paperback_{k + 1}": on("paperback_book", "bookcase_3/top", x, -5.00)
+                   for k, x in enumerate((1.895, 2.100, 2.305))}}
 # 11-17: bed_2 moved 0.6 m east and cell_shelf_2 into bedroom_0_0's south-west corner (tools/relocate_furniture.py,
 # the room was closed off from its west door); the basket, the teddy and the cup spot below follow
 def t26():
@@ -913,44 +921,133 @@ def t26():
                   [CAR, BASK])
     kb, nv = "kid_book", "adult_novel"
     KIDS_CASE = [f"bookcase_{i}/{lv}" for i in (2, 3) for lv in ("top", "shelf_1", "shelf_0")]   # a bookcase in his room
+    # 11-18 (user): every design gets a substitution seed (where things go in his room), per-seed tiers
+    from itertools import product
+    from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
+    LT = LAYOUT_TIERS.setdefault(("T26", "*"), {})
+    B2 = [f"bookcase_2/{lv}" for lv in ("top", "shelf_1", "shelf_0")]
+    B3 = [f"bookcase_3/{lv}" for lv in ("top", "shelf_1", "shelf_0")]
+    ROOM_TOPS = [DESK3] + [f"large_shelf_4/shelf_{k}" for k in range(5)] + \
+        [f"large_shelf_5/shelf_{k}" for k in range(4)]          # other furniture in his room
+    basket = {BASK: floor("storage_basket", 0.89, -1.93)}
+    nv_stays = [["near_start", nv, 0.03]]
+    stays = lambda names: [["near_start", n, 0.03] for n in sorted(names)]  # noqa: E731
+
+    def per_item(items, opts, faults=()):
+        """each item its own options [(atoms(x), cost)], the costs added"""
+        combos = product(*[[(f(x), c) for f, c in opts[x]] for x in items])
+        return cost_tiers([([a for at, _ in cb for a in at], sum(c for _, c in cb)) for cb in combos], list(faults))
+
+    # whose: his bookcase with room (ideal); or (capacity) bookcase_2 full on every level (T23's piles of his
+    # books), his other bookcase by the bed has room; the grown-up's novel stays either way
+    full_b2 = shelf_books([(lv, 2) for lv in B2])
+    LT["whose__shelf_room"] = cost_tiers([([["on_any", kb, KIDS_CASE]], 0)], [(nv_stays, 2)])
+    LT["whose__shelf_full"] = cost_tiers([([["on_any", kb, B3]], 0), ([["on_any", kb, ROOM_TOPS]], 1)],
+                                         [(nv_stays, 2), (stays(full_b2), 1)])
+    # scattered: the toy basket (ideal); or (absent) no basket, his small toy bin on his bookcase: the three in
+    # the bin best; on his bookcase / other furniture in his room a step down each
+    TB = "kids_toy_bin"
+    toys = (CAR, "living_duck", "living_block")
+    scat = {CAR: floor("toy_car", 4.36, 1.68), "living_duck": on("rubber_duck", TV, 7.00, 0.36),
+            "living_block": on("wooden_block", ISL, 7.20, 1.80)}
+    LT["scattered__basket"] = cost_tiers([([["inside", x, BASK] for x in toys], 0)])
+    LT["scattered__no_basket"] = per_item(toys, {x: [(lambda y: [["inside", y, TB]], 0),
+                                                     (lambda y: [["on_any", y, KIDS_CASE + ROOM_TOPS]], 1)]
+                                                 for x in toys})
+    # where_in_room: the car to the basket, the book to his bookcase (ideal); or (looks right, isn't) no toy
+    # basket, a waste bin where it stood: the car onto his bookcase with his things, never into the bin
+    WB = "kids_room_bin"
+    LT["where_in_room__basket"] = per_item((CAR, kb), {
+        CAR: [(lambda y: [["inside", y, BASK]], 0), (lambda y: [["on_any", y, KIDS_CASE]], 1)],
+        kb: [(lambda y: [["on_any", y, KIDS_CASE]], 0), (lambda y: [["inside", y, BASK]], 1)]})
+    LT["where_in_room__waste_bin"] = per_item((CAR, kb), {
+        CAR: [(lambda y: [["on_any", y, KIDS_CASE]], 0), (lambda y: [["on_any", y, ROOM_TOPS]], 1),
+              (lambda y: [["inside", y, WB]], 3)],
+        kb: [(lambda y: [["on_any", y, KIDS_CASE]], 0), (lambda y: [["on_any", y, ROOM_TOPS]], 1),
+             (lambda y: [["inside", y, WB]], 3)]})
+    # bear_to_bed: the bedside bookcase's top free (ideal); or (taken) covered with his books: a lower level of
+    # that bookcase (by the bed) best, his other bookcase a step down, the toy basket a step down
+    BEAR = "living_bear"
+    top_books = B3_TOP_BOOKS
+    LT["bear_to_bed__top_free"] = cost_tiers([([["on_any", BEAR, ["mattress_1/top", "bookcase_3/top"]]], 0),
+                                              ([["inside", BEAR, BASK]], 1)])
+    LT["bear_to_bed__top_covered"] = cost_tiers(
+        [([["on_any", BEAR, ["mattress_1/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0"]]], 0),
+         ([["on_any", BEAR, B2]], 1), ([["inside", BEAR, BASK]], 1)], [(stays(top_books), 1)])
     fams = {
         "whose": fam(
-            "car_in_living_room", ["referent_clue"], "the seed's layout only",
-            "a picture book like the ones on the kid's bookcase and a grown-up's novel on the TV stand",
-            "only the kid's things go: the picture book to his bookcase, the novel stays",
-            {"": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36), **room},
-                      watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], ["near_start", nv, 0.03], H]},
-                      route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.43]))}),
+            "car_in_living_room", ["referent_clue", "storage_place"],
+            "how full his bookcase is (seed: room; or every level of it full of his books, his other bookcase by "
+            "the bed with room)",
+            "a picture book like the ones on the kid's bookcase and a grown-up's novel on the TV stand; his "
+            "bookcase may be full",
+            "only the kid's things go: the picture book to his bookcase -- the other one by his bed when it is "
+            "full -- the novel stays",
+            {"shelf_room": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
+                                     **room},
+                                watch=[kb, nv], goal={"all": [["on_any", kb, KIDS_CASE], *nv_stays, H]},
+                                route=[look(TV)] + fetch(kb, "bookcase_2/top", [1.12, -0.43])),
+             "shelf_full": dict(add={kb: on("book_blue", TV, 7.20, 0.36), nv: on("paperback_book", TV, 7.80, 0.36),
+                                     **basket, **full_b2},
+                                watch=[kb, nv, *full_b2],
+                                goal={"all": [["on_any", kb, B3 + ROOM_TOPS], *nv_stays, H]},
+                                route=[look(TV), nav(kb), pick(kb), nav("bookcase_2/top"), look("bookcase_2/top"),
+                                       nav("bookcase_3/top"), place(kb, "bookcase_3/top", [2.10, -4.78])])}),
         "scattered": fam(
-            "car_in_living_room", ["goal_items_unstated", "multi_object_goal"], "the seed's layout only",
-            "the car on the floor, the duck on the TV stand, a block on the island",
-            "everything of his in the living room, not only the first thing seen",
-            {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), "living_duck": on("rubber_duck", TV, 7.00, 0.36),
-                           "living_block": on("wooden_block", ISL, 7.20, 1.80), **room},
-                      watch=[CAR, "living_duck", "living_block", BASK],
-                      goal={"all": [["inside", x, BASK] for x in (CAR, "living_duck", "living_block")] + [H]},
-                      route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK) + into("living_duck", BASK)
-                      + into("living_block", BASK))}),
+            "car_in_living_room", ["goal_items_unstated", "multi_object_goal", "container_absent"],
+            "what holds his toys (seed: the toy basket on his floor; or no basket, his small toy bin on his "
+            "bookcase)",
+            "the car on the floor, the duck on the TV stand, a block on the island; his toys kept in the basket, or "
+            "(no basket) in a small bin",
+            "everything of his in the living room, not only the first thing seen, into what holds his toys",
+            {"basket": dict(add={**scat, **room}, watch=[*toys, BASK],
+                            goal={"all": [["inside", x, BASK] for x in toys] + [H]},
+                            route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)
+                            + into("living_duck", BASK) + into("living_block", BASK)),
+             "no_basket": dict(add={**scat, TB: on("small_storage_bin", "bookcase_2/top", 1.00, -0.43)},
+                               watch=[*toys, TB],
+                               goal={"all": [["on_any", x, KIDS_CASE + ROOM_TOPS] for x in toys]
+                                     + [["not on_floor", x] for x in toys] + [H]},
+                               route=[S("explore_room", room="living_room_0_0")] + into(CAR, TB)
+                               + into("living_duck", TB) + into("living_block", TB))}),
         "where_in_room": fam(
-            "car_in_living_room", ["storage_place", "multi_object_goal"], "the seed's layout only",
-            "the car and one of his picture books in the living room",
-            "in his room each by kind: the car into the toy basket, the book onto his bookcase",
+            "car_in_living_room", ["storage_place", "multi_object_goal", "container_absent"],
+            "what stands on his floor (seed: the toy basket; or no basket, a waste bin there)",
+            "the car and one of his picture books in the living room; in his room the toy basket, or only a waste "
+            "bin on the floor",
+            "in his room each by kind: the car into the toy basket -- or, with no basket, onto his bookcase, not "
+            "into the waste bin -- the book onto his bookcase",
             # the book turned 90 deg, its 20 cm side to the stand's front edge: along its 14 cm side it could
             # hang over by 5.5 cm with its centre 1.5 cm on the top -- just short (slide to edge, 11-15)
-            {"": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36, 90.0), **room},
-                      watch=[CAR, kb, BASK],
-                      goal={"all": [["inside", CAR, BASK], ["on_any", kb, KIDS_CASE], H]},
-                      route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)
-                      + fetch(kb, "bookcase_2/top", [1.12, -0.43]))}),
+            {"basket": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36, 90.0), **room},
+                            watch=[CAR, kb, BASK],
+                            goal={"all": [["inside", CAR, BASK], ["on_any", kb, KIDS_CASE], H]},
+                            route=[S("explore_room", room="living_room_0_0")] + into(CAR, BASK)
+                            + fetch(kb, "bookcase_2/top", [1.12, -0.43])),
+             "waste_bin": dict(add={CAR: floor("toy_car", 4.36, 1.68), kb: on("book_blue", TV, 7.20, 0.36, 90.0),
+                                    WB: floor("trash_can", 0.89, -1.93),
+                                    "kids_shelf_book": on("book_blue", "bookcase_2/top", 0.90, -0.43)},
+                               watch=[CAR, kb, WB],
+                               goal={"all": [["on_any", x, KIDS_CASE + ROOM_TOPS] for x in (CAR, kb)] + [H]},
+                               route=[S("explore_room", room="living_room_0_0"), nav(CAR), pick(CAR), nav(WB),
+                                      look(WB), nav("bookcase_2/top"), place(CAR, "bookcase_2/top", [1.15, -0.43])]
+                               + fetch(kb, "bookcase_3/top", [2.10, -4.78]))}),
         "bear_to_bed": fam(
-            "car_in_living_room", ["storage_place"], "the seed's layout only",
-            "his teddy bear on the TV stand; it is bedtime",
-            "at bedtime the bear goes to his bed or his bookcase, not into the toy basket",
-            {"": dict(add={"living_bear": on("teddy_bear", TV, 7.40, 0.36), **room}, watch=["living_bear", BASK],
-                      goal={"all": [["on_any", "living_bear", ["mattress_1/top", "bookcase_3/top"]], H]},
-                      # the reference sets it on his bookcase: the bed frame keeps the base 0.70 m from the
-                      # mattress's top, out of the arm's reach
-                      route=[look(TV)] + fetch("living_bear", "bookcase_3/top", [2.10, -4.78]))},
+            "car_in_living_room", ["storage_place"],
+            "how the bedside bookcase's top is (seed: free; or covered with his books)",
+            "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
+            "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), "
+            "not into the toy basket",
+            {"top_free": dict(add={BEAR: on("teddy_bear", TV, 7.40, 0.36), **room}, watch=[BEAR, BASK],
+                              goal={"all": [["on_any", BEAR, ["mattress_1/top", "bookcase_3/top"]], H]},
+                              # the reference sets it on his bookcase: the bed frame keeps the base 0.70 m from
+                              # the mattress's top, out of the arm's reach
+                              route=[look(TV)] + fetch(BEAR, "bookcase_3/top", [2.10, -4.78])),
+             "top_covered": dict(add={BEAR: on("teddy_bear", TV, 7.40, 0.36), **room, **top_books},
+                                 watch=[BEAR, BASK, *top_books],
+                                 goal={"all": [["on_any", BEAR, ["mattress_1/top", *B3, *B2]], H]},
+                                 route=[look(TV), nav(BEAR), pick(BEAR), nav("bookcase_3/top"),
+                                        look("bookcase_3/top"), place(BEAR, "bookcase_3/shelf_1", [2.10, -4.85])])},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),
         "two_bedrooms": fam(
@@ -977,6 +1074,25 @@ def t27():
     # with a second thing on the table the edge search pushed the box 0.5 m west and the hand jammed on its rim;
     # 15 cm east the east edge is the short push (the one that works in rice_on_table)
     rice_east = {R: on("glass_food_container", T2, 3.45, 6.70)}
+    # 11-18 (user): every design with a substitution.  two_leftovers + soup_at_seat: the soup pot at a place
+    # where someone is still eating from a bowl (in use): only the rice; fridge_out_of_view + fridge_crowded: the
+    # left of the fridge shelf full of stored lunch boxes and juice (taken): the rice in the free right part
+    from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
+    LT = LAYOUT_TIERS.setdefault(("T27", "*"), {})
+    SOUP_P, closed = "leftover_soup", [["is_closed", FR]]
+    STORED = {**{f"stored_box_{k + 1}": on("steel_lunch_box", FS, x, y, 90.0)
+                 for k, (x, y) in enumerate([(5.695, 3.14), (5.815, 3.14), (5.695, 3.31), (5.815, 3.31)])},
+              **{f"stored_juice_{k + 1}": on("juice_bottle", FS, x, 3.48) for k, x in enumerate((5.69, 5.82))}}
+    seat = {"eating_bowl": on("oatmeal_bowl", T2, 3.05, 7.30), "eating_spoon": on("breakfast_spoon", T2, 3.05, 7.49)}
+    both_in = [["on", R, FS], ["on", SOUP_P, FS], ["upright", SOUP_P]]
+    for c in ("soup_on_table", "soup_on_stove"):
+        LT[f"two_leftovers__{c}"] = cost_tiers([(both_in, 0)], [(closed, 1)])
+    LT["two_leftovers__soup_at_seat"] = cost_tiers(
+        [([["on", R, FS], ["near_start", SOUP_P, 0.03], ["near_start", "eating_bowl", 0.03]], 0),
+         ([["on", R, FS]], 2)], [(closed, 1)])
+    LT["fridge_out_of_view__fridge_free"] = cost_tiers([([["on", R, FS]], 0)], [(closed, 1)])
+    LT["fridge_out_of_view__fridge_crowded"] = cost_tiers(
+        [([["on", R, FS]], 0)], [(closed, 1), ([["near_start", n, 0.03] for n in sorted(STORED)], 1)])
     fams = {
         "which_is_leftover": fam(
             "rice_on_table", ["disposal_by_state"], "the seed's layout only",
@@ -986,13 +1102,20 @@ def t27():
                       goal={"all": rg + [["not on", "empty_tray", FS], H]}, route=[look(T2)] + fridge([R]))}),
         "two_leftovers": fam(
             "rice_on_table", ["goal_items_unstated", "multi_object_goal"],
-            "where the leftover soup is (seed: on the table, or still in its pot on the stove)",
-            "the box of rice on the table, and a pot of leftover soup, on the table or still on the stove",
-            "all the leftovers, not only the first one seen: both into the fridge",
-            {c: dict(add={**(rice_east if "table" in c else rice), "leftover_soup": on("soup_pot", sup, *xy)}, watch=[R, "leftover_soup"],
+            "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the "
+            "table where someone is still eating from a bowl -- in use)",
+            "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being "
+            "eaten from at a place",
+            "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating "
+            "the soup, then only the rice",
+            {"soup_at_seat": dict(add={**rice_east, SOUP_P: on("soup_pot", T2, 3.35, 7.40), **seat},
+                                  watch=[R, SOUP_P, "eating_bowl"],
+                                  goal={"all": rg + [["near_start", SOUP_P, 0.03], ["near_start", "eating_bowl", 0.03], H]},
+                                  route=[look(T2)] + fridge([R])),
+             **{c: dict(add={**(rice_east if "table" in c else rice), "leftover_soup": on("soup_pot", sup, *xy)}, watch=[R, "leftover_soup"],
                      goal={"all": rg + [["on", "leftover_soup", FS], ["upright", "leftover_soup"], H]},
                      route=[look(T2)] + ([look("kitchen_stove/top")] if "stove" in sup else []) + fridge([R, "leftover_soup"], spots=((5.90, 3.46), (5.90, 3.20))))   # the pot (30 cm with handles) does not fit beside the box: the flat box at the back, the pot in front
-             for c, sup, xy in (("soup_on_table", T2, (3.35, 6.05)), ("soup_on_stove", "kitchen_stove/top", (8.41, 1.725)))}),
+             for c, sup, xy in (("soup_on_table", T2, (3.35, 6.05)), ("soup_on_stove", "kitchen_stove/top", (8.41, 1.725)))}}),
         "still_eating": fam(
             "rice_on_table", ["referent_clue"], "the seed's layout only",
             "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
@@ -1002,11 +1125,18 @@ def t27():
                       watch=[R, "eating_bowl"], goal={"all": rg + [["near_start", "eating_bowl", 0.03], ["never_picked", ["eating_bowl"]], H]},
                       route=[look(T2)] + fridge([R]))}),
         "fridge_out_of_view": fam(
-            "rice_on_table", ["not_in_view"], "the seed's layout only",
-            "the robot starts in the dining room; the fridge stands in the open kitchen, out of view",
-            "find the fridge first, then put the rice in",
-            {"": dict(add=rice, start=[3.80, 4.90, 180.0],
-                      route=[look(T2), S("explore_room", room="living_room_0_0")] + fridge([R]))}),
+            "rice_on_table", ["not_in_view", "storage_place"],
+            "how full the fridge shelf is (seed: free; or its left part packed with stored lunch boxes and juice)",
+            "the robot starts in the dining room; the fridge stands in the open kitchen, out of view; its shelf "
+            "free, or half taken by what is stored there",
+            "find the fridge first, then put the rice in -- in the part of the shelf that is free, the stored food "
+            "left as it is",
+            {"fridge_free": dict(add=rice, start=[3.80, 4.90, 180.0],
+                                 route=[look(T2), S("explore_room", room="living_room_0_0")] + fridge([R])),
+             "fridge_crowded": dict(add={**rice, **STORED}, start=[3.80, 4.90, 180.0], watch=[R, *STORED],
+                                    goal={"all": rg + [H]},
+                                    route=[look(T2), S("explore_room", room="living_room_0_0")]
+                                    + fridge([R], spots=((6.05, 3.30),)))}),
         "fruit_stays_out": fam(
             "rice_on_table", ["category_rule"], "the seed's layout only",
             "the box of rice, the fruit basket with an apple and a box of cereal on the table",
@@ -1032,6 +1162,25 @@ def t28():
                   "孩子要睡了，把他的水杯拿到床边。", "cup_on_counter", ctl,
                   {"all": [["on_any", KC, SIDES], ["upright", KC], H]}, fetch(KC, side, [2.10, -4.88]), [KC])
     to_side = fetch(KC, side, [2.10, -4.88])
+    # 11-18 (user): every design with a substitution.  where_his_cup_is + no_kid_cup: no plastic cup in the
+    # house, a china cup and a mug on the counter (absent): a cup of the house; cup_out_of_view + side_covered:
+    # the bookcase top by his bed covered with books (taken): a lower level of it or the desk; already_there +
+    # wrong_cup: a china cup by his bed, his plastic cup on the counter (looks right, isn't): bring his
+    from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
+    LT = LAYOUT_TIERS.setdefault(("T28", "*"), {})
+    OTHER = ["cup_counter_b", "counter_mug"]
+    at_side = lambda x, where=SIDES: [["on_any", x, where], ["upright", x]]  # noqa: E731
+    stay_cnt = [["near_start", n, 0.03] for n in OTHER]
+    LT["where_his_cup_is__on_counter"] = cost_tiers([(at_side(KC), 0)] + [(at_side(x), 2) for x in OTHER],
+                                                    [(stay_cnt, 1)])
+    LT["where_his_cup_is__in_cabinet"] = cost_tiers([(at_side(KC), 0)] + [(at_side(x), 2) for x in OTHER],
+                                                    [(stay_cnt, 1), ([["is_closed", C4]], 1)])
+    LT["where_his_cup_is__no_kid_cup"] = cost_tiers([(at_side(x), 0) for x in OTHER + HOUSE_CUPS[1:3]],
+                                                    [([["is_closed", C4]], 1)])
+    LOWER = ["bookcase_3/shelf_1", "bookcase_3/shelf_0", "desk_1/top"]
+    LT["cup_out_of_view__cup_found"] = cost_tiers([(at_side(KC), 0)])
+    LT["cup_out_of_view__side_covered"] = cost_tiers(
+        [(at_side(KC, LOWER), 0)], [([["near_start", n, 0.03] for n in sorted(B3_TOP_BOOKS)], 1)])
     fams = {
         "which_bed": fam(
             "cup_on_counter", ["referent_clue"], "which bed is his (seed: the teddy bear on one of the two beds)",
@@ -1045,7 +1194,7 @@ def t28():
                            route=[nav(KC), pick(KC), look("mattress_1/top"), nav("cell_shelf_2/top"),
                                   place(KC, "cell_shelf_2/top", [1.30, -11.90])])}),
         "where_his_cup_is": fam(
-            "cup_on_counter", ["referent_clue", "item_put_away", "dependent_decisions"],
+            "cup_on_counter", ["referent_clue", "item_put_away", "dependent_decisions", "resource_absent"],
             "whether his cup is on the counter among the others or put away in the low cabinet (seed)",
             "on the counter a china cup and a mug, and his plastic cup with them, or not (then it is in the low "
             "cabinet)",
@@ -1063,20 +1212,40 @@ def t28():
                                 goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
                                               ["near_start", "counter_mug", 0.03], ["is_closed", C4], H]},
                                 route=[look(COUNTER)] + explore(C4) + from_closed(KC, C4)
-                                + [nav(side), place(KC, side, [2.10, -4.88])])}),
+                                + [nav(side), place(KC, side, [2.10, -4.88])]),
+             "no_kid_cup": dict(add={"counter_mug": on("breakfast_mug", COUNTER, -0.30, 9.00), **BEAR},
+                                watch=["cup_counter_b", "counter_mug"],
+                                goal={"all": [["count_on_at_least", OTHER + HOUSE_CUPS[1:3], side, 1]]
+                                      + [["is_closed", C4], H]},
+                                route=[look(COUNTER)] + explore(C4) + [S("close", articulated=C4)]
+                                + fetch("cup_counter_b", side, [2.10, -4.88]))}),
         "cup_out_of_view": fam(
-            "cup_on_counter", ["not_in_view"], "the seed's layout only",
-            "the cup was left on the dining table, out of view",
-            "find the cup first",
-            {"": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR},
-                      route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1")] + to_side)}),
+            "cup_on_counter", ["not_in_view", "storage_place"],
+            "how the top by his bed is (seed: free; or covered with his books)",
+            "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
+            "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is "
+            "covered, the books left",
+            {"cup_found": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR},
+                               route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1")] + to_side),
+             "side_covered": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR, **B3_TOP_BOOKS},
+                                  watch=[KC, *B3_TOP_BOOKS],
+                                  goal={"all": at_side(KC, LOWER) + [H]},
+                                  route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1"), nav(KC),
+                                         pick(KC), nav(side), look(side),
+                                         place(KC, "bookcase_3/shelf_1", [2.10, -4.85])])}),
         "already_there": fam(
-            "cup_on_counter", ["goal_already_met"], "the seed's layout only",
-            "the cup already stands by his bed",
-            "the goal already holds: check and leave it",
-            {"": dict(add={KC: on("plastic_cup", side, 2.10, -4.88), **BEAR},
-                      goal={"all": [["on_any", KC, SIDES], ["near_start", KC, 0.03], H]},
-                      route=[nav(side), look(side)])}),
+            "cup_on_counter", ["goal_already_met", "referent_clue"],
+            "what cup stands by his bed (seed: his plastic cup; or a china cup, his still on the counter)",
+            "a cup already stands by his bed: his own, or a china one that is not his",
+            "his cup already there: check and leave it; a cup that is not his does not count: bring his",
+            {"his_cup": dict(add={KC: on("plastic_cup", side, 2.10, -4.88), **BEAR},
+                             goal={"all": [["on_any", KC, SIDES], ["near_start", KC, 0.03], H]},
+                             route=[nav(side), look(side)]),
+             "wrong_cup": dict(add={"bedside_cup": on("breakfast_cup", side, 2.28, -4.88),
+                                    KC: on("plastic_cup", COUNTER, -0.20, 7.60), **BEAR},
+                               watch=[KC, "bedside_cup"],
+                               goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "bedside_cup", 0.03], H]},
+                               route=[nav(side), look(side)] + fetch(KC, side, [2.00, -4.88]))}),
     }
     return t, fams
 
@@ -1095,34 +1264,80 @@ def t29():
     keep = [["near_start", "set_bowl", 0.03], ["near_start", "set_spoon", 0.03]]
     shelves = [f"bookcase_{i}/{lv}" for i in (1, 2, 3, 4) for lv in ("top", "shelf_1", "shelf_0")] + \
         [f"large_shelf_2/shelf_{k}" for k in range(4)]                      # a book goes on any bookshelf
+    # 11-18 (user): every design with a substitution.  belongs_on_table + no_toy_box: no toy box, a sorting
+    # tray on the TV stand (absent); homework_on_table + desk_covered: the study desk covered with someone's
+    # books (taken): the kid's own desk in the bedroom or his bookcase; several + bin_full: no toy box, his small
+    # toy bin full, a tray beside it (capacity)
+    from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
+    LT = LAYOUT_TIERS.setdefault(("T29", "*"), {})
+    TRAY29 = "spare_tray"
+    tray29 = {TRAY29: on("shallow_sorting_tray", TV, 7.80, 0.36)}
+    DESK_FULL = {**HOMEWORK_SPREAD, "hw_notebook_corner": on("notebook", DESK, -0.138, -6.245)}
+    HW = ["hw_notebook", "hw_pencil"]
+    KIDS_SPOTS = [DESK3] + [f"bookcase_2/{lv}" for lv in ("top", "shelf_1", "shelf_0")]
+    off_t = lambda x: [["not on", x, T2], ["not on_floor", x]]  # noqa: E731
+    LT["homework_on_table__desk_free"] = cost_tiers([([["on", x, DESK] for x in HW], 0),
+                                                     ([a for x in HW for a in off_t(x)], 2)])
+    LT["homework_on_table__desk_covered"] = cost_tiers(
+        [([["on_any", x, KIDS_SPOTS] for x in HW], 0), ([["on", x, DESK] for x in HW], 1),
+         ([a for x in HW for a in off_t(x)], 2)], [([["near_start", n, 0.03] for n in sorted(DESK_FULL)], 1)])
     fams = {
         "belongs_on_table": fam(
-            "car_on_table", ["category_rule"], "the seed's layout only",
-            "the toy car, and a bowl and a spoon set for the meal",
-            "what is set for the meal stays; only the toy goes",
+            "car_on_table", ["category_rule", "container_absent"],
+            "what holds the toys (seed: the toy box; or no toy box, a sorting tray on the TV stand)",
+            "the toy car, and a bowl and a spoon set for the meal; the toy box in the living room, or none",
+            "what is set for the meal stays; only the toy goes -- into the toy box, or the tray when there is none",
             {"": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tb, **setting}, watch=[TC, "set_bowl", "set_spoon"],
-                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + into(TC, BOX))}),
+                      goal={"all": [["inside", TC, BOX]] + keep + [H]}, route=[look(T2)] + into(TC, BOX)),
+             "no_toy_box": dict(add={TC: on("toy_car", T2, 3.30, 6.70), **tray29, **setting},
+                                watch=[TC, "set_bowl", "set_spoon", TRAY29],
+                                goal={"all": [["inside", TC, TRAY29]] + keep + [H]},
+                                route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
+                                       nav(TRAY29), place(TC, TRAY29)])}),
         "homework_on_table": fam(
-            "car_on_table", ["storage_place", "multi_object_goal"], "the seed's layout only",
-            "the kid's notebook and pencil on the dining table",
-            "homework goes back to the study desk, not just off the table",
-            {"": dict(add={"hw_notebook": on("notebook", T2, 3.30, 6.30), "hw_pencil": on("pencil", T2, 3.55, 6.30, 90.0)},
-                      watch=["hw_notebook", "hw_pencil"],
-                      goal={"all": [["on", "hw_notebook", DESK], ["on", "hw_pencil", DESK], H]},
-                      route=[look(T2)] + fetch("hw_notebook", DESK, [-0.70, -5.95])
-                      + fetch("hw_pencil", DESK, [-0.35, -5.95]))}),
+            "car_on_table", ["storage_place", "multi_object_goal"],
+            "how the study desk is (seed: free; or covered with someone's books)",
+            "the kid's notebook and pencil on the dining table; the study desk free, or covered with books",
+            "homework goes back to a desk, not just off the table: the study desk, or -- covered -- his own desk "
+            "in the bedroom (or his bookcase), the books left",
+            {"desk_free": dict(add={"hw_notebook": on("notebook", T2, 3.30, 6.30),
+                                    "hw_pencil": on("pencil", T2, 3.55, 6.30, 90.0)},
+                               watch=HW, goal={"all": [["on", x, DESK] for x in HW] + [H]},
+                               route=[look(T2)] + fetch("hw_notebook", DESK, [-0.70, -5.95])
+                               + fetch("hw_pencil", DESK, [-0.35, -5.95])),
+             "desk_covered": dict(add={"hw_notebook": on("notebook", T2, 3.30, 6.30),
+                                       "hw_pencil": on("pencil", T2, 3.55, 6.30, 90.0), **DESK_FULL},
+                                  watch=[*HW, *DESK_FULL],
+                                  goal={"all": [["on_any", x, KIDS_SPOTS + [DESK]] for x in HW] + [H]},
+                                  route=[look(T2), nav("hw_notebook"), pick("hw_notebook"), nav(DESK), look(DESK),
+                                         nav(DESK3), place("hw_notebook", DESK3, [6.20, -5.50])]
+                                  + fetch("hw_pencil", DESK3, [6.50, -5.50]))}),
         "several": fam(
-            "car_on_table", ["category_rule", "multi_object_goal"], "the seed's layout only",
-            "the toy car, a paperback and an empty soda can on the table",
-            "each to its place: the toy to the toy box, the book to a bookshelf, the empty can into the bin",
-            {"": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
-                           "empty_can": on("soda_can", T2, 3.30, 6.20), **tb},
-                      watch=[TC, "table_book", "empty_can"],
-                      goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
-                            "any": [[["on", "table_book", s]] for s in shelves]},
-                      route=[look(T2)] + into(TC, BOX) + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
-                                                          S("drop", object="empty_can", container="trash_can")]
-                      + fetch("table_book", "bookcase_2/top", [1.00, -0.43]))}),
+            "car_on_table", ["category_rule", "multi_object_goal", "storage_place"],
+            "what holds the toys (seed: the toy box; or no toy box, his small toy bin full, a tray beside it)",
+            "the toy car, a paperback and an empty soda can on the table; the toy box, or only a full toy bin",
+            "each to its place: the toy to the toy box (the tray beside the full bin), the book to a bookshelf, the "
+            "empty can into the bin",
+            {"toy_box": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
+                                  "empty_can": on("soda_can", T2, 3.30, 6.20), **tb},
+                             watch=[TC, "table_book", "empty_can"],
+                             goal={"all": [["inside", TC, BOX], ["inside", "empty_can", "trash_can"], H],
+                                   "any": [[["on", "table_book", s]] for s in shelves]},
+                             route=[look(T2)] + into(TC, BOX) + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                                                                 S("drop", object="empty_can", container="trash_can")]
+                             + fetch("table_book", "bookcase_2/top", [1.00, -0.43])),
+             "bin_full": dict(add={TC: on("toy_car", T2, 3.30, 6.70), "table_book": on("paperback_book", T2, 3.30, 7.20),
+                                   "empty_can": on("soda_can", T2, 3.30, 6.20),
+                                   **toy_bin_full("toy_bin", TV_Z, 7.30, 0.36), **tray29},
+                              watch=[TC, "table_book", "empty_can", "toy_bin", TRAY29],
+                              goal={"all": [["inside", TC, TRAY29], ["inside", "empty_can", "trash_can"], H]
+                                    + [["fully_inside", f"bin_block_{i}", "toy_bin"] for i in range(1, 25)],
+                                    "any": [[["on", "table_book", s]] for s in shelves]},
+                              route=[look(T2), nav(TC), pick(TC), S("explore_room", room="living_room_0_0"),
+                                     nav("toy_bin"), S("measure", object="toy_bin"), place(TC, TRAY29)]
+                              + [nav("empty_can"), pick("empty_can"), nav("trash_can"),
+                                 S("drop", object="empty_can", container="trash_can")]
+                              + fetch("table_book", "bookcase_2/top", [1.00, -0.43]))}),
         "nothing_to_clear": fam(
             "car_on_table", ["goal_already_met"], "the seed's layout only",
             "the table holds only what is set for the meal",
@@ -1159,19 +1374,32 @@ def t30():
                   "汤快好了，拿碗过来准备盛。", "bowl_on_cabinet", ctl, {"all": [bowls(B1), H]},
                   fetch(B1, ISL, [8.05, 1.75]), [B1],
                   remove=["spoon_kitchen_cabinet", "handled_cooking_pot", "pot_lid"])
+    spoons3 = {f"seat_spoon_{i + 1}": on("breakfast_spoon", T2, 3.05, y) for i, y in enumerate((5.90, 6.70, 7.50))}
     fams = {
         "how_many": fam(
-            "bowl_on_cabinet", ["count_from_scene", "multi_object_goal"], "the seed's layout only",
-            "three spoons laid out at the dining table; three clean bowls on the cabinet",
-            "as many bowls as places at the table: three",
-            {"": dict(add={**SOUP, **{f"soup_bowl_{i + 1}": on("breakfast_bowl", top6, x, 0.36)
-                              for i, x in enumerate((3.29, 3.50, 3.71))},
-                           **{f"seat_spoon_{i + 1}": on("breakfast_spoon", T2, 3.05, y) for i, y in enumerate((5.90, 6.70, 7.50))}},
-                      remove=["clutter_cereal_a", "clutter_cereal_b"],
-                      watch=["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"],
-                      goal={"all": [bowls("soup_bowl_1", "soup_bowl_2", "soup_bowl_3", n=3), H]},
-                      route=[look(T2)] + fetch("soup_bowl_1", ISL, [7.65, 1.75]) + fetch("soup_bowl_2", ISL, [7.85, 1.75])
-                      + fetch("soup_bowl_3", ISL, [8.05, 1.75]))},
+            "bowl_on_cabinet", ["count_from_scene", "multi_object_goal", "resource_absent"],
+            "how many bowls there are (seed: three; or two and a mug)",
+            "three spoons laid out at the dining table; three clean bowls on the cabinet, or two and a mug (the "
+            "house has no other bowl)",
+            "as many bowls as places at the table: three -- with two bowls, the mug for the third",
+            {"three_bowls": dict(add={**SOUP, **{f"soup_bowl_{i + 1}": on("breakfast_bowl", top6, x, 0.36)
+                                                 for i, x in enumerate((3.29, 3.50, 3.71))}, **spoons3},
+                                 remove=["clutter_cereal_a", "clutter_cereal_b"],
+                                 watch=["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"],
+                                 goal={"all": [bowls("soup_bowl_1", "soup_bowl_2", "soup_bowl_3", n=3), H]},
+                                 route=[look(T2)] + fetch("soup_bowl_1", ISL, [7.65, 1.75])
+                                 + fetch("soup_bowl_2", ISL, [7.85, 1.75]) + fetch("soup_bowl_3", ISL, [8.05, 1.75])),
+             # 11-18 (user): only two bowls in the house and a mug beside them (absent): the mug for the third
+             "two_bowls": dict(add={**SOUP, "soup_bowl_1": on("breakfast_bowl", top6, 3.29, 0.36),
+                                    "soup_bowl_2": on("breakfast_bowl", top6, 3.50, 0.36),
+                                    "spare_mug": on("breakfast_mug", top6, 3.71, 0.36), **spoons3},
+                               remove=["clutter_cereal_a", "clutter_cereal_b", "plate_inside_kitchen_cabinet", *HOUSE_BOWLS],
+                               watch=["soup_bowl_1", "soup_bowl_2", "spare_mug"],
+                               goal={"all": [["count_on_at_least", ["soup_bowl_1", "soup_bowl_2"], ISL, 2],
+                                             ["count_on_at_least", ["soup_bowl_1", "soup_bowl_2", "spare_mug"] + HOUSE_CUPS,
+                                              ISL, 3], H]},
+                               route=[look(T2)] + fetch("soup_bowl_1", ISL, [7.65, 1.75])
+                               + fetch("soup_bowl_2", ISL, [7.85, 1.75]) + fetch("spare_mug", ISL, [8.05, 1.75]))},
             instruction="The soup is almost ready. Bring bowls over for serving it.",
             instruction_zh="汤快好了，拿碗过来准备盛。"),
         "bowls_in_cabinet": fam(
@@ -1209,12 +1437,22 @@ def t30():
                       goal={"all": [bowls(B1), ["near_start", "full_bowl", 0.03], H]},
                       route=[look(top6)] + fetch(B1, ISL, [8.05, 1.75]))}),
         "bowl_put_away": fam(
-            "bowl_on_cabinet", ["item_put_away"], "the seed's layout only",
-            "no bowl out; the clean bowls are in the low cabinet",
-            "look in the cabinet, take a bowl, close the door",
-            {"": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
-                      goal={"all": [bowls(B1), ["is_closed", C4], H]},
-                      route=explore(C4) + from_closed(B1, C4) + [nav(ISL), place(B1, ISL, [8.05, 1.75])])}),
+            "bowl_on_cabinet", ["item_put_away", "resource_absent"],
+            "what the low cabinet holds (seed: a bowl; or, no bowl in the house, a plate and a mug)",
+            "no bowl out; the low cabinet holds the clean bowl, or only a plate and a mug",
+            "look in the cabinet, take a bowl -- or the mug, which holds soup, not the plate -- close the door",
+            {"bowl_inside": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
+                                 goal={"all": [bowls(B1), ["is_closed", C4], H]},
+                                 route=explore(C4) + from_closed(B1, C4) + [nav(ISL), place(B1, ISL, [8.05, 1.75])]),
+             "mug_inside": dict(add={**SOUP, "stored_mug": on("breakfast_mug", f"{C4}/inside_shelf", 1.40, 0.42),
+                                     "stored_plate": on("breakfast_plate", f"{C4}/inside_shelf", 1.20, 0.42)},
+                                remove=["bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table",
+                                        "bowl_inside_kitchen_cabinet"],
+                                watch=["stored_mug", "stored_plate"],
+                                goal={"all": [["count_on_at_least", ["stored_mug"] + HOUSE_CUPS, ISL, 1],
+                                              ["is_closed", C4], H]},
+                                route=explore(C4) + from_closed("stored_mug", C4)
+                                + [nav(ISL), place("stored_mug", ISL, [8.05, 1.75])])}),
         "no_bowl": fam(
             "bowl_on_cabinet", ["resource_absent"], "the seed's layout only",
             "no clean bowl anywhere; a mug and a plate on the cabinet",

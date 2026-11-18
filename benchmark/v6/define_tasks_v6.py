@@ -3390,13 +3390,15 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                                                                   "(seed: an empty takeout tray; the fruit basket "
                                                                   "and cereal; a bowl someone is still eating from)",
                 ("T29_clear_table_for_dinner", "belongs_on_table"): "what is on the table besides the place setting "
-                                                                    "(seed: a toy car, or nothing)",
+                                                                    "and what holds the toys (seed: a toy car, the "
+                                                                    "toy box; nothing; a toy car, no toy box, a "
+                                                                    "tray)",
                 ("T30_bowls_for_soup", "bowl_not_plate"): "what stands next to the clean bowl (seed: a plate, or a "
                                                           "bowl still full of oatmeal)",
                 ("T28_cup_to_bedside", "where_his_cup_is"): "where his cup is and what else stands on the counter "
                                                             "(seed: on the counter among other cups; in the cabinet "
-                                                            "with other cups on the counter; in the cabinet, the "
-                                                            "counter empty)"}
+                                                            "with other cups on the counter; no cup of his in the "
+                                                            "house, a china cup and a mug on the counter)"}
 
 
 def ext_target(t, fam):

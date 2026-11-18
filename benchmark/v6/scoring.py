@@ -737,11 +737,55 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
                                       "tipped; still held"),
              ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
              ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
+         **{("T26", d): _layout_tiers(d, w, "a thing of his left in the living room or put elsewhere; still held or "
+                                         "dropped") for d, w in (
+             ("whose", {"best": "his picture book to his bookcase (the one by his bed when his is full), the novel "
+                                "left",
+                        "second": "his book in his room but not on a bookcase, or the books on the full one moved, or "
+                                  "the grown-up's novel taken too",
+                        "worst": "two of those slips"}),
+             ("scattered", {"best": "all three in what holds his toys (the basket; or, no basket, his toy bin)",
+                            "second": "one of them only on his bookcase or other furniture in his room",
+                            "worst": "two or more of them not in the bin"}),
+             ("where_in_room", {"best": "the car in the toy basket (no basket: onto his bookcase), the book on his "
+                                        "bookcase",
+                                "second": "one of them in the wrong spot in his room (the car on a shelf with the "
+                                          "basket there, the book in the basket or on other furniture)",
+                                "worst": "both a step down, or one into the waste bin"}),
+             ("bear_to_bed", {"best": "the teddy on his bed or the bookcase by it (a lower level when its top is "
+                                      "covered)",
+                              "second": "the teddy in the toy basket, on his other bookcase, or the books on the top "
+                                        "moved",
+                              "worst": "two of those slips"}))},
+         **{(tid, d): _layout_tiers(d, w, no) for tid, d, w, no in (
+             ("T27", "two_leftovers", {"best": "the leftovers in the fridge (the soup too, unless someone is eating "
+                                               "it), the door closed",
+                                       "second": "the door left open", "worst": "the soup taken from someone eating"},
+              "a leftover not in the fridge; tipped; still held or dropped"),
+             ("T27", "fridge_out_of_view", {"best": "the rice in the fridge's free part, the stored food left, the "
+                                                    "door closed",
+                                            "second": "the door left open, or the stored food moved",
+                                            "worst": "both"},
+              "the rice not in the fridge; tipped; still held or dropped"),
+             ("T28", "where_his_cup_is", {"best": "his cup by his bed (with no cup of his, a cup of the house), "
+                                                  "the rest left, the door closed",
+                                          "second": "his cup, but the cabinet left open or other cups moved",
+                                          "worst": "a cup that is not his though his is there"},
+                                          "no cup by his bed; lying; still held or dropped"),
+             ("T28", "cup_out_of_view", {"best": "his cup found and by his bed (a lower level or the desk when the "
+                                                 "top is covered)",
+                                         "second": "the books on the top moved to make room", "worst": "-"},
+              "no cup by his bed; lying; still held or dropped"),
+             ("T29", "homework_on_table", {"best": "the homework on a free desk (the study desk; covered: his own "
+                                                   "desk or bookcase)",
+                                           "second": "on top of the books on the covered desk, or the books moved",
+                                           "worst": "off the table but not on a desk"},
+              "homework left on the table; still held or dropped"))},
          ("T25", "cup_elsewhere"): _layout_tiers("cup_elsewhere", {
-             "best": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when there is "
-                     "no clean cup (the sponge cup left alone)",
-             "second": "the sponge taken out of its cup and that cup brought",
-             "worst": "the cup with the dish sponge in it brought"},
+             "best": "the juice and a cup fit to drink from by the guest: the counter's cup, or a mug when the only "
+                     "cup holds the kid's blocks (that cup left alone)",
+             "second": "the blocks taken out of the cup and that cup brought",
+             "worst": "the cup brought with the blocks in it"},
              "no drink or no cup by the guest; the juice lying; still held or dropped"),
          **{("T24", d): _layout_tiers(d, w, no) for d, w, no in (
              ("no_apples_for_him", {"best": "something nobody is eating on the desk: the apple when free, else the "
@@ -1008,6 +1052,15 @@ NOT_OK_ZH = {
     ("T24", "fruit_out_of_view"): "书桌上没有能吃的；还拿着或掉了",
     ("T24", "two_kids"): "有孩子没拿到、东西留在桌上；还拿着或掉了",
     ("T25", "cup_elsewhere"): "缺饮料或杯子；果汁躺着；还拿着或掉了",
+    ("T27", "two_leftovers"): "有剩菜没进冰箱；倒了；还拿着或掉了",
+    ("T27", "fridge_out_of_view"): "剩饭没进冰箱；倒了；还拿着或掉了",
+    ("T28", "where_his_cup_is"): "床边没杯子；躺着；还拿着或掉了",
+    ("T28", "cup_out_of_view"): "床边没杯子；躺着；还拿着或掉了",
+    ("T29", "homework_on_table"): "作业还在桌上；还拿着或掉了",
+    ("T26", "whose"): "图画书没拿回或放到别处；还拿着或掉了",
+    ("T26", "scattered"): "有一样没拿回他房间或还在地上；还拿着或掉了",
+    ("T26", "where_in_room"): "有一样没拿回他房间；还拿着或掉了",
+    ("T26", "bear_to_bed"): "熊没拿回他房间；还拿着或掉了",
     ("T23", "by_kind"): "有东西还在地上；还拿着",
     ("T23", "belongs_on_floor"): "积木还在地上或没放进容器；还拿着",
     ("T23", "dropped_out_of_view"): "没找到；还在地上；还拿着或掉了",

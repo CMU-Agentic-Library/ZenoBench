@@ -1,33 +1,33 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 241 个摆法，其中 160 个要做替换，81 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 32.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 291 个摆法，其中 186 个要做替换，105 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 37.2 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 38 | +6.0 |
-| 被占用 | 34 | +2.0 |
-| 能力不足 | 22 | -10.0 |
-| 看着像但不能用 | 30 | -2.0 |
-| 去处替换 | 36 | +4.0 |
+| 缺失 | 45 | +7.8 |
+| 被占用 | 42 | +4.8 |
+| 能力不足 | 24 | -13.2 |
+| 看着像但不能用 | 33 | -4.2 |
+| 去处替换 | 42 | +4.8 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 118 |
+| 在 | 144 |
 | 不在 | 42 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 22 | 16 |
-| 被占用 | 19 | 15 |
-| 能力不足 | 16 | 6 |
-| 看着像但不能用 | 30 | 0 |
-| 去处替换 | 31 | 5 |
+| 缺失 | 29 | 16 |
+| 被占用 | 27 | 15 |
+| 能力不足 | 18 | 6 |
+| 看着像但不能用 | 33 | 0 |
+| 去处替换 | 37 | 5 |
 
 ## 每个摆法
 
@@ -262,7 +262,7 @@
 | T25 | drink_on_island | — | 不用替换 | 在 | 0 |
 | T25 | cup_elsewhere | counter_cup | 不用替换 | 在 | 0 |
 | T25 | cup_elsewhere | only_mugs | 缺失 | 在 | 0 |
-| T25 | cup_elsewhere | sponge_cup | 看着像但不能用 | 在 | 1 |
+| T25 | cup_elsewhere | blocks_in_cup | 被占用 | 在 | 1 |
 | T25 | cold_one | cold_juice | 不用替换 | 在 | 1 |
 | T25 | cold_one | cold_soda | 缺失 | 在 | 1 |
 | T25 | drink_in_fridge | juice | 不用替换 | 在 | 1 |
@@ -274,3 +274,53 @@
 | T25 | two_guests | two_cups | 不用替换 | 在 | 0 |
 | T25 | two_guests | one_cup | 缺失 | 在 | 0 |
 | T25 | little_guest | — | 不用替换 | 在 | 1 |
+| T26 | car_in_living_room | — | 不用替换 | 在 | 0 |
+| T26 | whose | shelf_room | 不用替换 | 在 | 1 |
+| T26 | whose | shelf_full | 能力不足 | 在 | 1 |
+| T26 | scattered | basket | 不用替换 | 在 | 0 |
+| T26 | scattered | no_basket | 缺失 | 在 | 1 |
+| T26 | where_in_room | basket | 不用替换 | 在 | 1 |
+| T26 | where_in_room | waste_bin | 看着像但不能用 | 在 | 1 |
+| T26 | bear_to_bed | top_free | 不用替换 | 在 | 1 |
+| T26 | bear_to_bed | top_covered | 被占用 | 在 | 1 |
+| T26 | two_bedrooms | room_east | 去处替换 | 在 | 0 |
+| T26 | two_bedrooms | room_south | 去处替换 | 在 | 0 |
+| T27 | rice_on_table | — | 不用替换 | 在 | 1 |
+| T27 | which_is_leftover | — | 看着像但不能用 | 在 | 1 |
+| T27 | which_is_leftover | — | 不用替换 | 在 | 1 |
+| T27 | which_is_leftover | — | 被占用 | 在 | 1 |
+| T27 | two_leftovers | soup_at_seat | 被占用 | 在 | 1 |
+| T27 | two_leftovers | soup_on_table | 不用替换 | 在 | 1 |
+| T27 | two_leftovers | soup_on_stove | 不用替换 | 在 | 1 |
+| T27 | fridge_out_of_view | fridge_free | 不用替换 | 在 | 1 |
+| T27 | fridge_out_of_view | fridge_crowded | 被占用 | 在 | 1 |
+| T28 | cup_on_counter | — | 不用替换 | 在 | 0 |
+| T28 | which_bed | east | 去处替换 | 在 | 0 |
+| T28 | which_bed | south | 去处替换 | 在 | 0 |
+| T28 | where_his_cup_is | on_counter | 不用替换 | 在 | 1 |
+| T28 | where_his_cup_is | in_cabinet | 不用替换 | 在 | 1 |
+| T28 | where_his_cup_is | no_kid_cup | 缺失 | 在 | 1 |
+| T28 | cup_out_of_view | cup_found | 不用替换 | 在 | 0 |
+| T28 | cup_out_of_view | side_covered | 被占用 | 在 | 1 |
+| T28 | already_there | his_cup | 不用替换 | 在 | 1 |
+| T28 | already_there | wrong_cup | 看着像但不能用 | 在 | 1 |
+| T29 | car_on_table | — | 不用替换 | 在 | 1 |
+| T29 | belongs_on_table | — | 不用替换 | 在 | 1 |
+| T29 | belongs_on_table | no_toy_box | 缺失 | 在 | 1 |
+| T29 | belongs_on_table | — | 不用替换 | 在 | 1 |
+| T29 | homework_on_table | desk_free | 不用替换 | 在 | 1 |
+| T29 | homework_on_table | desk_covered | 被占用 | 在 | 1 |
+| T29 | several | toy_box | 不用替换 | 在 | 1 |
+| T29 | several | bin_full | 能力不足 | 在 | 1 |
+| T29 | which_table | east | 去处替换 | 在 | 1 |
+| T29 | which_table | west | 去处替换 | 在 | 1 |
+| T30 | bowl_on_cabinet | — | 不用替换 | 在 | 0 |
+| T30 | how_many | three_bowls | 不用替换 | 在 | 0 |
+| T30 | how_many | two_bowls | 缺失 | 在 | 0 |
+| T30 | bowls_in_cabinet | two_inside | 不用替换 | 在 | 1 |
+| T30 | bowls_in_cabinet | one_inside | 缺失 | 在 | 1 |
+| T30 | bowl_put_away | bowl_inside | 不用替换 | 在 | 1 |
+| T30 | bowl_put_away | mug_inside | 缺失 | 在 | 1 |
+| T30 | no_bowl | — | 缺失 | 在 | 1 |
+| T30 | bowl_not_plate | — | 看着像但不能用 | 在 | 1 |
+| T30 | bowl_not_plate | — | 被占用 | 在 | 1 |

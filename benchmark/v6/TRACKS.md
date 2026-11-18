@@ -154,28 +154,28 @@ Removed with the injected action failures: 121 variants (17 had nothing else, 46
 | T25 | two_guests | Task-Level | - | count_from_scene; multi_object_goal; resource_absent | 2 |
 | T25 | little_guest | Task-Level | - | preference_allocation | 1 |
 | T26 | car_in_living_room | Control | - | - | 1 |
-| T26 | whose | Task-Level | - | referent_clue | 1 |
-| T26 | scattered | Task-Level | - | goal_items_unstated; multi_object_goal | 1 |
-| T26 | where_in_room | Task-Level | - | multi_object_goal; storage_place | 1 |
-| T26 | bear_to_bed | Task-Level | - | storage_place | 1 |
+| T26 | whose | Task-Level | - | referent_clue; storage_place | 2 |
+| T26 | scattered | Task-Level | - | container_absent; goal_items_unstated; multi_object_goal | 2 |
+| T26 | where_in_room | Task-Level | - | container_absent; multi_object_goal; storage_place | 2 |
+| T26 | bear_to_bed | Task-Level | - | storage_place | 2 |
 | T26 | two_bedrooms | Task-Level | - | not_in_view; referent_clue | 2 |
 | T27 | rice_on_table | Control | - | - | 1 |
 | T27 | which_is_leftover | Task-Level | - | category_rule; disposal_by_state; referent_clue | 3 |
-| T27 | two_leftovers | Task-Level | - | goal_items_unstated; multi_object_goal | 2 |
-| T27 | fridge_out_of_view | Task-Level | - | not_in_view | 1 |
+| T27 | two_leftovers | Task-Level | - | goal_items_unstated; multi_object_goal | 3 |
+| T27 | fridge_out_of_view | Task-Level | - | not_in_view; storage_place | 2 |
 | T28 | cup_on_counter | Control | - | - | 1 |
 | T28 | which_bed | Task-Level | - | referent_clue | 2 |
-| T28 | where_his_cup_is | Task-Level | - | dependent_decisions; item_put_away; referent_clue | 2 |
-| T28 | cup_out_of_view | Task-Level | - | not_in_view | 1 |
-| T28 | already_there | Task-Level | - | goal_already_met | 1 |
+| T28 | where_his_cup_is | Task-Level | - | dependent_decisions; item_put_away; referent_clue; resource_absent | 3 |
+| T28 | cup_out_of_view | Task-Level | - | not_in_view; storage_place | 2 |
+| T28 | already_there | Task-Level | - | goal_already_met; referent_clue | 2 |
 | T29 | car_on_table | Control | - | - | 1 |
-| T29 | belongs_on_table | Task-Level | - | category_rule; goal_already_met | 2 |
-| T29 | homework_on_table | Task-Level | - | multi_object_goal; storage_place | 1 |
-| T29 | several | Task-Level | - | category_rule; multi_object_goal | 1 |
+| T29 | belongs_on_table | Task-Level | - | category_rule; container_absent; goal_already_met | 3 |
+| T29 | homework_on_table | Task-Level | - | multi_object_goal; storage_place | 2 |
+| T29 | several | Task-Level | - | category_rule; multi_object_goal; storage_place | 2 |
 | T29 | which_table | Task-Level | - | destination_unnamed | 2 |
 | T30 | bowl_on_cabinet | Control | - | - | 1 |
-| T30 | how_many | Task-Level | - | count_from_scene; multi_object_goal | 1 |
+| T30 | how_many | Task-Level | - | count_from_scene; multi_object_goal; resource_absent | 2 |
 | T30 | bowls_in_cabinet | Task-Level | - | count_from_scene; dependent_decisions; item_put_away; resource_absent | 2 |
-| T30 | bowl_put_away | Task-Level | - | item_put_away | 1 |
+| T30 | bowl_put_away | Task-Level | - | item_put_away; resource_absent | 2 |
 | T30 | no_bowl | Task-Level | - | resource_absent | 1 |
 | T30 | bowl_not_plate | Task-Level | - | referent_clue | 2 |
