@@ -4794,7 +4794,7 @@
 
 ### seen_from_bed（Task）
 
-**情况**："孩子今晚想躺在床上看着积木。把积木放到床头边的矮书架上，要让孩子躺着能看见；书架上孩子的东西别动" → 书架上靠枕头、没被挡住的地方；书架被孩子的东西占满时，换到卧室里另一个躺着看得见的地方（墙边大架子中间层，最好的替代算好）；判定从孩子眼睛的位置算视线
+**情况**："孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动" → 书架顶有地方就放顶上；顶上被孩子的东西占满，就放到同一个书架的下层（都算好）；放卧室别的台面降一档，挪孩子的东西腾地方再降
 
 **指令**：孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动。
 
@@ -5554,7 +5554,7 @@
 
 ## T09_tomato_soup
 
-> 午饭做个番茄汤：把小番茄放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
+> 午饭做个番茄汤：把小番茄放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
 
 ### lid_off（对照）
 
@@ -5604,46 +5604,85 @@
 
 **情况**：锅盖盖着，勺子也不在 → 揭盖；找勺子
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`lid_on_spoon_away` D = 1、理想物在，`lid_missing` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `handled_cooking_pot` 搅拌过
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+  - 摆法 `lid_missing`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `lid_plate`
+  - 摆法 `lid_on_spoon_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
 - **次好（0.6）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
+  - 摆法 `lid_missing`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `lid_plate`
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+  - 摆法 `lid_on_spoon_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+- **最不好（0.3）**：
+
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
-      - `handled_cooking_pot` 盖着 `pot_lid`
-    - 第 2 组：
-      - `handled_cooking_pot` 搅拌过
-- **最不好（0.3）**：
-
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+      - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+      - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+      - `cherry_tomato_1` 温度至少 60 °C
+      - `cherry_tomato_2` 温度至少 60 °C
+      - `kitchen_stove` 已经停止加热
 - **不行（0）**：只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `lid_on_spoon_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=living_room_0_0)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `alt_dining_table_2`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `uncover(container=handled_cooking_pot)` → 6. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 7. `search(object=breakfast_spoon, region=dining_room_0_1)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `lid_missing`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=lid_plate)` → 11. `pick(object=lid_plate)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=lid_plate)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### pot_in_use（Task）
 
@@ -5722,149 +5761,549 @@
 
 **情况**：汤要用三颗小番茄；岛台上只有两颗，第三颗收在关着的冰箱里（指令没说在哪） → 数一数不够，想到食材放在冰箱，开冰箱拿出来再关好（Action），而不是满屋找（Task）；三颗都在岛台上时去开冰箱是白跑
 
-**指令**：午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
+**指令**：午饭用三颗小番茄做番茄汤：放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_fridge` D = 1、理想物在，`big_tomato` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `handled_cooking_pot` 搅拌过
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - `fridge_tomato` 在 `handled_cooking_pot` 里
-  - `fridge_tomato` 温度至少 60 °C
-  - `breakfast_fridge` 关着
+  - 摆法 `big_tomato`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+  - 摆法 `in_fridge`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
 - **次好（0.6）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - `fridge_tomato` 在 `handled_cooking_pot` 里
-  - `fridge_tomato` 温度至少 60 °C
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `handled_cooking_pot` 盖着 `pot_lid`
-      - `breakfast_fridge` 关着
-    - 第 2 组：
-      - `handled_cooking_pot` 搅拌过
-      - `breakfast_fridge` 关着
-    - 第 3 组：
-      - `handled_cooking_pot` 搅拌过
-      - `handled_cooking_pot` 盖着 `pot_lid`
+  - 摆法 `big_tomato`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `breakfast_fridge` 关着
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+  - 摆法 `in_fridge`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `breakfast_fridge` 关着
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
 - **最不好（0.3）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - `fridge_tomato` 在 `handled_cooking_pot` 里
-  - `fridge_tomato` 温度至少 60 °C
-- **不行（0）**：只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
+  - 摆法 `big_tomato`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+      - 第 4 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `big_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `big_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+  - 摆法 `in_fridge`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+      - 第 4 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+- **不行（0）**：只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `in_fridge`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `bend()` → 7. `explore_furniture(furniture=breakfast_fridge)` → 8. `straighten()` → 9. `navigate(destination=fridge_tomato)` → 10. `pick(object=fridge_tomato)` → 11. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_fridge)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=breakfast_spoon)` → 17. `pick(object=breakfast_spoon)` → 18. `navigate(destination=handled_cooking_pot)` → 19. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 22. `navigate(destination=pot_lid)` → 23. `pick(object=pot_lid)` → 24. `navigate(destination=handled_cooking_pot)` → 25. `cover(container=handled_cooking_pot, lid=pot_lid)` → 26. `navigate(destination=kitchen_stove)` → 27. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `on_island`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2, fridge_tomato], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `big_tomato`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `bend()` → 7. `explore_furniture(furniture=breakfast_fridge)` → 8. `straighten()` → 9. `navigate(destination=big_tomato)` → 10. `pick(object=big_tomato)` → 11. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=big_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_fridge)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=breakfast_spoon)` → 17. `pick(object=breakfast_spoon)` → 18. `navigate(destination=handled_cooking_pot)` → 19. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 22. `navigate(destination=pot_lid)` → 23. `pick(object=pot_lid)` → 24. `navigate(destination=handled_cooking_pot)` → 25. `cover(container=handled_cooking_pot, lid=pot_lid)` → 26. `navigate(destination=kitchen_stove)` → 27. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### x6_gd_tomato_elsewhere（Task）
 
 **情况**：一颗番茄在岛台，另一颗不在 → 先放一颗，再去找另一颗
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`dining` D = 1、理想物在，`on_plate` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `handled_cooking_pot` 搅拌过
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+  - 摆法 `dining`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+  - 摆法 `on_plate`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
 - **次好（0.6）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `handled_cooking_pot` 盖着 `pot_lid`
-    - 第 2 组：
-      - `handled_cooking_pot` 搅拌过
+  - 摆法 `dining`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+  - 摆法 `on_plate`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 搅拌过
+        - `breakfast_fridge` 关着
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
 - **最不好（0.3）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+  - 摆法 `dining`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+  - 摆法 `on_plate`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `breakfast_fridge` 关着
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 3 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+        - `handled_cooking_pot` 搅拌过
+      - 第 4 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 5 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 6 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `cherry_tomato_2` 没被挪动（离开局位置不超过 3 cm）
+        - `lunch_plate` 没被挪动（离开局位置不超过 3 cm）
+      - 第 7 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 8 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `breakfast_fridge` 关着
+      - 第 9 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 10 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `breakfast_fridge` 关着
+      - 第 11 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `breakfast_fridge` 关着
+      - 第 12 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 13 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `breakfast_fridge` 关着
+      - 第 14 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 15 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+      - 第 16 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `breakfast_fridge` 关着
+      - 第 17 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 18 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+      - 第 19 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+      - 第 20 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `fridge_tomato` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `fridge_tomato` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
 - **不行（0）**：只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=dining_room_0_1)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `cabinet6`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 4. `search(object=cherry_tomato_2, region=living_room_0_0)`（补救） → 5. `navigate(destination=cherry_tomato_2)`（补救） → 6. `pick(object=cherry_tomato_2)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `on_plate`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_fridge)` → 5. `open(articulated=breakfast_fridge)` → 6. `bend()` → 7. `explore_furniture(furniture=breakfast_fridge)` → 8. `straighten()` → 9. `navigate(destination=fridge_tomato)` → 10. `pick(object=fridge_tomato)` → 11. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_fridge)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=breakfast_spoon)` → 17. `pick(object=breakfast_spoon)` → 18. `navigate(destination=handled_cooking_pot)` → 19. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 20. `navigate(destination=kitchen_island/top)` → 21. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 22. `navigate(destination=pot_lid)` → 23. `pick(object=pot_lid)` → 24. `navigate(destination=handled_cooking_pot)` → 25. `cover(container=handled_cooking_pot, lid=pot_lid)` → 26. `navigate(destination=kitchen_stove)` → 27. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### pot_in_dining_room（Task）
 
 **情况**：番茄旁边有碗和马克杯，锅却不在灶上，而在隔壁餐厅的餐桌上（锅盖在灶上）；指令和任务本身一样 → 不能就近用碗或杯，要去餐厅把锅拿回炉眼上，再做汤
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`pot_away` D = 1、理想物在，`spare_pot` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `handled_cooking_pot` 搅拌过
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+  - 摆法 `pot_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+        - `handled_cooking_pot` 盖着 `pot_lid`
+  - 摆法 `spare_pot`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `spare_pot` 里
+        - `cherry_tomato_2` 在 `spare_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `spare_pot` 搅拌过
+        - `spare_pot` 盖着 `pot_lid`
 - **次好（0.6）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `handled_cooking_pot` 盖着 `pot_lid`
-    - 第 2 组：
-      - `handled_cooking_pot` 搅拌过
+  - 摆法 `pot_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 盖着 `pot_lid`
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `handled_cooking_pot` 搅拌过
+  - 摆法 `spare_pot`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `spare_pot` 里
+        - `cherry_tomato_2` 在 `spare_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `spare_pot` 盖着 `pot_lid`
+      - 第 2 组：
+        - `cherry_tomato_1` 在 `spare_pot` 里
+        - `cherry_tomato_2` 在 `spare_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+        - `spare_pot` 搅拌过
 - **最不好（0.3）**：
 
-  - `cherry_tomato_1` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_2` 在 `handled_cooking_pot` 里
-  - `cherry_tomato_1` 温度至少 60 °C
-  - `cherry_tomato_2` 温度至少 60 °C
-  - `kitchen_stove` 已经停止加热
-  - 手里空着
+  - 摆法 `pot_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_2` 在 `handled_cooking_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
+  - 摆法 `spare_pot`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `cherry_tomato_1` 在 `spare_pot` 里
+        - `cherry_tomato_2` 在 `spare_pot` 里
+        - `cherry_tomato_1` 温度至少 60 °C
+        - `cherry_tomato_2` 温度至少 60 °C
+        - `kitchen_stove` 已经停止加热
 - **不行（0）**：用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 10. `navigate(destination=cherry_tomato_1)`（补救） → 11. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 12. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 13. `navigate(destination=breakfast_spoon)` → 14. `pick(object=breakfast_spoon)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 19. `navigate(destination=pot_lid)` → 20. `pick(object=pot_lid)` → 21. `navigate(destination=handled_cooking_pot)` → 22. `cover(container=handled_cooking_pot, lid=pot_lid)` → 23. `navigate(destination=kitchen_stove)` → 24. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `pot_away`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `pick(object=handled_cooking_pot)` → 8. `navigate(destination=kitchen_stove/top)` → 9. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 10. `navigate(destination=cherry_tomato_1)`（补救） → 11. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 12. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 13. `navigate(destination=breakfast_spoon)` → 14. `pick(object=breakfast_spoon)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 19. `navigate(destination=pot_lid)` → 20. `pick(object=pot_lid)` → 21. `navigate(destination=handled_cooking_pot)` → 22. `cover(container=handled_cooking_pot, lid=pot_lid)` → 23. `navigate(destination=kitchen_stove)` → 24. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `spare_pot`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `look(target=kitchen_stove/top)` → 7. `navigate(destination=spare_pot)` → 8. `pick(object=spare_pot)` → 9. `navigate(destination=kitchen_stove/top)` → 10. `place(object=spare_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 11. `navigate(destination=cherry_tomato_1)`（补救） → 12. `sweep(objects=[cherry_tomato_1, cherry_tomato_2], radius_m=0.12)`（补救） → 13. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=spare_pot)`（换做法） → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=spare_pot)` → 17. `stir(container=spare_pot, tool=breakfast_spoon)` → 18. `navigate(destination=kitchen_island/top)` → 19. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 20. `navigate(destination=pot_lid)` → 21. `pick(object=pot_lid)` → 22. `navigate(destination=spare_pot)` → 23. `cover(container=spare_pot, lid=pot_lid)` → 24. `navigate(destination=kitchen_stove)` → 25. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ---
 
@@ -5939,19 +6378,43 @@
 
 **情况**：罐子在岛台上，但垃圾桶今天不在岛台旁边的老地方 → 拿起罐子去找垃圾桶（找的是目的地，不是东西）
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`dining` D = 0、理想物在，`trash_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_can` 在 `trash_can` 里
-  - 手里空着
-- **不行（0）**：没找到垃圾桶；扔进别的箱子；还拿着或掉了
+  - 摆法 `trash_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `bathroom_trash` 里
+        - `trash_fill_1` 没被挪动（离开局位置不超过 5 cm）
+        - `trash_fill_2` 没被挪动（离开局位置不超过 5 cm）
+        - `trash_fill_3` 没被挪动（离开局位置不超过 5 cm）
+        - `trash_fill_4` 没被挪动（离开局位置不超过 5 cm）
+  - 摆法 `dining`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+- **次好（0.6）**：
+
+  - 摆法 `dining`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `trash_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `bathroom_trash` 里
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `dining`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=dining_room_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
-- 摆法 `bathroom`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `explore_room(room=bathroom_0_1)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
+- 摆法 `trash_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `look(target=trash_can)` → 8. `explore_room(room=bathroom_0_1)` → 9. `navigate(destination=bathroom_trash)` → 10. `hover(object=soda_can, target=bathroom_trash)` → 11. `drop(object=soda_can, container=bathroom_trash)`
 
 ### after_dinner_clear（Task）
 
@@ -6126,29 +6589,76 @@
 
 **情况**：指令只说空易拉罐在厨房里被误收起来了、要开门才能找到；它在靠墙矮柜、微波炉或冰箱里 → 逐个打开找，扔进垃圾桶，打开的门都关好
 
-**指令**：厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。
+**指令**：厨房里有个空易拉罐被人误收起来了，找出来扔进垃圾桶。
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_can` 在 `trash_can` 里
-  - 手里空着
-  - `kitchen_microwave` 关着
-  - `kitchen_cabinet_6` 关着
-  - `breakfast_fridge` 关着
+  - 摆法 `in_cabinet`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+        - `kitchen_microwave` 关着
+        - `kitchen_cabinet_6` 关着
+        - `breakfast_fridge` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `fridge_drink`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+        - `fridge_soda` 没被挪动（离开局位置不超过 3 cm）
+        - `kitchen_microwave` 关着
+        - `kitchen_cabinet_6` 关着
+        - `breakfast_fridge` 关着
+        - `kitchen_cabinet_4` 关着
 - **次好（0.6）**：
 
-  - `soda_can` 在 `trash_can` 里
-  - 手里空着
-- **不行（0）**：没找到或没扔；还拿着或掉了
+  - 摆法 `fridge_drink`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+        - `fridge_soda` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `soda_can` 在 `trash_can` 里
+        - `fridge_soda` 不在 `trash_can` 里
+        - `kitchen_microwave` 关着
+        - `kitchen_cabinet_6` 关着
+        - `breakfast_fridge` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `in_cabinet`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+- **最不好（0.3）**：
+
+  - 摆法 `in_cabinet`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `fridge_drink`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `trash_can` 里
+        - `fridge_soda` 不在 `trash_can` 里
+      - 第 2 组：
+        - `soda_can` 在 `trash_can` 里
+        - `kitchen_microwave` 关着
+        - `kitchen_cabinet_6` 关着
+        - `breakfast_fridge` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `soda_can` 在 `trash_can` 里
+- **不行（0）**：空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `in_cabinet`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `navigate(destination=kitchen_cabinet_6)` → 6. `open(articulated=kitchen_cabinet_6)` → 7. `bend()` → 8. `explore_furniture(furniture=kitchen_cabinet_6)` → 9. `straighten()` → 10. `navigate(destination=soda_can)` → 11. `pick(object=soda_can)` → 12. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 13. `navigate(destination=trash_can)` → 14. `drop(object=soda_can, container=trash_can)` → 15. `navigate(destination=kitchen_cabinet_6)` → 16. `close(articulated=kitchen_cabinet_6)`
-- 摆法 `in_microwave`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_microwave)` → 8. `open(articulated=kitchen_microwave)` → 9. `look(target=kitchen_microwave/inside_floor)` → 10. `navigate(destination=soda_can)` → 11. `pick(object=soda_can)` → 12. `retreat(obstacle=kitchen_microwave, distance_m=0.3)` → 13. `close(articulated=kitchen_microwave)` → 14. `navigate(destination=trash_can)` → 15. `drop(object=soda_can, container=trash_can)`
-- 摆法 `in_fridge`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `navigate(destination=kitchen_cabinet_6)` → 6. `open(articulated=kitchen_cabinet_6)` → 7. `bend()` → 8. `explore_furniture(furniture=kitchen_cabinet_6)` → 9. `straighten()` → 10. `close(articulated=kitchen_cabinet_6)` → 11. `navigate(destination=breakfast_fridge)` → 12. `open(articulated=breakfast_fridge)` → 13. `bend()` → 14. `explore_furniture(furniture=breakfast_fridge)` → 15. `straighten()` → 16. `navigate(destination=soda_can)` → 17. `pick(object=soda_can)` → 18. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 19. `navigate(destination=trash_can)` → 20. `drop(object=soda_can, container=trash_can)` → 21. `navigate(destination=breakfast_fridge)` → 22. `close(articulated=breakfast_fridge)`
+- 摆法 `fridge_drink`：1. `navigate(destination=breakfast_fridge)` → 2. `open(articulated=breakfast_fridge)` → 3. `bend()` → 4. `explore_furniture(furniture=breakfast_fridge)` → 5. `straighten()` → 6. `close(articulated=breakfast_fridge)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=trash_can)` → 16. `drop(object=soda_can, container=trash_can)` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
 
 ---
 

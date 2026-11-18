@@ -71,8 +71,8 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T09 | lid_off | Control | - | - | 1 |
 | T09 | pot_in_use | Task-Level | - | not_in_view; resource_in_use | 2 |
 | T09 | x6_gd_tomato_elsewhere | Task-Level | - | resource | 2 |
-| T09 | pot_in_dining_room | Task-Level | - | cookware_choice; not_in_view | 1 |
-| T09 | lid_on_spoon_away | Action + Task | take the lid off, then put in | not_in_view | 2 |
+| T09 | pot_in_dining_room | Task-Level | - | missing_piece; not_in_view | 2 |
+| T09 | lid_on_spoon_away | Action + Task | take the lid off, then put in | missing_piece; not_in_view | 2 |
 | T09 | tomato_in_fridge | Action + Task | open the fridge at the work spot, take the item out, close it again | not_in_view; storage_place | 2 |
 | T10 | can_on_island | Control | - | - | 1 |
 | T10 | can_in_dining_room | Task-Level | - | not_in_view | 2 |
@@ -80,7 +80,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T10 | trash_moved | Task-Level | - | destination_unnamed; not_in_view | 2 |
 | T10 | after_dinner_clear | Task-Level | - | disposal_by_state; multi_object_goal | 3 |
 | T10 | guests_coming | Task-Level | - | goal_items_unstated; multi_object_goal | 3 |
-| T10 | x6_gd_can_put_away | Task-Level | - | resource | 3 |
+| T10 | x6_gd_can_put_away | Task-Level | - | resource | 2 |
 | T11 | fruits_on_table | Control | - | - | 1 |
 | T11 | basket_missing | Task-Level | - | container_absent; decoy_destination | 2 |
 | T11 | leave_one_for_kid | Task-Level | - | multi_object_goal; preference_allocation; storage_place | 3 |

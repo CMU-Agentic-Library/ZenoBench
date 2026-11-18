@@ -2249,8 +2249,8 @@
 {
 "task": "T09_tomato_soup",
 "seed": 11,
-"variant": "tomato_in_fridge__on_island",
-"route": "v6_tomato_in_fridge__on_island",
+"variant": "tomato_in_fridge__big_tomato",
+"route": "v6_tomato_in_fridge__big_tomato",
 "family": "tomato_in_fridge"
 },
 {
@@ -2270,15 +2270,15 @@
 {
 "task": "T09_tomato_soup",
 "seed": 14,
-"variant": "tomato_in_fridge__on_island",
-"route": "v6_tomato_in_fridge__on_island",
+"variant": "tomato_in_fridge__big_tomato",
+"route": "v6_tomato_in_fridge__big_tomato",
 "family": "tomato_in_fridge"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 15,
-"variant": "tomato_in_fridge__on_island",
-"route": "v6_tomato_in_fridge__on_island",
+"variant": "tomato_in_fridge__big_tomato",
+"route": "v6_tomato_in_fridge__big_tomato",
 "family": "tomato_in_fridge"
 },
 {
@@ -2291,15 +2291,15 @@
 {
 "task": "T09_tomato_soup",
 "seed": 17,
-"variant": "tomato_in_fridge__on_island",
-"route": "v6_tomato_in_fridge__on_island",
+"variant": "tomato_in_fridge__big_tomato",
+"route": "v6_tomato_in_fridge__big_tomato",
 "family": "tomato_in_fridge"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 18,
-"variant": "tomato_in_fridge__on_island",
-"route": "v6_tomato_in_fridge__on_island",
+"variant": "tomato_in_fridge__big_tomato",
+"route": "v6_tomato_in_fridge__big_tomato",
 "family": "tomato_in_fridge"
 },
 {
@@ -2319,8 +2319,8 @@
 {
 "task": "T09_tomato_soup",
 "seed": 11,
-"variant": "x6_gd_tomato_elsewhere__cabinet6",
-"route": "v6_x6_gd_tomato_elsewhere__cabinet6",
+"variant": "x6_gd_tomato_elsewhere__on_plate",
+"route": "v6_x6_gd_tomato_elsewhere__on_plate",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2340,8 +2340,8 @@
 {
 "task": "T09_tomato_soup",
 "seed": 14,
-"variant": "x6_gd_tomato_elsewhere__cabinet6",
-"route": "v6_x6_gd_tomato_elsewhere__cabinet6",
+"variant": "x6_gd_tomato_elsewhere__on_plate",
+"route": "v6_x6_gd_tomato_elsewhere__on_plate",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2354,22 +2354,22 @@
 {
 "task": "T09_tomato_soup",
 "seed": 16,
-"variant": "x6_gd_tomato_elsewhere__cabinet6",
-"route": "v6_x6_gd_tomato_elsewhere__cabinet6",
+"variant": "x6_gd_tomato_elsewhere__on_plate",
+"route": "v6_x6_gd_tomato_elsewhere__on_plate",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 17,
-"variant": "x6_gd_tomato_elsewhere__cabinet6",
-"route": "v6_x6_gd_tomato_elsewhere__cabinet6",
+"variant": "x6_gd_tomato_elsewhere__on_plate",
+"route": "v6_x6_gd_tomato_elsewhere__on_plate",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 18,
-"variant": "x6_gd_tomato_elsewhere__cabinet6",
-"route": "v6_x6_gd_tomato_elsewhere__cabinet6",
+"variant": "x6_gd_tomato_elsewhere__on_plate",
+"route": "v6_x6_gd_tomato_elsewhere__on_plate",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2382,71 +2382,71 @@
 {
 "task": "T09_tomato_soup",
 "seed": 10,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__spare_pot",
+"route": "v6_pot_in_dining_room__spare_pot",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 11,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__pot_away",
+"route": "v6_pot_in_dining_room__pot_away",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 12,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__spare_pot",
+"route": "v6_pot_in_dining_room__spare_pot",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 13,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__pot_away",
+"route": "v6_pot_in_dining_room__pot_away",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 14,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__spare_pot",
+"route": "v6_pot_in_dining_room__spare_pot",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 15,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__pot_away",
+"route": "v6_pot_in_dining_room__pot_away",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 16,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__spare_pot",
+"route": "v6_pot_in_dining_room__spare_pot",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 17,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__spare_pot",
+"route": "v6_pot_in_dining_room__spare_pot",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 18,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__pot_away",
+"route": "v6_pot_in_dining_room__pot_away",
 "family": "pot_in_dining_room"
 },
 {
 "task": "T09_tomato_soup",
 "seed": 19,
-"variant": "pot_in_dining_room",
-"route": "v6_pot_in_dining_room",
+"variant": "pot_in_dining_room__pot_away",
+"route": "v6_pot_in_dining_room__pot_away",
 "family": "pot_in_dining_room"
 },
 {
@@ -2543,15 +2543,15 @@
 {
 "task": "T10_trash_the_can",
 "seed": 13,
-"variant": "trash_moved__bathroom",
-"route": "v6_trash_moved__bathroom",
+"variant": "trash_moved__trash_full",
+"route": "v6_trash_moved__trash_full",
 "family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "trash_moved__bathroom",
-"route": "v6_trash_moved__bathroom",
+"variant": "trash_moved__trash_full",
+"route": "v6_trash_moved__trash_full",
 "family": "trash_moved"
 },
 {
@@ -2564,22 +2564,22 @@
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "trash_moved__bathroom",
-"route": "v6_trash_moved__bathroom",
+"variant": "trash_moved__trash_full",
+"route": "v6_trash_moved__trash_full",
 "family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 17,
-"variant": "trash_moved__bathroom",
-"route": "v6_trash_moved__bathroom",
+"variant": "trash_moved__trash_full",
+"route": "v6_trash_moved__trash_full",
 "family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 18,
-"variant": "trash_moved__bathroom",
-"route": "v6_trash_moved__bathroom",
+"variant": "trash_moved__trash_full",
+"route": "v6_trash_moved__trash_full",
 "family": "trash_moved"
 },
 {
@@ -2739,29 +2739,29 @@
 {
 "task": "T10_trash_the_can",
 "seed": 11,
-"variant": "x6_gd_can_put_away__in_fridge",
-"route": "v6_x6_gd_can_put_away__in_fridge",
-"family": "x6_gd_can_put_away"
-},
-{
-"task": "T10_trash_the_can",
-"seed": 12,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
+"seed": 12,
+"variant": "x6_gd_can_put_away__fridge_drink",
+"route": "v6_x6_gd_can_put_away__fridge_drink",
+"family": "x6_gd_can_put_away"
+},
+{
+"task": "T10_trash_the_can",
 "seed": 13,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__fridge_drink",
+"route": "v6_x6_gd_can_put_away__fridge_drink",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__in_cabinet",
+"route": "v6_x6_gd_can_put_away__in_cabinet",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2774,29 +2774,29 @@
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "x6_gd_can_put_away__in_fridge",
-"route": "v6_x6_gd_can_put_away__in_fridge",
-"family": "x6_gd_can_put_away"
-},
-{
-"task": "T10_trash_the_can",
-"seed": 17,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
+"seed": 17,
+"variant": "x6_gd_can_put_away__fridge_drink",
+"route": "v6_x6_gd_can_put_away__fridge_drink",
+"family": "x6_gd_can_put_away"
+},
+{
+"task": "T10_trash_the_can",
 "seed": 18,
-"variant": "x6_gd_can_put_away__in_microwave",
-"route": "v6_x6_gd_can_put_away__in_microwave",
+"variant": "x6_gd_can_put_away__fridge_drink",
+"route": "v6_x6_gd_can_put_away__fridge_drink",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 19,
-"variant": "x6_gd_can_put_away__in_fridge",
-"route": "v6_x6_gd_can_put_away__in_fridge",
+"variant": "x6_gd_can_put_away__fridge_drink",
+"route": "v6_x6_gd_can_put_away__fridge_drink",
 "family": "x6_gd_can_put_away"
 },
 {

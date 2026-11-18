@@ -11,7 +11,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 18 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 3 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 3 | pick mug: not held (lift 0.000 m) |
-| open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 13 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
+| open | kitchen_cabinet_4 | 0 | 38 | 100% | articulation (door does not move) 23, grasp miss 15 | T18 | 14 | open kitchen_cabinet_4: joint -0.000 -> -0.000, goal -1.400 |
 | open | kitchen_cabinet_6 | 95 | 34 | 26% | grasp miss 26, IK / reach / base pose 6, articulation (door does not move) 2 | T05 T18 | 14 | grasp handle kitchen_cabinet_6: no finger contact |
 | flip | paperback_book | 52 | 34 | 40% | IK / reach / base pose 13, other 11, placement result 7 | T15 | 0 | POSTCONDITION_FAILED: flipped(object=paperback_book) is false (z dot -0.38) |
 | separate | wooden_block_b | 15 | 21 | 58% | other 15, perception / search 6 | T02 T17 | 0 | PRECONDITION_FAILED: hand_empty(hand=right) is false (right holds wooden_block_b); not grasp_clearance(object=wooden_block_b) is false (pinc |
@@ -58,11 +58,14 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 
 | skill | object | variants |
 |---|---|---|
-| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
-| close | kitchen_cabinet_4 | T02/block_put_away, T04/two_guests, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T17/hide_somewhere, T18/bowls_apart, T18/door_stuck, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_put_away, T25/cups_for_two, T28/where_his_cup_is, T30/bowl_put_away |
+| close | breakfast_fridge | T09/tomato_in_fridge, T09/x6_gd_tomato_elsewhere, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| close | kitchen_cabinet_4 | T02/block_put_away, T04/two_guests, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T10/x6_gd_can_put_away, T17/hide_somewhere, T18/bowls_apart, T18/door_stuck, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away, T21/tissue_put_away, T25/cups_for_two, T28/where_his_cup_is, T30/bowl_put_away |
+| collect | spare_pot | T09/pot_in_dining_room |
+| cover | spare_pot | T09/pot_in_dining_room |
+| drop | big_tomato | T09/tomato_in_fridge |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | empty_can | T29/several |
-| drop | fridge_tomato | T09/tomato_in_fridge |
+| drop | fridge_tomato | T09/tomato_in_fridge, T09/x6_gd_tomato_elsewhere |
 | drop | takeout_tray | T10/after_dinner_clear |
 | expose | foil_takeout_tray | T07/vessel_decides_appliance |
 | expose | glass_food_container | T07/vessel_decides_appliance |
@@ -75,7 +78,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | lift | takeout_tray | T10/after_dinner_clear |
 | measure | example_spoon | T13/copy_the_setting |
 | measure | toy_bin_small_2 | T12/bins_capacity |
-| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| open | breakfast_fridge | T09/tomato_in_fridge, T09/x6_gd_tomato_elsewhere, T10/after_dinner_clear, T10/x6_gd_can_put_away, T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots, T25/cold_one, T25/drink_in_fridge, T27/fridge_out_of_view, T27/two_leftovers, T27/which_is_leftover |
+| pick | big_tomato | T09/tomato_in_fridge |
 | pick | blue_book | T14/whose_book |
 | pick | bought_apple | T22/by_kind, T22/tray_elsewhere, T22/two_spots |
 | pick | bought_juice | T22/by_kind, T22/eat_now, T22/not_shopping, T22/tray_elsewhere, T22/two_spots |
@@ -97,7 +101,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | empty_can | T29/several |
 | pick | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid, T06/display_row |
 | pick | foil_takeout_tray | T07/vessel_decides_appliance |
-| pick | fridge_tomato | T09/tomato_in_fridge |
+| pick | fridge_tomato | T09/tomato_in_fridge, T09/x6_gd_tomato_elsewhere |
 | pick | fruit_tray | T11/fruit_plate_for_guests |
 | pick | glass_box | T18/bowl_in_use, T18/one_bowl |
 | pick | glass_cup_2 | T04/two_guests |
@@ -140,6 +144,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | pick | spare_bowl | T16/box_in_use, T16/no_box |
 | pick | spare_mug | T18/one_bowl, T30/bowls_in_cabinet, T30/no_bowl |
+| pick | spare_pot | T09/pot_in_dining_room |
 | pick | spare_sponge | T21/no_tissue |
 | pick | steel_lunch_box | T07/vessel_decides_appliance |
 | pick | stock_cup_1 | T25/cups_for_two |
@@ -217,6 +222,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | place | spare_bowl | T16/box_in_use, T16/no_box |
 | place | spare_mug | T18/one_bowl, T30/bowls_in_cabinet, T30/no_bowl |
+| place | spare_pot | T09/pot_in_dining_room |
 | place | spare_sponge | T21/no_tissue |
 | place | steel_lunch_box | T07/vessel_decides_appliance |
 | place | stock_cup_1 | T25/cups_for_two |
@@ -241,6 +247,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | stack | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid |
 | stack | rubber_duck | T02/block_put_away, T02/third_toy_elsewhere, T02/tower_for_kid_duck |
 | stack | toy_block | T02/block_put_away, T02/third_toy_elsewhere |
+| stir | spare_pot | T09/pot_in_dining_room |
 | wipe | dining_table_2/top | T08/which_surface |
 
 ## 3. Priorities

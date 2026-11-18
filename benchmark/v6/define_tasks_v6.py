@@ -1596,9 +1596,67 @@ def T09(t):
         route=base[:2] + open_explore(FRIDGE) + [nav(F3), pick(F3), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                                                  S("close", articulated=FRIDGE), nav(POT),
                                                  S("drop", object=F3, container=POT)] + base[2:])
-    on_island = dict(
-        add={F3: {"asset": "cherry_tomato", **P(ISL, 7.715, 1.70)}},
-        route=[base[0], S("collect", objects=[*TOMATOES, F3], container=POT)] + base[2:])
+    # 11-17 (user): the seed changes what stands in -- no cherry tomato left in the fridge, a big tomato instead (an
+    # apple beside it, not for soup)
+    BIG, APPLE = "big_tomato", "fridge_apple"
+    big = dict(
+        add={BIG: {"asset": "big_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.80, 3.25], "yaw_deg": 0.0},
+             APPLE: {"asset": "apple", "support": f"{FRIDGE}/inside_shelf", "xy": [6.02, 3.30], "yaw_deg": 0.0}},
+        thermal_override={BIG: dict(cold[F3])},
+        goal={"all": [*goal["all"], ["inside", BIG, POT], ["temperature_at_least", BIG, 60], ["is_closed", FRIDGE]]},
+        watch=[POT, LID, BIG, APPLE, *TOMATOES],
+        route=base[:2] + open_explore(FRIDGE) + [nav(BIG), pick(BIG), S("retreat", obstacle=FRIDGE, distance_m=0.3),
+                                                 S("close", articulated=FRIDGE), nav(POT),
+                                                 S("drop", object=BIG, container=POT)] + base[2:])
+    # per-seed tiers (11-17): the soup's side steps (stir, cover, the fridge closed) cost a level each
+    LT = LAYOUT_TIERS.setdefault(("T09", "*"), {})
+    core = lambda pot, xs: [*[["inside", x, pot] for x in xs], *[["temperature_at_least", x, 60] for x in xs],  # noqa: E731
+                            ["not heating", "kitchen_stove"]]
+    sides = lambda pot, lid, fridge=False: [([["stirred", pot]], 1), ([["covered", pot, lid]], 1)] \
+        + ([([["is_closed", FRIDGE]], 1)] if fridge else [])  # noqa: E731
+    LT["tomato_in_fridge__in_fridge"] = cost_tiers([(core(POT, [*TOMATOES, F3]), 0)], sides(POT, LID, True))
+    LT["tomato_in_fridge__big_tomato"] = cost_tiers([(core(POT, [*TOMATOES, BIG]), 1)], sides(POT, LID, True))
+    # x6_gd_tomato_elsewhere on_plate (11-17, user): the second tomato lies on someone's lunch plate at the dining
+    # table (in use); a spare one is in the fridge (the stand-in); the plate's tomato taken is the worst
+    PLATE, LSPOON = "lunch_plate", "lunch_spoon"
+    plate_case = dict(
+        move={TOMATOES[1]: {"support": None, "z": 0.858, "xy": [3.62, 6.55], "yaw_deg": 0.0}},
+        add={PLATE: {"asset": "breakfast_plate", **P(DINING, 3.62, 6.55)},
+             LSPOON: {"asset": "breakfast_spoon", **P(DINING, 3.62, 6.76)},
+             F3: {"asset": "cherry_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.90, 3.14], "yaw_deg": 0.0}},
+        thermal_override=cold,
+        goal={"all": [*core(POT, [TOMATOES[0], F3]), ["stirred", POT], ["covered", POT, LID], ["is_closed", FRIDGE],
+                      ["near_start", TOMATOES[1], 0.03], ["near_start", PLATE, 0.03], ["hand_empty", "right"]]},
+        watch=[POT, LID, F3, PLATE, *TOMATOES],
+        route=base[:1] + [S("collect", objects=[TOMATOES[0]], container=POT)] + open_explore(FRIDGE)
+        + [nav(F3), pick(F3), S("retreat", obstacle=FRIDGE, distance_m=0.3), S("close", articulated=FRIDGE), nav(POT),
+           S("drop", object=F3, container=POT)] + base[2:])
+    plate_stays = [["near_start", TOMATOES[1], 0.03], ["near_start", PLATE, 0.03]]
+    LT["x6_gd_tomato_elsewhere__dining"] = cost_tiers([(core(POT, TOMATOES), 0)], sides(POT, LID))
+    LT["x6_gd_tomato_elsewhere__on_plate"] = cost_tiers(
+        [(core(POT, [TOMATOES[0], F3]) + plate_stays, 1), (core(POT, TOMATOES), 3), (core(POT, [TOMATOES[0], F3]), 3)],
+        sides(POT, LID, True))
+    # lid_on_spoon_away's seeds (11-17, user): the spoon on the low cabinet (to find), or no lid in the house, a
+    # breakfast plate of the lid's size (24.8 cm) on the island to cover the pot with (merged, MERGE)
+    LPLATE = "lid_plate"
+
+    def swap(steps, old, new):
+        out = copy.deepcopy(steps)
+        for st in out:
+            for k, v in st.get("args", {}).items():
+                if v == old:
+                    st["args"][k] = new
+        return out
+    LT["lid_on_spoon_away"] = cost_tiers([(core(POT, TOMATOES), 0)], sides(POT, LID))
+    LT["lid_missing"] = cost_tiers([(core(POT, TOMATOES), 1)], sides(POT, LPLATE))
+    lid_missing = dict(
+        base="lid_off", control="lid_off", conditions=["missing_piece"], remove=[LID],
+        add={LPLATE: {"asset": "breakfast_plate", **P(ISL, 8.06, 1.78)}},
+        goal={"all": [*core(POT, TOMATOES), ["stirred", POT], ["covered", POT, LPLATE], ["hand_empty", "right"]]},
+        watch=[POT, LPLATE, *TOMATOES],
+        challenge="no pot lid in the house; a breakfast plate the lid's size lies on the island",
+        rationale="the plate covers the pot as well as the lid would: use it",
+        cases={"": dict(route=swap(base, LID, LPLATE))})
 
     def apart(region):
         return base[:1] + recs(S("collect", objects=[TOMATOES[0]], container=POT),
@@ -1618,29 +1676,34 @@ def T09(t):
             cases={"in_use": in_use, "free": free}),
         "tomato_in_fridge": dict(
             base="lid_off", control="lid_off", conditions=["storage_place", "not_in_view", "closed_fridge"],
-            instruction="Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, "
-                        "stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-            instruction_zh="午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
+            # 11-17 (user): "the pot on the stove" dropped (not every seed has it there)
+            instruction="Make tomato soup for lunch with three cherry tomatoes: put them into the pot, stir, cover "
+                        "the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+            instruction_zh="午饭用三颗小番茄做番茄汤：放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
             goal=three_goal, thermal_override=cold, watch=[POT, LID, F3, *TOMATOES],
-            factor="where the third tomato is (seed: in the fridge, or on the island with the other two)",
+            factor="what the fridge holds for the third tomato (seed: a cherry tomato; or none, a big tomato and an "
+                   "apple)",
             challenge="the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge "
                       "(the instruction does not say where it is)",
             rationale="count: two are not enough; food is kept in the fridge, so look there (open it, take the "
                       "tomato, close it again: Action) rather than search the house (Task); when all three are on "
                       "the island, opening the fridge is a needless trip",
-            cases={"in_fridge": fridge, "on_island": on_island}),
+            cases={"in_fridge": fridge, "big_tomato": big}),
         "x6_gd_tomato_elsewhere": dict(
             base="lid_off", control="lid_off",
-            factor="where the second tomato was left",
-            challenge="one cherry tomato is on the island, the other was left on the dining table or on the wall "
-                      "cabinet",
+            factor="where the second tomato is (seed: left on the dining table; or on someone's lunch plate there, a "
+                   "spare one in the fridge)",
+            challenge="one cherry tomato is on the island, the other is on the dining table: left there, or on "
+                      "someone's lunch plate",
             rationale="collecting both at once only works for tomatoes on one surface: split the batch, collect the "
                       "near one, fetch the other on its own",
-            cases={c: dict(move={TOMATOES[1]: to},
-                           failures=[f_initial("resource", [["on", TOMATOES[1], to["support"]]], fid="resource_tomato_apart")],
-                           route=apart(region))
-                   for c, to, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
-                                         ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "living_room_0_0"))}),
+            cases={**{c: dict(move={TOMATOES[1]: to},
+                              failures=[f_initial("resource", [["on", TOMATOES[1], to["support"]]],
+                                                  fid="resource_tomato_apart")],
+                              route=apart(region))
+                      for c, to, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),)},
+                   "on_plate": plate_case}),
+        "lid_missing": lid_missing,
     }
 
 
@@ -1682,7 +1745,25 @@ def T10(t):
                            route=[look(ISL), nav(CAN), pick(CAN), S("lift", object=CAN, height_m=0.95),
                                   S("search", object=TRASH, region=region), nav(TRASH),
                                   S("hover", object=CAN, target=TRASH), S("drop", object=CAN, container=TRASH)])
-                   for c, (pose, region) in moved.items()}
+                   for c, (pose, region) in moved.items() if c == "dining"}
+    # trash_full (11-17, user): the trash can by the island is stuffed with snack cartons sticking out over its rim
+    # (no room for the can); a second, empty trash can stands in the bathroom (the stand-in)
+    LT = LAYOUT_TIERS.setdefault(("T10", "*"), {})
+    BATH = "bathroom_trash"
+    TX, TY = 9.05, 1.12                                   # the kitchen trash can (scene move)
+    fill = {f"trash_fill_{i + 1}": {"asset": "snack_carton", "support": None, "z": z, "xy": [TX + dx, TY + dy],
+                                    "yaw_deg": yaw}
+            for i, (dx, dy, z, yaw) in enumerate([(-0.031, 0.0, 0.037, 0.0), (0.031, 0.0, 0.037, 0.0),
+                                                  (0.0, -0.031, 0.209, 90.0), (0.0, 0.031, 0.209, 90.0)])}
+    fill_stays = [["near_start", n, 0.05] for n in fill]
+    moved_cases["trash_full"] = dict(
+        add={**fill, BATH: {"asset": "trash_can", "support": None, "z": 0.0, "xy": [-0.75, 3.25], "yaw_deg": 0}},
+        goal={"all": [["inside", CAN, BATH], *fill_stays, ["hand_empty", "right"]]}, watch=[CAN, TRASH, BATH, *fill],
+        route=[look(ISL), nav(CAN), pick(CAN), S("lift", object=CAN, height_m=0.95), nav(TRASH), look(TRASH),
+               S("search", object=BATH, region="bathroom_0_1"), nav(BATH), S("hover", object=CAN, target=BATH),
+               S("drop", object=CAN, container=BATH)])
+    LT["trash_moved__dining"] = cost_tiers([([["inside", CAN, TRASH]], 0)])
+    LT["trash_moved__trash_full"] = cost_tiers([([["inside", CAN, BATH]] + fill_stays, 1), ([["inside", CAN, BATH]], 2)])
     # after_dinner_clear: what is on the dining table decides where it goes: the empty can and the empty foil takeout
     # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
     # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
@@ -1732,6 +1813,25 @@ def T10(t):
                   + [["hand_empty", "right"]]},
             watch=[*items, BOX, *stays],
             route=[look(ISL), look("tv_stand_2/top")] + [st for x in items for st in put_steps[x]])
+    # x6_gd_can_put_away fridge_drink (11-17, user): the empty can was put in the other low cabinet; the fridge
+    # holds an unopened can of the same kind among the drinks (a juice bottle): it looks the same, it is no rubbish
+    SODA, JUICE, CAB4 = "fridge_soda", "fridge_juice", "kitchen_cabinet_4"
+    doors = [["is_closed", "kitchen_microwave"], ["is_closed", "kitchen_cabinet_6"], ["is_closed", "breakfast_fridge"],
+             ["is_closed", CAB4]]
+    fridge_drink = dict(
+        move={CAN: {"support": f"{CAB4}/inside_shelf", "xy": [1.40, 0.42], "yaw_deg": 0.0}},
+        add={SODA: {"asset": "soda_can", "support": "breakfast_fridge/inside_shelf", "xy": [5.90, 3.30], "yaw_deg": 0.0},
+             JUICE: {"asset": "juice_bottle", "support": "breakfast_fridge/inside_shelf", "xy": [6.04, 3.30],
+                     "yaw_deg": 0.0}},
+        goal={"all": [["inside", CAN, TRASH], ["near_start", SODA, 0.03], *doors, ["hand_empty", "right"]]},
+        watch=[CAN, SODA, JUICE],
+        route=open_explore("breakfast_fridge") + [S("close", articulated="breakfast_fridge")]
+        + open_explore(CAB4) + take(CAB4))
+    shut = [(doors, 1)]
+    LT["x6_gd_can_put_away__in_cabinet"] = cost_tiers([([["inside", CAN, TRASH]], 0)], shut)
+    LT["x6_gd_can_put_away__fridge_drink"] = cost_tiers(
+        [([["inside", CAN, TRASH], ["near_start", SODA, 0.03]], 0),
+         ([["inside", CAN, TRASH], ["not inside", SODA, TRASH]], 1), ([["inside", CAN, TRASH]], 2)], shut)
     return {
         "keep_kids_can": dict(
             base="can_on_island", control="can_on_island", conditions=["referent_clue", "not_in_view"],
@@ -1749,10 +1849,12 @@ def T10(t):
         "trash_moved": dict(
             base="can_on_island", control="can_on_island", conditions=["destination_unnamed", "not_in_view"],
             watch=[CAN, TRASH],
-            factor="where the trash can is today (seed: the dining room or the bathroom)",
-            challenge="the can is on the island, but the trash can is not in its usual place by the island: it "
-                      "stands in the dining room or in the bathroom, out of view",
-            rationale="the destination, not the item, has to be found: take the can and look for the trash can",
+            factor="whether the trash can can take the can (seed: moved to the dining room; or by the island but "
+                   "stuffed full, a second one in the bathroom)",
+            challenge="the can is on the island; the trash can is not in its usual place (the dining room), or it "
+                      "is there but stuffed full, with snack cartons over its rim; a second trash can stands in the "
+                      "bathroom",
+            rationale="the destination has to be found: look for the trash can; when it is full, the bathroom's",
             cases=moved_cases),
         "after_dinner_clear": dict(
             base="can_on_island", control="can_on_island", conditions=["disposal_by_state", "multi_object_goal"],
@@ -1782,9 +1884,13 @@ def T10(t):
             cases=guest_cases),
         "x6_gd_can_put_away": dict(
             base="can_on_island", control="can_on_island",
-            instruction=instr, goal=goal, remove=["plate_inside_kitchen_cabinet"],
-            instruction_zh="厨房里有个空易拉罐被误收起来了，要打开门才能找到。找出来扔进垃圾桶，最后把打开的门关好。",
-            factor="which closed place holds the can (seed: the low wall cabinet, the microwave or the fridge)",
+            # 11-17 (user): no hint at the doors; a door left open costs a level by common sense
+            instruction="An empty soda can was put away in the kitchen by mistake. Find it and throw it into the "
+                        "trash can.",
+            goal=goal, remove=["plate_inside_kitchen_cabinet"],
+            instruction_zh="厨房里有个空易拉罐被人误收起来了，找出来扔进垃圾桶。",
+            factor="what is behind the doors (seed: the empty can in the low wall cabinet; or the empty can in the "
+                   "other low cabinet and an unopened can among the drinks in the fridge)",
             challenge="the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the "
                       "fridge); the instruction names none of them",
             rationale="the item's location is a disjunction the planner must resolve by inspecting both candidates "
@@ -1794,17 +1900,7 @@ def T10(t):
                                       + open_explore("kitchen_cabinet_6") + take("kitchen_cabinet_6"),
                                       failures=[f_initial("resource", [["on", CAN, "kitchen_cabinet_6/inside_shelf"]],
                                                           fid="resource_can_put_away")]),
-                   "in_microwave": dict(move={CAN: in_mw}, route=open_explore("kitchen_cabinet_6")
-                                        + [S("close", articulated="kitchen_cabinet_6")] + mw + take("kitchen_microwave"),
-                                        failures=[f_initial("resource", [["on", CAN, "kitchen_microwave/inside_floor"]],
-                                                            fid="resource_can_put_away")]),
-                   "in_fridge": dict(move={CAN: {"support": "breakfast_fridge/inside_shelf", "xy": [5.90, 3.30],
-                                                 "yaw_deg": 0.0}},
-                                     route=mw + [S("close", articulated="kitchen_microwave")]
-                                     + open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")]
-                                     + open_explore("breakfast_fridge") + take("breakfast_fridge"),
-                                     failures=[f_initial("resource", [["on", CAN, "breakfast_fridge/inside_shelf"]],
-                                                         fid="resource_can_put_away")])}),
+                   "fridge_drink": fridge_drink}),
     }
 
 
@@ -2845,21 +2941,51 @@ def T03_more(t):
 
 
 def T09_long(t):
-    POT = "handled_cooking_pot"
+    POT, SPARE, STOVE = "handled_cooking_pot", "spare_pot", "kitchen_stove/top"
     tail = OR(t, "cookware_choice")
     i = at(tail, "navigate", destination="cherry_tomato_1")
+
+    def swap(steps, old, new):
+        out = copy.deepcopy(steps)
+        for st in out:
+            for k, v in st.get("args", {}).items():
+                if v == old:
+                    st["args"][k] = new
+                elif isinstance(v, list):
+                    st["args"][k] = [new if x == old else x for x in v]
+        return out
+    # 11-17 (user): no bowl or mug to tempt; the seed changes the pot -- the usual one on the dining table next door
+    # (fetch it), or gone, a second pot of the same kind on the island (the stand-in; the lid fits it)
+    from benchmark.v6.scoring import LAYOUT_TIERS
+    LT = LAYOUT_TIERS.setdefault(("T09", "*"), {})
+    tom = ["cherry_tomato_1", "cherry_tomato_2"]
+    core = lambda pot: [*[["inside", x, pot] for x in tom], *[["temperature_at_least", x, 60] for x in tom],  # noqa: E731
+                        ["not heating", "kitchen_stove"]]
+    sides = lambda pot: [([["stirred", pot]], 1), ([["covered", pot, "pot_lid"]], 1)]  # noqa: E731
+    LT["pot_in_dining_room__pot_away"] = cost_tiers([(core(POT), 0)], sides(POT))
+    LT["pot_in_dining_room__spare_pot"] = cost_tiers([(core(SPARE), 1)], sides(SPARE))
     return {
         "pot_in_dining_room": dict(
-            base="cookware_choice", control="lid_off", conditions=["cookware_choice", "not_in_view"],
+            base="cookware_choice", control="lid_off", conditions=["missing_piece", "not_in_view"],
             instruction=t["instruction"], instruction_zh=t["instruction_zh"],     # the task's own words
+            remove=["bowl_kitchen_cabinet", "mug_counter"],
             move={POT: {"support": "dining_table_2/top", "xy": [3.55, 5.75], "yaw_deg": 0.0}},
-            challenge="a breakfast bowl and a mug stand by the tomatoes on the island; the pot is not on the stove but "
-                      "on the dining table in the next room, its lid on the stove",
-            rationale="the soup needs the pot, not the near bowl or mug: fetch the pot from the dining room to the "
-                      "burner, then cook",
-            cases={"": dict(route=tail[:2] + [S("search", object=POT, region="dining_room_0_1"), nav(POT), pick(POT),
-                                              nav("kitchen_stove/top"), place(POT, "kitchen_stove/top", [8.41, 1.725])]
-                            + tail[i:])}),
+            factor="where a pot is (seed: the usual one on the dining table next door; or it is gone, a second pot "
+                   "on the island)",
+            challenge="the pot is not on the stove (its lid is): it stands on the dining table in the next room, or "
+                      "it is gone and a second pot of the same kind stands on the island",
+            rationale="the soup needs a pot on the burner: fetch the usual one from the dining room, or use the "
+                      "second pot when the usual one is gone",
+            cases={"pot_away": dict(route=tail[:2] + [S("search", object=POT, region="dining_room_0_1"), nav(POT),
+                                                      pick(POT), nav(STOVE), place(POT, STOVE, [8.41, 1.725])]
+                                    + tail[i:]),
+                   "spare_pot": dict(
+                       remove=[POT], add={SPARE: {"asset": "handled_cooking_pot", **P("kitchen_island/top", 8.11, 1.80)}},
+                       goal={"all": [*core(SPARE), ["stirred", SPARE], ["covered", SPARE, "pot_lid"],
+                                     ["hand_empty", "right"]]},
+                       watch=[SPARE, "pot_lid", *tom],
+                       route=tail[:2] + [look(STOVE), nav(SPARE), pick(SPARE), nav(STOVE),
+                                         place(SPARE, STOVE, [8.41, 1.725])] + swap(tail[i:], POT, SPARE))}),
     }
 
 
@@ -3072,7 +3198,6 @@ SEED_EXT = {
     ('T07_heat_oatmeal', 'broken_oatmeal_away'): 0,
     ('T08_wipe_island', 'h_dynamic_sponge_taken'): 0,
     ('T09_tomato_soup', 'h_dynamic_spoon_taken'): 0,
-    ('T09_tomato_soup', 'lid_on_spoon_away'): 0,
     ('T10_trash_the_can', 'can_in_dining_room'): 1,
     ('T10_trash_the_can', 'far_can_far'): 0,
     ('T10_trash_the_can', 'h_dynamic_can_moved'): 1,
@@ -3089,6 +3214,7 @@ SEED_EXT = {
 MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_kid"],
          ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen_pencil_in_use"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
+         ("T09_tomato_soup", "lid_on_spoon_away"): ["lid_missing"],
          ("T08_wipe_island", "far_sponge_tv"): ["far_sponge_foam_cube", "far_sponge_spare_only"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
@@ -3106,6 +3232,9 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                 ("T08_wipe_island", "far_sponge_tv"): "what is at hand to wipe with (seed: the sponge on the TV "
                                                       "stand; the kid's foam cube on the island, the sponge on the "
                                                       "TV stand; or only the spare sponge in its tray)",
+                ("T09_tomato_soup", "lid_on_spoon_away"): "what is missing (seed: the spoon, left on the low "
+                                                          "cabinet; or the pot lid, a plate of its size on the "
+                                                          "island)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
                                                           "a used breakfast bowl)",
                 ("T12_tidy_toys", "bins_capacity"): "which containers there are and how full (seed: two small bins, "
@@ -3266,6 +3395,10 @@ TASK_TEXT = {
     # 11-17 (user): "afterwards the stove off and the microwave door closed" named the stove (the fallback when the
     # microwave fails) -- dropped; appliances left on / the door left open are scored by common sense
     "T07_heat_oatmeal": ("Warm up the leftover oatmeal for breakfast (at least 40 C).", "把剩下的燕麦粥热一下当早饭（至少 40 度）。"),
+    # 11-17 (user): "the pot on the stove" dropped: in some seeds the pot to use is elsewhere
+    "T09_tomato_soup": ("Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot "
+                        "and heat the soup to 60 C. Turn the stove off afterwards.",
+                        "午饭做个番茄汤：把小番茄放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。"),
     "T11_collect_fruits": ("Lunch is over and the apple is still on the dining table. Put it away.",
                            "午饭吃完了，苹果还在餐桌上，把它收起来。"),
     "T12_tidy_toys": ("It is nearly bedtime. Put the kid's toys away.", "快到睡觉时间了，把孩子的玩具收起来。"),

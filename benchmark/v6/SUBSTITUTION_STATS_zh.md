@@ -1,33 +1,33 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 83 个摆法，其中 54 个要做替换，29 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 10.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 109 个摆法，其中 69 个要做替换，40 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 13.8 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 17 | +6.2 |
-| 被占用 | 12 | +1.2 |
-| 能力不足 | 8 | -2.8 |
-| 看着像但不能用 | 11 | +0.2 |
-| 去处替换 | 6 | -4.8 |
+| 缺失 | 20 | +6.2 |
+| 被占用 | 16 | +2.2 |
+| 能力不足 | 9 | -4.8 |
+| 看着像但不能用 | 12 | -1.8 |
+| 去处替换 | 12 | -1.8 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 27 |
-| 不在 | 27 |
+| 在 | 37 |
+| 不在 | 32 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 6 | 11 |
-| 被占用 | 3 | 9 |
-| 能力不足 | 5 | 3 |
-| 看着像但不能用 | 11 | 0 |
-| 去处替换 | 2 | 4 |
+| 缺失 | 6 | 14 |
+| 被占用 | 6 | 10 |
+| 能力不足 | 5 | 4 |
+| 看着像但不能用 | 12 | 0 |
+| 去处替换 | 8 | 4 |
 
 ## 每个摆法
 
@@ -116,3 +116,29 @@
 | T08 | return_sponge_home | far_dining | 不用替换 | 在 | 1 |
 | T08 | which_surface | island | 不用替换 | 在 | 1 |
 | T08 | which_surface | dining | 不用替换 | 在 | 1 |
+| T09 | lid_off | — | 不用替换 | 在 | 1 |
+| T09 | lid_on_spoon_away | — | 不用替换 | 在 | 1 |
+| T09 | lid_on_spoon_away | — | 缺失 | 不在 | 1 |
+| T09 | pot_in_use | in_use | 被占用 | 在 | 1 |
+| T09 | pot_in_use | free | 不用替换 | 在 | 1 |
+| T09 | tomato_in_fridge | in_fridge | 不用替换 | 在 | 1 |
+| T09 | tomato_in_fridge | big_tomato | 缺失 | 不在 | 1 |
+| T09 | x6_gd_tomato_elsewhere | dining | 不用替换 | 在 | 1 |
+| T09 | x6_gd_tomato_elsewhere | on_plate | 被占用 | 不在 | 1 |
+| T09 | pot_in_dining_room | pot_away | 不用替换 | 在 | 1 |
+| T09 | pot_in_dining_room | spare_pot | 缺失 | 不在 | 1 |
+| T10 | can_on_island | — | 不用替换 | 在 | 0 |
+| T10 | can_in_dining_room | — | 不用替换 | 在 | 0 |
+| T10 | can_in_dining_room | alt_tv_stand_2 | 不用替换 | 在 | 0 |
+| T10 | keep_kids_can | kid_desk | 被占用 | 在 | 1 |
+| T10 | keep_kids_can | kid_island | 被占用 | 在 | 1 |
+| T10 | trash_moved | dining | 不用替换 | 在 | 0 |
+| T10 | trash_moved | trash_full | 能力不足 | 不在 | 1 |
+| T10 | after_dinner_clear | rubbish_leftovers | 去处替换 | 在 | 1 |
+| T10 | after_dinner_clear | leftovers_mug | 去处替换 | 在 | 1 |
+| T10 | after_dinner_clear | rubbish_mug | 去处替换 | 在 | 1 |
+| T10 | guests_coming | can_mug_block | 去处替换 | 在 | 1 |
+| T10 | guests_coming | can_block | 去处替换 | 在 | 1 |
+| T10 | guests_coming | can_mug | 去处替换 | 在 | 1 |
+| T10 | x6_gd_can_put_away | in_cabinet | 不用替换 | 在 | 1 |
+| T10 | x6_gd_can_put_away | fridge_drink | 看着像但不能用 | 在 | 1 |

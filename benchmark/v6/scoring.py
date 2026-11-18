@@ -525,6 +525,13 @@ def _which_surface(task: dict) -> dict:
         "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor"}
 
 
+_T09_WHY = {"best": "the best the seed offers (what is asked for when it is there, else the stand-in: the plate "
+                    "for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 "
+                    "C, stirred, covered, the stove off, the fridge closed",
+            "second": "one side step missed: not stirred, not covered, or the fridge left open",
+            "worst": "two side steps or more missed; or the tomato taken from someone's lunch plate"}
+
+
 def _soup_steps(design: str, not_ok: str, slips=("stirred", "covered")):
     """T09: the soup's side steps (stir, cover) are tiers: one missed is the second tier, both the worst; the
     tomatoes in the pot at 60 C and the stove off are the task (user 11-11)."""
@@ -610,21 +617,31 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # the lid on the pot, the spoon away (cabinet or dining table): not stirred for want of the spoon is the
          # second tier too
          ("T09", "pot_in_use"): _pot_in_use,
-         # the second tomato left on the dining table or the wall cabinet: tiers as the control
-         ("T09", "x6_gd_tomato_elsewhere"): _soup_steps("x6_gd_tomato_elsewhere", "one tomato only (the other not "
-                                                        "found); below 60 C; the stove left on; a tomato out of the "
-                                                        "pot; still held or dropped"),
-         # the pot on the dining table (lid on the stove), a bowl and a mug by the tomatoes: tiers as the control;
-         # the bowl or the mug for the pot is not ok (the tomatoes not in the pot)
-         ("T09", "pot_in_dining_room"): _soup_steps("pot_in_dining_room", "the bowl or the mug used for the pot; the "
-                                                    "pot not found; one tomato only; below 60 C; the stove left on; "
-                                                    "still held or dropped"),
-         # three tomatoes, the third in the closed fridge or on the island; the fridge door is a side step too
-         ("T09", "tomato_in_fridge"): _soup_steps("tomato_in_fridge", "two tomatoes only (the third not found); "
-                                                  "below 60 C; the stove left on; a tomato out of the pot; still held "
-                                                  "or dropped", slips=("stirred", "covered", "is_closed")),
-         ("T09", "lid_on_spoon_away"): _soup_steps("lid_on_spoon_away", "one tomato only; below 60 C; the stove "
-                                                   "left on; a tomato out of the pot; still held or dropped")}
+         # 11-17 (user): per-seed tiers (define_tasks_v6 LAYOUT_TIERS): the stand-in the seed offers (the plate for
+         # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
+         # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
+         # worst
+         ("T10", "trash_moved"): _layout_tiers("trash_moved", {
+             "best": "the can in the trash can that has room: the moved one (dining room); when the one by the island "
+                     "is full, the bathroom's, the full one untouched",
+             "second": "the can in the bathroom's, but the full one's cartons disturbed",
+             "worst": "-"}, "the can not in a trash can (left on the full one, another bin, left out); still held or "
+                            "dropped"),
+         ("T10", "x6_gd_can_put_away"): _layout_tiers("x6_gd_can_put_away", {
+             "best": "the empty can found and in the trash, the unopened can in the fridge untouched, every door "
+                     "closed",
+             "second": "a door left open; or the unopened can moved (not thrown)",
+             "worst": "the unopened can thrown away too, or several faults"},
+             "the empty can not found or not in the trash (only the fridge's can thrown); still held or dropped"),
+         **{("T09", d): _layout_tiers(d, _T09_WHY, no) for d, no in (
+             ("x6_gd_tomato_elsewhere", "one tomato only (the other not found); below 60 C; the stove left on; a "
+                                        "tomato out of the pot; still held or dropped"),
+             ("pot_in_dining_room", "the pot not found; a bowl or a mug used for the pot; one tomato only; below 60 "
+                                    "C; the stove left on; still held or dropped"),
+             ("tomato_in_fridge", "two tomatoes only (the third not found); the apple in the soup; below 60 C; the "
+                                  "stove left on; a tomato out of the pot; still held or dropped"),
+             ("lid_on_spoon_away", "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still "
+                                   "held or dropped"))}}
 
 
 def scoring_for(task_id: str, design: str, task: dict | None = None) -> dict | None:
@@ -788,7 +805,9 @@ NOT_OK_ZH = {
     ("T09", "lid_off"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
-    ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",
+    ("T10", "x6_gd_can_put_away"): "空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了",
     ("T09", "x6_gd_tomato_elsewhere"): "只放了一颗（没找到另一颗）；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_dining_room"): "用碗或马克杯代替锅；没找到锅；只放了一颗；没到 60 度；灶台没关火；还拿着或掉了",
     ("T03", "which_bin_by_contents"): "两样分在两个箱子；只收了一样；还拿着或掉了",

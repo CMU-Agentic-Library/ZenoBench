@@ -13022,7 +13022,7 @@
    18,
    19
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13094,7 +13094,7 @@
    18,
    19
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13161,7 +13161,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/lid_on_spoon_away__alt_dining_table_2": {
+ "T09_tomato_soup/lid_missing": {
   "variant": "lid_on_spoon_away",
   "category": "action_task",
   "seeds": [
@@ -13171,22 +13171,22 @@
    14,
    17
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "breakfast_spoon",
-    "handled_cooking_pot",
+    "handled_cooking_pot"
+   ],
+   "added": [
+    "lid_plate"
+   ],
+   "removed": [
     "pot_lid"
    ],
-   "added": [],
-   "removed": [
-    "spoon_kitchen_cabinet"
-   ],
    "conditions": [
-    "lid_on",
-    "not_in_view"
+    "missing_piece"
    ],
    "initial_checks": []
   },
@@ -13214,17 +13214,17 @@
      60
     ],
     [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
      "stirred",
      "handled_cooking_pot"
     ],
     [
      "covered",
      "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
+     "lid_plate"
     ],
     [
      "hand_empty",
@@ -13233,9 +13233,9 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_lid_on_spoon_away__alt_dining_table_2",
-  "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_lid_missing",
+  "challenge": "no pot lid in the house; a breakfast plate the lid's size lies on the island",
+  "rationale": "the plate covers the pot as well as the lid would: use it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/pot_in_use__in_use": {
@@ -13248,7 +13248,7 @@
    18,
    19
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13344,7 +13344,7 @@
    16,
    17
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13440,7 +13440,7 @@
    16,
    19
   ],
-  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13522,7 +13522,7 @@
   "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/tomato_in_fridge__on_island": {
+ "T09_tomato_soup/tomato_in_fridge__big_tomato": {
   "variant": "tomato_in_fridge",
   "category": "action_task",
   "seeds": [
@@ -13532,7 +13532,7 @@
    17,
    18
   ],
-  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13542,7 +13542,8 @@
     "pot_lid"
    ],
    "added": [
-    "fridge_tomato"
+    "big_tomato",
+    "fridge_apple"
    ],
    "removed": [],
    "conditions": [
@@ -13594,12 +13595,12 @@
     ],
     [
      "inside",
-     "fridge_tomato",
+     "big_tomato",
      "handled_cooking_pot"
     ],
     [
      "temperature_at_least",
-     "fridge_tomato",
+     "big_tomato",
      60
     ],
     [
@@ -13609,7 +13610,7 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_tomato_in_fridge__on_island",
+  "oracle_route": "v6_tomato_in_fridge__big_tomato",
   "challenge": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
   "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -13624,7 +13625,7 @@
    15,
    19
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13699,11 +13700,11 @@
   },
   "control": "lid_off",
   "oracle_route": "v6_x6_gd_tomato_elsewhere__dining",
-  "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+  "challenge": "one cherry tomato is on the island, the other is on the dining table: left there, or on someone's lunch plate",
   "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/x6_gd_tomato_elsewhere__cabinet6": {
+ "T09_tomato_soup/x6_gd_tomato_elsewhere__on_plate": {
   "variant": "x6_gd_tomato_elsewhere",
   "category": "task",
   "seeds": [
@@ -13713,7 +13714,7 @@
    17,
    18
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -13723,28 +13724,16 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "fridge_tomato",
+    "lunch_plate",
+    "lunch_spoon"
+   ],
    "removed": [],
    "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "cherry_tomato_2",
-     "kitchen_cabinet_6/top"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_tomato_apart",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -13754,7 +13743,7 @@
     ],
     [
      "inside",
-     "cherry_tomato_2",
+     "fridge_tomato",
      "handled_cooking_pot"
     ],
     [
@@ -13764,8 +13753,12 @@
     ],
     [
      "temperature_at_least",
-     "cherry_tomato_2",
+     "fridge_tomato",
      60
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
     ],
     [
      "stirred",
@@ -13777,8 +13770,18 @@
      "pot_lid"
     ],
     [
-     "not heating",
-     "kitchen_stove"
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "cherry_tomato_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "lunch_plate",
+     0.03
     ],
     [
      "hand_empty",
@@ -13787,41 +13790,37 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-  "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+  "oracle_route": "v6_x6_gd_tomato_elsewhere__on_plate",
+  "challenge": "one cherry tomato is on the island, the other is on the dining table: left there, or on someone's lunch plate",
   "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/pot_in_dining_room": {
+ "T09_tomato_soup/pot_in_dining_room__pot_away": {
   "variant": "pot_in_dining_room",
   "category": "task",
   "seeds": [
-   10,
    11,
-   12,
    13,
-   14,
    15,
-   16,
-   17,
    18,
    19
   ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "bowl_kitchen_cabinet",
     "breakfast_spoon",
     "handled_cooking_pot",
-    "mug_counter",
     "pot_lid"
    ],
    "added": [],
-   "removed": [],
+   "removed": [
+    "bowl_kitchen_cabinet",
+    "mug_counter"
+   ],
    "conditions": [
-    "cookware_choice",
+    "missing_piece",
     "not_in_view"
    ],
    "initial_checks": []
@@ -13869,9 +13868,89 @@
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_pot_in_dining_room",
-  "challenge": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is not on the stove but on the dining table in the next room, its lid on the stove",
-  "rationale": "the soup needs the pot, not the near bowl or mug: fetch the pot from the dining room to the burner, then cook",
+  "oracle_route": "v6_pot_in_dining_room__pot_away",
+  "challenge": "the pot is not on the stove (its lid is): it stands on the dining table in the next room, or it is gone and a second pot of the same kind stands on the island",
+  "rationale": "the soup needs a pot on the burner: fetch the usual one from the dining room, or use the second pot when the usual one is gone",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T09_tomato_soup/pot_in_dining_room__spare_pot": {
+  "variant": "pot_in_dining_room",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   14,
+   16,
+   17
+  ],
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [
+    "spare_pot"
+   ],
+   "removed": [
+    "bowl_kitchen_cabinet",
+    "mug_counter"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "cherry_tomato_1",
+     "spare_pot"
+    ],
+    [
+     "inside",
+     "cherry_tomato_2",
+     "spare_pot"
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_1",
+     60
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_2",
+     60
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "stirred",
+     "spare_pot"
+    ],
+    [
+     "covered",
+     "spare_pot",
+     "pot_lid"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_pot_in_dining_room__spare_pot",
+  "challenge": "the pot is not on the stove (its lid is): it stands on the dining table in the next room, or it is gone and a second pot of the same kind stands on the island",
+  "rationale": "the soup needs a pot on the burner: fetch the usual one from the dining room, or use the second pot when the usual one is gone",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/can_on_island": {
@@ -14187,11 +14266,11 @@
   },
   "control": "can_on_island",
   "oracle_route": "v6_trash_moved__dining",
-  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
-  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+  "challenge": "the can is on the island; the trash can is not in its usual place (the dining room), or it is there but stuffed full, with snack cartons over its rim; a second trash can stands in the bathroom",
+  "rationale": "the destination has to be found: look for the trash can; when it is full, the bathroom's",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/trash_moved__bathroom": {
+ "T10_trash_the_can/trash_moved__trash_full": {
   "variant": "trash_moved",
   "category": "task",
   "seeds": [
@@ -14206,10 +14285,15 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "soda_can",
-    "trash_can"
+    "soda_can"
    ],
-   "added": [],
+   "added": [
+    "bathroom_trash",
+    "trash_fill_1",
+    "trash_fill_2",
+    "trash_fill_3",
+    "trash_fill_4"
+   ],
    "removed": [],
    "conditions": [
     "destination_unnamed",
@@ -14223,7 +14307,27 @@
     [
      "inside",
      "soda_can",
-     "trash_can"
+     "bathroom_trash"
+    ],
+    [
+     "near_start",
+     "trash_fill_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_fill_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_fill_3",
+     0.05
+    ],
+    [
+     "near_start",
+     "trash_fill_4",
+     0.05
     ],
     [
      "hand_empty",
@@ -14232,9 +14336,9 @@
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v6_trash_moved__bathroom",
-  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
-  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+  "oracle_route": "v6_trash_moved__trash_full",
+  "challenge": "the can is on the island; the trash can is not in its usual place (the dining room), or it is there but stuffed full, with snack cartons over its rim; a second trash can stands in the bathroom",
+  "rationale": "the destination has to be found: look for the trash can; when it is full, the bathroom's",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/after_dinner_clear__rubbish_leftovers": {
@@ -14677,11 +14781,12 @@
   "category": "task",
   "seeds": [
    10,
-   12,
+   11,
+   14,
    15,
-   17
+   16
   ],
-  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+  "instruction": "An empty soda can was put away in the kitchen by mistake. Find it and throw it into the trash can.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -14743,115 +14848,34 @@
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/x6_gd_can_put_away__in_microwave": {
+ "T10_trash_the_can/x6_gd_can_put_away__fridge_drink": {
   "variant": "x6_gd_can_put_away",
   "category": "task",
   "seeds": [
+   12,
    13,
-   14,
-   18
-  ],
-  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "soda_can"
-   ],
-   "added": [],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_microwave/inside_floor"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_can_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "trash_can"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ]
-   ]
-  },
-  "control": "can_on_island",
-  "oracle_route": "v6_x6_gd_can_put_away__in_microwave",
-  "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
-  "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T10_trash_the_can/x6_gd_can_put_away__in_fridge": {
-  "variant": "x6_gd_can_put_away",
-  "category": "task",
-  "seeds": [
-   11,
-   16,
+   17,
+   18,
    19
   ],
-  "instruction": "An empty soda can was put away in the kitchen by mistake; a door has to be opened to find it. Find it, throw it into the trash can, and close the doors you opened at the end.",
+  "instruction": "An empty soda can was put away in the kitchen by mistake. Find it and throw it into the trash can.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "soda_can"
    ],
-   "added": [],
+   "added": [
+    "fridge_juice",
+    "fridge_soda"
+   ],
    "removed": [
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "breakfast_fridge/inside_shelf"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_can_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -14860,8 +14884,9 @@
      "trash_can"
     ],
     [
-     "hand_empty",
-     "right"
+     "near_start",
+     "fridge_soda",
+     0.03
     ],
     [
      "is_closed",
@@ -14874,11 +14899,19 @@
     [
      "is_closed",
      "breakfast_fridge"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v6_x6_gd_can_put_away__in_fridge",
+  "oracle_route": "v6_x6_gd_can_put_away__fridge_drink",
   "challenge": "the can was put away behind a door in the kitchen (the microwave, the wall cabinet or the fridge); the instruction names none of them",
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"

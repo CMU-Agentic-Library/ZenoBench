@@ -63,7 +63,7 @@
 | T10 | trash_moved | task | 0/0 of 10 | - |
 | T10 | after_dinner_clear | task | 0/0 of 10 | - |
 | T10 | guests_coming | task | 0/0 of 10 | - |
-| T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
+| T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |
 | T11 | leave_one_for_kid | task | 0/0 of 10 | - |

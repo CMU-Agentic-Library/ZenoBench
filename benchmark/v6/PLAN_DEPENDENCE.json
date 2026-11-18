@@ -6,11 +6,11 @@
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 54,
-   "goal_not_met": 92,
-   "not_observed": 67,
-   "resource_missing": 49,
-   "argument_mismatch": 6
+   "passes": 53,
+   "goal_not_met": 94,
+   "not_observed": 66,
+   "resource_missing": 50,
+   "argument_mismatch": 5
   },
   "control_route_passes": [
    "T01 no_room_fallback",
@@ -50,18 +50,16 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 110,
-   "goal_not_met": 157,
-   "not_observed": 21,
-   "argument_mismatch": 85,
-   "resource_missing": 121
+   "passes": 109,
+   "goal_not_met": 160,
+   "not_observed": 20,
+   "argument_mismatch": 78,
+   "resource_missing": 125
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
    "T01 which_book",
    "T06 seen_from_bed",
-   "T09 tomato_in_fridge",
-   "T09 x6_gd_tomato_elsewhere",
    "T11 basket_missing",
    "T13 copy_the_setting",
    "T14 next_in_series",
@@ -73,7 +71,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 83,
+  "multi_layout_variants": 84,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -94,8 +92,9 @@
    "T07 two_portions",
    "T08 far_sponge_tv",
    "T08 return_sponge_home",
+   "T09 tomato_in_fridge",
+   "T09 x6_gd_tomato_elsewhere",
    "T10 after_dinner_clear",
-   "T10 trash_moved",
    "T10 x6_gd_can_put_away",
    "T11 fruit_plate_for_guests",
    "T11 leave_one_for_kid",
@@ -213,6 +212,9 @@
    ],
    "T08 return_sponge_home": [
     "spare_sponge"
+   ],
+   "T09 pot_in_dining_room": [
+    "spare_pot"
    ],
    "T10 after_dinner_clear": [
     "clutter_cereal_a",
@@ -2830,18 +2832,18 @@
    "geometric_atoms": [],
    "control_route": "argument_mismatch",
    "other_layouts": {
-    "lid_on_spoon_away__alt_dining_table_2": "argument_mismatch"
+    "lid_missing": "argument_mismatch"
    },
    "other_variants_passing": []
   },
   {
    "task": "T09_tomato_soup",
    "variant": "lid_on_spoon_away",
-   "layout": "lid_on_spoon_away__alt_dining_table_2",
-   "steps": 19,
+   "layout": "lid_missing",
+   "steps": 15,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "argument_mismatch",
+   "control_route": "resource_missing",
    "other_layouts": {
     "lid_on_spoon_away": "argument_mismatch"
    },
@@ -2861,7 +2863,7 @@
     "pot_in_use__free": "not_observed"
    },
    "other_variants_passing": [
-    "pot_in_dining_room"
+    "pot_in_dining_room__pot_away"
    ]
   },
   {
@@ -2877,10 +2879,7 @@
    "other_layouts": {
     "pot_in_use__in_use": "argument_mismatch"
    },
-   "other_variants_passing": [
-    "tomato_in_fridge__on_island",
-    "x6_gd_tomato_elsewhere__cabinet6"
-   ]
+   "other_variants_passing": []
   },
   {
    "task": "T09_tomato_soup",
@@ -2891,20 +2890,20 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "tomato_in_fridge__on_island": "argument_mismatch"
+    "tomato_in_fridge__big_tomato": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T09_tomato_soup",
    "variant": "tomato_in_fridge",
-   "layout": "tomato_in_fridge__on_island",
-   "steps": 15,
+   "layout": "tomato_in_fridge__big_tomato",
+   "steps": 27,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "tomato_in_fridge__in_fridge": "passes"
+    "tomato_in_fridge__in_fridge": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -2917,41 +2916,52 @@
    "geometric_atoms": [],
    "control_route": "passes",
    "other_layouts": {
-    "x6_gd_tomato_elsewhere__cabinet6": "argument_mismatch"
+    "x6_gd_tomato_elsewhere__on_plate": "resource_missing"
    },
    "other_variants_passing": [
-    "pot_in_use__free",
-    "tomato_in_fridge__on_island"
+    "pot_in_use__free"
    ]
   },
   {
    "task": "T09_tomato_soup",
    "variant": "x6_gd_tomato_elsewhere",
-   "layout": "x6_gd_tomato_elsewhere__cabinet6",
-   "steps": 20,
+   "layout": "x6_gd_tomato_elsewhere__on_plate",
+   "steps": 27,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "passes",
+   "control_route": "goal_not_met",
    "other_layouts": {
-    "x6_gd_tomato_elsewhere__dining": "argument_mismatch"
+    "x6_gd_tomato_elsewhere__dining": "goal_not_met"
+   },
+   "other_variants_passing": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "pot_in_dining_room",
+   "layout": "pot_in_dining_room__pot_away",
+   "steps": 24,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "not_observed",
+   "other_layouts": {
+    "pot_in_dining_room__spare_pot": "resource_missing"
    },
    "other_variants_passing": [
-    "pot_in_use__free",
-    "tomato_in_fridge__on_island"
+    "pot_in_use__in_use"
    ]
   },
   {
    "task": "T09_tomato_soup",
    "variant": "pot_in_dining_room",
-   "layout": "pot_in_dining_room",
-   "steps": 24,
+   "layout": "pot_in_dining_room__spare_pot",
+   "steps": 25,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
-   "other_layouts": {},
-   "other_variants_passing": [
-    "pot_in_use__in_use"
-   ]
+   "other_layouts": {
+    "pot_in_dining_room__pot_away": "goal_not_met"
+   },
+   "other_variants_passing": []
   },
   {
    "task": "T10_trash_the_can",
@@ -2995,9 +3005,8 @@
    "other_variants_passing": [
     "can_in_dining_room__alt_tv_stand_2",
     "trash_moved__dining",
-    "trash_moved__bathroom",
     "x6_gd_can_put_away__in_cabinet",
-    "x6_gd_can_put_away__in_fridge"
+    "x6_gd_can_put_away__fridge_drink"
    ]
   },
   {
@@ -3024,20 +3033,20 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "trash_moved__bathroom": "not_observed"
+    "trash_moved__trash_full": "not_observed"
    },
    "other_variants_passing": []
   },
   {
    "task": "T10_trash_the_can",
    "variant": "trash_moved",
-   "layout": "trash_moved__bathroom",
-   "steps": 9,
+   "layout": "trash_moved__trash_full",
+   "steps": 11,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "not_observed",
+   "control_route": "goal_not_met",
    "other_layouts": {
-    "trash_moved__dining": "not_observed"
+    "trash_moved__dining": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -3142,36 +3151,20 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_can_put_away__in_microwave": "argument_mismatch",
-    "x6_gd_can_put_away__in_fridge": "argument_mismatch"
+    "x6_gd_can_put_away__fridge_drink": "not_observed"
    },
    "other_variants_passing": []
   },
   {
    "task": "T10_trash_the_can",
    "variant": "x6_gd_can_put_away",
-   "layout": "x6_gd_can_put_away__in_microwave",
-   "steps": 15,
+   "layout": "x6_gd_can_put_away__fridge_drink",
+   "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_can_put_away__in_cabinet": "argument_mismatch",
-    "x6_gd_can_put_away__in_fridge": "argument_mismatch"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T10_trash_the_can",
-   "variant": "x6_gd_can_put_away",
-   "layout": "x6_gd_can_put_away__in_fridge",
-   "steps": 22,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "not_observed",
-   "other_layouts": {
-    "x6_gd_can_put_away__in_cabinet": "not_observed",
-    "x6_gd_can_put_away__in_microwave": "not_observed"
+    "x6_gd_can_put_away__in_cabinet": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -5501,7 +5494,7 @@
    "variant": "lid_on_spoon_away",
    "candidates": [
     "lid_on_spoon_away",
-    "lid_on_spoon_away__alt_dining_table_2",
+    "lid_missing",
     "lid_off"
    ],
    "passes_all": []
@@ -5521,24 +5514,30 @@
    "variant": "tomato_in_fridge",
    "candidates": [
     "tomato_in_fridge__in_fridge",
-    "tomato_in_fridge__on_island",
+    "tomato_in_fridge__big_tomato",
     "lid_off"
    ],
-   "passes_all": [
-    "tomato_in_fridge__in_fridge"
-   ]
+   "passes_all": []
   },
   {
    "task": "T09_tomato_soup",
    "variant": "x6_gd_tomato_elsewhere",
    "candidates": [
     "x6_gd_tomato_elsewhere__dining",
-    "x6_gd_tomato_elsewhere__cabinet6",
+    "x6_gd_tomato_elsewhere__on_plate",
     "lid_off"
    ],
-   "passes_all": [
+   "passes_all": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "pot_in_dining_room",
+   "candidates": [
+    "pot_in_dining_room__pot_away",
+    "pot_in_dining_room__spare_pot",
     "lid_off"
-   ]
+   ],
+   "passes_all": []
   },
   {
    "task": "T10_trash_the_can",
@@ -5565,7 +5564,7 @@
    "variant": "trash_moved",
    "candidates": [
     "trash_moved__dining",
-    "trash_moved__bathroom",
+    "trash_moved__trash_full",
     "can_on_island"
    ],
    "passes_all": []
@@ -5597,8 +5596,7 @@
    "variant": "x6_gd_can_put_away",
    "candidates": [
     "x6_gd_can_put_away__in_cabinet",
-    "x6_gd_can_put_away__in_microwave",
-    "x6_gd_can_put_away__in_fridge",
+    "x6_gd_can_put_away__fridge_drink",
     "can_on_island"
    ],
    "passes_all": []
@@ -8041,7 +8039,7 @@
    "variant": "lid_on_spoon_away",
    "layouts": [
     "lid_on_spoon_away",
-    "lid_on_spoon_away__alt_dining_table_2"
+    "lid_missing"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
@@ -8067,25 +8065,38 @@
    "variant": "tomato_in_fridge",
    "layouts": [
     "tomato_in_fridge__in_fridge",
-    "tomato_in_fridge__on_island"
+    "tomato_in_fridge__big_tomato"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": false,
-   "route_a_on_b": "passes",
-   "route_b_on_a": "argument_mismatch",
-   "hidden_state_branch": false
+   "same_before_key_observation": true,
+   "route_a_on_b": "resource_missing",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
   },
   {
    "task": "T09_tomato_soup",
    "variant": "x6_gd_tomato_elsewhere",
    "layouts": [
     "x6_gd_tomato_elsewhere__dining",
-    "x6_gd_tomato_elsewhere__cabinet6"
+    "x6_gd_tomato_elsewhere__on_plate"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "resource_missing",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "pot_in_dining_room",
+   "layouts": [
+    "pot_in_dining_room__pot_away",
+    "pot_in_dining_room__spare_pot"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
+   "route_a_on_b": "goal_not_met",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": false
   },
   {
@@ -8119,13 +8130,13 @@
    "variant": "trash_moved",
    "layouts": [
     "trash_moved__dining",
-    "trash_moved__bathroom"
+    "trash_moved__trash_full"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "not_observed",
+   "same_before_key_observation": false,
+   "route_a_on_b": "goal_not_met",
    "route_b_on_a": "not_observed",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T10_trash_the_can",
@@ -8210,38 +8221,12 @@
    "variant": "x6_gd_can_put_away",
    "layouts": [
     "x6_gd_can_put_away__in_cabinet",
-    "x6_gd_can_put_away__in_microwave"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
-   "route_b_on_a": "argument_mismatch",
-   "hidden_state_branch": true
-  },
-  {
-   "task": "T10_trash_the_can",
-   "variant": "x6_gd_can_put_away",
-   "layouts": [
-    "x6_gd_can_put_away__in_cabinet",
-    "x6_gd_can_put_away__in_fridge"
+    "x6_gd_can_put_away__fridge_drink"
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "not_observed",
-   "route_b_on_a": "argument_mismatch",
-   "hidden_state_branch": true
-  },
-  {
-   "task": "T10_trash_the_can",
-   "variant": "x6_gd_can_put_away",
-   "layouts": [
-    "x6_gd_can_put_away__in_microwave",
-    "x6_gd_can_put_away__in_fridge"
-   ],
-   "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "not_observed",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": true
   },
   {
