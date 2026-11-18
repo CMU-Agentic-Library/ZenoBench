@@ -36,9 +36,9 @@ def test_missing_open_is_caught():
 
 
 def test_missing_walk_is_caught():
-    lid = "far_sponge_tv"
+    lid = "return_sponge_home__far_dining"          # the walk back from the far dining room with the sponge
     steps = TASKS["T08"]["routes"][TASKS["T08"]["oracle"][lid]]["steps"]
-    k = next(i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top")
+    k = [i for i, s in enumerate(steps) if s["skill"] == "navigate" and s["args"]["destination"] == "kitchen_island/top"][-1]
     p = broken("T08", lid, lambda i, s: i == k)
     assert any("not near kitchen_island/top" in x["problem"] for x in p)
 
