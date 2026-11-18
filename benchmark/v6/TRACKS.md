@@ -103,7 +103,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T16 | no_box | Task-Level | - | not_in_view; resource_absent | 1 |
 | T16 | box_in_use | Task-Level | - | resource_in_use | 1 |
 | T17 | lid_off | Control | - | - | 1 |
-| T17 | h_task_lid_elsewhere | Task-Level | - | resource | 1 |
+| T17 | h_task_lid_elsewhere | Task-Level | - | resource; resource_in_use | 2 |
 | T17 | hide_both | Task-Level | - | multi_object_goal; not_in_view | 2 |
 | T17 | hide_somewhere | Task-Level | - | storage_place | 2 |
 | T18 | bowls_in_cabinet | Control | - | - | 1 |

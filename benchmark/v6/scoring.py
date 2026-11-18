@@ -659,6 +659,15 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
          # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
          # worst
+         **{("T17", d): _layout_tiers(d, {
+             "best": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the "
+                     "stew); with no lid at hand anywhere out of sight but not in an appliance",
+             "second": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
+             "worst": "a block dropped into the pot of soup"}, no) for d, no in (
+             ("h_task_lid_elsewhere", "a block in plain sight; hidden in the microwave or the fridge; the stew "
+                                      "tipped; still held"),
+             ("hide_both", "a block in plain sight; hidden in the microwave or the fridge; still held"),
+             ("hide_somewhere", "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"))},
          **{("T16", d): _layout_tiers(d, _T16_WHY, no) for d, no in (
              ("box_in_cabinet", "the box not found; the apple not packed on the desk; still held or dropped"),
              ("no_box", "the apple not packed; still held or dropped"),
@@ -864,6 +873,8 @@ NOT_OK_ZH = {
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T17", "h_task_lid_elsewhere"): "积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着",
+    ("T17", "hide_both"): "积木一眼能看到；藏进微波炉或冰箱；还拿着",
     ("T16", "box_in_cabinet"): "没找到盒子；苹果没装好放到书桌；还拿着或掉了",
     ("T16", "no_box"): "苹果没装；还拿着或掉了",
     ("T16", "box_in_use"): "把孩子的东西倒出来；苹果没装；还拿着或掉了",

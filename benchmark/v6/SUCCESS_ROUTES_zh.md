@@ -7821,31 +7821,55 @@
 
 ### h_task_lid_elsewhere（Task）
 
-**情况**：锅盖在靠墙柜上 → 先把锅盖拿到灶台，再藏
+**情况**：锅盖在靠墙柜上 → 先拿回灶台再藏；锅盖正盖在右边灶眼的炖菜上时别动它，用岛台上的盘子盖（最好的替代算好；拿炖菜的盖子降一档）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`h_task_lid_elsewhere` D = 1、理想物在，`hide_lid_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `wooden_block_b` 藏好了（从房间里看不到）
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - 手里空着
+  - 摆法 `hide_lid_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `handled_cooking_pot` 盖着 `cover_plate`
+        - `stew_pot` 盖着 `pot_lid`
+        - `stew_pot` 立着
+  - 摆法 `h_task_lid_elsewhere`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `handled_cooking_pot` 盖着 `pot_lid`
 - **次好（0.6）**：
 
-  - `wooden_block_b` 藏好了（从房间里看不到）
-  - 手里空着
-  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
-  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
-- **不行（0）**：积木一眼能看到；藏进微波炉或冰箱；还拿着
+  - 摆法 `hide_lid_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `handled_cooking_pot` 盖着 `pot_lid`
+  - 摆法 `h_task_lid_elsewhere`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+        - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：积木一眼能看到；藏进微波炉或冰箱；碰倒炖菜；还拿着
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=pot_lid)` → 4. `pick(object=pot_lid)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `place(object=pot_lid, receptacle=kitchen_stove/top, hint_xy=[8.715, 1.655])` → 7. `navigate(destination=handled_cooking_pot)` → 8. `look(target=kitchen_stove/top)` → 9. `navigate(destination=kitchen_island/top)` → 10. `look(target=kitchen_island/top)` → 11. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `h_task_lid_elsewhere`：1. `navigate(destination=kitchen_cabinet_6/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=pot_lid)` → 4. `pick(object=pot_lid)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `place(object=pot_lid, receptacle=kitchen_stove/top, hint_xy=[8.715, 1.655])` → 7. `navigate(destination=handled_cooking_pot)` → 8. `look(target=kitchen_stove/top)` → 9. `navigate(destination=kitchen_island/top)` → 10. `look(target=kitchen_island/top)` → 11. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)`
+- 摆法 `hide_lid_in_use`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=cover_plate)`
 
 ### hide_both（Task）
 
-**情况**：两块积木藏进同一个锅，另一块在别的房间 → 找到第二块，中间再揭一次盖，最后盖好
+**情况**：两块积木藏进同一个空锅，另一块在别的房间 → 找到第二块，中间再揭一次盖，最后盖好；灶上另一口锅装着汤，不是空锅（放进汤锅算差）
 
 **指令**：我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。
 
@@ -7853,26 +7877,50 @@
 
 - **好（1.0）**：
 
-  - `wooden_block_b` 藏好了（从房间里看不到）
-  - `floor_block` 藏好了（从房间里看不到）
-  - `handled_cooking_pot` 盖着 `pot_lid`
-  - 手里空着
+  - 摆法 `two_pots`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `floor_block` 藏好了（从房间里看不到）
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `full_soup_pot` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `tv_stand`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `floor_block` 藏好了（从房间里看不到）
+        - `handled_cooking_pot` 盖着 `pot_lid`
 - **次好（0.6）**：
 
-  - `wooden_block_b` 藏好了（从房间里看不到）
-  - `floor_block` 藏好了（从房间里看不到）
   - 手里空着
-  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
-  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
-  - `["not on", "floor_block", "kitchen_microwave/inside_floor"]`
-  - `["not on", "floor_block", "breakfast_fridge/inside_shelf"]`
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 藏好了（从房间里看不到）
+      - `floor_block` 藏好了（从房间里看不到）
+      - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+      - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+      - `["not on", "floor_block", "kitchen_microwave/inside_floor"]`
+      - `["not on", "floor_block", "breakfast_fridge/inside_shelf"]`
+- **最不好（0.3）**：
+
+  - 摆法 `tv_stand`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `two_pots`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 在 `full_soup_pot` 里
+      - 第 2 组：
+        - `floor_block` 在 `full_soup_pot` 里
 - **不行（0）**：积木一眼能看到；藏进微波炉或冰箱；还拿着
 
 
 **参考调用顺序**：
 
 - 摆法 `tv_stand`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=living_room_0_0)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
-- 摆法 `dining`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=dining_room_0_1)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
+- 摆法 `two_pots`：1. `navigate(destination=kitchen_stove/top)` → 2. `look(target=kitchen_stove/top)` → 3. `navigate(destination=kitchen_island/top)` → 4. `look(target=kitchen_island/top)` → 5. `hide(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)` → 6. `search(object=floor_block, region=dining_room_0_1)`（补救） → 7. `navigate(destination=handled_cooking_pot)`（补救） → 8. `uncover(container=handled_cooking_pot)`（补救） → 9. `navigate(destination=floor_block)`（补救） → 10. `look(target=floor_block)`（补救） → 11. `hide(object=floor_block, receptacle=handled_cooking_pot, lid=pot_lid)`（补救）
 
 ### hide_somewhere（Task）
 
@@ -7880,14 +7928,22 @@
 
 **指令**：陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`pot_ready` D = 0、理想物在，`lid_away` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `wooden_block_b` 藏好了（从房间里看不到）
-  - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
-  - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
   - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `wooden_block_b` 藏好了（从房间里看不到）
+      - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+      - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+- **次好（0.6）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **不行（0）**：一眼能看到；藏进微波炉或冰箱；还拿着
 
 

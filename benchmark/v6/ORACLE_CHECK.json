@@ -1,6 +1,6 @@
 {
- "routes": 298,
- "ok": 298,
+ "routes": 299,
+ "ok": 299,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2371,6 +2371,18 @@
   },
   {
    "task": "T17_hide_and_seek_block",
+   "layout": "hide_lid_in_use",
+   "steps": 5,
+   "atoms_checked": 4,
+   "atoms_geometric": 1,
+   "geometric_atoms": [
+    "upright stew_pot"
+   ],
+   "problems": [],
+   "variant": "h_task_lid_elsewhere"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
    "layout": "hide_both__tv_stand",
    "steps": 11,
    "atoms_checked": 4,
@@ -2381,9 +2393,9 @@
   },
   {
    "task": "T17_hide_and_seek_block",
-   "layout": "hide_both__dining",
+   "layout": "hide_both__two_pots",
    "steps": 11,
-   "atoms_checked": 4,
+   "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

@@ -2422,6 +2422,44 @@ def T17(t):
     both_goal = {"all": [["hidden", B], ["hidden", F], ["covered", POT, LID], ["hand_empty", "right"]]}
     both = lambda region: base + recs(S("search", object=F, region=region), nav(POT), S("uncover", container=POT),  # noqa: E731
                                       nav(F), look(F), S("hide", object=F, receptacle=POT, lid=LID))
+    # 11-17 (user): per-seed tiers; the seed changes the stand-in
+    LT = LAYOUT_TIERS.setdefault(("T17", "*"), {})
+    STOVE = "kitchen_stove/top"
+    noapp = lambda b: [["not on", b, "kitchen_microwave/inside_floor"], ["not on", b, "breakfast_fridge/inside_shelf"]]  # noqa: E731
+    # h_task_lid_elsewhere's second seed (merged, MERGE): the lid is on a stew on the right burner (in use); a
+    # breakfast plate on the island covers the hiding pot instead
+    STEW, CPLATE = "stew_pot", "cover_plate"
+
+    def swap(steps, old, new):
+        out = copy.deepcopy(steps)
+        for st in out:
+            for k, v in st.get("args", {}).items():
+                if v == old:
+                    st["args"][k] = new
+        return out
+    LT["h_task_lid_elsewhere"] = cost_tiers([([["hidden", B], ["covered", POT, LID]], 0), ([["hidden", B]] + noapp(B), 1)])
+    LT["hide_lid_in_use"] = cost_tiers([([["hidden", B], ["covered", POT, CPLATE], ["covered", STEW, LID],
+                                          ["upright", STEW]], 1), ([["hidden", B], ["covered", POT, LID]], 2)])
+    lid_in_use = dict(
+        base="lid_off", control="lid_off", conditions=["resource_in_use"],
+        add={STEW: {"asset": "soup_pot", **P(STOVE, 8.70, 1.725)}, CPLATE: {"asset": "breakfast_plate",
+                                                                          **P("kitchen_island/top", 8.06, 1.78)}},
+        move={LID: {"support": None, "z": 0.8591, "xy": [8.70, 1.725], "yaw_deg": 0.0}},
+        goal={"all": [["hidden", B], ["covered", POT, CPLATE], ["covered", STEW, LID], ["upright", STEW],
+                      ["hand_empty", "right"]]},
+        watch=[B, POT, LID, STEW, CPLATE],
+        challenge="the pot's lid is on a stew on the right burner; a breakfast plate lies on the island",
+        rationale="the lid is in use: leave it on the stew, cover the hiding pot with the plate",
+        cases={"": dict(route=swap(base, LID, CPLATE))})
+    # hide_both two_pots (11-17, user): a second pot on the right burner holds soup (no lid): it looks like the pot,
+    # it is not the empty one; the blocks go in the empty pot
+    SOUPP = "full_soup_pot"
+    LT["hide_both__tv_stand"] = cost_tiers([(both_goal["all"][:-1], 0), ([["hidden", B], ["hidden", F]] + noapp(B) + noapp(F), 1)])
+    LT["hide_both__two_pots"] = cost_tiers(
+        [(both_goal["all"][:-1] + [["near_start", SOUPP, 0.03]], 0),
+         ([["hidden", B], ["hidden", F]] + noapp(B) + noapp(F), 1), ([["inside", B, SOUPP]], 3), ([["inside", F, SOUPP]], 3)])
+    LT["hide_somewhere__pot_ready"] = cost_tiers([([["hidden", B]] + noapp(B), 0)])
+    LT["hide_somewhere__lid_away"] = cost_tiers([([["hidden", B]] + noapp(B), 1)])
     return {
         "hide_both": dict(
             base="lid_off", control="lid_off", conditions=["multi_object_goal", "not_in_view"],
@@ -2429,13 +2467,19 @@ def T17(t):
             instruction="We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty "
                         "pot on the stove and put the lid on so they cannot see them.",
             instruction_zh="我们在和孩子玩捉迷藏，藏的是他的玩具积木：把两块木积木都藏进灶上那个空锅里，再盖上锅盖，别让孩子看见。",
-            factor="where the second block is (seed: the TV stand or the dining table)",
-            challenge="one block on the island, the other in another room; one pot, one lid",
+            factor="where the second block is and what else stands on the stove (seed: the block on the TV stand; or "
+                   "on the dining table, and a pot of soup on the right burner)",
+            challenge="one block on the island, the other in another room; one pot, one lid; on one seed a second pot "
+                      "on the stove holds soup",
             rationale="two hides share the lid: find the second block, take the lid off again between the hides, "
                       "cover at the end",
-            cases={c: dict(move={F: to}, route=both(region))
-                   for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
-                                         ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))}),
+            cases={"tv_stand": dict(move={F: P("tv_stand_2/top", 7.0, 0.36)}, route=both("living_room_0_0")),
+                   "two_pots": dict(move={F: P("dining_table_2/top", 3.7, 6.3)},
+                                    add={SOUPP: {"asset": "soup_pot", **P(STOVE, 8.70, 1.725)}},
+                                    goal={"all": [*both_goal["all"], ["near_start", SOUPP, 0.03]]},
+                                    watch=[B, F, LID, POT, SOUPP],
+                                    route=both("dining_room_0_1"))}),
+        "hide_lid_in_use": lid_in_use,
         "hide_somewhere": dict(
             base="lid_off", control="lid_off", conditions=["storage_place"],
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
@@ -3264,6 +3308,7 @@ MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_ki
          ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen_pencil_in_use"],
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
          ("T09_tomato_soup", "lid_on_spoon_away"): ["lid_missing"],
+         ("T17_hide_and_seek_block", "h_task_lid_elsewhere"): ["hide_lid_in_use"],
          ("T08_wipe_island", "far_sponge_tv"): ["far_sponge_foam_cube", "far_sponge_spare_only"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
@@ -3284,6 +3329,9 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                 ("T09_tomato_soup", "lid_on_spoon_away"): "what is missing (seed: the spoon, left on the low "
                                                           "cabinet; or the pot lid, a plate of its size on the "
                                                           "island)",
+                ("T17_hide_and_seek_block", "h_task_lid_elsewhere"): "what the lid is doing (seed: left on the "
+                                                                     "wall cabinet; or on a stew on the right "
+                                                                     "burner, a plate on the island)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
                                                           "a used breakfast bowl)",
                 ("T12_tidy_toys", "bins_capacity"): "which containers there are and how full (seed: two small bins, "

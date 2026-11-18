@@ -196874,8 +196874,62 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden in the pot on the stove, the lid on",
+        "goal": {
+         "by_layout": {
+          "h_task_lid_elsewhere": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "cover_plate"
+             ],
+             [
+              "covered",
+              "stew_pot",
+              "pot_lid"
+             ],
+             [
+              "upright",
+              "stew_pot"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
         "raw": "best"
        },
        {
@@ -196884,34 +196938,59 @@
         "goal": {
          "by_layout": {
           "h_task_lid_elsewhere": {
-           "all": [
+           "any": [
             [
-             "hidden",
-             "wooden_block_b"
-            ],
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
-            ],
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
             [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
             [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "hidden out of sight elsewhere (not in an appliance), not in the covered pot",
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
         "raw": "second"
        }
       ],
-      "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held",
+      "not_ok": "a block in plain sight; hidden in the microwave or the fridge; the stew tipped; still held",
       "top": "ideal"
      }
     },
@@ -197002,15 +197081,15 @@
       "rolling_pin"
      ],
      "since": "v6",
-     "note": "one block on the island, the other in another room; one pot, one lid",
+     "note": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
      "v6": {
       "family": "hide_both",
       "case": "tv_stand",
-      "challenge": "one block on the island, the other in another room; one pot, one lid",
+      "challenge": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
       "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
       "control": "lid_off",
       "contrast": null,
-      "factor": "where the second block is (seed: the TV stand or the dining table)",
+      "factor": "where the second block is and what else stands on the stove (seed: the block on the TV stand; or on the dining table, and a pot of soup on the right burner)",
       "derived_from": "lid_off"
      },
      "layout": {
@@ -197189,8 +197268,66 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden in the pot on the stove, the lid on",
+        "goal": {
+         "by_layout": {
+          "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "full_soup_pot",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
         "raw": "best"
        },
        {
@@ -197199,80 +197336,88 @@
         "goal": {
          "by_layout": {
           "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           },
-          "hide_both__dining": {
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           }
          }
         },
-        "why": "hidden out of sight elsewhere (not in an appliance), not in the covered pot",
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
         "raw": "second"
        }
       ],
@@ -197280,7 +197425,7 @@
       "top": "ideal"
      }
     },
-    "hide_both__dining": {
+    "hide_both__two_pots": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -197353,6 +197498,11 @@
        [
         "hand_empty",
         "right"
+       ],
+       [
+        "near_start",
+        "full_soup_pot",
+        0.03
        ]
       ]
      },
@@ -197363,19 +197513,29 @@
       "floor_block",
       "pot_lid",
       "handled_cooking_pot",
-      "oatmeal",
-      "rolling_pin"
+      "full_soup_pot"
      ],
+     "add": {
+      "full_soup_pot": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.7,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v6",
-     "note": "one block on the island, the other in another room; one pot, one lid",
+     "note": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
      "v6": {
       "family": "hide_both",
-      "case": "dining",
-      "challenge": "one block on the island, the other in another room; one pot, one lid",
+      "case": "two_pots",
+      "challenge": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
       "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
       "control": "lid_off",
       "contrast": null,
-      "factor": "where the second block is (seed: the TV stand or the dining table)",
+      "factor": "where the second block is and what else stands on the stove (seed: the block on the TV stand; or on the dining table, and a pot of soup on the right burner)",
       "derived_from": "lid_off"
      },
      "layout": {
@@ -197588,8 +197748,66 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden in the pot on the stove, the lid on",
+        "goal": {
+         "by_layout": {
+          "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "full_soup_pot",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
         "raw": "best"
        },
        {
@@ -197598,85 +197816,505 @@
         "goal": {
          "by_layout": {
           "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           },
-          "hide_both__dining": {
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           }
          }
         },
-        "why": "hidden out of sight elsewhere (not in an appliance), not in the covered pot",
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "hide_both__tv_stand": "n/a",
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "inside",
+              "wooden_block_b",
+              "full_soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "floor_block",
+              "full_soup_pot"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a block dropped into the pot of soup",
+        "raw": "worst"
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held",
       "top": "ideal"
+     }
+    },
+    "hide_lid_in_use": {
+     "move": {
+      "pot_lid": {
+       "support": null,
+       "z": 0.8591,
+       "xy": [
+        8.7,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.83
+       ],
+       "yaw_deg": 168.5
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.7,
+        1.635
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "stew_pot": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.7,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "cover_plate": {
+       "asset": "breakfast_plate",
+       "support": "kitchen_island/top",
+       "xy": [
+        8.06,
+        1.78
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "resource_in_use"
+     ],
+     "goal": {
+      "all": [
+       [
+        "hidden",
+        "wooden_block_b"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "cover_plate"
+       ],
+       [
+        "covered",
+        "stew_pot",
+        "pot_lid"
+       ],
+       [
+        "upright",
+        "stew_pot"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "wooden_block_b",
+      "handled_cooking_pot",
+      "pot_lid",
+      "stew_pot",
+      "cover_plate"
+     ],
+     "since": "v6",
+     "note": "the pot's lid is on a stew on the right burner; a breakfast plate lies on the island",
+     "v6": {
+      "family": "hide_lid_in_use",
+      "case": null,
+      "challenge": "the pot's lid is on a stew on the right burner; a breakfast plate lies on the island",
+      "rationale": "the lid is in use: leave it on the stew, cover the hiding pot with the plate",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "lid_off"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "cover_plate"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.936,
+         1.656,
+         8.184,
+         1.9041
+        ],
+        "dx": [
+         -1.38,
+         0.06
+        ],
+        "dy": [
+         -0.13,
+         0.07
+        ]
+       },
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.5852,
+         1.7262,
+         6.7948,
+         1.9338
+        ],
+        "dx": [
+         -0.03,
+         1.45
+        ],
+        "dy": [
+         -0.2,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.59,
+         1.6119,
+         6.81,
+         1.6582
+        ],
+        "dx": [
+         -0.03,
+         1.43
+        ],
+        "dy": [
+         -0.08,
+         0.31
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.05,
+         1.605,
+         7.09,
+         1.645
+        ],
+        "dx": [
+         -0.5,
+         1.15
+        ],
+        "dy": [
+         -0.08,
+         0.33
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "h_task_lid_elsewhere": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "cover_plate"
+             ],
+             [
+              "covered",
+              "stew_pot",
+              "pot_lid"
+             ],
+             [
+              "upright",
+              "stew_pot"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "h_task_lid_elsewhere": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "a block in plain sight; hidden in the microwave or the fridge; the stew tipped; still held",
+      "top": "moderate"
      }
     },
     "hide_somewhere__pot_ready": {
@@ -197895,8 +198533,63 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden out of sight, not in an appliance",
+        "goal": {
+         "by_layout": {
+          "hide_somewhere__pot_ready": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_somewhere__lid_away": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
         "raw": "best"
        }
       ],
@@ -198137,13 +198830,68 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden out of sight, not in an appliance",
+        "goal": {
+         "by_layout": {
+          "hide_somewhere__pot_ready": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_somewhere__lid_away": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance",
         "raw": "best"
        }
       ],
       "not_ok": "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held",
-      "top": "ideal"
+      "top": "moderate"
      }
     }
    },
@@ -198176,7 +198924,8 @@
     "lid_off": "v5fix_lid_off",
     "h_task_lid_elsewhere": "v5_h_task_lid_elsewhere",
     "hide_both__tv_stand": "v6_hide_both__tv_stand",
-    "hide_both__dining": "v6_hide_both__dining",
+    "hide_both__two_pots": "v6_hide_both__two_pots",
+    "hide_lid_in_use": "v6_hide_lid_in_use",
     "hide_somewhere__pot_ready": "v6_hide_somewhere__pot_ready",
     "hide_somewhere__lid_away": "v6_hide_somewhere__lid_away"
    },
@@ -198426,7 +199175,7 @@
      "kind": "v6_oracle",
      "variant": "hide_both__tv_stand"
     },
-    "v6_hide_both__dining": {
+    "v6_hide_both__two_pots": {
      "steps": [
       {
        "skill": "navigate",
@@ -198507,7 +199256,45 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "hide_both__dining"
+     "variant": "hide_both__two_pots"
+    },
+    "v6_hide_lid_in_use": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "cover_plate"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "hide_lid_in_use"
     },
     "v6_hide_somewhere__pot_ready": {
      "steps": [
@@ -198787,28 +199574,88 @@
      "origin": "v5",
      "control": "lid_off",
      "layouts": [
-      "h_task_lid_elsewhere"
+      "h_task_lid_elsewhere",
+      "hide_lid_in_use"
      ],
      "seeds": {
       "10": "h_task_lid_elsewhere",
-      "11": "h_task_lid_elsewhere",
-      "12": "h_task_lid_elsewhere",
+      "11": "hide_lid_in_use",
+      "12": "hide_lid_in_use",
       "13": "h_task_lid_elsewhere",
       "14": "h_task_lid_elsewhere",
-      "15": "h_task_lid_elsewhere",
-      "16": "h_task_lid_elsewhere",
+      "15": "hide_lid_in_use",
+      "16": "hide_lid_in_use",
       "17": "h_task_lid_elsewhere",
       "18": "h_task_lid_elsewhere",
-      "19": "h_task_lid_elsewhere"
+      "19": "hide_lid_in_use"
      },
+     "factor": "what the lid is doing (seed: left on the wall cabinet; or on a stew on the right burner, a plate on the island)",
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "h_task_lid_elsewhere": true,
+       "hide_lid_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden in the pot on the stove, the lid on"
+        "goal": {
+         "by_layout": {
+          "h_task_lid_elsewhere": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "cover_plate"
+             ],
+             [
+              "covered",
+              "stew_pot",
+              "pot_lid"
+             ],
+             [
+              "upright",
+              "stew_pot"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance"
        },
        {
         "name": "second",
@@ -198816,33 +199663,77 @@
         "goal": {
          "by_layout": {
           "h_task_lid_elsewhere": {
-           "all": [
+           "any": [
             [
-             "hidden",
-             "wooden_block_b"
-            ],
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
             [
              "hand_empty",
              "right"
-            ],
+            ]
+           ]
+          },
+          "hide_lid_in_use": {
+           "any": [
             [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
             [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
+             "hand_empty",
+             "right"
             ]
            ]
           }
          }
         },
-        "why": "hidden out of sight elsewhere (not in an appliance), not in the covered pot"
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "h_task_lid_elsewhere": "n/a",
+          "hide_lid_in_use": "n/a"
+         }
+        },
+        "why": "a block dropped into the pot of soup"
        }
       ],
-      "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held"
+      "not_ok": "a block in plain sight; hidden in the microwave or the fridge; the stew tipped; still held",
+      "D_by_layout": {
+       "h_task_lid_elsewhere": 1,
+       "hide_lid_in_use": 1
+      },
+      "top_by_layout": {
+       "h_task_lid_elsewhere": "ideal",
+       "hide_lid_in_use": "moderate"
+      }
      }
     },
     "hide_both": {
@@ -198850,29 +199741,91 @@
      "control": "lid_off",
      "layouts": [
       "hide_both__tv_stand",
-      "hide_both__dining"
+      "hide_both__two_pots"
      ],
-     "factor": "where the second block is (seed: the TV stand or the dining table)",
+     "factor": "where the second block is and what else stands on the stove (seed: the block on the TV stand; or on the dining table, and a pot of soup on the right burner)",
      "seeds": {
-      "10": "hide_both__dining",
+      "10": "hide_both__two_pots",
       "11": "hide_both__tv_stand",
-      "12": "hide_both__dining",
-      "13": "hide_both__dining",
+      "12": "hide_both__two_pots",
+      "13": "hide_both__two_pots",
       "14": "hide_both__tv_stand",
-      "15": "hide_both__dining",
-      "16": "hide_both__dining",
+      "15": "hide_both__two_pots",
+      "16": "hide_both__two_pots",
       "17": "hide_both__tv_stand",
       "18": "hide_both__tv_stand",
       "19": "hide_both__tv_stand"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "hide_both__tv_stand": true,
+       "hide_both__two_pots": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden in the pot on the stove, the lid on"
+        "goal": {
+         "by_layout": {
+          "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "covered",
+              "handled_cooking_pot",
+              "pot_lid"
+             ],
+             [
+              "near_start",
+              "full_soup_pot",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance"
        },
        {
         "name": "second",
@@ -198880,80 +199833,122 @@
         "goal": {
          "by_layout": {
           "hide_both__tv_stand": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           },
-          "hide_both__dining": {
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "hidden",
+              "floor_block"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "floor_block",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "hidden",
-             "wooden_block_b"
-            ],
-            [
-             "hidden",
-             "floor_block"
-            ],
             [
              "hand_empty",
              "right"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "wooden_block_b",
-             "breakfast_fridge/inside_shelf"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "kitchen_microwave/inside_floor"
-            ],
-            [
-             "not on",
-             "floor_block",
-             "breakfast_fridge/inside_shelf"
             ]
            ]
           }
          }
         },
-        "why": "hidden out of sight elsewhere (not in an appliance), not in the covered pot"
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "hide_both__tv_stand": "n/a",
+          "hide_both__two_pots": {
+           "any": [
+            [
+             [
+              "inside",
+              "wooden_block_b",
+              "full_soup_pot"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "floor_block",
+              "full_soup_pot"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a block dropped into the pot of soup"
        }
       ],
       "not_ok": "a block in plain sight; hidden in the microwave or the fridge; still held"
@@ -198980,16 +199975,105 @@
       "19": "hide_somewhere__pot_ready"
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "hide_somewhere__pot_ready": true,
+       "hide_somewhere__lid_away": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "hidden out of sight, not in an appliance"
+        "goal": {
+         "by_layout": {
+          "hide_somewhere__pot_ready": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "hide_somewhere__lid_away": {
+           "any": [
+            [
+             [
+              "hidden",
+              "wooden_block_b"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "kitchen_microwave/inside_floor"
+             ],
+             [
+              "not on",
+              "wooden_block_b",
+              "breakfast_fridge/inside_shelf"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: hidden in the empty pot under its lid (a plate when the lid is on the stew); with no lid at hand anywhere out of sight but not in an appliance"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "hide_somewhere__pot_ready": "n/a",
+          "hide_somewhere__lid_away": "n/a"
+         }
+        },
+        "why": "hidden out of sight elsewhere (not an appliance); or the lid taken off the stew"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "hide_somewhere__pot_ready": "n/a",
+          "hide_somewhere__lid_away": "n/a"
+         }
+        },
+        "why": "a block dropped into the pot of soup"
        }
       ],
-      "not_ok": "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held"
+      "not_ok": "in plain sight; in the microwave or the fridge (dangerous, ruled out); still held",
+      "D_by_layout": {
+       "hide_somewhere__pot_ready": 0,
+       "hide_somewhere__lid_away": 0
+      },
+      "top_by_layout": {
+       "hide_somewhere__pot_ready": "ideal",
+       "hide_somewhere__lid_away": "moderate"
+      }
      }
     }
    },
@@ -199001,8 +200085,8 @@
    },
    "v6_dropped": {
     "e2_from_dining_room": "same as lid_off but for the layout (object poses / start)",
-    "h_action_ik_twice": "same as h_task_lid_elsewhere without its injected action failures",
-    "h_mixed_lid_elsewhere_ik": "same as h_task_lid_elsewhere without its injected action failures",
+    "h_action_ik_twice": "same as h_task_lid_elsewhere (SAME_DESIGN)",
+    "h_mixed_lid_elsewhere_ik": "same as h_task_lid_elsewhere (SAME_DESIGN)",
     "lid_on": "removed: lifting the lid first is Action-Level",
     "block_crowded": "removed: separating the crowded block is Action-Level",
     "lid_on_crowded": "removed: both Action-Level preconditions together",
@@ -199018,7 +200102,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "resource"
+      "resource",
+      "resource_in_use"
      ]
     },
     "hide_both": {

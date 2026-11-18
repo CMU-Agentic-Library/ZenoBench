@@ -3712,8 +3712,8 @@
 {
 "task": "T17_hide_and_seek_block",
 "seed": 10,
-"variant": "hide_both__dining",
-"route": "v6_hide_both__dining",
+"variant": "hide_both__two_pots",
+"route": "v6_hide_both__two_pots",
 "family": "hide_both"
 },
 {
@@ -3726,15 +3726,15 @@
 {
 "task": "T17_hide_and_seek_block",
 "seed": 12,
-"variant": "hide_both__dining",
-"route": "v6_hide_both__dining",
+"variant": "hide_both__two_pots",
+"route": "v6_hide_both__two_pots",
 "family": "hide_both"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 13,
-"variant": "hide_both__dining",
-"route": "v6_hide_both__dining",
+"variant": "hide_both__two_pots",
+"route": "v6_hide_both__two_pots",
 "family": "hide_both"
 },
 {
@@ -3747,15 +3747,15 @@
 {
 "task": "T17_hide_and_seek_block",
 "seed": 15,
-"variant": "hide_both__dining",
-"route": "v6_hide_both__dining",
+"variant": "hide_both__two_pots",
+"route": "v6_hide_both__two_pots",
 "family": "hide_both"
 },
 {
 "task": "T17_hide_and_seek_block",
 "seed": 16,
-"variant": "hide_both__dining",
-"route": "v6_hide_both__dining",
+"variant": "hide_both__two_pots",
+"route": "v6_hide_both__two_pots",
 "family": "hide_both"
 },
 {

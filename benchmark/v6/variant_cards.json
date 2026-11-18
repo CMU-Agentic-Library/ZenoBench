@@ -18762,15 +18762,10 @@
   "category": "task",
   "seeds": [
    10,
-   11,
-   12,
    13,
    14,
-   15,
-   16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
   "initial_conditions": {
@@ -18829,6 +18824,70 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T17_hide_and_seek_block/hide_lid_in_use": {
+  "variant": "h_task_lid_elsewhere",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   15,
+   16,
+   19
+  ],
+  "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid",
+    "rolling_pin",
+    "wooden_block_b"
+   ],
+   "added": [
+    "cover_plate",
+    "stew_pot"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hidden",
+     "wooden_block_b"
+    ],
+    [
+     "covered",
+     "handled_cooking_pot",
+     "cover_plate"
+    ],
+    [
+     "covered",
+     "stew_pot",
+     "pot_lid"
+    ],
+    [
+     "upright",
+     "stew_pot"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_hide_lid_in_use",
+  "challenge": "the pot's lid is on a stew on the right burner; a breakfast plate lies on the island",
+  "rationale": "the lid is in use: leave it on the stew, cover the hiding pot with the plate",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T17_hide_and_seek_block/hide_both__tv_stand": {
   "variant": "hide_both",
   "category": "task",
@@ -18883,11 +18942,11 @@
   },
   "control": "lid_off",
   "oracle_route": "v6_hide_both__tv_stand",
-  "challenge": "one block on the island, the other in another room; one pot, one lid",
+  "challenge": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
   "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T17_hide_and_seek_block/hide_both__dining": {
+ "T17_hide_and_seek_block/hide_both__two_pots": {
   "variant": "hide_both",
   "category": "task",
   "seeds": [
@@ -18909,7 +18968,9 @@
     "rolling_pin",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "full_soup_pot"
+   ],
    "removed": [],
    "conditions": [
     "multi_object_goal",
@@ -18936,12 +18997,17 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "near_start",
+     "full_soup_pot",
+     0.03
     ]
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_hide_both__dining",
-  "challenge": "one block on the island, the other in another room; one pot, one lid",
+  "oracle_route": "v6_hide_both__two_pots",
+  "challenge": "one block on the island, the other in another room; one pot, one lid; on one seed a second pot on the stove holds soup",
   "rationale": "two hides share the lid: find the second block, take the lid off again between the hides, cover at the end",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

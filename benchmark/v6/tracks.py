@@ -62,6 +62,9 @@ LOCAL_CONDITIONS = {
 
 # designs the rules above cannot tell apart: (task, variant) -> the variant it is the same design as
 SAME_DESIGN = {
+    # 11-17: h_task_lid_elsewhere gained a seed (the lid in use), so the layout match no longer finds it
+    ("T17_hide_and_seek_block", "h_action_ik_twice"): "h_task_lid_elsewhere",
+    ("T17_hide_and_seek_block", "h_mixed_lid_elsewhere_ik"): "h_task_lid_elsewhere",
     # its extra dependency only states that block A stands on the island, i.e. the unstable_base condition
     ("T02_stack_blocks", "h_action_grasp_and_ik"): "edge_base",
     ("T02_stack_blocks", "h_mixed_edge_base_grasp"): "edge_base",

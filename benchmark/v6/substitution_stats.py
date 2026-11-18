@@ -95,6 +95,10 @@ KIND = {
     ("T16", "box_in_cabinet"): {"in_cabinet": None, "box_full": "能力不足"},
     ("T16", "no_box"): {"*": "缺失"},
     ("T16", "box_in_use"): {"*": "被占用"},
+    ("T17", "lid_off"): {"*": None},
+    ("T17", "h_task_lid_elsewhere"): {"h_task_lid_elsewhere": None, "hide_lid_in_use": "被占用"},
+    ("T17", "hide_both"): {"tv_stand": None, "two_pots": "看着像但不能用"},
+    ("T17", "hide_somewhere"): {"pot_ready": None, "lid_away": "去处替换"},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }
