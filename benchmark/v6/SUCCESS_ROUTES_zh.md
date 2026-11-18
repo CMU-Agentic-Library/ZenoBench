@@ -4823,18 +4823,34 @@
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_1` 立着
         - `bedside_teddy_2` 立着
         - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
       - 第 2 组：
         - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
         - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_1` 立着
         - `bedside_teddy_2` 立着
         - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
 - **次好（0.6）**：
 
   - 摆法 `boxes_middle`：
@@ -4873,6 +4889,10 @@
         - `bedside_teddy_1` 立着
         - `bedside_teddy_2` 立着
         - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
 - **最不好（0.3）**：
 
   - 摆法 `boxes_middle`：
@@ -4894,9 +4914,17 @@
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_1` 立着
         - `bedside_teddy_2` 立着
         - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
 - **不行（0）**：放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了
 
 
@@ -4979,7 +5007,7 @@
 
 ### microwave_holds_pot（Task）
 
-**情况**：微波炉里放着带盖的汤锅，放不下碗（指令和任务本身一样，没提汤锅） → 改用灶台，微波炉门关好
+**情况**：微波炉里放着带盖的汤锅，放不下碗（指令和任务本身一样，没提汤锅） → 用灶台、汤锅不动（把汤锅拿出来用微波炉降一档），微波炉门关好
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
@@ -5022,7 +5050,7 @@
 
 ### vessel_decides_appliance（Task）
 
-**情况**：两个电器都正常；剩饭装在五种容器之一里，指令轻提示"注意容器适不适合进微波炉或放到灶上" → 按容器的材质选电器：瓷碗、玻璃盒进微波炉（放灶上不算热），金属锅、不锈钢饭盒、铝箔盒上灶台（进微波炉不热）
+**情况**：两个电器都正常；剩饭装在五种容器之一里，指令只说"把剩饭热一下"，不提示容器 → 按容器的材质选电器：瓷碗、玻璃盒进微波炉（放灶上不算热），金属锅、不锈钢饭盒、铝箔盒上灶台（进微波炉不热）
 
 **指令**：把剩饭热一下当早饭（至少 40 度）。
 

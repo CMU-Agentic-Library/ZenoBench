@@ -121160,6 +121160,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -121170,6 +121190,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ],
             [
@@ -121204,6 +121240,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -121214,6 +121270,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -121390,6 +121462,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -121478,6 +121566,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -121488,6 +121596,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -121577,6 +121701,42 @@
         -5.04
        ],
        "yaw_deg": 90.0
+      },
+      "bedside_bin_1": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.02,
+        -4.773
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_bin_2": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.02,
+        -4.968
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.271,
+        -4.785
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_book": {
+       "asset": "book_red",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.271,
+        -4.99
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -121612,6 +121772,26 @@
         0.05
        ],
        [
+        "near_start",
+        "bedside_bin_1",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_bin_2",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_tray",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_book",
+        0.05
+       ],
+       [
         "upright",
         "bedside_teddy_1"
        ],
@@ -121624,6 +121804,22 @@
         "bedside_snacks"
        ],
        [
+        "upright",
+        "bedside_bin_1"
+       ],
+       [
+        "upright",
+        "bedside_bin_2"
+       ],
+       [
+        "upright",
+        "bedside_tray"
+       ],
+       [
+        "upright",
+        "bedside_book"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -121634,7 +121830,11 @@
       "wooden_block_b",
       "bedside_teddy_1",
       "bedside_teddy_2",
-      "bedside_snacks"
+      "bedside_snacks",
+      "bedside_bin_1",
+      "bedside_bin_2",
+      "bedside_tray",
+      "bedside_book"
      ],
      "since": "v6",
      "keep_design": [
@@ -121905,6 +122105,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -121915,6 +122135,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ],
             [
@@ -121949,6 +122185,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -121959,6 +122215,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -122135,6 +122407,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -122223,6 +122511,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -122233,6 +122541,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -127356,6 +127680,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -127366,6 +127710,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ],
             [
@@ -127400,6 +127760,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -127410,6 +127790,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -127585,6 +127981,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],
@@ -127672,6 +128084,26 @@
               0.05
              ],
              [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
               "upright",
               "bedside_teddy_1"
              ],
@@ -127682,6 +128114,22 @@
              [
               "upright",
               "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
             ]
            ],

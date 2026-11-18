@@ -1350,13 +1350,17 @@
    "task": "T06_block_destination_occupied",
    "layout": "seen_from_bed__bookcase_full",
    "steps": 10,
-   "atoms_checked": 5,
-   "atoms_geometric": 4,
+   "atoms_checked": 9,
+   "atoms_geometric": 8,
    "geometric_atoms": [
     "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_teddy_1",
     "upright bedside_teddy_2",
-    "upright bedside_snacks"
+    "upright bedside_snacks",
+    "upright bedside_bin_1",
+    "upright bedside_bin_2",
+    "upright bedside_tray",
+    "upright bedside_book"
    ],
    "problems": [],
    "variant": "seen_from_bed"

@@ -120,7 +120,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 421,
+  "geometric_atoms_unchecked": 425,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -2494,7 +2494,11 @@
     "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_teddy_1",
     "upright bedside_teddy_2",
-    "upright bedside_snacks"
+    "upright bedside_snacks",
+    "upright bedside_bin_1",
+    "upright bedside_bin_2",
+    "upright bedside_tray",
+    "upright bedside_book"
    ],
    "control_route": "goal_not_met",
    "other_layouts": {

@@ -11453,9 +11453,13 @@
     "wooden_block_b"
    ],
    "added": [
+    "bedside_bin_1",
+    "bedside_bin_2",
+    "bedside_book",
     "bedside_snacks",
     "bedside_teddy_1",
-    "bedside_teddy_2"
+    "bedside_teddy_2",
+    "bedside_tray"
    ],
    "removed": [],
    "conditions": [
@@ -11498,6 +11502,26 @@
      0.05
     ],
     [
+     "near_start",
+     "bedside_bin_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_bin_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_tray",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_book",
+     0.05
+    ],
+    [
      "upright",
      "bedside_teddy_1"
     ],
@@ -11508,6 +11532,22 @@
     [
      "upright",
      "bedside_snacks"
+    ],
+    [
+     "upright",
+     "bedside_bin_1"
+    ],
+    [
+     "upright",
+     "bedside_bin_2"
+    ],
+    [
+     "upright",
+     "bedside_tray"
+    ],
+    [
+     "upright",
+     "bedside_book"
     ],
     [
      "hand_empty",

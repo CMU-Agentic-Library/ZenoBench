@@ -1257,8 +1257,8 @@ def T06(t):
     # seen_from_bed: the kid wants to see the block from bed.  The bedside bookcase is the surface in view of the
     # pillow (farther, lower furniture is hidden by the bed itself).  11-17 (user): the seed changes the stand-in --
     # the kid's cereal boxes in the middle of the bookcase top (the half facing the pillow is free, ideal), or the
-    # kid's teddies and a snack carton lined along the bed side of the top, so nothing on it can be seen from the
-    # pillow (static check, scratchpad bed_vis.py): the wall shelf (large_shelf_4, its middle shelves) is in view
+    # kid's things filling the top (teddies and a snack carton along the bed side, bins, a tray and a book), so
+    # nothing on it can be seen from the pillow (static check, scratchpad bed_vis.py): the wall shelf (large_shelf_4, its middle shelves) is in view
     # over the teddies.  visible_from checks the line of sight from the kid's eye at the end
     BED = "bookcase_3/top"
     SHELVES = ("large_shelf_4/shelf_2", "large_shelf_4/shelf_3")
@@ -1268,7 +1268,13 @@ def T06(t):
                                    for i, y in enumerate((-5.0145, -4.8895, -4.7645))},
                   "bookcase_full": {"bedside_teddy_1": ("teddy_bear", 1.85, -4.765, 0.0),
                                     "bedside_teddy_2": ("teddy_bear", 1.85, -4.927, 0.0),
-                                    "bedside_snacks": ("snack_carton", 1.85, -5.040, 90.0)}}
+                                    "bedside_snacks": ("snack_carton", 1.85, -5.040, 90.0),
+                                    # 11-17 (user): the rest of the top filled too (no 4 cm spot left), all low
+                                    # enough for the wall shelf to stay in view over them
+                                    "bedside_bin_1": ("small_storage_bin", 2.02, -4.773, 0.0),
+                                    "bedside_bin_2": ("small_storage_bin", 2.02, -4.968, 0.0),
+                                    "bedside_tray": ("shallow_sorting_tray", 2.271, -4.785, 0.0),
+                                    "bedside_book": ("book_red", 2.271, -4.99, 0.0)}}
     bed_cases = {}
     for case, things in BED_THINGS.items():
         names = list(things)
