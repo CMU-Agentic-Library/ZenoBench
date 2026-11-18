@@ -2599,9 +2599,9 @@
   },
   {
    "task": "T20_juice_back_to_table",
-   "layout": "x6_gd_bottle_put_away__in_cabinet_4",
-   "steps": 18,
-   "atoms_checked": 4,
+   "layout": "x6_gd_bottle_put_away__on_tv_stand",
+   "steps": 8,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright juice_bottle"
@@ -2611,9 +2611,9 @@
   },
   {
    "task": "T20_juice_back_to_table",
-   "layout": "x6_gd_bottle_put_away__stock_bottles",
-   "steps": 18,
-   "atoms_checked": 7,
+   "layout": "x6_gd_bottle_put_away__in_bedroom",
+   "steps": 9,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright juice_bottle"

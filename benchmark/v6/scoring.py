@@ -660,10 +660,10 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
          # worst
          **{("T20", d): _layout_tiers(d, {
-             "best": "the breakfast bottle standing on the dining table, the bottle in use left alone, doors closed",
-             "second": "a door left open; lying on the table; or another bottle brought instead (the one in use, a new "
-                       "one from the stock)",
-             "worst": "lying on the table with a door left open"}, no) for d, no in (
+             "best": "the breakfast bottle standing on the dining table, the bottle in use and the stock left alone",
+             "second": "lying on the table; or another bottle brought instead (the one in use, one from the stock), "
+                       "or the stock disturbed",
+             "worst": "lying on the table and the stock disturbed"}, no) for d, no in (
              ("m_bottle_on_tv_stand", "no bottle back on the breakfast table; still held or dropped"),
              ("x6_gd_bottle_put_away", "the bottle not on the breakfast table; still held or dropped"))},
          **{("T19", d): _layout_tiers(d, {

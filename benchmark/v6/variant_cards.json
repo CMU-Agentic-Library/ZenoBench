@@ -20239,7 +20239,7 @@
   "rationale": "the bottle taken from the breakfast table is the one put down on the cabinet; the living room's is in use: leave it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T20_juice_back_to_table/x6_gd_bottle_put_away__in_cabinet_4": {
+ "T20_juice_back_to_table/x6_gd_bottle_put_away__on_tv_stand": {
   "variant": "x6_gd_bottle_put_away",
   "category": "task",
   "seeds": [
@@ -20249,79 +20249,7 @@
    17,
    19
   ],
-  "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
-  "initial_conditions": {
-   "scene": "tasks/organize_utility_items",
-   "start": null,
-   "moved": [
-    "juice_bottle"
-   ],
-   "added": [],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "juice_bottle",
-     "kitchen_cabinet_4/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_bottle_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "juice_bottle",
-     "dining_table_2/top"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ]
-   ]
-  },
-  "control": "bottle_on_cabinet",
-  "oracle_route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-  "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
-  "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T20_juice_back_to_table/x6_gd_bottle_put_away__stock_bottles": {
-  "variant": "x6_gd_bottle_put_away",
-  "category": "task",
-  "seeds": [
-   10,
-   14,
-   15,
-   16,
-   18
-  ],
-  "instruction": "Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the dining table, standing up.",
+  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {
    "scene": "tasks/organize_utility_items",
    "start": null,
@@ -20333,10 +20261,10 @@
     "stock_juice_2",
     "stock_juice_3"
    ],
-   "removed": [
-    "plate_inside_kitchen_cabinet"
+   "removed": [],
+   "conditions": [
+    "referent_clue"
    ],
-   "conditions": [],
    "initial_checks": []
   },
   "failure_triggers": [],
@@ -20352,16 +20280,71 @@
      "juice_bottle"
     ],
     [
+     "near_start",
+     "stock_juice_1",
+     0.03
+    ],
+    [
+     "near_start",
+     "stock_juice_2",
+     0.03
+    ],
+    [
+     "near_start",
+     "stock_juice_3",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
+    ]
+   ]
+  },
+  "control": "bottle_on_cabinet",
+  "oracle_route": "v6_x6_gd_bottle_put_away__on_tv_stand",
+  "challenge": "the breakfast bottle was put down casually on one top, alone and askew; three new bottles of the same juice stand in a neat row on another",
+  "rationale": "the bottle taken from the table is the one left lying about, not one of the stock in its row",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T20_juice_back_to_table/x6_gd_bottle_put_away__in_bedroom": {
+  "variant": "x6_gd_bottle_put_away",
+  "category": "task",
+  "seeds": [
+   10,
+   14,
+   15,
+   16,
+   18
+  ],
+  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+  "initial_conditions": {
+   "scene": "tasks/organize_utility_items",
+   "start": null,
+   "moved": [
+    "juice_bottle"
+   ],
+   "added": [
+    "stock_juice_1",
+    "stock_juice_2",
+    "stock_juice_3"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "juice_bottle",
+     "dining_table_2/top"
     ],
     [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
+     "upright",
+     "juice_bottle"
     ],
     [
      "near_start",
@@ -20377,13 +20360,17 @@
      "near_start",
      "stock_juice_3",
      0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "bottle_on_cabinet",
-  "oracle_route": "v6_x6_gd_bottle_put_away__stock_bottles",
-  "challenge": "the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a stock of new bottles of the same juice",
-  "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
+  "oracle_route": "v6_x6_gd_bottle_put_away__in_bedroom",
+  "challenge": "the breakfast bottle was put down casually on one top, alone and askew; three new bottles of the same juice stand in a neat row on another",
+  "rationale": "the bottle taken from the table is the one left lying about, not one of the stock in its row",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/e1_book_ready": {

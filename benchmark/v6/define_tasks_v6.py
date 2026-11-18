@@ -2638,19 +2638,28 @@ def T20(t):
     base = OR(t, "bottle_on_cabinet")           # nav cab6 top, look, nav bottle, pick, nav dining, place
     i = at(base, "pick", object=J)
 
-    # 11-17 (user): no hint at the cabinets or the doors (the task's words); a door left open costs a level
-    instr = ("Someone took the juice bottle from the breakfast table and put it away somewhere. Put it back on the "
-             "dining table, standing up.")
-    instr_zh = "有人把早餐桌上的果汁瓶拿走，随手收起来了。把它放回餐桌上，立着放。"   # 11-17 (user): put away, not put down
     LT = LAYOUT_TIERS.setdefault(("T20", "*"), {})
     TABLE = "dining_table_2/top"
     stand = [["on", J, TABLE], ["upright", J]]
-    closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    # x6_gd_bottle_put_away (11-17, user, redesigned): no cabinets -- the breakfast bottle was put down casually on
+    # one top (alone, askew), three new bottles of the same juice stand in a neat row on another (the stock): they
+    # look the same, they are not the one from the table.  The seed swaps the two tops
     STOCK = ["stock_juice_1", "stock_juice_2", "stock_juice_3"]
-    LT["x6_gd_bottle_put_away__in_cabinet_4"] = cost_tiers([(stand, 0), ([["on", J, TABLE]], 2)], [(closed, 1)])
-    LT["x6_gd_bottle_put_away__stock_bottles"] = cost_tiers(
-        [(stand + [["near_start", n, 0.03] for n in STOCK], 0), ([["on", J, TABLE]], 2),
-         *[([["on", n, TABLE], ["upright", n]], 1) for n in STOCK]], [(closed, 1)])
+    CAB6, TV = "kitchen_cabinet_6/top", "tv_stand_2/top"
+    stock_stays = [["near_start", n, 0.03] for n in STOCK]
+    casual = {"on_tv_stand": ((TV, 7.95, 0.30, 37.0), (CAB6, (3.40, 3.50, 3.60), 0.36), None),
+              "in_bedroom": (("bookcase_2/top", 1.15, -0.36, 25.0), (CAB6, (3.40, 3.50, 3.60), 0.36), "bedroom_0_1")}
+    stock_cases = {}
+    for c, ((sup, x, y, yaw), (ssup, xs, sy), region) in casual.items():
+        LT[f"x6_gd_bottle_put_away__{c}"] = cost_tiers(
+            [(stand + stock_stays, 0), *[([["on", n, TABLE], ["upright", n]], 1) for n in STOCK],
+             ([["on", J, TABLE]] + stock_stays, 1), ([["on", J, TABLE]], 2)])
+        stock_cases[c] = dict(
+            move={J: P(sup, x, y, yaw)},
+            add={n: {"asset": "juice_bottle", **P(ssup, sx, sy)} for n, sx in zip(STOCK, xs)},
+            goal={"all": [*stand, *stock_stays, ["hand_empty", "right"]]}, watch=[J, *STOCK],
+            route=[look(CAB6), look(TV)] + ([S("search", object=J, region=region)] if region else [])
+            + [nav(J), pick(J), nav(TABLE), place(J, TABLE, [2.948, 7.295])])
     # m_bottle_on_tv_stand's second seed (merged, MERGE): the breakfast bottle on the low cabinet top; the same
     # juice stands on the TV stand beside a poured cup, someone drinking in the living room (in use)
     LJ, LC = "living_juice", "living_cup"
@@ -2675,29 +2684,14 @@ def T20(t):
     return {
         "bottle_in_use": bottle_in_use,
         "x6_gd_bottle_put_away": dict(
-            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
-            instruction_zh=instr_zh,
-            factor="what the low cabinets hold (seed: the bottle alone in cabinet 4; or alone in cabinet 6, three new "
-                   "bottles of the same juice in cabinet 4)",
-            remove=["plate_inside_kitchen_cabinet"],
-            challenge="the bottle was put away in one of the two low cabinets; on one seed the other cabinet holds a "
-                      "stock of new bottles of the same juice",
-            rationale="a disjunction over closed places: inspect them (reference route: the worse order), take the "
-                      "bottle, close both doors",
-            cases={"in_cabinet_4": dict(move={J: {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0}},
-                                        failures=[f_initial("resource", [["on", J, "kitchen_cabinet_4/inside_shelf"]],
-                                                            fid="resource_bottle_put_away")],
-                                        route=open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")]
-                                        + open_explore("kitchen_cabinet_4") + take("kitchen_cabinet_4") + tail),
-                   # 11-17 (user): the breakfast bottle alone in cabinet 6; cabinet 4 holds a stock of three new
-                   # bottles of the same juice side by side: they look the same, they are not the one from the table
-                   "stock_bottles": dict(
-                       move={J: {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}},
-                       add={n: {"asset": "juice_bottle", "support": "kitchen_cabinet_4/inside_shelf", "xy": [x, 0.42],
-                                "yaw_deg": 0.0} for n, x in zip(STOCK, (1.28, 1.40, 1.52))},
-                       goal={"all": [*goal["all"], *[["near_start", n, 0.03] for n in STOCK]]}, watch=[J, *STOCK],
-                       route=open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")]
-                       + open_explore("kitchen_cabinet_6") + take("kitchen_cabinet_6") + tail)}),
+            base="bottle_on_cabinet", control="bottle_on_cabinet", conditions=["referent_clue"],
+            instruction=t["instruction"], instruction_zh=t["instruction_zh"],     # the task's own words
+            factor="where the bottle was put down (seed: askew on the TV stand; or on the bedroom bookcase, out of "
+                   "view); the stock's row stands on the low cabinet top",
+            challenge="the breakfast bottle was put down casually on one top, alone and askew; three new bottles of "
+                      "the same juice stand in a neat row on another",
+            rationale="the bottle taken from the table is the one left lying about, not one of the stock in its row",
+            cases=stock_cases),
     }
 
 

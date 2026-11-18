@@ -6,9 +6,9 @@
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 53,
+   "passes": 54,
    "goal_not_met": 96,
-   "not_observed": 66,
+   "not_observed": 65,
    "resource_missing": 49,
    "argument_mismatch": 5
   },
@@ -35,6 +35,7 @@
    "T17 hide_somewhere",
    "T19 lookalike_bin",
    "T20 m_bottle_on_tv_stand",
+   "T20 x6_gd_bottle_put_away",
    "T21 which_table",
    "T22 not_shopping",
    "T23 belongs_on_floor",
@@ -52,8 +53,8 @@
   "routes_between_layouts": {
    "passes": 112,
    "goal_not_met": 163,
-   "not_observed": 23,
-   "argument_mismatch": 71,
+   "not_observed": 24,
+   "argument_mismatch": 70,
    "resource_missing": 123
   },
   "universal_fixed_sequence": [
@@ -109,7 +110,6 @@
    "T16 box_in_cabinet",
    "T18 one_bowl",
    "T19 x6_gd_can_put_away",
-   "T20 x6_gd_bottle_put_away",
    "T21 the_kids_side",
    "T21 tissue_put_away",
    "T21 which_table",
@@ -4044,7 +4044,9 @@
    "other_layouts": {
     "bottle_in_use": "not_observed"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "x6_gd_bottle_put_away__on_tv_stand"
+   ]
   },
   {
    "task": "T20_juice_back_to_table",
@@ -4060,37 +4062,39 @@
     "m_bottle_on_tv_stand": "passes"
    },
    "other_variants_passing": [
-    "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__stock_bottles"
+    "x6_gd_bottle_put_away__on_tv_stand"
    ]
   },
   {
    "task": "T20_juice_back_to_table",
    "variant": "x6_gd_bottle_put_away",
-   "layout": "x6_gd_bottle_put_away__in_cabinet_4",
-   "steps": 18,
+   "layout": "x6_gd_bottle_put_away__on_tv_stand",
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright juice_bottle"
    ],
-   "control_route": "not_observed",
+   "control_route": "passes",
    "other_layouts": {
-    "x6_gd_bottle_put_away__stock_bottles": "argument_mismatch"
+    "x6_gd_bottle_put_away__in_bedroom": "argument_mismatch"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "m_bottle_on_tv_stand",
+    "bottle_in_use"
+   ]
   },
   {
    "task": "T20_juice_back_to_table",
    "variant": "x6_gd_bottle_put_away",
-   "layout": "x6_gd_bottle_put_away__stock_bottles",
-   "steps": 18,
+   "layout": "x6_gd_bottle_put_away__in_bedroom",
+   "steps": 9,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright juice_bottle"
    ],
    "control_route": "not_observed",
    "other_layouts": {
-    "x6_gd_bottle_put_away__in_cabinet_4": "argument_mismatch"
+    "x6_gd_bottle_put_away__on_tv_stand": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -5892,8 +5896,8 @@
    "task": "T20_juice_back_to_table",
    "variant": "x6_gd_bottle_put_away",
    "candidates": [
-    "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__stock_bottles",
+    "x6_gd_bottle_put_away__on_tv_stand",
+    "x6_gd_bottle_put_away__in_bedroom",
     "bottle_on_cabinet"
    ],
    "passes_all": []
@@ -8890,14 +8894,14 @@
    "task": "T20_juice_back_to_table",
    "variant": "x6_gd_bottle_put_away",
    "layouts": [
-    "x6_gd_bottle_put_away__in_cabinet_4",
-    "x6_gd_bottle_put_away__stock_bottles"
+    "x6_gd_bottle_put_away__on_tv_stand",
+    "x6_gd_bottle_put_away__in_bedroom"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
+   "same_before_key_observation": false,
+   "route_a_on_b": "not_observed",
    "route_b_on_a": "argument_mismatch",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T14_shelve_the_book",

@@ -117,7 +117,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T19 | x6_gd_can_put_away | Task-Level | - | resource | 2 |
 | T20 | bottle_on_cabinet | Control | - | - | 1 |
 | T20 | m_bottle_on_tv_stand | Task-Level | - | not_in_view; resource_in_use | 2 |
-| T20 | x6_gd_bottle_put_away | Task-Level | - | resource | 2 |
+| T20 | x6_gd_bottle_put_away | Task-Level | - | referent_clue | 2 |
 | T14 | e1_book_ready | Control | - | - | 1 |
 | T14 | within_kids_reach | Task-Level | - | agent_ability | 2 |
 | T14 | stack_them_stably | Task-Level | - | multi_object_goal; subgoal_order | 2 |

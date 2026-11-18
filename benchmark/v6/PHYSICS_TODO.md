@@ -100,7 +100,7 @@
 | T19 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors |
 | T20 | bottle_on_cabinet | control | 0/0 of 10 | juice bottle grasp |
 | T20 | m_bottle_on_tv_stand | task | 0/0 of 10 | juice bottle grasp |
-| T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp, low cabinet doors |
+| T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp |
 | T14 | e1_book_ready | control | 0/0 of 10 | - |
 | T14 | within_kids_reach | task | 0/0 of 10 | - |
 | T14 | stack_them_stably | task | 0/0 of 10 | - |
