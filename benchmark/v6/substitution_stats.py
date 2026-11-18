@@ -43,6 +43,12 @@ KIND = {
     ("T06", "display_spot_or_tv"): {"front_free": None, "front_free_block_away": None, "front_taken": "去处替换",
                                     "front_taken_tv_full": "去处替换"},
     ("T06", "seen_from_bed"): {"boxes_middle": None, "bookcase_full": "去处替换"},
+    ("T07", "microwave_works"): {"*": None},
+    ("T07", "microwave_broken"): {"*": "看着像但不能用"},
+    ("T07", "microwave_holds_pot"): {"*": "被占用"},
+    ("T07", "vessel_decides_appliance"): {"in_ceramic_bowl": None, "in_glass_box": None, "in_pot": "能力不足",
+                                          "in_steel_box": "能力不足", "in_foil_tray": "能力不足"},
+    ("T07", "two_portions"): {"*": None},
     ("T03", "utensils_apart"): {"bin_free": None, "bin_full_tray": "被占用", "bin_full_basket": "被占用",
                                 "bin_full_fruit": "被占用"},
 }

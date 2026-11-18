@@ -1,22 +1,22 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 60 个摆法，其中 45 个要做替换，15 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 9.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 72 个摆法，其中 52 个要做替换，20 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 10.4 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 16 | +7.0 |
-| 被占用 | 11 | +2.0 |
-| 能力不足 | 5 | -4.0 |
-| 看着像但不能用 | 7 | -2.0 |
-| 去处替换 | 6 | -3.0 |
+| 缺失 | 16 | +5.6 |
+| 被占用 | 12 | +1.6 |
+| 能力不足 | 8 | -2.4 |
+| 看着像但不能用 | 10 | -0.4 |
+| 去处替换 | 6 | -4.4 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 18 |
+| 在 | 25 |
 | 不在 | 27 |
 
 ## 类别 × 理想物在不在
@@ -24,9 +24,9 @@
 | 类别 | 在 | 不在 |
 |---|---|---|
 | 缺失 | 6 | 10 |
-| 被占用 | 2 | 9 |
-| 能力不足 | 2 | 3 |
-| 看着像但不能用 | 7 | 0 |
+| 被占用 | 3 | 9 |
+| 能力不足 | 5 | 3 |
+| 看着像但不能用 | 10 | 0 |
 | 去处替换 | 1 | 5 |
 
 ## 每个摆法
@@ -93,3 +93,15 @@
 | T06 | display_spot_or_tv | front_free_block_away | 不用替换 | 在 | 1 |
 | T06 | seen_from_bed | boxes_middle | 不用替换 | 在 | 1 |
 | T06 | seen_from_bed | bookcase_full | 去处替换 | 不在 | 1 |
+| T07 | microwave_works | — | 不用替换 | 在 | 1 |
+| T07 | microwave_broken | — | 看着像但不能用 | 在 | 1 |
+| T07 | microwave_broken | — | 看着像但不能用 | 在 | 1 |
+| T07 | microwave_broken | alt_dining_table_2 | 看着像但不能用 | 在 | 1 |
+| T07 | microwave_holds_pot | — | 被占用 | 在 | 1 |
+| T07 | vessel_decides_appliance | in_ceramic_bowl | 不用替换 | 在 | 1 |
+| T07 | vessel_decides_appliance | in_glass_box | 不用替换 | 在 | 1 |
+| T07 | vessel_decides_appliance | in_pot | 能力不足 | 在 | 1 |
+| T07 | vessel_decides_appliance | in_steel_box | 能力不足 | 在 | 1 |
+| T07 | vessel_decides_appliance | in_foil_tray | 能力不足 | 在 | 1 |
+| T07 | two_portions | dining | 不用替换 | 在 | 1 |
+| T07 | two_portions | counter | 不用替换 | 在 | 1 |
