@@ -99,7 +99,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T15 | no_lid | Task-Level | - | not_in_view; resource_absent | 1 |
 | T15 | lid_in_use | Task-Level | - | not_in_view; resource_in_use | 1 |
 | T16 | box_on_counter | Control | - | - | 1 |
-| T16 | box_in_cabinet | Task-Level | - | item_put_away; not_in_view | 1 |
+| T16 | box_in_cabinet | Task-Level | - | item_put_away; not_in_view | 2 |
 | T16 | no_box | Task-Level | - | not_in_view; resource_absent | 1 |
 | T16 | box_in_use | Task-Level | - | resource_in_use | 1 |
 | T17 | lid_off | Control | - | - | 1 |

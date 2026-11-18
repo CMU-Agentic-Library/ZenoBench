@@ -7679,6 +7679,8 @@
 
 ### box_on_counter（对照）
 
+**情况**：零食盒在厨房台面 → 装好放书桌
+
 **成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
@@ -7695,40 +7697,60 @@
 
 ### box_in_cabinet（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**情况**：零食盒收在矮柜里 → 开柜拿、关门、装好；零食盒已经装满零食（香蕉、三个橙子）放不下苹果时，用旁边的碗装（最好的替代算好；把零食拿出来腾地方降一档）
+
+**成功条件**（D 按摆法：`in_cabinet` D = 1、理想物在，`box_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `school_apple` 在 `snack_box` 里
-  - `snack_box` 在 `desk_1/top` 上
-  - 手里空着
-  - `kitchen_cabinet_6` 关着
+  - 摆法 `in_cabinet`：
+    - `school_apple` 在 `snack_box` 里
+    - `snack_box` 在 `desk_1/top` 上
+    - `kitchen_cabinet_6` 关着
+    - 手里空着
+  - 摆法 `box_full`：
+    - `school_apple` 在 `spare_bowl` 里
+    - `spare_bowl` 在 `desk_1/top` 上
+    - `box_banana` 在 `snack_box` 里
+    - `box_orange_1` 在 `snack_box` 里
+    - `box_orange_2` 在 `snack_box` 里
+    - `box_orange_3` 在 `snack_box` 里
+    - 手里空着
 - **次好（0.6）**：
 
   - `school_apple` 在 `snack_box` 里
   - `snack_box` 在 `desk_1/top` 上
   - 手里空着
-- **不行（0）**：没找到盒子；没装好；还拿着或掉了
+- **最不好（0.3）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+- **不行（0）**：没找到盒子；苹果没装好放到书桌；还拿着或掉了
 
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=snack_box)` → 7. `pick(object=snack_box)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=snack_box, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=dining_table_2/top)` → 14. `look(target=dining_table_2/top)` → 15. `navigate(destination=school_apple)` → 16. `pick(object=school_apple)` → 17. `navigate(destination=snack_box)` → 18. `place(object=school_apple, receptacle=snack_box)`
+- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=snack_box)` → 7. `pick(object=snack_box)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=snack_box, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 11. `navigate(destination=kitchen_cabinet_6)` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=dining_table_2/top)` → 14. `look(target=dining_table_2/top)` → 15. `navigate(destination=school_apple)` → 16. `pick(object=school_apple)` → 17. `navigate(destination=snack_box)` → 18. `place(object=school_apple, receptacle=snack_box)`
+- 摆法 `box_full`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=spare_bowl)` → 4. `pick(object=spare_bowl)` → 5. `navigate(destination=desk_1/top)` → 6. `place(object=spare_bowl, receptacle=desk_1/top, hint_xy=[-0.7, -6.2])` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=school_apple)` → 10. `pick(object=school_apple)` → 11. `navigate(destination=spare_bowl)` → 12. `place(object=school_apple, receptacle=spare_bowl)`
 
 ### no_box（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**情况**：家里没有零食盒；台面有碗，电视柜有大收纳箱 → 用碗（用大收纳箱降一档）
+
+**成功条件**（D 按摆法：`no_box` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `school_apple` 在 `spare_bowl` 里
   - `spare_bowl` 在 `desk_1/top` 上
   - 手里空着
+- **次好（0.6）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **最不好（0.3）**：
 
   - `school_apple` 在 `big_bin` 里
   - 手里空着
-- **不行（0）**：没装；还拿着或掉了
+- **不行（0）**：苹果没装；还拿着或掉了
 
 
 **参考调用顺序**：
@@ -7737,21 +7759,30 @@
 
 ### box_in_use（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**情况**：零食盒里放着孩子的蜡笔和积木 → 别动，用碗（硬塞进盒子降一档）
+
+**成功条件**（D 按摆法：`box_in_use` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - `school_apple` 在 `spare_bowl` 里
   - `spare_bowl` 在 `desk_1/top` 上
-  - 手里空着
   - `box_crayon_1` 在 `snack_box` 里
   - `box_crayon_2` 在 `snack_box` 里
   - `box_block` 在 `snack_box` 里
+  - 手里空着
+- **次好（0.6）**：
+
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
 - **最不好（0.3）**：
 
   - `school_apple` 在 `snack_box` 里
+  - `snack_box` 在 `desk_1/top` 上
+  - `box_crayon_1` 在 `snack_box` 里
+  - `box_crayon_2` 在 `snack_box` 里
+  - `box_block` 在 `snack_box` 里
   - 手里空着
-- **不行（0）**：把盒里的东西拿出来；没装；还拿着或掉了
+- **不行（0）**：把孩子的东西倒出来；苹果没装；还拿着或掉了
 
 
 **参考调用顺序**：

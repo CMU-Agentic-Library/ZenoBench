@@ -5252,71 +5252,71 @@
 {
 "task": "T16_pack_snack_box",
 "seed": 10,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__box_full",
+"route": "v6_box_in_cabinet__box_full",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 11,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__in_cabinet",
+"route": "v6_box_in_cabinet__in_cabinet",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 12,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__in_cabinet",
+"route": "v6_box_in_cabinet__in_cabinet",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 13,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__in_cabinet",
+"route": "v6_box_in_cabinet__in_cabinet",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 14,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__box_full",
+"route": "v6_box_in_cabinet__box_full",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 15,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__in_cabinet",
+"route": "v6_box_in_cabinet__in_cabinet",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 16,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__box_full",
+"route": "v6_box_in_cabinet__box_full",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 17,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__box_full",
+"route": "v6_box_in_cabinet__box_full",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 18,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__in_cabinet",
+"route": "v6_box_in_cabinet__in_cabinet",
 "family": "box_in_cabinet"
 },
 {
 "task": "T16_pack_snack_box",
 "seed": 19,
-"variant": "box_in_cabinet",
-"route": "v6_box_in_cabinet",
+"variant": "box_in_cabinet__box_full",
+"route": "v6_box_in_cabinet__box_full",
 "family": "box_in_cabinet"
 },
 {

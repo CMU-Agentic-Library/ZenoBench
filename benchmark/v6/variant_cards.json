@@ -18437,20 +18437,15 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T16_pack_snack_box/box_in_cabinet": {
+ "T16_pack_snack_box/box_in_cabinet__in_cabinet": {
   "variant": "box_in_cabinet",
   "category": "task",
   "seeds": [
-   10,
    11,
    12,
    13,
-   14,
    15,
-   16,
-   17,
-   18,
-   19
+   18
   ],
   "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
   "initial_conditions": {
@@ -18495,9 +18490,85 @@
    ]
   },
   "control": "box_on_counter",
-  "oracle_route": "v6_box_in_cabinet",
-  "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
-  "rationale": "the named box is in the house: open the cabinet, take it, close the door, then pack",
+  "oracle_route": "v6_box_in_cabinet__in_cabinet",
+  "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
+  "rationale": "the named box: open the cabinet, take it, close the door, then pack; when it is full, the apple goes in the bowl and the snacks stay",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T16_pack_snack_box/box_in_cabinet__box_full": {
+  "variant": "box_in_cabinet",
+  "category": "task",
+  "seeds": [
+   10,
+   14,
+   16,
+   17,
+   19
+  ],
+  "instruction": "The kid takes some fruit to school tomorrow. Put an apple into his snack box and leave it on his desk.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "box_banana",
+    "box_orange_1",
+    "box_orange_2",
+    "box_orange_3",
+    "school_apple",
+    "snack_box",
+    "spare_bowl"
+   ],
+   "removed": [],
+   "conditions": [
+    "item_put_away",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "school_apple",
+     "spare_bowl"
+    ],
+    [
+     "on",
+     "spare_bowl",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "inside",
+     "box_banana",
+     "snack_box"
+    ],
+    [
+     "inside",
+     "box_orange_1",
+     "snack_box"
+    ],
+    [
+     "inside",
+     "box_orange_2",
+     "snack_box"
+    ],
+    [
+     "inside",
+     "box_orange_3",
+     "snack_box"
+    ]
+   ]
+  },
+  "control": "box_on_counter",
+  "oracle_route": "v6_box_in_cabinet__box_full",
+  "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
+  "rationale": "the named box: open the cabinet, take it, close the door, then pack; when it is full, the apple goes in the bowl and the snacks stay",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T16_pack_snack_box/no_box": {

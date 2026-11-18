@@ -977,15 +977,32 @@ def t16():
                   "box_on_counter", ctl, goal(BOX), [look(COUNTER)] + pack(BOX), [BOX, APPLE])
     spares = {BOWL: on("breakfast_bowl", COUNTER, -0.10, 7.70), BIG: on("wide_storage_bin", TV, 7.30, 0.40)}
     fams = {
+        # 11-17 (user): the seed changes whether the box can take the apple -- empty in the closed cabinet (ideal),
+        # or on the counter already full of tomorrow's snacks (a banana, three oranges: no 6 cm gap left), a bowl
+        # beside it (the stand-in)
         "box_in_cabinet": fam(
-            "box_on_counter", ["item_put_away", "not_in_view"], "the layout only",
-            "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
-            "the named box is in the house: open the cabinet, take it, close the door, then pack",
-            {"": dict(add={**box_on("kitchen_cabinet_6/inside_shelf", 3.50, 0.40), **apple},
-                      remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
-                      goal={"all": [*goal(BOX)["all"], ["is_closed", C6]]}, watch=[BOX, APPLE],
-                      route=explore(C6) + from_closed(BOX, C6) + [nav(DESK), place(BOX, DESK, [-0.70, -6.20]),
-                                                                  nav(APPLE), pick(APPLE), nav(BOX), place(APPLE, BOX)])}),
+            "box_on_counter", ["item_put_away", "not_in_view"], "whether the box has room (seed: empty, put away in "
+            "the low wall cabinet; or on the counter full of snacks, a bowl beside it)",
+            "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on "
+            "the counter already full of snacks",
+            "the named box: open the cabinet, take it, close the door, then pack; when it is full, the apple goes in "
+            "the bowl and the snacks stay",
+            {"in_cabinet": dict(add={**box_on("kitchen_cabinet_6/inside_shelf", 3.50, 0.40), **apple},
+                                remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
+                                goal={"all": [*goal(BOX)["all"], ["is_closed", C6]]}, watch=[BOX, APPLE],
+                                route=explore(C6) + from_closed(BOX, C6) + [nav(DESK), place(BOX, DESK, [-0.70, -6.20]),
+                                                                            nav(APPLE), pick(APPLE), nav(BOX),
+                                                                            place(APPLE, BOX)]),
+             "box_full": dict(
+                 add={**box_on(COUNTER, -0.10, 7.30), **apple, BOWL: spares[BOWL],
+                      "box_banana": {"asset": "banana", "support": None, "z": 1.009, "xy": [-0.10, 7.264],
+                                     "yaw_deg": 0.0},
+                      **{f"box_orange_{i + 1}": {"asset": "orange", "support": None, "z": 1.009, "xy": [x, 7.345],
+                                                 "yaw_deg": 0.0} for i, x in enumerate((-0.17, -0.10, -0.03))}},
+                 goal={"all": [*goal(BOWL)["all"], *[["inside", n, BOX] for n in ("box_banana", "box_orange_1",
+                                                                                  "box_orange_2", "box_orange_3")]]},
+                 watch=[BOX, APPLE, BOWL, "box_banana", "box_orange_1", "box_orange_2", "box_orange_3"],
+                 route=[look(COUNTER)] + pack(BOWL))}),
         "no_box": fam(
             "box_on_counter", ["resource_absent", "not_in_view"], "the layout only",
             "there is no snack box in the house; a bowl on the kitchen counter, a big storage bin on the TV stand",

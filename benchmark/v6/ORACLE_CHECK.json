@@ -1,6 +1,6 @@
 {
- "routes": 297,
- "ok": 297,
+ "routes": 298,
+ "ok": 298,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2311,9 +2311,19 @@
   },
   {
    "task": "T16_pack_snack_box",
-   "layout": "box_in_cabinet",
+   "layout": "box_in_cabinet__in_cabinet",
    "steps": 18,
    "atoms_checked": 4,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "box_in_cabinet"
+  },
+  {
+   "task": "T16_pack_snack_box",
+   "layout": "box_in_cabinet__box_full",
+   "steps": 12,
+   "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

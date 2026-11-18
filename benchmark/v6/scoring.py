@@ -602,6 +602,23 @@ LAYOUT_TIERS[("T15", "*")] = {
                    "second": NA,
                    "worst": {"all": [["covered", "handled_cooking_pot", "pot_lid"], ["upright", "stew_pot"], *_H15]},
                    "_ideal": False}}
+_SNACKS = [["inside", n, "snack_box"] for n in ("box_banana", "box_orange_1", "box_orange_2", "box_orange_3")]
+_THINGS = [["inside", n, "snack_box"] for n in ("box_crayon_1", "box_crayon_2", "box_block")]
+_BOWL16 = [["inside", "school_apple", "spare_bowl"], ["on", "spare_bowl", "desk_1/top"]]
+_BOX16 = [["inside", "school_apple", "snack_box"], ["on", "snack_box", "desk_1/top"]]
+LAYOUT_TIERS[("T16", "*")] = {
+    "box_in_cabinet__in_cabinet": {"best": {"all": [*_BOX16, ["is_closed", "kitchen_cabinet_6"], *_H15]},
+                                   "second": {"all": [*_BOX16, *_H15]}, "worst": NA, "_ideal": True},
+    "box_in_cabinet__box_full": {"best": {"all": [*_BOWL16, *_SNACKS, *_H15]}, "second": {"all": [*_BOX16, *_H15]},
+                                 "worst": NA, "_ideal": False},
+    "no_box": {"best": {"all": [*_BOWL16, *_H15]}, "second": NA,
+               "worst": {"all": [["inside", "school_apple", "big_bin"], *_H15]}, "_ideal": False},
+    "box_in_use": {"best": {"all": [*_BOWL16, *_THINGS, *_H15]}, "second": NA,
+                   "worst": {"all": [*_BOX16, *_THINGS, *_H15]}, "_ideal": False}}
+_T16_WHY = {"best": "the best the seed offers: the apple in the snack box on his desk when the box is free (the "
+                    "cabinet closed), else in the bowl, the box's contents untouched",
+            "second": "a door left open; or the snacks taken out of the full box to fit the apple",
+            "worst": "the apple in the big storage bin, or squeezed into the box on top of his things"}
 _T15_WHY = {"best": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left "
                     "on the stew or on someone's bowl)",
             "second": "the lid taken off someone's bowl for the pot",
@@ -642,6 +659,10 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
          # the lid, the second pot, the fridge's tomato for the one on someone's plate, the big tomato) is the best;
          # each side step missed (stir, cover, the fridge closed) costs a level; the tomato from someone's plate the
          # worst
+         **{("T16", d): _layout_tiers(d, _T16_WHY, no) for d, no in (
+             ("box_in_cabinet", "the box not found; the apple not packed on the desk; still held or dropped"),
+             ("no_box", "the apple not packed; still held or dropped"),
+             ("box_in_use", "his things taken out of the box; the apple not packed; still held or dropped"))},
          **{("T15", d): _layout_tiers(d, _T15_WHY, no) for d, no in (
              ("lid_elsewhere", "the pot not covered; the lid not found; someone's bowl tipped; still held"),
              ("no_lid", "the pot not covered; still held or dropped"),
@@ -843,6 +864,9 @@ NOT_OK_ZH = {
     ("T09", "lid_on_spoon_away"): "只放了一个番茄；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
     ("T09", "pot_in_use"): "满锅打翻；只放了一个番茄；没到 60 度；灶台没关火；还拿着或掉了",
     ("T09", "tomato_in_fridge"): "只放了两颗（没找到冰箱里那颗或大番茄）；拿苹果凑数；没到 60 度；灶台没关火；番茄掉出锅外；还拿着或掉了",
+    ("T16", "box_in_cabinet"): "没找到盒子；苹果没装好放到书桌；还拿着或掉了",
+    ("T16", "no_box"): "苹果没装；还拿着或掉了",
+    ("T16", "box_in_use"): "把孩子的东西倒出来；苹果没装；还拿着或掉了",
     ("T15", "lid_elsewhere"): "没盖；没找到锅盖；碰翻了别人的碗；还拿着",
     ("T15", "no_lid"): "没盖；还拿着或掉了",
     ("T15", "lid_in_use"): "汤锅没盖；炖菜的锅碰倒了；还拿着或掉了",

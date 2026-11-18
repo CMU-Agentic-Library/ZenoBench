@@ -143,7 +143,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |
 | pick | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
-| pick | spare_bowl | T16/box_in_use, T16/no_box |
+| pick | spare_bowl | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
 | pick | spare_mug | T18/one_bowl, T30/bowls_in_cabinet, T30/no_bowl |
 | pick | spare_pot | T09/pot_in_dining_room |
 | pick | spare_sponge | T21/no_tissue |
@@ -222,7 +222,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | soup_bowl_2 | T30/bowls_in_cabinet, T30/how_many |
 | place | soup_bowl_3 | T30/bowls_in_cabinet, T30/how_many |
 | place | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
-| place | spare_bowl | T16/box_in_use, T16/no_box |
+| place | spare_bowl | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
 | place | spare_mug | T18/one_bowl, T30/bowls_in_cabinet, T30/no_bowl |
 | place | spare_pot | T09/pot_in_dining_room |
 | place | spare_sponge | T21/no_tissue |

@@ -194051,7 +194051,7 @@
       "top": "ideal"
      }
     },
-    "box_in_cabinet": {
+    "box_in_cabinet__in_cabinet": {
      "conditions": [
       "item_put_away",
       "not_in_view"
@@ -194107,15 +194107,15 @@
       "school_apple"
      ],
      "since": "v6",
-     "note": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
+     "note": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
      "v6": {
       "family": "box_in_cabinet",
-      "case": null,
-      "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door",
-      "rationale": "the named box is in the house: open the cabinet, take it, close the door, then pack",
+      "case": "in_cabinet",
+      "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
+      "rationale": "the named box: open the cabinet, take it, close the door, then pack; when it is full, the apple goes in the bowl and the snacks stay",
       "control": "box_on_counter",
       "contrast": null,
-      "factor": "the layout only",
+      "factor": "whether the box has room (seed: empty, put away in the low wall cabinet; or on the counter full of snacks, a bowl beside it)",
       "derived_from": "bare"
      },
      "move": {},
@@ -194209,8 +194209,71 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the snack box found in the cabinet, the apple in it on his desk, the cabinet closed",
+        "goal": {
+         "by_layout": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_banana",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_3",
+             "snack_box"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched",
         "raw": "best"
        },
        {
@@ -194218,7 +194281,25 @@
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "box_in_cabinet": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
            "all": [
             [
              "inside",
@@ -194238,12 +194319,434 @@
           }
          }
         },
-        "why": "the task done, but a door left open",
+        "why": "a door left open; or the snacks taken out of the full box to fit the apple",
         "raw": "second"
        }
       ],
-      "not_ok": "the box not found; the apple not in it on the desk; still held or dropped",
+      "not_ok": "the box not found; the apple not packed on the desk; still held or dropped",
       "top": "ideal"
+     }
+    },
+    "box_in_cabinet__box_full": {
+     "conditions": [
+      "item_put_away",
+      "not_in_view"
+     ],
+     "add": {
+      "snack_box": {
+       "asset": "small_storage_bin",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.1,
+        7.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "school_apple": {
+       "asset": "apple",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_bowl": {
+       "asset": "breakfast_bowl",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.364,
+        7.709
+       ],
+       "yaw_deg": 0.0
+      },
+      "box_banana": {
+       "asset": "banana",
+       "support": null,
+       "z": 1.009,
+       "xy": [
+        -0.1,
+        7.264
+       ],
+       "yaw_deg": 0.0
+      },
+      "box_orange_1": {
+       "asset": "orange",
+       "support": null,
+       "z": 1.009,
+       "xy": [
+        -0.17,
+        7.345
+       ],
+       "yaw_deg": 0.0
+      },
+      "box_orange_2": {
+       "asset": "orange",
+       "support": null,
+       "z": 1.009,
+       "xy": [
+        -0.1,
+        7.345
+       ],
+       "yaw_deg": 0.0
+      },
+      "box_orange_3": {
+       "asset": "orange",
+       "support": null,
+       "z": 1.009,
+       "xy": [
+        -0.03,
+        7.345
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "school_apple",
+        "spare_bowl"
+       ],
+       [
+        "on",
+        "spare_bowl",
+        "desk_1/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "inside",
+        "box_banana",
+        "snack_box"
+       ],
+       [
+        "inside",
+        "box_orange_1",
+        "snack_box"
+       ],
+       [
+        "inside",
+        "box_orange_2",
+        "snack_box"
+       ],
+       [
+        "inside",
+        "box_orange_3",
+        "snack_box"
+       ]
+      ]
+     },
+     "watch": [
+      "snack_box",
+      "school_apple",
+      "spare_bowl",
+      "box_banana",
+      "box_orange_1",
+      "box_orange_2",
+      "box_orange_3"
+     ],
+     "since": "v6",
+     "note": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
+     "v6": {
+      "family": "box_in_cabinet",
+      "case": "box_full",
+      "challenge": "the snack box was put away in the low wall cabinet (kitchen cabinet 6), behind its door; or it stands on the counter already full of snacks",
+      "rationale": "the named box: open the cabinet, take it, close the door, then pack; when it is full, the apple goes in the bowl and the snacks stay",
+      "control": "box_on_counter",
+      "contrast": null,
+      "factor": "whether the box has room (seed: empty, put away in the low wall cabinet; or on the counter full of snacks, a bowl beside it)",
+      "derived_from": "bare"
+     },
+     "move": {},
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "school_apple"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.6691,
+         6.268,
+         3.7309,
+         6.332
+        ],
+        "dx": [
+         -0.87,
+         0.09
+        ],
+        "dy": [
+         -0.76,
+         1.61
+        ],
+        "pick": [
+         "school_apple"
+        ]
+       },
+       {
+        "names": [
+         "box_banana",
+         "box_orange_1",
+         "box_orange_2",
+         "box_orange_3",
+         "snack_box",
+         "spare_bowl"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4531,
+         7.215,
+         0.01,
+         7.7969
+        ],
+        "dx": [
+         -0.06,
+         0.23
+        ],
+        "dy": [
+         -0.23,
+         1.63
+        ],
+        "pick": [
+         "spare_bowl"
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
+       "dining_table_2/top": [
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ],
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_banana",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_3",
+             "snack_box"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the snacks taken out of the full box to fit the apple",
+        "raw": "second"
+       }
+      ],
+      "not_ok": "the box not found; the apple not packed on the desk; still held or dropped",
+      "top": "moderate"
      }
     },
     "no_box": {
@@ -194523,8 +195026,29 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "no snack box: the apple in the bowl on his desk",
+        "goal": {
+         "by_layout": {
+          "no_box": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched",
         "raw": "best"
        },
        {
@@ -194547,12 +195071,12 @@
           }
          }
         },
-        "why": "the apple in the big storage bin",
+        "why": "the apple in the big storage bin, or squeezed into the box on top of his things",
         "raw": "worst"
        }
       ],
       "not_ok": "the apple not packed; still held or dropped",
-      "top": "ideal"
+      "top": "moderate"
      }
     },
     "box_in_use": {
@@ -194841,8 +195365,44 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the box in use (his crayons and a block in it): the apple in the bowl on his desk, his things left in the box",
+        "goal": {
+         "by_layout": {
+          "box_in_use": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_crayon_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_crayon_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_block",
+             "snack_box"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched",
         "raw": "best"
        },
        {
@@ -194858,6 +195418,26 @@
              "snack_box"
             ],
             [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_crayon_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_crayon_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_block",
+             "snack_box"
+            ],
+            [
              "hand_empty",
              "right"
             ]
@@ -194865,12 +195445,12 @@
           }
          }
         },
-        "why": "the apple squeezed into the box on top of his things",
+        "why": "the apple in the big storage bin, or squeezed into the box on top of his things",
         "raw": "worst"
        }
       ],
       "not_ok": "his things taken out of the box; the apple not packed; still held or dropped",
-      "top": "ideal"
+      "top": "moderate"
      }
     }
    },
@@ -194899,7 +195479,8 @@
    "nominal": "nominal",
    "oracle": {
     "box_on_counter": "nominal",
-    "box_in_cabinet": "v6_box_in_cabinet",
+    "box_in_cabinet__in_cabinet": "v6_box_in_cabinet__in_cabinet",
+    "box_in_cabinet__box_full": "v6_box_in_cabinet__box_full",
     "no_box": "v6_no_box",
     "box_in_use": "v6_box_in_use"
    },
@@ -194990,7 +195571,7 @@
       }
      ]
     },
-    "v6_box_in_cabinet": {
+    "v6_box_in_cabinet__in_cabinet": {
      "steps": [
       {
        "skill": "navigate",
@@ -195105,7 +195686,91 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "box_in_cabinet"
+     "variant": "box_in_cabinet__in_cabinet"
+    },
+    "v6_box_in_cabinet__box_full": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spare_bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spare_bowl",
+        "receptacle": "desk_1/top",
+        "hint_xy": [
+         -0.7,
+         -6.2
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "school_apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "school_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_bowl"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "school_apple",
+        "receptacle": "spare_bowl"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "box_in_cabinet__box_full"
     },
     "v6_no_box": {
      "steps": [
@@ -195328,36 +195993,122 @@
      "origin": "v6",
      "control": "box_on_counter",
      "layouts": [
-      "box_in_cabinet"
+      "box_in_cabinet__in_cabinet",
+      "box_in_cabinet__box_full"
      ],
-     "factor": "the layout only",
+     "factor": "whether the box has room (seed: empty, put away in the low wall cabinet; or on the counter full of snacks, a bowl beside it)",
      "seeds": {
-      "10": "box_in_cabinet",
-      "11": "box_in_cabinet",
-      "12": "box_in_cabinet",
-      "13": "box_in_cabinet",
-      "14": "box_in_cabinet",
-      "15": "box_in_cabinet",
-      "16": "box_in_cabinet",
-      "17": "box_in_cabinet",
-      "18": "box_in_cabinet",
-      "19": "box_in_cabinet"
+      "10": "box_in_cabinet__box_full",
+      "11": "box_in_cabinet__in_cabinet",
+      "12": "box_in_cabinet__in_cabinet",
+      "13": "box_in_cabinet__in_cabinet",
+      "14": "box_in_cabinet__box_full",
+      "15": "box_in_cabinet__in_cabinet",
+      "16": "box_in_cabinet__box_full",
+      "17": "box_in_cabinet__box_full",
+      "18": "box_in_cabinet__in_cabinet",
+      "19": "box_in_cabinet__box_full"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "box_in_cabinet__in_cabinet": true,
+       "box_in_cabinet__box_full": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the snack box found in the cabinet, the apple in it on his desk, the cabinet closed"
+        "goal": {
+         "by_layout": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "is_closed",
+             "kitchen_cabinet_6"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_banana",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_orange_3",
+             "snack_box"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched"
        },
        {
         "name": "second",
         "score": 0.6,
         "goal": {
          "by_layout": {
-          "box_in_cabinet": {
+          "box_in_cabinet__in_cabinet": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "snack_box"
+            ],
+            [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "box_in_cabinet__box_full": {
            "all": [
             [
              "inside",
@@ -195377,10 +196128,29 @@
           }
          }
         },
-        "why": "the task done, but a door left open"
+        "why": "a door left open; or the snacks taken out of the full box to fit the apple"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "box_in_cabinet__in_cabinet": "n/a",
+          "box_in_cabinet__box_full": "n/a"
+         }
+        },
+        "why": "the apple in the big storage bin, or squeezed into the box on top of his things"
        }
       ],
-      "not_ok": "the box not found; the apple not in it on the desk; still held or dropped"
+      "not_ok": "the box not found; the apple not packed on the desk; still held or dropped",
+      "D_by_layout": {
+       "box_in_cabinet__in_cabinet": 1,
+       "box_in_cabinet__box_full": 1
+      },
+      "top_by_layout": {
+       "box_in_cabinet__in_cabinet": "ideal",
+       "box_in_cabinet__box_full": "moderate"
+      }
      }
     },
     "no_box": {
@@ -195404,12 +196174,46 @@
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "no_box": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "no snack box: the apple in the bowl on his desk"
+        "goal": {
+         "by_layout": {
+          "no_box": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "no_box": "n/a"
+         }
+        },
+        "why": "a door left open; or the snacks taken out of the full box to fit the apple"
        },
        {
         "name": "worst",
@@ -195431,10 +196235,16 @@
           }
          }
         },
-        "why": "the apple in the big storage bin"
+        "why": "the apple in the big storage bin, or squeezed into the box on top of his things"
        }
       ],
-      "not_ok": "the apple not packed; still held or dropped"
+      "not_ok": "the apple not packed; still held or dropped",
+      "D_by_layout": {
+       "no_box": 1
+      },
+      "top_by_layout": {
+       "no_box": "moderate"
+      }
      }
     },
     "box_in_use": {
@@ -195458,12 +196268,61 @@
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "box_in_use": false
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "the box in use (his crayons and a block in it): the apple in the bowl on his desk, his things left in the box"
+        "goal": {
+         "by_layout": {
+          "box_in_use": {
+           "all": [
+            [
+             "inside",
+             "school_apple",
+             "spare_bowl"
+            ],
+            [
+             "on",
+             "spare_bowl",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_crayon_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_crayon_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_block",
+             "snack_box"
+            ],
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "box_in_use": "n/a"
+         }
+        },
+        "why": "a door left open; or the snacks taken out of the full box to fit the apple"
        },
        {
         "name": "worst",
@@ -195478,6 +196337,26 @@
              "snack_box"
             ],
             [
+             "on",
+             "snack_box",
+             "desk_1/top"
+            ],
+            [
+             "inside",
+             "box_crayon_1",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_crayon_2",
+             "snack_box"
+            ],
+            [
+             "inside",
+             "box_block",
+             "snack_box"
+            ],
+            [
              "hand_empty",
              "right"
             ]
@@ -195485,10 +196364,16 @@
           }
          }
         },
-        "why": "the apple squeezed into the box on top of his things"
+        "why": "the apple in the big storage bin, or squeezed into the box on top of his things"
        }
       ],
-      "not_ok": "his things taken out of the box; the apple not packed; still held or dropped"
+      "not_ok": "his things taken out of the box; the apple not packed; still held or dropped",
+      "D_by_layout": {
+       "box_in_use": 1
+      },
+      "top_by_layout": {
+       "box_in_use": "moderate"
+      }
      }
     }
    },

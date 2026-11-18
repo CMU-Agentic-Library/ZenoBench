@@ -1,13 +1,13 @@
 {
  "summary": {
   "scope": {
-   "layouts": 267,
+   "layouts": 268,
    "variants": 127,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 53,
-   "goal_not_met": 94,
+   "goal_not_met": 95,
    "not_observed": 66,
    "resource_missing": 49,
    "argument_mismatch": 5
@@ -52,9 +52,9 @@
   "routes_between_layouts": {
    "passes": 109,
    "goal_not_met": 162,
-   "not_observed": 20,
+   "not_observed": 21,
    "argument_mismatch": 75,
-   "resource_missing": 122
+   "resource_missing": 123
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -71,7 +71,7 @@
    "T28 where_his_cup_is",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 84,
+  "multi_layout_variants": 85,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -104,6 +104,7 @@
    "T12 find_all_toys",
    "T14 whose_book",
    "T15 lid_elsewhere",
+   "T16 box_in_cabinet",
    "T18 one_bowl",
    "T19 x6_gd_can_put_away",
    "T20 x6_gd_bottle_put_away",
@@ -259,7 +260,8 @@
     "kid_teddy"
    ],
    "T16 box_in_cabinet": [
-    "snack_box"
+    "snack_box",
+    "spare_bowl"
    ],
    "T16 box_in_use": [
     "snack_box",
@@ -3705,13 +3707,31 @@
   {
    "task": "T16_pack_snack_box",
    "variant": "box_in_cabinet",
-   "layout": "box_in_cabinet",
+   "layout": "box_in_cabinet__in_cabinet",
    "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
-   "other_layouts": {},
+   "other_layouts": {
+    "box_in_cabinet__box_full": "resource_missing"
+   },
    "other_variants_passing": []
+  },
+  {
+   "task": "T16_pack_snack_box",
+   "variant": "box_in_cabinet",
+   "layout": "box_in_cabinet__box_full",
+   "steps": 12,
+   "own_route_passes": true,
+   "geometric_atoms": [],
+   "control_route": "goal_not_met",
+   "other_layouts": {
+    "box_in_cabinet__in_cabinet": "not_observed"
+   },
+   "other_variants_passing": [
+    "no_box",
+    "box_in_use"
+   ]
   },
   {
    "task": "T16_pack_snack_box",
@@ -3723,6 +3743,7 @@
    "control_route": "resource_missing",
    "other_layouts": {},
    "other_variants_passing": [
+    "box_in_cabinet__box_full",
     "box_in_use"
    ]
   },
@@ -3736,6 +3757,7 @@
    "control_route": "goal_not_met",
    "other_layouts": {},
    "other_variants_passing": [
+    "box_in_cabinet__box_full",
     "no_box"
    ]
   },
@@ -5717,6 +5739,16 @@
     "lid_elsewhere__dining",
     "lid_elsewhere__covering_bowl",
     "lid_by_pot"
+   ],
+   "passes_all": []
+  },
+  {
+   "task": "T16_pack_snack_box",
+   "variant": "box_in_cabinet",
+   "candidates": [
+    "box_in_cabinet__in_cabinet",
+    "box_in_cabinet__box_full",
+    "box_on_counter"
    ],
    "passes_all": []
   },
@@ -8673,6 +8705,19 @@
    "same_before_key_observation": true,
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
+  },
+  {
+   "task": "T16_pack_snack_box",
+   "variant": "box_in_cabinet",
+   "layouts": [
+    "box_in_cabinet__in_cabinet",
+    "box_in_cabinet__box_full"
+   ],
+   "start_room": "living_room_0_0",
+   "same_before_key_observation": true,
+   "route_a_on_b": "not_observed",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {
