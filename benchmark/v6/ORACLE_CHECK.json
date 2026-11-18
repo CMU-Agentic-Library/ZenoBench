@@ -1335,10 +1335,9 @@
    "task": "T06_block_destination_occupied",
    "layout": "seen_from_bed__boxes_middle",
    "steps": 8,
-   "atoms_checked": 5,
-   "atoms_geometric": 4,
+   "atoms_checked": 7,
+   "atoms_geometric": 3,
    "geometric_atoms": [
-    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_box_1",
     "upright bedside_box_2",
     "upright bedside_box_3"
@@ -1349,11 +1348,10 @@
   {
    "task": "T06_block_destination_occupied",
    "layout": "seen_from_bed__bookcase_full",
-   "steps": 10,
-   "atoms_checked": 9,
-   "atoms_geometric": 8,
+   "steps": 8,
+   "atoms_checked": 10,
+   "atoms_geometric": 7,
    "geometric_atoms": [
-    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_teddy_1",
     "upright bedside_teddy_2",
     "upright bedside_snacks",

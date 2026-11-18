@@ -120800,11 +120800,11 @@
       }
      },
      "conditions": [
-      "viewer_place",
+      "infeasible_fallback",
       "not_in_view"
      ],
-     "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
-     "instruction_zh": "孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+     "instruction": "The kid wants to play with the toy block first thing tomorrow morning. Put it on the bookcase beside the bed; leave the kid's things on it as they are.",
+     "instruction_zh": "孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动。",
      "add": {
       "bedside_box_1": {
        "asset": "cereal_box",
@@ -120835,22 +120835,30 @@
       }
      },
      "goal": {
-      "all": [
+      "any": [
        [
-        "on",
-        "wooden_block_a",
-        "bookcase_3/top"
-       ],
-       [
-        "visible_from",
-        "wooden_block_a",
         [
-         0.0,
-         -4.6,
-         1.2
-        ],
-        0.5
+         "on",
+         "wooden_block_a",
+         "bookcase_3/top"
+        ]
        ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "bookcase_3/shelf_1"
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "bookcase_3/shelf_0"
+        ]
+       ]
+      ],
+      "all": [
        [
         "near_start",
         "bedside_box_1",
@@ -120895,28 +120903,16 @@
      "keep_design": [
       "bookcase_3/top"
      ],
-     "note": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
+     "note": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
      "v6": {
       "family": "seen_from_bed",
       "case": "boxes_middle",
-      "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
-      "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
+      "challenge": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
+      "rationale": "put the block on the bookcase where there is room without touching the kid's things: the top when it has room, else a lower shelf of the same bookcase",
       "control": "free",
       "contrast": null,
-      "factor": "what stands on the bedside bookcase (seed: the kid's cereal boxes in the middle of the top, or the kid's teddies and snacks lined along its bed side)",
-      "derived_from": "free",
-      "viewer": {
-       "eye": [
-        0.0,
-        -4.6,
-        1.2
-       ],
-       "label": "躺在床上看",
-       "targets": [
-        "bookcase_3/top",
-        "large_shelf_4/shelf_2"
-       ]
-      }
+      "factor": "what stands on the bedside bookcase's top (seed: the kid's cereal boxes in the middle, room beside them; or the kid's things filling it)",
+      "derived_from": "free"
      },
      "layout": {
       "clusters": [
@@ -121081,14 +121077,72 @@
               "bookcase_3/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -121132,17 +121186,7 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/top"
              ],
              [
               "near_start",
@@ -121212,17 +121256,77 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_3"
+              "bookcase_3/shelf_1"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -121298,7 +121402,7 @@
           }
          }
         },
-        "why": "the best the seed offers, seen from the pillow, the kid's things untouched: the bedside bookcase when part of it is in view, else the wall shelf's middle shelf",
+        "why": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched",
         "raw": "best"
        },
        {
@@ -121312,17 +121416,56 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "large_shelf_4/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
              ],
              [
               "upright",
@@ -121342,16 +121485,6 @@
               "on",
               "wooden_block_a",
               "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
              ],
              [
               "near_start",
@@ -121388,16 +121521,6 @@
               "large_shelf_4/shelf_3"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
-             ],
-             [
               "near_start",
               "bedside_box_1",
               0.05
@@ -121411,6 +121534,25 @@
               "near_start",
               "bedside_box_3",
               0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
              ],
              [
               "upright",
@@ -121439,17 +121581,42 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
              ],
              [
               "upright",
@@ -121479,76 +121646,152 @@
               "upright",
               "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          }
-         }
-        },
-        "why": "one step down: the wall shelf though the bookcase was in view, or the kid's things moved to make room (still standing)",
-        "raw": "second"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "seen_from_bed__boxes_middle": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_1"
              ],
              [
               "near_start",
-              "bedside_box_1",
+              "bedside_teddy_1",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_2",
+              "bedside_teddy_2",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_3",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
               0.05
              ],
              [
               "upright",
-              "bedside_box_1"
+              "bedside_teddy_1"
              ],
              [
               "upright",
-              "bedside_box_2"
+              "bedside_teddy_2"
              ],
              [
               "upright",
-              "bedside_box_3"
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          },
-          "seen_from_bed__bookcase_full": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_2"
+             ],
+             [
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "large_shelf_4/shelf_3"
              ],
              [
               "near_start",
@@ -121624,11 +121867,11 @@
           }
          }
         },
-        "why": "on the bedside bookcase, hidden behind the kid's things",
-        "raw": "worst"
+        "why": "on another bedroom top (the desk, the wall shelf) though the bookcase had room; or the kid's things moved to make room on the top (still standing)",
+        "raw": "second"
        }
       ],
-      "not_ok": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a thing tipped; still held or dropped",
+      "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
       "top": "ideal"
      }
     },
@@ -121669,11 +121912,11 @@
       }
      },
      "conditions": [
-      "viewer_place",
+      "infeasible_fallback",
       "not_in_view"
      ],
-     "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
-     "instruction_zh": "孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+     "instruction": "The kid wants to play with the toy block first thing tomorrow morning. Put it on the bookcase beside the bed; leave the kid's things on it as they are.",
+     "instruction_zh": "孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动。",
      "add": {
       "bedside_teddy_1": {
        "asset": "teddy_bear",
@@ -121740,22 +121983,23 @@
       }
      },
      "goal": {
-      "all": [
+      "any": [
        [
-        "on",
-        "wooden_block_a",
-        "large_shelf_4/shelf_2"
-       ],
-       [
-        "visible_from",
-        "wooden_block_a",
         [
-         0.0,
-         -4.6,
-         1.2
-        ],
-        0.5
+         "on",
+         "wooden_block_a",
+         "bookcase_3/shelf_1"
+        ]
        ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "bookcase_3/shelf_0"
+        ]
+       ]
+      ],
+      "all": [
        [
         "near_start",
         "bedside_teddy_1",
@@ -121840,28 +122084,16 @@
      "keep_design": [
       "bookcase_3/top"
      ],
-     "note": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
+     "note": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
      "v6": {
       "family": "seen_from_bed",
       "case": "bookcase_full",
-      "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
-      "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
+      "challenge": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
+      "rationale": "put the block on the bookcase where there is room without touching the kid's things: the top when it has room, else a lower shelf of the same bookcase",
       "control": "free",
       "contrast": null,
-      "factor": "what stands on the bedside bookcase (seed: the kid's cereal boxes in the middle of the top, or the kid's teddies and snacks lined along its bed side)",
-      "derived_from": "free",
-      "viewer": {
-       "eye": [
-        0.0,
-        -4.6,
-        1.2
-       ],
-       "label": "躺在床上看",
-       "targets": [
-        "bookcase_3/top",
-        "large_shelf_4/shelf_2"
-       ]
-      }
+      "factor": "what stands on the bedside bookcase's top (seed: the kid's cereal boxes in the middle, room beside them; or the kid's things filling it)",
+      "derived_from": "free"
      },
      "layout": {
       "clusters": [
@@ -122026,14 +122258,72 @@
               "bookcase_3/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -122077,17 +122367,7 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/top"
              ],
              [
               "near_start",
@@ -122157,17 +122437,77 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_3"
+              "bookcase_3/shelf_1"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -122243,7 +122583,7 @@
           }
          }
         },
-        "why": "the best the seed offers, seen from the pillow, the kid's things untouched: the bedside bookcase when part of it is in view, else the wall shelf's middle shelf",
+        "why": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched",
         "raw": "best"
        },
        {
@@ -122257,17 +122597,56 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "large_shelf_4/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
              ],
              [
               "upright",
@@ -122287,16 +122666,6 @@
               "on",
               "wooden_block_a",
               "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
              ],
              [
               "near_start",
@@ -122333,16 +122702,6 @@
               "large_shelf_4/shelf_3"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
-             ],
-             [
               "near_start",
               "bedside_box_1",
               0.05
@@ -122356,6 +122715,25 @@
               "near_start",
               "bedside_box_3",
               0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
              ],
              [
               "upright",
@@ -122384,17 +122762,42 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
              ],
              [
               "upright",
@@ -122424,76 +122827,152 @@
               "upright",
               "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          }
-         }
-        },
-        "why": "one step down: the wall shelf though the bookcase was in view, or the kid's things moved to make room (still standing)",
-        "raw": "second"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "seen_from_bed__boxes_middle": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_1"
              ],
              [
               "near_start",
-              "bedside_box_1",
+              "bedside_teddy_1",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_2",
+              "bedside_teddy_2",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_3",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
               0.05
              ],
              [
               "upright",
-              "bedside_box_1"
+              "bedside_teddy_1"
              ],
              [
               "upright",
-              "bedside_box_2"
+              "bedside_teddy_2"
              ],
              [
               "upright",
-              "bedside_box_3"
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          },
-          "seen_from_bed__bookcase_full": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_2"
+             ],
+             [
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "large_shelf_4/shelf_3"
              ],
              [
               "near_start",
@@ -122569,12 +123048,68 @@
           }
          }
         },
-        "why": "on the bedside bookcase, hidden behind the kid's things",
+        "why": "on another bedroom top (the desk, the wall shelf) though the bookcase had room; or the kid's things moved to make room on the top (still standing)",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": "n/a",
+          "seen_from_bed__bookcase_full": {
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the kid's things moved to make room on the full top",
         "raw": "worst"
        }
       ],
-      "not_ok": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a thing tipped; still held or dropped",
-      "top": "moderate"
+      "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
+      "top": "ideal"
      }
     }
    },
@@ -123330,25 +123865,13 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "large_shelf_4/shelf_2"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "large_shelf_4/shelf_2"
-       }
-      },
-      {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "large_shelf_4/shelf_2",
+        "receptacle": "bookcase_3/shelf_1",
         "hint_xy": [
-         3.6,
-         -5.11
+         2.1,
+         -4.88
         ]
        }
       }
@@ -127567,7 +128090,7 @@
       "seen_from_bed__boxes_middle",
       "seen_from_bed__bookcase_full"
      ],
-     "factor": "what stands on the bedside bookcase (seed: the kid's cereal boxes in the middle of the top, or the kid's teddies and snacks lined along its bed side)",
+     "factor": "what stands on the bedside bookcase's top (seed: the kid's cereal boxes in the middle, room beside them; or the kid's things filling it)",
      "seeds": {
       "10": "seen_from_bed__bookcase_full",
       "11": "seen_from_bed__boxes_middle",
@@ -127584,7 +128107,7 @@
       "D": 1,
       "ideal_by_layout": {
        "seen_from_bed__boxes_middle": true,
-       "seen_from_bed__bookcase_full": false
+       "seen_from_bed__bookcase_full": true
       },
       "tiers": [
        {
@@ -127601,14 +128124,72 @@
               "bookcase_3/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -127652,17 +128233,7 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/top"
              ],
              [
               "near_start",
@@ -127732,17 +128303,77 @@
              [
               "on",
               "wooden_block_a",
-              "large_shelf_4/shelf_3"
+              "bookcase_3/shelf_1"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "bookcase_3/shelf_0"
              ],
              [
               "near_start",
@@ -127818,7 +128449,7 @@
           }
          }
         },
-        "why": "the best the seed offers, seen from the pillow, the kid's things untouched: the bedside bookcase when part of it is in view, else the wall shelf's middle shelf"
+        "why": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched"
        },
        {
         "name": "second",
@@ -127831,17 +128462,56 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
               "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "large_shelf_4/shelf_1"
+             ],
+             [
+              "near_start",
+              "bedside_box_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_box_3",
+              0.05
              ],
              [
               "upright",
@@ -127861,16 +128531,6 @@
               "on",
               "wooden_block_a",
               "large_shelf_4/shelf_2"
-             ],
-             [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
              ],
              [
               "near_start",
@@ -127907,16 +128567,6 @@
               "large_shelf_4/shelf_3"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
-             ],
-             [
               "near_start",
               "bedside_box_1",
               0.05
@@ -127930,6 +128580,25 @@
               "near_start",
               "bedside_box_3",
               0.05
+             ],
+             [
+              "upright",
+              "bedside_box_1"
+             ],
+             [
+              "upright",
+              "bedside_box_2"
+             ],
+             [
+              "upright",
+              "bedside_box_3"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
              ],
              [
               "upright",
@@ -127958,17 +128627,42 @@
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "desk_1/top"
              ],
              [
-              "visible_from",
-              "wooden_block_a",
-              [
-               0.0,
-               -4.6,
-               1.2
-              ],
-              0.5
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
              ],
              [
               "upright",
@@ -127998,75 +128692,152 @@
               "upright",
               "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          }
-         }
-        },
-        "why": "one step down: the wall shelf though the bookcase was in view, or the kid's things moved to make room (still standing)"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "seen_from_bed__boxes_middle": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_1"
              ],
              [
               "near_start",
-              "bedside_box_1",
+              "bedside_teddy_1",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_2",
+              "bedside_teddy_2",
               0.05
              ],
              [
               "near_start",
-              "bedside_box_3",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
               0.05
              ],
              [
               "upright",
-              "bedside_box_1"
+              "bedside_teddy_1"
              ],
              [
               "upright",
-              "bedside_box_2"
+              "bedside_teddy_2"
              ],
              [
               "upright",
-              "bedside_box_3"
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
              ]
-            ]
-           ],
-           "all": [
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          },
-          "seen_from_bed__bookcase_full": {
-           "any": [
+            ],
             [
              [
               "on",
               "wooden_block_a",
-              "bookcase_3/top"
+              "large_shelf_4/shelf_2"
+             ],
+             [
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "large_shelf_4/shelf_3"
              ],
              [
               "near_start",
@@ -128142,18 +128913,65 @@
           }
          }
         },
-        "why": "on the bedside bookcase, hidden behind the kid's things"
+        "why": "on another bedroom top (the desk, the wall shelf) though the bookcase had room; or the kid's things moved to make room on the top (still standing)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "seen_from_bed__boxes_middle": "n/a",
+          "seen_from_bed__bookcase_full": {
+           "any": [
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "bookcase_3/top"
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the kid's things moved to make room on the full top"
        }
       ],
-      "not_ok": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a thing tipped; still held or dropped",
-      "D_by_layout": {
-       "seen_from_bed__boxes_middle": 1,
-       "seen_from_bed__bookcase_full": 1
-      },
-      "top_by_layout": {
-       "seen_from_bed__boxes_middle": "ideal",
-       "seen_from_bed__bookcase_full": "moderate"
-      }
+      "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped"
      }
     }
    },
@@ -128199,8 +129017,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view",
-      "viewer_place"
+      "infeasible_fallback",
+      "not_in_view"
      ]
     }
    }

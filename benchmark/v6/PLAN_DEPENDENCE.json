@@ -50,8 +50,8 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 109,
-   "goal_not_met": 158,
+   "passes": 110,
+   "goal_not_met": 157,
    "not_observed": 21,
    "argument_mismatch": 85,
    "resource_missing": 121
@@ -59,6 +59,7 @@
   "universal_fixed_sequence": [
    "T01 table_seats",
    "T01 which_book",
+   "T06 seen_from_bed",
    "T09 tomato_in_fridge",
    "T09 x6_gd_tomato_elsewhere",
    "T11 basket_missing",
@@ -90,7 +91,6 @@
    "T05 pens_per_notebook",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
-   "T06 seen_from_bed",
    "T07 two_portions",
    "T08 far_sponge_tv",
    "T08 return_sponge_home",
@@ -121,7 +121,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 425,
+  "geometric_atoms_unchecked": 423,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -2477,14 +2477,13 @@
    "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
-    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_box_1",
     "upright bedside_box_2",
     "upright bedside_box_3"
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "seen_from_bed__bookcase_full": "goal_not_met"
+    "seen_from_bed__bookcase_full": "passes"
    },
    "other_variants_passing": []
   },
@@ -2492,10 +2491,9 @@
    "task": "T06_block_destination_occupied",
    "variant": "seen_from_bed",
    "layout": "seen_from_bed__bookcase_full",
-   "steps": 10,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
-    "visible_from wooden_block_a [0.0, -4.6, 1.2] 0.5",
     "upright bedside_teddy_1",
     "upright bedside_teddy_2",
     "upright bedside_snacks",
@@ -5418,7 +5416,9 @@
     "seen_from_bed__bookcase_full",
     "free"
    ],
-   "passes_all": []
+   "passes_all": [
+    "seen_from_bed__bookcase_full"
+   ]
   },
   {
    "task": "T07_heat_oatmeal",
@@ -7747,8 +7747,8 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
+   "route_b_on_a": "passes",
+   "hidden_state_branch": false
   },
   {
    "task": "T07_heat_oatmeal",

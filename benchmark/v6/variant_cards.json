@@ -11353,7 +11353,7 @@
    17,
    18
   ],
-  "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
+  "instruction": "The kid wants to play with the toy block first thing tomorrow morning. Put it on the bookcase beside the bed; leave the kid's things on it as they are.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11370,29 +11370,37 @@
    ],
    "removed": [],
    "conditions": [
-    "viewer_place",
+    "infeasible_fallback",
     "not_in_view"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "all": [
+   "any": [
     [
-     "on",
-     "wooden_block_a",
-     "bookcase_3/top"
-    ],
-    [
-     "visible_from",
-     "wooden_block_a",
      [
-      0.0,
-      -4.6,
-      1.2
-     ],
-     0.5
+      "on",
+      "wooden_block_a",
+      "bookcase_3/top"
+     ]
     ],
+    [
+     [
+      "on",
+      "wooden_block_a",
+      "bookcase_3/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "wooden_block_a",
+      "bookcase_3/shelf_0"
+     ]
+    ]
+   ],
+   "all": [
     [
      "near_start",
      "bedside_box_1",
@@ -11428,8 +11436,8 @@
   },
   "control": "free",
   "oracle_route": "v6_seen_from_bed__boxes_middle",
-  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
-  "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
+  "challenge": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
+  "rationale": "put the block on the bookcase where there is room without touching the kid's things: the top when it has room, else a lower shelf of the same bookcase",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/seen_from_bed__bookcase_full": {
@@ -11442,7 +11450,7 @@
    16,
    19
   ],
-  "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
+  "instruction": "The kid wants to play with the toy block first thing tomorrow morning. Put it on the bookcase beside the bed; leave the kid's things on it as they are.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -11463,29 +11471,30 @@
    ],
    "removed": [],
    "conditions": [
-    "viewer_place",
+    "infeasible_fallback",
     "not_in_view"
    ],
    "initial_checks": []
   },
   "failure_triggers": [],
   "goal_constraints": {
-   "all": [
+   "any": [
     [
-     "on",
-     "wooden_block_a",
-     "large_shelf_4/shelf_2"
-    ],
-    [
-     "visible_from",
-     "wooden_block_a",
      [
-      0.0,
-      -4.6,
-      1.2
-     ],
-     0.5
+      "on",
+      "wooden_block_a",
+      "bookcase_3/shelf_1"
+     ]
     ],
+    [
+     [
+      "on",
+      "wooden_block_a",
+      "bookcase_3/shelf_0"
+     ]
+    ]
+   ],
+   "all": [
     [
      "near_start",
      "bedside_teddy_1",
@@ -11557,8 +11566,8 @@
   },
   "control": "free",
   "oracle_route": "v6_seen_from_bed__bookcase_full",
-  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow, unless the kid's things along its bed side hide all of its top; the wall shelf beyond is in view over them",
-  "rationale": "judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the kid's things stay",
+  "challenge": "the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill the bookcase top, not to be moved; its lower shelves are empty",
+  "rationale": "put the block on the bookcase where there is room without touching the kid's things: the top when it has room, else a lower shelf of the same bookcase",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/microwave_works": {

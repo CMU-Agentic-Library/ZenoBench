@@ -16,8 +16,8 @@
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 26 |
-| 不在 | 28 |
+| 在 | 27 |
+| 不在 | 27 |
 
 ## 类别 × 理想物在不在
 
@@ -27,7 +27,7 @@
 | 被占用 | 3 | 9 |
 | 能力不足 | 5 | 3 |
 | 看着像但不能用 | 11 | 0 |
-| 去处替换 | 1 | 5 |
+| 去处替换 | 2 | 4 |
 
 ## 每个摆法
 
@@ -92,7 +92,7 @@
 | T06 | display_spot_or_tv | front_taken_tv_full | 去处替换 | 不在 | 1 |
 | T06 | display_spot_or_tv | front_free_block_away | 不用替换 | 在 | 1 |
 | T06 | seen_from_bed | boxes_middle | 不用替换 | 在 | 1 |
-| T06 | seen_from_bed | bookcase_full | 去处替换 | 不在 | 1 |
+| T06 | seen_from_bed | bookcase_full | 去处替换 | 在 | 1 |
 | T07 | microwave_works | — | 不用替换 | 在 | 1 |
 | T07 | microwave_broken | — | 看着像但不能用 | 在 | 1 |
 | T07 | microwave_broken | — | 看着像但不能用 | 在 | 1 |

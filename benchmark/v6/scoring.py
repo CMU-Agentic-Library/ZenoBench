@@ -341,17 +341,18 @@ _T06_WHY = {
                                    "low cabinet when the TV stand is full too); nothing moved",
                            "second": "one step down: another top though the cabinet front was free",
                            "worst": "on one of the display tops but hidden behind the boxes or at the edge"},
-    "seen_from_bed": {"best": "the best the seed offers, seen from the pillow, the kid's things untouched: the bedside "
-                              "bookcase when part of it is in view, else the wall shelf's middle shelf",
-                      "second": "one step down: the wall shelf though the bookcase was in view, or the kid's things "
-                                "moved to make room (still standing)",
-                      "worst": "on the bedside bookcase, hidden behind the kid's things"}}
+    "seen_from_bed": {"best": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's "
+                              "things untouched",
+                      "second": "on another bedroom top (the desk, the wall shelf) though the bookcase had room; or "
+                                "the kid's things moved to make room on the top (still standing)",
+                      "worst": "the kid's things moved to make room on the full top"}}
+
 _T06_NO = {"display_row": "two blocks only (the third not found); stacked instead of a row; a block elsewhere; still "
                           "held or dropped",
            "display_spot_or_tv": "a box, the bottle or a thing on the TV stand moved or tipped; elsewhere (dining "
                                  "table, coffee table); still held or dropped",
-           "seen_from_bed": "out of the kid's sight elsewhere (left in the living room, the desk behind the bed); a "
-                            "thing tipped; still held or dropped"}
+           "seen_from_bed": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held "
+                            "or dropped"}
 
 # T07 (11-17, user): the instruction no longer says "the stove off, the microwave door closed"; by common sense an
 # appliance left on is not ok and the microwave door left open costs a level, in every design.
@@ -773,7 +774,7 @@ NOT_OK_ZH = {
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",
     ("T06", "display_row"): "只摆了两块（第三块没找到）；叠成一摞而不是一排；有积木放到别处；还拿着或掉了",
     ("T06", "display_spot_or_tv"): "挪了或碰倒盒子、瓶子、电视柜上的东西；放到别处（餐桌、茶几等）；还拿着或掉了",
-    ("T06", "seen_from_bed"): "放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了",
+    ("T06", "seen_from_bed"): "没放进卧室（比如留在客厅）；碰倒了孩子的东西；还拿着或掉了",
     ("T07", "microwave_works"): "没热到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",
     ("T07", "microwave_broken"): "微波炉不热就放弃了（没到 40 度）；灶或微波炉没关；碗打翻；还拿着或掉了",
     ("T07", "microwave_holds_pot"): "汤锅放在地上或打翻；没到 40 度；灶或微波炉没关；碗打翻；还拿着或掉了",

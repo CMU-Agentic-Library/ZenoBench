@@ -57,7 +57,7 @@ Removed with the injected action failures: 119 variants (17 had nothing else, 46
 | T06 | free | Control | - | - | 1 |
 | T06 | display_row | Task-Level | - | arrangement; infeasible_fallback | 2 |
 | T06 | display_spot_or_tv | Task-Level | - | infeasible_fallback; spot_quality | 4 |
-| T06 | seen_from_bed | Task-Level | - | not_in_view; viewer_place | 2 |
+| T06 | seen_from_bed | Task-Level | - | infeasible_fallback; not_in_view | 2 |
 | T07 | microwave_works | Control | - | - | 1 |
 | T07 | microwave_broken | Task-Level | - | microwave_broken; not_in_view | 3 |
 | T07 | microwave_holds_pot | Task-Level | - | appliance_occupied | 1 |

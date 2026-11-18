@@ -1254,23 +1254,21 @@ def T06(t):
     LT["display_spot_or_tv__front_taken_tv_full"] = cost_tiers(
         [(shown(CAB4) + stay + tv_stay, 1), (shown(TV) + stay + tv_stay, 2),
          *[(g + stay + tv_stay, 3) for g in anywhere]], hand=False)
-    # seen_from_bed: the kid wants to see the block from bed.  The bedside bookcase is the surface in view of the
-    # pillow (farther, lower furniture is hidden by the bed itself).  11-17 (user): the seed changes the stand-in --
-    # the kid's cereal boxes in the middle of the bookcase top (the half facing the pillow is free, ideal), or the
-    # kid's things filling the top (teddies and a snack carton along the bed side, bins, a tray and a book), so
-    # nothing on it can be seen from the pillow (static check, scratchpad bed_vis.py): the wall shelf (large_shelf_4, its middle shelves) is in view
-    # over the teddies.  visible_from checks the line of sight from the kid's eye at the end
+    # seen_from_bed (11-17, user: "where the kid can see it" made the place a line-of-sight puzzle -- now a plain
+    # purpose): the kid plays with the block first thing in the morning, so it goes on the bookcase beside the bed,
+    # the kid's things on it left alone.  The seed changes where on the bookcase there is room: the kid's cereal
+    # boxes in the middle of the top (the top has room, ideal), or the top filled with the kid's things (teddies, a
+    # snack carton, bins, a tray, a book: no 4 cm spot, static check), so the block goes on a lower shelf of the
+    # same bookcase (empty).  Another bedroom top (the desk, the wall shelf) is one level down; making room on the
+    # top by moving the kid's things one more
     BED = "bookcase_3/top"
-    SHELVES = ("large_shelf_4/shelf_2", "large_shelf_4/shelf_3")
-    EYE = [0.0, -4.6, 1.2]                               # the kid's eye, head on the pillow
-    seen = ["visible_from", A, EYE, 0.5]
+    BED_SHELVES = ("bookcase_3/shelf_1", "bookcase_3/shelf_0")
+    ROOM_TOPS = ("desk_1/top", "large_shelf_4/shelf_1", "large_shelf_4/shelf_2", "large_shelf_4/shelf_3")
     BED_THINGS = {"boxes_middle": {f"bedside_box_{i + 1}": ("cereal_box", 2.10, y, 0.0)
                                    for i, y in enumerate((-5.0145, -4.8895, -4.7645))},
                   "bookcase_full": {"bedside_teddy_1": ("teddy_bear", 1.85, -4.765, 0.0),
                                     "bedside_teddy_2": ("teddy_bear", 1.85, -4.927, 0.0),
                                     "bedside_snacks": ("snack_carton", 1.85, -5.040, 90.0),
-                                    # 11-17 (user): the rest of the top filled too (no 4 cm spot left), all low
-                                    # enough for the wall shelf to stay in view over them
                                     "bedside_bin_1": ("small_storage_bin", 2.02, -4.773, 0.0),
                                     "bedside_bin_2": ("small_storage_bin", 2.02, -4.968, 0.0),
                                     "bedside_tray": ("shallow_sorting_tray", 2.271, -4.785, 0.0),
@@ -1280,18 +1278,16 @@ def T06(t):
         names = list(things)
         kept = [*[["near_start", n, 0.05] for n in names], *[["upright", n] for n in names]]
         upright = [["upright", n] for n in names]
-        on_shelf = [([["on", A, sh], seen] + kept, 1) for sh in SHELVES]
+        on_case = [([["on", A, sup]] + kept, 0) for sup in (BED, *BED_SHELVES)]
+        elsewhere = [([["on", A, sup]] + kept, 1) for sup in ROOM_TOPS]
+        made_room = [([["on", A, BED]] + upright, 1 if case == "boxes_middle" else 2)]
+        LT[f"seen_from_bed__{case}"] = cost_tiers(on_case + elsewhere + made_room)
         if case == "boxes_middle":
-            goal = {"all": [["on", A, BED], seen, *kept, ["hand_empty", "right"]]}
+            goal = {"any": [[["on", A, sup]] for sup in (BED, *BED_SHELVES)], "all": [*kept, ["hand_empty", "right"]]}
             tail = [nav(BED), look(BED), place(A, BED, [1.88, -4.88])]
-            LT[f"seen_from_bed__{case}"] = cost_tiers(
-                [([["on", A, BED], seen] + kept, 0), ([["on", A, BED], seen] + upright, 1), *on_shelf,
-                 ([["on", A, BED]] + kept, 3)])
         else:
-            goal = {"all": [["on", A, SHELVES[0]], seen, *kept, ["hand_empty", "right"]]}
-            tail = [nav(BED), look(BED), nav(SHELVES[0]), look(SHELVES[0]), place(A, SHELVES[0], [3.60, -5.11])]
-            LT[f"seen_from_bed__{case}"] = cost_tiers(
-                [*on_shelf, ([["on", A, BED], seen] + upright, 2), ([["on", A, BED]] + kept, 3)])
+            goal = {"any": [[["on", A, sup]] for sup in BED_SHELVES], "all": [*kept, ["hand_empty", "right"]]}
+            tail = [nav(BED), look(BED), place(A, BED_SHELVES[0], [2.10, -4.88])]
         bed_cases[case] = dict(
             add={n: {"asset": a, **P(BED, x, y, yaw)} for n, (a, x, y, yaw) in things.items()},
             goal=goal, watch=[A, B, *names],
@@ -1330,20 +1326,17 @@ def T06(t):
                       "cabinet when the TV stand is full",
             cases=spot_cases),
         "seen_from_bed": dict(
-            base="free", control="free", conditions=["viewer_place", "not_in_view"],
-            instruction="The kid wants to look at the toy block while lying in bed tonight. Put it on display "
-                        "somewhere the kid can see from the bed.",
-            instruction_zh="孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+            base="free", control="free", conditions=["infeasible_fallback", "not_in_view"],
+            instruction="The kid wants to play with the toy block first thing tomorrow morning. Put it on the bookcase "
+                        "beside the bed; leave the kid's things on it as they are.",
+            instruction_zh="孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动。",
             keep_design=[BED],
-            viewer={"eye": EYE, "label": "躺在床上看", "targets": [BED, SHELVES[0]]},
-            factor="what stands on the bedside bookcase (seed: the kid's cereal boxes in the middle of the top, or "
-                   "the kid's teddies and snacks lined along its bed side)",
-            challenge="the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the "
-                      "pillow, unless the kid's things along its bed side hide all of its top; the wall shelf "
-                      "beyond is in view over them",
-            rationale="judge from where the kid lies: on the bookcase, the part facing the pillow, not behind the "
-                      "boxes; when the kid's things hide the whole top, the wall shelf's middle shelf in view; the "
-                      "kid's things stay",
+            factor="what stands on the bedside bookcase's top (seed: the kid's cereal boxes in the middle, room "
+                   "beside them; or the kid's things filling it)",
+            challenge="the block is in the kitchen, the bookcase in the bedroom; on one seed the kid's things fill "
+                      "the bookcase top, not to be moved; its lower shelves are empty",
+            rationale="put the block on the bookcase where there is room without touching the kid's things: the top "
+                      "when it has room, else a lower shelf of the same bookcase",
             cases=bed_cases),
     }
 

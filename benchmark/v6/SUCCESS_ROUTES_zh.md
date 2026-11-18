@@ -4794,11 +4794,11 @@
 
 ### seen_from_bed（Task）
 
-**情况**：孩子今晚想躺在床上看着积木；指令只说"躺在床上能看到的地方" → 设想孩子躺着的视线，放在从枕头看得见、没被挡住的地方，孩子的东西不动；判定从孩子眼睛的位置算视线
+**情况**："孩子今晚想躺在床上看着积木。把积木放到床头边的矮书架上，要让孩子躺着能看见；书架上孩子的东西别动" → 书架上靠枕头、没被挡住的地方；书架被孩子的东西占满时，换到卧室里另一个躺着看得见的地方（墙边大架子中间层，最好的替代算好）；判定从孩子眼睛的位置算视线
 
-**指令**：孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。
+**指令**：孩子明天一早醒来就要玩积木，把积木放到床头边的书架上。书架上孩子的东西别动。
 
-**成功条件**（D 按摆法：`boxes_middle` D = 1、理想物在，`bookcase_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -4807,7 +4807,22 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `wooden_block_a` 在 `bookcase_3/top` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 2 组：
+        - `wooden_block_a` 在 `bookcase_3/shelf_1` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 3 组：
+        - `wooden_block_a` 在 `bookcase_3/shelf_0` 上
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
@@ -4818,8 +4833,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `wooden_block_a` 在 `bookcase_3/top` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
@@ -4835,8 +4849,23 @@
         - `bedside_tray` 立着
         - `bedside_book` 立着
       - 第 2 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `wooden_block_a` 在 `bookcase_3/shelf_1` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
+      - 第 3 组：
+        - `wooden_block_a` 在 `bookcase_3/shelf_0` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
@@ -4857,14 +4886,15 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `wooden_block_a` 在 `bookcase_3/top` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `wooden_block_a` 在 `desk_1/top` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_1` 立着
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
       - 第 2 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
+        - `wooden_block_a` 在 `large_shelf_4/shelf_1` 上
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
@@ -4872,11 +4902,23 @@
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
       - 第 3 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 4 组：
         - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 5 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
         - `bedside_box_1` 立着
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
@@ -4884,33 +4926,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `wooden_block_a` 在 `bookcase_3/top` 上
-        - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
-        - `bedside_teddy_1` 立着
-        - `bedside_teddy_2` 立着
-        - `bedside_snacks` 立着
-        - `bedside_bin_1` 立着
-        - `bedside_bin_2` 立着
-        - `bedside_tray` 立着
-        - `bedside_book` 立着
-- **最不好（0.3）**：
-
-  - 摆法 `boxes_middle`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `wooden_block_a` 在 `bookcase_3/top` 上
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
-  - 摆法 `bookcase_full`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `wooden_block_a` 在 `desk_1/top` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
@@ -4925,13 +4941,77 @@
         - `bedside_bin_2` 立着
         - `bedside_tray` 立着
         - `bedside_book` 立着
-- **不行（0）**：放在别处、从床上看不见（比如留在客厅、床头后面的书桌）；碰倒了孩子的东西；还拿着或掉了
+      - 第 2 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_1` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
+      - 第 3 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
+      - 第 4 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
+- **最不好（0.3）**：
+
+  - 摆法 `boxes_middle`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `bookcase_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
+- **不行（0）**：没放进卧室（比如留在客厅）；碰倒了孩子的东西；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `boxes_middle`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
-- 摆法 `bookcase_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `navigate(destination=large_shelf_4/shelf_2)` → 9. `look(target=large_shelf_4/shelf_2)` → 10. `place(object=wooden_block_a, receptacle=large_shelf_4/shelf_2, hint_xy=[3.6, -5.11])`
+- 摆法 `bookcase_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/shelf_1, hint_xy=[2.1, -4.88])`
 
 ---
 
@@ -5236,7 +5316,7 @@
 
 ### far_sponge_tv（Task）
 
-**情况**：从餐厅出发，海绵不在岛台 → 先找海绵
+**情况**：从餐厅出发，海绵不在岛台 → 先找海绵；岛台上若有孩子的蓝色泡沫方块（像海绵，是玩具）不能拿来擦；平时的海绵不在时，用矮柜托盘里的备用海绵（最好的替代算好）
 
 **成功条件**（D 按摆法：`far_sponge_tv` D = 1、理想物在，`far_sponge_foam_cube` D = 1、理想物在，`far_sponge_spare_only` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
