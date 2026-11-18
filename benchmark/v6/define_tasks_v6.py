@@ -2584,19 +2584,52 @@ def T19(t):
     rest = base[i_can + 1:]
     can_goal = copy.deepcopy(t["goal"])
     can_goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    # 11-17 (user): per-seed tiers; the seed changes the stand-in
+    LT = LAYOUT_TIERS.setdefault(("T19", "*"), {})
+    BIN, CUBE, J = "wide_storage_bin", "foam_cube", "full_juice"
+    core = [["inside", CAN, BIN], ["inside", CUBE, BIN]]
+    doors = [(can_goal["all"][-2:], 1)]
+    # x6 juice_full: the empty can in cabinet 6; cabinet 4 holds an unopened juice bottle (plastic, but full: no
+    # rubbish)
+    LT["x6_gd_can_put_away__in_4"] = cost_tiers([(core, 0)], doors)
+    LT["x6_gd_can_put_away__juice_full"] = cost_tiers(
+        [(core + [["near_start", J, 0.03]], 0), (core + [["not inside", J, BIN]], 1), (core, 2)], doors)
+    # m_can_in_dining_room's second seed (merged, MERGE): two cans on the dining table, one at someone's seat beside
+    # a bowl of oatmeal and an open book (still drinking): only the lone one is rubbish
+    SEAT = {"seat_can": ("soda_can", 3.70, 6.75), "seat_bowl": ("oatmeal_bowl", 3.45, 6.62),
+            "seat_book": ("paperback_book", 3.62, 6.92)}
+    seat_stays = [["near_start", n, 0.03] for n in SEAT]
+    LT["m_can_in_dining_room"] = cost_tiers([(core, 0)])
+    LT["can_in_use"] = cost_tiers([(core + seat_stays, 0), (core + [["not inside", "seat_can", BIN]], 1), (core, 2)])
+    m_route = RT(t, t["oracle"]["m_can_in_dining_room"])
+    can_in_use = dict(
+        base="m_can_in_dining_room", control="bin_on_bookcase", conditions=["resource_in_use"],
+        add={n: {"asset": a, **P("dining_table_2/top", x, y)} for n, (a, x, y) in SEAT.items()},
+        goal={"all": [*core, *seat_stays, ["hand_empty", "right"]]}, watch=[CAN, CUBE, *SEAT],
+        challenge="two cans on the dining table: one alone (finished), one at someone's seat with a bowl of oatmeal "
+                  "and an open book (still drinking)",
+        rationale="only the finished can is rubbish: recycle the lone one, leave the seat as it is",
+        cases={"": dict(route=m_route)})
     return {
+        "can_in_use": can_in_use,
         "x6_gd_can_put_away": dict(
             base="bin_on_bookcase", control="m_can_in_dining_room", goal=can_goal,
             remove=["plate_inside_kitchen_cabinet"],
-            instruction="Movie night is over; put what goes to recycling into the recycling bin. Someone put the "
-                        "empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
-            instruction_zh="电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
-            factor="which closed place holds the item",
-            challenge="the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+            # 11-17 (user): no hint at the cabinets or the doors; a door left open costs a level by common sense
+            instruction=t["instruction"], instruction_zh=t["instruction_zh"],
+            factor="what the low cabinets hold (seed: the empty can in cabinet 4; or the can in cabinet 6 and an "
+                   "unopened juice bottle in cabinet 4)",
+            challenge="the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened "
+                      "juice bottle (plastic, but full); the cube on the floor",
             rationale="inspect the closed places for the can (reference route: the worse order), then recycle both",
-            cases={f"in_{w[-1]}": dict(move={CAN: shelf[w]}, route=put_away([], o, w, take, rest),
-                                       failures=[f_initial("resource", [["on", CAN, f"{w}/inside_shelf"]], fid="resource_can_put_away")])
-                   for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
+            cases={"in_4": dict(move={CAN: shelf["kitchen_cabinet_4"]},
+                                route=put_away([], "kitchen_cabinet_6", "kitchen_cabinet_4", take, rest),
+                                failures=[f_initial("resource", [["on", CAN, "kitchen_cabinet_4/inside_shelf"]],
+                                                    fid="resource_can_put_away")]),
+                   "juice_full": dict(move={CAN: shelf["kitchen_cabinet_6"]},
+                                      add={J: {"asset": "juice_bottle", **shelf["kitchen_cabinet_4"]}},
+                                      goal={"all": [*can_goal["all"], ["near_start", J, 0.03]]}, watch=[CAN, CUBE, J],
+                                      route=put_away([], "kitchen_cabinet_4", "kitchen_cabinet_6", take, rest))}),
     }
 
 
@@ -3298,7 +3331,6 @@ SEED_EXT = {
     ('T19_recycling', 'h_action_grasp_and_miss'): 1,
     ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
     ('T19_recycling', 'lookalike_bin'): 1,
-    ('T19_recycling', 'm_can_in_dining_room'): 1,
     ('T20_juice_back_to_table', 'm_bottle_on_tv_stand'): 4,     # not 0: the dining table is where it goes
 }
 
@@ -3309,6 +3341,7 @@ MERGE = {("T04_cup_or_mug_to_cabinet", "no_cup"): ["no_cup_mug_away", "no_cup_ki
          ("T07_heat_oatmeal", "microwave_broken"): ["broken_oatmeal_away"],
          ("T09_tomato_soup", "lid_on_spoon_away"): ["lid_missing"],
          ("T17_hide_and_seek_block", "h_task_lid_elsewhere"): ["hide_lid_in_use"],
+         ("T19_recycling", "m_can_in_dining_room"): ["can_in_use"],
          ("T08_wipe_island", "far_sponge_tv"): ["far_sponge_foam_cube", "far_sponge_spare_only"],
          ("T11_collect_fruits", "basket_missing"): ["basket_gone_bowl_there"],
          ("T22_put_away_shopping", "tray_elsewhere"): ["basket_missing"],
@@ -3332,6 +3365,8 @@ MERGE_FACTOR = {("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): "whether th
                 ("T17_hide_and_seek_block", "h_task_lid_elsewhere"): "what the lid is doing (seed: left on the "
                                                                      "wall cabinet; or on a stew on the right "
                                                                      "burner, a plate on the island)",
+                ("T19_recycling", "m_can_in_dining_room"): "what is on the dining table (seed: the finished can "
+                                                           "alone; or beside a can at someone's seat, still in use)",
                 ("T11_collect_fruits", "basket_missing"): "what stands where the basket used to be (seed: nothing, or "
                                                           "a used breakfast bowl)",
                 ("T12_tidy_toys", "bins_capacity"): "which containers there are and how full (seed: two small bins, "

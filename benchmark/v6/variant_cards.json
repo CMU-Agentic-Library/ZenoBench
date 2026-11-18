@@ -19759,7 +19759,7 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T19_recycling/m_can_in_dining_room__alt_tv_stand_2": {
+ "T19_recycling/can_in_use": {
   "variant": "m_can_in_dining_room",
   "category": "task",
   "seeds": [
@@ -19777,10 +19777,14 @@
     "soda_can",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "seat_book",
+    "seat_bowl",
+    "seat_can"
+   ],
    "removed": [],
    "conditions": [
-    "not_in_view"
+    "resource_in_use"
    ],
    "initial_checks": []
   },
@@ -19798,15 +19802,30 @@
      "wide_storage_bin"
     ],
     [
+     "near_start",
+     "seat_can",
+     0.03
+    ],
+    [
+     "near_start",
+     "seat_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "seat_book",
+     0.03
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "bin_on_bookcase",
-  "oracle_route": "v6_m_can_in_dining_room__alt_tv_stand_2",
-  "challenge": "the can was left on the dining table, out of view: search it (here the soda_can is on tv_stand_2/top)",
-  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_can_in_use",
+  "challenge": "two cans on the dining table: one alone (finished), one at someone's seat with a bowl of oatmeal and an open book (still drinking)",
+  "rationale": "only the finished can is rubbish: recycle the lone one, leave the seat as it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/lookalike_bin": {
@@ -19931,7 +19950,7 @@
    17,
    18
   ],
-  "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -19991,11 +20010,11 @@
   },
   "control": "m_can_in_dining_room",
   "oracle_route": "v6_x6_gd_can_put_away__in_4",
-  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+  "challenge": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
   "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T19_recycling/x6_gd_can_put_away__in_6": {
+ "T19_recycling/x6_gd_can_put_away__juice_full": {
   "variant": "x6_gd_can_put_away",
   "category": "task",
   "seeds": [
@@ -20005,7 +20024,7 @@
    16,
    19
   ],
-  "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
+  "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
   "initial_conditions": {
    "scene": "tasks/recycle_and_store",
    "start": null,
@@ -20013,30 +20032,16 @@
     "soda_can",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "full_juice"
+   ],
    "removed": [
     "plate_inside_kitchen_cabinet"
    ],
    "conditions": [],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_can_put_away",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -20060,12 +20065,17 @@
     [
      "is_closed",
      "kitchen_cabinet_4"
+    ],
+    [
+     "near_start",
+     "full_juice",
+     0.03
     ]
    ]
   },
   "control": "m_can_in_dining_room",
-  "oracle_route": "v6_x6_gd_can_put_away__in_6",
-  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+  "oracle_route": "v6_x6_gd_can_put_away__juice_full",
+  "challenge": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
   "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

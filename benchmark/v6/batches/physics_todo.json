@@ -6162,8 +6162,8 @@
 {
 "task": "T19_recycling",
 "seed": 10,
-"variant": "m_can_in_dining_room__alt_tv_stand_2",
-"route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+"variant": "can_in_use",
+"route": "v6_can_in_use",
 "family": "m_can_in_dining_room"
 },
 {
@@ -6183,8 +6183,8 @@
 {
 "task": "T19_recycling",
 "seed": 13,
-"variant": "m_can_in_dining_room__alt_tv_stand_2",
-"route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+"variant": "can_in_use",
+"route": "v6_can_in_use",
 "family": "m_can_in_dining_room"
 },
 {
@@ -6211,22 +6211,22 @@
 {
 "task": "T19_recycling",
 "seed": 17,
-"variant": "m_can_in_dining_room__alt_tv_stand_2",
-"route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+"variant": "can_in_use",
+"route": "v6_can_in_use",
 "family": "m_can_in_dining_room"
 },
 {
 "task": "T19_recycling",
 "seed": 18,
-"variant": "m_can_in_dining_room__alt_tv_stand_2",
-"route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+"variant": "can_in_use",
+"route": "v6_can_in_use",
 "family": "m_can_in_dining_room"
 },
 {
 "task": "T19_recycling",
 "seed": 19,
-"variant": "m_can_in_dining_room__alt_tv_stand_2",
-"route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+"variant": "can_in_use",
+"route": "v6_can_in_use",
 "family": "m_can_in_dining_room"
 },
 {
@@ -6309,8 +6309,8 @@
 {
 "task": "T19_recycling",
 "seed": 11,
-"variant": "x6_gd_can_put_away__in_6",
-"route": "v6_x6_gd_can_put_away__in_6",
+"variant": "x6_gd_can_put_away__juice_full",
+"route": "v6_x6_gd_can_put_away__juice_full",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -6330,22 +6330,22 @@
 {
 "task": "T19_recycling",
 "seed": 14,
-"variant": "x6_gd_can_put_away__in_6",
-"route": "v6_x6_gd_can_put_away__in_6",
+"variant": "x6_gd_can_put_away__juice_full",
+"route": "v6_x6_gd_can_put_away__juice_full",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T19_recycling",
 "seed": 15,
-"variant": "x6_gd_can_put_away__in_6",
-"route": "v6_x6_gd_can_put_away__in_6",
+"variant": "x6_gd_can_put_away__juice_full",
+"route": "v6_x6_gd_can_put_away__juice_full",
 "family": "x6_gd_can_put_away"
 },
 {
 "task": "T19_recycling",
 "seed": 16,
-"variant": "x6_gd_can_put_away__in_6",
-"route": "v6_x6_gd_can_put_away__in_6",
+"variant": "x6_gd_can_put_away__juice_full",
+"route": "v6_x6_gd_can_put_away__juice_full",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -6365,8 +6365,8 @@
 {
 "task": "T19_recycling",
 "seed": 19,
-"variant": "x6_gd_can_put_away__in_6",
-"route": "v6_x6_gd_can_put_away__in_6",
+"variant": "x6_gd_can_put_away__juice_full",
+"route": "v6_x6_gd_can_put_away__juice_full",
 "family": "x6_gd_can_put_away"
 },
 {

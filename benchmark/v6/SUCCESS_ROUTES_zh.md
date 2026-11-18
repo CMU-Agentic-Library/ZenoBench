@@ -8126,22 +8126,55 @@
 
 ### m_can_in_dining_room（Task）
 
-**情况**：罐子不在原处，看不到 → 先找
+**情况**：罐子不在原处，看不到 → 先找；餐桌上另一罐摆在别人座位上（旁边有燕麦碗和摊开的书，还在喝）就别动，只回收喝完的那罐（把在喝的也回收算差）
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`m_can_in_dining_room` D = 0、理想物在，`can_in_use` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_can` 在 `wide_storage_bin` 里
-  - `foam_cube` 在 `wide_storage_bin` 里
-  - 手里空着
-- **不行（0）**：没找到罐子；没进回收箱；还拿着或掉了
+  - 摆法 `can_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `seat_can` 没被挪动（离开局位置不超过 3 cm）
+        - `seat_bowl` 没被挪动（离开局位置不超过 3 cm）
+        - `seat_book` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `m_can_in_dining_room`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+- **次好（0.6）**：
+
+  - 摆法 `m_can_in_dining_room`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `can_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `seat_can` 不在 `wide_storage_bin` 里
+- **最不好（0.3）**：
+
+  - 摆法 `m_can_in_dining_room`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `can_in_use`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+- **不行（0）**：罐子或泡沫块没进回收箱；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `m_can_in_dining_room`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)` → 11. `navigate(destination=foam_cube)` → 12. `look(target=foam_cube)` → 13. `pick(object=foam_cube)` → 14. `navigate(destination=wide_storage_bin)` → 15. `drop(object=foam_cube, container=wide_storage_bin)`
-- 摆法 `alt_tv_stand_2`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=living_room_0_0)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)` → 11. `navigate(destination=foam_cube)` → 12. `look(target=foam_cube)` → 13. `pick(object=foam_cube)` → 14. `navigate(destination=wide_storage_bin)` → 15. `drop(object=foam_cube, container=wide_storage_bin)`
+- 摆法 `can_in_use`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=tv_stand_2/top)` → 3. `look(target=tv_stand_2/top)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=bookcase_2/top)` → 8. `look(target=bookcase_2/top)` → 9. `navigate(destination=wide_storage_bin)` → 10. `drop(object=soda_can, container=wide_storage_bin)` → 11. `navigate(destination=foam_cube)` → 12. `look(target=foam_cube)` → 13. `pick(object=foam_cube)` → 14. `navigate(destination=wide_storage_bin)` → 15. `drop(object=foam_cube, container=wide_storage_bin)`
 
 ### lookalike_bin（Task）
 
@@ -8171,31 +8204,76 @@
 
 ### x6_gd_can_put_away（Task）
 
-**情况**：“电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好”：泡沫块在客厅地上 → 逐个打开矮柜找罐子，两样都放进回收箱（书架上装回收的那个）
-
-**指令**：电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。
+**情况**：指令只说“把该回收的东西放进回收箱” → 空罐被收进了厨房矮柜，打开找，泡沫块在客厅地上，两样都放进回收箱，门都关好（门没关降一档）；另一个柜里那瓶果汁没开封，不是垃圾（回收了算差）
 
 **成功条件**（D = 1；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - `soda_can` 在 `wide_storage_bin` 里
-  - `foam_cube` 在 `wide_storage_bin` 里
-  - 手里空着
-  - `kitchen_cabinet_6` 关着
-  - `kitchen_cabinet_4` 关着
+  - 摆法 `in_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `juice_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `full_juice` 没被挪动（离开局位置不超过 3 cm）
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
 - **次好（0.6）**：
 
-  - `soda_can` 在 `wide_storage_bin` 里
-  - `foam_cube` 在 `wide_storage_bin` 里
-  - 手里空着
-- **不行（0）**：没找到罐子；没进回收箱；还拿着或掉了
+  - 摆法 `juice_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `full_juice` 没被挪动（离开局位置不超过 3 cm）
+      - 第 2 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `full_juice` 不在 `wide_storage_bin` 里
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+  - 摆法 `in_4`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+- **最不好（0.3）**：
+
+  - 摆法 `in_4`：
+    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `juice_full`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `full_juice` 不在 `wide_storage_bin` 里
+      - 第 2 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+        - `kitchen_cabinet_6` 关着
+        - `kitchen_cabinet_4` 关着
+      - 第 3 组：
+        - `soda_can` 在 `wide_storage_bin` 里
+        - `foam_cube` 在 `wide_storage_bin` 里
+- **不行（0）**：罐子或泡沫块没进回收箱；还拿着或掉了
 
 
 **参考调用顺序**：
 
 - 摆法 `in_4`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=wide_storage_bin)` → 18. `drop(object=soda_can, container=wide_storage_bin)` → 19. `navigate(destination=kitchen_cabinet_4)` → 20. `close(articulated=kitchen_cabinet_4)` → 21. `navigate(destination=foam_cube)` → 22. `look(target=foam_cube)` → 23. `pick(object=foam_cube)` → 24. `navigate(destination=wide_storage_bin)` → 25. `drop(object=foam_cube, container=wide_storage_bin)`
-- 摆法 `in_6`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=wide_storage_bin)` → 18. `drop(object=soda_can, container=wide_storage_bin)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)` → 21. `navigate(destination=foam_cube)` → 22. `look(target=foam_cube)` → 23. `pick(object=foam_cube)` → 24. `navigate(destination=wide_storage_bin)` → 25. `drop(object=foam_cube, container=wide_storage_bin)`
+- 摆法 `juice_full`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `navigate(destination=soda_can)` → 13. `pick(object=soda_can)` → 14. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 15. `navigate(destination=bookcase_2/top)` → 16. `look(target=bookcase_2/top)` → 17. `navigate(destination=wide_storage_bin)` → 18. `drop(object=soda_can, container=wide_storage_bin)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)` → 21. `navigate(destination=foam_cube)` → 22. `look(target=foam_cube)` → 23. `pick(object=foam_cube)` → 24. `navigate(destination=wide_storage_bin)` → 25. `drop(object=foam_cube, container=wide_storage_bin)`
 
 ---
 

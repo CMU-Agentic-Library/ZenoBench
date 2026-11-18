@@ -1,32 +1,32 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 169 个摆法，其中 113 个要做替换，56 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 22.6 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 183 个摆法，其中 122 个要做替换，61 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 24.4 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 25 | +2.4 |
-| 被占用 | 25 | +2.4 |
-| 能力不足 | 17 | -5.6 |
-| 看着像但不能用 | 20 | -2.6 |
-| 去处替换 | 26 | +3.4 |
+| 缺失 | 27 | +2.6 |
+| 被占用 | 28 | +3.6 |
+| 能力不足 | 17 | -7.4 |
+| 看着像但不能用 | 24 | -0.4 |
+| 去处替换 | 26 | +1.6 |
 
 ## 理想物在不在（不在时，最好的替代算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 71 |
+| 在 | 80 |
 | 不在 | 42 |
 
 ## 类别 × 理想物在不在
 
 | 类别 | 在 | 不在 |
 |---|---|---|
-| 缺失 | 9 | 16 |
-| 被占用 | 10 | 15 |
+| 缺失 | 11 | 16 |
+| 被占用 | 13 | 15 |
 | 能力不足 | 11 | 6 |
-| 看着像但不能用 | 20 | 0 |
+| 看着像但不能用 | 24 | 0 |
 | 去处替换 | 21 | 5 |
 
 ## 每个摆法
@@ -190,6 +190,20 @@
 | T17 | hide_both | two_pots | 看着像但不能用 | 在 | 1 |
 | T17 | hide_somewhere | pot_ready | 不用替换 | 在 | 0 |
 | T17 | hide_somewhere | lid_away | 去处替换 | 不在 | 0 |
+| T18 | bowls_in_cabinet | — | 不用替换 | 在 | 1 |
+| T18 | bowls_apart | — | 不用替换 | 在 | 1 |
+| T18 | one_bowl | glass_box | 缺失 | 在 | 1 |
+| T18 | one_bowl | mug | 缺失 | 在 | 1 |
+| T18 | bowl_in_use | tomatoes | 被占用 | 在 | 1 |
+| T18 | bowl_in_use | oatmeal | 被占用 | 在 | 1 |
+| T18 | door_stuck | — | 看着像但不能用 | 在 | 0 |
+| T19 | bin_on_bookcase | — | 不用替换 | 在 | 0 |
+| T19 | m_can_in_dining_room | — | 不用替换 | 在 | 0 |
+| T19 | m_can_in_dining_room | — | 被占用 | 在 | 1 |
+| T19 | lookalike_bin | — | 看着像但不能用 | 在 | 1 |
+| T19 | lookalike_bin | alt_tv_stand_2 | 看着像但不能用 | 在 | 1 |
+| T19 | x6_gd_can_put_away | in_4 | 不用替换 | 在 | 1 |
+| T19 | x6_gd_can_put_away | juice_full | 看着像但不能用 | 在 | 1 |
 | T14 | e1_book_ready | — | 不用替换 | 在 | 1 |
 | T14 | within_kids_reach | set_on_large_shelf_4 | 去处替换 | 在 | 1 |
 | T14 | within_kids_reach | set_on_large_shelf_5 | 去处替换 | 在 | 1 |

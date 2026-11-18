@@ -2513,9 +2513,9 @@
   },
   {
    "task": "T19_recycling",
-   "layout": "m_can_in_dining_room__alt_tv_stand_2",
+   "layout": "can_in_use",
    "steps": 15,
-   "atoms_checked": 3,
+   "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],
@@ -2553,9 +2553,9 @@
   },
   {
    "task": "T19_recycling",
-   "layout": "x6_gd_can_put_away__in_6",
+   "layout": "x6_gd_can_put_away__juice_full",
    "steps": 25,
-   "atoms_checked": 5,
+   "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
    "problems": [],

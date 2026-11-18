@@ -204473,133 +204473,70 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the can found",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
-      "top": "ideal"
-     }
-    },
-    "m_can_in_dining_room__alt_tv_stand_2": {
-     "move": {
-      "soda_can": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.0,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "wide_storage_bin": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0889,
-        -0.4278
-       ],
-       "yaw_deg": 179.0
-      }
-     },
-     "conditions": [
-      "not_in_view"
-     ],
-     "difficulty": "medium",
-     "since": "v6",
-     "note": "the can was left on the dining table, out of view: search it (here the soda_can is on tv_stand_2/top)",
-     "v6": {
-      "family": "m_can_in_dining_room",
-      "case": "alt_tv_stand_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the can was left on the dining table, out of view: search it (here the soda_can is on tv_stand_2/top)",
-      "derived_from": "m_can_in_dining_room",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         6.967,
-         0.327,
-         7.033,
-         0.393
-        ],
-        "dx": [
-         -0.31,
-         1.33
-        ],
-        "dy": [
-         -0.1,
-         0.11
-        ],
-        "pick": [
-         "soda_can"
-        ],
-        "search": [
-         "soda_can"
-        ]
-       }
-      ],
-      "static": {
-       "bookcase_2/top": [
-        [
-         0.9163,
-         -0.5807,
-         1.2615,
-         -0.2749
-        ]
-       ]
-      },
-      "reach": {
-       "tv_stand_2/top": [
-        [
-         0,
-         1,
-         8.375,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         6.644,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         1,
-         1,
-         0.514,
-         6.644,
-         8.375,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [
-        "soda_can"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the can found",
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "seat_can",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_bowl",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_book",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed",
         "raw": "best"
        }
       ],
@@ -204921,6 +204858,361 @@
       "top": "ideal"
      }
     },
+    "can_in_use": {
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "resource_in_use"
+     ],
+     "add": {
+      "seat_can": {
+       "asset": "soda_can",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.75
+       ],
+       "yaw_deg": 0.0
+      },
+      "seat_bowl": {
+       "asset": "oatmeal_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.45,
+        6.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "seat_book": {
+       "asset": "paperback_book",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        6.92
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "foam_cube",
+        "wide_storage_bin"
+       ],
+       [
+        "near_start",
+        "seat_can",
+        0.03
+       ],
+       [
+        "near_start",
+        "seat_bowl",
+        0.03
+       ],
+       [
+        "near_start",
+        "seat_book",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "foam_cube",
+      "seat_can",
+      "seat_bowl",
+      "seat_book"
+     ],
+     "since": "v6",
+     "note": "two cans on the dining table: one alone (finished), one at someone's seat with a bowl of oatmeal and an open book (still drinking)",
+     "v6": {
+      "family": "can_in_use",
+      "case": null,
+      "challenge": "two cans on the dining table: one alone (finished), one at someone's seat with a bowl of oatmeal and an open book (still drinking)",
+      "rationale": "only the finished can is rubbish: recycle the lone one, leave the seat as it is",
+      "control": "bin_on_bookcase",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "m_can_in_dining_room"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "seat_book",
+         "seat_bowl",
+         "seat_can",
+         "soda_can"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.361,
+         6.267,
+         3.733,
+         6.98
+        ],
+        "dx": [
+         -0.56,
+         0.09
+        ],
+        "dy": [
+         -0.76,
+         0.96
+        ],
+        "pick": [
+         "soda_can"
+        ],
+        "search": [
+         "soda_can"
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ]
+       ],
+       "bookcase_2/top": [
+        [
+         0.9188,
+         -0.5777,
+         1.2588,
+         -0.2777
+        ]
+       ]
+      },
+      "reach": {
+       "dining_table_2/top": [
+        [
+         0,
+         1,
+         3.839,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         2.788,
+         5.495,
+         7.955,
+         0.2
+        ],
+        [
+         1,
+         1,
+         7.955,
+         2.788,
+         3.839,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         5.495,
+         2.788,
+         3.839,
+         0.2
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     },
+     "scoring": {
+      "D": 1,
+      "tiers": [
+       {
+        "name": "best",
+        "score": 1.0,
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "seat_can",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_bowl",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_book",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": "n/a",
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "seat_can",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the can in use or the unopened juice moved (not recycled)",
+        "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": "n/a",
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the can someone is drinking from, or the full juice bottle, recycled too",
+        "raw": "worst"
+       }
+      ],
+      "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
+      "top": "ideal"
+     }
+    },
     "x6_gd_can_put_away__in_4": {
      "move": {
       "wide_storage_bin": {
@@ -204969,8 +205261,8 @@
        ]
       ]
      },
-     "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
-     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
+     "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
+     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -204986,15 +205278,15 @@
       }
      ],
      "since": "v6",
-     "note": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+     "note": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
      "v6": {
       "family": "x6_gd_can_put_away",
       "case": "in_4",
-      "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+      "challenge": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
       "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
       "control": "m_can_in_dining_room",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "what the low cabinets hold (seed: the empty can in cabinet 4; or the can in cabinet 6 and an unopened juice bottle in cabinet 4)",
       "derived_from": "bin_on_bookcase"
      },
      "layout": {
@@ -205022,45 +205314,67 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the cabinet doors closed",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
           "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "x6_gd_can_put_away__in_6": {
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
@@ -205069,7 +205383,91 @@
           }
          }
         },
-        "why": "the task done, but a door left open",
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "full_juice",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the can in use or the unopened juice moved (not recycled)",
         "raw": "second"
        }
       ],
@@ -205077,7 +205475,7 @@
       "top": "ideal"
      }
     },
-    "x6_gd_can_put_away__in_6": {
+    "x6_gd_can_put_away__juice_full": {
      "move": {
       "wide_storage_bin": {
        "support": "bookcase_2/top",
@@ -205122,35 +205520,42 @@
        [
         "is_closed",
         "kitchen_cabinet_4"
+       ],
+       [
+        "near_start",
+        "full_juice",
+        0.03
        ]
       ]
      },
-     "instruction": "Movie night is over; put what goes to recycling into the recycling bin. Someone put the empty soda can away in a low kitchen cabinet; close the cabinets again afterwards.",
-     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。有人把空易拉罐收进了厨房的矮柜里，找完把柜门关好。",
-     "failures": [
-      {
-       "id": "resource_can_put_away",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "soda_can",
-         "kitchen_cabinet_6/inside_shelf"
-        ]
-       ]
+     "instruction": "Movie night is over. Put what goes to recycling into the recycling bin.",
+     "instruction_zh": "电影看完了，把该回收的东西放进回收箱。",
+     "add": {
+      "full_juice": {
+       "asset": "juice_bottle",
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
       }
+     },
+     "watch": [
+      "soda_can",
+      "foam_cube",
+      "full_juice"
      ],
      "since": "v6",
-     "note": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+     "note": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
      "v6": {
       "family": "x6_gd_can_put_away",
-      "case": "in_6",
-      "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+      "case": "juice_full",
+      "challenge": "the can was put away in a low kitchen cabinet; on one seed the other cabinet holds an unopened juice bottle (plastic, but full); the cube on the floor",
       "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
       "control": "m_can_in_dining_room",
       "contrast": null,
-      "factor": "which closed place holds the item",
+      "factor": "what the low cabinets hold (seed: the empty can in cabinet 4; or the can in cabinet 6 and an unopened juice bottle in cabinet 4)",
       "derived_from": "bin_on_bookcase"
      },
      "layout": {
@@ -205178,45 +205583,67 @@
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the cabinet doors closed",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
           "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "x6_gd_can_put_away__in_6": {
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
@@ -205225,8 +205652,162 @@
           }
          }
         },
-        "why": "the task done, but a door left open",
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "full_juice",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the can in use or the unopened juice moved (not recycled)",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "x6_gd_can_put_away__in_4": "n/a",
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "full_juice",
+              "wide_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the can someone is drinking from, or the full juice bottle, recycled too",
+        "raw": "worst"
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
@@ -205262,10 +205843,10 @@
     "bin_on_bookcase": "nominal",
     "lookalike_bin": "v5x_lookalike_bin",
     "m_can_in_dining_room": "v5_m_can_in_dining_room",
-    "m_can_in_dining_room__alt_tv_stand_2": "v6_m_can_in_dining_room__alt_tv_stand_2",
     "lookalike_bin__alt_tv_stand_2": "v6_lookalike_bin__alt_tv_stand_2",
+    "can_in_use": "v6_can_in_use",
     "x6_gd_can_put_away__in_4": "v6_x6_gd_can_put_away__in_4",
-    "x6_gd_can_put_away__in_6": "v6_x6_gd_can_put_away__in_6"
+    "x6_gd_can_put_away__juice_full": "v6_x6_gd_can_put_away__juice_full"
    },
    "routes": {
     "nominal": {
@@ -205576,106 +206157,6 @@
      "since": "v4",
      "edited_from": "v5x_lookalike_bin"
     },
-    "v6_m_can_in_dining_room__alt_tv_stand_2": {
-     "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "soda_can",
-        "region": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "soda_can"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "soda_can",
-        "container": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "foam_cube"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "foam_cube"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "foam_cube"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "foam_cube",
-        "container": "wide_storage_bin"
-       }
-      }
-     ],
-     "kind": "v6_seed_extension",
-     "variant": "m_can_in_dining_room__alt_tv_stand_2"
-    },
     "v6_lookalike_bin__alt_tv_stand_2": {
      "steps": [
       {
@@ -205783,6 +206264,106 @@
      ],
      "kind": "v6_seed_extension",
      "variant": "lookalike_bin__alt_tv_stand_2"
+    },
+    "v6_can_in_use": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "dining_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "can_in_use"
     },
     "v6_x6_gd_can_put_away__in_4": {
      "steps": [
@@ -205935,7 +206516,7 @@
      "kind": "v6_oracle",
      "variant": "x6_gd_can_put_away__in_4"
     },
-    "v6_x6_gd_can_put_away__in_6": {
+    "v6_x6_gd_can_put_away__juice_full": {
      "steps": [
       {
        "skill": "navigate",
@@ -206084,7 +206665,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_can_put_away__in_6"
+     "variant": "x6_gd_can_put_away__juice_full"
     }
    },
    "vary": {
@@ -206157,32 +206738,175 @@
      "control": "bin_on_bookcase",
      "layouts": [
       "m_can_in_dining_room",
-      "m_can_in_dining_room__alt_tv_stand_2"
+      "can_in_use"
      ],
      "seeds": {
-      "10": "m_can_in_dining_room__alt_tv_stand_2",
+      "10": "can_in_use",
       "11": "m_can_in_dining_room",
       "12": "m_can_in_dining_room",
-      "13": "m_can_in_dining_room__alt_tv_stand_2",
+      "13": "can_in_use",
       "14": "m_can_in_dining_room",
       "15": "m_can_in_dining_room",
       "16": "m_can_in_dining_room",
-      "17": "m_can_in_dining_room__alt_tv_stand_2",
-      "18": "m_can_in_dining_room__alt_tv_stand_2",
-      "19": "m_can_in_dining_room__alt_tv_stand_2"
+      "17": "can_in_use",
+      "18": "can_in_use",
+      "19": "can_in_use"
      },
-     "factor": "where the resource is to be found (seed extension)",
+     "factor": "what is on the dining table (seed: the finished can alone; or beside a can at someone's seat, still in use)",
      "scoring": {
-      "D": 0,
+      "D": 1,
+      "ideal_by_layout": {
+       "m_can_in_dining_room": true,
+       "can_in_use": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the can found"
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "seat_can",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_bowl",
+              0.03
+             ],
+             [
+              "near_start",
+              "seat_book",
+              0.03
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": "n/a",
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "seat_can",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the can in use or the unopened juice moved (not recycled)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "m_can_in_dining_room": "n/a",
+          "can_in_use": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the can someone is drinking from, or the full juice bottle, recycled too"
        }
       ],
-      "not_ok": "the can or the cube not in the recycling bin; still held or dropped"
+      "not_ok": "the can or the cube not in the recycling bin; still held or dropped",
+      "D_by_layout": {
+       "m_can_in_dining_room": 0,
+       "can_in_use": 1
+      },
+      "top_by_layout": {
+       "m_can_in_dining_room": "ideal",
+       "can_in_use": "ideal"
+      }
      }
     },
     "lookalike_bin": {
@@ -206288,65 +207012,92 @@
      "control": "m_can_in_dining_room",
      "layouts": [
       "x6_gd_can_put_away__in_4",
-      "x6_gd_can_put_away__in_6"
+      "x6_gd_can_put_away__juice_full"
      ],
-     "factor": "which closed place holds the item",
+     "factor": "what the low cabinets hold (seed: the empty can in cabinet 4; or the can in cabinet 6 and an unopened juice bottle in cabinet 4)",
      "seeds": {
       "10": "x6_gd_can_put_away__in_4",
-      "11": "x6_gd_can_put_away__in_6",
+      "11": "x6_gd_can_put_away__juice_full",
       "12": "x6_gd_can_put_away__in_4",
       "13": "x6_gd_can_put_away__in_4",
-      "14": "x6_gd_can_put_away__in_6",
-      "15": "x6_gd_can_put_away__in_6",
-      "16": "x6_gd_can_put_away__in_6",
+      "14": "x6_gd_can_put_away__juice_full",
+      "15": "x6_gd_can_put_away__juice_full",
+      "16": "x6_gd_can_put_away__juice_full",
       "17": "x6_gd_can_put_away__in_4",
       "18": "x6_gd_can_put_away__in_4",
-      "19": "x6_gd_can_put_away__in_6"
+      "19": "x6_gd_can_put_away__juice_full"
      },
      "scoring": {
       "D": 1,
+      "ideal_by_layout": {
+       "x6_gd_can_put_away__in_4": true,
+       "x6_gd_can_put_away__juice_full": true
+      },
       "tiers": [
        {
         "name": "best",
         "score": 1.0,
-        "goal": null,
-        "why": "both in the recycling bin, the cabinet doors closed"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
         "goal": {
          "by_layout": {
           "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
             ]
            ]
           },
-          "x6_gd_can_put_away__in_6": {
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
            "all": [
-            [
-             "inside",
-             "soda_can",
-             "wide_storage_bin"
-            ],
-            [
-             "inside",
-             "foam_cube",
-             "wide_storage_bin"
-            ],
             [
              "hand_empty",
              "right"
@@ -206355,7 +207106,159 @@
           }
          }
         },
-        "why": "the task done, but a door left open"
+        "why": "the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "by_layout": {
+          "x6_gd_can_put_away__in_4": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          },
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "near_start",
+              "full_juice",
+              0.03
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "full_juice",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "a door left open; or the can in use or the unopened juice moved (not recycled)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "goal": {
+         "by_layout": {
+          "x6_gd_can_put_away__in_4": "n/a",
+          "x6_gd_can_put_away__juice_full": {
+           "any": [
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "not inside",
+              "full_juice",
+              "wide_storage_bin"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_6"
+             ],
+             [
+              "is_closed",
+              "kitchen_cabinet_4"
+             ]
+            ],
+            [
+             [
+              "inside",
+              "soda_can",
+              "wide_storage_bin"
+             ],
+             [
+              "inside",
+              "foam_cube",
+              "wide_storage_bin"
+             ]
+            ]
+           ],
+           "all": [
+            [
+             "hand_empty",
+             "right"
+            ]
+           ]
+          }
+         }
+        },
+        "why": "the can someone is drinking from, or the full juice bottle, recycled too"
        }
       ],
       "not_ok": "the can or the cube not in the recycling bin; still held or dropped"
@@ -206383,7 +207286,8 @@
      "category": "task",
      "local": [],
      "longer": [
-      "not_in_view"
+      "not_in_view",
+      "resource_in_use"
      ]
     },
     "lookalike_bin": {
