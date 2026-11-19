@@ -7933,22 +7933,22 @@
 {
 "task": "T23_pick_up_dropped",
 "seed": 13,
-"variant": "dropped_out_of_view__no_room_for_plate",
-"route": "v6_dropped_out_of_view__no_room_for_plate",
+"variant": "dropped_out_of_view__no_room_for_lid",
+"route": "v6_dropped_out_of_view__no_room_for_lid",
 "family": "dropped_out_of_view"
 },
 {
 "task": "T23_pick_up_dropped",
 "seed": 14,
-"variant": "dropped_out_of_view__no_room_for_plate",
-"route": "v6_dropped_out_of_view__no_room_for_plate",
+"variant": "dropped_out_of_view__no_room_for_lid",
+"route": "v6_dropped_out_of_view__no_room_for_lid",
 "family": "dropped_out_of_view"
 },
 {
 "task": "T23_pick_up_dropped",
 "seed": 15,
-"variant": "dropped_out_of_view__no_room_for_plate",
-"route": "v6_dropped_out_of_view__no_room_for_plate",
+"variant": "dropped_out_of_view__no_room_for_lid",
+"route": "v6_dropped_out_of_view__no_room_for_lid",
 "family": "dropped_out_of_view"
 },
 {
@@ -7961,8 +7961,8 @@
 {
 "task": "T23_pick_up_dropped",
 "seed": 17,
-"variant": "dropped_out_of_view__no_room_for_plate",
-"route": "v6_dropped_out_of_view__no_room_for_plate",
+"variant": "dropped_out_of_view__no_room_for_lid",
+"route": "v6_dropped_out_of_view__no_room_for_lid",
 "family": "dropped_out_of_view"
 },
 {
@@ -7975,8 +7975,8 @@
 {
 "task": "T23_pick_up_dropped",
 "seed": 19,
-"variant": "dropped_out_of_view__no_room_for_plate",
-"route": "v6_dropped_out_of_view__no_room_for_plate",
+"variant": "dropped_out_of_view__no_room_for_lid",
+"route": "v6_dropped_out_of_view__no_room_for_lid",
 "family": "dropped_out_of_view"
 },
 {

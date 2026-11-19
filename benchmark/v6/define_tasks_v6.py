@@ -1288,10 +1288,14 @@ def T06(t):
         else:
             goal = {"any": [[["on", A, sup]] for sup in BED_SHELVES], "all": [*kept, ["hand_empty", "right"]]}
             tail = [nav(BED), look(BED), place(A, BED_SHELVES[0], [2.10, -4.88])]
+        # 11-19 (physics side): shelf_1 has the top board 27 cm above it; a top pinch holds the palm above the block
+        # and lifts out along the gripper axis into that board, so the block is taken by its side pinch for the
+        # shelf (docs/skills/pick.md; as T17 lid_away into cabinet_4, 29.5 cm, which failed with the top pinch)
+        grip = pick(A) if case == "boxes_middle" else pick(A, grasp="side")
         bed_cases[case] = dict(
             add={n: {"asset": a, **P(BED, x, y, yaw)} for n, (a, x, y, yaw) in things.items()},
             goal=goal, watch=[A, B, *names],
-            route=[look(ISL), nav(A), pick(A), S("explore_room", room="bedroom_0_1")] + tail)
+            route=[look(ISL), nav(A), grip, S("explore_room", room="bedroom_0_1")] + tail)
     return {
         "display_row": dict(
             base="free", control="free", conditions=["arrangement", "infeasible_fallback"],
@@ -2088,7 +2092,9 @@ def T13(t):
         for k in order:
             x = use[k]
             if k == "bowl" and "plate" in kinds:
-                route += [nav(x), pick(x), nav(TABLE), S("stack", object=x, base=use["plate"])]
+                # 11-19 (physics side): stack needs base_near(plate) (1.3 m); navigate(TABLE) parks at the table's
+                # nearest stand-off, which was 2.64 m from the plate at the far corner (v6full_1116, seed 10)
+                route += [nav(x), pick(x), nav(use["plate"]), S("stack", object=x, base=use["plate"])]
             else:
                 route += fetch(x, B_SP, W, *pattern[k])
         news, refs = [use[k] for k in order], [f"example_{k}" for k in order]

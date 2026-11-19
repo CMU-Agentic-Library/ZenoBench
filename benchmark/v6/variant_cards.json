@@ -23634,7 +23634,7 @@
   "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/dropped_out_of_view__no_room_for_plate": {
+ "T23_pick_up_dropped/dropped_out_of_view__no_room_for_lid": {
   "variant": "dropped_out_of_view",
   "category": "task",
   "seeds": [
@@ -23677,12 +23677,14 @@
     "counter_plate_w3",
     "counter_plate_w5",
     "counter_plate_w7",
-    "dropped_plate"
+    "dropped_lid"
    ],
    "removed": [
     "cup_counter_b",
+    "handled_cooking_pot",
     "plate_counter_a",
     "plate_counter_b",
+    "pot_lid",
     "spoon_counter"
    ],
    "conditions": [
@@ -23696,7 +23698,7 @@
    "all": [
     [
      "on_any",
-     "dropped_plate",
+     "dropped_lid",
      [
       "kitchen_counter_1/top",
       "kitchen_island/top"
@@ -23709,7 +23711,7 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_out_of_view__no_room_for_plate",
+  "oracle_route": "v6_dropped_out_of_view__no_room_for_lid",
   "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
   "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -23752,7 +23754,7 @@
     [
      "on",
      "dropped_cup",
-     "kitchen_cabinet_4/inside_shelf"
+     "kitchen_cabinet_4/top"
     ],
     [
      "is_closed",
@@ -23775,8 +23777,8 @@
   },
   "control": "spoon_on_floor",
   "oracle_route": "v6_only_this_room__cabinet_room",
-  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
-  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
+  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
+  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet's top full -- on a worktop or in a low cabinet",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T23_pick_up_dropped/only_this_room__cabinet_full": {
@@ -23847,8 +23849,8 @@
   },
   "control": "spoon_on_floor",
   "oracle_route": "v6_only_this_room__cabinet_full",
-  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
-  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
+  "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
+  "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet's top full -- on a worktop or in a low cabinet",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T23_pick_up_dropped/dropped_in_two_rooms__shelf_room": {
@@ -23871,7 +23873,7 @@
    ],
    "moved": [],
    "added": [
-    "dropped_book",
+    "dropped_bear",
     "dropped_spoon",
     "kid_book_shelf_1_1a",
     "kid_book_shelf_1_2a",
@@ -23900,11 +23902,12 @@
     ],
     [
      "on_any",
-     "dropped_book",
+     "dropped_bear",
      [
       "bookcase_2/shelf_0",
       "bookcase_2/shelf_1",
-      "bookcase_2/top"
+      "bookcase_2/top",
+      "mattress_1/top"
      ]
     ],
     [
@@ -23915,8 +23918,8 @@
   },
   "control": "spoon_on_floor",
   "oracle_route": "v6_dropped_in_two_rooms__shelf_room",
-  "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
-  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
+  "challenge": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
+  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the bear to his bookcase or his bed -- or, when the bookcase is full, another bookcase or a desk",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T23_pick_up_dropped/dropped_in_two_rooms__shelf_full": {
@@ -23939,7 +23942,7 @@
    ],
    "moved": [],
    "added": [
-    "dropped_book",
+    "dropped_bear",
     "dropped_spoon",
     "kid_book_shelf_0_1a",
     "kid_book_shelf_0_1b",
@@ -23988,7 +23991,7 @@
     ],
     [
      "on_any",
-     "dropped_book",
+     "dropped_bear",
      [
       "bookcase_1/shelf_0",
       "bookcase_1/shelf_1",
@@ -24027,7 +24030,8 @@
       "large_shelf_6/shelf_3",
       "large_shelf_6/top",
       "desk_1/top",
-      "desk_3/top"
+      "desk_3/top",
+      "mattress_1/top"
      ]
     ],
     [
@@ -24038,8 +24042,8 @@
   },
   "control": "spoon_on_floor",
   "oracle_route": "v6_dropped_in_two_rooms__shelf_full",
-  "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
-  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
+  "challenge": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
+  "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the bear to his bookcase or his bed -- or, when the bookcase is full, another bookcase or a desk",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T24_snack_for_kid/apple_on_table": {
@@ -26431,7 +26435,7 @@
   "control": "car_in_living_room",
   "oracle_route": "v6_bear_to_bed__top_free",
   "challenge": "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
-  "rationale": "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), not into the toy basket",
+  "rationale": "at bedtime the bear goes to his bed or the bookcase by it -- when its top is covered, elsewhere on his bookcases (his other bookcase's top), the books left -- not into the toy basket",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T26_kids_things_to_room/bear_to_bed__top_covered": {
@@ -26491,7 +26495,7 @@
   "control": "car_in_living_room",
   "oracle_route": "v6_bear_to_bed__top_covered",
   "challenge": "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
-  "rationale": "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), not into the toy basket",
+  "rationale": "at bedtime the bear goes to his bed or the bookcase by it -- when its top is covered, elsewhere on his bookcases (his other bookcase's top), the books left -- not into the toy basket",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T26_kids_things_to_room/two_bedrooms__room_east": {
@@ -27491,7 +27495,7 @@
   "control": "cup_on_counter",
   "oracle_route": "v6_cup_out_of_view__cup_found",
   "challenge": "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
-  "rationale": "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is covered, the books left",
+  "rationale": "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is covered, the books left",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T28_cup_to_bedside/cup_out_of_view__side_covered": {
@@ -27551,7 +27555,7 @@
   "control": "cup_on_counter",
   "oracle_route": "v6_cup_out_of_view__side_covered",
   "challenge": "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
-  "rationale": "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is covered, the books left",
+  "rationale": "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is covered, the books left",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T28_cup_to_bedside/already_there__his_cup": {

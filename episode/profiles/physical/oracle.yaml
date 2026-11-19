@@ -4,7 +4,6 @@ execution:
   nested_repair: true
   auto_recovery: true
   slide_to_edge: true
-  edge_pinch_upright_waist: true
 observation:
   cameras: [head]
   image_size: [480, 640]

@@ -180,7 +180,7 @@ def test_no_automatic_recovery_configuration(gated):
     rig, obs, runner = gated
     assert runner.auto_repair is False
     assert {"grasp_clearance", "edge_overhang"} <= runner.advisory
-    assert "policy_045" in runner.skip_steps[("pick", "flat_edge")]
+    assert not runner.skip_steps           # pick slides a flat object to the edge itself (slide_to_edge on)
     assert rig.auto_recovery is False and rig.occlusion is True and rig.static_explore is True
 
 

@@ -6,12 +6,10 @@ execution:
   gate: true
   nested_repair: false
   auto_recovery: false
-  slide_to_edge: false
   advisory: [grasp_clearance, edge_overhang]
   mask_feedback: true
   occlusion: true
   static_explore: true
-  edge_pinch_upright_waist: true
   sticky_hands: carry
 observation:
   cameras: [head]

@@ -66,3 +66,81 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 
 - 摆放或目标不合理（物理上做不到、被挤掉、够不着）：告诉我任务、摆法和 seed，我在 bench 这边改布局。
 - 技能本身的问题：照旧记进 `SKILL_ISSUES_zh.md` 和 `SKILL_FIX_LIST.md`。
+
+## 6. 物理侧回复（muqingj，11-19）
+
+合并进 `remove-handcoded-motion` 后，我按现在的 skill contract（`skill_library/definitions.py`）和 `docs/skills/` 里对调用方的要求，把 326 条参考路线重放了一遍。`oracle_check.py` 照样 326/326，但有几条前提它没查（见 6.5），所以多查出下面这些。**都还没跑仿真。**
+
+### 6.1 我已经改的三处路线
+
+改在生成脚本里（`define_tasks_v6.py`：T06、T13；`new_tasks_v6.py`：T23），重新生成会保留。
+
+| 任务 / 摆法 | seed | 改了什么 | 原因 |
+|---|---|---|---|
+| T06 `seen_from_bed__bookcase_full` | 10 12 15 16 19 | `pick(wooden_block_a)` 改成 `pick(wooden_block_a, grasp="side")` | 积木要放进 `bookcase_3/shelf_1`，上面 27 cm 是隔板。顶部捏取时手掌在积木上方，放下后沿夹爪轴往上抽手会撞隔板，所以要侧面捏取（`docs/skills/pick.md`；和 T17 `lid_away` 放 4 号柜一样） |
+| T23 `by_kind__bin_full` | 10 11 14 17 19 | 放托盘前加 `navigate(spare_tray)` | place 要求 `base_near(托盘)`：底盘中心离托盘 1.3 m 以内。`navigate(tv_stand_2/top)` 停在 1.7 m 长的电视柜离来路最近的地方，从西头来离东头的托盘约 1.3 m，正好卡在边上 |
+| T23 `belongs_on_floor__no_toy_box` | 10 11 16 18 19 | 同上 | 同上 |
+| T23 `belongs_on_floor__bin_full` | 12 13 14 15 17 | 同上 | 同上 |
+| T13 `copy_the_setting__plate_bowl_mug_left` | 10 14 18 | stack 前的 `navigate(dining_table_2/top)` 改成 `navigate(plate_counter_a)` | stack 要求 `base_near(盘子)`。11-16 全量运行 seed 10 就停在这一步：`base_near(place=plate_counter_a) is false (distance 2.64 m)`，盘子在桌子远端 |
+
+- 重新生成了 `tasks.json`、`ROUTES.md`、`SUCCESS_ROUTES_zh.md`、`ORACLE_CHECK.json`、`PLAN_DEPENDENCE.json`、`STATIC.json`。
+- `report_v6.py` 在我这边跑不完（要读 `benchmark/runs/v5_fix3` 的结果）。它写的其余文件和这三处改动无关，我没动。
+- 检查：静态 1550/1550，`oracle_check` 326/326，`pytest benchmark/v6/tests failure_injection` 685 个通过（1 个 xfail），`define_tasks_v6.py --check` 通过。
+
+### 6.2 要改布局：用现在的技能做不成（4 个摆法，20 个 episode）
+
+| 任务 / 摆法 | seed | 问题 | 建议 |
+|---|---|---|---|
+| T09 `tomato_in_fridge__big_tomato` | 11 14 15 17 18 | `big_tomato` 宽 7.5 cm，超过捏取宽度上限 6.8 cm（`tools/prepare_assets.py` 的 `PINCH_MAX`：夹爪最大开口 8 cm，两边各留 6 mm），所以 `annotations/assets.json` 里它的 `grasps` 是空的。第 9 步 pick 直接失败（`has no Zeno-feasible grasp annotation`） | 换成宽度不超过约 6.5 cm 的东西。原来冰箱里的 `fridge_tomato`（顶部捏取）11-15 从冰箱里拿成功过 |
+| T23 `dropped_out_of_view__no_room_for_plate` | 13 14 15 17 19 | 盘子掉在地上。盘子只有厚度捏取（扁平物体），pick 的 contract 写明地上的扁平物体不能 pick：`floor_top` 路径要顶部捏取，`flat_edge` 要先把东西推到支撑面边上 | 掉在地上的换成有顶部捏取、又放不进台面空隙的东西（比如擀面杖 22 cm、锅盖 25 cm），或者盘子不放在地上 |
+| T23 `dropped_in_two_rooms__shelf_room` | 10 12 15 18 19 | 书掉在书房地上，原因同上（书也是扁平物体） | 换成有顶部捏取的东西，或者书不放在地上 |
+| T23 `dropped_in_two_rooms__shelf_full` | 11 13 14 16 17 | 同上 | 同上 |
+
+### 6.3 很可能做不成：放进上面有隔板的层板（3 个摆法，15 个 episode）
+
+- 顶部捏取、杯沿捏取时，手掌都在物体上方。place 竖直放下以后沿夹爪轴（竖直向上）抽手，会撞上面的隔板。
+- 依据：T17 的 4 cm 积木用顶部捏取放 4 号柜层板（上方 29.5 cm）就是这样失败的，改成侧面捏取后成功。11-14 T04、T25 从 4 号柜用杯沿捏取拿杯子，600 个候选全都顶到柜顶，放进去是同一个问题。
+- 下面三个物体都没有侧面捏取，没法像 T06 那样改抓法：小熊宽 10.6 cm，超过夹爪开口；塑料杯只有杯沿捏取。
+- 注意：`bookcase_3/shelf_1` 到上面隔板的标注净高是 27.3 cm，第 3 节写的是约 29 cm。
+
+| 任务 / 摆法 | seed | 放什么、放到哪 | 物体上方还剩 |
+|---|---|---|---|
+| T26 `bear_to_bed__top_covered` | 14 15 16 17 19 | 小熊（15 cm 高，只有顶部捏取）放 `bookcase_3/shelf_1` | 约 12 cm |
+| T28 `cup_out_of_view__side_covered` | 10 11 13 14 19 | 塑料杯（9.5 cm 高，杯沿捏取）放 `bookcase_3/shelf_1` | 约 18 cm |
+| T23 `only_this_room__cabinet_room` | 11 14 15 17 18 | 塑料杯（杯沿捏取）放 `kitchen_cabinet_4/inside_shelf`（净高 29.5 cm） | 约 20 cm |
+
+建议：这几个的去处换成上面敞开的面（柜顶、书架顶、桌面）；或者中间层只给有侧面捏取的东西用（木积木、易拉罐、果汁瓶、零食盒）。这组的判断只依据 T17，没跑仿真。你要是想保留，我先跑这三个，看结果再定。
+
+### 6.4 以前没跑过的取放组合（路线没问题，跑完再告诉你）
+
+- T23 `only_this_room__cabinet_room`、`only_this_room__cabinet_full`：从地上用杯沿捏取塑料杯。以前地上捡的都是顶部捏取的东西（勺子、积木、小车、泡沫块）。
+- T30 `bowl_put_away__mug_inside`：从 4 号柜层板拿马克杯（杯沿或把手，杯子上方约 17.5 cm）。11-14 看到 T04 的杯子在 4 号柜里用杯沿捏取会顶到柜顶，这个可能也一样。
+- T04 `x6_gd_cup_in_cabinets__plastic_only`：从 6 号柜层板拿塑料杯。
+- T05 `x6_gd_pen_or_pencil_cabinets__pen_in_use`：从 6 号柜层板拿铅笔。
+
+### 6.5 `oracle_check.py` 没查的几条（建议加进符号检查）
+
+- **`base_near` 要按距离算。** navigate 停在目的地外 0.45–1.0 m 的一圈上（`base_motion.STANDOFF_RING`），取离来路最近的点；之后的 pick / place / stack / open 要求底盘中心离操作对象 1.3 m 以内（`predicates.NEAR_M`）。现在的判法是"去过同一件家具就算近"，长桌、长电视柜从一头到另一头会漏掉，上面 T13、T23 就是这种。
+- **地上的扁平物体没有 pick 路径**：只有厚度捏取的东西，比如书、本子、盘子、饭盒。
+- **没有抓取标注的物体 pick 不了**：`assets.json` 里 `grasps` 为空的，现在是 `big_tomato` 和 `cereal_box`。
+- **放进上面有隔板的层板**：顶部捏取或杯沿捏取时，物体上方要留够手的高度；有侧面捏取的物体在路线里写 `pick(..., grasp="side")`。
+- （可选，不改也没错）`close_hands_free` 假定只有微波炉能拿着东西关门。11-12 起 close 有 `loaded` 路径：右手拿着东西时左手推门（`docs/skills/close.md`）。现在的路线先放下再回来关，只是多走几步。
+
+我这边的检查脚本就是按上面这几条重放路线的。T13 那一步是它先算出来、再和 11-16 的运行结果对上的。你需要的话，我把脚本整理进仓库。
+
+## 7. bench 侧回复（zihan，11-19）：6.2 和 6.3 的 7 个摆法都改了
+
+都按 6.2、6.3 的建议改，改在生成脚本里（`define_tasks_v6.py` 没动，T23/T26/T28 改在 `new_tasks_v6.py`），派生文件全部重新生成。检查：静态 1550/1550，`oracle_check` 326/326，`pytest benchmark/v6/tests failure_injection` 685 个通过（1 个 xfail），`report_v6.py` 在我这边能跑完，也重跑了。**没跑仿真。**
+
+| 任务 / 摆法 | 改了什么 |
+|---|---|
+| T09 `tomato_in_fridge__big_tomato` | 换物体不如改尺寸：`big_tomato` 从 7.5×7.5×6.5 cm 缩到 6.2×6.2×5.4 cm（`assets/custom_assets.json` 的 `target_size`，`prepare_assets.py --only big_tomato` 和 `collider_hulls.py` 重算，USD 用 `patch_usd` 改了缩放），现在有顶部捏取（宽 6.17 cm）。还是小番茄（2.8 cm）的两倍多，看得出是大番茄。路线没变 |
+| T23 `dropped_out_of_view__no_room_for_plate` → `__no_room_for_lid` | 掉的盘子换成锅盖（25 cm，顶部捏取）。按台面空隙算过：勺子、擀面杖都还放得下，盘子和锅盖放不下，所以没用擀面杖。这个摆法把岛台上原来的锅和锅盖去掉（家里只有一个锅盖）。参考路线放岛台 [7.40, 1.70] |
+| T23 `dropped_in_two_rooms__shelf_room` / `__shelf_full` | 掉在书房地上的书换成小熊（`dropped_bear`，10.6×16 cm，顶部捏取；书堆之间 8 cm 的空隙也放不下）。床也算对。参考路线都放书架顶：shelf_room 放 `bookcase_2/top`，shelf_full 放 `bookcase_3/top`（原来是书桌） |
+| T23 `only_this_room__cabinet_room` / `__cabinet_full` | 他的杯子从 4 号柜里面改放到 **4 号柜柜顶**（`kitchen_cabinet_4/top`）；full 时两个锅和三个杯子也摆在柜顶。参考路线不再开关柜门：room 放柜顶，full 放小厨房台面。柜子里面、6 号柜都算次一档（full 时和台面同档） |
+| T26 `bear_to_bed__top_covered` | 参考路线改放他另一个书架的顶（`bookcase_2/top` [1.12, -0.43]）。床、床边书架任一层、他另一个书架任一层都算最好，放进玩具筐次一档 |
+| T28 `cup_out_of_view__side_covered` | 参考路线改放书桌（`desk_1/top` [-0.35, -5.95]，原来就在可接受的范围里）。成功条件没变 |
+
+- 6.4 里的 T23 `only_this_room` 两个摆法还是从地上用杯沿捏取塑料杯，请照常跑。
+- 要重跑的放在 `batches/physics_1119_layouts.json`，一共 63 个 episode：上面 8 个摆法，加上你 6.1 改的 T06、T23×3、T13。
+- `batches/physics_1118_changed.json` 里还是旧名 `no_room_for_plate`，以 `physics_1119_layouts.json` 为准。

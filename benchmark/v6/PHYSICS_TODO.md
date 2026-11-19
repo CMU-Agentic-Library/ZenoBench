@@ -121,7 +121,7 @@
 | T23 | by_kind | task | 0/0 of 10 | - |
 | T23 | belongs_on_floor | task | 0/0 of 10 | - |
 | T23 | dropped_out_of_view | task | 0/0 of 10 | - |
-| T23 | only_this_room | task | 0/0 of 10 | low cabinet doors |
+| T23 | only_this_room | task | 0/0 of 10 | - |
 | T23 | dropped_in_two_rooms | task | 0/0 of 10 | - |
 | T24 | apple_on_table | control | 0/0 of 10 | - |
 | T24 | no_apples_for_him | task | 0/0 of 10 | - |

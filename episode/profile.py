@@ -44,7 +44,6 @@ DEFAULTS = {
         "mask_feedback": False,           # names of never-observed objects -> <unobserved> in results
         "occlusion": False,               # dynamic occlusion in visibility tests
         "static_explore": False,          # explore covers the static layout only
-        "edge_pinch_upright_waist": False,
         "sticky_hands": False,            # false | carry: weld while held | snap: carry + snap a failed pick / place
         "contact_monitor": True,          # log robot links inside the world (zeno_skills/clearance.py); a metric
     },
@@ -205,7 +204,6 @@ def apply_rig_flags(rig, prof):
     rig.auto_recovery = ex["auto_recovery"]
     rig.occlusion = ex["occlusion"]
     rig.static_explore = ex["static_explore"]
-    rig.edge_pinch_upright_waist = ex["edge_pinch_upright_waist"]
     if getattr(rig, "clear", None) is not None:
         rig.clear.monitor = ex["contact_monitor"]
     rig.sticky = None

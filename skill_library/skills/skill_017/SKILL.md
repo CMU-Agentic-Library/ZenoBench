@@ -115,7 +115,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 1. `policy_045($object)`
 2. `policy_013($object)`
-- Slide the flat item until it overhangs a free edge, then pinch the overhang. In the benchmark profiles the slide is left out: call expose first, then pick takes flat_overhang_ready.
+- Slide the flat item until it overhangs a free edge, then pinch the overhang. After expose the overhang exists already and pick takes flat_overhang_ready.
 
 ### `rect_rim` — when 'rim_pinch_rect' in object.grasp_types
 
