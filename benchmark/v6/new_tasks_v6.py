@@ -418,6 +418,9 @@ def t23():
     bin_stays = [["fully_inside", f"bin_block_{i}", BIN] for i in range(1, 25)]
     tray = {TRAY: on("shallow_sorting_tray", TV, *TRAY_AT)}
     find_tv = [S("explore_room", room="living_room_0_0"), nav(TV), look(TV)]
+    # 11-19 (physics side): place into the tray needs base_near(tray) (1.3 m); navigate(TV) parks at the 1.7 m
+    # stand's nearest stand-off, which from its west end is about 1.3 m from the tray at the east end
+    into_tray = [nav(TRAY), place(BLK, TRAY)]
     off_floor = lambda x: [["not on_floor", x]]  # noqa: E731
 
     # by_kind: the block goes where the kid's toys are kept -- the toy box (ideal); or (11-17) his small toy bin,
@@ -505,7 +508,7 @@ def t23():
              "bin_full": dict(add={**spoon, BLK: block_k, **full_bin, **tray}, watch=[SP, BLK, BIN, TRAY],
                               goal={"all": sgoal + [["inside", BLK, TRAY], *bin_stays, H]},
                               route=[look(COUNTER)] + back + [nav(BLK), pick(BLK)] + find_tv
-                              + [S("measure", object=BIN), place(BLK, TRAY)])}),
+                              + [S("measure", object=BIN)] + into_tray)}),
         "belongs_on_floor": fam(
             "spoon_on_floor", ["goal_items_unstated", "container_absent"],
             "what holds the kid's toys (seed: no toy box, a sorting tray on the TV stand; or his toy bin there, "
@@ -516,11 +519,11 @@ def t23():
             "laundry basket next to it",
             {"no_toy_box": dict(add={**blk_f, **floor_things, **tray}, watch=[BLK, BB, LB, TRAY],
                                 goal={"all": [["inside", BLK, TRAY], *stay, H]},
-                                route=[nav(BLK), look(BLK), pick(BLK)] + find_tv + [place(BLK, TRAY)]),
+                                route=[nav(BLK), look(BLK), pick(BLK)] + find_tv + into_tray),
              "bin_full": dict(add={**blk_f, **floor_things, **full_bin, **tray}, watch=[BLK, BB, LB, BIN, TRAY],
                               goal={"all": [["inside", BLK, TRAY], *bin_stays, *stay, H]},
                               route=[nav(BLK), look(BLK), pick(BLK)] + find_tv
-                              + [S("measure", object=BIN), place(BLK, TRAY)])}),
+                              + [S("measure", object=BIN)] + into_tray)}),
         "dropped_out_of_view": fam(
             "spoon_on_floor", ["not_in_view", "storage_place"],
             "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or a "

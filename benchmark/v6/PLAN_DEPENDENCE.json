@@ -55,8 +55,8 @@
    "passes": 130,
    "goal_not_met": 181,
    "not_observed": 24,
-   "argument_mismatch": 69,
-   "resource_missing": 156
+   "argument_mismatch": 68,
+   "resource_missing": 157
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -4577,7 +4577,7 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "by_kind__bin_full": "argument_mismatch"
+    "by_kind__bin_full": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -4585,7 +4585,7 @@
    "task": "T23_pick_up_dropped",
    "variant": "by_kind",
    "layout": "by_kind__bin_full",
-   "steps": 15,
+   "steps": 16,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",
@@ -4598,7 +4598,7 @@
    "task": "T23_pick_up_dropped",
    "variant": "belongs_on_floor",
    "layout": "belongs_on_floor__no_toy_box",
-   "steps": 7,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
@@ -4611,7 +4611,7 @@
    "task": "T23_pick_up_dropped",
    "variant": "belongs_on_floor",
    "layout": "belongs_on_floor__bin_full",
-   "steps": 8,
+   "steps": 9,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
@@ -9955,7 +9955,7 @@
    "start_room": "kitchen_0_1",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "argument_mismatch",
+   "route_b_on_a": "resource_missing",
    "hidden_state_branch": true
   },
   {

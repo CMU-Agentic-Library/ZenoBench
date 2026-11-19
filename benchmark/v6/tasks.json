@@ -124009,7 +124009,8 @@
       {
        "skill": "pick",
        "args": {
-        "object": "wooden_block_a"
+        "object": "wooden_block_a",
+        "grasp": "side"
        }
       },
       {
@@ -190749,7 +190750,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/top"
+        "destination": "plate_counter_a"
        }
       },
       {
@@ -238344,6 +238345,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "dropped_block",
@@ -238390,6 +238397,12 @@
        "skill": "look",
        "args": {
         "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
        }
       },
       {
@@ -238445,6 +238458,12 @@
        "skill": "measure",
        "args": {
         "object": "toy_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
        }
       },
       {
