@@ -366,8 +366,8 @@ def counter_dishes(cups_between):
     """dropped_out_of_view: the small kitchen's counter (x -0.52..0.25, y 6.97..9.44; the base reaches it from the
     west edge and both ends) covered where it can be reached: a row of plates at each end, plates along the west
     edge 3 cm apart and a row of bowls behind them 1.7 cm apart (no 4 cm spoon fits anywhere).  ``cups_between``:
-    every other plate of the west row a cup instead -- 7 cm gaps beside each cup: a spoon fits, a 25 cm plate does
-    not"""
+    every other plate of the west row a cup instead -- 7 cm gaps beside each cup: a spoon fits, a 25 cm plate or
+    pot lid does not"""
     out = {}
     for k, x in enumerate((-0.398, -0.148, 0.100)):
         out[f"counter_plate_s{k + 1}"] = on("breakfast_plate", COUNTER, x, 7.094)
@@ -445,9 +445,11 @@ def t23():
         [(stay, 1), (on_floor, 1)])
 
     # dropped_out_of_view (11-17): the spoon slid into the dining room next door and the small kitchen's counter
-    # is covered with dishes (taken); or a plate slid there and the counter's gaps fit a spoon, not a plate
-    # (capacity): another worktop (the island, the other kitchen's counter) is the best
-    PL = "dropped_plate"
+    # is covered with dishes (taken); or (11-19) the pot lid slid there and the counter's gaps fit a spoon, not the
+    # 25 cm lid (capacity): another worktop (the island, the other kitchen's counter) is the best.  Not a plate any
+    # more: a plate has only its thickness pinch, and pick has no path for a flat thing on the floor (muqingj
+    # 11-19); the lid is taken by its knob.  The island's pot and lid are removed in that seed (one lid in the house)
+    PL = "dropped_lid"
     dishes_a, dishes_b = counter_dishes(False), counter_dishes(True)
     counter_base = ["plate_counter_a", "plate_counter_b", "cup_counter_b", "spoon_counter"]
 
@@ -456,42 +458,49 @@ def t23():
                            ([["on", x, COUNTER], ["clear_of", x, sorted(dishes), 0.0]], 1),
                            ([["on", x, COUNTER]], 2)])
     LT["dropped_out_of_view__counter_full"] = out_of_view_tiers(SP, dishes_a)
-    LT["dropped_out_of_view__no_room_for_plate"] = out_of_view_tiers(PL, dishes_b)
+    LT["dropped_out_of_view__no_room_for_lid"] = out_of_view_tiers(PL, dishes_b)
 
-    # only_this_room (11-17): "the kitchen floor"; the kid's plastic cup fell there, his cups are kept in low
-    # cabinet 4: with room (ideal); or cabinet 4 full -- two pots and three of his cups (capacity): the other low
-    # cabinet or a worktop.  The toy car on the living-room floor is not in the kitchen and stays
+    # only_this_room (11-17): "the kitchen floor"; the kid's plastic cup fell there, his cups are kept on low
+    # cabinet 4: with room (ideal); or cabinet 4's top full -- two pots and three of his cups (capacity): a
+    # worktop or the other low cabinet.  The toy car on the living-room floor is not in the kitchen and stays.
+    # 11-19 (muqingj): on cabinet 4's top, not on its inside shelf -- a rim-pinched cup put on a shelf with a board
+    # 29.5 cm above it lifts the hand out into that board (as T17's top-pinched block did)
     CUP, CAR = "dropped_cup", "living_car"
-    C4S, C6S = f"{C4}/inside_shelf", f"{C6}/inside_shelf"
+    C4S, C6S, C4T = f"{C4}/inside_shelf", f"{C6}/inside_shelf", f"{C4}/top"
     car = {CAR: floor("toy_car", 4.36, 1.68)}
-    kid_cups_a = {f"kid_cup_{k + 1}": on("plastic_cup", C4S, x, 0.42) for k, x in enumerate((1.15, 1.26))}
-    full_c4 = {"stored_pot_1": on("soup_pot", C4S, 1.20, 0.42, 90.0), "stored_pot_2": on("soup_pot", C4S, 1.50, 0.42, 90.0),
-               **{f"kid_cup_{k + 1}": on("plastic_cup", C4S, 1.70, y) for k, y in enumerate((0.325, 0.42, 0.515))}}
+    kid_cups_a = {f"kid_cup_{k + 1}": on("plastic_cup", C4T, x, 0.42) for k, x in enumerate((1.15, 1.26))}
+    full_c4 = {"stored_pot_1": on("soup_pot", C4T, 1.20, 0.42, 90.0), "stored_pot_2": on("soup_pot", C4T, 1.50, 0.42, 90.0),
+               **{f"kid_cup_{k + 1}": on("plastic_cup", C4T, 1.70, y) for k, y in enumerate((0.325, 0.42, 0.515))}}
     not_in_pots = [["not inside", CUP, "stored_pot_1"], ["not inside", CUP, "stored_pot_2"]]
     closed = [["is_closed", C4], ["is_closed", C6]]
     car_stays = [["near_start", CAR, 0.03]]
     LT["only_this_room__cabinet_room"] = cost_tiers(
-        [([["on", CUP, C4S]], 0), ([["on", CUP, C6S]], 1), ([["on_any", CUP, WORKTOPS]], 1)],
+        [([["on", CUP, C4T]], 0), ([["on_any", CUP, [C4S, C6S, f"{C6}/top"]]], 1), ([["on_any", CUP, WORKTOPS]], 1)],
         [(closed, 1), (car_stays, 2)])
     LT["only_this_room__cabinet_full"] = cost_tiers(
-        [([["on", CUP, C6S]], 0), ([["on_any", CUP, WORKTOPS]], 0),
-         ([["on", CUP, C4S]] + not_in_pots, 1)], [(closed, 1), (car_stays, 2)])
+        [([["on_any", CUP, [C4S, C6S, f"{C6}/top"]]], 0), ([["on_any", CUP, WORKTOPS]], 0),
+         ([["on", CUP, C4T]] + not_in_pots, 1)], [(closed, 1), (car_stays, 2)])
 
-    # dropped_in_two_rooms (11-17): the spoon on the kitchen floor and the kid's book on the study floor; his
-    # bookcase (bookcase_2) with room (ideal); or every level full, piles of books (capacity): another bookcase or
-    # a desk.  Anywhere else (a table, a kitchen top) is the worst
-    BK = "dropped_book"
+    # dropped_in_two_rooms (11-17): the spoon on the kitchen floor and the kid's teddy bear on the study floor; his
+    # bookcase (bookcase_2) with room (ideal), or his bed; or every level full, piles of books (capacity): another
+    # bookcase or a desk.  Anywhere else (a table, a kitchen top) is the worst.  11-19 (muqingj): a bear, not a
+    # book -- a book has only its thickness pinch and pick has no path for a flat thing on the floor; the bear
+    # (10.6 x 16 cm, top pinch) fits in no gap of the piles either.  The reference puts it on a bookcase's top: a
+    # top-pinched thing set on a level with a board above lifts the hand out into that board
+    BK = "dropped_bear"
+    BED = "mattress_1/top"
     KIDS = ["bookcase_2/shelf_0", "bookcase_2/shelf_1", "bookcase_2/top"]
     OTHER_CASES = [f"bookcase_{i}/{sh}" for i in (1, 3, 4) for sh in ("shelf_0", "shelf_1", "top")] + \
         [f"large_shelf_{i}/shelf_{k}" for i, n in ((1, 5), (2, 4), (3, 4), (4, 5), (5, 4), (6, 4)) for k in range(n)] + \
         ["large_shelf_6/top", DESK, DESK3]
     books_a, books_b = shelf_books([("bookcase_2/shelf_1", 1)]), shelf_books([(lv, 2) for lv in KIDS])
     LT["dropped_in_two_rooms__shelf_room"] = cost_tiers(
-        [(sgoal + [["on_any", BK, KIDS]], 0), (sgoal + [["on_any", BK, OTHER_CASES]], 1), (sgoal + off_floor(BK), 2)])
+        [(sgoal + [["on_any", BK, KIDS + [BED]]], 0), (sgoal + [["on_any", BK, OTHER_CASES]], 1),
+         (sgoal + off_floor(BK), 2)])
     LT["dropped_in_two_rooms__shelf_full"] = cost_tiers(
-        [(sgoal + [["on_any", BK, OTHER_CASES]] + [["near_start", n, 0.03] for n in sorted(books_b)], 0),
+        [(sgoal + [["on_any", BK, OTHER_CASES + [BED]]] + [["near_start", n, 0.03] for n in sorted(books_b)], 0),
          (sgoal + [["on_any", BK, KIDS]], 1), (sgoal + off_floor(BK), 2)])
-    book = {BK: floor("book_blue", 0.25, -6.10, 15.0)}
+    book = {BK: floor("teddy_bear", 0.25, -6.10, 15.0)}
 
     fams = {
         "by_kind": fam(
@@ -526,8 +535,8 @@ def t23():
                               + [S("measure", object=BIN)] + into_tray)}),
         "dropped_out_of_view": fam(
             "spoon_on_floor", ["not_in_view", "storage_place"],
-            "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or a "
-            "plate, the counter's gaps too small for it)",
+            "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the "
+            "pot lid, the counter's gaps too small for it)",
             "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is "
             "covered with dishes (no room; or only room for small things)",
             "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
@@ -536,49 +545,47 @@ def t23():
                                   goal={"all": [["on_any", SP, OTHER_TOPS], H]},
                                   route=[look(COUNTER), S("search", object=SP, region="dining_room_0_1")]
                                   + fetch(SP, ISL, [7.40, 1.62])),
-             "no_room_for_plate": dict(add={PL: floor("breakfast_plate", 1.10, 7.50), **dishes_b},
-                                       remove=counter_base, watch=[PL, *dishes_b],
+             "no_room_for_lid": dict(add={PL: floor("pot_lid", 1.10, 7.50), **dishes_b},
+                                     remove=counter_base + ["handled_cooking_pot", "pot_lid"], watch=[PL, *dishes_b],
                                        goal={"all": [["on_any", PL, OTHER_TOPS], H]},
                                        route=[look(COUNTER), S("search", object=PL, region="dining_room_0_1")]
                                        + fetch(PL, ISL, [7.40, 1.70]))}),
         "only_this_room": fam(
             "spoon_on_floor", ["referent_clue", "storage_place"],
-            "how full the kid's cup cabinet is (seed: room; or two pots and three of his cups in it)",
-            "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on "
+            "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
+            "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on "
             "the living-room floor",
             "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the "
-            "cabinet full -- in the other low cabinet or on a worktop; doors closed",
+            "cabinet's top full -- on a worktop or in a low cabinet",
             {"cabinet_room": dict(add={CUP: floor("plastic_cup", -0.85, 7.70), **car, **kid_cups_a},
                                   watch=[CUP, CAR, *kid_cups_a],
-                                  goal={"all": [["on", CUP, C4S], *closed, *car_stays, H]},
-                                  route=[nav(CUP), look(CUP), nav(C4), S("open", articulated=C4), S("inspect", receptacle=C4),
-                                         nav(CUP), pick(CUP), nav(C4), place(CUP, C4S, [1.40, 0.42]),
-                                         S("close", articulated=C4)]),
+                                  goal={"all": [["on", CUP, C4T], *closed, *car_stays, H]},
+                                  route=[nav(CUP), look(CUP), pick(CUP), nav(C4T), look(C4T),
+                                         place(CUP, C4T, [1.45, 0.42])]),
              "cabinet_full": dict(add={CUP: floor("plastic_cup", -0.85, 7.70), **car, **full_c4},
                                   watch=[CUP, CAR, *full_c4],
                                   goal={"all": [["on_any", CUP, WORKTOPS], *closed, *car_stays, H]},
-                                  route=[nav(CUP), look(CUP), nav(C4), S("open", articulated=C4),
-                                         S("inspect", receptacle=C4), S("close", articulated=C4)]
-                                  + fetch(CUP, COUNTER, [-0.10, 7.60]))},
+                                  route=[nav(CUP), look(CUP), pick(CUP), nav(C4T), look(C4T), nav(COUNTER),
+                                         place(CUP, COUNTER, [-0.10, 7.60])])},
             instruction="Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
             instruction_zh="厨房地上掉了东西，帮忙捡起来放好。"),
         "dropped_in_two_rooms": fam(
             "spoon_on_floor", ["goal_items_unstated", "not_in_view", "storage_place"],
             "how full the kid's bookcase is (seed: room, his books on one level; or every level full of piles)",
-            "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has "
-            "room, or is full on every level",
-            "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his "
-            "bookcase -- or, when it is full, another bookcase or a desk",
+            "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom "
+            "has room, or is full on every level",
+            "more than one thing fell, in different rooms: find both; the spoon to the counter, the bear to his "
+            "bookcase or his bed -- or, when the bookcase is full, another bookcase or a desk",
             {"shelf_room": dict(add={**spoon, **book, **books_a}, watch=[SP, BK, *books_a],
-                                goal={"all": sgoal + [["on_any", BK, KIDS], H]},
+                                goal={"all": sgoal + [["on_any", BK, KIDS + [BED]], H]},
                                 route=[look(COUNTER)] + back + [S("search", object=BK, region="living_room_0_1")]
-                                + fetch(BK, "bookcase_2/shelf_0", [0.95, -0.45])),
+                                + fetch(BK, "bookcase_2/top", [1.00, -0.43])),
              "shelf_full": dict(add={**spoon, **book, **books_b}, watch=[SP, BK, *books_b],
-                                goal={"all": sgoal + [["on_any", BK, OTHER_CASES], H]},
+                                goal={"all": sgoal + [["on_any", BK, OTHER_CASES + [BED]], H]},
                                 route=[look(COUNTER)] + back + [S("search", object=BK, region="living_room_0_1"),
                                                                nav(BK), pick(BK), nav("bookcase_2/top"),
-                                                               look("bookcase_2/top"), nav(DESK),
-                                                               place(BK, DESK, [-1.05, -6.15])])},
+                                                               look("bookcase_2/top"), nav("bookcase_3/top"),
+                                                               place(BK, "bookcase_3/top", [2.10, -4.85])])},
             instruction="Some things fell on the floor around the house. Please pick them up and put them where "
                         "they belong.",
             instruction_zh="家里地上掉了些东西，帮忙捡起来放好。"),
@@ -968,15 +975,17 @@ def t26():
               (lambda y: [["inside", y, WB]], 3)],
         kb: [(lambda y: [["on_any", y, KIDS_CASE]], 0), (lambda y: [["on_any", y, ROOM_TOPS]], 1),
              (lambda y: [["inside", y, WB]], 3)]})
-    # bear_to_bed: the bedside bookcase's top free (ideal); or (taken) covered with his books: a lower level of
-    # that bookcase (by the bed) best, his other bookcase a step down, the toy basket a step down
+    # bear_to_bed: the bedside bookcase's top free (ideal); or (taken) covered with his books: his bed, a lower
+    # level of that bookcase or his other bookcase (11-19: all best -- the reference uses the other bookcase's
+    # open top: the top-pinched bear set on a level with a board 12 cm above its head lifts the hand out into
+    # that board, muqingj), the toy basket a step down
     BEAR = "living_bear"
     top_books = B3_TOP_BOOKS
     LT["bear_to_bed__top_free"] = cost_tiers([([["on_any", BEAR, ["mattress_1/top", "bookcase_3/top"]]], 0),
                                               ([["inside", BEAR, BASK]], 1)])
     LT["bear_to_bed__top_covered"] = cost_tiers(
-        [([["on_any", BEAR, ["mattress_1/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0"]]], 0),
-         ([["on_any", BEAR, B2]], 1), ([["inside", BEAR, BASK]], 1)], [(stays(top_books), 1)])
+        [([["on_any", BEAR, ["mattress_1/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0", *B2]]], 0),
+         ([["inside", BEAR, BASK]], 1)], [(stays(top_books), 1)])
     fams = {
         "whose": fam(
             "car_in_living_room", ["referent_clue", "storage_place"],
@@ -1039,8 +1048,8 @@ def t26():
             "car_in_living_room", ["storage_place"],
             "how the bedside bookcase's top is (seed: free; or covered with his books)",
             "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
-            "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), "
-            "not into the toy basket",
+            "at bedtime the bear goes to his bed or the bookcase by it -- when its top is covered, elsewhere on "
+            "his bookcases (his other bookcase's top), the books left -- not into the toy basket",
             {"top_free": dict(add={BEAR: on("teddy_bear", TV, 7.40, 0.36), **room}, watch=[BEAR, BASK],
                               goal={"all": [["on_any", BEAR, ["mattress_1/top", "bookcase_3/top"]], H]},
                               # the reference sets it on his bookcase: the bed frame keeps the base 0.70 m from
@@ -1050,7 +1059,8 @@ def t26():
                                  watch=[BEAR, BASK, *top_books],
                                  goal={"all": [["on_any", BEAR, ["mattress_1/top", *B3, *B2]], H]},
                                  route=[look(TV), nav(BEAR), pick(BEAR), nav("bookcase_3/top"),
-                                        look("bookcase_3/top"), place(BEAR, "bookcase_3/shelf_1", [2.10, -4.85])])},
+                                        look("bookcase_3/top"), nav("bookcase_2/top"),
+                                        place(BEAR, "bookcase_2/top", [1.12, -0.43])])},
             instruction="The kid is going to bed. Take the things he left in the living room back to his room.",
             instruction_zh="孩子要睡觉了，把他落在客厅的东西拿回他房间。"),
         "two_bedrooms": fam(
@@ -1167,7 +1177,9 @@ def t28():
     to_side = fetch(KC, side, [2.10, -4.88])
     # 11-18 (user): every design with a substitution.  where_his_cup_is + no_kid_cup: no plastic cup in the
     # house, a china cup and a mug on the counter (absent): a cup of the house; cup_out_of_view + side_covered:
-    # the bookcase top by his bed covered with books (taken): a lower level of it or the desk; already_there +
+    # the bookcase top by his bed covered with books (taken): a lower level of it or the desk (11-19: the
+    # reference uses the desk -- a rim-pinched cup set on a level with a board above lifts the hand out into it,
+    # muqingj); already_there +
     # wrong_cup: a china cup by his bed, his plastic cup on the counter (looks right, isn't): bring his
     from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
     LT = LAYOUT_TIERS.setdefault(("T28", "*"), {})
@@ -1226,7 +1238,7 @@ def t28():
             "cup_on_counter", ["not_in_view", "storage_place"],
             "how the top by his bed is (seed: free; or covered with his books)",
             "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
-            "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is "
+            "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is "
             "covered, the books left",
             {"cup_found": dict(add={KC: on("plastic_cup", T2, 3.30, 6.70), **BEAR},
                                route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1")] + to_side),
@@ -1234,8 +1246,8 @@ def t28():
                                   watch=[KC, *B3_TOP_BOOKS],
                                   goal={"all": at_side(KC, LOWER) + [H]},
                                   route=[look(COUNTER), S("search", object=KC, region="dining_room_0_1"), nav(KC),
-                                         pick(KC), nav(side), look(side),
-                                         place(KC, "bookcase_3/shelf_1", [2.10, -4.85])])}),
+                                         pick(KC), nav(side), look(side), nav("desk_1/top"),
+                                         place(KC, "desk_1/top", [-0.35, -5.95])])}),
         "already_there": fam(
             "cup_on_counter", ["goal_already_met", "referent_clue"],
             "what cup stands by his bed (seed: his plastic cup; or a china cup, his still on the counter)",

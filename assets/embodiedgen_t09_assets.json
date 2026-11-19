@@ -2,7 +2,7 @@
   "_note": "EmbodiedGen V2 prop for v6 T09 (11-17): the big tomato that stands in for the third cherry tomato. Generate with tools/generate_assets.py --batch in the EmbodiedGen V2 environment (GPT_PROVIDER=codex).",
   "big_tomato": {
     "prompt": "one large round ripe red beefsteak tomato with a short green stem, isolated product photo, plain white background",
-    "size": 0.075,
+    "size": 0.062,
     "mass": 0.15,
     "tags": [
       "food",
@@ -12,9 +12,9 @@
     "collider": "solid",
     "lay_flat": false,
     "target_size": [
-      0.075,
-      0.075,
-      0.065
+      0.062,
+      0.062,
+      0.054
     ],
     "seed": 7
   }

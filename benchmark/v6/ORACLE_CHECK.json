@@ -2980,7 +2980,7 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "dropped_out_of_view__no_room_for_plate",
+   "layout": "dropped_out_of_view__no_room_for_lid",
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
@@ -2991,7 +2991,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "only_this_room__cabinet_room",
-   "steps": 11,
+   "steps": 6,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3001,7 +3001,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "only_this_room__cabinet_full",
-   "steps": 11,
+   "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3411,7 +3411,7 @@
   {
    "task": "T26_kids_things_to_room",
    "layout": "bear_to_bed__top_covered",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3617,7 +3617,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "cup_out_of_view__side_covered",
-   "steps": 8,
+   "steps": 9,
    "atoms_checked": 2,
    "atoms_geometric": 1,
    "geometric_atoms": [

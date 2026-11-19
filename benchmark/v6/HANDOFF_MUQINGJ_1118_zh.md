@@ -127,3 +127,20 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - （可选，不改也没错）`close_hands_free` 假定只有微波炉能拿着东西关门。11-12 起 close 有 `loaded` 路径：右手拿着东西时左手推门（`docs/skills/close.md`）。现在的路线先放下再回来关，只是多走几步。
 
 我这边的检查脚本就是按上面这几条重放路线的。T13 那一步是它先算出来、再和 11-16 的运行结果对上的。你需要的话，我把脚本整理进仓库。
+
+## 7. bench 侧回复（zihan，11-19）：6.2 和 6.3 的 7 个摆法都改了
+
+都按 6.2、6.3 的建议改，改在生成脚本里（`define_tasks_v6.py` 没动，T23/T26/T28 改在 `new_tasks_v6.py`），派生文件全部重新生成。检查：静态 1550/1550，`oracle_check` 326/326，`pytest benchmark/v6/tests failure_injection` 685 个通过（1 个 xfail），`report_v6.py` 在我这边能跑完，也重跑了。**没跑仿真。**
+
+| 任务 / 摆法 | 改了什么 |
+|---|---|
+| T09 `tomato_in_fridge__big_tomato` | 换物体不如改尺寸：`big_tomato` 从 7.5×7.5×6.5 cm 缩到 6.2×6.2×5.4 cm（`assets/custom_assets.json` 的 `target_size`，`prepare_assets.py --only big_tomato` 和 `collider_hulls.py` 重算，USD 用 `patch_usd` 改了缩放），现在有顶部捏取（宽 6.17 cm）。还是小番茄（2.8 cm）的两倍多，看得出是大番茄。路线没变 |
+| T23 `dropped_out_of_view__no_room_for_plate` → `__no_room_for_lid` | 掉的盘子换成锅盖（25 cm，顶部捏取）。按台面空隙算过：勺子、擀面杖都还放得下，盘子和锅盖放不下，所以没用擀面杖。这个摆法把岛台上原来的锅和锅盖去掉（家里只有一个锅盖）。参考路线放岛台 [7.40, 1.70] |
+| T23 `dropped_in_two_rooms__shelf_room` / `__shelf_full` | 掉在书房地上的书换成小熊（`dropped_bear`，10.6×16 cm，顶部捏取；书堆之间 8 cm 的空隙也放不下）。床也算对。参考路线都放书架顶：shelf_room 放 `bookcase_2/top`，shelf_full 放 `bookcase_3/top`（原来是书桌） |
+| T23 `only_this_room__cabinet_room` / `__cabinet_full` | 他的杯子从 4 号柜里面改放到 **4 号柜柜顶**（`kitchen_cabinet_4/top`）；full 时两个锅和三个杯子也摆在柜顶。参考路线不再开关柜门：room 放柜顶，full 放小厨房台面。柜子里面、6 号柜都算次一档（full 时和台面同档） |
+| T26 `bear_to_bed__top_covered` | 参考路线改放他另一个书架的顶（`bookcase_2/top` [1.12, -0.43]）。床、床边书架任一层、他另一个书架任一层都算最好，放进玩具筐次一档 |
+| T28 `cup_out_of_view__side_covered` | 参考路线改放书桌（`desk_1/top` [-0.35, -5.95]，原来就在可接受的范围里）。成功条件没变 |
+
+- 6.4 里的 T23 `only_this_room` 两个摆法还是从地上用杯沿捏取塑料杯，请照常跑。
+- 要重跑的放在 `batches/physics_1119_layouts.json`，一共 63 个 episode：上面 8 个摆法，加上你 6.1 改的 T06、T23×3、T13。
+- `batches/physics_1118_changed.json` 里还是旧名 `no_room_for_plate`，以 `physics_1119_layouts.json` 为准。

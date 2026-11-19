@@ -234333,7 +234333,7 @@
       "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or a plate, the counter's gaps too small for it)",
+      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
       "derived_from": "bare"
      },
      "move": {},
@@ -234518,12 +234518,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on_any",
-              "dropped_plate",
+              "dropped_lid",
               [
                "kitchen_counter_1/top",
                "kitchen_island/top"
@@ -234595,17 +234595,17 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ],
              [
               "clear_of",
-              "dropped_plate",
+              "dropped_lid",
               [
                "counter_bowl_1",
                "counter_bowl_10",
@@ -234669,12 +234669,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ]
             ]
@@ -234698,7 +234698,7 @@
       "ideal_zh": "小厨房台面（摆满了，放别的台面）"
      }
     },
-    "dropped_out_of_view__no_room_for_plate": {
+    "dropped_out_of_view__no_room_for_lid": {
      "start": [
       -1.2,
       9.4,
@@ -234710,13 +234710,15 @@
      ],
      "remove": [
       "cup_counter_b",
+      "handled_cooking_pot",
       "plate_counter_a",
       "plate_counter_b",
+      "pot_lid",
       "spoon_counter"
      ],
      "add": {
-      "dropped_plate": {
-       "asset": "breakfast_plate",
+      "dropped_lid": {
+       "asset": "pot_lid",
        "support": null,
        "z": 0.0,
        "xy": [
@@ -234937,7 +234939,7 @@
       "all": [
        [
         "on_any",
-        "dropped_plate",
+        "dropped_lid",
         [
          "kitchen_counter_1/top",
          "kitchen_island/top"
@@ -234950,7 +234952,7 @@
       ]
      },
      "watch": [
-      "dropped_plate",
+      "dropped_lid",
       "counter_plate_s1",
       "counter_plate_n1",
       "counter_plate_s2",
@@ -234979,12 +234981,12 @@
      "note": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
      "v6": {
       "family": "dropped_out_of_view",
-      "case": "no_room_for_plate",
+      "case": "no_room_for_lid",
       "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
       "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or a plate, the counter's gaps too small for it)",
+      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
       "derived_from": "bare"
      },
      "move": {},
@@ -235136,7 +235138,7 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_plate"
+        "dropped_lid"
        ],
        "look": []
       }
@@ -235169,12 +235171,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on_any",
-              "dropped_plate",
+              "dropped_lid",
               [
                "kitchen_counter_1/top",
                "kitchen_island/top"
@@ -235246,17 +235248,17 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ],
              [
               "clear_of",
-              "dropped_plate",
+              "dropped_lid",
               [
                "counter_bowl_1",
                "counter_bowl_10",
@@ -235320,12 +235322,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ]
             ]
@@ -235346,7 +235348,7 @@
       "not_ok": "not found; left on the floor; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "小厨房台面（空隙放不下盘子，放别的台面）"
+      "ideal_zh": "小厨房台面（空隙放不下锅盖，放别的台面）"
      }
     },
     "only_this_room__cabinet_room": {
@@ -235384,7 +235386,7 @@
       },
       "kid_cup_1": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.15,
         0.42
@@ -235393,7 +235395,7 @@
       },
       "kid_cup_2": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.26,
         0.42
@@ -235406,7 +235408,7 @@
        [
         "on",
         "dropped_cup",
-        "kitchen_cabinet_4/inside_shelf"
+        "kitchen_cabinet_4/top"
        ],
        [
         "is_closed",
@@ -235434,22 +235436,80 @@
       "kid_cup_2"
      ],
      "since": "v6",
-     "note": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
+     "note": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
      "v6": {
       "family": "only_this_room",
       "case": "cabinet_room",
-      "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
-      "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
+      "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
+      "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet's top full -- on a worktop or in a low cabinet",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "how full the kid's cup cabinet is (seed: room; or two pots and three of his cups in it)",
+      "factor": "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
       "derived_from": "bare"
      },
      "move": {},
      "layout": {
-      "clusters": [],
-      "static": {},
-      "reach": {},
+      "clusters": [
+       {
+        "names": [
+         "kid_cup_1",
+         "kid_cup_2"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.11,
+         0.38,
+         1.3,
+         0.46
+        ],
+        "dx": [
+         -0.06,
+         0.45
+        ],
+        "dy": [
+         -0.11,
+         0.11
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_cabinet_4/top": [
+        [
+         1.41,
+         0.38,
+         1.49,
+         0.46
+        ]
+       ]
+      },
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "kitchen_0_1",
        "hide": [],
@@ -235470,7 +235530,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -235498,9 +235558,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -235564,7 +235628,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "near_start",
@@ -235574,9 +235638,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -235628,9 +235696,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -235658,7 +235730,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -235708,7 +235780,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -235721,9 +235793,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -235751,14 +235827,18 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ]
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -235790,9 +235870,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -235818,9 +235902,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -235854,7 +235942,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -235874,9 +235962,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -235894,7 +235986,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -235919,7 +236011,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -235986,7 +236078,7 @@
       },
       "stored_pot_1": {
        "asset": "soup_pot",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.2,
         0.42
@@ -235995,7 +236087,7 @@
       },
       "stored_pot_2": {
        "asset": "soup_pot",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.5,
         0.42
@@ -236004,7 +236096,7 @@
       },
       "kid_cup_1": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.7,
         0.325
@@ -236013,7 +236105,7 @@
       },
       "kid_cup_2": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.7,
         0.42
@@ -236022,7 +236114,7 @@
       },
       "kid_cup_3": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.7,
         0.515
@@ -236070,21 +236162,54 @@
       "kid_cup_3"
      ],
      "since": "v6",
-     "note": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
+     "note": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
      "v6": {
       "family": "only_this_room",
       "case": "cabinet_full",
-      "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept in low cabinet 4), the kid's toy car on the living-room floor",
-      "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet full -- in the other low cabinet or on a worktop; doors closed",
+      "challenge": "the kid's plastic cup on the kitchen floor (his cups are kept on low cabinet 4), the kid's toy car on the living-room floor",
+      "rationale": "the instruction names the kitchen: pick up the cup, leave the car; the cup with his cups, or -- the cabinet's top full -- on a worktop or in a low cabinet",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "how full the kid's cup cabinet is (seed: room; or two pots and three of his cups in it)",
+      "factor": "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
       "derived_from": "bare"
      },
      "move": {},
      "layout": {
       "clusters": [],
-      "static": {},
+      "static": {
+       "kitchen_cabinet_4/top": [
+        [
+         1.05,
+         0.29,
+         1.35,
+         0.55
+        ],
+        [
+         1.35,
+         0.29,
+         1.65,
+         0.55
+        ],
+        [
+         1.66,
+         0.285,
+         1.74,
+         0.365
+        ],
+        [
+         1.66,
+         0.38,
+         1.74,
+         0.46
+        ],
+        [
+         1.66,
+         0.475,
+         1.74,
+         0.555
+        ]
+       ]
+      },
       "reach": {},
       "start": {
        "room": "kitchen_0_1",
@@ -236106,7 +236231,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -236134,9 +236259,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -236200,7 +236329,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "near_start",
@@ -236210,9 +236339,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -236264,9 +236397,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -236294,7 +236431,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -236344,7 +236481,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -236357,9 +236494,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -236387,14 +236528,18 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ]
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -236426,9 +236571,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -236454,9 +236603,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -236490,7 +236643,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -236510,9 +236663,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -236530,7 +236687,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -236555,7 +236712,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -236585,7 +236742,7 @@
       "not_ok": "the cup left on the floor or out of the kitchen's places; still held",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "他的杯子柜（满了，放另一个矮柜或台面）"
+      "ideal_zh": "4 号矮柜柜顶他放杯子的地方（满了，放台面或别的矮柜）"
      }
     },
     "dropped_in_two_rooms__shelf_room": {
@@ -236612,8 +236769,8 @@
        ],
        "yaw_deg": 30.0
       },
-      "dropped_book": {
-       "asset": "book_blue",
+      "dropped_bear": {
+       "asset": "teddy_bear",
        "support": null,
        "z": 0.0,
        "xy": [
@@ -236672,11 +236829,12 @@
        ],
        [
         "on_any",
-        "dropped_book",
+        "dropped_bear",
         [
          "bookcase_2/shelf_0",
          "bookcase_2/shelf_1",
-         "bookcase_2/top"
+         "bookcase_2/top",
+         "mattress_1/top"
         ]
        ],
        [
@@ -236687,19 +236845,19 @@
      },
      "watch": [
       "dropped_spoon",
-      "dropped_book",
+      "dropped_bear",
       "kid_book_shelf_1_1a",
       "kid_book_shelf_1_2a",
       "kid_book_shelf_1_3a",
       "kid_book_shelf_1_4a"
      ],
      "since": "v6",
-     "note": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
+     "note": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
      "v6": {
       "family": "dropped_in_two_rooms",
       "case": "shelf_room",
-      "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
-      "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
+      "challenge": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
+      "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the bear to his bookcase or his bed -- or, when the bookcase is full, another bookcase or a desk",
       "control": "spoon_on_floor",
       "contrast": null,
       "factor": "how full the kid's bookcase is (seed: room, his books on one level; or every level full of piles)",
@@ -236740,7 +236898,7 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_book"
+        "dropped_bear"
        ],
        "look": []
       }
@@ -236767,11 +236925,12 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
-               "bookcase_2/top"
+               "bookcase_2/top",
+               "mattress_1/top"
               ]
              ]
             ]
@@ -236797,7 +236956,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -236836,7 +236995,8 @@
                "large_shelf_6/shelf_3",
                "large_shelf_6/top",
                "desk_1/top",
-               "desk_3/top"
+               "desk_3/top",
+               "mattress_1/top"
               ]
              ],
              [
@@ -236992,7 +237152,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -237057,7 +237217,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
@@ -237097,7 +237257,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -237122,7 +237282,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -237168,8 +237328,8 @@
        ],
        "yaw_deg": 30.0
       },
-      "dropped_book": {
-       "asset": "book_blue",
+      "dropped_bear": {
+       "asset": "teddy_bear",
        "support": null,
        "z": 0.0,
        "xy": [
@@ -237420,7 +237580,7 @@
        ],
        [
         "on_any",
-        "dropped_book",
+        "dropped_bear",
         [
          "bookcase_1/shelf_0",
          "bookcase_1/shelf_1",
@@ -237459,7 +237619,8 @@
          "large_shelf_6/shelf_3",
          "large_shelf_6/top",
          "desk_1/top",
-         "desk_3/top"
+         "desk_3/top",
+         "mattress_1/top"
         ]
        ],
        [
@@ -237470,7 +237631,7 @@
      },
      "watch": [
       "dropped_spoon",
-      "dropped_book",
+      "dropped_bear",
       "kid_book_shelf_0_1a",
       "kid_book_shelf_0_1b",
       "kid_book_shelf_0_2a",
@@ -237497,12 +237658,12 @@
       "kid_book_top_4b"
      ],
      "since": "v6",
-     "note": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
+     "note": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
      "v6": {
       "family": "dropped_in_two_rooms",
       "case": "shelf_full",
-      "challenge": "a spoon on the kitchen floor, and the kid's book on the study floor; his bookcase in the bedroom has room, or is full on every level",
-      "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the book to his bookcase -- or, when it is full, another bookcase or a desk",
+      "challenge": "a spoon on the kitchen floor, and the kid's teddy bear on the study floor; his bookcase in the bedroom has room, or is full on every level",
+      "rationale": "more than one thing fell, in different rooms: find both; the spoon to the counter, the bear to his bookcase or his bed -- or, when the bookcase is full, another bookcase or a desk",
       "control": "spoon_on_floor",
       "contrast": null,
       "factor": "how full the kid's bookcase is (seed: room, his books on one level; or every level full of piles)",
@@ -237667,7 +237828,7 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_book"
+        "dropped_bear"
        ],
        "look": []
       }
@@ -237694,11 +237855,12 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
-               "bookcase_2/top"
+               "bookcase_2/top",
+               "mattress_1/top"
               ]
              ]
             ]
@@ -237724,7 +237886,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -237763,7 +237925,8 @@
                "large_shelf_6/shelf_3",
                "large_shelf_6/top",
                "desk_1/top",
-               "desk_3/top"
+               "desk_3/top",
+               "mattress_1/top"
               ]
              ],
              [
@@ -237919,7 +238082,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -237984,7 +238147,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
@@ -238024,7 +238187,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -238049,7 +238212,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -238069,7 +238232,7 @@
       "not_ok": "a dropped thing left on the floor; still held",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "他的书架（每层都满，放别的书架或书桌）"
+      "ideal_zh": "他的书架（每层都满，小熊放别的书架或床上）"
      }
     }
    },
@@ -238101,7 +238264,7 @@
     "belongs_on_floor__no_toy_box": "v6_belongs_on_floor__no_toy_box",
     "belongs_on_floor__bin_full": "v6_belongs_on_floor__bin_full",
     "dropped_out_of_view__counter_full": "v6_dropped_out_of_view__counter_full",
-    "dropped_out_of_view__no_room_for_plate": "v6_dropped_out_of_view__no_room_for_plate",
+    "dropped_out_of_view__no_room_for_lid": "v6_dropped_out_of_view__no_room_for_lid",
     "only_this_room__cabinet_room": "v6_only_this_room__cabinet_room",
     "only_this_room__cabinet_full": "v6_only_this_room__cabinet_full",
     "dropped_in_two_rooms__shelf_room": "v6_dropped_in_two_rooms__shelf_room",
@@ -238536,7 +238699,7 @@
      "kind": "v6_oracle",
      "variant": "dropped_out_of_view__counter_full"
     },
-    "v6_dropped_out_of_view__no_room_for_plate": {
+    "v6_dropped_out_of_view__no_room_for_lid": {
      "steps": [
       {
        "skill": "navigate",
@@ -238559,19 +238722,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_plate"
+        "destination": "dropped_lid"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_plate"
+        "target": "dropped_lid"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "dropped_plate"
+        "object": "dropped_lid"
        }
       },
       {
@@ -238583,7 +238746,7 @@
       {
        "skill": "place",
        "args": {
-        "object": "dropped_plate",
+        "object": "dropped_lid",
         "receptacle": "kitchen_island/top",
         "hint_xy": [
          7.4,
@@ -238593,40 +238756,10 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "dropped_out_of_view__no_room_for_plate"
+     "variant": "dropped_out_of_view__no_room_for_lid"
     },
     "v6_only_this_room__cabinet_room": {
      "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dropped_cup"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dropped_cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "inspect",
-       "args": {
-        "receptacle": "kitchen_cabinet_4"
-       }
-      },
       {
        "skill": "navigate",
        "args": {
@@ -238648,24 +238781,24 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_4/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_cup",
-        "receptacle": "kitchen_cabinet_4/inside_shelf",
+        "receptacle": "kitchen_cabinet_4/top",
         "hint_xy": [
-         1.4,
+         1.45,
          0.42
         ]
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -238687,45 +238820,21 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "pick",
        "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "inspect",
-       "args": {
-        "receptacle": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
+        "object": "dropped_cup"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_cup"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "dropped_cup"
+        "target": "kitchen_cabinet_4/top"
        }
       },
       {
@@ -238807,35 +238916,35 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_book"
+        "destination": "dropped_bear"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_book"
+        "target": "dropped_bear"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "dropped_book"
+        "object": "dropped_bear"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/shelf_0"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "dropped_book",
-        "receptacle": "bookcase_2/shelf_0",
+        "object": "dropped_bear",
+        "receptacle": "bookcase_2/top",
         "hint_xy": [
-         0.95,
-         -0.45
+         1.005,
+         -0.459
         ]
        }
       }
@@ -238901,19 +239010,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_book"
+        "destination": "dropped_bear"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_book"
+        "target": "dropped_bear"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "dropped_book"
+        "object": "dropped_bear"
        }
       },
       {
@@ -238931,17 +239040,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/top"
+        "destination": "bookcase_3/top"
        }
       },
       {
        "skill": "place",
        "args": {
-        "object": "dropped_book",
-        "receptacle": "desk_1/top",
+        "object": "dropped_bear",
+        "receptacle": "bookcase_3/top",
         "hint_xy": [
-         -1.048,
-         -6.186
+         2.093,
+         -4.837
         ]
        }
       }
@@ -240244,26 +240353,26 @@
      "control": "spoon_on_floor",
      "layouts": [
       "dropped_out_of_view__counter_full",
-      "dropped_out_of_view__no_room_for_plate"
+      "dropped_out_of_view__no_room_for_lid"
      ],
-     "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or a plate, the counter's gaps too small for it)",
+     "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
      "seeds": {
       "10": "dropped_out_of_view__counter_full",
       "11": "dropped_out_of_view__counter_full",
       "12": "dropped_out_of_view__counter_full",
-      "13": "dropped_out_of_view__no_room_for_plate",
-      "14": "dropped_out_of_view__no_room_for_plate",
-      "15": "dropped_out_of_view__no_room_for_plate",
+      "13": "dropped_out_of_view__no_room_for_lid",
+      "14": "dropped_out_of_view__no_room_for_lid",
+      "15": "dropped_out_of_view__no_room_for_lid",
       "16": "dropped_out_of_view__counter_full",
-      "17": "dropped_out_of_view__no_room_for_plate",
+      "17": "dropped_out_of_view__no_room_for_lid",
       "18": "dropped_out_of_view__counter_full",
-      "19": "dropped_out_of_view__no_room_for_plate"
+      "19": "dropped_out_of_view__no_room_for_lid"
      },
      "scoring": {
       "D": 1,
       "ideal_by_layout": {
        "dropped_out_of_view__counter_full": true,
-       "dropped_out_of_view__no_room_for_plate": true
+       "dropped_out_of_view__no_room_for_lid": true
       },
       "tiers": [
        {
@@ -240291,12 +240400,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on_any",
-              "dropped_plate",
+              "dropped_lid",
               [
                "kitchen_counter_1/top",
                "kitchen_island/top"
@@ -240367,17 +240476,17 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ],
              [
               "clear_of",
-              "dropped_plate",
+              "dropped_lid",
               [
                "counter_bowl_1",
                "counter_bowl_10",
@@ -240440,12 +240549,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_plate": {
+          "dropped_out_of_view__no_room_for_lid": {
            "any": [
             [
              [
               "on",
-              "dropped_plate",
+              "dropped_lid",
               "kitchen_counter_2/top"
              ]
             ]
@@ -240465,11 +240574,11 @@
       "not_ok": "not found; left on the floor; still held or dropped",
       "D_by_layout": {
        "dropped_out_of_view__counter_full": 1,
-       "dropped_out_of_view__no_room_for_plate": 1
+       "dropped_out_of_view__no_room_for_lid": 1
       },
       "top_by_layout": {
        "dropped_out_of_view__counter_full": "moderate",
-       "dropped_out_of_view__no_room_for_plate": "moderate"
+       "dropped_out_of_view__no_room_for_lid": "moderate"
       }
      }
     },
@@ -240480,7 +240589,7 @@
       "only_this_room__cabinet_room",
       "only_this_room__cabinet_full"
      ],
-     "factor": "how full the kid's cup cabinet is (seed: room; or two pots and three of his cups in it)",
+     "factor": "how full the kid's cup spot is (seed: room; or two pots and three of his cups on it)",
      "seeds": {
       "10": "only_this_room__cabinet_full",
       "11": "only_this_room__cabinet_room",
@@ -240511,7 +240620,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -240539,9 +240648,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -240604,7 +240717,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "near_start",
@@ -240614,9 +240727,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -240668,9 +240785,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -240698,7 +240819,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -240747,7 +240868,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "is_closed",
@@ -240760,9 +240881,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "near_start",
@@ -240790,14 +240915,18 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ]
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -240829,9 +240958,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -240857,9 +240990,13 @@
            "any": [
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ],
              [
               "is_closed",
@@ -240893,7 +241030,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -240913,9 +241050,13 @@
             ],
             [
              [
-              "on",
+              "on_any",
               "dropped_cup",
-              "kitchen_cabinet_6/inside_shelf"
+              [
+               "kitchen_cabinet_4/inside_shelf",
+               "kitchen_cabinet_6/inside_shelf",
+               "kitchen_cabinet_6/top"
+              ]
              ]
             ],
             [
@@ -240933,7 +241074,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -240958,7 +241099,7 @@
              [
               "on",
               "dropped_cup",
-              "kitchen_cabinet_4/inside_shelf"
+              "kitchen_cabinet_4/top"
              ],
              [
               "not inside",
@@ -241041,11 +241182,12 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
-               "bookcase_2/top"
+               "bookcase_2/top",
+               "mattress_1/top"
               ]
              ]
             ]
@@ -241071,7 +241213,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -241110,7 +241252,8 @@
                "large_shelf_6/shelf_3",
                "large_shelf_6/top",
                "desk_1/top",
-               "desk_3/top"
+               "desk_3/top",
+               "mattress_1/top"
               ]
              ],
              [
@@ -241265,7 +241408,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_1/shelf_0",
                "bookcase_1/shelf_1",
@@ -241330,7 +241473,7 @@
              ],
              [
               "on_any",
-              "dropped_book",
+              "dropped_bear",
               [
                "bookcase_2/shelf_0",
                "bookcase_2/shelf_1",
@@ -241369,7 +241512,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -241394,7 +241537,7 @@
              ],
              [
               "not on_floor",
-              "dropped_book"
+              "dropped_bear"
              ]
             ]
            ],
@@ -263215,7 +263358,7 @@
       "family": "bear_to_bed",
       "case": "top_free",
       "challenge": "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
-      "rationale": "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), not into the toy basket",
+      "rationale": "at bedtime the bear goes to his bed or the bookcase by it -- when its top is covered, elsewhere on his bookcases (his other bookcase's top), the books left -- not into the toy basket",
       "control": "car_in_living_room",
       "contrast": null,
       "factor": "how the bedside bookcase's top is (seed: free; or covered with his books)",
@@ -263366,7 +263509,10 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
+               "bookcase_3/shelf_0",
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
               ]
              ],
              [
@@ -263444,49 +263590,11 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
-              ]
-             ]
-            ],
-            [
-             [
-              "on_any",
-              "living_bear",
-              [
+               "bookcase_3/shelf_0",
                "bookcase_2/top",
                "bookcase_2/shelf_1",
                "bookcase_2/shelf_0"
               ]
-             ],
-             [
-              "near_start",
-              "b3_book_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_3",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_3",
-              0.03
              ]
             ],
             [
@@ -263672,7 +263780,7 @@
       "family": "bear_to_bed",
       "case": "top_covered",
       "challenge": "his teddy bear on the TV stand; it is bedtime; the top of the bookcase by his bed free or covered",
-      "rationale": "at bedtime the bear goes to his bed or the bookcase by it (a lower level when the top is covered), not into the toy basket",
+      "rationale": "at bedtime the bear goes to his bed or the bookcase by it -- when its top is covered, elsewhere on his bookcases (his other bookcase's top), the books left -- not into the toy basket",
       "control": "car_in_living_room",
       "contrast": null,
       "factor": "how the bedside bookcase's top is (seed: free; or covered with his books)",
@@ -263762,6 +263870,14 @@
          -5.06,
          2.395,
          -4.94
+        ]
+       ],
+       "bookcase_2/top": [
+        [
+         1.0722,
+         -0.539,
+         1.1778,
+         -0.379
         ]
        ]
       },
@@ -263862,7 +263978,10 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
+               "bookcase_3/shelf_0",
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
               ]
              ],
              [
@@ -263940,49 +264059,11 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
-              ]
-             ]
-            ],
-            [
-             [
-              "on_any",
-              "living_bear",
-              [
+               "bookcase_3/shelf_0",
                "bookcase_2/top",
                "bookcase_2/shelf_1",
                "bookcase_2/shelf_0"
               ]
-             ],
-             [
-              "near_start",
-              "b3_book_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_3",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_3",
-              0.03
              ]
             ],
             [
@@ -264045,17 +264126,6 @@
            "any": [
             [
              [
-              "on_any",
-              "living_bear",
-              [
-               "bookcase_2/top",
-               "bookcase_2/shelf_1",
-               "bookcase_2/shelf_0"
-              ]
-             ]
-            ],
-            [
-             [
               "inside",
               "living_bear",
               "kids_basket"
@@ -264078,7 +264148,7 @@
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "床边书架顶（摆满书，放下一层）"
+      "ideal_zh": "床边书架顶（摆满书，放他另一个书架顶或床上）"
      }
     },
     "two_bedrooms__room_east": {
@@ -264875,13 +264945,19 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "living_bear",
-        "receptacle": "bookcase_3/shelf_1",
+        "receptacle": "bookcase_2/top",
         "hint_xy": [
-         2.1,
-         -4.85
+         1.125,
+         -0.459
         ]
        }
       }
@@ -266746,7 +266822,10 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
+               "bookcase_3/shelf_0",
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
               ]
              ],
              [
@@ -266823,49 +266902,11 @@
               [
                "mattress_1/top",
                "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"
-              ]
-             ]
-            ],
-            [
-             [
-              "on_any",
-              "living_bear",
-              [
+               "bookcase_3/shelf_0",
                "bookcase_2/top",
                "bookcase_2/shelf_1",
                "bookcase_2/shelf_0"
               ]
-             ],
-             [
-              "near_start",
-              "b3_book_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_book_3",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_1",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_2",
-              0.03
-             ],
-             [
-              "near_start",
-              "b3_paperback_3",
-              0.03
              ]
             ],
             [
@@ -266925,17 +266966,6 @@
           "bear_to_bed__top_free": "n/a",
           "bear_to_bed__top_covered": {
            "any": [
-            [
-             [
-              "on_any",
-              "living_bear",
-              [
-               "bookcase_2/top",
-               "bookcase_2/shelf_1",
-               "bookcase_2/shelf_0"
-              ]
-             ]
-            ],
             [
              [
               "inside",
@@ -274004,7 +274034,7 @@
       "family": "cup_out_of_view",
       "case": "cup_found",
       "challenge": "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
-      "rationale": "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is covered, the books left",
+      "rationale": "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is covered, the books left",
       "control": "cup_on_counter",
       "contrast": null,
       "factor": "how the top by his bed is (seed: free; or covered with his books)",
@@ -274333,7 +274363,7 @@
       "family": "cup_out_of_view",
       "case": "side_covered",
       "challenge": "the cup was left on the dining table, out of view; the bookcase top by his bed free or covered",
-      "rationale": "find the cup first; by his bed -- on a lower level of that bookcase or the desk when its top is covered, the books left",
+      "rationale": "find the cup first; by his bed -- on the desk or a lower level of that bookcase when its top is covered, the books left",
       "control": "cup_on_counter",
       "contrast": null,
       "factor": "how the top by his bed is (seed: free; or covered with his books)",
@@ -274619,7 +274649,7 @@
       "not_ok": "no cup by his bed; lying; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "床边书架顶（摆满书，放下一层或书桌）"
+      "ideal_zh": "床边书架顶（摆满书，放书桌或下一层）"
      }
     },
     "already_there__his_cup": {
@@ -275645,13 +275675,19 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "kid_cup",
-        "receptacle": "bookcase_3/shelf_1",
+        "receptacle": "desk_1/top",
         "hint_xy": [
-         2.1,
-         -4.85
+         -0.168,
+         -5.946
         ]
        }
       }

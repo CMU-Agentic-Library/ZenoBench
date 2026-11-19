@@ -242,11 +242,11 @@
 | T23 | belongs_on_floor | no_toy_box | 缺失 | 玩具箱（没有，用托盘） | 不在 | 1 |
 | T23 | belongs_on_floor | bin_full | 能力不足 | 玩具盒（满了，用旁边托盘） | 不在 | 1 |
 | T23 | dropped_out_of_view | counter_full | 被占用 | 小厨房台面（摆满了，放别的台面） | 不在 | 1 |
-| T23 | dropped_out_of_view | no_room_for_plate | 能力不足 | 小厨房台面（空隙放不下盘子，放别的台面） | 不在 | 1 |
+| T23 | dropped_out_of_view | no_room_for_lid | 能力不足 | 小厨房台面（空隙放不下锅盖，放别的台面） | 不在 | 1 |
 | T23 | only_this_room | cabinet_room | 不用替换 | 按指令（the cup with his cups in cabinet 4 -- or, the cabinet full, in the other low cabinet or on a worktop; doors closed, the car left） | 在 | 1 |
-| T23 | only_this_room | cabinet_full | 能力不足 | 他的杯子柜（满了，放另一个矮柜或台面） | 不在 | 1 |
+| T23 | only_this_room | cabinet_full | 能力不足 | 4 号矮柜柜顶他放杯子的地方（满了，放台面或别的矮柜） | 不在 | 1 |
 | T23 | dropped_in_two_rooms | shelf_room | 不用替换 | 按指令（the spoon to the kitchen, the book on his bookcase -- or, the bookcase full, on another bookcase or a desk, his books left as they are） | 在 | 1 |
-| T23 | dropped_in_two_rooms | shelf_full | 能力不足 | 他的书架（每层都满，放别的书架或书桌） | 不在 | 1 |
+| T23 | dropped_in_two_rooms | shelf_full | 能力不足 | 他的书架（每层都满，小熊放别的书架或床上） | 不在 | 1 |
 | T24 | apple_on_table | — | 不用替换 | 按指令（the apple on the study desk） | 在 | 0 |
 | T24 | no_apples_for_him | apple_free | 不用替换 | 按指令（something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone） | 在 | 0 |
 | T24 | no_apples_for_him | apple_in_use | 被占用 | 苹果（在别人盘子里，用果篮的香蕉） | 不在 | 1 |
@@ -282,7 +282,7 @@
 | T26 | where_in_room | basket | 不用替换 | 按指令（the car in the toy basket (no basket: onto his bookcase), the book on his bookcase） | 在 | 1 |
 | T26 | where_in_room | waste_bin | 看着像但不能用 | 玩具筐（没有，原处是垃圾桶；小车放书架） | 不在 | 1 |
 | T26 | bear_to_bed | top_free | 不用替换 | 按指令（the teddy on his bed or the bookcase by it (a lower level when its top is covered)） | 在 | 1 |
-| T26 | bear_to_bed | top_covered | 被占用 | 床边书架顶（摆满书，放下一层） | 不在 | 1 |
+| T26 | bear_to_bed | top_covered | 被占用 | 床边书架顶（摆满书，放他另一个书架顶或床上） | 不在 | 1 |
 | T26 | two_bedrooms | room_east | 去处替换 | 有他玩具筐的那间 | 在 | 0 |
 | T26 | two_bedrooms | room_south | 去处替换 | 有他玩具筐的那间 | 在 | 0 |
 | T27 | rice_on_table | — | 不用替换 | 按指令（every leftover in the fridge, the fridge closed） | 在 | 1 |
@@ -301,7 +301,7 @@
 | T28 | where_his_cup_is | in_cabinet | 不用替换 | 按指令（his cup by his bed (with no cup of his, a cup of the house), the rest left, the door closed） | 在 | 1 |
 | T28 | where_his_cup_is | no_kid_cup | 缺失 | 他的塑料杯（家里没有，用家里的杯子） | 不在 | 1 |
 | T28 | cup_out_of_view | cup_found | 不用替换 | 按指令（his cup found and by his bed (a lower level or the desk when the top is covered)） | 在 | 0 |
-| T28 | cup_out_of_view | side_covered | 被占用 | 床边书架顶（摆满书，放下一层或书桌） | 不在 | 1 |
+| T28 | cup_out_of_view | side_covered | 被占用 | 床边书架顶（摆满书，放书桌或下一层） | 不在 | 1 |
 | T28 | already_there | his_cup | 不用替换 | 按指令（seen it is already there and left it） | 在 | 1 |
 | T28 | already_there | wrong_cup | 看着像但不能用 | 他的塑料杯（床边那个是瓷杯） | 在 | 1 |
 | T29 | car_on_table | — | 不用替换 | 按指令（the toy car in his toy box） | 在 | 1 |

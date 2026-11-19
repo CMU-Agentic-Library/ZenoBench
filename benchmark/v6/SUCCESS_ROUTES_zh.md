@@ -9614,15 +9614,15 @@
 
 **情况**：东西滑到隔壁餐厅地上，看不到 → 先找；小厨房台面被碗盘占满 → 放到岛台或另一个厨房台面（挪开碗盘腾地方降一档；压在碗盘上最不好）
 
-**成功条件**（D 按摆法：`counter_full` D = 1、理想物不在，`no_room_for_plate` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`counter_full` D = 1、理想物不在，`no_room_for_lid` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 摆法 `no_room_for_plate`：
+  - 摆法 `no_room_for_lid`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_plate` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_island/top`
+        - `dropped_lid` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_island/top`
   - 摆法 `counter_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -9630,12 +9630,12 @@
         - `dropped_spoon` 在其中任一处上：`kitchen_counter_1/top`、`kitchen_island/top`
 - **次好（0.6）**：
 
-  - 摆法 `no_room_for_plate`：
+  - 摆法 `no_room_for_lid`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_plate` 在 `kitchen_counter_2/top` 上
-        - `dropped_plate` 离这些东西都至少 0 cm：`counter_bowl_1`、`counter_bowl_10`、`counter_bowl_2`、`counter_bowl_3`、`counter_bowl_4`、`counter_bowl_5`、`counter_bowl_6`、`counter_bowl_7`、`counter_bowl_8`、`counter_bowl_9`、`counter_cup_w2`、`counter_cup_w4`、`counter_cup_w6`、`counter_plate_n1`、`counter_plate_n2`、`counter_plate_n3`、`counter_plate_s1`、`counter_plate_s2`、`counter_plate_s3`、`counter_plate_w1`、`counter_plate_w3`、`counter_plate_w5`、`counter_plate_w7`
+        - `dropped_lid` 在 `kitchen_counter_2/top` 上
+        - `dropped_lid` 离这些东西都至少 0 cm：`counter_bowl_1`、`counter_bowl_10`、`counter_bowl_2`、`counter_bowl_3`、`counter_bowl_4`、`counter_bowl_5`、`counter_bowl_6`、`counter_bowl_7`、`counter_bowl_8`、`counter_bowl_9`、`counter_cup_w2`、`counter_cup_w4`、`counter_cup_w6`、`counter_plate_n1`、`counter_plate_n2`、`counter_plate_n3`、`counter_plate_s1`、`counter_plate_s2`、`counter_plate_s3`、`counter_plate_w1`、`counter_plate_w3`、`counter_plate_w5`、`counter_plate_w7`
   - 摆法 `counter_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -9644,11 +9644,11 @@
         - `dropped_spoon` 离这些东西都至少 0 cm：`counter_bowl_1`、`counter_bowl_10`、`counter_bowl_2`、`counter_bowl_3`、`counter_bowl_4`、`counter_bowl_5`、`counter_bowl_6`、`counter_bowl_7`、`counter_bowl_8`、`counter_bowl_9`、`counter_plate_n1`、`counter_plate_n2`、`counter_plate_n3`、`counter_plate_s1`、`counter_plate_s2`、`counter_plate_s3`、`counter_plate_w1`、`counter_plate_w2`、`counter_plate_w3`、`counter_plate_w4`、`counter_plate_w5`、`counter_plate_w6`、`counter_plate_w7`
 - **最不好（0.3）**：
 
-  - 摆法 `no_room_for_plate`：
+  - 摆法 `no_room_for_lid`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_plate` 在 `kitchen_counter_2/top` 上
+        - `dropped_lid` 在 `kitchen_counter_2/top` 上
   - 摆法 `counter_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -9660,7 +9660,7 @@
 **参考调用顺序**：
 
 - 摆法 `counter_full`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_spoon)` → 5. `look(target=dropped_spoon)` → 6. `pick(object=dropped_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=dropped_spoon, receptacle=kitchen_island/top, hint_xy=[7.4, 1.62])`
-- 摆法 `no_room_for_plate`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_plate)` → 5. `look(target=dropped_plate)` → 6. `pick(object=dropped_plate)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=dropped_plate, receptacle=kitchen_island/top, hint_xy=[7.4, 1.7])`
+- 摆法 `no_room_for_lid`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `explore_room(room=dining_room_0_1)` → 4. `navigate(destination=dropped_lid)` → 5. `look(target=dropped_lid)` → 6. `pick(object=dropped_lid)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=dropped_lid, receptacle=kitchen_island/top, hint_xy=[7.4, 1.7])`
 
 ### only_this_room（Task）
 
@@ -9676,7 +9676,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
@@ -9684,7 +9684,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
@@ -9699,10 +9699,10 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 2 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
@@ -9715,13 +9715,13 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 2 组：
         - `dropped_cup` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 3 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `dropped_cup` 不在 `stored_pot_1` 里
         - `dropped_cup` 不在 `stored_pot_2` 里
         - `kitchen_cabinet_4` 关着
@@ -9733,19 +9733,19 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 2 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 3 组：
         - `dropped_cup` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 4 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
       - 第 5 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 6 组：
@@ -9753,14 +9753,14 @@
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 7 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
       - 第 8 组：
         - `dropped_cup` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
   - 摆法 `cabinet_full`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 2 组：
@@ -9768,22 +9768,22 @@
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 3 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `dropped_cup` 不在 `stored_pot_1` 里
         - `dropped_cup` 不在 `stored_pot_2` 里
         - `living_car` 没被挪动（离开局位置不超过 3 cm）
       - 第 4 组：
-        - `dropped_cup` 在 `kitchen_cabinet_6/inside_shelf` 上
+        - `dropped_cup` 在其中任一处上：`kitchen_cabinet_4/inside_shelf`、`kitchen_cabinet_6/inside_shelf`、`kitchen_cabinet_6/top`
       - 第 5 组：
         - `dropped_cup` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
       - 第 6 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `dropped_cup` 不在 `stored_pot_1` 里
         - `dropped_cup` 不在 `stored_pot_2` 里
         - `kitchen_cabinet_4` 关着
         - `kitchen_cabinet_6` 关着
       - 第 7 组：
-        - `dropped_cup` 在 `kitchen_cabinet_4/inside_shelf` 上
+        - `dropped_cup` 在 `kitchen_cabinet_4/top` 上
         - `dropped_cup` 不在 `stored_pot_1` 里
         - `dropped_cup` 不在 `stored_pot_2` 里
 - **不行（0）**：杯子还在地上或放到厨房以外；还拿着
@@ -9791,8 +9791,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `cabinet_room`：1. `navigate(destination=dropped_cup)` → 2. `look(target=dropped_cup)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `inspect(receptacle=kitchen_cabinet_4)` → 6. `navigate(destination=dropped_cup)` → 7. `look(target=dropped_cup)` → 8. `pick(object=dropped_cup)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `place(object=dropped_cup, receptacle=kitchen_cabinet_4/inside_shelf, hint_xy=[1.4, 0.42])` → 11. `close(articulated=kitchen_cabinet_4)`
-- 摆法 `cabinet_full`：1. `navigate(destination=dropped_cup)` → 2. `look(target=dropped_cup)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `inspect(receptacle=kitchen_cabinet_4)` → 6. `close(articulated=kitchen_cabinet_4)` → 7. `navigate(destination=dropped_cup)` → 8. `look(target=dropped_cup)` → 9. `pick(object=dropped_cup)` → 10. `navigate(destination=kitchen_counter_2/top)` → 11. `place(object=dropped_cup, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
+- 摆法 `cabinet_room`：1. `navigate(destination=dropped_cup)` → 2. `look(target=dropped_cup)` → 3. `pick(object=dropped_cup)` → 4. `navigate(destination=kitchen_cabinet_4/top)` → 5. `look(target=kitchen_cabinet_4/top)` → 6. `place(object=dropped_cup, receptacle=kitchen_cabinet_4/top, hint_xy=[1.45, 0.42])`
+- 摆法 `cabinet_full`：1. `navigate(destination=dropped_cup)` → 2. `look(target=dropped_cup)` → 3. `pick(object=dropped_cup)` → 4. `navigate(destination=kitchen_cabinet_4/top)` → 5. `look(target=kitchen_cabinet_4/top)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_cup, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])`
 
 ### dropped_in_two_rooms（Task）
 
@@ -9809,7 +9809,7 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-        - `dropped_book` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`、`desk_1/top`、`desk_3/top`
+        - `dropped_bear` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`、`desk_1/top`、`desk_3/top`、`mattress_1/top`
         - `kid_book_shelf_0_1a` 没被挪动（离开局位置不超过 3 cm）
         - `kid_book_shelf_0_1b` 没被挪动（离开局位置不超过 3 cm）
         - `kid_book_shelf_0_2a` 没被挪动（离开局位置不超过 3 cm）
@@ -9839,7 +9839,7 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-        - `dropped_book` 在其中任一处上：`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`
+        - `dropped_bear` 在其中任一处上：`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`、`mattress_1/top`
 - **次好（0.6）**：
 
   - 摆法 `shelf_room`：
@@ -9847,27 +9847,27 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-        - `dropped_book` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`、`desk_1/top`、`desk_3/top`
+        - `dropped_bear` 在其中任一处上：`bookcase_1/shelf_0`、`bookcase_1/shelf_1`、`bookcase_1/top`、`bookcase_3/shelf_0`、`bookcase_3/shelf_1`、`bookcase_3/top`、`bookcase_4/shelf_0`、`bookcase_4/shelf_1`、`bookcase_4/top`、`large_shelf_1/shelf_0`、`large_shelf_1/shelf_1`、`large_shelf_1/shelf_2`、`large_shelf_1/shelf_3`、`large_shelf_1/shelf_4`、`large_shelf_2/shelf_0`、`large_shelf_2/shelf_1`、`large_shelf_2/shelf_2`、`large_shelf_2/shelf_3`、`large_shelf_3/shelf_0`、`large_shelf_3/shelf_1`、`large_shelf_3/shelf_2`、`large_shelf_3/shelf_3`、`large_shelf_4/shelf_0`、`large_shelf_4/shelf_1`、`large_shelf_4/shelf_2`、`large_shelf_4/shelf_3`、`large_shelf_4/shelf_4`、`large_shelf_5/shelf_0`、`large_shelf_5/shelf_1`、`large_shelf_5/shelf_2`、`large_shelf_5/shelf_3`、`large_shelf_6/shelf_0`、`large_shelf_6/shelf_1`、`large_shelf_6/shelf_2`、`large_shelf_6/shelf_3`、`large_shelf_6/top`、`desk_1/top`、`desk_3/top`
   - 摆法 `shelf_full`：
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
         - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-        - `dropped_book` 在其中任一处上：`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`
+        - `dropped_bear` 在其中任一处上：`bookcase_2/shelf_0`、`bookcase_2/shelf_1`、`bookcase_2/top`
 - **最不好（0.3）**：
 
   - 手里空着
   - 满足下面任意一组：
     - 第 1 组：
       - `dropped_spoon` 在其中任一处上：`kitchen_counter_2/top`、`kitchen_counter_1/top`、`kitchen_island/top`
-      - `dropped_book` 不在地上
+      - `dropped_bear` 不在地上
 - **不行（0）**：有一样还在地上；还拿着
 
 
 **参考调用顺序**：
 
-- 摆法 `shelf_room`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_book)` → 10. `look(target=dropped_book)` → 11. `pick(object=dropped_book)` → 12. `navigate(destination=bookcase_2/shelf_0)` → 13. `place(object=dropped_book, receptacle=bookcase_2/shelf_0, hint_xy=[0.95, -0.45])`
-- 摆法 `shelf_full`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_book)` → 10. `look(target=dropped_book)` → 11. `pick(object=dropped_book)` → 12. `navigate(destination=bookcase_2/top)` → 13. `look(target=bookcase_2/top)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=dropped_book, receptacle=desk_1/top, hint_xy=[-1.048, -6.186])`
+- 摆法 `shelf_room`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_bear)` → 10. `look(target=dropped_bear)` → 11. `pick(object=dropped_bear)` → 12. `navigate(destination=bookcase_2/top)` → 13. `place(object=dropped_bear, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])`
+- 摆法 `shelf_full`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=dropped_spoon)` → 4. `look(target=dropped_spoon)` → 5. `pick(object=dropped_spoon)` → 6. `navigate(destination=kitchen_counter_2/top)` → 7. `place(object=dropped_spoon, receptacle=kitchen_counter_2/top, hint_xy=[-0.364, 7.609])` → 8. `explore_room(room=living_room_0_1)` → 9. `navigate(destination=dropped_bear)` → 10. `look(target=dropped_bear)` → 11. `pick(object=dropped_bear)` → 12. `navigate(destination=bookcase_2/top)` → 13. `look(target=bookcase_2/top)` → 14. `navigate(destination=bookcase_3/top)` → 15. `place(object=dropped_bear, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
 
 ---
 
@@ -10971,7 +10971,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
         - `b3_book_1` 没被挪动（离开局位置不超过 3 cm）
         - `b3_book_2` 没被挪动（离开局位置不超过 3 cm）
         - `b3_book_3` 没被挪动（离开局位置不超过 3 cm）
@@ -10994,16 +10994,8 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `living_bear` 在其中任一处上：`mattress_1/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
       - 第 2 组：
-        - `living_bear` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-        - `b3_book_1` 没被挪动（离开局位置不超过 3 cm）
-        - `b3_book_2` 没被挪动（离开局位置不超过 3 cm）
-        - `b3_book_3` 没被挪动（离开局位置不超过 3 cm）
-        - `b3_paperback_1` 没被挪动（离开局位置不超过 3 cm）
-        - `b3_paperback_2` 没被挪动（离开局位置不超过 3 cm）
-        - `b3_paperback_3` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
         - `living_bear` 在 `kids_basket` 里
         - `b3_book_1` 没被挪动（离开局位置不超过 3 cm）
         - `b3_book_2` 没被挪动（离开局位置不超过 3 cm）
@@ -11019,8 +11011,6 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `living_bear` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-      - 第 2 组：
         - `living_bear` 在 `kids_basket` 里
 - **不行（0）**：熊没拿回他房间；还拿着或掉了
 
@@ -11028,7 +11018,7 @@
 **参考调用顺序**：
 
 - 摆法 `top_free`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=living_bear, receptacle=bookcase_3/top, hint_xy=[2.1, -4.78])`
-- 摆法 `top_covered`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=living_bear, receptacle=bookcase_3/shelf_1, hint_xy=[2.1, -4.85])`
+- 摆法 `top_covered`：1. `navigate(destination=tv_stand_2/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=living_bear)` → 4. `pick(object=living_bear)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `navigate(destination=bookcase_2/top)` → 8. `place(object=living_bear, receptacle=bookcase_2/top, hint_xy=[1.125, -0.459])`
 
 ### two_bedrooms（Task）
 
@@ -11499,7 +11489,7 @@
 **参考调用顺序**：
 
 - 摆法 `cup_found`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `side_covered`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/shelf_1, hint_xy=[2.1, -4.85])`
+- 摆法 `side_covered`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `search(object=kid_cup, region=dining_room_0_1)` → 4. `navigate(destination=kid_cup)` → 5. `pick(object=kid_cup)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `navigate(destination=desk_1/top)` → 9. `place(object=kid_cup, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 
 ### already_there（Task）
 
