@@ -67,7 +67,8 @@ LOOK_VERBS = {"look", "face", "point", "identify", "measure", "inspect"}
 STALE_M = 0.03
 REFUSAL = "'{name}' is not a known place or an observed object"
 ADVISORY = ("grasp_clearance", "edge_overhang")
-NO_AUTO_STEPS = {("pick", "flat_edge"): {"policy_045"}}            # the automatic slide-to-edge (= expose)
+NO_AUTO_STEPS = {("pick", "flat_edge"): {"policy_045"}}            # the automatic slide-to-edge (= expose);
+                                                                   # left out only by a profile with slide_to_edge: false
 
 
 # ----------------------------------------------------------------- static layout
@@ -305,7 +306,6 @@ class GatedRunner(SkillContractRunner):
     def __init__(self, rig, observer=None, *, capture_images=True, gate=True, **kw):
         kw.setdefault("auto_repair", False)
         kw.setdefault("advisory", ADVISORY)
-        kw.setdefault("skip_steps", NO_AUTO_STEPS)
         super().__init__(rig, **kw)
         self.obs = observer or getattr(rig, "observer", None) or Observer(rig)
         self.gate = gate

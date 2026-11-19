@@ -298,7 +298,7 @@ def table(groups, keys):
 
 
 PLANNER_NOTE = ("`fixed`, `retry` and `recovery` share the observation gate, the low-level settings "
-                "(`auto_recovery` off, upright edge-pinch waist) and the skill set; `fixed` runs the nominal plan "
+                "(`auto_recovery` off) and the skill set; `fixed` runs the nominal plan "
                 "once, `retry` repeats a failed call up to twice, `recovery` is bounded by the task's `max_calls` "
                 "(default 60). `oracle` is a capability upper bound, not a planner: it uses the GT runner (full "
                 "state, no observation gate, nested repair on) and the hand-written route for the variant, without "

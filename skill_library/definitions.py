@@ -451,9 +451,8 @@ skill("pick", "object", "Pick an object",
                note="The overhang already exists (e.g. after expose): pinch it directly."),
           Path("flat_edge", [W("object", "flat", "truthy")],
                [St("policy_045", "$object"), St("policy_013", "$object")],
-               note="Slide the flat item until it overhangs a free edge, then pinch the overhang. In the "
-                    "benchmark profiles the slide is left out: call expose first, then pick takes "
-                    "flat_overhang_ready."),
+               note="Slide the flat item until it overhangs a free edge, then pinch the overhang. After "
+                    "expose the overhang exists already and pick takes flat_overhang_ready."),
           Path("rect_rim", [W("object", "grasp_types", "contains", "rim_pinch_rect")], [St("policy_012", "$object")]),
           Path("round_rim", [W("object", "grasp_types", "contains", "rim_pinch")], [St("policy_011", "$object")],
                requires=[P("grasp_clearance", object="$object")],

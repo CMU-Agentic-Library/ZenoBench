@@ -45,8 +45,9 @@ call - top level and every nested Contract inside multi-object skills:
 Navigation keeps the GT map and collision checking for safe low-level planning.
 
 No automatic recovery in this interface: no nested repair (`auto_repair=False`),
-no slide-to-edge inside pick (`skip_steps`), no pick -> push fallback, no
-door "retry from another park" (`rig.auto_recovery=False`).  The feasibility
+no pick -> push fallback, no door "retry from another park"
+(`rig.auto_recovery=False`).  Pick still slides a flat object to a free edge
+itself (`execution.slide_to_edge` is on in every profile).  The feasibility
 estimates `grasp_clearance` and `edge_overhang` are advisory (recorded, the
 action is attempted), so an infeasible pick fails *physically*.  The original
 behaviour stays the default of `SkillContractRunner`; `tools/verify_skills.py`
@@ -163,8 +164,8 @@ Both read `result.json` only.
 | **drops / side / budget** | Episodes with a floor drop (this also fails SR); non-goal watched objects moved more than 5 cm (informational, because separate and push move things on purpose); episodes ended by the call budget |
 
 Comparability:
-- `fixed`, `retry` and `recovery` run through the same gate, with the same low-level settings (`auto_recovery` off,
-  upright edge-pinch waist) and the same skills.
+- `fixed`, `retry` and `recovery` run through the same gate, with the same low-level settings (`auto_recovery` off)
+  and the same skills.
 - `fixed` runs the nominal plan once; `retry` repeats a failed call up to twice; `recovery` is bounded by `max_calls`.
 - `oracle` is a capability upper bound and is reported separately. It runs the GT runner (full state, no gate, nested
   repair on) with the hand-written route for the variant, minus its expected-failure and unwind steps.
@@ -293,7 +294,7 @@ All changes are behind flags; the skill library's defaults are unchanged except 
 |---|---|
 | `zeno_skills/perception.py` | `dynamic_occluder()`; used by `project_to_head_camera` only when `rig.occlusion` |
 | `zeno_skills/skill_runtime.py` | `SkillContractRunner(auto_repair=True, advisory=(), skip_steps=None)` |
-| `zeno_skills/skills.py` | `rig.auto_recovery` (default True): pick → push fallback, slide-to-edge inside `pick_flat`, door retry from another park; `_edge_pinch(attempt=)`. `rig.edge_pinch_upright_waist` (default False; the benchmark sets it): at table height the edge pinch keeps the waist ≤ 0.2 rad, as `_pick_pinch` does; without it the chest stalled against the island edge in 4/4 direct paperback picks. A failed top pinch ends with the hand open and 8 cm higher; fingers left closed beside a crowding bowl stopped at 5 mm, and the next push could not make its fist (3/4) |
+| `zeno_skills/skills.py` | `rig.auto_recovery` (default True): pick → push fallback, slide-to-edge inside `pick_flat`, door retry from another park; `_edge_pinch(attempt=)`. A failed top pinch ends with the hand open and 8 cm higher; fingers left closed beside a crowding bowl stopped at 5 mm, and the next push could not make its fist (3/4) |
 | `zeno_skills/policies/navigation.py` | `lift` (carry_height_adjust) repeats the vertical move on the measured object bottom, up to 3 times while the object keeps rising: a rolling pin caught in a mug after a failed place lagged the hand by 4-5 cm and one move fell short (4/4); the verifier (bottom >= target - 2 cm) is unchanged |
 | `zeno_skills/policies/perceive.py` | `rig.static_explore`: explore_room coverage over static furniture only; `rig.observer` hook in `record_view` |
 
@@ -312,7 +313,8 @@ code with the edge-pinch flag), compared with `skill_library/verification/status
 
 `g_expose_then_pick_book` failed in an earlier regression run when the upright edge-pinch waist was on by default
 (the park moved from 8.20 to 8.34 and the book fell off the bookcase). The waist is now opt-in
-(`rig.edge_pinch_upright_waist`, set only by the benchmark); the scenario passes with the baseline trajectory and the
+(`rig.edge_pinch_upright_waist`, set only by the benchmark; the edge pinch itself was removed later and the flag with
+it); the scenario passes with the baseline trajectory and the
 book on the bookcase `top`. Repeats on the current code: g_expose_then_pick_book 3/3 pass; k_separate 2/2 and
 k_restore_swap 2/2 fail at the same step; the clean worktree fails k_restore_swap 2/2 the same way.
 

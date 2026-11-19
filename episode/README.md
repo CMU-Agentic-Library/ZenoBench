@@ -39,11 +39,10 @@ A profile is named by its path under `profiles/` without `.yaml`; `physical/` pr
 | `execution.gate` | object arguments must be observed; the manipulated object must be in view or in hand; navigation drives to the cached pose | off | off | on |
 | `execution.nested_repair` | repair fallback and one retry for a failed nested call of a composite skill | off | on | off |
 | `execution.auto_recovery` | policy-internal recovery (expose, door retry from another park, pick -> push) | on | on | off |
-| `execution.slide_to_edge` | the automatic slide-to-edge step inside pick | on | on | off |
+| `execution.slide_to_edge` | the automatic slide-to-edge step inside pick | on | on | on |
 | `execution.advisory` | feasibility predicates that are only recorded | – | – | grasp_clearance, edge_overhang |
 | `execution.mask_feedback` | never-observed names -> `<unobserved>` in results | off | off | on |
 | `execution.occlusion` / `static_explore` | dynamic occlusion in visibility; explore_room covers static furniture only | off | off | on |
-| `execution.edge_pinch_upright_waist` | low-level edge-pinch setting | off | on | on |
 | `execution.sticky_hands` | `false`; `carry`: a held object is welded to the gripper until the fingers open; `snap`: `carry`, and a pick / place that fails physically after its preconditions held snaps the object into the hand / onto the receptacle | off | off | off |
 | `observation.cameras` | which cameras go into `images` | 3 | head | head |
 | `observation.gt_objects` | `objects`: task entities with GT positions | on | on | off |
