@@ -278,9 +278,17 @@ R[("T12", "castle_stays")] = tiers(
             no="城堡拆了没搭回或碰倒了；小车或鸭子没收；还拿着或掉了"))
 
 # ================================================================================================ T13 breakfast setup
-R[("T13", "dishes_on_tv_stand")] = d0("bowl, cup (or a mug) and spoon together on the dining table, upright",
-                                      "a piece missing; tipped; still held or dropped", dict(
-    sit="碗和杯子在电视柜，勺子在餐桌（对照）", good="碗、杯子（马克杯也行）、勺子在餐桌摆在一起", no="少一样；倒了；还拿着或掉了"))
+# 11-17 (user): the cup is there, so the mug for it is one level down (as T04); no_cup's mug is the stand-in
+R[("T13", "dishes_on_tv_stand")] = tiers(
+    best=lambda g, lid: {"all": [["on", "bowl", "dining_table_2/top"], ["upright", "bowl"], ["on", "cup",
+                                 "dining_table_2/top"], ["upright", "cup"],
+                                 ["grouped", ["bowl", "cup", "spoon"], "dining_table_2/top", 0.5], HAND]},
+    second=lambda g, lid: g,
+    why=("bowl, cup and spoon together on the dining table, upright",
+         "the mug for the cup though the cup is there", ""),
+    not_ok="a piece missing; tipped; still held or dropped",
+    zh=dict(sit="碗和杯子在电视柜，勺子在餐桌（对照）", good="碗、杯子、勺子在餐桌摆在一起",
+            second="杯子在却用了马克杯", no="少一样；倒了；还拿着或掉了"))
 R[("T13", "no_cup")] = d0("bowl, the mug and spoon together on the dining table", "a piece missing; tipped; "
                           "still held or dropped", dict(
     sit="家里没有杯子，马克杯在卧室书架", good="碗、马克杯、勺子摆在一起", no="少一样；倒了；还拿着或掉了"))

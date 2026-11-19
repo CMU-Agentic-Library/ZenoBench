@@ -46,6 +46,7 @@ ATOMS = {
         f"{_names(objs)} 相对 {anchor} 的摆法（按坐在那里的人的前后左右）和 {_names(refs)} 相对 {ref_anchor} 的一样，"
         f"误差不超过 {round(tol * 100)} cm"),
     "never_picked": lambda o: f"过程要求：整局都没拿起过 {_names(o)}（拆了再搭回去不算）",
+    "not on_any": lambda o, sups: f"{_names(o)} 不在其中任何一处上：{'、'.join(f'`{x}`' for x in sups)}",
     "on_any": lambda o, sups: f"{_names(o)} 在其中任一处上：{'、'.join(f'`{x}`' for x in sups)}",
     "near_any": lambda o, others, d: f"{_names(o)} 离其中至少一个不超过 {round(d * 100)} cm：{_names(others)}",
     "not near_any": lambda o, others, d: f"{_names(o)} 离这些都超过 {round(d * 100)} cm：{_names(others)}",
@@ -142,7 +143,12 @@ def main():
                 lines += [f"**指令**：{instr}", ""]
             sc = info.get("scoring")
             if sc:                                    # graded: every tier is success, the score differs
-                lines += [f"**成功条件**（D = {sc['D']}；以下各档都算成功，分数不同）：", ""]
+                dl = sc.get("D_by_layout")
+                d_txt = (f"D 按摆法：" + "，".join(f"`{k.split('__', 1)[-1]}` D = {v}、"
+                                                 + ("理想物在" if sc['top_by_layout'][k] == "ideal" else "理想物不在")
+                                                 for k, v in dl.items())
+                         + "；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好") if dl else f"D = {sc['D']}"
+                lines += [f"**成功条件**（{d_txt}；以下各档都算成功，分数不同）：", ""]
                 for tier in sc["tiers"]:
                     lines += [f"- **{TIER_ZH[tier['name']]}（{tier['score']}）**：", ""]
                     lines += tier_lines(t, info, tier, 1)
@@ -177,6 +183,9 @@ def layout_goal_lines(t, info, tier, depth):
     for g, lids in sorted(goals.items()):
         if len(goals) > 1:
             lines.append("  " * depth + "- 摆法 " + "、".join(f"`{x.split('__', 1)[-1]}`" for x in lids) + "：")
+        if json.loads(g) == "n/a":                # 11-17: the seed cannot offer this level (the ideal is missing)
+            lines.append("  " * (depth + 1) + "- 这个摆法没有这一档（理想的东西 / 位置不在或用不了）")
+            continue
         lines += goal_lines(json.loads(g), depth + (1 if len(goals) > 1 else 0))
     return lines
 

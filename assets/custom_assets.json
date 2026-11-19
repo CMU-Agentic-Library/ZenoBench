@@ -587,5 +587,23 @@
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "prompt": "a rectangular aluminium foil takeout food tray with a folded rim, filled with fried noodles, no lid, isolated product, plain white background"
+ },
+ "big_tomato": {
+  "size": 0.075,
+  "mass": 0.15,
+  "tags": [
+   "food",
+   "small_item",
+   "vegetable"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/big_tomato/result/big_tomato.urdf",
+  "target_size": [
+   0.075,
+   0.075,
+   0.065
+  ],
+  "prompt": "one large round ripe red beefsteak tomato with a short green stem, isolated product photo, plain white background"
  }
 }

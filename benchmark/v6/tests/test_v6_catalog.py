@@ -195,7 +195,8 @@ def test_in_place_choices_are_redesigned_at_a_longer_horizon():
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"
-        assert all(any(s["skill"] == "search" for s in t["routes"][t["oracle"][lid]]["steps"])
+        # 11-17: a seed may offer the stand-in in view (T09 spare_pot); the far one is still a seed
+        assert any(any(s["skill"] in ("search", "explore_room") for s in t["routes"][t["oracle"][lid]]["steps"])
                    for lid in t["v6_variants"][new]["layouts"])
     assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
     # T04 has no dynamic events (user ruling): the cup taken away, the drinks spot filled after the pick
