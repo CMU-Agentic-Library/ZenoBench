@@ -1326,7 +1326,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "microwave_broken",
-   "steps": 15,
+   "steps": 17,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1476,7 +1476,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "wipe_and_sort__blocks",
-   "steps": 16,
+   "steps": 17,
    "atoms_checked": 12,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -1491,7 +1491,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "wipe_and_sort__duck",
-   "steps": 16,
+   "steps": 17,
    "atoms_checked": 12,
    "atoms_geometric": 4,
    "geometric_atoms": [
@@ -1506,7 +1506,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__dining",
-   "steps": 9,
+   "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1516,7 +1516,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__study",
-   "steps": 9,
+   "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1526,7 +1526,7 @@
   {
    "task": "T08_wipe_island",
    "layout": "return_sponge_home__far_dining",
-   "steps": 9,
+   "steps": 11,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1556,7 +1556,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "lid_off",
-   "steps": 15,
+   "steps": 17,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1566,7 +1566,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "lid_on_spoon_away",
-   "steps": 19,
+   "steps": 21,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1576,7 +1576,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "lid_missing",
-   "steps": 15,
+   "steps": 17,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1610,7 +1610,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "tomato_in_fridge__in_fridge",
-   "steps": 27,
+   "steps": 31,
    "atoms_checked": 11,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1620,7 +1620,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "tomato_in_fridge__big_tomato",
-   "steps": 27,
+   "steps": 31,
    "atoms_checked": 11,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1630,7 +1630,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "x6_gd_tomato_elsewhere__dining",
-   "steps": 20,
+   "steps": 22,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1640,7 +1640,7 @@
   {
    "task": "T09_tomato_soup",
    "layout": "x6_gd_tomato_elsewhere__on_plate",
-   "steps": 27,
+   "steps": 29,
    "atoms_checked": 11,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1700,7 +1700,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "keep_kids_can__kid_desk",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1712,7 +1712,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "keep_kids_can__kid_island",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1734,7 +1734,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "trash_moved__trash_full",
-   "steps": 11,
+   "steps": 12,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1744,7 +1744,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "after_dinner_clear__rubbish_leftovers",
-   "steps": 21,
+   "steps": 22,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1754,7 +1754,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "after_dinner_clear__leftovers_mug",
-   "steps": 20,
+   "steps": 21,
    "atoms_checked": 7,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1766,7 +1766,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "after_dinner_clear__rubbish_mug",
-   "steps": 17,
+   "steps": 18,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1778,7 +1778,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "guests_coming__can_mug_block",
-   "steps": 19,
+   "steps": 20,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1790,7 +1790,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "guests_coming__can_block",
-   "steps": 15,
+   "steps": 16,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1800,7 +1800,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "guests_coming__can_mug",
-   "steps": 14,
+   "steps": 15,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1812,7 +1812,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "x6_gd_can_put_away__in_cabinet",
-   "steps": 16,
+   "steps": 17,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1822,7 +1822,7 @@
   {
    "task": "T10_trash_the_can",
    "layout": "x6_gd_can_put_away__fridge_drink",
-   "steps": 18,
+   "steps": 19,
    "atoms_checked": 7,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2024,7 +2024,7 @@
   {
    "task": "T12_tidy_toys",
    "layout": "castle_stays__tall_two_loose",
-   "steps": 20,
+   "steps": 21,
    "atoms_checked": 11,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2036,7 +2036,7 @@
   {
    "task": "T12_tidy_toys",
    "layout": "castle_stays__short_one_loose",
-   "steps": 15,
+   "steps": 16,
    "atoms_checked": 8,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2048,7 +2048,7 @@
   {
    "task": "T12_tidy_toys",
    "layout": "castle_stays__tall_none_loose",
-   "steps": 10,
+   "steps": 11,
    "atoms_checked": 9,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2164,7 +2164,7 @@
   {
    "task": "T15_cover_the_pot",
    "layout": "lid_by_pot",
-   "steps": 6,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2458,7 +2458,7 @@
   {
    "task": "T19_recycling",
    "layout": "x6_gd_can_put_away__in_4",
-   "steps": 25,
+   "steps": 26,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2468,7 +2468,7 @@
   {
    "task": "T19_recycling",
    "layout": "x6_gd_can_put_away__juice_full",
-   "steps": 25,
+   "steps": 26,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2670,7 +2670,7 @@
   {
    "task": "T21_bring_tissues",
    "layout": "no_tissue",
-   "steps": 6,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2712,7 +2712,7 @@
   {
    "task": "T22_put_away_shopping",
    "layout": "by_kind",
-   "steps": 21,
+   "steps": 23,
    "atoms_checked": 25,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2797,7 +2797,7 @@
   {
    "task": "T22_put_away_shopping",
    "layout": "basket_missing",
-   "steps": 13,
+   "steps": 15,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -2809,7 +2809,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "spoon_on_floor",
-   "steps": 7,
+   "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2819,7 +2819,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "by_kind__toy_box",
-   "steps": 13,
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2829,7 +2829,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "by_kind__bin_full",
-   "steps": 16,
+   "steps": 17,
    "atoms_checked": 27,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2839,7 +2839,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "belongs_on_floor__no_toy_box",
-   "steps": 8,
+   "steps": 9,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2849,7 +2849,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "belongs_on_floor__bin_full",
-   "steps": 9,
+   "steps": 10,
    "atoms_checked": 28,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2879,16 +2879,6 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "only_this_room__cabinet_room",
-   "steps": 6,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "only_this_room"
-  },
-  {
-   "task": "T23_pick_up_dropped",
-   "layout": "only_this_room__cabinet_full",
    "steps": 7,
    "atoms_checked": 5,
    "atoms_geometric": 0,
@@ -2898,8 +2888,18 @@
   },
   {
    "task": "T23_pick_up_dropped",
+   "layout": "only_this_room__cabinet_full",
+   "steps": 8,
+   "atoms_checked": 5,
+   "atoms_geometric": 0,
+   "geometric_atoms": [],
+   "problems": [],
+   "variant": "only_this_room"
+  },
+  {
+   "task": "T23_pick_up_dropped",
    "layout": "dropped_in_two_rooms__shelf_room",
-   "steps": 13,
+   "steps": 14,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -2909,7 +2909,7 @@
   {
    "task": "T23_pick_up_dropped",
    "layout": "dropped_in_two_rooms__shelf_full",
-   "steps": 15,
+   "steps": 16,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3087,7 +3087,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cold_one__cold_juice",
-   "steps": 15,
+   "steps": 17,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3099,7 +3099,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cold_one__cold_soda",
-   "steps": 15,
+   "steps": 17,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3135,7 +3135,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__one_there",
-   "steps": 18,
+   "steps": 20,
    "atoms_checked": 7,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3147,7 +3147,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__none_one_inside",
-   "steps": 23,
+   "steps": 25,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3159,7 +3159,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__none_two_inside",
-   "steps": 22,
+   "steps": 24,
    "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3171,7 +3171,7 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__two_there",
-   "steps": 6,
+   "steps": 8,
    "atoms_checked": 8,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3539,7 +3539,7 @@
   {
    "task": "T29_clear_table_for_dinner",
    "layout": "car_on_table",
-   "steps": 6,
+   "steps": 7,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3549,7 +3549,7 @@
   {
    "task": "T29_clear_table_for_dinner",
    "layout": "belongs_on_table",
-   "steps": 6,
+   "steps": 7,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3599,7 +3599,7 @@
   {
    "task": "T29_clear_table_for_dinner",
    "layout": "several__toy_box",
-   "steps": 14,
+   "steps": 15,
    "atoms_checked": 19,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3619,7 +3619,7 @@
   {
    "task": "T29_clear_table_for_dinner",
    "layout": "which_table__east",
-   "steps": 8,
+   "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3629,7 +3629,7 @@
   {
    "task": "T29_clear_table_for_dinner",
    "layout": "which_table__west",
-   "steps": 8,
+   "steps": 9,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3649,7 +3649,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "how_many__three_bowls",
-   "steps": 14,
+   "steps": 16,
    "atoms_checked": 2,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3659,7 +3659,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "how_many__two_bowls",
-   "steps": 14,
+   "steps": 16,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3669,7 +3669,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowls_in_cabinet__two_inside",
-   "steps": 22,
+   "steps": 24,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -3679,7 +3679,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowls_in_cabinet__one_inside",
-   "steps": 22,
+   "steps": 24,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],

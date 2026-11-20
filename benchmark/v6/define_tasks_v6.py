@@ -3728,6 +3728,9 @@ GT_PREFIX = {
     ("T25", "little_guest"): [("navigate", "kitchen_island/top"), ("look", "kitchen_island/top")],
     ("T26", "two_bedrooms"): [("explore_room", "living_room_0_0")],
     ("T30", "bowl_on_cabinet"): [("navigate", "kitchen_cabinet_6/top"), ("look", "kitchen_cabinet_6/top")],
+    # 11-20 (v6_layouts_1120, 3 of 5 big_tomato seeds): collect into the pot after looking only at the island:
+    # NOT_OBSERVED, the pot on the stove never seen -- look at the stove first
+    ("T09", "tomato_in_fridge"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
 }
 GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
 _GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}

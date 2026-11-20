@@ -96421,6 +96421,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "oatmeal"
        }
       },
@@ -99788,7 +99800,9 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "wooden_block_b"
+       ],
        "look": []
       }
      },
@@ -100330,7 +100344,9 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "rubber_duck"
+       ],
        "look": []
       }
      },
@@ -102394,6 +102410,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
@@ -102497,6 +102519,12 @@
        "skill": "pick",
        "args": {
         "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -102628,6 +102656,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "sponge_tray"
        }
       },
@@ -102691,6 +102731,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "sponge_tray"
        }
       },
@@ -102749,6 +102801,18 @@
        "args": {
         "surface": "kitchen_island/top",
         "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_4/top"
        }
       },
       {
@@ -108179,6 +108243,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "handled_cooking_pot"
        }
       },
@@ -108274,6 +108350,18 @@
        },
        "expect": "fail",
        "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
       },
       {
        "skill": "navigate",
@@ -108662,6 +108750,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -108724,6 +108824,18 @@
        "args": {
         "obstacle": "breakfast_fridge",
         "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
        }
       },
       {
@@ -108837,6 +108949,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -108899,6 +109023,18 @@
        "args": {
         "obstacle": "breakfast_fridge",
         "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
        }
       },
       {
@@ -109052,6 +109188,18 @@
         "object": "cherry_tomato_2"
        },
        "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
       },
       {
        "skill": "navigate",
@@ -109220,6 +109368,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "handled_cooking_pot"
        }
       },
@@ -109357,6 +109517,18 @@
        "skill": "pick",
        "args": {
         "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
        }
       },
       {
@@ -117222,6 +117394,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -117283,6 +117461,12 @@
        "args": {
         "object": "soda_can",
         "height_m": 0.95
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -117406,6 +117590,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -117478,6 +117668,12 @@
        "args": {
         "object": "soda_can",
         "height_m": 0.95
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -117620,6 +117816,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -117752,6 +117954,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -117875,6 +118083,12 @@
        "args": {
         "object": "soda_can",
         "height_m": 0.95
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -118003,6 +118217,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -118100,6 +118320,12 @@
        "args": {
         "object": "soda_can",
         "height_m": 0.95
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -118223,6 +118449,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
@@ -118328,6 +118560,12 @@
        "args": {
         "obstacle": "kitchen_cabinet_4",
         "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -132580,6 +132818,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "storage_basket"
@@ -132710,6 +132954,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "storage_basket"
@@ -132806,6 +133056,12 @@
        "skill": "pick",
        "args": {
         "object": "toy_car"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
        }
       },
       {
@@ -141745,6 +142001,18 @@
        "skill": "look",
        "args": {
         "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -154824,6 +155092,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "foam_cube"
@@ -154972,6 +155246,12 @@
        "skill": "close",
        "args": {
         "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -166125,6 +166405,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "spare_sponge"
        }
       },
@@ -170809,6 +171101,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "home_basket"
        }
       },
@@ -171147,6 +171451,18 @@
        "skill": "pick",
        "args": {
         "object": "bought_apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -178669,7 +178985,8 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_bear"
+        "dropped_bear",
+        "dropped_spoon"
        ],
        "look": []
       }
@@ -179344,7 +179661,8 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_bear"
+        "dropped_bear",
+        "dropped_spoon"
        ],
        "look": []
       }
@@ -179671,6 +179989,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "dropped_spoon"
@@ -179719,6 +180043,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -179809,6 +180139,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -179908,6 +180244,12 @@
     "v6_belongs_on_floor__no_toy_box": {
      "steps": [
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "dropped_block"
@@ -179962,6 +180304,12 @@
     },
     "v6_belongs_on_floor__bin_full": {
      "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -180142,6 +180490,12 @@
     "v6_only_this_room__cabinet_room": {
      "steps": [
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "dropped_cup"
@@ -180188,6 +180542,12 @@
     },
     "v6_only_this_room__cabinet_full": {
      "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -180251,6 +180611,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180345,6 +180711,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -194525,6 +194897,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "guest_cup"
        }
       },
@@ -194627,6 +195011,18 @@
        "skill": "close",
        "args": {
         "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -194917,6 +195313,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "guest_juice"
        }
       },
@@ -195033,6 +195441,18 @@
        "skill": "look",
        "args": {
         "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -195195,6 +195615,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "guest_juice"
        }
       },
@@ -195340,6 +195772,18 @@
        "skill": "look",
        "args": {
         "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -201482,7 +201926,9 @@
       "reach": {},
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "living_car"
+       ],
        "look": []
       }
      },
@@ -201591,7 +202037,9 @@
       "reach": {},
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "living_car"
+       ],
        "look": []
       }
      },
@@ -218731,6 +219179,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
@@ -218769,6 +219223,12 @@
        "skill": "pick",
        "args": {
         "object": "table_car"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -219028,6 +219488,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
@@ -219264,6 +219730,12 @@
        }
       },
       {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "toy_box"
@@ -219316,6 +219788,12 @@
        "skill": "pick",
        "args": {
         "object": "toy_west"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
        }
       },
       {
@@ -223227,6 +223705,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "soup_bowl_1"
        }
       },
@@ -223332,6 +223822,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "soup_bowl_1"
        }
       },
@@ -223432,6 +223934,18 @@
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {
@@ -223582,6 +224096,18 @@
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {

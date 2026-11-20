@@ -46,7 +46,7 @@ def scene(base):
 
 
 class World:
-    def __init__(self, task, lid, gate=False):
+    def __init__(self, task, lid, gate=False, start_view=True):
         self.task, self.lid, self.gate = task, lid, gate
         self.ann, raw = scene(task["scene"]["base"])
         v = task["variants"][lid]
@@ -110,7 +110,10 @@ class World:
         self.heating = set()
         self.flags = set()                      # ("wiped", s), ("stirred", c), ("hidden", o), ("observed", x), ...
         self.problems = []
-        if gate:                                # what the robot sees from its start: the start room in plain sight
+        # what the robot sees from its start: the start room in plain sight.  start_view=False (11-20): nothing --
+        # the start pose moves with the seed, a route must not count on what happens to be in view there (T09
+        # big_tomato: the pot on the stove out of view in 3 of 5 seeds, NOT_OBSERVED)
+        if gate and start_view:
             st = (v.get("layout") or {}).get("start") or {}
             room = st.get("room") or self.room_of(raw["robot"]["xy"])
             for n in self.obj:
@@ -594,8 +597,8 @@ class World:
         return fails, any_ok, groups, checked, unchecked
 
 
-def check(task, lid, gate=False):
-    w = World(task, lid, gate)
+def check(task, lid, gate=False, start_view=True):
+    w = World(task, lid, gate, start_view)
     v = task["variants"][lid]
     steps = task["routes"][task["oracle"][lid]]["steps"]
     fires = {}
@@ -622,13 +625,13 @@ def check(task, lid, gate=False):
             "problems": probs}
 
 
-def observe_first(task, lid, tries=12):
+def observe_first(task, lid, tries=12, start_view=False):
     """Make a reference route legal under the benchmark's observation gate: before the first call that names an
     object the robot has not seen, go to where it stands and look (an object on the floor: explore its room).
     Returns the number of observation steps added."""
     added = 0
     for _ in range(tries):
-        res = check(task, lid, gate=True)
+        res = check(task, lid, gate=True, start_view=start_view)
         p = next((x for x in res["problems"] if "was never observed" in x["problem"]), None)
         if p is None:
             return added
