@@ -86298,6 +86298,13 @@
          "wooden_block_a",
          "bookcase_3/shelf_0"
         ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "desk_1/top"
+        ]
        ]
       ],
       "all": [
@@ -86688,18 +86695,7 @@
             "bedside_book",
             0.05
            ]
-          ]
-         ]
-        },
-        "why": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched",
-        "raw": "best"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
-        "goal": {
-         "all": [],
-         "any": [
+          ],
           [
            [
             "hand_empty",
@@ -86745,7 +86741,18 @@
             "bedside_book",
             0.05
            ]
-          ],
+          ]
+         ]
+        },
+        "why": "on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "goal": {
+         "all": [],
+         "any": [
           [
            [
             "hand_empty",
@@ -86915,7 +86922,7 @@
       "not_ok": "outside the bedroom (left in the living room); a thing of the kid's tipped; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "床头书架顶（被孩子的东西占满，放下层）",
+      "ideal_zh": "床头书架顶（被孩子的东西占满，放下层或床边书桌）",
       "loosened": "11-20"
      }
     }
@@ -87673,13 +87680,25 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "bookcase_3/shelf_1",
+        "receptacle": "desk_1/top",
         "hint_xy": [
-         2.1,
-         -4.88
+         -0.188,
+         -5.946
         ]
        }
       }
@@ -92178,6 +92197,76 @@
               "upright",
               "bedside_book"
              ]
+            ],
+            [
+             [
+              "on",
+              "wooden_block_a",
+              "desk_1/top"
+             ],
+             [
+              "near_start",
+              "bedside_teddy_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_teddy_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_snacks",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_1",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_bin_2",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_tray",
+              0.05
+             ],
+             [
+              "near_start",
+              "bedside_book",
+              0.05
+             ],
+             [
+              "upright",
+              "bedside_teddy_1"
+             ],
+             [
+              "upright",
+              "bedside_teddy_2"
+             ],
+             [
+              "upright",
+              "bedside_snacks"
+             ],
+             [
+              "upright",
+              "bedside_bin_1"
+             ],
+             [
+              "upright",
+              "bedside_bin_2"
+             ],
+             [
+              "upright",
+              "bedside_tray"
+             ],
+             [
+              "upright",
+              "bedside_book"
+             ]
             ]
            ],
            "all": [
@@ -92276,76 +92365,6 @@
           },
           "seen_from_bed__bookcase_full": {
            "any": [
-            [
-             [
-              "on",
-              "wooden_block_a",
-              "desk_1/top"
-             ],
-             [
-              "near_start",
-              "bedside_teddy_1",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_teddy_2",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_snacks",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_bin_1",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_bin_2",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_tray",
-              0.05
-             ],
-             [
-              "near_start",
-              "bedside_book",
-              0.05
-             ],
-             [
-              "upright",
-              "bedside_teddy_1"
-             ],
-             [
-              "upright",
-              "bedside_teddy_2"
-             ],
-             [
-              "upright",
-              "bedside_snacks"
-             ],
-             [
-              "upright",
-              "bedside_bin_1"
-             ],
-             [
-              "upright",
-              "bedside_bin_2"
-             ],
-             [
-              "upright",
-              "bedside_tray"
-             ],
-             [
-              "upright",
-              "bedside_book"
-             ]
-            ],
             [
              [
               "on",

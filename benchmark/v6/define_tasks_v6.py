@@ -1259,15 +1259,18 @@ def T06(t):
         # (0.6) and the other room tops / making room on the top a level below it (0.3)
         free = case == "boxes_middle"
         on_case = [([["on", A, BED]] + kept, 0)] + [([["on", A, sup]] + kept, 1 if free else 0) for sup in BED_SHELVES]
-        elsewhere = [([["on", A, sup]] + kept, 2 if free else 1) for sup in ROOM_TOPS]
+        # 11-20 (user, v6_layouts_1120: 4 of 5 places on the low shelf failed under the top board): the top full, the
+        # desk beside the bed is as good as a lower shelf (1.0, as T28 side_covered) and the reference goes there
+        elsewhere = [([["on", A, sup]] + kept, 2 if free else (0 if sup == "desk_1/top" else 1)) for sup in ROOM_TOPS]
         made_room = [([["on", A, BED]] + upright, 2)]
         LT[f"seen_from_bed__{case}"] = cost_tiers(on_case + elsewhere + made_room)
         if case == "boxes_middle":
             goal = {"any": [[["on", A, sup]] for sup in (BED, *BED_SHELVES)], "all": [*kept, ["hand_empty", "right"]]}
             tail = [nav(BED), look(BED), place(A, BED, [1.88, -4.88])]
         else:
-            goal = {"any": [[["on", A, sup]] for sup in BED_SHELVES], "all": [*kept, ["hand_empty", "right"]]}
-            tail = [nav(BED), look(BED), place(A, BED_SHELVES[0], [2.10, -4.88])]
+            goal = {"any": [[["on", A, sup]] for sup in (*BED_SHELVES, "desk_1/top")],
+                    "all": [*kept, ["hand_empty", "right"]]}
+            tail = [nav(BED), look(BED), nav("desk_1/top"), look("desk_1/top"), place(A, "desk_1/top", [-0.35, -5.95])]
         # 11-19 (physics side): shelf_1 has the top board 27 cm above it; a top pinch holds the palm above the block
         # and lifts out along the gripper axis into that board, so the block is taken by its side pinch for the
         # shelf (docs/skills/pick.md; as T17 lid_away into cabinet_4, 29.5 cm, which failed with the top pinch)

@@ -46,7 +46,7 @@ IDEAL = {
     ("T06", "display_row"): {"cab_short": (False, "矮柜顶一排摆开（太短，放不下）")},
     ("T06", "display_spot_or_tv"): {"front_taken": (False, "矮柜正面那块地方（被占了）"),
                                     "front_taken_tv_full": (False, "矮柜正面那块地方（被占了，电视柜也满）")},
-    ("T06", "seen_from_bed"): {"bookcase_full": (False, "床头书架顶（被孩子的东西占满，放下层）")},
+    ("T06", "seen_from_bed"): {"bookcase_full": (False, "床头书架顶（被孩子的东西占满，放下层或床边书桌）")},
     ("T07", "microwave_broken"): {"microwave_broken": (False, "微波炉（坏了，用灶台）"),
                                   "broken_oatmeal_away": (False, "微波炉（坏了，用灶台）"),
                                   "alt_dining_table_2": (False, "微波炉（坏了，用灶台）")},

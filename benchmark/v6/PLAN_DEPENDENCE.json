@@ -52,8 +52,8 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 131,
-   "goal_not_met": 184,
+   "passes": 130,
+   "goal_not_met": 185,
    "not_observed": 28,
    "argument_mismatch": 65,
    "resource_missing": 136
@@ -61,7 +61,6 @@
   "universal_fixed_sequence": [
    "T01 table_seats",
    "T01 which_book",
-   "T06 seen_from_bed",
    "T11 basket_missing",
    "T13 copy_the_setting",
    "T14 next_in_series",
@@ -100,6 +99,7 @@
    "T05 no_pen_pencil_away",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
+   "T06 seen_from_bed",
    "T07 two_portions",
    "T08 far_sponge_tv",
    "T08 return_sponge_home",
@@ -2554,7 +2554,7 @@
    ],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "seen_from_bed__bookcase_full": "passes"
+    "seen_from_bed__bookcase_full": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -2562,7 +2562,7 @@
    "task": "T06_block_destination_occupied",
    "variant": "seen_from_bed",
    "layout": "seen_from_bed__bookcase_full",
-   "steps": 8,
+   "steps": 10,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright bedside_teddy_1",
@@ -5891,9 +5891,7 @@
     "seen_from_bed__bookcase_full",
     "free"
    ],
-   "passes_all": [
-    "seen_from_bed__bookcase_full"
-   ]
+   "passes_all": []
   },
   {
    "task": "T07_heat_oatmeal",
@@ -8443,8 +8441,8 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "passes",
-   "hidden_state_branch": false
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
   },
   {
    "task": "T07_heat_oatmeal",

@@ -4651,6 +4651,22 @@
         - `bedside_bin_2` 立着
         - `bedside_tray` 立着
         - `bedside_book` 立着
+      - 第 4 组：
+        - `wooden_block_a` 在 `desk_1/top` 上
+        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_teddy_1` 立着
+        - `bedside_teddy_2` 立着
+        - `bedside_snacks` 立着
+        - `bedside_bin_1` 立着
+        - `bedside_bin_2` 立着
+        - `bedside_tray` 立着
+        - `bedside_book` 立着
 - **次好（0.6）**：
 
   - 摆法 `boxes_middle`：
@@ -4676,22 +4692,6 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `wooden_block_a` 在 `desk_1/top` 上
-        - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_snacks` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_bin_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_bin_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_tray` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_book` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_teddy_1` 立着
-        - `bedside_teddy_2` 立着
-        - `bedside_snacks` 立着
-        - `bedside_bin_1` 立着
-        - `bedside_bin_2` 立着
-        - `bedside_tray` 立着
-        - `bedside_book` 立着
-      - 第 2 组：
         - `wooden_block_a` 在 `large_shelf_4/shelf_1` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
@@ -4707,7 +4707,7 @@
         - `bedside_bin_2` 立着
         - `bedside_tray` 立着
         - `bedside_book` 立着
-      - 第 3 组：
+      - 第 2 组：
         - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
@@ -4723,7 +4723,7 @@
         - `bedside_bin_2` 立着
         - `bedside_tray` 立着
         - `bedside_book` 立着
-      - 第 4 组：
+      - 第 3 组：
         - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
         - `bedside_teddy_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_teddy_2` 没被挪动（离开局位置不超过 5 cm）
@@ -4799,7 +4799,7 @@
 **参考调用顺序**：
 
 - 摆法 `boxes_middle`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
-- 摆法 `bookcase_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a, grasp=side)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/shelf_1, hint_xy=[2.1, -4.88])`
+- 摆法 `bookcase_full`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a, grasp=side)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `navigate(destination=desk_1/top)` → 9. `look(target=desk_1/top)` → 10. `place(object=wooden_block_a, receptacle=desk_1/top, hint_xy=[-0.188, -5.946])`
 
 ---
 

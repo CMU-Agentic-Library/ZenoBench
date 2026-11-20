@@ -1298,8 +1298,8 @@
   {
    "task": "T06_block_destination_occupied",
    "layout": "seen_from_bed__bookcase_full",
-   "steps": 8,
-   "atoms_checked": 10,
+   "steps": 10,
+   "atoms_checked": 11,
    "atoms_geometric": 7,
    "geometric_atoms": [
     "upright bedside_teddy_1",

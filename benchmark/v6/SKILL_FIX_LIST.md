@@ -34,7 +34,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | navigate | kitchen_cabinet_6/top | 284 | 8 | 3% | carry slip 8 | T04 | 10 | carry: cup_counter_b slipped out of the hand while carrying it |
 | pick | kitchen_sponge | 82 | 8 | 9% | grasp miss 8 | T08 | 3 | pick kitchen_sponge: not held (lift 0.000 m) |
 | place | apple | 73 | 8 | 10% | IK / reach / base pose 8 | T11 | 2 | place_pre: no IK solution reaches apple from this base pose |
-| look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 8 | face desk_1/top: turning in place would hit furniture |
+| look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 9 | face desk_1/top: turning in place would hit furniture |
 | arrange |  | 2 | 8 | 80% | IK / reach / base pose 5, other 2, placement result 1 | T13 | 0 | SUBSKILL_FAILED: pick_object(object=cup): no IK for pick_lift |
 | pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 1 | pick from cavity oatmeal: front approach missed by 0.163 m |
 | pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 2 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |

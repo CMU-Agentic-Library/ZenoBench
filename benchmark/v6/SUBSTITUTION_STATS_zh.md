@@ -92,7 +92,7 @@
 | T06 | display_spot_or_tv | front_taken_tv_full | 去处替换 | 矮柜正面那块地方（被占了，电视柜也满） | 不在 | 1 |
 | T06 | display_spot_or_tv | front_free_block_away | 不用替换 | 按指令（the best the seed offers, in view from the room and 2 cm from the edge: the cabinet front when free, else the TV stand or the other low cabinet (the other low cabinet when the TV stand is full too); nothing moved） | 在 | 1 |
 | T06 | seen_from_bed | boxes_middle | 不用替换 | 按指令（on the bedside bookcase (its top when it has room, else a lower shelf), the kid's things untouched） | 在 | 1 |
-| T06 | seen_from_bed | bookcase_full | 去处替换 | 床头书架顶（被孩子的东西占满，放下层） | 不在 | 1 |
+| T06 | seen_from_bed | bookcase_full | 去处替换 | 床头书架顶（被孩子的东西占满，放下层或床边书桌） | 不在 | 1 |
 | T07 | microwave_works | — | 不用替换 | 按指令（warmed to 40 C in the microwave only, both off, the microwave door closed） | 在 | 1 |
 | T07 | microwave_broken | — | 看着像但不能用 | 微波炉（坏了，用灶台） | 不在 | 0 |
 | T07 | microwave_broken | — | 看着像但不能用 | 微波炉（坏了，用灶台） | 不在 | 0 |
