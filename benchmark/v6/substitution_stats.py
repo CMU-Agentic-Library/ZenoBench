@@ -75,7 +75,6 @@ KIND = {
     ("T12", "toys_out"): {"*": None},
     ("T12", "duck_in_study"): {"*": None},
     ("T12", "bins_capacity"): {"*": "能力不足"},
-    ("T12", "find_all_toys"): {"*": "看着像但不能用"},
     ("T12", "castle_stays"): {"*": "被占用"},
     ("T13", "dishes_on_tv_stand"): {"*": None},
     ("T13", "no_cup"): {"*": "缺失"},

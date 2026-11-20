@@ -37,7 +37,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 8 | face desk_1/top: turning in place would hit furniture |
 | arrange |  | 2 | 8 | 80% | IK / reach / base pose 5, other 2, placement result 1 | T13 | 0 | SUBSKILL_FAILED: pick_object(object=cup): no IK for pick_lift |
 | pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 1 | pick from cavity oatmeal: front approach missed by 0.163 m |
-| pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 4 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
+| pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 2 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
 | pick | pot_lid | 90 | 7 | 7% | grasp miss 7 | T17 | 6 | pick pot_lid: not held (lift 0.010 m) |
 | place | rolling_pin | 72 | 6 | 8% | other 5, carry slip 1 | T03 | 4 | carry: rolling_pin slipped out of the hand while carrying it |
 | place | oatmeal | 156 | 6 | 4% | other 4, IK / reach / base pose 1, placement result 1 | T04 T07 T16 | 1 | no IK for place_above |
@@ -50,7 +50,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | party_bowl_1 | 36 | 4 | 10% | other 3, IK / reach / base pose 1 | T20 | 0 | place party_bowl_1: container shifted 0.067 m before release |
 | collect | handled_cooking_pot | 78 | 3 | 4% | other 2, IK / reach / base pose 1 | T09 | 4 | SUBSKILL_FAILED: fetch_object(object=cherry_tomato_2, receptacle=handled_cooking_pot): SUBSKILL_FAILED: place_object(object=cherry_tomato_2, |
 | hover | soda_can | 26 | 3 | 10% | other 2, carry slip 1 | T10 | 4 | POSTCONDITION_FAILED: hovering_over(object=soda_can, target=trash_can) is false (xy 0.252 m, above by 0.343 m) |
-| pick | rubber_duck | 86 | 3 | 3% | IK / reach / base pose 2, grasp miss 1 | T12 | 7 | pick rubber_duck: no reachable grasp from any base pose |
+| pick | rubber_duck | 86 | 3 | 3% | IK / reach / base pose 2, grasp miss 1 | T12 | 6 | pick rubber_duck: no reachable grasp from any base pose |
 | place | cup | 27 | 3 | 10% | placement result 3 | T13 | 1 | place cup: xy err 0.058 m, on support False (bottom at (3.15, 7.45, 0.933)) |
 | look | book_red | 57 | 3 | 5% | perception / search 3 | T14 | 0 | NOT_FOUND: 'book_red' is not visible at its last observed position |
 
@@ -131,9 +131,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | notebook_2 | T05/homework_ready |
 | pick | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
 | pick | paperback | T14/whose_book |
-| pick | pen | T05/all_pens, T05/check_desk_first, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
-| pick | pen_2 | T05/all_pens, T05/pens_per_notebook |
-| pick | pencil_2 | T05/all_pens |
+| pick | pen | T05/check_desk_first, T05/errand_combined, T05/homework_ready, T05/x6_gd_pen_or_pencil_cabinets |
 | pick | plate_counter_a | T13/copy_the_setting, T15/lid_elsewhere, T15/lid_in_use, T15/no_lid |
 | pick | red_book_2 | T14/next_in_series |
 | pick | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
@@ -152,11 +150,9 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | stock_cup_1 | T25/cups_for_two |
 | pick | stock_cup_2 | T25/cups_for_two |
 | pick | stored_mug | T30/bowl_put_away |
-| pick | stray_block | T12/find_all_toys |
 | pick | table_book | T29/several |
 | pick | table_car | T29/belongs_on_table, T29/several |
 | pick | takeout_tray | T10/after_dinner_clear |
-| pick | teddy_bear | T12/find_all_toys |
 | pick | tissue | T21/the_kids_side, T21/which_table |
 | pick | toy_block | T02/block_put_away, T02/third_toy_elsewhere |
 | pick | toy_east | T29/which_table |
@@ -213,9 +209,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | notebook_2 | T05/homework_ready |
 | place | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
 | place | paperback | T14/whose_book |
-| place | pen | T05/all_pens, T05/check_desk_first, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
-| place | pen_2 | T05/all_pens, T05/pens_per_notebook |
-| place | pencil_2 | T05/all_pens |
+| place | pen | T05/check_desk_first, T05/errand_combined, T05/homework_ready, T05/x6_gd_pen_or_pencil_cabinets |
 | place | plate_counter_a | T13/copy_the_setting |
 | place | red_book_2 | T14/next_in_series |
 | place | school_apple | T16/box_in_cabinet, T16/box_in_use, T16/no_box |
@@ -234,10 +228,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | stock_cup_1 | T25/cups_for_two |
 | place | stock_cup_2 | T25/cups_for_two |
 | place | stored_mug | T30/bowl_put_away |
-| place | stray_block | T12/find_all_toys |
 | place | table_book | T29/several |
 | place | table_car | T29/belongs_on_table, T29/several |
-| place | teddy_bear | T12/find_all_toys |
 | place | tissue | T21/the_kids_side, T21/which_table |
 | place | toy_east | T29/which_table |
 | place | toy_west | T29/which_table |

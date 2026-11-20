@@ -76,6 +76,9 @@ class World:
                 o["z"] = m.get("z") if m.get("z") is not None else (
                     self.supports[m["support"]]["z"] if m.get("support") in self.supports else None)
                 removed.discard(n)
+        # 11-20: what the layout itself takes out stays out though the scene moves it (as benchmark.scene: the prim
+        # is deactivated) -- T03 no wide bin, T05 no pen
+        removed |= set(v.get("remove") or []) - set(v.get("move") or {}) - set(v.get("add") or {})
         for n in removed:
             self.obj.pop(n, None)
         self.start = {n: list(o["xy"]) for n, o in self.obj.items()}

@@ -982,7 +982,10 @@ def t26():
     # that board, muqingj), the toy basket a step down
     BEAR = "living_bear"
     top_books = B3_TOP_BOOKS
+    # 11-20 (user: the ideal there tops): with the top free, a lower level of it or his other bookcase is the
+    # substitute (0.6, as the why says), the toy basket too
     LT["bear_to_bed__top_free"] = cost_tiers([([["on_any", BEAR, ["mattress_1/top", "bookcase_3/top"]]], 0),
+                                              ([["on_any", BEAR, ["bookcase_3/shelf_1", "bookcase_3/shelf_0", *B2]]], 1),
                                               ([["inside", BEAR, BASK]], 1)])
     LT["bear_to_bed__top_covered"] = cost_tiers(
         [([["on_any", BEAR, ["mattress_1/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0", *B2]]], 0),

@@ -1,6 +1,6 @@
 {
- "routes": 324,
- "ok": 324,
+ "routes": 316,
+ "ok": 316,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -1077,36 +1077,6 @@
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
-   "layout": "all_pens__two",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "all_pens"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
-   "layout": "all_pens__three",
-   "steps": 15,
-   "atoms_checked": 4,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "all_pens"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
-   "layout": "all_pens__four",
-   "steps": 20,
-   "atoms_checked": 5,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "all_pens"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
    "layout": "homework_ready__single",
    "steps": 12,
    "atoms_checked": 5,
@@ -1134,26 +1104,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "homework_ready"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
-   "layout": "pens_per_notebook__notebooks_2",
-   "steps": 10,
-   "atoms_checked": 27,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "pens_per_notebook"
-  },
-  {
-   "task": "T05_pen_or_pencil_to_desk",
-   "layout": "pens_per_notebook__notebooks_3",
-   "steps": 15,
-   "atoms_checked": 20,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "pens_per_notebook"
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -2070,42 +2020,6 @@
    ],
    "problems": [],
    "variant": "bins_capacity"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__car_duck",
-   "steps": 11,
-   "atoms_checked": 4,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__car_duck_bear",
-   "steps": 16,
-   "atoms_checked": 5,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
-  },
-  {
-   "task": "T12_tidy_toys",
-   "layout": "find_all_toys__all_four",
-   "steps": 21,
-   "atoms_checked": 6,
-   "atoms_geometric": 1,
-   "geometric_atoms": [
-    "upright storage_basket"
-   ],
-   "problems": [],
-   "variant": "find_all_toys"
   },
   {
    "task": "T12_tidy_toys",

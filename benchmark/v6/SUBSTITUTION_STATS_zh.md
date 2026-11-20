@@ -1,22 +1,22 @@
 # 替换统计（按摆法）
 
-已审过的变体里一共 289 个摆法，其中 185 个要做替换，104 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 37.0 个。由 `python benchmark/v6/substitution_stats.py` 生成。
+已审过的变体里一共 286 个摆法，其中 182 个要做替换，104 个不用替换（理想的东西在、眼前也没有诱惑，作对照）。五类平均每类应有约 36.4 个。由 `python benchmark/v6/substitution_stats.py` 生成。
 
 ## 每类替换的摆法数
 
 | 类别 | 摆法数 | 和平均的差 |
 |---|---|---|
-| 缺失 | 45 | +8.0 |
-| 被占用 | 42 | +5.0 |
-| 能力不足 | 23 | -14.0 |
-| 看着像但不能用 | 33 | -4.0 |
-| 去处替换 | 42 | +5.0 |
+| 缺失 | 45 | +8.6 |
+| 被占用 | 42 | +5.6 |
+| 能力不足 | 23 | -13.4 |
+| 看着像但不能用 | 30 | -6.4 |
+| 去处替换 | 42 | +5.6 |
 
 ## 理想物在不在（不在时，原来的次好——最好的替代——就是这个摆法的理想，算好）
 
 | 理想物 | 摆法数 |
 |---|---|
-| 在 | 86 |
+| 在 | 83 |
 | 不在 | 99 |
 
 ## 类别 × 理想物在不在
@@ -26,7 +26,7 @@
 | 缺失 | 4 | 41 |
 | 被占用 | 14 | 28 |
 | 能力不足 | 5 | 18 |
-| 看着像但不能用 | 27 | 6 |
+| 看着像但不能用 | 24 | 6 |
 | 去处替换 | 36 | 6 |
 
 ## 每个摆法（理想：ideals.py 里逐个定的；理想物不在时，括号里的替代就是这个摆法的理想，算好 1.0，后面的依次 0.6、0.3；没列的摆法不用替换，理想就是最好那档）
@@ -37,7 +37,7 @@
 | T01 | which_book | bedroom | 看着像但不能用 | 指令要的那本书（旁边有本像的） | 在 | 1 |
 | T02 | crowded_use_another | tight_tv | 被占用 | 碗旁那块积木 B（被占着，用别屋的积木） | 不在 | 1 |
 | T02 | crowded_use_another | tight_dining | 被占用 | 碗旁那块积木 B（被占着，用别屋的积木） | 不在 | 1 |
-| T02 | crowded_use_another | loose | 不用替换 | 按指令（tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched） | 在 | 0 |
+| T02 | crowded_use_another | loose | 不用替换 | 按指令（tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched） | 在 | 1 |
 | T02 | third_toy_elsewhere | duck | 缺失 | 第三块积木（没有，去别屋拿小鸭） | 不在 | 1 |
 | T02 | third_toy_elsewhere | toy_block | 缺失 | 第三块积木（没有，去别屋拿玩具积木） | 不在 | 1 |
 | T02 | tower_for_kid | counter | 不用替换 | 按指令（three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its things, nothing moved） | 在 | 1 |
@@ -159,22 +159,19 @@
 | T12 | bins_capacity | apart_empty_on_desk | 能力不足 | 能装下所有玩具的收纳筐（没有，分到放得下的箱子里） | 不在 | 1 |
 | T12 | bins_capacity | half_bin_and_tray | 能力不足 | 能装下所有玩具的收纳筐（没有，分到放得下的箱子里） | 不在 | 1 |
 | T12 | bins_capacity | half_bin_and_tray_duck_dining | 能力不足 | 能装下所有玩具的收纳筐（没有，分到放得下的箱子里） | 不在 | 1 |
-| T12 | find_all_toys | car_duck | 看着像但不能用 | 所有玩具（有像玩具的别的东西） | 在 | 0 |
-| T12 | find_all_toys | car_duck_bear | 看着像但不能用 | 所有玩具（有像玩具的别的东西） | 在 | 0 |
-| T12 | find_all_toys | all_four | 看着像但不能用 | 所有玩具（有像玩具的别的东西） | 在 | 0 |
 | T12 | castle_stays | tall_two_loose | 被占用 | 散玩具进筐，城堡不动 | 在 | 1 |
 | T12 | castle_stays | short_one_loose | 被占用 | 散玩具进筐，城堡不动 | 在 | 1 |
 | T12 | castle_stays | tall_none_loose | 被占用 | 散玩具进筐，城堡不动 | 在 | 1 |
 | T13 | dishes_on_tv_stand | — | 不用替换 | 按指令（bowl, cup and spoon together on the dining table, upright） | 在 | 1 |
 | T13 | no_cup | — | 缺失 | 杯子（没有，用马克杯） | 不在 | 0 |
-| T13 | copy_the_setting | bowl_cup | 去处替换 | 照样摆的那几样 | 在 | 0 |
-| T13 | copy_the_setting | plate_bowl_mug_left | 去处替换 | 照样摆的那几样 | 在 | 0 |
+| T13 | copy_the_setting | bowl_cup | 去处替换 | 照样摆的那几样 | 在 | 1 |
+| T13 | copy_the_setting | plate_bowl_mug_left | 去处替换 | 照样摆的那几样 | 在 | 1 |
 | T13 | copy_the_setting | no_cup | 缺失 | 杯子（没有，用马克杯） | 不在 | 0 |
 | T13 | finish_the_table | adult_seat | 去处替换 | 缺的那份摆齐 | 在 | 1 |
 | T13 | finish_the_table | kid_seat | 去处替换 | 缺的那份摆齐 | 在 | 1 |
 | T13 | finish_the_table | adult_and_kid | 去处替换 | 缺的那份摆齐 | 在 | 1 |
 | T15 | lid_by_pot | — | 不用替换 | 按指令（the pot covered with its lid） | 在 | 0 |
-| T15 | lid_elsewhere | dining | 不用替换 | 按指令（the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)） | 在 | 0 |
+| T15 | lid_elsewhere | dining | 不用替换 | 按指令（the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)） | 在 | 1 |
 | T15 | lid_elsewhere | covering_bowl | 被占用 | 锅盖（盖着别的碗，用盘子） | 不在 | 1 |
 | T15 | no_lid | — | 缺失 | 锅盖（没有，用盘子） | 不在 | 1 |
 | T15 | lid_in_use | — | 被占用 | 锅盖（正盖着别的锅，用盘子） | 不在 | 1 |
@@ -220,8 +217,8 @@
 | T14 | next_in_series | on_other_bookcase | 看着像但不能用 | 同一套书的下一本 | 在 | 1 |
 | T14 | next_in_series | on_tall_shelf | 看着像但不能用 | 同一套书的下一本 | 在 | 1 |
 | T21 | tissue_on_tv_stand | — | 不用替换 | 按指令（the tissues on the dining table） | 在 | 0 |
-| T21 | which_table | east | 去处替换 | 洒了汤的那张桌 | 在 | 0 |
-| T21 | which_table | west | 去处替换 | 洒了汤的那张桌 | 在 | 0 |
+| T21 | which_table | east | 去处替换 | 洒了汤的那张桌 | 在 | 1 |
+| T21 | which_table | west | 去处替换 | 洒了汤的那张桌 | 在 | 1 |
 | T21 | no_tissue | — | 缺失 | 纸巾（没有，用干海绵） | 不在 | 0 |
 | T21 | the_kids_side | kid_north | 去处替换 | 孩子那一侧 | 在 | 1 |
 | T21 | the_kids_side | kid_south | 去处替换 | 孩子那一侧 | 在 | 1 |
@@ -252,8 +249,8 @@
 | T24 | dinner_soon | banana | 看着像但不能用 | 水果（不是零食） | 在 | 1 |
 | T24 | fruit_out_of_view | apple_in_basket | 不用替换 | 按指令（the fruit found (the apple in the basket, else the banana) on the desk） | 在 | 1 |
 | T24 | fruit_out_of_view | basket_empty | 缺失 | 果篮里的水果（空了，用台面上的香蕉） | 不在 | 1 |
-| T24 | where_is_he | study | 去处替换 | 有作业的那张书桌 | 在 | 0 |
-| T24 | where_is_he | bedroom | 去处替换 | 有作业的那张书桌 | 在 | 0 |
+| T24 | where_is_he | study | 去处替换 | 有作业的那张书桌 | 在 | 1 |
+| T24 | where_is_he | bedroom | 去处替换 | 有作业的那张书桌 | 在 | 1 |
 | T24 | two_kids | apple_banana | 不用替换 | 按指令（one thing to eat by each kid's homework, not on it: on his desk, or on the bookcase beside a desk that has no room） | 在 | 1 |
 | T24 | two_kids | apple_snacks | 缺失 | 两样水果（只有一个苹果，另一样用零食） | 不在 | 1 |
 | T24 | two_kids | desk3_covered | 被占用 | 卧室那个孩子的书桌（摊满作业，放旁边矮书架） | 不在 | 1 |
@@ -281,8 +278,8 @@
 | T26 | where_in_room | waste_bin | 看着像但不能用 | 玩具筐（没有，原处是垃圾桶；小车放书架） | 不在 | 1 |
 | T26 | bear_to_bed | top_free | 不用替换 | 按指令（the teddy on his bed or the bookcase by it (a lower level when its top is covered)） | 在 | 1 |
 | T26 | bear_to_bed | top_covered | 被占用 | 床边书架顶（摆满书，放他另一个书架顶或床上） | 不在 | 1 |
-| T26 | two_bedrooms | room_east | 去处替换 | 有他玩具筐的那间 | 在 | 0 |
-| T26 | two_bedrooms | room_south | 去处替换 | 有他玩具筐的那间 | 在 | 0 |
+| T26 | two_bedrooms | room_east | 去处替换 | 有他玩具筐的那间 | 在 | 1 |
+| T26 | two_bedrooms | room_south | 去处替换 | 有他玩具筐的那间 | 在 | 1 |
 | T27 | rice_on_table | — | 不用替换 | 按指令（every leftover in the fridge, the fridge closed） | 在 | 0 |
 | T27 | which_is_leftover | — | 看着像但不能用 | 只有剩饭（旁边空外卖盒像剩菜） | 在 | 1 |
 | T27 | which_is_leftover | — | 不用替换 | 按指令（only the rice in the fridge, the fridge closed, the rest left (empty tray, fruit and cereal, the bowl someone eats from)） | 在 | 1 |
@@ -293,8 +290,8 @@
 | T27 | fridge_out_of_view | fridge_free | 不用替换 | 按指令（the rice in the fridge's free part, the stored food left, the door closed） | 在 | 0 |
 | T27 | fridge_out_of_view | fridge_crowded | 被占用 | 冰箱层板（左半边占了，右边还空着） | 在 | 1 |
 | T28 | cup_on_counter | — | 不用替换 | 按指令（his cup standing by his bed） | 在 | 0 |
-| T28 | which_bed | east | 去处替换 | 有小熊那张床的床边 | 在 | 0 |
-| T28 | which_bed | south | 去处替换 | 有小熊那张床的床边 | 在 | 0 |
+| T28 | which_bed | east | 去处替换 | 有小熊那张床的床边 | 在 | 1 |
+| T28 | which_bed | south | 去处替换 | 有小熊那张床的床边 | 在 | 1 |
 | T28 | where_his_cup_is | on_counter | 不用替换 | 按指令（his cup by his bed (with no cup of his, a cup of the house), the rest left, the door closed） | 在 | 1 |
 | T28 | where_his_cup_is | in_cabinet | 不用替换 | 按指令（his cup by his bed (with no cup of his, a cup of the house), the rest left, the door closed） | 在 | 1 |
 | T28 | where_his_cup_is | no_kid_cup | 缺失 | 他的塑料杯（家里没有，用家里的杯子） | 不在 | 0 |

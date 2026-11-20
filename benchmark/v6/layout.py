@@ -495,7 +495,8 @@ def layout_spec(task, vid, registry, control=None):
     removed = set(scene.get("remove", [])) | set(v.get("remove", []))
     move = {**scene.get("move", {}), **v.get("move", {})}
     add = {**scene.get("add", {}), **v.get("add", {})}
-    placed = {**move, **add}
+    gone = set(v.get("remove", [])) - set(v.get("move", {})) - set(v.get("add", {}))
+    placed = {n: m for n, m in {**move, **add}.items() if n not in gone}    # 11-20: taken out stays out
     steps = task["routes"][task["oracle"][vid]]["steps"]
     picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}

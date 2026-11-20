@@ -72,7 +72,6 @@ IDEAL = {
                                for c in ("side_left_full", "side_right_full", "apart_full_on_tv", "apart_empty_on_desk",
                                          "half_bin_and_tray", "half_bin_and_tray_duck_dining")},
     ("T12", "castle_stays"): {c: (True, "散玩具进筐，城堡不动") for c in ("tall_two_loose", "short_one_loose", "tall_none_loose")},
-    ("T12", "find_all_toys"): {c: (True, "所有玩具（有像玩具的别的东西）") for c in ("car_duck", "car_duck_bear", "all_four")},
     ("T13", "copy_the_setting"): {"bowl_cup": (True, "照样摆的那几样"), "plate_bowl_mug_left": (True, "照样摆的那几样"),
                                   "no_cup": (False, "杯子（没有，用马克杯）")},
     ("T13", "finish_the_table"): {c: (True, "缺的那份摆齐") for c in ("adult_seat", "kid_seat", "adult_and_kid")},

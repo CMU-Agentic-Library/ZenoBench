@@ -1085,18 +1085,7 @@ def T05(t):
             rationale="look before fetching: if the pen is there the goal already holds and the right plan is to stop "
                       "(fetching another is a wasted errand); a pencil is not what was asked for, so then fetch the pen",
             cases=check_cases),
-        "all_pens": dict(
-            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["unknown_count", "not_in_view"],
-            instruction="The kid is filling the pencil case. Collect every pen and pencil in the house onto the study "
-                        "desk.",
-            instruction_zh="孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
-            factor="how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, "
-                   "the living room and the kitchen)",
-            challenge="the instruction does not say how many; two to four pens and pencils are spread over different "
-                      "rooms, most of them out of view",
-            rationale="an open-ended collection: search room after room, one item per trip, and stop only when every "
-                      "place has been checked; missing one fails",
-            cases=all_cases),
+        # all_pens: removed 11-20 (user: finding all / counting is not substitution)
         "homework_ready": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_items_unstated", "not_in_view"],
             instruction="The kid is about to do homework at the study desk. Get the desk ready with what they need to "
@@ -1109,19 +1098,7 @@ def T05(t):
             rationale="written homework needs something to write with and a notebook to write in: bring one of each "
                       "(any pen or pencil, any notebook), not the book or the teddy",
             cases=ready_cases),
-        "pens_per_notebook": dict(
-            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["count_from_scene", "not_in_view"],
-            instruction="The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil "
-                        "for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
-            instruction_zh="孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，"
-                           "每本旁边放一支，不要多拿。",
-            keep_design=[DESK],
-            factor="how many notebooks are on the desk (seed: 2 or 3)",
-            challenge="the number of pens is not in the instruction but on the desk (two or three notebooks); four "
-                      "writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-            rationale="count the notebooks first, then bring exactly that many writing things and put one by each; "
-                      "the others stay where they are",
-            cases=per_cases),
+        # pens_per_notebook: removed 11-20 (user)
         "errand_combined": dict(
             base="e1_pencil_asked", control="e1_pencil_asked", conditions=["errands_combined"],
             add={MUG: {"asset": "breakfast_mug", "support": DESK, "xy": [-0.35, -5.95], "yaw_deg": 0.0}},
@@ -2030,15 +2007,7 @@ def T12(t):
             rationale="the full bin has no room left: both toys go into the empty one, which may have to be found in "
                       "another room; the blocks stay in the full bin",
             cases=cap_cases),
-        "find_all_toys": dict(
-            base="toys_out", control="toys_out", conditions=["goal_items_unstated", "not_in_view", "multi_object_goal"],
-            factor="which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-            challenge="the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, "
-                      "dining table, TV stand); a yellow sponge on the dining table is not a toy",
-            rationale="the instruction does not list the toys: search the rooms until every toy is found, tell toys "
-                      "from look-alikes (leave the sponge), put each into the basket; stopping after the first few "
-                      "fails",
-            cases=all_cases),
+        # find_all_toys: removed 11-20 (user)
         "castle_stays": dict(
             base="toys_out", control="toys_out", conditions=["relational_exception", "multi_object_goal"],
             instruction="It is nearly bedtime. Put the kid's toys away. Don't take apart the block castle the kid "
@@ -3448,7 +3417,11 @@ def make_variant(t, fam, spec, case, cspec):
         for k in FIELDS:
             if k in src and k not in ("move", "remove", "add", "failures"):
                 v[k] = copy.deepcopy(src[k])
-    placed = set(spec.get("move", {})) | set(cspec.get("move", {})) | set(spec.get("add", {})) | set(cspec.get("add", {}))
+    # 11-20: what the seed (case) itself takes out stays out, though the design places it (T03 basket_in_bedroom:
+    # no wide bin; T09 spare_pot: the usual pot gone) -- only what the base removes and a variant places comes back
+    gone = set(cspec.get("remove", []))
+    placed = ((set(spec.get("move", {})) | set(spec.get("add", {}))) - gone) | set(cspec.get("move", {})) | \
+        set(cspec.get("add", {}))
     if v.get("remove") and placed & set(v["remove"]):
         v["remove"] = sorted(set(v["remove"]) - placed)      # an object the base removes but this variant places
     if v.get("remove") and v.get("move"):                # the base moves an object this variant takes out (11-17)
@@ -3485,7 +3458,13 @@ SPLIT = set()
 NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
                    # a pencil is asked for: no pen in the house is no longer a substitution
                    ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen"],
-                   ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"]}
+                   ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"],
+                   # 11-20 (user): finding a thing out of view is no substitution -- these count as controls
+                   ("T10_trash_the_can", "can_in_dining_room"): ["not_in_view"],
+                   ("T10_trash_the_can", "can_in_dining_room__alt_tv_stand_2"): ["not_in_view"],
+                   ("T12_tidy_toys", "duck_in_study"): ["not_in_view"],
+                   ("T12_tidy_toys", "duck_in_study__alt_dining_table_2"): ["not_in_view"],
+                   ("T18_set_out_bowls", "bowls_apart"): ["item_put_away", "not_in_view"]}
 
 
 # a task whose v5 instruction spelled out every place and fallback: one short instruction for the task and all of

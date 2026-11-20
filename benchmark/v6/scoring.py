@@ -87,11 +87,6 @@ SCORING: dict[tuple[str, str], dict] = {
     ("T05", "e1_pencil_asked"): only("the pencil on the study desk, the hand empty",
                                      "the pencil elsewhere; something else brought instead; still held or dropped"),
     # T05 no_pen_pencil_away: no pen, the pencil on the dining table out of view; a search, no substitution
-    ("T05", "all_pens"): only("every pen and pencil on the study desk, the hand empty (extra things brought along "
-                              "do not cost)",
-                              "one or more missed (stopped before every place was checked); elsewhere; still held "
-                              "or dropped"),
-    # T06 free (control): two blocks on the island, both display spots empty; one block (or both) on either does it
     ("T06", "free"): only("a block (or both) on the low wall cabinet or the TV stand, the hand empty",
                           "elsewhere (coffee table, dining table, left on the island); still held or dropped"),
 }
@@ -301,17 +296,6 @@ def _homework_ready(task: dict) -> dict:
          "why": "a pen or pencil with the red book in place of a notebook"}],
         "not_ok": "only a pen or only a notebook; the teddy bear or another unrelated thing to make up the set; "
                   "elsewhere; still held or dropped"}
-
-# T05 pens_per_notebook: exactly one pen or pencil beside each of the 2-3 notebooks, the rest left where they are.
-# The right count not beside the notebooks is the second tier; too many (beside or not) the worst (user 11-11)
-SCORING[("T05", "pens_per_notebook")] = {"D": 1, "tiers": [
-    {"name": "best", "score": 1.0, "goal": None,
-     "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"},
-    {"name": "second", "score": 0.6, "goal": {"drop": ["near_any"]},
-     "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"},
-    {"name": "worst", "score": 0.3, "goal": {"drop": ["near_any", "near_start"]},
-     "why": "too many brought (one more, or all four), against \"no more\""}],
-    "not_ok": "fewer than the notebooks; elsewhere; still held or dropped"}
 
 # T05 errand_combined: a pen to the study desk, the used mug from it to a kitchen counter.  The errands' order is
 # SPL's business.  The mug elsewhere in the kitchen is the second tier; the mug outside the kitchen, or the pencil
@@ -939,28 +923,33 @@ def with_ideal(task_id: str, design: str, lid: str, p: dict) -> dict:
 #   ``require``: a level without those atoms of the best is no level (too many brought); ``mention``: names every
 #   level must still place;
 # then a level that can no longer be told from a higher one is left out and the rest renumbered 1.0, 0.6, 0.3.
+# Per seed (``by_layout``, keyed by the layout's case): ``sub`` -- the ideal is there, a substitute in the scene too:
+# the best tier with those names swapped is a 0.6 level; ``demote`` -- best groups naming these things are the
+# substitute (0.6); ``wrong`` -- the wrong place (the other table, desk, bed, room, surface) scores 0.3 (user 11-20).
 STAY_TOL = 0.25
 SLIP_PREDS = {"is_closed", "squared", "never_picked"}
 _PLACING = {"on", "on_any", "inside", "inside_any", "fully_inside", "on_top_of", "count_on_at_least",
             "count_on_at_most", "hidden", "covered", "same_arrangement", "grouped", "near_any"}
 _STRICT_ALL = {"strict": ["*"]}
 LOOSEN: dict = {
-    **{("T01", d): _STRICT_ALL for d in ("table_seats", "which_table", "no_room_fallback", "reader_seat")},
+    **{("T01", d): _STRICT_ALL for d in ("table_seats", "no_room_fallback", "reader_seat")},
     ("T01", "which_book"): {"drop": [("near_start", "book_island"), ("near_start", "book_other")]},
-    ("T02", "crowded_use_another"): {"strict": ["wooden_block_b"]},
+    # loose: B is free, the block from the other room is the substitute (11-20)
+    ("T02", "crowded_use_another"): {"strict": ["wooden_block_b"], "by_layout": {"loose": {"demote": ["floor_block"]}}},
     ("T02", "tower_for_kid"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
     ("T02", "tower_for_kid_duck"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
     ("T02", "block_put_away"): {"drop": [("away_from_edge", "*")]},
     ("T04", "two_guests"): {"drop": [("clear_of", "*")]},
     ("T04", "clear_the_drinks_spot"): {"strict": ["kid_*"]},
     ("T05", "homework_ready"): {"drop": [("near_start", "teddy_bear")]},
-    ("T05", "pens_per_notebook"): {"drop": [("near_any", "*")], "require": [("near_start", "*")]},
     ("T06", "display_row"): {"strict": ["fam_*"], "drop": [("front_visible", "*"), ("clear_of", "*")]},
     ("T06", "display_spot_or_tv"): {"strict": ["*"], "drop": [("away_from_edge", "*")]},
     ("T06", "seen_from_bed"): {"strict": ["bedside_*"]},
     ("T07", "microwave_holds_pot"): {"strict": ["handled_cooking_pot", "pot_lid"]},
-    **{("T08", d): {"step": [("on", "kitchen_sponge")]} for d in ("sponge_on_island", "wipe_and_sort",
-                                                                    "which_surface")},
+    **{("T08", d): {"step": [("on", "kitchen_sponge")]} for d in ("sponge_on_island", "wipe_and_sort")},
+    ("T08", "which_surface"): {"step": [("on", "kitchen_sponge")], "by_layout": {
+        "island": {"wrong": [[["wiped", "dining_table_2/top"], ["on", "kitchen_sponge", "kitchen_island/top"]]]},
+        "dining": {"wrong": [[["wiped", "kitchen_island/top"], ["on", "kitchen_sponge", "kitchen_island/top"]]]}}},
     # the kid's foam cube used instead of the sponge (the sponge never taken, strict) is a substitute: no sponge to
     # put back
     ("T08", "far_sponge_tv"): {"step": [("on", "*sponge*")], "unless": [("near_start", "kitchen_sponge")],
@@ -971,8 +960,24 @@ LOOSEN: dict = {
     ("T09", "pot_in_use"): {"strict": ["soup_pot"], "step": [("stirred", "*"), ("covered", "*")]},
     ("T10", "trash_moved"): {"drop": [("near_start", "trash_fill_*")]},
     ("T11", "fruit_plate_for_guests"): {"strict": ["kid_*"], "mention": ["apple", "lunch_orange"]},
-    ("T12", "find_all_toys"): {"drop": [("near_start", "kitchen_sponge")]},
-    ("T13", "copy_the_setting"): {"drop": [("near_start", "example_*")], "step": [("same_arrangement", "*")]},
+    ("T13", "copy_the_setting"): {"drop": [("near_start", "example_*")], "step": [("same_arrangement", "*")],
+                                  "by_layout": {"bowl_cup": {"sub": {"cup": "mug"}},
+                                                "plate_bowl_mug_left": {"sub": {"mug": "cup"}}}},
+    ("T15", "lid_elsewhere"): {"by_layout": {"dining": {"sub": {"pot_lid": "plate_counter_a"}}}},
+    ("T01", "which_table"): {"strict": ["*"], "by_layout": {
+        **{c: {"wrong": [[["on", "paperback_book", "dining_table_1/top"]]]}
+           for c in ("near_a", "near_b", "near_a_flat", "near_b_flat")},
+        **{c: {"wrong": [[["on", "paperback_book", "dining_table_2/top"]]]}
+           for c in ("far_a", "far_b", "far_a_flat", "far_b_flat")}}},
+    ("T21", "which_table"): {"by_layout": {"east": {"wrong": [[["on", "tissue", "dining_table_1/top"]]]},
+                                           "west": {"wrong": [[["on", "tissue", "dining_table_2/top"]]]}}},
+    ("T24", "where_is_he"): {"by_layout": {"study": {"wrong": [[["on_any", "snack_apple", ["desk_3/top", "bookcase_4/top"]]]]},
+                                           "bedroom": {"wrong": [[["on", "snack_apple", "desk_1/top"]]]}}},
+    ("T26", "two_bedrooms"): {"by_layout": {"room_east": {"wrong": [[["in_room", "living_car", "bedroom_0_0"]]]},
+                                            "room_south": {"wrong": [[["in_room", "living_car", "bedroom_0_1"]]]}}},
+    ("T28", "which_bed"): {"by_layout": {
+        "east": {"wrong": [[["on", "kid_cup", "cell_shelf_2/top"], ["upright", "kid_cup"]]]},
+        "south": {"wrong": [[["on_any", "kid_cup", ["bookcase_3/top", "desk_1/top"]], ["upright", "kid_cup"]]]}}},
     ("T14", "homework_stays"): {"strict": ["homework", "hw_pencil"],
                                 "step": [("near_start", "homework"), ("near_start", "hw_pencil")]},
     **{("T20", d): {"step": [("upright", "juice_bottle")]}
@@ -1004,7 +1009,8 @@ def _match(atom, pred, glob) -> bool:
 def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
     """The seed's tiers with slips not scored, skipped steps no level, and the levels left renumbered."""
     import json
-    cfg = LOOSEN.get((task["task_id"][:3], design), {})
+    cfg = dict(LOOSEN.get((task["task_id"][:3], design), {}))
+    cfg.update(cfg.pop("by_layout", {}).get(lid.split("__")[-1], {}))
     goal = {**task, "goal": task["variants"][lid].get("goal") or task["goal"]}
     strict, drop = cfg.get("strict", []), cfg.get("drop", [])
 
@@ -1063,8 +1069,33 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
         if kept:
             seen.extend({json.dumps(a) for a in grp} for grp in kept)
             out.append({**t, "goal": {"all": [], "any": kept}})
+    def swap(grp, names):                           # every argument naming a swapped thing (exact names only)
+        return [[a[0], *[[names.get(n, n) if isinstance(n, str) else n for n in x] if isinstance(x, list)
+                         else names.get(x, x) if isinstance(x, str) else x for x in a[1:]]] for a in grp]
+
+    def mentions(grp, names):
+        return any(n in json.dumps(a) for a in grp for n in names)
+
+    hand = [["hand_empty", "right"]]
+    sub = [clean(swap(g, cfg["sub"])) for g in out[0]["goal"]["any"]] if cfg.get("sub") else []
+    if cfg.get("demote"):
+        sub += [g for g in out[0]["goal"]["any"] if mentions(g, cfg["demote"])]
+        out[0]["goal"]["any"] = [g for g in out[0]["goal"]["any"] if not mentions(g, cfg["demote"])]
+    if sub:                                         # the substitute while the ideal is there: the 0.6 level
+        if len(out) > 1:
+            out[1]["goal"]["any"] = sub + out[1]["goal"]["any"]
+        else:
+            out.append({"name": "second", "score": 0.6, "raw": "substitute", "goal": {"all": [], "any": sub},
+                        "why": "a substitute though the ideal is there (11-20)"})
     for i, t in enumerate(out):
         t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
+    if cfg.get("wrong"):                            # the wrong place: 0.3 whatever else the seed offers
+        wrong = [clean(g + hand) for g in cfg["wrong"]]
+        if len(out) >= 3:
+            out[2]["goal"]["any"] += wrong
+        else:
+            out.append({"name": "worst", "score": 0.3, "raw": "wrong_place", "goal": {"all": [], "any": wrong},
+                        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"})
     return {**p, "tiers": out, "D": 1 if len(out) > 1 else 0, "loosened": "11-20"}
 
 
@@ -1173,9 +1204,7 @@ NOT_OK_ZH = {
     ("T05", "e1_pencil_asked"): "铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "no_pen_pencil_away"): "没找到铅笔；铅笔放到别处；拿了别的东西当笔；还拿着或掉了",
     ("T05", "check_desk_first"): "书桌上既没有钢笔也没有铅笔；还拿着或掉了",
-    ("T05", "all_pens"): "漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了",
     ("T05", "homework_ready"): "只拿了笔或只拿了本子；拿泰迪熊等无关东西凑数；放到别处；还拿着或掉了",
-    ("T05", "pens_per_notebook"): "拿少了（比作业本少）；笔放到别处；还拿着或掉了",
     ("T05", "errand_combined"): "只做了一件（笔没拿来，或杯子还在书桌上）；杯子倒着或躺着；还拿着或掉了",
     ("T05", "x6_gd_pen_or_pencil_cabinets"): "书桌上什么笔都没有；还拿着或掉了",
     ("T06", "free"): "放到别处（茶几、餐桌、岛台上没动）；还拿着或掉了",

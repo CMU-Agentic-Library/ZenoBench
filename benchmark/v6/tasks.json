@@ -4524,6 +4524,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -5172,6 +5183,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -5813,6 +5835,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_2/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -6449,6 +6482,17 @@
             "near_start",
             "wooden_block_b",
             0.03
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_2/top"
            ],
            [
             "hand_empty",
@@ -7103,6 +7147,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -7752,6 +7807,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -8394,6 +8460,17 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_2/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
@@ -9031,6 +9108,17 @@
             "near_start",
             "wooden_block_b",
             0.03
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ],
+          [
+           [
+            "on",
+            "paperback_book",
+            "dining_table_2/top"
            ],
            [
             "hand_empty",
@@ -27183,7 +27271,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -27229,10 +27317,22 @@
            ],
            [
             "on_top_of",
-            "wooden_block_a",
-            "floor_block"
+            "wooden_block_b",
+            "wooden_block_a"
            ]
-          ],
+          ]
+         ]
+        },
+        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched",
+        "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
           [
            [
             "near_start",
@@ -27250,8 +27350,8 @@
            ],
            [
             "on_top_of",
-            "wooden_block_b",
-            "wooden_block_a"
+            "wooden_block_a",
+            "floor_block"
            ]
           ],
           [
@@ -27319,8 +27419,7 @@
           ]
          ]
         },
-        "why": "tight: block A with the block from the other room (either on the other), B, the bowl and the rolling pin untouched; loose: any two blocks, the bowl and the pin untouched",
-        "raw": "best"
+        "why": "a substitute though the ideal is there (11-20)"
        }
       ],
       "not_ok": "the bowl or the rolling pin moved, the bowl tipped; no stack",
@@ -42442,7 +42541,7 @@
       "D_by_layout": {
        "crowded_use_another__tight_tv": 1,
        "crowded_use_another__tight_dining": 1,
-       "crowded_use_another__loose": 0
+       "crowded_use_another__loose": 1
       },
       "top_by_layout": {
        "crowded_use_another__tight_tv": "moderate",
@@ -47660,14 +47759,6 @@
     },
     "small_bin_or_bedroom_bin__basket_in_bedroom": {
      "move": {
-      "wide_storage_bin": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.0888,
-        -0.4277
-       ],
-       "yaw_deg": 0.0
-      },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
@@ -47690,7 +47781,8 @@
       "not_in_view"
      ],
      "remove": [
-      "mug"
+      "mug",
+      "wide_storage_bin"
      ],
      "add": {
       "small_storage_bin": {
@@ -47877,14 +47969,6 @@
          1.6119,
          8.213,
          1.678
-        ]
-       ],
-       "bookcase_2/top": [
-        [
-         0.9188,
-         -0.5777,
-         1.2588,
-         -0.2777
         ]
        ]
       },
@@ -49328,19 +49412,18 @@
         "names": [
          "small_bin_block_1",
          "small_bin_block_2",
-         "small_storage_bin",
-         "wide_storage_bin"
+         "small_storage_bin"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.13,
-         0.25,
-         7.47,
-         0.55
+         7.19,
+         0.315,
+         7.41,
+         0.485
         ],
         "dx": [
-         -0.47,
-         0.89
+         -0.53,
+         0.95
         ]
        }
       ],
@@ -49903,19 +49986,18 @@
         "names": [
          "small_bin_block_1",
          "small_bin_block_2",
-         "small_storage_bin",
-         "wide_storage_bin"
+         "small_storage_bin"
         ],
         "support": "tv_stand_2/top",
         "box": [
-         7.13,
-         0.25,
-         7.47,
-         0.55
+         7.19,
+         0.315,
+         7.41,
+         0.485
         ],
         "dx": [
-         -0.47,
-         0.89
+         -0.53,
+         0.95
         ]
        }
       ],
@@ -73823,26 +73905,6 @@
       "clusters": [
        {
         "names": [
-         "pen"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.08,
-         -0.4081,
-         1.22,
-         -0.3919
-        ],
-        "dx": [
-         -0.36,
-         0.06
-        ],
-        "dy": [
-         -0.2,
-         0.14
-        ]
-       },
-       {
-        "names": [
          "pencil"
         ],
         "support": "dining_table_2/top",
@@ -73888,32 +73950,6 @@
        ]
       },
       "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
        "dining_table_2/top": [
         [
          0,
@@ -74029,26 +74065,6 @@
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.08,
-         -0.4081,
-         1.22,
-         -0.3919
-        ],
-        "dx": [
-         -0.36,
-         0.06
-        ],
-        "dy": [
-         -0.2,
-         0.14
-        ]
-       },
        {
         "names": [
          "pencil"
@@ -74219,7 +74235,6 @@
       "clusters": [
        {
         "names": [
-         "pen",
          "spare_pen"
         ],
         "support": "bookcase_2/top",
@@ -75226,991 +75241,6 @@
       "top": "moderate",
       "ideal_present": false,
       "ideal_zh": "笔（正被用着）",
-      "loosened": "11-20"
-     }
-    },
-    "all_pens__two": {
-     "remove": [],
-     "conditions": [
-      "unknown_count",
-      "not_in_view"
-     ],
-     "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
-     "instruction_zh": "孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
-     "move": {
-      "pencil": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.96,
-        -0.49
-       ],
-       "yaw_deg": -72.1
-      },
-      "pen": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.708,
-        6.595
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "add": {},
-     "goal": {
-      "all": [
-       [
-        "on",
-        "pencil",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pen",
-        "desk_1/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "pencil",
-      "pen"
-     ],
-     "since": "v6",
-     "note": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-     "v6": {
-      "family": "all_pens",
-      "case": "two",
-      "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-      "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
-      "control": "e1_pencil_asked",
-      "contrast": null,
-      "factor": "how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, the living room and the kitchen)",
-      "derived_from": "e1_pencil_asked"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pencil"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9242,
-         -0.5783,
-         0.9958,
-         -0.4017
-        ],
-        "dx": [
-         -0.2,
-         0.28
-        ],
-        "dy": [
-         -0.03,
-         0.15
-        ],
-        "pick": [
-         "pencil"
-        ],
-        "search": [
-         "pencil"
-        ]
-       },
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.638,
-         6.5869,
-         3.778,
-         6.6031
-        ],
-        "dx": [
-         -0.84,
-         0.05
-        ],
-        "dy": [
-         -1.08,
-         1.34
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "pen",
-        "pencil"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "loosened": "11-20"
-     }
-    },
-    "all_pens__three": {
-     "remove": [],
-     "conditions": [
-      "unknown_count",
-      "not_in_view"
-     ],
-     "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
-     "instruction_zh": "孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
-     "move": {
-      "pencil": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.96,
-        -0.49
-       ],
-       "yaw_deg": -72.1
-      },
-      "pen": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.708,
-        6.595
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "add": {
-      "pencil_2": {
-       "asset": "pencil",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.2,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on",
-        "pencil",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pen",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pencil_2",
-        "desk_1/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "pencil",
-      "pen",
-      "pencil_2"
-     ],
-     "since": "v6",
-     "note": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-     "v6": {
-      "family": "all_pens",
-      "case": "three",
-      "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-      "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
-      "control": "e1_pencil_asked",
-      "contrast": null,
-      "factor": "how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, the living room and the kitchen)",
-      "derived_from": "e1_pencil_asked"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pencil"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9242,
-         -0.5783,
-         0.9958,
-         -0.4017
-        ],
-        "dx": [
-         -0.2,
-         0.28
-        ],
-        "dy": [
-         -0.03,
-         0.15
-        ],
-        "pick": [
-         "pencil"
-        ],
-        "search": [
-         "pencil"
-        ]
-       },
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.638,
-         6.5869,
-         3.778,
-         6.6031
-        ],
-        "dx": [
-         -0.84,
-         0.05
-        ],
-        "dy": [
-         -1.08,
-         1.34
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
-        ]
-       },
-       {
-        "names": [
-         "pencil_2"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.11,
-         0.3514,
-         7.29,
-         0.3686
-        ],
-        "dx": [
-         -0.45,
-         1.07
-        ],
-        "dy": [
-         -0.13,
-         0.13
-        ],
-        "pick": [
-         "pencil_2"
-        ],
-        "search": [
-         "pencil_2"
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ],
-       "tv_stand_2/top": [
-        [
-         0,
-         1,
-         8.375,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         6.644,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         1,
-         1,
-         0.514,
-         6.644,
-         8.375,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "pen",
-        "pencil",
-        "pencil_2"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "loosened": "11-20"
-     }
-    },
-    "all_pens__four": {
-     "remove": [],
-     "conditions": [
-      "unknown_count",
-      "not_in_view"
-     ],
-     "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
-     "instruction_zh": "孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
-     "move": {
-      "pencil": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.96,
-        -0.49
-       ],
-       "yaw_deg": -72.1
-      },
-      "pen": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.708,
-        6.595
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "add": {
-      "pencil_2": {
-       "asset": "pencil",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.2,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "pen_2": {
-       "asset": "pen",
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.104,
-        7.149
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "on",
-        "pencil",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pen",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pencil_2",
-        "desk_1/top"
-       ],
-       [
-        "on",
-        "pen_2",
-        "desk_1/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "pencil",
-      "pen",
-      "pencil_2",
-      "pen_2"
-     ],
-     "since": "v6",
-     "note": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-     "v6": {
-      "family": "all_pens",
-      "case": "four",
-      "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
-      "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
-      "control": "e1_pencil_asked",
-      "contrast": null,
-      "factor": "how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, the living room and the kitchen)",
-      "derived_from": "e1_pencil_asked"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pencil"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9242,
-         -0.5783,
-         0.9958,
-         -0.4017
-        ],
-        "dx": [
-         -0.2,
-         0.28
-        ],
-        "dy": [
-         -0.03,
-         0.15
-        ],
-        "pick": [
-         "pencil"
-        ],
-        "search": [
-         "pencil"
-        ]
-       },
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.638,
-         6.5869,
-         3.778,
-         6.6031
-        ],
-        "dx": [
-         -0.84,
-         0.05
-        ],
-        "dy": [
-         -1.08,
-         1.34
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
-        ]
-       },
-       {
-        "names": [
-         "pen_2"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.174,
-         7.1409,
-         -0.034,
-         7.1571
-        ],
-        "dx": [
-         -0.34,
-         0.27
-        ],
-        "dy": [
-         -0.16,
-         2.26
-        ],
-        "pick": [
-         "pen_2"
-        ],
-        "search": [
-         "pen_2"
-        ]
-       },
-       {
-        "names": [
-         "pencil_2"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.11,
-         0.3514,
-         7.29,
-         0.3686
-        ],
-        "dx": [
-         -0.45,
-         1.07
-        ],
-        "dy": [
-         -0.13,
-         0.13
-        ],
-        "pick": [
-         "pencil_2"
-        ],
-        "search": [
-         "pencil_2"
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.4036,
-         8.1356,
-         -0.2763,
-         8.2644
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ],
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         6.969,
-         -0.266,
-         0.147,
-         0.2
-        ]
-       ],
-       "tv_stand_2/top": [
-        [
-         0,
-         1,
-         8.375,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         6.644,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         1,
-         1,
-         0.514,
-         6.644,
-         8.375,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "pen",
-        "pen_2",
-        "pencil",
-        "pencil_2"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
       "loosened": "11-20"
      }
     },
@@ -77701,1018 +76731,6 @@
       "loosened": "11-20"
      }
     },
-    "pens_per_notebook__notebooks_2": {
-     "remove": [],
-     "conditions": [
-      "count_from_scene",
-      "not_in_view"
-     ],
-     "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
-     "instruction_zh": "孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。",
-     "move": {
-      "pen": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.15,
-        -0.4
-       ],
-       "yaw_deg": 0.0
-      },
-      "pencil": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.9646,
-        -0.4948
-       ],
-       "yaw_deg": -72.1
-      }
-     },
-     "add": {
-      "pen_2": {
-       "asset": "pen",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.2,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "pencil_2": {
-       "asset": "pencil",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.6,
-        6.6
-       ],
-       "yaw_deg": 0.0
-      },
-      "hw_notebook_1": {
-       "asset": "notebook",
-       "support": "desk_1/top",
-       "xy": [
-        -1.0,
-        -6.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "hw_notebook_2": {
-       "asset": "notebook",
-       "support": "desk_1/top",
-       "xy": [
-        -0.45,
-        -6.22
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pen_2",
-         0.03
-        ],
-        [
-         "near_start",
-         "pencil_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pen",
-         0.03
-        ],
-        [
-         "near_start",
-         "pencil_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pen",
-         0.03
-        ],
-        [
-         "near_start",
-         "pen_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pencil",
-         0.03
-        ],
-        [
-         "near_start",
-         "pencil_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pencil",
-         0.03
-        ],
-        [
-         "near_start",
-         "pen_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pencil",
-         0.03
-        ],
-        [
-         "near_start",
-         "pen",
-         0.03
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "near_any",
-        "hw_notebook_1",
-        [
-         "pencil",
-         "pen",
-         "pen_2",
-         "pencil_2"
-        ],
-        0.15
-       ],
-       [
-        "near_any",
-        "hw_notebook_2",
-        [
-         "pencil",
-         "pen",
-         "pen_2",
-         "pencil_2"
-        ],
-        0.15
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "pencil",
-      "pen",
-      "pen_2",
-      "pencil_2",
-      "hw_notebook_1",
-      "hw_notebook_2"
-     ],
-     "since": "v6",
-     "keep_design": [
-      "desk_1/top"
-     ],
-     "note": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-     "v6": {
-      "family": "pens_per_notebook",
-      "case": "notebooks_2",
-      "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-      "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
-      "control": "e1_pencil_asked",
-      "contrast": null,
-      "factor": "how many notebooks are on the desk (seed: 2 or 3)",
-      "derived_from": "e1_pencil_asked"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.08,
-         -0.4081,
-         1.22,
-         -0.3919
-        ],
-        "dx": [
-         -0.36,
-         0.06
-        ],
-        "dy": [
-         -0.2,
-         0.14
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
-        ]
-       },
-       {
-        "names": [
-         "pencil"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9288,
-         -0.5831,
-         1.0004,
-         -0.4065
-        ],
-        "dx": [
-         -0.21,
-         0.28
-        ],
-        "pick": [
-         "pencil"
-        ],
-        "search": [
-         "pencil"
-        ]
-       }
-      ],
-      "static": {},
-      "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "pen",
-        "pencil"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pen_2",
-            0.25
-           ],
-           [
-            "near_start",
-            "pencil_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pen",
-            0.25
-           ],
-           [
-            "near_start",
-            "pencil_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pen",
-            0.25
-           ],
-           [
-            "near_start",
-            "pen_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pencil",
-            0.25
-           ],
-           [
-            "near_start",
-            "pencil_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pencil",
-            0.25
-           ],
-           [
-            "near_start",
-            "pen_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pencil",
-            0.25
-           ],
-           [
-            "near_start",
-            "pen",
-            0.25
-           ]
-          ]
-         ]
-        },
-        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "loosened": "11-20"
-     }
-    },
-    "pens_per_notebook__notebooks_3": {
-     "remove": [],
-     "conditions": [
-      "count_from_scene",
-      "not_in_view"
-     ],
-     "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
-     "instruction_zh": "孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。",
-     "move": {
-      "pen": {
-       "support": "bookcase_2/top",
-       "xy": [
-        1.15,
-        -0.4
-       ],
-       "yaw_deg": 0.0
-      },
-      "pencil": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.9646,
-        -0.4948
-       ],
-       "yaw_deg": -72.1
-      }
-     },
-     "add": {
-      "pen_2": {
-       "asset": "pen",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.2,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
-      "pencil_2": {
-       "asset": "pencil",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.6,
-        6.6
-       ],
-       "yaw_deg": 0.0
-      },
-      "hw_notebook_1": {
-       "asset": "notebook",
-       "support": "desk_1/top",
-       "xy": [
-        -1.15,
-        -6.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "hw_notebook_2": {
-       "asset": "notebook",
-       "support": "desk_1/top",
-       "xy": [
-        -0.72,
-        -6.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "hw_notebook_3": {
-       "asset": "notebook",
-       "support": "desk_1/top",
-       "xy": [
-        -0.29,
-        -6.22
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pencil_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pen_2",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pencil",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pen",
-         0.03
-        ]
-       ],
-       [
-        [
-         "on",
-         "pen",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pen_2",
-         "desk_1/top"
-        ],
-        [
-         "on",
-         "pencil_2",
-         "desk_1/top"
-        ],
-        [
-         "near_start",
-         "pencil",
-         0.03
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "near_any",
-        "hw_notebook_1",
-        [
-         "pencil",
-         "pen",
-         "pen_2",
-         "pencil_2"
-        ],
-        0.15
-       ],
-       [
-        "near_any",
-        "hw_notebook_2",
-        [
-         "pencil",
-         "pen",
-         "pen_2",
-         "pencil_2"
-        ],
-        0.15
-       ],
-       [
-        "near_any",
-        "hw_notebook_3",
-        [
-         "pencil",
-         "pen",
-         "pen_2",
-         "pencil_2"
-        ],
-        0.15
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "pencil",
-      "pen",
-      "pen_2",
-      "pencil_2",
-      "hw_notebook_1",
-      "hw_notebook_2",
-      "hw_notebook_3"
-     ],
-     "since": "v6",
-     "keep_design": [
-      "desk_1/top"
-     ],
-     "note": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-     "v6": {
-      "family": "pens_per_notebook",
-      "case": "notebooks_3",
-      "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
-      "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
-      "control": "e1_pencil_asked",
-      "contrast": null,
-      "factor": "how many notebooks are on the desk (seed: 2 or 3)",
-      "derived_from": "e1_pencil_asked"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "pen"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.08,
-         -0.4081,
-         1.22,
-         -0.3919
-        ],
-        "dx": [
-         -0.36,
-         0.06
-        ],
-        "dy": [
-         -0.2,
-         0.14
-        ],
-        "pick": [
-         "pen"
-        ],
-        "search": [
-         "pen"
-        ]
-       },
-       {
-        "names": [
-         "pencil"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.9288,
-         -0.5831,
-         1.0004,
-         -0.4065
-        ],
-        "dx": [
-         -0.21,
-         0.28
-        ],
-        "pick": [
-         "pencil"
-        ],
-        "search": [
-         "pencil"
-        ]
-       },
-       {
-        "names": [
-         "pen_2"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.13,
-         0.3519,
-         7.27,
-         0.3681
-        ],
-        "dx": [
-         -0.47,
-         1.09
-        ],
-        "dy": [
-         -0.13,
-         0.13
-        ],
-        "pick": [
-         "pen_2"
-        ],
-        "search": [
-         "pen_2"
-        ]
-       }
-      ],
-      "static": {},
-      "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
-       "tv_stand_2/top": [
-        [
-         0,
-         1,
-         8.375,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         6.644,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         1,
-         1,
-         0.514,
-         6.644,
-         8.375,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "pen",
-        "pen_2",
-        "pencil"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pencil_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pen_2",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pencil",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pen",
-            0.25
-           ]
-          ],
-          [
-           [
-            "hand_empty",
-            "right"
-           ],
-           [
-            "on",
-            "pen",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pen_2",
-            "desk_1/top"
-           ],
-           [
-            "on",
-            "pencil_2",
-            "desk_1/top"
-           ],
-           [
-            "near_start",
-            "pencil",
-            0.25
-           ]
-          ]
-         ]
-        },
-        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "loosened": "11-20"
-     }
-    },
     "errand_combined__pen_bedroom": {
      "remove": [],
      "conditions": [
@@ -80095,14 +78113,9 @@
     "check_desk_first__pen_on_desk": "v6_check_desk_first__pen_on_desk",
     "check_desk_first__pencil_on_desk": "v6_check_desk_first__pencil_on_desk",
     "check_desk_first__pen_in_use": "v6_check_desk_first__pen_in_use",
-    "all_pens__two": "v6_all_pens__two",
-    "all_pens__three": "v6_all_pens__three",
-    "all_pens__four": "v6_all_pens__four",
     "homework_ready__single": "v6_homework_ready__single",
     "homework_ready__several": "v6_homework_ready__several",
     "homework_ready__notebook_in_use": "v6_homework_ready__notebook_in_use",
-    "pens_per_notebook__notebooks_2": "v6_pens_per_notebook__notebooks_2",
-    "pens_per_notebook__notebooks_3": "v6_pens_per_notebook__notebooks_3",
     "errand_combined__pen_bedroom": "v6_errand_combined__pen_bedroom",
     "errand_combined__pen_in_use": "v6_errand_combined__pen_in_use",
     "x6_gd_pen_or_pencil_cabinets__pen_in_4": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
@@ -80460,348 +78473,6 @@
      "kind": "v6_oracle",
      "variant": "check_desk_first__pen_in_use"
     },
-    "v6_all_pens__two": {
-     "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.248,
-         -5.946
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.908,
-         -6.146
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "all_pens__two"
-    },
-    "v6_all_pens__three": {
-     "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.248,
-         -5.946
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.908,
-         -6.146
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil_2",
-        "region": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil_2"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil_2"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil_2",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.608,
-         -6.146
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "all_pens__three"
-    },
-    "v6_all_pens__four": {
-     "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.248,
-         -5.946
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.908,
-         -6.146
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil_2",
-        "region": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil_2"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil_2"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil_2",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.608,
-         -6.146
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen_2",
-        "region": "kitchen_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen_2"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen_2"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen_2",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.168,
-         -5.946
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "all_pens__four"
-    },
     "v6_homework_ready__single": {
      "steps": [
       {
@@ -81059,198 +78730,6 @@
      ],
      "kind": "v6_oracle",
      "variant": "homework_ready__notebook_in_use"
-    },
-    "v6_pens_per_notebook__notebooks_2": {
-     "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.85,
-         -6.22
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.3,
-         -6.22
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "pens_per_notebook__notebooks_2"
-    },
-    "v6_pens_per_notebook__notebooks_3": {
-     "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "pencil",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -1.0,
-         -6.22
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen",
-        "region": "bedroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.57,
-         -6.22
-        ]
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pen_2",
-        "region": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen_2"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pen_2"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pen_2",
-        "receptacle": "desk_1/top",
-        "hint_xy": [
-         -0.14,
-         -6.22
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "pens_per_notebook__notebooks_3"
     },
     "v6_errand_combined__pen_bedroom": {
      "steps": [
@@ -82063,40 +79542,6 @@
       }
      }
     },
-    "all_pens": {
-     "origin": "v6",
-     "control": "e1_pencil_asked",
-     "layouts": [
-      "all_pens__two",
-      "all_pens__three",
-      "all_pens__four"
-     ],
-     "factor": "how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, the living room and the kitchen)",
-     "seeds": {
-      "10": "all_pens__two",
-      "11": "all_pens__two",
-      "12": "all_pens__four",
-      "13": "all_pens__three",
-      "14": "all_pens__two",
-      "15": "all_pens__three",
-      "16": "all_pens__three",
-      "17": "all_pens__two",
-      "18": "all_pens__four",
-      "19": "all_pens__four"
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "every pen and pencil on the study desk, the hand empty (extra things brought along do not cost)"
-       }
-      ],
-      "not_ok": "one or more missed (stopped before every place was checked); elsewhere; still held or dropped"
-     }
-    },
     "homework_ready": {
      "origin": "v6",
      "control": "e1_pencil_asked",
@@ -82591,68 +80036,6 @@
        "homework_ready__single": "ideal",
        "homework_ready__several": "ideal",
        "homework_ready__notebook_in_use": "moderate"
-      }
-     }
-    },
-    "pens_per_notebook": {
-     "origin": "v6",
-     "control": "e1_pencil_asked",
-     "layouts": [
-      "pens_per_notebook__notebooks_2",
-      "pens_per_notebook__notebooks_3"
-     ],
-     "factor": "how many notebooks are on the desk (seed: 2 or 3)",
-     "seeds": {
-      "10": "pens_per_notebook__notebooks_3",
-      "11": "pens_per_notebook__notebooks_3",
-      "12": "pens_per_notebook__notebooks_2",
-      "13": "pens_per_notebook__notebooks_2",
-      "14": "pens_per_notebook__notebooks_2",
-      "15": "pens_per_notebook__notebooks_3",
-      "16": "pens_per_notebook__notebooks_3",
-      "17": "pens_per_notebook__notebooks_3",
-      "18": "pens_per_notebook__notebooks_2",
-      "19": "pens_per_notebook__notebooks_2"
-     },
-     "scoring": {
-      "D": 1,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "as many writing things as notebooks, one within 15 cm of each, the others left where they were"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
-        "goal": {
-         "drop": [
-          "near_any"
-         ]
-        },
-        "why": "the right number on the desk, the others untouched, but not one beside each notebook (piled together)"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "drop": [
-          "near_any",
-          "near_start"
-         ]
-        },
-        "why": "too many brought (one more, or all four), against \"no more\""
-       }
-      ],
-      "not_ok": "fewer than the notebooks; elsewhere; still held or dropped",
-      "D_by_layout": {
-       "pens_per_notebook__notebooks_2": 0,
-       "pens_per_notebook__notebooks_3": 0
-      },
-      "top_by_layout": {
-       "pens_per_notebook__notebooks_2": "ideal",
-       "pens_per_notebook__notebooks_3": "ideal"
       }
      }
     },
@@ -83417,27 +80800,11 @@
       "goal_already_met"
      ]
     },
-    "all_pens": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "not_in_view",
-      "unknown_count"
-     ]
-    },
     "homework_ready": {
      "category": "task",
      "local": [],
      "longer": [
       "goal_items_unstated",
-      "not_in_view"
-     ]
-    },
-    "pens_per_notebook": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "count_from_scene",
       "not_in_view"
      ]
     },
@@ -103053,6 +100420,32 @@
         },
         "why": "both wiped (the clean one too, against \"leave it\")",
         "raw": "worst"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "wiped",
+            "dining_table_2/top"
+           ],
+           [
+            "on",
+            "kitchen_sponge",
+            "kitchen_island/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor",
@@ -103384,6 +100777,32 @@
         },
         "why": "both wiped (the clean one too, against \"leave it\")",
         "raw": "worst"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "wiped",
+            "kitchen_island/top"
+           ],
+           [
+            "on",
+            "kitchen_sponge",
+            "kitchen_island/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "only the clean one wiped; neither wiped; the sponge still held or dropped on the floor",
@@ -108671,14 +106090,6 @@
        ],
        "yaw_deg": 0.0
       },
-      "handled_cooking_pot": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.55,
-        5.75
-       ],
-       "yaw_deg": 0.0
-      },
       "breakfast_spoon": {
        "support": "kitchen_island/top",
        "xy": [
@@ -108694,6 +106105,7 @@
      ],
      "remove": [
       "bowl_kitchen_cabinet",
+      "handled_cooking_pot",
       "mug_counter"
      ],
      "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
@@ -108772,26 +106184,6 @@
       "clusters": [
        {
         "names": [
-         "handled_cooking_pot"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.42,
-         5.6,
-         3.68,
-         5.9
-        ],
-        "dx": [
-         -0.62,
-         0.14
-        ],
-        "dy": [
-         -0.09,
-         2.04
-        ]
-       },
-       {
-        "names": [
          "breakfast_spoon"
         ],
         "support": "kitchen_island/top",
@@ -108855,32 +106247,6 @@
        }
       ],
       "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.835,
-         6.405,
-         3.135,
-         6.795
-        ]
-       ],
        "kitchen_island/top": [
         [
          7.2,
@@ -108915,40 +106281,6 @@
        ]
       },
       "reach": {
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
@@ -114278,9 +111610,6 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "not_in_view"
-     ],
      "since": "v2",
      "condition_types": [
       "search_target"
@@ -114295,6 +111624,9 @@
       "existing": true,
       "seed_vary_added": true
      },
+     "conditions_ignored": [
+      "not_in_view"
+     ],
      "layout": {
       "clusters": [
        {
@@ -114390,9 +111722,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "soda_can"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -114440,9 +111770,6 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "not_in_view"
-     ],
      "since": "v6",
      "condition_types": [
       "search_target"
@@ -114460,6 +111787,9 @@
       "seed_extension": true,
       "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
      },
+     "conditions_ignored": [
+      "not_in_view"
+     ],
      "layout": {
       "clusters": [
        {
@@ -114520,9 +111850,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "soda_can"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -120336,11 +117664,9 @@
      "longer": []
     },
     "can_in_dining_room": {
-     "category": "task",
+     "category": "control",
      "local": [],
-     "longer": [
-      "not_in_view"
-     ]
+     "longer": []
     },
     "keep_kids_can": {
      "category": "task",
@@ -124986,9 +122312,6 @@
     },
     "duck_in_study": {
      "note": "the duck was left on the study desk",
-     "conditions": [
-      "not_in_view"
-     ],
      "move": {
       "rubber_duck": {
        "support": "desk_1/top",
@@ -125013,6 +122336,9 @@
       "existing": true,
       "seed_vary_added": true
      },
+     "conditions_ignored": [
+      "not_in_view"
+     ],
      "layout": {
       "clusters": [
        {
@@ -125073,10 +122399,7 @@
       },
       "start": {
        "room": "bedroom_0_1",
-       "hide": [
-        "rubber_duck",
-        "toy_car"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -125119,9 +122442,6 @@
     },
     "duck_in_study__alt_dining_table_2": {
      "note": "the duck was left on the study desk (here the rubber_duck is on dining_table_2/top)",
-     "conditions": [
-      "not_in_view"
-     ],
      "move": {
       "rubber_duck": {
        "support": "dining_table_2/top",
@@ -125149,6 +122469,9 @@
       "seed_extension": true,
       "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
      },
+     "conditions_ignored": [
+      "not_in_view"
+     ],
      "layout": {
       "clusters": [
        {
@@ -125238,10 +122561,7 @@
       },
       "start": {
        "room": "bedroom_0_1",
-       "hide": [
-        "rubber_duck",
-        "toy_car"
-       ],
+       "hide": [],
        "look": []
       }
      },
@@ -131484,865 +128804,6 @@
       "loosened": "11-20"
      }
     },
-    "find_all_toys__car_duck": {
-     "move": {
-      "rubber_duck": {
-       "support": "desk_1/top",
-       "xy": [
-        -0.948,
-        -6.166
-       ],
-       "yaw_deg": 128.7
-      }
-     },
-     "conditions": [
-      "goal_items_unstated",
-      "not_in_view",
-      "multi_object_goal"
-     ],
-     "add": {
-      "kitchen_sponge": {
-       "asset": "kitchen_sponge",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.5,
-        7.2
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "inside",
-        "toy_car",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "rubber_duck",
-        "storage_basket"
-       ],
-       [
-        "near_start",
-        "kitchen_sponge",
-        0.03
-       ],
-       [
-        "upright",
-        "storage_basket"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "kitchen_sponge",
-      "storage_basket"
-     ],
-     "since": "v6",
-     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-     "v6": {
-      "family": "find_all_toys",
-      "case": "car_duck",
-      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
-      "control": "toys_out",
-      "contrast": null,
-      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-      "derived_from": "toys_out"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.0018,
-         -6.2217,
-         -0.8942,
-         -6.1103
-        ],
-        "dx": [
-         -0.39,
-         0.85
-        ],
-        "dy": [
-         -0.09,
-         0.39
-        ],
-        "pick": [
-         "rubber_duck"
-        ],
-        "search": [
-         "rubber_duck"
-        ]
-       },
-       {
-        "names": [
-         "kitchen_sponge"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.455,
-         7.17,
-         3.545,
-         7.23
-        ],
-        "dx": [
-         -0.65,
-         0.28
-        ],
-        "dy": [
-         -1.66,
-         0.71
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "desk_1/top": [
-        [
-         0,
-         1,
-         -0.025,
-         -6.326,
-         -5.812,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         -1.408,
-         -6.326,
-         -5.709,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -6.326,
-         -1.408,
-         -0.025,
-         0.2
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "rubber_duck",
-        "toy_car"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "inside",
-            "toy_car",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "rubber_duck",
-            "storage_basket"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every toy found and in the basket, the yellow sponge untouched",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "ideal_zh": "所有玩具（有像玩具的别的东西）",
-      "loosened": "11-20"
-     }
-    },
-    "find_all_toys__car_duck_bear": {
-     "move": {
-      "rubber_duck": {
-       "support": "large_shelf_3/shelf_1",
-       "xy": [
-        -1.75,
-        5.65
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "goal_items_unstated",
-      "not_in_view",
-      "multi_object_goal"
-     ],
-     "add": {
-      "kitchen_sponge": {
-       "asset": "kitchen_sponge",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.5,
-        7.2
-       ],
-       "yaw_deg": 0.0
-      },
-      "teddy_bear": {
-       "asset": "teddy_bear",
-       "support": "dining_table_2/top",
-       "xy": [
-        2.928,
-        6.795
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "inside",
-        "toy_car",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "rubber_duck",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "teddy_bear",
-        "storage_basket"
-       ],
-       [
-        "near_start",
-        "kitchen_sponge",
-        0.03
-       ],
-       [
-        "upright",
-        "storage_basket"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "teddy_bear",
-      "kitchen_sponge",
-      "storage_basket"
-     ],
-     "since": "v6",
-     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-     "v6": {
-      "family": "find_all_toys",
-      "case": "car_duck_bear",
-      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
-      "control": "toys_out",
-      "contrast": null,
-      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-      "derived_from": "toys_out"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "kitchen_sponge",
-         "teddy_bear"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8752,
-         6.715,
-         3.545,
-         7.23
-        ],
-        "dx": [
-         -0.07,
-         0.28
-        ],
-        "dy": [
-         -1.2,
-         0.71
-        ],
-        "pick": [
-         "teddy_bear"
-        ],
-        "search": [
-         "teddy_bear"
-        ]
-       },
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "large_shelf_3/shelf_1",
-        "box": [
-         -1.795,
-         5.6171,
-         -1.705,
-         5.6829
-        ],
-        "dx": [
-         -0.32,
-         0.34
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ],
-        "pick": [
-         "rubber_duck"
-        ],
-        "search": [
-         "rubber_duck"
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "rubber_duck",
-        "teddy_bear",
-        "toy_car"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "inside",
-            "toy_car",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "rubber_duck",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "teddy_bear",
-            "storage_basket"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every toy found and in the basket, the yellow sponge untouched",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "ideal_zh": "所有玩具（有像玩具的别的东西）",
-      "loosened": "11-20"
-     }
-    },
-    "find_all_toys__all_four": {
-     "move": {
-      "rubber_duck": {
-       "support": "desk_1/top",
-       "xy": [
-        -0.948,
-        -6.166
-       ],
-       "yaw_deg": 128.7
-      }
-     },
-     "conditions": [
-      "goal_items_unstated",
-      "not_in_view",
-      "multi_object_goal"
-     ],
-     "add": {
-      "kitchen_sponge": {
-       "asset": "kitchen_sponge",
-       "support": "dining_table_2/top",
-       "xy": [
-        3.5,
-        7.2
-       ],
-       "yaw_deg": 0.0
-      },
-      "teddy_bear": {
-       "asset": "teddy_bear",
-       "support": "dining_table_2/top",
-       "xy": [
-        2.928,
-        6.795
-       ],
-       "yaw_deg": 0.0
-      },
-      "stray_block": {
-       "asset": "wooden_block",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.4,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "inside",
-        "toy_car",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "rubber_duck",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "teddy_bear",
-        "storage_basket"
-       ],
-       [
-        "inside",
-        "stray_block",
-        "storage_basket"
-       ],
-       [
-        "near_start",
-        "kitchen_sponge",
-        0.03
-       ],
-       [
-        "upright",
-        "storage_basket"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "toy_car",
-      "rubber_duck",
-      "teddy_bear",
-      "stray_block",
-      "kitchen_sponge",
-      "storage_basket"
-     ],
-     "since": "v6",
-     "note": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-     "v6": {
-      "family": "find_all_toys",
-      "case": "all_four",
-      "challenge": "the car on the living-room floor, the other toys in other rooms (study desk, bathroom shelf, dining table, TV stand); a yellow sponge on the dining table is not a toy",
-      "rationale": "the instruction does not list the toys: search the rooms until every toy is found, tell toys from look-alikes (leave the sponge), put each into the basket; stopping after the first few fails",
-      "control": "toys_out",
-      "contrast": null,
-      "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-      "derived_from": "toys_out"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "rubber_duck"
-        ],
-        "support": "desk_1/top",
-        "box": [
-         -1.0018,
-         -6.2217,
-         -0.8942,
-         -6.1103
-        ],
-        "dx": [
-         -0.39,
-         0.85
-        ],
-        "dy": [
-         -0.09,
-         0.39
-        ],
-        "pick": [
-         "rubber_duck"
-        ],
-        "search": [
-         "rubber_duck"
-        ]
-       },
-       {
-        "names": [
-         "kitchen_sponge",
-         "teddy_bear"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8752,
-         6.715,
-         3.545,
-         7.23
-        ],
-        "dx": [
-         -0.07,
-         0.28
-        ],
-        "dy": [
-         -1.2,
-         0.71
-        ],
-        "pick": [
-         "teddy_bear"
-        ],
-        "search": [
-         "teddy_bear"
-        ]
-       },
-       {
-        "names": [
-         "stray_block"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.38,
-         0.34,
-         7.42,
-         0.38
-        ],
-        "dx": [
-         -0.72,
-         0.94
-        ],
-        "dy": [
-         -0.11,
-         0.12
-        ],
-        "pick": [
-         "stray_block"
-        ],
-        "search": [
-         "stray_block"
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ]
-       ]
-      },
-      "reach": {
-       "desk_1/top": [
-        [
-         0,
-         1,
-         -0.025,
-         -6.326,
-         -5.812,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         -1.408,
-         -6.326,
-         -5.709,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -6.326,
-         -1.408,
-         -0.025,
-         0.2
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         0,
-         1,
-         3.839,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         2.788,
-         5.495,
-         7.955,
-         0.2
-        ],
-        [
-         1,
-         1,
-         7.955,
-         2.788,
-         3.839,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         5.495,
-         2.788,
-         3.839,
-         0.2
-        ]
-       ],
-       "tv_stand_2/top": [
-        [
-         0,
-         1,
-         8.375,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         6.644,
-         0.312,
-         0.514,
-         0.2
-        ],
-        [
-         1,
-         1,
-         0.514,
-         6.644,
-         8.375,
-         0.2
-        ]
-       ]
-      },
-      "start": {
-       "room": "bedroom_0_1",
-       "hide": [
-        "rubber_duck",
-        "stray_block",
-        "teddy_bear",
-        "toy_car"
-       ],
-       "look": []
-      }
-     },
-     "scoring": {
-      "D": 0,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": {
-         "all": [],
-         "any": [
-          [
-           [
-            "inside",
-            "toy_car",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "rubber_duck",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "teddy_bear",
-            "storage_basket"
-           ],
-           [
-            "inside",
-            "stray_block",
-            "storage_basket"
-           ],
-           [
-            "hand_empty",
-            "right"
-           ]
-          ]
-         ]
-        },
-        "why": "every toy found and in the basket, the yellow sponge untouched",
-        "raw": "best"
-       }
-      ],
-      "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "top": "ideal",
-      "ideal_present": true,
-      "ideal_zh": "所有玩具（有像玩具的别的东西）",
-      "loosened": "11-20"
-     }
-    },
     "castle_stays__tall_two_loose": {
      "move": {
       "rubber_duck": {
@@ -133266,9 +129727,6 @@
     "bins_capacity__apart_empty_on_desk": "v6_bins_capacity__apart_empty_on_desk",
     "bins_capacity__half_bin_and_tray": "v6_bins_capacity__half_bin_and_tray",
     "bins_capacity__half_bin_and_tray_duck_dining": "v6_bins_capacity__half_bin_and_tray_duck_dining",
-    "find_all_toys__car_duck": "v6_find_all_toys__car_duck",
-    "find_all_toys__car_duck_bear": "v6_find_all_toys__car_duck_bear",
-    "find_all_toys__all_four": "v6_find_all_toys__all_four",
     "castle_stays__tall_two_loose": "v6_castle_stays__tall_two_loose",
     "castle_stays__short_one_loose": "v6_castle_stays__short_one_loose",
     "castle_stays__tall_none_loose": "v6_castle_stays__tall_none_loose"
@@ -134219,327 +130677,6 @@
      ],
      "kind": "v6_oracle",
      "variant": "bins_capacity__half_bin_and_tray_duck_dining"
-    },
-    "v6_find_all_toys__car_duck": {
-     "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "living_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "rubber_duck",
-        "receptacle": "storage_basket"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "find_all_toys__car_duck"
-    },
-    "v6_find_all_toys__car_duck_bear": {
-     "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "bathroom_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "rubber_duck",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "teddy_bear",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "teddy_bear"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "teddy_bear"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "teddy_bear",
-        "receptacle": "storage_basket"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "find_all_toys__car_duck_bear"
-    },
-    "v6_find_all_toys__all_four": {
-     "steps": [
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_car"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "toy_car"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_car"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_car",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "rubber_duck",
-        "region": "living_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rubber_duck"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "rubber_duck",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "teddy_bear",
-        "region": "dining_room_0_1"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "teddy_bear"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "teddy_bear"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "teddy_bear",
-        "receptacle": "storage_basket"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "stray_block",
-        "region": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "stray_block"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "stray_block"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "storage_basket"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "stray_block",
-        "receptacle": "storage_basket"
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "find_all_toys__all_four"
     },
     "v6_castle_stays__tall_two_loose": {
      "steps": [
@@ -136350,245 +132487,6 @@
       }
      }
     },
-    "find_all_toys": {
-     "origin": "v6",
-     "control": "toys_out",
-     "layouts": [
-      "find_all_toys__car_duck",
-      "find_all_toys__car_duck_bear",
-      "find_all_toys__all_four"
-     ],
-     "factor": "which toys are out and where (seed: car + duck; car, duck, bear; or car, duck, bear and a block)",
-     "seeds": {
-      "10": "find_all_toys__all_four",
-      "11": "find_all_toys__all_four",
-      "12": "find_all_toys__car_duck_bear",
-      "13": "find_all_toys__car_duck",
-      "14": "find_all_toys__car_duck_bear",
-      "15": "find_all_toys__car_duck",
-      "16": "find_all_toys__car_duck",
-      "17": "find_all_toys__car_duck_bear",
-      "18": "find_all_toys__car_duck",
-      "19": "find_all_toys__all_four"
-     },
-     "scoring": {
-      "D": 1,
-      "tiers": [
-       {
-        "name": "best",
-        "score": 1.0,
-        "goal": null,
-        "why": "every toy found and in the basket, the yellow sponge untouched"
-       },
-       {
-        "name": "second",
-        "score": 0.6,
-        "goal": {
-         "by_layout": {
-          "find_all_toys__car_duck": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ],
-            [
-             "not inside",
-             "kitchen_sponge",
-             "storage_basket"
-            ]
-           ]
-          },
-          "find_all_toys__car_duck_bear": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "teddy_bear",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ],
-            [
-             "not inside",
-             "kitchen_sponge",
-             "storage_basket"
-            ]
-           ]
-          },
-          "find_all_toys__all_four": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "teddy_bear",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "stray_block",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ],
-            [
-             "not inside",
-             "kitchen_sponge",
-             "storage_basket"
-            ]
-           ]
-          }
-         }
-        },
-        "why": "every toy in the basket, the sponge moved (not into the basket)"
-       },
-       {
-        "name": "worst",
-        "score": 0.3,
-        "goal": {
-         "by_layout": {
-          "find_all_toys__car_duck": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          },
-          "find_all_toys__car_duck_bear": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "teddy_bear",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          },
-          "find_all_toys__all_four": {
-           "all": [
-            [
-             "inside",
-             "toy_car",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "rubber_duck",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "teddy_bear",
-             "storage_basket"
-            ],
-            [
-             "inside",
-             "stray_block",
-             "storage_basket"
-            ],
-            [
-             "upright",
-             "storage_basket"
-            ],
-            [
-             "hand_empty",
-             "right"
-            ]
-           ]
-          }
-         }
-        },
-        "why": "every toy in the basket, and the sponge too (taken for a toy)"
-       }
-      ],
-      "not_ok": "a toy not found; the basket tipped; still held or dropped",
-      "D_by_layout": {
-       "find_all_toys__car_duck": 0,
-       "find_all_toys__car_duck_bear": 0,
-       "find_all_toys__all_four": 0
-      },
-      "top_by_layout": {
-       "find_all_toys__car_duck": "ideal",
-       "find_all_toys__car_duck_bear": "ideal",
-       "find_all_toys__all_four": "ideal"
-      }
-     }
-    },
     "castle_stays": {
      "origin": "v6",
      "control": "toys_out",
@@ -136746,26 +132644,15 @@
      "longer": []
     },
     "duck_in_study": {
-     "category": "task",
+     "category": "control",
      "local": [],
-     "longer": [
-      "not_in_view"
-     ]
+     "longer": []
     },
     "bins_capacity": {
      "category": "task",
      "local": [],
      "longer": [
       "joint_capacity"
-     ]
-    },
-    "find_all_toys": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "goal_items_unstated",
-      "multi_object_goal",
-      "not_in_view"
      ]
     },
     "castle_stays": {
@@ -137559,7 +133446,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -137607,6 +133494,53 @@
         },
         "why": "the same things, laid out as in the set place, by the other spoon; the set place untouched",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "same_arrangement",
+            [
+             "bowl",
+             "mug"
+            ],
+            [
+             "example_bowl",
+             "example_cup"
+            ],
+            "spoon",
+            "example_spoon",
+            [
+             1.0,
+             0.0
+            ],
+            [
+             -1.0,
+             0.0
+            ],
+            0.12
+           ],
+           [
+            "upright",
+            "bowl"
+           ],
+           [
+            "upright",
+            "mug"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a substitute though the ideal is there (11-20)"
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
@@ -137999,7 +133933,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -138054,6 +133988,60 @@
         },
         "why": "the same things, laid out as in the set place, by the other spoon; the set place untouched",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "same_arrangement",
+            [
+             "plate_counter_a",
+             "bowl",
+             "cup"
+            ],
+            [
+             "example_plate",
+             "example_bowl",
+             "example_mug"
+            ],
+            "spoon",
+            "example_spoon",
+            [
+             1.0,
+             0.0
+            ],
+            [
+             -1.0,
+             0.0
+            ],
+            0.12
+           ],
+           [
+            "upright",
+            "bowl"
+           ],
+           [
+            "upright",
+            "cup"
+           ],
+           [
+            "on_top_of",
+            "bowl",
+            "plate_counter_a"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a substitute though the ideal is there (11-20)"
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
@@ -141723,8 +137711,8 @@
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
       "D_by_layout": {
-       "copy_the_setting__bowl_cup": 0,
-       "copy_the_setting__plate_bowl_mug_left": 0,
+       "copy_the_setting__bowl_cup": 1,
+       "copy_the_setting__plate_bowl_mug_left": 1,
        "copy_the_setting__no_cup": 0
       },
       "top_by_layout": {
@@ -142351,7 +138339,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -142374,6 +138362,28 @@
         },
         "why": "the best the seed offers: the lid when it is free, else a plate from the counter (the lid left on the stew or on someone's bowl)",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_counter_a"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a substitute though the ideal is there (11-20)"
        }
       ],
       "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
@@ -143774,7 +139784,7 @@
       ],
       "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
       "D_by_layout": {
-       "lid_elsewhere__dining": 0,
+       "lid_elsewhere__dining": 1,
        "lid_elsewhere__covering_bowl": 1
       },
       "top_by_layout": {
@@ -150251,10 +146261,6 @@
      }
     },
     "bowls_apart": {
-     "conditions": [
-      "item_put_away",
-      "not_in_view"
-     ],
      "remove": [
       "bowl_inside_kitchen_cabinet",
       "plate_inside_kitchen_cabinet"
@@ -150352,6 +146358,10 @@
       "derived_from": "bare"
      },
      "move": {},
+     "conditions_ignored": [
+      "item_put_away",
+      "not_in_view"
+     ],
      "layout": {
       "clusters": [
        {
@@ -153838,12 +149848,9 @@
      "longer": []
     },
     "bowls_apart": {
-     "category": "task",
+     "category": "control",
      "local": [],
-     "longer": [
-      "item_put_away",
-      "not_in_view"
-     ]
+     "longer": []
     },
     "one_bowl": {
      "category": "task",
@@ -166131,7 +162138,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -166154,6 +162161,28 @@
         },
         "why": "the tissues on the table with the soup",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "tissue",
+            "dining_table_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped",
@@ -166353,7 +162382,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -166376,6 +162405,28 @@
         },
         "why": "the tissues on the table with the soup",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "tissue",
+            "dining_table_2/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped",
@@ -167592,7 +163643,15 @@
         "why": "the tissues on the table with the soup"
        }
       ],
-      "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped"
+      "not_ok": "the tissues on the bare table; nothing to wipe with on the table; still held or dropped",
+      "D_by_layout": {
+       "which_table__east": 1,
+       "which_table__west": 1
+      },
+      "top_by_layout": {
+       "which_table__east": "ideal",
+       "which_table__west": "ideal"
+      }
      }
     },
     "no_tissue": {
@@ -186363,7 +182422,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -186386,6 +182445,31 @@
         },
         "why": "the snack on the desk with the homework",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on_any",
+            "snack_apple",
+            [
+             "desk_3/top",
+             "bookcase_4/top"
+            ]
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped",
@@ -186575,7 +182659,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -186601,6 +182685,28 @@
         },
         "why": "the snack on the desk with the homework",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "snack_apple",
+            "desk_1/top"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped",
@@ -190047,7 +186153,15 @@
         "why": "the snack on the desk with the homework"
        }
       ],
-      "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped"
+      "not_ok": "on the other desk; nothing to eat on the kid's desk; still held or dropped",
+      "D_by_layout": {
+       "where_is_he__study": 1,
+       "where_is_he__bedroom": 1
+      },
+      "top_by_layout": {
+       "where_is_he__study": "ideal",
+       "where_is_he__bedroom": "ideal"
+      }
      }
     },
     "two_kids": {
@@ -201887,6 +198001,23 @@
             "right"
            ],
            [
+            "on_any",
+            "living_bear",
+            [
+             "bookcase_3/shelf_1",
+             "bookcase_3/shelf_0",
+             "bookcase_2/top",
+             "bookcase_2/shelf_1",
+             "bookcase_2/shelf_0"
+            ]
+           ]
+          ],
+          [
+           [
+            "hand_empty",
+            "right"
+           ],
+           [
             "inside",
             "living_bear",
             "kids_basket"
@@ -202409,7 +198540,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -202432,6 +198563,28 @@
         },
         "why": "the car in the basket in his room",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "in_room",
+            "living_car",
+            "bedroom_0_0"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped",
@@ -202496,7 +198649,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -202519,6 +198672,28 @@
         },
         "why": "the car in the basket in his room",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "in_room",
+            "living_car",
+            "bedroom_0_1"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped",
@@ -205145,6 +201320,19 @@
            "any": [
             [
              [
+              "on_any",
+              "living_bear",
+              [
+               "bookcase_3/shelf_1",
+               "bookcase_3/shelf_0",
+               "bookcase_2/top",
+               "bookcase_2/shelf_1",
+               "bookcase_2/shelf_0"
+              ]
+             ]
+            ],
+            [
+             [
               "inside",
               "living_bear",
               "kids_basket"
@@ -205292,7 +201480,15 @@
         "why": "the car in the basket in his room"
        }
       ],
-      "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped"
+      "not_ok": "the other bedroom; a thing of his left in the living room or put elsewhere; still held or dropped",
+      "D_by_layout": {
+       "two_bedrooms__room_east": 1,
+       "two_bedrooms__room_south": 1
+      },
+      "top_by_layout": {
+       "two_bedrooms__room_east": "ideal",
+       "two_bedrooms__room_south": "ideal"
+      }
      }
     }
    },
@@ -208982,7 +205178,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -209012,6 +205208,32 @@
         },
         "why": "his cup by the bed with his teddy",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on",
+            "kid_cup",
+            "cell_shelf_2/top"
+           ],
+           [
+            "upright",
+            "kid_cup"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped",
@@ -209184,7 +205406,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -209211,6 +205433,35 @@
         },
         "why": "his cup by the bed with his teddy",
         "raw": "best"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "wrong_place",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on_any",
+            "kid_cup",
+            [
+             "bookcase_3/top",
+             "desk_1/top"
+            ]
+           ],
+           [
+            "upright",
+            "kid_cup"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"
        }
       ],
       "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped",
@@ -211838,7 +208089,15 @@
         "why": "his cup by the bed with his teddy"
        }
       ],
-      "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped"
+      "not_ok": "the other bed; the cup not by his bed; the cup lying; still held or dropped",
+      "D_by_layout": {
+       "which_bed__east": 1,
+       "which_bed__south": 1
+      },
+      "top_by_layout": {
+       "which_bed__east": "ideal",
+       "which_bed__south": "ideal"
+      }
      }
     },
     "where_his_cup_is": {

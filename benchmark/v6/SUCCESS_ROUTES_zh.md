@@ -365,7 +365,7 @@
 
 **指令**：把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。
 
-**成功条件**（D 按摆法：`tight_tv` D = 1、理想物不在，`tight_dining` D = 1、理想物不在，`loose` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`tight_tv` D = 1、理想物不在，`tight_dining` D = 1、理想物不在，`loose` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -3412,40 +3412,6 @@
 - 摆法 `pencil_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)` → 4. `search(object=pen, region=bedroom_0_1)` → 5. `navigate(destination=pen)` → 6. `pick(object=pen)` → 7. `navigate(destination=desk_1/top)` → 8. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
 - 摆法 `pen_in_use`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)` → 4. `explore_room(room=dining_room_0_1)` → 5. `navigate(destination=pen)` → 6. `look(target=pen)`
 
-### all_pens（Task）
-
-**情况**：孩子整理文具盒，把家里所有钢笔和铅笔都收到书桌上；指令不说有几支，2 到 4 支分散在卧室书架、餐桌、电视柜、厨房台面 → 一间间找，一次拿一支，每个地方都找过才算完；漏一支算失败
-
-**指令**：孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。
-
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `two`：
-    - `pencil` 在 `desk_1/top` 上
-    - `pen` 在 `desk_1/top` 上
-    - 手里空着
-  - 摆法 `three`：
-    - `pencil` 在 `desk_1/top` 上
-    - `pen` 在 `desk_1/top` 上
-    - `pencil_2` 在 `desk_1/top` 上
-    - 手里空着
-  - 摆法 `four`：
-    - `pencil` 在 `desk_1/top` 上
-    - `pen` 在 `desk_1/top` 上
-    - `pencil_2` 在 `desk_1/top` 上
-    - `pen_2` 在 `desk_1/top` 上
-    - 手里空着
-- **不行（0）**：漏了一支或几支（没找全就停了）；笔放到别处；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `two`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])`
-- 摆法 `three`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])`
-- 摆法 `four`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.248, -5.946])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.146])` → 16. `search(object=pen_2, region=kitchen_0_1)` → 17. `navigate(destination=pen_2)` → 18. `pick(object=pen_2)` → 19. `navigate(destination=desk_1/top)` → 20. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.168, -5.946])`
-
 ### homework_ready（Task）
 
 **情况**：（看着像 / 被占用）只说写作业要用的东西；笔和作业本在别处，旁边有红皮书和小熊（都不是作业本）。按毛病数排序，这个摆法里能做到的最好结果算好
@@ -3575,185 +3541,6 @@
 - 摆法 `single`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 6. `search(object=notebook_1, region=dining_room_0_1)` → 7. `navigate(destination=notebook_1)` → 8. `expose(object=notebook_1)` → 9. `look(target=notebook_1)` → 10. `pick(object=notebook_1)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.608, -6.166])`
 - 摆法 `several`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 6. `search(object=notebook_2, region=living_room_0_0)` → 7. `navigate(destination=notebook_2)` → 8. `expose(object=notebook_2)` → 9. `look(target=notebook_2)` → 10. `pick(object=notebook_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_2, receptacle=desk_1/top, hint_xy=[-0.608, -6.166])`
 - 摆法 `notebook_in_use`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.908, -6.146])` → 6. `search(object=book_red, region=dining_room_0_1)` → 7. `navigate(destination=book_red)` → 8. `pick(object=book_red)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=book_red, receptacle=desk_1/top, hint_xy=[-0.608, -6.166])`
-
-### pens_per_notebook（Task）
-
-**情况**：孩子们在书桌写作业，指令说桌上有几本作业本就拿几支笔，每本旁边放一支，不要多拿；家里有 4 支笔分散在不同房间 → 先数作业本，再拿正好那么多支，每本旁边放一支，其余的笔不动
-
-**指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。
-
-**成功条件**（D 按摆法：`notebooks_2` D = 0、理想物在，`notebooks_3` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `notebooks_2`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 5 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 6 组：
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-  - 摆法 `notebooks_3`：
-    - `hw_notebook_1` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-    - `hw_notebook_2` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-    - `hw_notebook_3` 离其中至少一个不超过 15 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-- **次好（0.6）**：
-
-  - 摆法 `notebooks_2`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 5 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 6 组：
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-  - 摆法 `notebooks_3`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen_2` 没被挪动（离开局位置不超过 3 cm）
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pen` 没被挪动（离开局位置不超过 3 cm）
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-        - `pencil` 没被挪动（离开局位置不超过 3 cm）
-- **最不好（0.3）**：
-
-  - 摆法 `notebooks_3`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-  - 摆法 `notebooks_2`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen` 在 `desk_1/top` 上
-      - 第 2 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-      - 第 3 组：
-        - `pencil` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-      - 第 4 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pen_2` 在 `desk_1/top` 上
-      - 第 5 组：
-        - `pen` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-      - 第 6 组：
-        - `pen_2` 在 `desk_1/top` 上
-        - `pencil_2` 在 `desk_1/top` 上
-- **不行（0）**：拿少了（比作业本少）；笔放到别处；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `notebooks_2`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.85, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -6.22])`
-- 摆法 `notebooks_3`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.0, -6.22])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.57, -6.22])` → 11. `search(object=pen_2, region=living_room_0_0)` → 12. `navigate(destination=pen_2)` → 13. `pick(object=pen_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.14, -6.22])`
 
 ### errand_combined（Task）
 
@@ -6330,7 +6117,7 @@
 
 1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `lift(object=soda_can, height_m=0.95)` → 7. `navigate(destination=trash_can)` → 8. `hover(object=soda_can, target=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
 
-### can_in_dining_room（Task）
+### can_in_dining_room（对照）
 
 **情况**：罐子在隔壁看不到的地方 → 先找
 
@@ -6924,7 +6711,7 @@
 
 1. `explore_room(room=bedroom_0_1)` → 2. `explore_room(room=living_room_0_0)` → 3. `navigate(destination=toy_car)` → 4. `look(target=toy_car)` → 5. `pick(object=toy_car)` → 6. `navigate(destination=storage_basket)` → 7. `place(object=toy_car, receptacle=storage_basket)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `nod()`（补救）
 
-### duck_in_study（Task）
+### duck_in_study（对照）
 
 **情况**：鸭子落在别处，开局看不到 → 找鸭子
 
@@ -7198,87 +6985,6 @@
 - 摆法 `half_bin_and_tray`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `look(target=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_tray)` → 10. `place(object=toy_car, receptacle=toy_tray)` → 11. `search(object=rubber_duck, region=living_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
 - 摆法 `half_bin_and_tray_duck_dining`：1. `navigate(destination=bookcase_2/top)` → 2. `look(target=bookcase_2/top)` → 3. `measure(object=toy_bin_small)` → 4. `measure(object=toy_tray)` → 5. `explore_room(room=living_room_0_0)` → 6. `navigate(destination=toy_car)` → 7. `look(target=toy_car)` → 8. `pick(object=toy_car)` → 9. `navigate(destination=toy_tray)` → 10. `place(object=toy_car, receptacle=toy_tray)` → 11. `search(object=rubber_duck, region=dining_room_0_1)` → 12. `navigate(destination=rubber_duck)` → 13. `pick(object=rubber_duck)` → 14. `navigate(destination=toy_bin_small)` → 15. `drop(object=rubber_duck, container=toy_bin_small)`
 
-### find_all_toys（Task）
-
-**情况**：玩具散在好几个房间，指令没说有几个；餐桌上有块黄海绵像积木但不是玩具 → 把各房间找遍，认出哪些是玩具，全放进筐，海绵别动（找到一两个就停算失败）
-
-**成功条件**（D 按摆法：`car_duck` D = 0、理想物在，`car_duck_bear` D = 0、理想物在，`all_four` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `all_four`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `stray_block` 在 `storage_basket` 里
-    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - `storage_basket` 立着
-    - 手里空着
-  - 摆法 `car_duck_bear`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - `storage_basket` 立着
-    - 手里空着
-  - 摆法 `car_duck`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
-    - `storage_basket` 立着
-    - 手里空着
-- **次好（0.6）**：
-
-  - 摆法 `all_four`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `stray_block` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-    - `kitchen_sponge` 不在 `storage_basket` 里
-  - 摆法 `car_duck_bear`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-    - `kitchen_sponge` 不在 `storage_basket` 里
-  - 摆法 `car_duck`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-    - `kitchen_sponge` 不在 `storage_basket` 里
-- **最不好（0.3）**：
-
-  - 摆法 `all_four`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `stray_block` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-  - 摆法 `car_duck_bear`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `teddy_bear` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-  - 摆法 `car_duck`：
-    - `toy_car` 在 `storage_basket` 里
-    - `rubber_duck` 在 `storage_basket` 里
-    - `storage_basket` 立着
-    - 手里空着
-- **不行（0）**：有玩具没找到；篮子倒了；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `car_duck`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=living_room_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)`
-- 摆法 `car_duck_bear`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=bathroom_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `search(object=teddy_bear, region=dining_room_0_1)` → 13. `navigate(destination=teddy_bear)` → 14. `pick(object=teddy_bear)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=teddy_bear, receptacle=storage_basket)`
-- 摆法 `all_four`：1. `explore_room(room=living_room_0_0)` → 2. `navigate(destination=toy_car)` → 3. `look(target=toy_car)` → 4. `pick(object=toy_car)` → 5. `navigate(destination=storage_basket)` → 6. `place(object=toy_car, receptacle=storage_basket)` → 7. `search(object=rubber_duck, region=living_room_0_1)` → 8. `navigate(destination=rubber_duck)` → 9. `pick(object=rubber_duck)` → 10. `navigate(destination=storage_basket)` → 11. `place(object=rubber_duck, receptacle=storage_basket)` → 12. `search(object=teddy_bear, region=dining_room_0_1)` → 13. `navigate(destination=teddy_bear)` → 14. `pick(object=teddy_bear)` → 15. `navigate(destination=storage_basket)` → 16. `place(object=teddy_bear, receptacle=storage_basket)` → 17. `search(object=stray_block, region=living_room_0_0)` → 18. `navigate(destination=stray_block)` → 19. `pick(object=stray_block)` → 20. `navigate(destination=storage_basket)` → 21. `place(object=stray_block, receptacle=storage_basket)`
-
 ### castle_stays（Task）
 
 **情况**：“他搭的积木城堡别拆”：客厅地上一座积木塔，旁边散着同样的积木 → 叠在塔里的不动，散着的积木和小车、鸭子收进筐。检测的是：整局没拿起过塔上的积木（过程要求），结束时每块都在原位、叠放关系还在（终态）。中途被碰倒的话，不拿起来就搭不回去，终态会判失败；碰歪了又恰好推回原位这种情况检测不到
@@ -7415,7 +7121,7 @@
 
 **指令**：照着桌上摆好的那份，在另一把勺子那里也摆一份。
 
-**成功条件**（D 按摆法：`bowl_cup` D = 0、理想物在，`plate_bowl_mug_left` D = 0、理想物在，`no_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bowl_cup` D = 1、理想物在，`plate_bowl_mug_left` D = 1、理想物在，`no_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7580,7 +7286,7 @@
 
 **情况**：锅盖不在灶边，在餐桌上 → 找到；空着就拿来盖；正扣在别人没吃完的燕麦碗上就别动，用厨房台面的盘子盖（最好的替代算好；把锅盖从碗上拿走降一档）
 
-**成功条件**（D 按摆法：`dining` D = 0、理想物在，`covering_bowl` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`dining` D = 1、理想物在，`covering_bowl` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -8003,7 +7709,7 @@
 
 1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `navigate(destination=dinner_bowl_1)` → 7. `pick(object=dinner_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `navigate(destination=dining_table_2/top)` → 10. `place(object=dinner_bowl_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.195])` → 11. `navigate(destination=dinner_bowl_2)` → 12. `pick(object=dinner_bowl_2)` → 13. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 14. `navigate(destination=dining_table_2/top)` → 15. `place(object=dinner_bowl_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.755])` → 16. `navigate(destination=kitchen_cabinet_6)` → 17. `close(articulated=kitchen_cabinet_6)` → 18. `navigate(destination=kitchen_counter_2/top)` → 19. `look(target=kitchen_counter_2/top)` → 20. `navigate(destination=dinner_spoon_1)` → 21. `pick(object=dinner_spoon_1)` → 22. `navigate(destination=dining_table_2/top)` → 23. `place(object=dinner_spoon_1, receptacle=dining_table_2/top, hint_xy=[3.688, 6.415])` → 24. `navigate(destination=dinner_spoon_2)` → 25. `pick(object=dinner_spoon_2)` → 26. `navigate(destination=dining_table_2/top)` → 27. `place(object=dinner_spoon_2, receptacle=dining_table_2/top, hint_xy=[3.688, 6.975])`
 
-### bowls_apart（Task）
+### bowls_apart（对照）
 
 **成功条件**（D 按摆法：`bowls_apart` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -8655,7 +8361,7 @@
 
 **情况**：两张餐桌，一张上有人在吃饭（汤碗），另一张空着 → 送到吃饭的那张
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`east` D = 1、理想物在，`west` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -9977,7 +9683,7 @@
 
 **指令**：孩子写作业饿了，给他拿点吃的。
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`study` D = 1、理想物在，`bedroom` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -10945,6 +10651,8 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
+        - `living_bear` 在其中任一处上：`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+      - 第 2 组：
         - `living_bear` 在 `kids_basket` 里
   - 摆法 `top_covered`：
     - 手里空着
@@ -10980,7 +10688,7 @@
 
 **情况**：两间卧室，有他玩具筐的那间是他的 → 认出来，把小车放进去
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`room_east` D = 1、理想物在，`room_south` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11227,7 +10935,7 @@
 
 **情况**：两张床，他的床上有小熊 → 放到那张床边
 
-**成功条件**（D = 0；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`east` D = 1、理想物在，`south` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 

@@ -253,16 +253,6 @@ R[("T12", "bins_capacity")] = tiers(
     zh=dict(sit="没有储物篮；两个小箱子，一个装满积木一个空着（并排或分在不同房间）；小车在地上，鸭子在书桌",
             good="两样进有空的箱子，满箱的积木没动", second="分开放了或压在满箱上，但积木都还在箱里",
             worst="玩具进了箱子，但把满箱的积木挤出来了", no="有玩具没收；箱子倒了；还拿着或掉了"))
-R[("T12", "find_all_toys")] = tiers(
-    second=lambda g, lid: plus(drop(g, "near_start"), ["not inside", "kitchen_sponge", "storage_basket"]),
-    worst=lambda g, lid: drop(g, "near_start"),
-    why=("every toy found and in the basket, the yellow sponge untouched",
-         "every toy in the basket, the sponge moved (not into the basket)",
-         "every toy in the basket, and the sponge too (taken for a toy)"),
-    not_ok="a toy not found; the basket tipped; still held or dropped",
-    zh=dict(sit="小车在客厅地上，其他玩具分散在别的房间（2-4 件）；餐桌上一块黄海绵不是玩具",
-            good="找齐全部玩具进篮子，海绵没动", second="玩具齐了，但挪了海绵（没放进篮子）",
-            worst="玩具齐了，海绵也当玩具放进了篮子", no="有玩具没找到；篮子倒了；还拿着或掉了"))
 R[("T12", "castle_stays")] = tiers(
     # the castle standing at the end (its blocks one on another) is what counts for the second tier: nudged, taken
     # apart and built again (user 11-12), or the loose blocks left beside it
