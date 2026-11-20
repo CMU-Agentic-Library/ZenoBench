@@ -46,7 +46,7 @@ def scene(base):
 
 
 class World:
-    def __init__(self, task, lid, gate=False):
+    def __init__(self, task, lid, gate=False, start_view=True):
         self.task, self.lid, self.gate = task, lid, gate
         self.ann, raw = scene(task["scene"]["base"])
         v = task["variants"][lid]
@@ -76,6 +76,9 @@ class World:
                 o["z"] = m.get("z") if m.get("z") is not None else (
                     self.supports[m["support"]]["z"] if m.get("support") in self.supports else None)
                 removed.discard(n)
+        # 11-20: what the layout itself takes out stays out though the scene moves it (as benchmark.scene: the prim
+        # is deactivated) -- T03 no wide bin, T05 no pen
+        removed |= set(v.get("remove") or []) - set(v.get("move") or {}) - set(v.get("add") or {})
         for n in removed:
             self.obj.pop(n, None)
         self.start = {n: list(o["xy"]) for n, o in self.obj.items()}
@@ -107,7 +110,10 @@ class World:
         self.heating = set()
         self.flags = set()                      # ("wiped", s), ("stirred", c), ("hidden", o), ("observed", x), ...
         self.problems = []
-        if gate:                                # what the robot sees from its start: the start room in plain sight
+        # what the robot sees from its start: the start room in plain sight.  start_view=False (11-20): nothing --
+        # the start pose moves with the seed, a route must not count on what happens to be in view there (T09
+        # big_tomato: the pot on the stove out of view in 3 of 5 seeds, NOT_OBSERVED)
+        if gate and start_view:
             st = (v.get("layout") or {}).get("start") or {}
             room = st.get("room") or self.room_of(raw["robot"]["xy"])
             for n in self.obj:
@@ -591,8 +597,8 @@ class World:
         return fails, any_ok, groups, checked, unchecked
 
 
-def check(task, lid, gate=False):
-    w = World(task, lid, gate)
+def check(task, lid, gate=False, start_view=True):
+    w = World(task, lid, gate, start_view)
     v = task["variants"][lid]
     steps = task["routes"][task["oracle"][lid]]["steps"]
     fires = {}
@@ -619,13 +625,13 @@ def check(task, lid, gate=False):
             "problems": probs}
 
 
-def observe_first(task, lid, tries=12):
+def observe_first(task, lid, tries=12, start_view=False):
     """Make a reference route legal under the benchmark's observation gate: before the first call that names an
     object the robot has not seen, go to where it stands and look (an object on the floor: explore its room).
     Returns the number of observation steps added."""
     added = 0
     for _ in range(tries):
-        res = check(task, lid, gate=True)
+        res = check(task, lid, gate=True, start_view=start_view)
         p = next((x for x in res["problems"] if "was never observed" in x["problem"]), None)
         if p is None:
             return added

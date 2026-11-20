@@ -29,9 +29,10 @@ def test_in_tasks_json(key):
     got = dict(info.get("scoring") or {})
     got.pop("D_by_layout", None), got.pop("top_by_layout", None)     # 11-17: per-seed summaries
     assert got == spec
-    from benchmark.v6.scoring import per_layout, with_ideal
-    for lid in info["layouts"]:
-        assert t["variants"][lid]["scoring"] == with_ideal(t["task_id"], key[1], lid, per_layout(spec, lid))
+    from benchmark.v6.scoring import loosen, per_layout, with_ideal
+    for lid in info["layouts"]:         # 11-20: each seed's tiers loosened (slips not scored)
+        assert t["variants"][lid]["scoring"] == loosen(t, key[1], lid,
+                                                       with_ideal(t["task_id"], key[1], lid, per_layout(spec, lid)))
         for tier in spec["tiers"]:
             g = tier["goal"]
             if g and "by_layout" in g:

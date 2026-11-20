@@ -30,6 +30,7 @@ looks a goal atom up here first, then in the skill registry.
 * ``never_picked(objects)``: a process requirement: none of them was held at any time in the episode (the castle
   stays built the whole time, not taken apart and built again; T12, T14, T27);
 * ``on_any(object, supports)``: on one of several supports that all do what the person asked (T23, T28).
+* ``in_room(object, room)``: the object is in the named room (the wrong bedroom, T26).
 """
 from __future__ import annotations
 
@@ -206,6 +207,19 @@ def _never_picked(rig, ctx, objects):
     held = sorted({e.get("obj") for e in rig.events[start:]
                    if e.get("label") == "pick_result" and e.get("obj") in names and e.get("held")})
     return not held, f"picked up: {', '.join(held)}" if held else "never picked up"
+
+
+@goal_predicate("in_room", ["object", "room"],
+                "The object's centre lies in the named room (the scene's room polygons; a thing taken to the "
+                "wrong bedroom, T26).")
+def _in_room(rig, ctx, object, room):
+    from zeno_skills.evaluator import room_of
+    st = _state(rig, ctx)
+    if object not in st["objects"]:
+        return False, f"{object} missing"
+    fp = rig.geo.footprint(object, st)
+    got = room_of(rig.ann.rooms, ((fp[0] + fp[2]) / 2, (fp[1] + fp[3]) / 2))
+    return got == room, f"in {got}"
 
 
 @goal_predicate("on_any", ["object", "supports"],
