@@ -97,8 +97,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | dinner_spoon_2 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | pick | dropped_bear | T23/dropped_in_two_rooms |
 | pick | dropped_block | T23/belongs_on_floor, T23/by_kind |
+| pick | dropped_bowl | T23/dropped_out_of_view |
 | pick | dropped_cup | T23/only_this_room |
-| pick | dropped_lid | T23/dropped_out_of_view |
 | pick | dropped_spoon | T23/by_kind, T23/dropped_in_two_rooms, T23/dropped_out_of_view |
 | pick | empty_can | T29/several |
 | pick | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid, T06/display_row |
@@ -177,8 +177,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | dinner_spoon_2 | T18/bowl_in_use, T18/bowls_apart, T18/door_stuck, T18/one_bowl |
 | place | dropped_bear | T23/dropped_in_two_rooms |
 | place | dropped_block | T23/belongs_on_floor, T23/by_kind |
+| place | dropped_bowl | T23/dropped_out_of_view |
 | place | dropped_cup | T23/only_this_room |
-| place | dropped_lid | T23/dropped_out_of_view |
 | place | dropped_spoon | T23/by_kind, T23/dropped_in_two_rooms, T23/dropped_out_of_view |
 | place | floor_block | T06/display_row |
 | place | foil_takeout_tray | T07/vessel_decides_appliance |

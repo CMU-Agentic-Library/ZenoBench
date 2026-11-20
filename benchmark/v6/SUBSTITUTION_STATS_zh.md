@@ -237,7 +237,7 @@
 | T23 | belongs_on_floor | no_toy_box | 缺失 | 玩具箱（没有，用托盘） | 不在 | 1 |
 | T23 | belongs_on_floor | bin_full | 能力不足 | 玩具盒（满了，用旁边托盘） | 不在 | 1 |
 | T23 | dropped_out_of_view | counter_full | 被占用 | 小厨房台面（摆满了，放别的台面） | 不在 | 1 |
-| T23 | dropped_out_of_view | no_room_for_lid | 能力不足 | 小厨房台面（空隙放不下锅盖，放别的台面） | 不在 | 1 |
+| T23 | dropped_out_of_view | no_room_for_bowl | 能力不足 | 小厨房台面（空隙放不下碗，放别的台面） | 不在 | 1 |
 | T23 | only_this_room | cabinet_room | 不用替换 | 按指令（the cup with his cups in cabinet 4 -- or, the cabinet full, in the other low cabinet or on a worktop; doors closed, the car left） | 在 | 1 |
 | T23 | only_this_room | cabinet_full | 能力不足 | 4 号矮柜柜顶他放杯子的地方（满了，放台面或别的矮柜） | 不在 | 1 |
 | T23 | dropped_in_two_rooms | shelf_room | 不用替换 | 按指令（the spoon to the kitchen, the book on his bookcase -- or, the bookcase full, on another bookcase or a desk, his books left as they are） | 在 | 1 |

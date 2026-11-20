@@ -174459,8 +174459,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 30.0
       }
@@ -174533,8 +174533,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 30.0
       },
@@ -174543,8 +174543,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -1.0,
-        8.5
+        1.75,
+        7.65
        ],
        "yaw_deg": 0.0
       },
@@ -174697,8 +174697,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 30.0
       },
@@ -174707,8 +174707,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -1.0,
-        8.5
+        1.75,
+        7.65
        ],
        "yaw_deg": 0.0
       },
@@ -175454,8 +175454,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 0.0
       },
@@ -175809,8 +175809,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 0.0
       },
@@ -177389,7 +177389,7 @@
       "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
+      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the bowl, the counter's gaps too small for it)",
       "derived_from": "bare"
      },
      "move": {},
@@ -177656,7 +177656,7 @@
       "loosened": "11-20"
      }
     },
-    "dropped_out_of_view__no_room_for_lid": {
+    "dropped_out_of_view__no_room_for_bowl": {
      "start": [
       -1.2,
       9.4,
@@ -177675,8 +177675,8 @@
       "spoon_counter"
      ],
      "add": {
-      "dropped_lid": {
-       "asset": "pot_lid",
+      "dropped_bowl": {
+       "asset": "breakfast_bowl",
        "support": null,
        "z": 0.0,
        "xy": [
@@ -177897,7 +177897,7 @@
       "all": [
        [
         "on_any",
-        "dropped_lid",
+        "dropped_bowl",
         [
          "kitchen_counter_1/top",
          "kitchen_island/top"
@@ -177910,7 +177910,7 @@
       ]
      },
      "watch": [
-      "dropped_lid",
+      "dropped_bowl",
       "counter_plate_s1",
       "counter_plate_n1",
       "counter_plate_s2",
@@ -177939,12 +177939,12 @@
      "note": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
      "v6": {
       "family": "dropped_out_of_view",
-      "case": "no_room_for_lid",
+      "case": "no_room_for_bowl",
       "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
       "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
       "control": "spoon_on_floor",
       "contrast": null,
-      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
+      "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the bowl, the counter's gaps too small for it)",
       "derived_from": "bare"
      },
      "move": {},
@@ -178096,7 +178096,7 @@
       "start": {
        "room": "kitchen_0_1",
        "hide": [
-        "dropped_lid"
+        "dropped_bowl"
        ],
        "look": []
       }
@@ -178117,7 +178117,7 @@
            ],
            [
             "on_any",
-            "dropped_lid",
+            "dropped_bowl",
             [
              "kitchen_counter_1/top",
              "kitchen_island/top"
@@ -178142,12 +178142,12 @@
            ],
            [
             "on",
-            "dropped_lid",
+            "dropped_bowl",
             "kitchen_counter_2/top"
            ],
            [
             "clear_of",
-            "dropped_lid",
+            "dropped_bowl",
             [
              "counter_bowl_1",
              "counter_bowl_10",
@@ -178194,7 +178194,7 @@
            ],
            [
             "on",
-            "dropped_lid",
+            "dropped_bowl",
             "kitchen_counter_2/top"
            ]
           ]
@@ -178207,7 +178207,7 @@
       "not_ok": "not found; left on the floor; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "小厨房台面（空隙放不下锅盖，放别的台面）",
+      "ideal_zh": "小厨房台面（空隙放不下碗，放别的台面）",
       "loosened": "11-20"
      }
     },
@@ -178229,8 +178229,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 0.0
       },
@@ -178534,8 +178534,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 0.0
       },
@@ -178870,8 +178870,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 30.0
       },
@@ -179175,8 +179175,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        -0.85,
-        7.7
+        1.45,
+        7.2
        ],
        "yaw_deg": 30.0
       },
@@ -179982,7 +179982,7 @@
     "belongs_on_floor__no_toy_box": "v6_belongs_on_floor__no_toy_box",
     "belongs_on_floor__bin_full": "v6_belongs_on_floor__bin_full",
     "dropped_out_of_view__counter_full": "v6_dropped_out_of_view__counter_full",
-    "dropped_out_of_view__no_room_for_lid": "v6_dropped_out_of_view__no_room_for_lid",
+    "dropped_out_of_view__no_room_for_bowl": "v6_dropped_out_of_view__no_room_for_bowl",
     "only_this_room__cabinet_room": "v6_only_this_room__cabinet_room",
     "only_this_room__cabinet_full": "v6_only_this_room__cabinet_full",
     "dropped_in_two_rooms__shelf_room": "v6_dropped_in_two_rooms__shelf_room",
@@ -180010,7 +180010,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180067,7 +180067,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180163,7 +180163,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180265,7 +180265,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180326,7 +180326,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180447,7 +180447,7 @@
      "kind": "v6_oracle",
      "variant": "dropped_out_of_view__counter_full"
     },
-    "v6_dropped_out_of_view__no_room_for_lid": {
+    "v6_dropped_out_of_view__no_room_for_bowl": {
      "steps": [
       {
        "skill": "navigate",
@@ -180470,19 +180470,19 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dropped_lid"
+        "destination": "dropped_bowl"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dropped_lid"
+        "target": "dropped_bowl"
        }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "dropped_lid"
+        "object": "dropped_bowl"
        }
       },
       {
@@ -180494,24 +180494,24 @@
       {
        "skill": "place",
        "args": {
-        "object": "dropped_lid",
+        "object": "dropped_bowl",
         "receptacle": "kitchen_island/top",
         "hint_xy": [
          7.4,
-         1.7
+         1.675
         ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "dropped_out_of_view__no_room_for_lid"
+     "variant": "dropped_out_of_view__no_room_for_bowl"
     },
     "v6_only_this_room__cabinet_room": {
      "steps": [
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180564,7 +180564,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180635,7 +180635,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -180735,7 +180735,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "kitchen_0_1"
+        "room": "dining_room_0_1"
        }
       },
       {
@@ -182125,26 +182125,26 @@
      "control": "spoon_on_floor",
      "layouts": [
       "dropped_out_of_view__counter_full",
-      "dropped_out_of_view__no_room_for_lid"
+      "dropped_out_of_view__no_room_for_bowl"
      ],
-     "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the pot lid, the counter's gaps too small for it)",
+     "factor": "what slid away and how the counter is taken (seed: the spoon, the counter covered with dishes; or the bowl, the counter's gaps too small for it)",
      "seeds": {
       "10": "dropped_out_of_view__counter_full",
       "11": "dropped_out_of_view__counter_full",
       "12": "dropped_out_of_view__counter_full",
-      "13": "dropped_out_of_view__no_room_for_lid",
-      "14": "dropped_out_of_view__no_room_for_lid",
-      "15": "dropped_out_of_view__no_room_for_lid",
+      "13": "dropped_out_of_view__no_room_for_bowl",
+      "14": "dropped_out_of_view__no_room_for_bowl",
+      "15": "dropped_out_of_view__no_room_for_bowl",
       "16": "dropped_out_of_view__counter_full",
-      "17": "dropped_out_of_view__no_room_for_lid",
+      "17": "dropped_out_of_view__no_room_for_bowl",
       "18": "dropped_out_of_view__counter_full",
-      "19": "dropped_out_of_view__no_room_for_lid"
+      "19": "dropped_out_of_view__no_room_for_bowl"
      },
      "scoring": {
       "D": 1,
       "ideal_by_layout": {
        "dropped_out_of_view__counter_full": true,
-       "dropped_out_of_view__no_room_for_lid": true
+       "dropped_out_of_view__no_room_for_bowl": true
       },
       "tiers": [
        {
@@ -182172,12 +182172,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_lid": {
+          "dropped_out_of_view__no_room_for_bowl": {
            "any": [
             [
              [
               "on_any",
-              "dropped_lid",
+              "dropped_bowl",
               [
                "kitchen_counter_1/top",
                "kitchen_island/top"
@@ -182248,17 +182248,17 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_lid": {
+          "dropped_out_of_view__no_room_for_bowl": {
            "any": [
             [
              [
               "on",
-              "dropped_lid",
+              "dropped_bowl",
               "kitchen_counter_2/top"
              ],
              [
               "clear_of",
-              "dropped_lid",
+              "dropped_bowl",
               [
                "counter_bowl_1",
                "counter_bowl_10",
@@ -182321,12 +182321,12 @@
             ]
            ]
           },
-          "dropped_out_of_view__no_room_for_lid": {
+          "dropped_out_of_view__no_room_for_bowl": {
            "any": [
             [
              [
               "on",
-              "dropped_lid",
+              "dropped_bowl",
               "kitchen_counter_2/top"
              ]
             ]
@@ -182346,11 +182346,11 @@
       "not_ok": "not found; left on the floor; still held or dropped",
       "D_by_layout": {
        "dropped_out_of_view__counter_full": 1,
-       "dropped_out_of_view__no_room_for_lid": 1
+       "dropped_out_of_view__no_room_for_bowl": 1
       },
       "top_by_layout": {
        "dropped_out_of_view__counter_full": "moderate",
-       "dropped_out_of_view__no_room_for_lid": "moderate"
+       "dropped_out_of_view__no_room_for_bowl": "moderate"
       }
      }
     },

@@ -112,7 +112,7 @@ IDEAL = {
     ("T23", "by_kind"): {"toy_box": (True, "勺子回厨房、积木进玩具箱"), "bin_full": (False, "玩具盒（满了，用旁边托盘）")},
     ("T23", "dropped_in_two_rooms"): {"shelf_full": (False, "他的书架（每层都满，小熊放别的书架或床上）")},
     ("T23", "dropped_out_of_view"): {"counter_full": (False, "小厨房台面（摆满了，放别的台面）"),
-                                     "no_room_for_lid": (False, "小厨房台面（空隙放不下锅盖，放别的台面）")},
+                                     "no_room_for_bowl": (False, "小厨房台面（空隙放不下碗，放别的台面）")},
     ("T23", "only_this_room"): {"cabinet_full": (False, "4 号矮柜柜顶他放杯子的地方（满了，放台面或别的矮柜）")},
     ("T24", "dinner_soon"): {c: (True, "水果（不是零食）") for c in ("apple", "banana")},
     ("T24", "fruit_out_of_view"): {"basket_empty": (False, "果篮里的水果（空了，用台面上的香蕉）")},

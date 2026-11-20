@@ -2868,7 +2868,7 @@
   },
   {
    "task": "T23_pick_up_dropped",
-   "layout": "dropped_out_of_view__no_room_for_lid",
+   "layout": "dropped_out_of_view__no_room_for_bowl",
    "steps": 8,
    "atoms_checked": 2,
    "atoms_geometric": 0,

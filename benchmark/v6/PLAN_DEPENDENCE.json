@@ -7,8 +7,8 @@
   },
   "control_route_on_other_variants": {
    "passes": 56,
-   "goal_not_met": 96,
-   "not_observed": 58,
+   "goal_not_met": 97,
+   "not_observed": 57,
    "resource_missing": 71,
    "argument_mismatch": 5
   },
@@ -390,7 +390,7 @@
     "kid_book_top_4b"
    ],
    "T23 dropped_out_of_view": [
-    "dropped_lid",
+    "dropped_bowl",
     "dropped_spoon"
    ],
    "T23 only_this_room": [
@@ -4467,16 +4467,16 @@
    "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "not_observed",
+   "control_route": "goal_not_met",
    "other_layouts": {
-    "dropped_out_of_view__no_room_for_lid": "resource_missing"
+    "dropped_out_of_view__no_room_for_bowl": "resource_missing"
    },
    "other_variants_passing": []
   },
   {
    "task": "T23_pick_up_dropped",
    "variant": "dropped_out_of_view",
-   "layout": "dropped_out_of_view__no_room_for_lid",
+   "layout": "dropped_out_of_view__no_room_for_bowl",
    "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
@@ -6417,7 +6417,7 @@
    "variant": "dropped_out_of_view",
    "candidates": [
     "dropped_out_of_view__counter_full",
-    "dropped_out_of_view__no_room_for_lid",
+    "dropped_out_of_view__no_room_for_bowl",
     "spoon_on_floor"
    ],
    "passes_all": []
@@ -9671,7 +9671,7 @@
    "variant": "dropped_out_of_view",
    "layouts": [
     "dropped_out_of_view__counter_full",
-    "dropped_out_of_view__no_room_for_lid"
+    "dropped_out_of_view__no_room_for_bowl"
    ],
    "start_room": "kitchen_0_1",
    "same_before_key_observation": false,
