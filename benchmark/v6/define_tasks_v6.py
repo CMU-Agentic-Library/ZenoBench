@@ -1585,7 +1585,8 @@ def T09(t):
     # apple beside it, not for soup)
     BIG, APPLE = "big_tomato", "fridge_apple"
     big = dict(
-        add={BIG: {"asset": "big_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.80, 3.25], "yaw_deg": 0.0},
+        # 11-20: at the door edge like the cherry tomato (y 3.14) -- 21 cm in (y 3.25) no base pose reached it
+        add={BIG: {"asset": "big_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.80, 3.12], "yaw_deg": 0.0},
              APPLE: {"asset": "apple", "support": f"{FRIDGE}/inside_shelf", "xy": [6.02, 3.30], "yaw_deg": 0.0}},
         thermal_override={BIG: dict(cold[F3])},
         goal={"all": [*goal["all"], ["inside", BIG, POT], ["temperature_at_least", BIG, 60], ["is_closed", FRIDGE]]},
@@ -3470,7 +3471,7 @@ EXTRA_SUBSTITUTES = {
     ("T08", "far_sponge_spare_only"): {"foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
     ("T09", "lid_on_spoon_away"): {"lid_plate": _SURF("kitchen_island/top", 8.06, 1.795, "breakfast_plate"),
                                    "cover_book": _SURF("kitchen_island/top", 7.40, 1.85, "book_blue")},
-    ("T09", "tomato_in_fridge__in_fridge"): {"big_tomato": _SURF("breakfast_fridge/inside_shelf", 5.75, 3.28, "big_tomato")},
+    ("T09", "tomato_in_fridge__in_fridge"): {"big_tomato": _SURF("breakfast_fridge/inside_shelf", 5.72, 3.12, "big_tomato")},
     ("T09", "x6_gd_tomato_elsewhere__dining"): {"lunch_plate": _SURF("dining_table_2/top", 3.62, 6.65, "breakfast_plate"),
                                                 "plate_tomato": _ON(3.62, 6.65, 0.858, "cherry_tomato"),
                                                 "lunch_spoon": _SURF("dining_table_2/top", 3.62, 6.86, "breakfast_spoon")},

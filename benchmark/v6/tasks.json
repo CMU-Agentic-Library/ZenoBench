@@ -105609,8 +105609,8 @@
        "asset": "big_tomato",
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
-        5.75,
-        3.28
+        5.72,
+        3.12
        ],
        "yaw_deg": 0.0
       }
@@ -105996,7 +105996,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.8,
-        3.25
+        3.12
        ],
        "yaw_deg": 0.0
       },
