@@ -7,8 +7,8 @@
   },
   "control_route_on_other_variants": {
    "passes": 56,
-   "goal_not_met": 97,
-   "not_observed": 57,
+   "goal_not_met": 96,
+   "not_observed": 58,
    "resource_missing": 71,
    "argument_mismatch": 5
   },
@@ -4467,7 +4467,7 @@
    "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [],
-   "control_route": "goal_not_met",
+   "control_route": "not_observed",
    "other_layouts": {
     "dropped_out_of_view__no_room_for_bowl": "resource_missing"
    },

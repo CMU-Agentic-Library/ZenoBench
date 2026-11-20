@@ -49,8 +49,9 @@ def on(asset, sup, x, y, yaw=0.0):
 
 
 # 11-20 (v6_layouts_1120: explore_room of the small kitchen never saw a thing at (-0.85, 7.70) -- the strip between
-# counter 2 and the west wall, behind the counter): what fell lies on the open floor east of the counter
-DROP_XY = (1.45, 7.20)
+# counter 2 and the west wall, behind the counter): what fell lies on the open floor of the small kitchen north of
+# the counter (still kitchen_0_1; east of the counter is the dining room), 0.7 m from oven_2
+DROP_XY = (-0.10, 10.40)
 
 
 def floor(asset, x, y, yaw=0.0):
@@ -430,7 +431,7 @@ def t23():
 
     # by_kind: the block goes where the kid's toys are kept -- the toy box (ideal); or (11-17) his small toy bin,
     # full of blocks, an empty sorting tray beside it (capacity)
-    block_k = floor("wooden_block", 1.75, 7.65)
+    block_k = floor("wooden_block", -0.45, 10.85)
     LT["by_kind__toy_box"] = cost_tiers([(sgoal + [["inside", BLK, "toy_box"]], 0), (sgoal + off_floor(BLK), 2)])
     LT["by_kind__bin_full"] = cost_tiers([(sgoal + [["inside", BLK, TRAY]] + bin_stays, 0),
                                           (sgoal + [["inside", BLK, BIN]], 1), (sgoal + off_floor(BLK), 2)])

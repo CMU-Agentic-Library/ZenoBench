@@ -174459,8 +174459,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 30.0
       }
@@ -174533,8 +174533,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 30.0
       },
@@ -174543,8 +174543,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.75,
-        7.65
+        -0.45,
+        10.85
        ],
        "yaw_deg": 0.0
       },
@@ -174697,8 +174697,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 30.0
       },
@@ -174707,8 +174707,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.75,
-        7.65
+        -0.45,
+        10.85
        ],
        "yaw_deg": 0.0
       },
@@ -175454,8 +175454,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 0.0
       },
@@ -175809,8 +175809,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 0.0
       },
@@ -178229,8 +178229,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 0.0
       },
@@ -178534,8 +178534,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 0.0
       },
@@ -178870,8 +178870,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 30.0
       },
@@ -179175,8 +179175,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.45,
-        7.2
+        -0.1,
+        10.4
        ],
        "yaw_deg": 30.0
       },
@@ -180010,7 +180010,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180067,7 +180067,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180163,7 +180163,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180265,7 +180265,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180326,7 +180326,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180511,7 +180511,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180564,7 +180564,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180635,7 +180635,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
@@ -180735,7 +180735,7 @@
       {
        "skill": "explore_room",
        "args": {
-        "room": "dining_room_0_1"
+        "room": "kitchen_0_1"
        }
       },
       {
