@@ -1002,6 +1002,7 @@ LOOSEN: dict = {
 _ISL, _C6 = "kitchen_island/top", "kitchen_cabinet_6/top"
 _BOWLS3 = ["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"]
 _PLATES = ["plate_counter_a", "plate_counter_b"]
+_T26_ROOM = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1", "bookcase_3/shelf_0", "desk_3/top"] + [f"large_shelf_4/shelf_{k}" for k in range(5)] + [f"large_shelf_5/shelf_{k}" for k in range(4)]   # his room's furniture
 _T04_KID = [(0.6, [["on", "kid_cup", _C6], ["upright", "kid_cup"]])]
 LOOSEN_SEEDS: dict = {
     ("T03", "utensils_apart__bin_free"): {"sub": [{"wide_storage_bin": "storage_basket"},
@@ -1046,6 +1047,20 @@ LOOSEN_SEEDS: dict = {
     ("T11", "basket_missing"): {"extra": [(0.6, [["inside", "apple", "used_bowl"]])]},
     ("T13", "no_cup"): {"sub": {"mug": "kid_cup"}},
     ("T13", "copy_the_setting__no_cup"): {"sub": {"mug": "kid_cup"}},
+    # third levels (user 11-20: the more levels the better)
+    ("T13", "copy_the_setting__bowl_cup"): {"sub": [{"cup": "mug"}, {"cup": "kid_cup", "_score": 0.3}]},
+    ("T13", "copy_the_setting__plate_bowl_mug_left"): {"sub": [{"mug": "cup"}, {"mug": "kid_cup", "_score": 0.3}]},
+    ("T15", "lid_elsewhere__dining"): {"sub": [{"pot_lid": "plate_counter_a"}, {"pot_lid": "plate_counter_b"},
+                                               {"pot_lid": "cover_book", "_score": 0.3}]},
+    ("T09", "lid_on_spoon_away"): {"sub": [{"pot_lid": "lid_plate"}, {"pot_lid": "cover_book", "_score": 0.3}]},
+    ("T09", "lid_missing"): {"sub": {"lid_plate": "cover_book"}},
+    ("T08", "far_sponge_foam_cube"): {"strict": ["kitchen_sponge", "spare_sponge"],
+                                      "sub": {"kitchen_sponge": "spare_sponge"}, "shift": True},
+    ("T30", "bowls_in_cabinet__two_inside"): {"extra": [(0.3, [["count_on_at_least", _BOWLS3 + _PLATES, _ISL, 3]])]},
+    ("T26", "scattered__basket"): {"sub": {"kids_basket": "kids_toy_bin"}, "extra": [
+        (0.3, [["on_any", n, _T26_ROOM] for n in ("living_car", "living_duck", "living_block")])]},
+    ("T29", "which_table__east"): {"wrong": [[["inside", "toy_west", "toy_box"]]]},
+    ("T29", "which_table__west"): {"wrong": [[["inside", "toy_east", "toy_box"]]]},
 }
 
 
@@ -1148,6 +1163,8 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
     reach = lambda g: not any({json.dumps(a) for a in b} <= {json.dumps(a) for a in g}  # noqa: E731
                               for b in out[0]["goal"]["any"])
     mid, low = [g for g in mid if reach(g)], [g for g in low if reach(g)]
+    if mid and cfg.get("shift") and len(out) == 2:  # the new substitute is better than the old second level
+        low = out.pop(1)["goal"]["any"] + low
     if mid:                                         # a substitute though the ideal is there: the 0.6 level
         if len(out) > 1:
             out[1]["goal"]["any"] = mid + out[1]["goal"]["any"]

@@ -3468,7 +3468,8 @@ EXTRA_SUBSTITUTES = {
                                "spare_sponge": _ON(1.45, 0.42, 0.645, "kitchen_sponge"),
                                "foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
     ("T08", "far_sponge_spare_only"): {"foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
-    ("T09", "lid_on_spoon_away"): {"lid_plate": _SURF("kitchen_island/top", 8.06, 1.795, "breakfast_plate")},
+    ("T09", "lid_on_spoon_away"): {"lid_plate": _SURF("kitchen_island/top", 8.06, 1.795, "breakfast_plate"),
+                                   "cover_book": _SURF("kitchen_island/top", 7.40, 1.85, "book_blue")},
     ("T09", "tomato_in_fridge__in_fridge"): {"big_tomato": _SURF("breakfast_fridge/inside_shelf", 5.75, 3.28, "big_tomato")},
     ("T09", "x6_gd_tomato_elsewhere__dining"): {"lunch_plate": _SURF("dining_table_2/top", 3.62, 6.65, "breakfast_plate"),
                                                 "plate_tomato": _ON(3.62, 6.65, 0.858, "cherry_tomato"),
@@ -3493,6 +3494,12 @@ EXTRA_SUBSTITUTES = {
                                           "two_guests__mug")},
     ("T11", "basket_missing"): {"used_bowl": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_bowl")},
     ("T13", "no_cup"): _KID_CUP, ("T13", "copy_the_setting__no_cup"): _KID_CUP,
+    # a third level (user: the more levels the better)
+    ("T13", "copy_the_setting__bowl_cup"): _KID_CUP, ("T13", "copy_the_setting__plate_bowl_mug_left"): _KID_CUP,
+    ("T15", "lid_elsewhere__dining"): {"cover_book": _SURF("kitchen_island/top", 8.05, 1.80, "book_blue")},
+    ("T08", "far_sponge_foam_cube"): {"sponge_tray": _SURF("kitchen_cabinet_4/top", 1.40, 0.42, "shallow_sorting_tray"),
+                                      "spare_sponge": _ON(1.45, 0.42, 0.645, "kitchen_sponge")},
+    ("T09", "lid_missing"): {"cover_book": _SURF("kitchen_island/top", 7.40, 1.85, "book_blue")},
 }
 
 

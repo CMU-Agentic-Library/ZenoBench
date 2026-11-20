@@ -98796,6 +98796,25 @@
         1.82
        ],
        "yaw_deg": 0.0
+      },
+      "sponge_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 0.645,
+       "xy": [
+        1.45,
+        0.42
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -98821,8 +98840,10 @@
       ]
      },
      "watch": [
+      "foam_cube_toy",
       "kitchen_sponge",
-      "foam_cube_toy"
+      "spare_sponge",
+      "sponge_tray"
      ],
      "since": "v6",
      "note": "the kid's blue foam cube lies on the island, like a sponge; the sponge is on the TV stand",
@@ -98838,6 +98859,27 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "spare_sponge",
+         "sponge_tray"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.265,
+         0.32,
+         1.535,
+         0.52
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       },
        {
         "names": [
          "foam_cube_toy"
@@ -98944,6 +98986,32 @@
        ]
       },
       "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -99035,6 +99103,33 @@
        {
         "name": "second",
         "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "hand_empty",
+            "right"
+           ],
+           [
+            "wiped",
+            "kitchen_island/top"
+           ],
+           [
+            "on",
+            "spare_sponge",
+            "kitchen_island/top"
+           ]
+          ]
+         ]
+        },
+        "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
         "goal": {
          "all": [],
          "any": [
@@ -99055,8 +99150,7 @@
           ]
          ]
         },
-        "why": "the island wiped with the kid's foam cube (the real sponge never taken)",
-        "raw": "worst"
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "the sponge not found; not wiped (or not all of it); the sponge still held or dropped on the floor",
@@ -104018,9 +104112,19 @@
         1.795
        ],
        "yaw_deg": 0.0
+      },
+      "cover_book": {
+       "asset": "book_blue",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4,
+        1.85
+       ],
+       "yaw_deg": 0.0
       }
      },
      "watch": [
+      "cover_book",
       "lid_plate"
      ],
      "layout": {
@@ -104055,17 +104159,18 @@
         "names": [
          "cherry_tomato_1",
          "cherry_tomato_2",
+         "cover_book",
          "lid_plate"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.616,
+         7.3,
          1.606,
          8.184,
-         1.919
+         1.92
         ],
         "dx": [
-         -1.06,
+         -0.75,
          0.06
         ],
         "dy": [
@@ -104266,6 +104371,56 @@
          ]
         },
         "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "hand_empty",
+            "right"
+           ],
+           [
+            "inside",
+            "cherry_tomato_1",
+            "handled_cooking_pot"
+           ],
+           [
+            "inside",
+            "cherry_tomato_2",
+            "handled_cooking_pot"
+           ],
+           [
+            "temperature_at_least",
+            "cherry_tomato_1",
+            60
+           ],
+           [
+            "temperature_at_least",
+            "cherry_tomato_2",
+            60
+           ],
+           [
+            "not heating",
+            "kitchen_stove"
+           ],
+           [
+            "stirred",
+            "handled_cooking_pot"
+           ],
+           [
+            "covered",
+            "handled_cooking_pot",
+            "cover_book"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
@@ -106939,6 +107094,15 @@
         1.795
        ],
        "yaw_deg": 0.0
+      },
+      "cover_book": {
+       "asset": "book_blue",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4,
+        1.85
+       ],
+       "yaw_deg": 0.0
       }
      },
      "conditions": [
@@ -106986,10 +107150,11 @@
       ]
      },
      "watch": [
-      "handled_cooking_pot",
-      "lid_plate",
       "cherry_tomato_1",
-      "cherry_tomato_2"
+      "cherry_tomato_2",
+      "cover_book",
+      "handled_cooking_pot",
+      "lid_plate"
      ],
      "since": "v6",
      "note": "no pot lid in the house; a breakfast plate the lid's size lies on the island",
@@ -107010,17 +107175,18 @@
          "breakfast_spoon",
          "cherry_tomato_1",
          "cherry_tomato_2",
+         "cover_book",
          "lid_plate"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.3853,
+         7.3,
          1.5929,
          8.184,
-         1.919
+         1.92
         ],
         "dx": [
-         -0.83,
+         -0.75,
          0.06
         ],
         "dy": [
@@ -107096,7 +107262,7 @@
       }
      },
      "scoring": {
-      "D": 0,
+      "D": 1,
       "tiers": [
        {
         "name": "best",
@@ -107147,6 +107313,56 @@
         },
         "why": "the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed",
         "raw": "best"
+       },
+       {
+        "name": "second",
+        "score": 0.6,
+        "raw": "substitute",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "hand_empty",
+            "right"
+           ],
+           [
+            "inside",
+            "cherry_tomato_1",
+            "handled_cooking_pot"
+           ],
+           [
+            "inside",
+            "cherry_tomato_2",
+            "handled_cooking_pot"
+           ],
+           [
+            "temperature_at_least",
+            "cherry_tomato_1",
+            60
+           ],
+           [
+            "temperature_at_least",
+            "cherry_tomato_2",
+            60
+           ],
+           [
+            "not heating",
+            "kitchen_stove"
+           ],
+           [
+            "stirred",
+            "handled_cooking_pot"
+           ],
+           [
+            "covered",
+            "handled_cooking_pot",
+            "cover_book"
+           ]
+          ]
+         ]
+        },
+        "why": "a substitute though the ideal is there (11-20)"
        }
       ],
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
@@ -110091,7 +110307,7 @@
       "not_ok": "one tomato only; below 60 C; the stove left on; a tomato out of the pot; still held or dropped",
       "D_by_layout": {
        "lid_on_spoon_away": 1,
-       "lid_missing": 0
+       "lid_missing": 1
       },
       "top_by_layout": {
        "lid_on_spoon_away": "ideal",
@@ -135028,6 +135244,15 @@
         6.55
        ],
        "yaw_deg": 180.0
+      },
+      "kid_cup": {
+       "asset": "plastic_cup",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.364,
+        7.709
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -135089,6 +135314,7 @@
       "example_bowl",
       "example_cup",
       "example_spoon",
+      "kid_cup",
       "spoon"
      ],
      "since": "v6",
@@ -135126,6 +135352,26 @@
         "dy": [
          -0.12,
          0.08
+        ]
+       },
+       {
+        "names": [
+         "kid_cup"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.404,
+         7.669,
+         -0.324,
+         7.749
+        ],
+        "dx": [
+         -0.11,
+         0.56
+        ],
+        "dy": [
+         -0.68,
+         1.67
         ]
        },
        {
@@ -135175,7 +135421,34 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
        "bookcase_2/top": [
         [
@@ -135200,6 +135473,32 @@
          -0.619,
          0.705,
          1.295,
+         0.2
+        ]
+       ],
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
          0.2
         ]
        ],
@@ -135332,6 +135631,53 @@
          ]
         },
         "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "same_arrangement",
+            [
+             "bowl",
+             "kid_cup"
+            ],
+            [
+             "example_bowl",
+             "example_cup"
+            ],
+            "spoon",
+            "example_spoon",
+            [
+             1.0,
+             0.0
+            ],
+            [
+             -1.0,
+             0.0
+            ],
+            0.12
+           ],
+           [
+            "upright",
+            "bowl"
+           ],
+           [
+            "upright",
+            "kid_cup"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
@@ -135431,6 +135777,15 @@
         6.55
        ],
        "yaw_deg": 180.0
+      },
+      "kid_cup": {
+       "asset": "plastic_cup",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.364,
+        7.709
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -135499,13 +135854,14 @@
       ]
      },
      "watch": [
-      "plate_counter_a",
       "bowl",
-      "mug",
-      "example_plate",
       "example_bowl",
       "example_mug",
+      "example_plate",
       "example_spoon",
+      "kid_cup",
+      "mug",
+      "plate_counter_a",
       "spoon"
      ],
      "since": "v6",
@@ -135550,12 +135906,13 @@
        },
        {
         "names": [
+         "kid_cup",
          "plate_counter_a"
         ],
         "support": "kitchen_counter_2/top",
         "box": [
          -0.448,
-         8.3049,
+         7.669,
          -0.2,
          8.5531
         ],
@@ -135564,7 +135921,7 @@
          0.44
         ],
         "dy": [
-         -1.32,
+         -0.68,
          0.87
         ],
         "pick": [
@@ -135833,6 +136190,60 @@
          ]
         },
         "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "same_arrangement",
+            [
+             "plate_counter_a",
+             "bowl",
+             "kid_cup"
+            ],
+            [
+             "example_plate",
+             "example_bowl",
+             "example_mug"
+            ],
+            "spoon",
+            "example_spoon",
+            [
+             1.0,
+             0.0
+            ],
+            [
+             -1.0,
+             0.0
+            ],
+            0.12
+           ],
+           [
+            "upright",
+            "bowl"
+           ],
+           [
+            "upright",
+            "kid_cup"
+           ],
+           [
+            "on_top_of",
+            "bowl",
+            "plate_counter_a"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "a piece missing; the wrong place; tipped; still held or dropped",
@@ -140159,6 +140570,7 @@
       ]
      },
      "watch": [
+      "cover_book",
       "handled_cooking_pot",
       "pot_lid"
      ],
@@ -140173,6 +140585,17 @@
       "contrast": null,
       "factor": "what the lid is doing (seed: left on the dining table; or covering someone's unfinished bowl there, plates on the kitchen counter)",
       "derived_from": "bare"
+     },
+     "add": {
+      "cover_book": {
+       "asset": "book_blue",
+       "support": "kitchen_island/top",
+       "xy": [
+        8.05,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      }
      },
      "layout": {
       "clusters": [
@@ -140196,6 +140619,26 @@
         ],
         "search": [
          "pot_lid"
+        ]
+       },
+       {
+        "names": [
+         "cover_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.95,
+         1.7301,
+         8.15,
+         1.87
+        ],
+        "dx": [
+         -1.4,
+         0.09
+        ],
+        "dy": [
+         -0.2,
+         0.1
         ]
        }
       ],
@@ -140247,6 +140690,32 @@
          5.495,
          2.788,
          3.839,
+         0.2
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         0,
+         -1,
+         6.54,
+         1.515,
+         1.985,
+         0.2
+        ],
+        [
+         1,
+         1,
+         1.985,
+         6.54,
+         8.26,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         1.515,
+         6.54,
+         8.26,
          0.2
         ]
        ]
@@ -140301,10 +140770,43 @@
             "hand_empty",
             "right"
            ]
+          ],
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "plate_counter_b"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
           ]
          ]
         },
         "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "covered",
+            "handled_cooking_pot",
+            "cover_book"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "the pot not covered; the lid not found; someone's bowl tipped; still held",
@@ -198549,6 +199051,89 @@
          ]
         },
         "why": "a substitute though the ideal is there (11-20)"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "on_any",
+            "living_car",
+            [
+             "bookcase_2/top",
+             "bookcase_2/shelf_1",
+             "bookcase_2/shelf_0",
+             "bookcase_3/top",
+             "bookcase_3/shelf_1",
+             "bookcase_3/shelf_0",
+             "desk_3/top",
+             "large_shelf_4/shelf_0",
+             "large_shelf_4/shelf_1",
+             "large_shelf_4/shelf_2",
+             "large_shelf_4/shelf_3",
+             "large_shelf_4/shelf_4",
+             "large_shelf_5/shelf_0",
+             "large_shelf_5/shelf_1",
+             "large_shelf_5/shelf_2",
+             "large_shelf_5/shelf_3"
+            ]
+           ],
+           [
+            "on_any",
+            "living_duck",
+            [
+             "bookcase_2/top",
+             "bookcase_2/shelf_1",
+             "bookcase_2/shelf_0",
+             "bookcase_3/top",
+             "bookcase_3/shelf_1",
+             "bookcase_3/shelf_0",
+             "desk_3/top",
+             "large_shelf_4/shelf_0",
+             "large_shelf_4/shelf_1",
+             "large_shelf_4/shelf_2",
+             "large_shelf_4/shelf_3",
+             "large_shelf_4/shelf_4",
+             "large_shelf_5/shelf_0",
+             "large_shelf_5/shelf_1",
+             "large_shelf_5/shelf_2",
+             "large_shelf_5/shelf_3"
+            ]
+           ],
+           [
+            "on_any",
+            "living_block",
+            [
+             "bookcase_2/top",
+             "bookcase_2/shelf_1",
+             "bookcase_2/shelf_0",
+             "bookcase_3/top",
+             "bookcase_3/shelf_1",
+             "bookcase_3/shelf_0",
+             "desk_3/top",
+             "large_shelf_4/shelf_0",
+             "large_shelf_4/shelf_1",
+             "large_shelf_4/shelf_2",
+             "large_shelf_4/shelf_3",
+             "large_shelf_4/shelf_4",
+             "large_shelf_5/shelf_0",
+             "large_shelf_5/shelf_1",
+             "large_shelf_5/shelf_2",
+             "large_shelf_5/shelf_3"
+            ]
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "a thing of his left in the living room or put elsewhere; still held or dropped",
@@ -217762,6 +218347,28 @@
         },
         "why": "the meal table cleared, and the other table's toy put away too",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "inside",
+            "toy_west",
+            "toy_box"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "the meal table's toy left there; still held or dropped",
@@ -218030,6 +218637,28 @@
         },
         "why": "the meal table cleared, and the other table's toy put away too",
         "raw": "second"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "inside",
+            "toy_east",
+            "toy_box"
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "the meal table's toy left there; still held or dropped",
@@ -221145,6 +221774,35 @@
         },
         "why": "the mug used though a third bowl was in the cabinet",
         "raw": "worst"
+       },
+       {
+        "name": "worst",
+        "score": 0.3,
+        "raw": "poor_or_wrong",
+        "goal": {
+         "all": [],
+         "any": [
+          [
+           [
+            "count_on_at_least",
+            [
+             "soup_bowl_1",
+             "soup_bowl_2",
+             "soup_bowl_3",
+             "plate_counter_a",
+             "plate_counter_b"
+            ],
+            "kitchen_island/top",
+            3
+           ],
+           [
+            "hand_empty",
+            "right"
+           ]
+          ]
+         ]
+        },
+        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"
        }
       ],
       "not_ok": "fewer than three; dropped; still held",

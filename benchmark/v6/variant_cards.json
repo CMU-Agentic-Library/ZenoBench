@@ -11860,7 +11860,9 @@
     "kitchen_sponge"
    ],
    "added": [
-    "foam_cube_toy"
+    "foam_cube_toy",
+    "spare_sponge",
+    "sponge_tray"
    ],
    "removed": [],
    "conditions": [
@@ -12582,6 +12584,7 @@
     "pot_lid"
    ],
    "added": [
+    "cover_book",
     "lid_plate"
    ],
    "removed": [
@@ -12660,6 +12663,7 @@
     "handled_cooking_pot"
    ],
    "added": [
+    "cover_book",
     "lid_plate"
    ],
    "removed": [
@@ -16660,7 +16664,8 @@
    "added": [
     "example_bowl",
     "example_cup",
-    "example_spoon"
+    "example_spoon",
+    "kid_cup"
    ],
    "removed": [
     "clutter_cereal_a",
@@ -16755,7 +16760,8 @@
     "example_bowl",
     "example_mug",
     "example_plate",
-    "example_spoon"
+    "example_spoon",
+    "kid_cup"
    ],
    "removed": [
     "clutter_cereal_a",
@@ -17436,7 +17442,9 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "cover_book"
+   ],
    "removed": [],
    "conditions": [
     "not_in_view"

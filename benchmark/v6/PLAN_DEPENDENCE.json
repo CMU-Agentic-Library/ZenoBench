@@ -53,10 +53,10 @@
   ],
   "routes_between_layouts": {
    "passes": 131,
-   "goal_not_met": 183,
+   "goal_not_met": 184,
    "not_observed": 28,
    "argument_mismatch": 65,
-   "resource_missing": 137
+   "resource_missing": 136
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -114,7 +114,6 @@
    "T12 castle_stays",
    "T12 duck_in_study",
    "T14 whose_book",
-   "T15 lid_elsewhere",
    "T16 box_in_cabinet",
    "T18 one_bowl",
    "T19 x6_gd_can_put_away",
@@ -2768,7 +2767,7 @@
    "control_route": "passes",
    "other_layouts": {
     "far_sponge_tv": "passes",
-    "far_sponge_spare_only": "resource_missing"
+    "far_sponge_spare_only": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -3572,7 +3571,8 @@
    },
    "other_variants_passing": [
     "no_cup",
-    "finish_the_table__adult_seat"
+    "finish_the_table__adult_seat",
+    "finish_the_table__kid_seat"
    ]
   },
   {
@@ -8664,7 +8664,7 @@
    "start_room": "dining_room_0_1",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -9325,10 +9325,10 @@
     "lid_elsewhere__covering_bowl"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "argument_mismatch",
    "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T16_pack_snack_box",

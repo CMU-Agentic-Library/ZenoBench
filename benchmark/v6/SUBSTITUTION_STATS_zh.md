@@ -118,7 +118,7 @@
 | T08 | which_surface | dining | 不用替换 | 按指令（only the used surface wiped, the sponge on the island） | 在 | 1 |
 | T09 | lid_off | — | 不用替换 | 按指令（the tomatoes in the pot at 60 C, stirred, the lid on, the stove off） | 在 | 0 |
 | T09 | lid_on_spoon_away | — | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
-| T09 | lid_on_spoon_away | — | 缺失 | 锅盖（没有，用同样大的盘子盖） | 不在 | 0 |
+| T09 | lid_on_spoon_away | — | 缺失 | 锅盖（没有，用同样大的盘子盖） | 不在 | 1 |
 | T09 | pot_in_use | in_use | 被占用 | 灶上那口锅（装着昨天的汤，用空锅） | 不在 | 1 |
 | T09 | pot_in_use | free | 不用替换 | 按指令（the soup in the empty pot, every step done, the full pot untouched） | 在 | 1 |
 | T09 | tomato_in_fridge | in_fridge | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
