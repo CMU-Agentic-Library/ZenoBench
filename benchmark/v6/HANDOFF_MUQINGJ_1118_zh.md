@@ -144,3 +144,34 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 - 6.4 里的 T23 `only_this_room` 两个摆法还是从地上用杯沿捏取塑料杯，请照常跑。
 - 要重跑的放在 `batches/physics_1119_layouts.json`，一共 63 个 episode：上面 8 个摆法，加上你 6.1 改的 T06、T23×3、T13。
 - `batches/physics_1118_changed.json` 里还是旧名 `no_room_for_plate`，以 `physics_1119_layouts.json` 为准。
+
+## 8. 物理侧回复（muqingj，11-19 晚）：全量结果里属于 bench 侧的问题
+
+11-19 跑了一次全量（代码 `2e8b2ac8`，也就是第 7 节之前的布局；每个变体 seed 10，sticky/gt，一次一个仿真）：155 集成功 110 集。下面两条是路线本身的问题，请在 bench 侧改；其余失败是技能问题，我们这边处理。
+
+### 8.1 T15：拿盘子当盖子，`cover` 不接受（3 个摆法，25 个 episode）
+
+| 摆法 | seed | 步骤 |
+|---|---|---|
+| `lid_elsewhere__covering_bowl` | 10 12 15 16 17 | 第 10 步 `cover(container=handled_cooking_pot, lid=plate_counter_a)` |
+| `no_lid` | 10–19 | 第 8 步，同上 |
+| `lid_in_use` | 10–19 | 第 8 步，同上 |
+
+- `cover` 的 `lid` 参数类型是 `lid_ref`：只收标了 `lid` 标签的物体（`zeno_skills/predicates.py`）。盘子不是，调用直接被拒：`NOUN_INVALID: lid='plate_counter_a' is not a valid lid_ref in this scene`（全量里 `lid_elsewhere__covering_bowl`、`no_lid` 都停在这一步；`lid_in_use` 在更早的一步失败了，走到这里也会一样）。
+- 目标里的 `covered(pot, plate)` 判定本身能用盘子，问题只在调用。
+- 两种改法，你定：
+  1. bench 侧：盘子不走 `cover`。比如参考路线用 `place(plate_counter_a, handled_cooking_pot)`，但那是"放进容器"的路径，会把盘子放进锅里而不是盖在锅口上，不合适；或者换成真有 `lid` 标签的替代品。
+  2. 技能侧：让 `cover` 接受扁平的盘子当盖子（要改 contract 的参数类型和 `cover` 的放法：盘子只有厚度捏取，放到锅沿上和锅盖的顶部捏取完全不同）。这个要我们评估，不是小改动。
+- 如果选 2，先告诉我，我们排进技能修复。
+
+### 8.2 T09：加热对象选错了，冰箱里拿出来的那个到不了 60 °C（3 个摆法）
+
+- 所有 T09 路线最后都是 `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`。`heat` 只盯着它的 `food`：这一个到了目标温度就关火。
+- 冰箱里拿出来的番茄起始温度低，跟在后面。全量里 `tomato_in_fridge__in_fridge`（seed 10）路线全走完，`cherry_tomato_1` 72.5 °C，`fridge_tomato` 只有 56.5 °C，目标 `temperature_at_least(fridge_tomato, 60)` 不成立。
+- 受影响的是目标里有冷物体的三个摆法：`tomato_in_fridge__in_fridge`（seed 10 12 13 16 19，`fridge_tomato`）、`tomato_in_fridge__big_tomato`（11 14 15 17 18，`big_tomato`）、`x6_gd_tomato_elsewhere__on_plate`（11 14 16 17 18，`fridge_tomato`）。
+- 建议：这三个摆法的 `heat` 改成加热冰箱里拿出来的那个（`food=fridge_tomato` / `big_tomato`）。它最凉，它到了 60 °C 别的也都到了。其余 T09 摆法不用改。
+
+### 8.3 供参考：T06 `seen_from_bed__bookcase_full` 改成侧面捏取后仍然失败
+
+- 侧面捏取拿起来了，但 `place(wooden_block_a, bookcase_3/shelf_1)` 找不到能放的停车点：2674 个有 IK 的候选只构造出 4 个，都失败（伸进去、放下段碰撞）。
+- 这是我们放中间层的技能问题，我们这边先查；布局暂时不用动。查完如果确实放不进去，再请你像 T26 那样改去处。
