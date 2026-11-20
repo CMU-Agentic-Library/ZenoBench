@@ -51,7 +51,11 @@ def front_of(rig, a, target):
     """A base pose FRONT_SEED_M out of ``a``'s opening in front of its door's free edge -- the end of
     the closed door away from the hinge, where the open door is not; the handle for a drawer --
     facing ``target`` with it off to the right arm's side by park_search.FACE_LEFT, as the
-    candidates' cost prefers (and the hand-placed seeds had it)."""
+    candidates' cost prefers (and the hand-placed seeds had it).  The heading is rounded to the base
+    planner's lattice (YAW_STEP): the next drive starts with a turn to its nearest lattice heading, and
+    next to the open door that turn can be blocked (T22 s10 11-19: parked at 140.4 deg after the fridge
+    place, the 4.6 deg turn to 135 sank deeper, so every close park had no base path)."""
+    from ..base_planner import YAW_STEP
     from ..park_search import FACE_LEFT
     out = opening(a)
     if a.get("type") == "revolute":
@@ -65,4 +69,4 @@ def front_of(rig, a, target):
         edge = np.asarray(a["handle"]["center"], float)[:2]
     xy = edge + FRONT_SEED_M * out
     face = math.degrees(math.atan2(target[1] - xy[1], target[0] - xy[0]))
-    return float(xy[0]), float(xy[1]), float(face + FACE_LEFT)
+    return float(xy[0]), float(xy[1]), float(round((face + FACE_LEFT) / YAW_STEP) * YAW_STEP)
