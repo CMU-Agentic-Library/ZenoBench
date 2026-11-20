@@ -11627,6 +11627,7 @@
       - 第 1 组：
         - `hw_notebook` 在其中任一处上：`desk_3/top`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
         - `hw_pencil` 在其中任一处上：`desk_3/top`、`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+        - `desk_pencil` 没被挪动（离开局位置不超过 3 cm）
         - `homework` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_1` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_2` 没被挪动（离开局位置不超过 3 cm）
@@ -11646,7 +11647,6 @@
         - `hw_notebook_corner` 没被挪动（离开局位置不超过 3 cm）
         - `hw_paperback` 没被挪动（离开局位置不超过 3 cm）
         - `hw_pen` 没被挪动（离开局位置不超过 3 cm）
-        - `hw_pencil` 没被挪动（离开局位置不超过 3 cm）
 - **次好（0.6）**：
 
   - 摆法 `desk_free`：
@@ -11666,6 +11666,7 @@
       - 第 2 组：
         - `hw_notebook` 在 `desk_1/top` 上
         - `hw_pencil` 在 `desk_1/top` 上
+        - `desk_pencil` 没被挪动（离开局位置不超过 3 cm）
         - `homework` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_1` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_2` 没被挪动（离开局位置不超过 3 cm）
@@ -11685,7 +11686,6 @@
         - `hw_notebook_corner` 没被挪动（离开局位置不超过 3 cm）
         - `hw_paperback` 没被挪动（离开局位置不超过 3 cm）
         - `hw_pen` 没被挪动（离开局位置不超过 3 cm）
-        - `hw_pencil` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
   - 摆法 `desk_free`：
@@ -11701,6 +11701,7 @@
         - `hw_notebook` 不在地上
         - `["not on", "hw_pencil", "dining_table_2/top"]`
         - `hw_pencil` 不在地上
+        - `desk_pencil` 没被挪动（离开局位置不超过 3 cm）
         - `homework` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_1` 没被挪动（离开局位置不超过 3 cm）
         - `hw_book_green_2` 没被挪动（离开局位置不超过 3 cm）
@@ -11720,7 +11721,6 @@
         - `hw_notebook_corner` 没被挪动（离开局位置不超过 3 cm）
         - `hw_paperback` 没被挪动（离开局位置不超过 3 cm）
         - `hw_pen` 没被挪动（离开局位置不超过 3 cm）
-        - `hw_pencil` 没被挪动（离开局位置不超过 3 cm）
       - 第 3 组：
         - `["not on", "hw_notebook", "dining_table_2/top"]`
         - `hw_notebook` 不在地上

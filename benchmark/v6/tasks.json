@@ -277825,6 +277825,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -277916,11 +277921,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ]
@@ -278009,6 +278009,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -278101,11 +278106,6 @@
               "near_start",
               "hw_pen",
               0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
-              0.03
              ]
             ]
            ],
@@ -278144,12 +278144,12 @@
       },
       "hw_pencil": {
        "asset": "pencil",
-       "support": "desk_1/top",
+       "support": "dining_table_2/top",
        "xy": [
-        -0.4,
-        -6.136
+        3.688,
+        6.295
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90.0
       },
       "hw_notebook_1": {
        "asset": "notebook",
@@ -278204,6 +278204,15 @@
         -6.245
        ],
        "yaw_deg": 90.0
+      },
+      "desk_pencil": {
+       "asset": "pencil",
+       "support": "desk_1/top",
+       "xy": [
+        -0.4,
+        -6.136
+       ],
+       "yaw_deg": 0.0
       },
       "hw_book_green_1": {
        "asset": "book_green",
@@ -278362,7 +278371,7 @@
       "hw_notebook_3",
       "hw_paperback",
       "hw_pen",
-      "hw_pencil",
+      "desk_pencil",
       "hw_book_green_1",
       "hw_book_green_2",
       "hw_book_green_3",
@@ -278394,36 +278403,32 @@
       "clusters": [
        {
         "names": [
-         "hw_notebook"
+         "hw_notebook",
+         "hw_pencil"
         ],
         "support": "dining_table_2/top",
         "box": [
          2.863,
-         6.2104,
-         3.073,
-         6.3796
+         6.205,
+         3.6966,
+         6.385
         ],
         "dx": [
          -0.06,
-         0.75
+         0.13
         ],
         "dy": [
          -0.7,
          1.56
         ],
         "pick": [
-         "hw_notebook"
+         "hw_notebook",
+         "hw_pencil"
         ]
        }
       ],
       "static": {
        "desk_1/top": [
-        [
-         -0.49,
-         -6.1446,
-         -0.31,
-         -6.1274
-        ],
         [
          -1.395,
          -6.3296,
@@ -278459,6 +278464,12 @@
          -6.315,
          -0.2469,
          -6.175
+        ],
+        [
+         -0.49,
+         -6.1446,
+         -0.31,
+         -6.1274
         ],
         [
          -1.405,
@@ -278637,6 +278648,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -278728,11 +278744,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ]
@@ -278821,6 +278832,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -278912,11 +278928,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ]
@@ -278974,6 +278985,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -279065,11 +279081,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ],
@@ -282456,6 +282467,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -282547,11 +282563,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ]
@@ -282639,6 +282650,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -282730,11 +282746,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ]
@@ -282791,6 +282802,11 @@
              ],
              [
               "near_start",
+              "desk_pencil",
+              0.03
+             ],
+             [
+              "near_start",
               "homework",
               0.03
              ],
@@ -282882,11 +282898,6 @@
              [
               "near_start",
               "hw_pen",
-              0.03
-             ],
-             [
-              "near_start",
-              "hw_pencil",
               0.03
              ]
             ],
