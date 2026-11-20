@@ -844,12 +844,6 @@ BUILT = {("T02", "tower_for_kid"): _layout_tiers("tower_for_kid", {
              ("lid_elsewhere", "the pot not covered; the lid not found; someone's bowl tipped; still held"),
              ("no_lid", "the pot not covered; still held or dropped"),
              ("lid_in_use", "the soup not covered; the stew pot tipped; still held or dropped"))},
-         ("T14", "stack_them_stably"): _layout_tiers("stack_them_stably", {
-             "best": "one pile, largest at the bottom, on the kid's bookcase where it fits (the top when free, else a "
-                     "lower shelf or the bedside bookcase's top), the kid's things untouched",
-             "second": "the pile on the top after moving the kid's things (still standing)",
-             "worst": "the books on a bookcase, but not one pile or not largest-first"},
-             "a book left on the desk or elsewhere; a book on the floor; still held or dropped"),
          ("T11", "fruit_plate_for_guests"): _layout_tiers("fruit_plate_for_guests", {
              "best": "the best the seed offers: a free tray (the small one when it is empty, else the serving tray) "
                      "with the apple and the orange in front of the guests, the kid's homework untouched",
@@ -933,6 +927,147 @@ def with_ideal(task_id: str, design: str, lid: str, p: dict) -> dict:
     return p
 
 
+# 11-20 (user): the levels tell substitutes apart, not how tidily the job was done.  Slips (a door left open, a
+# thing nudged or tipped, not squared, at the edge) are not scored; a step the instruction asks for and skipped is
+# not done (no level); success is kept simple.  ``loosen`` rewrites every seed's tiers this way:
+# - dropped everywhere: is_closed, squared, never_picked, and ``upright`` of things the task does not place;
+# - ``near_start`` of other things widened to STAY_TOL (left there, not taken or used; a nudge is free), except
+#   ``strict`` ones: things moved to make room or used though in use -- that is the substitute the level scores;
+# - per design (LOOSEN): ``drop`` more atoms (pred, name glob); ``step``: an instruction step every level must do
+#   too -- its atoms (from the closest best group) are added to every level, so a level that only skipped it
+#   falls away (``unless``: a level with such an atom is a substitute route the step does not apply to);
+#   ``require``: a level without those atoms of the best is no level (too many brought); ``mention``: names every
+#   level must still place;
+# then a level that can no longer be told from a higher one is left out and the rest renumbered 1.0, 0.6, 0.3.
+STAY_TOL = 0.25
+SLIP_PREDS = {"is_closed", "squared", "never_picked"}
+_PLACING = {"on", "on_any", "inside", "inside_any", "fully_inside", "on_top_of", "count_on_at_least",
+            "count_on_at_most", "hidden", "covered", "same_arrangement", "grouped", "near_any"}
+_STRICT_ALL = {"strict": ["*"]}
+LOOSEN: dict = {
+    **{("T01", d): _STRICT_ALL for d in ("table_seats", "which_table", "no_room_fallback", "reader_seat")},
+    ("T01", "which_book"): {"drop": [("near_start", "book_island"), ("near_start", "book_other")]},
+    ("T02", "crowded_use_another"): {"strict": ["wooden_block_b"]},
+    ("T02", "tower_for_kid"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
+    ("T02", "tower_for_kid_duck"): {"strict": ["*"], "drop": [("clear_of", "*"), ("away_from_edge", "*")]},
+    ("T02", "block_put_away"): {"drop": [("away_from_edge", "*")]},
+    ("T04", "two_guests"): {"drop": [("clear_of", "*")]},
+    ("T04", "clear_the_drinks_spot"): {"strict": ["kid_*"]},
+    ("T05", "homework_ready"): {"drop": [("near_start", "teddy_bear")]},
+    ("T05", "pens_per_notebook"): {"drop": [("near_any", "*")], "require": [("near_start", "*")]},
+    ("T06", "display_row"): {"strict": ["fam_*"], "drop": [("front_visible", "*"), ("clear_of", "*")]},
+    ("T06", "display_spot_or_tv"): {"strict": ["*"], "drop": [("away_from_edge", "*")]},
+    ("T06", "seen_from_bed"): {"strict": ["bedside_*"]},
+    ("T07", "microwave_holds_pot"): {"strict": ["handled_cooking_pot", "pot_lid"]},
+    **{("T08", d): {"step": [("on", "kitchen_sponge")]} for d in ("sponge_on_island", "wipe_and_sort",
+                                                                    "which_surface")},
+    # the kid's foam cube used instead of the sponge (the sponge never taken, strict) is a substitute: no sponge to
+    # put back
+    ("T08", "far_sponge_tv"): {"step": [("on", "*sponge*")], "unless": [("near_start", "kitchen_sponge")],
+                               "strict": ["kitchen_sponge"], "drop": [("near_start", "foam_cube_toy")]},
+    ("T08", "return_sponge_home"): {"drop": [("inside", "spare_sponge")]},
+    **{("T09", d): {"step": [("stirred", "*"), ("covered", "*")]}
+       for d in ("lid_off", "lid_on_spoon_away", "tomato_in_fridge", "x6_gd_tomato_elsewhere", "pot_in_dining_room")},
+    ("T09", "pot_in_use"): {"strict": ["soup_pot"], "step": [("stirred", "*"), ("covered", "*")]},
+    ("T10", "trash_moved"): {"drop": [("near_start", "trash_fill_*")]},
+    ("T11", "fruit_plate_for_guests"): {"strict": ["kid_*"], "mention": ["apple", "lunch_orange"]},
+    ("T12", "find_all_toys"): {"drop": [("near_start", "kitchen_sponge")]},
+    ("T13", "copy_the_setting"): {"drop": [("near_start", "example_*")], "step": [("same_arrangement", "*")]},
+    ("T14", "homework_stays"): {"strict": ["homework", "hw_pencil"],
+                                "step": [("near_start", "homework"), ("near_start", "hw_pencil")]},
+    **{("T20", d): {"step": [("upright", "juice_bottle")]}
+       for d in ("bottle_on_cabinet", "m_bottle_on_tv_stand", "x6_gd_bottle_put_away")},
+    ("T22", "eat_now"): {"strict": ["homework", "hw_*"]},
+    ("T22", "tray_elsewhere"): {"drop": [("on_any", "tray_book_*")]},
+    ("T23", "dropped_in_two_rooms"): {"strict": ["kid_book_*"]},
+    ("T25", "cold_one"): {"drop": [("near_start", "guest_juice")]},
+    ("T25", "cups_for_two"): {"drop": [("near_start", "tv_cup_*")], "require": [("count_on_at_most", "*")]},
+    ("T26", "whose"): {"strict": ["kid_book_*"]},
+    ("T26", "bear_to_bed"): {"strict": ["b3_*"]},
+    ("T27", "fridge_out_of_view"): {"strict": ["stored_*"]},
+    ("T28", "where_his_cup_is"): {"drop": [("near_start", "counter_mug"), ("near_start", "cup_counter_b")]},
+    ("T28", "cup_out_of_view"): {"strict": ["b3_*"]},
+    ("T28", "already_there"): {"drop": [("near_start", "kid_cup")]},
+    ("T29", "homework_on_table"): {"strict": ["homework", "hw_*", "desk_pencil"]},
+}
+
+
+def _names(x) -> list:
+    return list(x) if isinstance(x, list) else [x]
+
+
+def _match(atom, pred, glob) -> bool:
+    from fnmatch import fnmatch
+    return atom[0] == pred and len(atom) > 1 and any(fnmatch(str(n), glob) for n in _names(atom[1]))
+
+
+def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
+    """The seed's tiers with slips not scored, skipped steps no level, and the levels left renumbered."""
+    import json
+    cfg = LOOSEN.get((task["task_id"][:3], design), {})
+    goal = {**task, "goal": task["variants"][lid].get("goal") or task["goal"]}
+    strict, drop = cfg.get("strict", []), cfg.get("drop", [])
+
+    def groups(g):
+        gs = g.get("any") or [[]]
+        return [list(g.get("all", [])) + list(grp) for grp in gs]
+
+    def clean(grp):
+        subjects = {n for a in grp if a[0] in _PLACING and len(a) > 1 for n in _names(a[1])} | \
+            {a[2] for a in grp if a[0] == "on_top_of"}
+        out = []
+        for a in grp:
+            if a[0] in SLIP_PREDS or any(_match(a, pr, gl) for pr, gl in drop):
+                continue
+            if a[0] == "upright" and a[1] not in subjects:
+                continue
+            if a[0] == "near_start" and not any(_match(a, "near_start", gl) for gl in strict):
+                a = ["near_start", a[1], max(float(a[2]) if len(a) > 2 else 0.0, STAY_TOL)]
+            if a not in out:
+                out.append(a)
+        return out
+
+    tiers = []
+    for t in p["tiers"]:
+        g = tier_goal(t, goal, lid)
+        if g == NA:
+            continue
+        tiers.append((t, [clean(grp) for grp in groups(g)]))
+    if not tiers:
+        return p
+    best = tiers[0][1]
+
+    def with_steps(grp):
+        if not cfg.get("step") or any(_match(a, pr, gl) for pr, gl in cfg.get("unless", []) for a in grp):
+            return grp
+        bg = max(best, key=lambda b: sum(a in grp for a in b))
+        return grp + [a for a in bg if any(_match(a, pr, gl) for pr, gl in cfg["step"]) and a not in grp]
+
+    def keeps(grp):
+        for pr, gl in cfg.get("require", []):
+            if not any(all(a in grp for a in bg if _match(a, pr, gl)) and any(_match(a, pr, gl) for a in bg)
+                       for bg in best):
+                return False
+        return all(any(len(a) > 1 and n in _names(a[1]) for a in grp) for n in cfg.get("mention", []))
+
+    seen, out = [], []
+    for t, gs in tiers:
+        kept = []
+        for grp in gs:
+            grp = with_steps(grp) if out else grp
+            key = {json.dumps(a) for a in grp}
+            if (out and not keeps(grp)) or any(k <= key for k in seen):   # needs a skipped step, or never reached
+                continue
+            if all({json.dumps(a) for a in g} != key for g in kept):
+                kept.append(grp)
+        if kept:
+            seen.extend({json.dumps(a) for a in grp} for grp in kept)
+            out.append({**t, "goal": {"all": [], "any": kept}})
+    for i, t in enumerate(out):
+        t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
+    return {**p, "tiers": out, "D": 1 if len(out) > 1 else 0, "loosened": "11-20"}
+
+
 def attach_scoring(out: dict) -> int:
     """Copy each reviewed design's scoring onto its layouts (per seed: per_layout); returns how many designs are
     reviewed."""
@@ -947,7 +1082,7 @@ def attach_scoring(out: dict) -> int:
             info["scoring"] = copy.deepcopy(s)
             per = {lid: per_layout(s, lid) for lid in info["layouts"]}
             for lid in info["layouts"]:
-                per[lid] = with_ideal(t["task_id"], design, lid, per[lid])
+                per[lid] = loosen(t, design, lid, with_ideal(t["task_id"], design, lid, per[lid]))
             if any(p["top"] != "ideal" or p["D"] != s["D"] for p in per.values()):
                 info["scoring"]["D_by_layout"] = {lid: p["D"] for lid, p in per.items()}
                 info["scoring"]["top_by_layout"] = {lid: p["top"] for lid, p in per.items()}
@@ -1093,7 +1228,6 @@ NOT_OK_ZH = {
     ("T15", "lid_elsewhere"): "没盖；没找到锅盖；碰翻了别人的碗；还拿着",
     ("T15", "no_lid"): "没盖；还拿着或掉了",
     ("T15", "lid_in_use"): "汤锅没盖；炖菜的锅碰倒了；还拿着或掉了",
-    ("T14", "stack_them_stably"): "有书留在桌上或别处；书掉地上；还拿着或掉了",
     ("T11", "fruit_plate_for_guests"): "什么都没端过去；水果掉了；还拿着",
     ("T10", "trash_moved"): "罐子没进有空位的垃圾桶（压在满桶上、扔进别的箱子或没扔）；还拿着或掉了",
     ("T10", "x6_gd_can_put_away"): "空罐没找到或没扔（只扔了冰箱那罐）；还拿着或掉了",

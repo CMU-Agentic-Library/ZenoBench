@@ -83,7 +83,6 @@ KIND = {
     ("T13", "finish_the_table"): {"*": "去处替换"},
     ("T14", "e1_book_ready"): {"*": None},
     ("T14", "within_kids_reach"): {"*": "去处替换"},
-    ("T14", "stack_them_stably"): {"room": None, "narrow_top": "能力不足"},
     ("T14", "homework_stays"): {"*": "被占用"},
     ("T14", "whose_book"): {"*": "去处替换"},
     ("T14", "next_in_series"): {"*": "看着像但不能用"},

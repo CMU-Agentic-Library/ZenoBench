@@ -1,6 +1,6 @@
 {
- "routes": 326,
- "ok": 326,
+ "routes": 324,
+ "ok": 324,
  "results": [
   {
    "task": "T01_book_to_dining_table",
@@ -2182,7 +2182,7 @@
    "atoms_checked": 4,
    "atoms_geometric": 3,
    "geometric_atoms": [
-    "same_arrangement ['bowl', 'cup'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['bowl', 'cup'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright cup"
    ],
@@ -2196,7 +2196,7 @@
    "atoms_checked": 6,
    "atoms_geometric": 3,
    "geometric_atoms": [
-    "same_arrangement ['plate_counter_a', 'bowl', 'mug'] ['example_plate', 'example_bowl', 'example_mug'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['plate_counter_a', 'bowl', 'mug'] ['example_plate', 'example_bowl', 'example_mug'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright mug"
    ],
@@ -2210,7 +2210,7 @@
    "atoms_checked": 4,
    "atoms_geometric": 3,
    "geometric_atoms": [
-    "same_arrangement ['bowl', 'mug'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['bowl', 'mug'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright mug"
    ],
@@ -2650,32 +2650,6 @@
    "geometric_atoms": [],
    "problems": [],
    "variant": "within_kids_reach"
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "layout": "stack_them_stably__room",
-   "steps": 10,
-   "atoms_checked": 3,
-   "atoms_geometric": 0,
-   "geometric_atoms": [],
-   "problems": [],
-   "variant": "stack_them_stably"
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "layout": "stack_them_stably__narrow_top",
-   "steps": 11,
-   "atoms_checked": 8,
-   "atoms_geometric": 5,
-   "geometric_atoms": [
-    "upright kid_bin_1",
-    "upright kid_bin_2",
-    "upright kid_teddy",
-    "upright kid_duck",
-    "upright kid_car"
-   ],
-   "problems": [],
-   "variant": "stack_them_stably"
   },
   {
    "task": "T14_shelve_the_book",

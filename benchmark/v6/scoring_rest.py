@@ -341,21 +341,6 @@ R[("T14", "within_kids_reach")] = tiers(
             worst="放回高处那一套里（孩子够不着）", no="书留在桌上、地上或别处；还拿着或掉了"))
 
 
-def _pile_worst(g, lid):
-    books = sorted({a[1] for a in atoms(g, "on_top_of") + atoms(g, "on_any")} | {a[2] for a in atoms(g, "on_top_of")})
-    base = [a for a in g["all"] if a[0] == "on_any"]
-    return {"all": [*base, *[x for b in books for x in _off(b, "desk_1/top")], HAND]}
-
-
-R[("T14", "stack_them_stably")] = tiers(
-    worst=_pile_worst,
-    why=("one pile on the bookcase, largest at the bottom", "",
-         "the books on the bookcase, but not one pile or not largest-first"),
-    not_ok="a book left on the desk or elsewhere; a book on the floor; still held or dropped",
-    zh=dict(sit="书桌上两本大小不同的书；收到卧室书架上摞成一摞，大的在下", good="一摞、大的在下",
-            worst="都上了书架，但没摞成一摞或大小顺序反了", no="有书留在桌上或别处；书掉地上；还拿着或掉了"))
-
-
 def _hw_mug(g):
     return [a if a[:2] != ["on_any", "desk_mug"] else ["on_any", "desk_mug", KITCHEN_TOPS] for a in g["all"]]
 

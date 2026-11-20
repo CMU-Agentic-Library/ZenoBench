@@ -365,7 +365,7 @@
 
 **指令**：把孩子的两块木积木叠起来。岛台上那碗燕麦盛得很满，别碰它周围的东西，免得洒出来。
 
-**成功条件**（D 按摆法：`tight_tv` D = 1、理想物不在，`tight_dining` D = 1、理想物不在，`loose` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`tight_tv` D = 1、理想物不在，`tight_dining` D = 1、理想物不在，`loose` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -726,7 +726,7 @@
 
 **指令**：孩子想在餐桌上看一座三层的塔，用他的玩具在餐桌上搭一座。
 
-**成功条件**（D 按摆法：`counter` D = 1、理想物不在，`study` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`counter` D = 0、理想物不在，`study` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -2639,7 +2639,7 @@
 
 **指令**：有两位客人要来喝茶。在靠墙矮柜上的饮品角摆两个玻璃杯，两个别挨着。
 
-**成功条件**（D 按摆法：`glass_in_cabinet` D = 1、理想物在，`mug` D = 1、理想物不在，`kid_cup` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`glass_in_cabinet` D = 1、理想物在，`mug` D = 0、理想物不在，`kid_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -3582,7 +3582,7 @@
 
 **指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`notebooks_2` D = 0、理想物在，`notebooks_3` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -4813,22 +4813,6 @@
         - `bedside_box_1` 立着
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
-      - 第 2 组：
-        - `wooden_block_a` 在 `bookcase_3/shelf_1` 上
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
-      - 第 3 组：
-        - `wooden_block_a` 在 `bookcase_3/shelf_0` 上
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
   - 摆法 `bookcase_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -4886,7 +4870,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `wooden_block_a` 在 `desk_1/top` 上
+        - `wooden_block_a` 在 `bookcase_3/shelf_1` 上
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
@@ -4894,31 +4878,10 @@
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
       - 第 2 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_1` 上
+        - `wooden_block_a` 在 `bookcase_3/shelf_0` 上
         - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
         - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
-      - 第 3 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
-      - 第 4 组：
-        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
-        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
-        - `bedside_box_1` 立着
-        - `bedside_box_2` 立着
-        - `bedside_box_3` 立着
-      - 第 5 组：
-        - `wooden_block_a` 在 `bookcase_3/top` 上
         - `bedside_box_1` 立着
         - `bedside_box_2` 立着
         - `bedside_box_3` 立着
@@ -4991,8 +4954,6 @@
         - `bedside_book` 立着
 - **最不好（0.3）**：
 
-  - 摆法 `boxes_middle`：
-    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
   - 摆法 `bookcase_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -5005,6 +4966,46 @@
         - `bedside_bin_2` 立着
         - `bedside_tray` 立着
         - `bedside_book` 立着
+  - 摆法 `boxes_middle`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_a` 在 `desk_1/top` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 2 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_1` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 3 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_2` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 4 组：
+        - `wooden_block_a` 在 `large_shelf_4/shelf_3` 上
+        - `bedside_box_1` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
+      - 第 5 组：
+        - `wooden_block_a` 在 `bookcase_3/top` 上
+        - `bedside_box_1` 立着
+        - `bedside_box_2` 立着
+        - `bedside_box_3` 立着
 - **不行（0）**：没放进卧室（比如留在客厅）；碰倒了孩子的东西；还拿着或掉了
 
 
@@ -5061,7 +5062,7 @@
 
 **情况**：微波炉转但不热，指令里没说 → 先放进微波炉热，发现热不起来，再改用灶台；有的摆法燕麦粥不在原处，要先找
 
-**成功条件**（D 按摆法：`microwave_broken` D = 1、理想物不在，`broken_oatmeal_away` D = 1、理想物不在，`alt_dining_table_2` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`microwave_broken` D = 0、理想物不在，`broken_oatmeal_away` D = 0、理想物不在，`alt_dining_table_2` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5295,7 +5296,7 @@
 
 **情况**：海绵在岛台上 → 擦完放回
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`sponge_on_island` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5318,7 +5319,7 @@
 
 **情况**：从餐厅出发，海绵不在岛台 → 先找海绵；岛台上若有孩子的蓝色泡沫方块（像海绵，是玩具）不能拿来擦；平时的海绵不在时，用矮柜托盘里的备用海绵（最好的替代算好）
 
-**成功条件**（D 按摆法：`far_sponge_tv` D = 1、理想物在，`far_sponge_foam_cube` D = 1、理想物在，`far_sponge_spare_only` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`far_sponge_tv` D = 0、理想物在，`far_sponge_foam_cube` D = 1、理想物在，`far_sponge_spare_only` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5374,6 +5375,7 @@
     - 满足下面任意一组：
       - 第 1 组：
         - `kitchen_island/top` 擦过
+        - `kitchen_sponge` 没被挪动（离开局位置不超过 5 cm）
 - **不行（0）**：没找到海绵（或备用海绵）；没擦或没擦完；海绵还拿着或掉在地上
 
 
@@ -5560,7 +5562,7 @@
 
 **情况**：锅盖在锅边 → 按步骤做完
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`lid_off` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5604,7 +5606,7 @@
 
 **情况**：锅盖盖着，勺子不在 → 揭盖、找勺子；或家里没有锅盖，岛台上有个同样大的早餐盘 → 用盘子盖锅（最好的替代算好）
 
-**成功条件**（D 按摆法：`lid_on_spoon_away` D = 1、理想物在，`lid_missing` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`lid_on_spoon_away` D = 0、理想物在，`lid_missing` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5763,7 +5765,7 @@
 
 **指令**：午饭用三颗小番茄做番茄汤：放进锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
 
-**成功条件**（D 按摆法：`in_fridge` D = 1、理想物在，`big_tomato` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_fridge` D = 0、理想物在，`big_tomato` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -5953,7 +5955,7 @@
 
 **情况**：一颗番茄在岛台，另一颗在餐桌：落在桌上就去拿；放在别人午饭的盘子里（旁边有勺子）就别动，用冰箱里那颗（拿盘子里的算差）
 
-**成功条件**（D 按摆法：`dining` D = 1、理想物在，`on_plate` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`dining` D = 0、理想物在，`on_plate` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -6215,7 +6217,7 @@
 
 **情况**：锅不在灶上（锅盖在灶上），指令只说"锅" → 平时的锅在隔壁餐桌就去拿回来；平时的锅不在了，岛台上有一口同款空锅就用它（最好的替代算好）
 
-**成功条件**（D 按摆法：`pot_away` D = 1、理想物在，`spare_pot` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`pot_away` D = 0、理想物在，`spare_pot` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -6378,7 +6380,7 @@
 
 **情况**：罐子在岛台上，垃圾桶不在老地方就去找；岛台旁的垃圾桶塞满了（零食盒冒出桶口）就用卫生间的垃圾桶（最好的替代算好）
 
-**成功条件**（D 按摆法：`dining` D = 0、理想物在，`trash_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`dining` D = 0、理想物在，`trash_full` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -6591,7 +6593,7 @@
 
 **指令**：厨房里有个空易拉罐被人误收起来了，找出来扔进垃圾桶。
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_cabinet` D = 0、理想物在，`fridge_drink` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -6695,7 +6697,7 @@
 
 **情况**：书架上没有果篮 → 自己找另一个能装水果的东西：书房书桌上的托盘；有的摆法果篮原位置放着一个用过的早餐碗，那不是放水果的
 
-**成功条件**（D 按摆法：`basket_missing` D = 1、理想物不在，`basket_gone_bowl_there` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`basket_missing` D = 0、理想物不在，`basket_gone_bowl_there` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7200,7 +7202,7 @@
 
 **情况**：玩具散在好几个房间，指令没说有几个；餐桌上有块黄海绵像积木但不是玩具 → 把各房间找遍，认出哪些是玩具，全放进筐，海绵别动（找到一两个就停算失败）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`car_duck` D = 0、理想物在，`car_duck_bear` D = 0、理想物在，`all_four` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7413,22 +7415,22 @@
 
 **指令**：照着桌上摆好的那份，在另一把勺子那里也摆一份。
 
-**成功条件**（D 按摆法：`bowl_cup` D = 1、理想物在，`plate_bowl_mug_left` D = 1、理想物在，`no_cup` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bowl_cup` D = 0、理想物在，`plate_bowl_mug_left` D = 0、理想物在，`no_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
   - 摆法 `bowl_cup`：
-    - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
     - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
     - `bowl`、`cup` 立着
     - 手里空着
   - 摆法 `no_cup`：
-    - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
     - `example_bowl`、`example_cup`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
     - `bowl`、`mug` 立着
     - 手里空着
   - 摆法 `plate_bowl_mug_left`：
-    - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 12 cm
     - `example_plate`、`example_bowl`、`example_mug`、`example_spoon` 没被挪动（离开局位置不超过 3 cm）
     - `bowl`、`mug` 立着
     - `bowl` 叠在 `plate_counter_a` 上
@@ -7458,15 +7460,15 @@
 - **最不好（0.3）**：
 
   - 摆法 `bowl_cup`：
-    - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `bowl`、`cup` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
     - `bowl`、`cup` 立着
     - 手里空着
   - 摆法 `no_cup`：
-    - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_bowl`、`example_cup` 相对 example_spoon 的一样，误差不超过 12 cm
     - `bowl`、`mug` 立着
     - 手里空着
   - 摆法 `plate_bowl_mug_left`：
-    - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 7 cm
+    - `plate_counter_a`、`bowl`、`mug` 相对 spoon 的摆法（按坐在那里的人的前后左右）和 `example_plate`、`example_bowl`、`example_mug` 相对 example_spoon 的一样，误差不超过 12 cm
     - `bowl`、`mug` 立着
     - `bowl` 叠在 `plate_counter_a` 上
     - 手里空着
@@ -7699,7 +7701,7 @@
 
 **情况**：零食盒收在矮柜里 → 开柜拿、关门、装好；零食盒已经装满零食（香蕉、三个橙子）放不下苹果时，用旁边的碗装（最好的替代算好；把零食拿出来腾地方降一档）
 
-**成功条件**（D 按摆法：`in_cabinet` D = 1、理想物在，`box_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_cabinet` D = 0、理想物在，`box_full` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7928,19 +7930,36 @@
 
 **指令**：陪孩子玩捉迷藏，把木积木藏到孩子一眼看不到的地方。别藏进电器里，危险。
 
-**成功条件**（D 按摆法：`pot_ready` D = 0、理想物在，`lid_away` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`pot_ready` D = 1、理想物在，`lid_away` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
-  - 手里空着
-  - 满足下面任意一组：
-    - 第 1 组：
-      - `wooden_block_b` 藏好了（从房间里看不到）
-      - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
-      - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+  - 摆法 `lid_away`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+        - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
+  - 摆法 `pot_ready`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 在 `handled_cooking_pot` 里
+        - `handled_cooking_pot` 盖着 `pot_lid`
+        - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+        - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
 - **次好（0.6）**：
 
+  - 摆法 `lid_away`：
     - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+  - 摆法 `pot_ready`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `wooden_block_b` 藏好了（从房间里看不到）
+        - `["not on", "wooden_block_b", "kitchen_microwave/inside_floor"]`
+        - `["not on", "wooden_block_b", "breakfast_fridge/inside_shelf"]`
 - **最不好（0.3）**：
 
     - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
@@ -7960,7 +7979,7 @@
 
 ### bowls_in_cabinet（对照）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bowls_in_cabinet` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -7986,7 +8005,7 @@
 
 ### bowls_apart（Task）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bowls_apart` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -8206,7 +8225,7 @@
 
 **情况**：指令只说“把该回收的东西放进回收箱” → 空罐被收进了厨房矮柜，打开找，泡沫块在客厅地上，两样都放进回收箱，门都关好（门没关降一档）；另一个柜里那瓶果汁没开封，不是垃圾（回收了算差）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`in_4` D = 0、理想物在，`juice_full` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -8285,7 +8304,7 @@
 
 **情况**：瓶子在靠墙柜顶 → 放回餐桌
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bottle_on_cabinet` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -8307,7 +8326,7 @@
 
 **情况**：瓶子在客厅看不到的地方 → 先找；早餐那瓶在靠墙柜顶，电视柜上另一瓶一样的果汁旁边有倒好的杯子（有人在喝）就别动（拿错那瓶降一档）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`m_bottle_on_tv_stand` D = 0、理想物在，`bottle_in_use` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -8476,75 +8495,6 @@
 
 - 摆法 `set_on_large_shelf_4`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_4/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_4/shelf_1, hint_xy=[3.7, -5.15])`
 - 摆法 `set_on_large_shelf_5`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=book_red)` → 5. `pick(object=book_red)` → 6. `navigate(destination=large_shelf_5/shelf_1)` → 7. `place(object=book_red, receptacle=large_shelf_5/shelf_1, hint_xy=[4.45, -0.35])`
-
-### stack_them_stably（Task）
-
-**情况**：“把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面” → 比较大小，大的在下；书架顶被孩子的东西占得只剩 13 cm 宽的空、放不下大书时，摞到书架下层或床头矮书架顶（最好的替代算好；挪孩子的东西腾地方降一档）
-
-**指令**：孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。
-
-**成功条件**（D 按摆法：`room` D = 1、理想物在，`narrow_top` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
-
-- **好（1.0）**：
-
-  - 摆法 `room`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_3/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
-        - `desk_book_blue` 叠在 `book_red` 上
-  - 摆法 `narrow_top`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `desk_book_green` 在其中任一处上：`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`
-        - `desk_paperback_book` 叠在 `desk_book_green` 上
-        - `kid_bin_1` 没被挪动（离开局位置不超过 3 cm）
-        - `kid_bin_2` 没被挪动（离开局位置不超过 3 cm）
-        - `kid_teddy` 没被挪动（离开局位置不超过 3 cm）
-        - `kid_duck` 没被挪动（离开局位置不超过 3 cm）
-        - `kid_car` 没被挪动（离开局位置不超过 3 cm）
-        - `kid_bin_1` 立着
-        - `kid_bin_2` 立着
-        - `kid_teddy` 立着
-        - `kid_duck` 立着
-        - `kid_car` 立着
-- **次好（0.6）**：
-
-  - 摆法 `narrow_top`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `desk_book_green` 在 `bookcase_2/top` 上
-        - `desk_paperback_book` 叠在 `desk_book_green` 上
-        - `kid_bin_1` 立着
-        - `kid_bin_2` 立着
-        - `kid_teddy` 立着
-        - `kid_duck` 立着
-        - `kid_car` 立着
-  - 摆法 `room`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `book_red` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-        - `desk_book_blue` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-- **最不好（0.3）**：
-
-  - 摆法 `room`：
-    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
-  - 摆法 `narrow_top`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `desk_paperback_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-        - `desk_book_green` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
-- **不行（0）**：有书留在桌上或别处；书掉地上；还拿着或掉了
-
-
-**参考调用顺序**：
-
-- 摆法 `room`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `navigate(destination=book_red)` → 4. `pick(object=book_red)` → 5. `navigate(destination=bookcase_2/top)` → 6. `place(object=book_red, receptacle=bookcase_2/top, hint_xy=[1.005, -0.459])` → 7. `navigate(destination=desk_book_blue)` → 8. `pick(object=desk_book_blue)` → 9. `navigate(destination=bookcase_2/top)` → 10. `stack(object=desk_book_blue, base=book_red)`
-- 摆法 `narrow_top`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `explore_room(room=bedroom_0_1)` → 4. `navigate(destination=desk_book_green)` → 5. `pick(object=desk_book_green)` → 6. `navigate(destination=bookcase_2/shelf_1)` → 7. `place(object=desk_book_green, receptacle=bookcase_2/shelf_1, hint_xy=[1.0, -0.45])` → 8. `navigate(destination=desk_paperback_book)` → 9. `pick(object=desk_paperback_book)` → 10. `navigate(destination=bookcase_2/shelf_1)` → 11. `stack(object=desk_paperback_book, base=desk_book_green)`
 
 ### homework_stays（Task）
 
@@ -8783,7 +8733,7 @@
 
 **情况**：餐桌上一瓶果汁 → 放进冰箱，关门
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`juice_on_table` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -9218,7 +9168,7 @@
 
 **指令**：我刚买东西回来，果汁和苹果放在餐桌上了，帮我收好。水果平时放在果篮里。
 
-**成功条件**（D 按摆法：`orange_in_it` D = 1、理想物不在，`books_on_it` D = 1、理想物不在，`basket_missing` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`orange_in_it` D = 0、理想物不在，`books_on_it` D = 0、理想物不在，`basket_missing` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -10262,7 +10212,7 @@
 
 **情况**：岛台上只有果汁 → 想到要配杯子，找一个能用来喝的：小厨房台面的杯子；没有普通杯子就用马克杯；台面那个杯子里装着孩子的积木时用马克杯（倒出积木用那个杯子次好，连积木一起拿最不好）
 
-**成功条件**（D 按摆法：`counter_cup` D = 0、理想物在，`only_mugs` D = 0、理想物不在，`blocks_in_cup` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`counter_cup` D = 0、理想物在，`only_mugs` D = 0、理想物在，`blocks_in_cup` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -10389,7 +10339,7 @@
 
 **情况**：外面没有饮料 → 想到饮料在冰箱里，有什么喝的拿什么
 
-**成功条件**（D 按摆法：`juice` D = 1、理想物在，`soda_only` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`juice` D = 0、理想物在，`soda_only` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -10571,7 +10521,7 @@
 
 **指令**：两位客人在客厅坐着，给他们拿点喝的。
 
-**成功条件**（D 按摆法：`two_cups` D = 0、理想物在，`one_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D = 0；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -10662,7 +10612,7 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
         - `adult_novel` 没被挪动（离开局位置不超过 3 cm）
   - 摆法 `shelf_full`：
     - 手里空着
@@ -10696,11 +10646,6 @@
         - `kid_book_top_4b` 没被挪动（离开局位置不超过 3 cm）
 - **次好（0.6）**：
 
-  - 摆法 `shelf_room`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`、`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
   - 摆法 `shelf_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -10734,10 +10679,21 @@
         - `kid_book_top_3b` 没被挪动（离开局位置不超过 3 cm）
         - `kid_book_top_4a` 没被挪动（离开局位置不超过 3 cm）
         - `kid_book_top_4b` 没被挪动（离开局位置不超过 3 cm）
+  - 摆法 `shelf_room`：
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kid_book` 在其中任一处上：`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
+        - `adult_novel` 没被挪动（离开局位置不超过 3 cm）
 - **最不好（0.3）**：
 
   - 摆法 `shelf_room`：
-    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
+    - 手里空着
+    - 满足下面任意一组：
+      - 第 1 组：
+        - `kid_book` 在其中任一处上：`bookcase_2/top`、`bookcase_2/shelf_1`、`bookcase_2/shelf_0`
+      - 第 2 组：
+        - `kid_book` 在其中任一处上：`bookcase_3/top`、`bookcase_3/shelf_1`、`bookcase_3/shelf_0`
   - 摆法 `shelf_full`：
     - 手里空着
     - 满足下面任意一组：
@@ -11048,7 +11004,7 @@
 
 **情况**：餐桌上一盒剩饭 → 放进冰箱，关门
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`rice_on_table` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11122,7 +11078,7 @@
 
 **情况**：剩饭和一锅汤 → 都收（汤可能还在灶上）；汤锅摆在有人正在吃的座位前时只收剩饭（把汤收走最不好）
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`soup_at_seat` D = 1、理想物在，`soup_on_table` D = 0、理想物在，`soup_on_stove` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11183,7 +11139,7 @@
 
 **情况**：从餐厅出发，看不到冰箱 → 先找到冰箱；冰箱层板左半边摆满了饭盒和果汁时放进右边空着的地方，原有的不动
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`fridge_free` D = 0、理想物在，`fridge_crowded` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11295,7 +11251,7 @@
 
 **情况**：台面上有瓷杯和马克杯；他的塑料杯也在那儿，或者收在矮柜里，或者家里根本没有 → 到台面看：有他的就拿；只有别人的 → 打开矮柜找他的，拿出来关好门；柜里也没有 → 拿家里的杯子代替
 
-**成功条件**（D 按摆法：`on_counter` D = 1、理想物在，`in_cabinet` D = 1、理想物在，`no_kid_cup` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`on_counter` D = 1、理想物在，`in_cabinet` D = 1、理想物在，`no_kid_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11448,7 +11404,7 @@
 
 **情况**：杯子落在餐桌上，看不到 → 先找；床边矮书架顶上摆满书时放到它下一层或书桌上（挪书腾地方次好）
 
-**成功条件**（D 按摆法：`cup_found` D = 0、理想物在，`side_covered` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`cup_found` D = 1、理想物在，`side_covered` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11468,18 +11424,15 @@
     - 手里空着
     - 满足下面任意一组：
       - 第 1 组：
-        - `kid_cup` 在其中任一处上：`bookcase_3/top`、`desk_1/top`
+        - `kid_cup` 在其中任一处上：`bookcase_3/top`
         - `kid_cup` 立着
 - **次好（0.6）**：
 
-  - 摆法 `cup_found`：
-    - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
-  - 摆法 `side_covered`：
-    - 手里空着
-    - 满足下面任意一组：
-      - 第 1 组：
-        - `kid_cup` 在其中任一处上：`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`desk_1/top`
-        - `kid_cup` 立着
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `kid_cup` 在其中任一处上：`bookcase_3/shelf_1`、`bookcase_3/shelf_0`、`desk_1/top`
+      - `kid_cup` 立着
 - **最不好（0.3）**：
 
     - 这个摆法没有这一档（理想的东西 / 位置不在或用不了）
@@ -11495,7 +11448,7 @@
 
 **情况**：杯子已经在他床边 → 什么都不用做；床边那个是瓷杯、不是他的（他的塑料杯在台面）时把他的拿过来
 
-**成功条件**（D = 1；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`his_cup` D = 0、理想物在，`wrong_cup` D = 1、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -11977,7 +11930,7 @@
 
 **情况**：“汤快好了，拿碗过来准备盛。”餐桌摆了三把勺子；矮柜上一个碗和一个马克杯；柜里还有两个碗，或者只有一个；家里没有别的碗 → 要三个 → 外面只有一个，打开柜子 → 两个碗：拿三个碗；一个碗：两碗不够，自己想到马克杯也能盛汤（盘子不行），补上马克杯，关门
 
-**成功条件**（D 按摆法：`two_inside` D = 1、理想物在，`one_inside` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`two_inside` D = 1、理想物在，`one_inside` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 
@@ -12021,7 +11974,7 @@
 
 **情况**：碗收在矮柜里 → 打开找，拿出来关好；柜里只有盘子和马克杯时拿马克杯（不拿盘子）
 
-**成功条件**（D 按摆法：`bowl_inside` D = 1、理想物在，`mug_inside` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
+**成功条件**（D 按摆法：`bowl_inside` D = 0、理想物在，`mug_inside` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
 - **好（1.0）**：
 

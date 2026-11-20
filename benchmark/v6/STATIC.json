@@ -1,7 +1,7 @@
 {
- "variants": 155,
- "episodes": 1550,
- "static_ok": 1550,
+ "variants": 154,
+ "episodes": 1540,
+ "static_ok": 1540,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -81,8 +81,8 @@
    "static_ok": 30
   },
   "T14_shelve_the_book": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T21_bring_tissues": {
    "episodes": 40,
@@ -128,7 +128,7 @@
  "categories": {
   "control": 30,
   "action_task": 8,
-  "task": 117
+  "task": 116
  },
- "tasks_sha1": "0384d52c4fa896db3863229b63a1c97454ab443d"
+ "tasks_sha1": "163117e8e073875e635eb7bbccc443674bd8bf8c"
 }

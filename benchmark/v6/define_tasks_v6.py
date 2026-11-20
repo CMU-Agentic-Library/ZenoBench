@@ -1278,9 +1278,12 @@ def T06(t):
         names = list(things)
         kept = [*[["near_start", n, 0.05] for n in names], *[["upright", n] for n in names]]
         upright = [["upright", n] for n in names]
-        on_case = [([["on", A, sup]] + kept, 0) for sup in (BED, *BED_SHELVES)]
-        elsewhere = [([["on", A, sup]] + kept, 1) for sup in ROOM_TOPS]
-        made_room = [([["on", A, BED]] + upright, 1 if case == "boxes_middle" else 2)]
+        # 11-20 (user: the ideal there is always the top): with room on the top, a lower shelf is the substitute
+        # (0.6) and the other room tops / making room on the top a level below it (0.3)
+        free = case == "boxes_middle"
+        on_case = [([["on", A, BED]] + kept, 0)] + [([["on", A, sup]] + kept, 1 if free else 0) for sup in BED_SHELVES]
+        elsewhere = [([["on", A, sup]] + kept, 2 if free else 1) for sup in ROOM_TOPS]
+        made_room = [([["on", A, BED]] + upright, 2)]
         LT[f"seen_from_bed__{case}"] = cost_tiers(on_case + elsewhere + made_room)
         if case == "boxes_middle":
             goal = {"any": [[["on", A, sup]] for sup in (BED, *BED_SHELVES)], "all": [*kept, ["hand_empty", "right"]]}
@@ -1503,7 +1506,8 @@ def T08(t):
     used = [["not near_start", X, 0.05]]
     LT["far_sponge_tv"] = cost_tiers([(wiped + back(X), 0), (wiped + left(X), 1)])
     LT["far_sponge_foam_cube"] = cost_tiers([(wiped + back(X) + cube_stays, 0), (wiped + back(X), 1),
-                                             (wiped + used + left(X), 1), (wiped, 2)])
+                                             (wiped + used + left(X), 1),
+                                             (wiped + [["near_start", X, 0.05]], 2)])   # 11-20: the sponge never taken
     LT["far_sponge_spare_only"] = cost_tiers([(wiped + back(SPARE), 1), (wiped + left(SPARE), 2)])
     fetch_wipe = lambda x, region: [look(ISL), S("search", object=x, region=region), nav(x), pick(x), nav(ISL),  # noqa: E731
                                     S("approach", target=ISL), S("wipe", surface=ISL, tool=x), place(x, ISL)]
@@ -2098,7 +2102,8 @@ def T13(t):
             else:
                 route += fetch(x, B_SP, W, *pattern[k])
         news, refs = [use[k] for k in order], [f"example_{k}" for k in order]
-        goal = {"all": [["same_arrangement", news, refs, SPOON, "example_spoon", list(W), list(E), 0.07]]
+        # 11-20 (user: keep success simple): 12 cm -- the right side of the spoon still decides (a swap is ~34 cm)
+        goal = {"all": [["same_arrangement", news, refs, SPOON, "example_spoon", list(W), list(E), 0.12]]
                 + [["near_start", r, 0.03] for r in [*refs, "example_spoon"]]
                 + [["upright", use[k]] for k in order if k in ("bowl", "cup", "mug")]
                 + ([["on_top_of", BOWL, "plate_counter_a"]] if "plate" in kinds else []) + [["hand_empty", "right"]]}
@@ -2203,46 +2208,7 @@ def T14(t):
             add={f"set_book_{i + 1}": book("book_red", high, x, y) for i, x in enumerate(xs)},
             watch=[B, "set_book_1", "set_book_2"],
             route=[look(DESK), S("explore_room", room="bedroom_0_1")] + shelve(B, lower, [xs[0] + 0.5, y]))
-    # stack_them_stably: every book from the desk onto the bookcase in one pile, the largest at the bottom.
-    # Two books per seed (11-15): a third book onto the second found no edge spot in every run (the edge
-    # place needs an overhang off a small, raised book); one book onto another went through.
-    # 11-17 (user): the seed changes where the pile can go -- the bookcase top free (room, ideal), or the kid's
-    # things on it leaving a 13 cm gap: the paperback fits, the green book (18 x 22 cm) does not (static check), so
-    # the pile goes on a lower shelf or the bedside bookcase's top (the stand-in)
-    LT = LAYOUT_TIERS.setdefault(("T14", "*"), {})
-    KID_TOP = {"kid_bin_1": ("small_storage_bin", 0.818, -0.532), "kid_bin_2": ("small_storage_bin", 0.818, -0.33),
-               "kid_teddy": ("teddy_bear", 1.118, -0.33), "kid_duck": ("rubber_duck", 1.118, -0.52),
-               "kid_car": ("toy_car", 1.262, -0.45)}
-    SHELVES = ["bookcase_2/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top", "bookcase_3/shelf_1",
-               "bookcase_3/shelf_0"]
-    stack_cases = {}
-    for c, books in (("room", ("book_red", "book_blue")), ("narrow_top", ("paperback_book", "book_green"))):
-        names = {a: ("book_red" if a == "book_red" else f"desk_{a}") for a in books}
-        add = {names[a]: on_desk(a, x) for a, x in zip(books, (-1.20, -0.90, -0.60)) if a != "book_red"}
-        move = {B: on_desk("book_red", -0.90 if books[1] == "book_red" else -1.20)} if "book_red" in books else {}
-        order = sorted(books, key=lambda a: -SIZE[a])
-        rm = [] if "book_red" in books else [B]
-        pile = [["on_top_of", names[hi], names[lo]] for lo, hi in zip(order, order[1:])]
-        shelved = [["on_any", names[a], SHELVES] for a in books]
-        if c == "room":
-            where, hint, kept = [CASE, "bookcase_3/top", "bookcase_2/shelf_1", "bookcase_2/shelf_0"], CASE, []
-            LT[f"stack_them_stably__{c}"] = cost_tiers([([["on_any", names[order[0]], where]] + pile, 0),
-                                                        (shelved, 2)])
-        else:
-            add.update({n: {"asset": a, **P(CASE, x, y)} for n, (a, x, y) in KID_TOP.items()})
-            where, hint = ["bookcase_2/shelf_1", "bookcase_2/shelf_0", "bookcase_3/top"], "bookcase_2/shelf_1"
-            kept = [*[["near_start", n, 0.03] for n in KID_TOP], *[["upright", n] for n in KID_TOP]]
-            LT[f"stack_them_stably__{c}"] = cost_tiers(
-                [([["on_any", names[order[0]], where]] + pile + kept, 1),
-                 ([["on", names[order[0]], CASE]] + pile + [["upright", n] for n in KID_TOP], 2), (shelved, 3)])
-        route = [look(DESK), S("explore_room", room="bedroom_0_1")] if c != "room" else [look(DESK)]
-        route += shelve(names[order[0]], hint, [1.00, -0.45])
-        for lo, hi in zip(order, order[1:]):
-            route += [nav(names[hi]), pick(names[hi]), nav(hint), S("stack", object=names[hi], base=names[lo])]
-        stack_cases[c] = dict(
-            add=add, move=move, remove=rm, watch=[names[a] for a in books] + list(KID_TOP if c != "room" else []),
-            goal={"all": [["on_any", names[order[0]], where]] + pile + kept + [["hand_empty", "right"]]},
-            route=route)
+    # stack_them_stably: removed 11-20 (user)
     # homework_stays: tidy the desk; the finished book to the bookcase, the used mug to the kitchen, the homework
     # (an open notebook and a pencil) stays for tomorrow
     hw = {"homework": book("notebook", DESK, -0.55, -5.95, 10.0), "hw_pencil": book("pencil", DESK, -0.30, -5.95, 80.0)}
@@ -2303,19 +2269,6 @@ def T14(t):
             rationale="weigh where it belongs against who will use it: the kid fetches it himself, so it goes on a "
                       "low shelf (below 0.8 m), not back with its set",
             cases=reach_cases),
-        "stack_them_stably": dict(
-            base="e1_book_ready", control="e1_book_ready", conditions=["subgoal_order", "multi_object_goal"],
-            instruction="The kid finished reading. Put the books on the desk away on his bookcase, in one pile, the "
-                        "biggest at the bottom and the smallest on top.",
-            instruction_zh="孩子看完书了，把书桌上的书都收到他卧室的书架上，摞成一摞，大的放下面，小的放上面。",
-            keep_design=[CASE],
-            factor="whether the bookcase top has room for the pile (seed: free, red + blue; or the kid's things on it "
-                   "leave a gap too narrow for the bigger book, green + paperback)",
-            challenge="two books of different sizes on the desk; one pile on the bookcase; on one seed the top has "
-                      "only a 13 cm gap, too narrow for the bigger book",
-            rationale="the order follows from the sizes: the larger at the bottom, the smaller on top, so the top "
-                      "book does not overhang the one below",
-            cases=stack_cases),
         "homework_stays": dict(
             base="e1_book_ready", control="e1_book_ready", conditions=["category_rule", "multi_object_goal"],
             instruction="The kid finished reading. Tidy up his desk and put each thing where it belongs best; he will "
@@ -2464,7 +2417,10 @@ def T17(t):
     LT["hide_both__two_pots"] = cost_tiers(
         [(both_goal["all"][:-1] + [["near_start", SOUPP, 0.03]], 0),
          ([["hidden", B], ["hidden", F]] + noapp(B) + noapp(F), 1), ([["inside", B, SOUPP]], 3), ([["inside", F, SOUPP]], 3)])
-    LT["hide_somewhere__pot_ready"] = cost_tiers([([["hidden", B]] + noapp(B), 0)])
+    # 11-20 (user: the ideal there is always the top): with the lid beside the pot, the pot under its lid is 1.0 and
+    # any other hiding place (a cabinet) the substitute, 0.6
+    LT["hide_somewhere__pot_ready"] = cost_tiers([([["inside", B, POT], ["covered", POT, LID]] + noapp(B), 0),
+                                                  ([["hidden", B]] + noapp(B), 1)])
     LT["hide_somewhere__lid_away"] = cost_tiers([([["hidden", B]] + noapp(B), 1)])
     return {
         "hide_both": dict(

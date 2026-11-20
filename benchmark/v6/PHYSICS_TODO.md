@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1550 episodes remain (1110 of the 111 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1540 episodes remain (1100 of the 110 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -103,7 +103,6 @@
 | T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp |
 | T14 | e1_book_ready | control | 0/0 of 10 | - |
 | T14 | within_kids_reach | task | 0/0 of 10 | - |
-| T14 | stack_them_stably | task | 0/0 of 10 | - |
 | T14 | homework_stays | task | 0/0 of 10 | - |
 | T14 | whose_book | task | 0/0 of 10 | - |
 | T14 | next_in_series | task | 0/0 of 10 | - |

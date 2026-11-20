@@ -951,7 +951,8 @@ def t26():
     # whose: his bookcase with room (ideal); or (capacity) bookcase_2 full on every level (T23's piles of his
     # books), his other bookcase by the bed has room; the grown-up's novel stays either way
     full_b2 = shelf_books([(lv, 2) for lv in B2])
-    LT["whose__shelf_room"] = cost_tiers([([["on_any", kb, KIDS_CASE]], 0)], [(nv_stays, 2)])
+    # 11-20 (user): his bookcase has room -> it is the ideal (1.0); the bookcase by the bed one level down
+    LT["whose__shelf_room"] = cost_tiers([([["on_any", kb, B2]], 0), ([["on_any", kb, B3]], 1)], [(nv_stays, 2)])
     LT["whose__shelf_full"] = cost_tiers([([["on_any", kb, B3]], 0), ([["on_any", kb, ROOM_TOPS]], 1)],
                                          [(nv_stays, 2), (stays(full_b2), 1)])
     # scattered: the toy basket (ideal); or (absent) no basket, his small toy bin on his bookcase: the three in
@@ -1193,7 +1194,8 @@ def t28():
     LT["where_his_cup_is__no_kid_cup"] = cost_tiers([(at_side(x), 0) for x in OTHER + HOUSE_CUPS[1:3]],
                                                     [([["is_closed", C4]], 1)])
     LOWER = ["bookcase_3/shelf_1", "bookcase_3/shelf_0", "desk_1/top"]
-    LT["cup_out_of_view__cup_found"] = cost_tiers([(at_side(KC), 0)])
+    # 11-20 (user: the ideal there is always the top): the bedside top free -> a lower level or the desk is 0.6
+    LT["cup_out_of_view__cup_found"] = cost_tiers([(at_side(KC, [side]), 0), (at_side(KC, LOWER), 1)])
     LT["cup_out_of_view__side_covered"] = cost_tiers(
         [(at_side(KC, LOWER), 0)], [([["near_start", n, 0.03] for n in sorted(B3_TOP_BOOKS)], 1)])
     fams = {

@@ -1,15 +1,15 @@
 {
  "summary": {
   "scope": {
-   "layouts": 296,
-   "variants": 125,
+   "layouts": 294,
+   "variants": 124,
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
    "passes": 56,
-   "goal_not_met": 104,
+   "goal_not_met": 103,
    "not_observed": 63,
-   "resource_missing": 68,
+   "resource_missing": 67,
    "argument_mismatch": 5
   },
   "control_route_passes": [
@@ -56,7 +56,7 @@
    "goal_not_met": 180,
    "not_observed": 24,
    "argument_mismatch": 68,
-   "resource_missing": 157
+   "resource_missing": 155
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -83,7 +83,7 @@
    "T29 homework_on_table",
    "T30 bowl_not_plate"
   ],
-  "multi_layout_variants": 110,
+  "multi_layout_variants": 109,
   "hidden_state_branch": [
    "T01 no_room_fallback",
    "T01 reader_seat",
@@ -143,7 +143,7 @@
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
-  "geometric_atoms_unchecked": 438,
+  "geometric_atoms_unchecked": 433,
   "leakage_checked": [
    "env_service initial_task answer (the worker's ready metadata stays in the server and config.json; check_task returns it after the episode)",
    "run_episode recovery planner inputs (instruction, skills, observation)",
@@ -274,13 +274,6 @@
    "T14 homework_stays": [
     "homework",
     "hw_pencil"
-   ],
-   "T14 stack_them_stably": [
-    "kid_bin_1",
-    "kid_bin_2",
-    "kid_car",
-    "kid_duck",
-    "kid_teddy"
    ],
    "T16 box_in_cabinet": [
     "snack_box",
@@ -3690,7 +3683,7 @@
    "steps": 13,
    "own_route_passes": true,
    "geometric_atoms": [
-    "same_arrangement ['bowl', 'cup'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['bowl', 'cup'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright cup"
    ],
@@ -3711,7 +3704,7 @@
    "steps": 21,
    "own_route_passes": true,
    "geometric_atoms": [
-    "same_arrangement ['plate_counter_a', 'bowl', 'mug'] ['example_plate', 'example_bowl', 'example_mug'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['plate_counter_a', 'bowl', 'mug'] ['example_plate', 'example_bowl', 'example_mug'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright mug"
    ],
@@ -3729,7 +3722,7 @@
    "steps": 15,
    "own_route_passes": true,
    "geometric_atoms": [
-    "same_arrangement ['bowl', 'mug'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.07",
+    "same_arrangement ['bowl', 'mug'] ['example_bowl', 'example_cup'] spoon example_spoon [1.0, 0.0] [-1.0, 0.0] 0.12",
     "upright bowl",
     "upright mug"
    ],
@@ -4248,38 +4241,6 @@
    "control_route": "passes",
    "other_layouts": {
     "within_kids_reach__set_on_large_shelf_4": "passes"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "variant": "stack_them_stably",
-   "layout": "stack_them_stably__room",
-   "steps": 10,
-   "own_route_passes": true,
-   "geometric_atoms": [],
-   "control_route": "goal_not_met",
-   "other_layouts": {
-    "stack_them_stably__narrow_top": "resource_missing"
-   },
-   "other_variants_passing": []
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "variant": "stack_them_stably",
-   "layout": "stack_them_stably__narrow_top",
-   "steps": 11,
-   "own_route_passes": true,
-   "geometric_atoms": [
-    "upright kid_bin_1",
-    "upright kid_bin_2",
-    "upright kid_teddy",
-    "upright kid_duck",
-    "upright kid_car"
-   ],
-   "control_route": "resource_missing",
-   "other_layouts": {
-    "stack_them_stably__room": "resource_missing"
    },
    "other_variants_passing": []
   },
@@ -6512,16 +6473,6 @@
     "within_kids_reach__set_on_large_shelf_5",
     "e1_book_ready"
    ]
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "variant": "stack_them_stably",
-   "candidates": [
-    "stack_them_stably__room",
-    "stack_them_stably__narrow_top",
-    "e1_book_ready"
-   ],
-   "passes_all": []
   },
   {
    "task": "T14_shelve_the_book",
@@ -9776,19 +9727,6 @@
    "same_before_key_observation": false,
    "route_a_on_b": "passes",
    "route_b_on_a": "passes",
-   "hidden_state_branch": false
-  },
-  {
-   "task": "T14_shelve_the_book",
-   "variant": "stack_them_stably",
-   "layouts": [
-    "stack_them_stably__room",
-    "stack_them_stably__narrow_top"
-   ],
-   "start_room": "bedroom_0_1",
-   "same_before_key_observation": false,
-   "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
    "hidden_state_branch": false
   },
   {
