@@ -554,7 +554,10 @@ class World:
         if p in ("wiped", "stirred", "flipped", "object_rolled", "observed"):
             return (p, args[0]) in self.flags
         if p == "on_floor":
-            return (self.support_of(args[0]) or "").startswith("floor")
+            n = args[0]
+            if self.loc.get(n) == ("sup", None) and n in self.obj and self.obj[n].get("z") is not None:
+                return self.obj[n]["z"] < 0.05           # spawned on the floor (support None, z 0) and not moved
+            return (self.support_of(n) or "").startswith("floor")
         if p == "near_start":
             return all(n in self.obj and self.obj[n]["xy"] is not None and self.loc[n][0] != "hand"
                        and math.dist(self.obj[n]["xy"], self.start[n]) <= NEAR_START_M for n in many(args[0]))

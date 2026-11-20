@@ -1287,7 +1287,10 @@ def t29():
     LT = LAYOUT_TIERS.setdefault(("T29", "*"), {})
     TRAY29 = "spare_tray"
     tray29 = {TRAY29: on("shallow_sorting_tray", TV, 7.80, 0.36)}
-    DESK_FULL = {**HOMEWORK_SPREAD, "hw_notebook_corner": on("notebook", DESK, -0.138, -6.245)}
+    # 11-20: the spread's own pencil renamed -- it was called hw_pencil like the kid's pencil, so it replaced the
+    # kid's (which then started on the study desk) and the best tier asked for that pencil both moved and left
+    DESK_FULL = {**{("desk_pencil" if k == "hw_pencil" else k): v for k, v in HOMEWORK_SPREAD.items()},
+                 "hw_notebook_corner": on("notebook", DESK, -0.138, -6.245)}
     HW = ["hw_notebook", "hw_pencil"]
     KIDS_SPOTS = [DESK3] + [f"bookcase_2/{lv}" for lv in ("top", "shelf_1", "shelf_0")]
     off_t = lambda x: [["not on", x, T2], ["not on_floor", x]]  # noqa: E731
