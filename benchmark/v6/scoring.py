@@ -997,6 +997,58 @@ LOOSEN: dict = {
 }
 
 
+# 11-20: what the substitutes define_tasks_v6.EXTRA_SUBSTITUTES puts into a seed score (keyed by task, layout);
+# ``best_plus``: atoms the best level adds (the thing that must not be taken stays where it is)
+_ISL, _C6 = "kitchen_island/top", "kitchen_cabinet_6/top"
+_BOWLS3 = ["soup_bowl_1", "soup_bowl_2", "soup_bowl_3"]
+_PLATES = ["plate_counter_a", "plate_counter_b"]
+_T04_KID = [(0.6, [["on", "kid_cup", _C6], ["upright", "kid_cup"]])]
+LOOSEN_SEEDS: dict = {
+    ("T03", "utensils_apart__bin_free"): {"sub": [{"wide_storage_bin": "storage_basket"},
+                                                  {"wide_storage_bin": "spare_tray"}]},
+    ("T05", "no_pen_pencil_away"): {"sub": {"pencil": "spare_pen"}},
+    ("T08", "far_sponge_tv"): {"strict": ["kitchen_sponge", "spare_sponge"], "sub": {"kitchen_sponge": "spare_sponge"},
+                               "extra": [(0.3, [["wiped", _ISL], ["near_start", "kitchen_sponge", 0.05],
+                                                ["near_start", "spare_sponge", 0.05]])]},
+    ("T08", "far_sponge_spare_only"): {"strict": ["spare_sponge"],
+                                       "extra": [(0.3, [["wiped", _ISL], ["near_start", "spare_sponge", 0.05]])]},
+    ("T09", "lid_on_spoon_away"): {"sub": {"pot_lid": "lid_plate"}},
+    ("T09", "tomato_in_fridge__in_fridge"): {"sub": {"fridge_tomato": "big_tomato"}},
+    ("T09", "x6_gd_tomato_elsewhere__dining"): {"best_plus": [["near_start", "plate_tomato", 0.25]],
+                                                "sub": {"cherry_tomato_2": "plate_tomato", "_score": 0.3}},
+    ("T09", "pot_in_dining_room__pot_away"): {"sub": {"handled_cooking_pot": "spare_pot"}},
+    ("T10", "trash_moved__dining"): {"sub": {"trash_can": "bathroom_trash"}},
+    ("T10", "x6_gd_can_put_away__in_cabinet"): {"best_plus": [["near_start", "fridge_soda", 0.25]],
+                                                "extra": [(0.3, [["inside", "soda_can", "trash_can"],
+                                                                 ["inside", "fridge_soda", "trash_can"]])]},
+    ("T16", "box_in_cabinet__in_cabinet"): {"sub": {"snack_box": "spare_bowl"}},
+    ("T19", "m_can_in_dining_room"): {"best_plus": [["near_start", "seat_can", 0.25]],
+                                      "sub": {"_plus": [["inside", "seat_can", "wide_storage_bin"]], "_score": 0.3}},
+    ("T19", "x6_gd_can_put_away__in_4"): {"best_plus": [["near_start", "full_juice", 0.25]],
+                                          "sub": {"_plus": [["inside", "full_juice", "wide_storage_bin"]], "_score": 0.3}},
+    ("T20", "m_bottle_on_tv_stand"): {"sub": {"juice_bottle": "living_juice"}},
+    ("T24", "no_apples_for_him__apple_free"): {"sub": {"snack_apple": "snack_banana"}},
+    ("T25", "drink_in_fridge__juice"): {"sub": {"cold_juice": "cold_soda"}},
+    ("T26", "scattered__basket"): {"sub": {"kids_basket": "kids_toy_bin"}},
+    ("T30", "how_many__three_bowls"): {"extra": [(0.6, [["count_on_at_least", _BOWLS3 + ["spare_mug"], _ISL, 3]]),
+                                                 (0.3, [["count_on_at_least", _BOWLS3 + ["spare_mug"] + _PLATES, _ISL, 3]])]},
+    ("T30", "bowl_put_away__bowl_inside"): {"extra": [(0.6, [["count_on_at_least", ["stored_mug"], _ISL, 1]]),
+                                                      (0.3, [["count_on_at_least", _PLATES, _ISL, 1]])]},
+    **{("T30", lid): {"extra": [(0.3, [["count_on_at_least", ["soup_bowl_1", "soup_bowl_2"], _ISL, 2],
+                                       ["count_on_at_least", ["soup_bowl_1", "soup_bowl_2"] + _PLATES, _ISL, 3]])]}
+       for lid in ("how_many__two_bowls", "bowls_in_cabinet__one_inside")},
+    ("T30", "bowl_put_away__mug_inside"): {"extra": [(0.3, [["count_on_at_least", ["stored_plate"] + _PLATES, _ISL, 1]])]},
+    **{("T02", lid): {"sub": {"rubber_duck": "kitchen_sponge", "_score": 0.3}}
+       for lid in ("tower_for_kid_duck__study", "tower_for_kid_duck__counter")},
+    **{("T04", lid): {"extra": _T04_KID} for lid in ("no_cup", "no_cup_mug_away", "no_cup_mug_away__alt_dining_table_2")},
+    ("T04", "two_guests__mug"): {"extra": [(0.6, [["on", "cup_counter_b", _C6], ["upright", "cup_counter_b"],
+                                                  ["on", "kid_cup", _C6], ["upright", "kid_cup"]])]},
+    ("T11", "basket_missing"): {"extra": [(0.6, [["inside", "apple", "used_bowl"]])]},
+    ("T13", "no_cup"): {"sub": {"mug": "kid_cup"}},
+    ("T13", "copy_the_setting__no_cup"): {"sub": {"mug": "kid_cup"}},
+}
+
+
 def _names(x) -> list:
     return list(x) if isinstance(x, list) else [x]
 
@@ -1011,6 +1063,7 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
     import json
     cfg = dict(LOOSEN.get((task["task_id"][:3], design), {}))
     cfg.update(cfg.pop("by_layout", {}).get(lid.split("__")[-1], {}))
+    cfg.update(LOOSEN_SEEDS.get((task["task_id"][:3], lid), {}))
     goal = {**task, "goal": task["variants"][lid].get("goal") or task["goal"]}
     strict, drop = cfg.get("strict", []), cfg.get("drop", [])
 
@@ -1077,25 +1130,38 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
         return any(n in json.dumps(a) for a in grp for n in names)
 
     hand = [["hand_empty", "right"]]
-    sub = [clean(swap(g, cfg["sub"])) for g in out[0]["goal"]["any"]] if cfg.get("sub") else []
+    best0 = out[0]["goal"]["any"]                   # substitutes are built from the best before best_plus
+    if cfg.get("best_plus"):                        # the thing not to take stays: part of the best level
+        out[0]["goal"]["any"] = [clean(g + cfg["best_plus"]) for g in best0]
+    mid, low = [], []                               # 0.6 / 0.3 groups this seed adds
+    subs = cfg.get("sub") or []
+    for sp in ([subs] if isinstance(subs, dict) else subs):
+        names = {k: v for k, v in sp.items() if not k.startswith("_")}
+        groups = [clean(swap(g, names) + sp.get("_plus", [])) for g in best0]
+        (low if sp.get("_score") == 0.3 else mid).extend(groups)
+    for sc, atoms in cfg.get("extra", []):
+        (low if sc == 0.3 else mid).append(clean(atoms + hand))
+    low += [clean(g + hand) for g in cfg.get("wrong", [])]
     if cfg.get("demote"):
-        sub += [g for g in out[0]["goal"]["any"] if mentions(g, cfg["demote"])]
+        mid += [g for g in out[0]["goal"]["any"] if mentions(g, cfg["demote"])]
         out[0]["goal"]["any"] = [g for g in out[0]["goal"]["any"] if not mentions(g, cfg["demote"])]
-    if sub:                                         # the substitute while the ideal is there: the 0.6 level
+    reach = lambda g: not any({json.dumps(a) for a in b} <= {json.dumps(a) for a in g}  # noqa: E731
+                              for b in out[0]["goal"]["any"])
+    mid, low = [g for g in mid if reach(g)], [g for g in low if reach(g)]
+    if mid:                                         # a substitute though the ideal is there: the 0.6 level
         if len(out) > 1:
-            out[1]["goal"]["any"] = sub + out[1]["goal"]["any"]
+            out[1]["goal"]["any"] = mid + out[1]["goal"]["any"]
         else:
-            out.append({"name": "second", "score": 0.6, "raw": "substitute", "goal": {"all": [], "any": sub},
+            out.append({"name": "second", "score": 0.6, "raw": "substitute", "goal": {"all": [], "any": mid},
                         "why": "a substitute though the ideal is there (11-20)"})
     for i, t in enumerate(out):
         t["name"], t["score"] = TIER_NAMES[i], SCORES[i]
-    if cfg.get("wrong"):                            # the wrong place: 0.3 whatever else the seed offers
-        wrong = [clean(g + hand) for g in cfg["wrong"]]
+    if low:                                         # a poor substitute or the wrong place: 0.3
         if len(out) >= 3:
-            out[2]["goal"]["any"] += wrong
+            out[2]["goal"]["any"] += low
         else:
-            out.append({"name": "worst", "score": 0.3, "raw": "wrong_place", "goal": {"all": [], "any": wrong},
-                        "why": "the wrong place (the other table, desk, bed, room or surface) (11-20)"})
+            out.append({"name": "worst", "score": 0.3, "raw": "poor_or_wrong", "goal": {"all": [], "any": low},
+                        "why": "a poor substitute, something in use taken, or the wrong place (11-20)"})
     return {**p, "tiers": out, "D": 1 if len(out) > 1 else 0, "loosened": "11-20"}
 
 

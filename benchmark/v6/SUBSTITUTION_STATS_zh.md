@@ -44,8 +44,8 @@
 | T02 | tower_for_kid | study | 不用替换 | 按指令（three blocks in one tower on the near dining table (the kid's), 10 cm from its edge and its things, nothing moved） | 在 | 1 |
 | T02 | tower_for_kid | near_full | 去处替换 | 近处那张餐桌（摆满了，用另一张餐桌） | 不在 | 1 |
 | T02 | tower_for_kid | both_full | 去处替换 | 餐桌（两张都满，只能放别的台面） | 不在 | 0 |
-| T02 | tower_for_kid_duck | counter | 缺失 | 第三块积木（没有，用小鸭放最上面） | 不在 | 0 |
-| T02 | tower_for_kid_duck | study | 缺失 | 第三块积木（没有，用小鸭放最上面） | 不在 | 0 |
+| T02 | tower_for_kid_duck | counter | 缺失 | 第三块积木（没有，用小鸭放最上面） | 不在 | 1 |
+| T02 | tower_for_kid_duck | study | 缺失 | 第三块积木（没有，用小鸭放最上面） | 不在 | 1 |
 | T02 | block_put_away | in_4 | 缺失 | 第三块木块（收在 4 号矮柜里） | 在 | 1 |
 | T02 | block_put_away | in_6 | 缺失 | 第三块木块（收在 6 号矮柜里） | 在 | 1 |
 | T02 | block_put_away | gone_toy_block | 缺失 | 第三块木块（家里没有了，用玩具积木代） | 不在 | 1 |
@@ -56,23 +56,23 @@
 | T03 | which_bin_by_contents | kitchen_bin_full | 被占用 | 厨房用品箱（满了） | 不在 | 1 |
 | T03 | no_bin_substitute | basket | 缺失 | 储物箱（没有，用收纳筐） | 不在 | 1 |
 | T03 | no_bin_substitute | tray | 缺失 | 储物箱（没有，用托盘） | 不在 | 1 |
-| T03 | utensils_apart | bin_free | 不用替换 | 按指令（both in the wide bin (the proper storage bin), nothing of anyone else's moved） | 在 | 0 |
+| T03 | utensils_apart | bin_free | 不用替换 | 按指令（both in the wide bin (the proper storage bin), nothing of anyone else's moved） | 在 | 1 |
 | T03 | utensils_apart | bin_full_tray | 被占用 | 空的收纳箱（满了，用托盘） | 不在 | 1 |
 | T03 | utensils_apart | bin_full_basket | 被占用 | 空的收纳箱（满了，用收纳筐） | 不在 | 1 |
 | T03 | utensils_apart | bin_full_fruit | 被占用 | 空的收纳箱（满了，只有果篮） | 不在 | 0 |
 | T04 | cup_available | — | 不用替换 | 按指令（no fault: the glass (two apart for two guests) upright where it belongs, nothing disturbed, doors closed） | 在 | 1 |
-| T04 | no_cup | — | 缺失 | 玻璃杯（没有，用马克杯） | 不在 | 0 |
-| T04 | no_cup | — | 缺失 | 玻璃杯（没有，用收起来的马克杯） | 不在 | 0 |
-| T04 | no_cup | alt_dining_table_2 | 缺失 | 玻璃杯（没有，用餐桌上的马克杯） | 不在 | 0 |
+| T04 | no_cup | — | 缺失 | 玻璃杯（没有，用马克杯） | 不在 | 1 |
+| T04 | no_cup | — | 缺失 | 玻璃杯（没有，用收起来的马克杯） | 不在 | 1 |
+| T04 | no_cup | alt_dining_table_2 | 缺失 | 玻璃杯（没有，用餐桌上的马克杯） | 不在 | 1 |
 | T04 | no_cup | — | 缺失 | 玻璃杯（没有，只有孩子的塑料杯） | 不在 | 0 |
 | T04 | clear_the_drinks_spot | spot_dishes | 不用替换 | 按指令（no fault: the glass (two apart for two guests) upright where it belongs, nothing disturbed, doors closed） | 在 | 1 |
 | T04 | clear_the_drinks_spot | spot_kid_toys | 去处替换 | 放饮料的老地方 | 在 | 1 |
 | T04 | two_guests | glass_in_cabinet | 不用替换 | 按指令（no fault: the glass (two apart for two guests) upright where it belongs, nothing disturbed, doors closed） | 在 | 1 |
-| T04 | two_guests | mug | 缺失 | 两个玻璃杯（只有一个，补马克杯） | 不在 | 0 |
+| T04 | two_guests | mug | 缺失 | 两个玻璃杯（只有一个，补马克杯） | 不在 | 1 |
 | T04 | two_guests | kid_cup | 缺失 | 两个玻璃杯（只有一个，补塑料杯） | 不在 | 0 |
 | T04 | x6_gd_cup_in_cabinets | cup_in_4 | 能力不足 | 玻璃杯（在另一个矮柜里） | 在 | 1 |
 | T04 | x6_gd_cup_in_cabinets | plastic_only | 能力不足 | 玻璃杯（没有，只有塑料杯） | 不在 | 1 |
-| T05 | no_pen_pencil_away | — | 不用替换 | 按指令（the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs） | 在 | 0 |
+| T05 | no_pen_pencil_away | — | 不用替换 | 按指令（the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs） | 在 | 1 |
 | T05 | no_pen_pencil_away | — | 被占用 | 铅笔（奶奶正用着，用卧室的笔） | 不在 | 1 |
 | T05 | check_desk_first | pen_on_desk | 不用替换 | 按指令（the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, nothing extra moved, doors closed, the mug where it belongs） | 在 | 1 |
 | T05 | check_desk_first | pencil_on_desk | 看着像但不能用 | 书桌上已有的铅笔 | 在 | 1 |
@@ -106,9 +106,9 @@
 | T07 | two_portions | dining | 不用替换 | 按指令（both at 40 C at the end, each in its own appliance from the start, both off, the door closed） | 在 | 1 |
 | T07 | two_portions | counter | 不用替换 | 按指令（both at 40 C at the end, each in its own appliance from the start, both off, the door closed） | 在 | 1 |
 | T08 | sponge_on_island | — | 不用替换 | 按指令（the island wiped, the sponge back on the island） | 在 | 0 |
-| T08 | far_sponge_tv | — | 不用替换 | 按指令（the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched） | 在 | 0 |
+| T08 | far_sponge_tv | — | 不用替换 | 按指令（the best the seed offers: the island wiped with the sponge (the spare when the usual one is gone), the sponge back on the island, the kid's cube untouched） | 在 | 1 |
 | T08 | far_sponge_tv | — | 看着像但不能用 | 海绵（在电视柜上，岛台上有个像的泡沫块） | 在 | 1 |
-| T08 | far_sponge_tv | — | 缺失 | 常用海绵（没有，用托盘里的备用海绵） | 不在 | 0 |
+| T08 | far_sponge_tv | — | 缺失 | 常用海绵（没有，用托盘里的备用海绵） | 不在 | 1 |
 | T08 | wipe_and_sort | blocks | 不用替换 | 按指令（the toys in the toy box, the kitchen things where they were and standing, the island wiped, the sponge on it） | 在 | 1 |
 | T08 | wipe_and_sort | duck | 不用替换 | 按指令（the toys in the toy box, the kitchen things where they were and standing, the island wiped, the sponge on it） | 在 | 1 |
 | T08 | return_sponge_home | dining | 不用替换 | 按指令（the island wiped, the sponge in the tray, the spare sponge still in it） | 在 | 1 |
@@ -117,22 +117,22 @@
 | T08 | which_surface | island | 不用替换 | 按指令（only the used surface wiped, the sponge on the island） | 在 | 1 |
 | T08 | which_surface | dining | 不用替换 | 按指令（only the used surface wiped, the sponge on the island） | 在 | 1 |
 | T09 | lid_off | — | 不用替换 | 按指令（the tomatoes in the pot at 60 C, stirred, the lid on, the stove off） | 在 | 0 |
-| T09 | lid_on_spoon_away | — | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 0 |
+| T09 | lid_on_spoon_away | — | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
 | T09 | lid_on_spoon_away | — | 缺失 | 锅盖（没有，用同样大的盘子盖） | 不在 | 0 |
 | T09 | pot_in_use | in_use | 被占用 | 灶上那口锅（装着昨天的汤，用空锅） | 不在 | 1 |
 | T09 | pot_in_use | free | 不用替换 | 按指令（the soup in the empty pot, every step done, the full pot untouched） | 在 | 1 |
-| T09 | tomato_in_fridge | in_fridge | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 0 |
+| T09 | tomato_in_fridge | in_fridge | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
 | T09 | tomato_in_fridge | big_tomato | 缺失 | 第三颗小番茄（没有，用大番茄） | 不在 | 0 |
-| T09 | x6_gd_tomato_elsewhere | dining | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 0 |
+| T09 | x6_gd_tomato_elsewhere | dining | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
 | T09 | x6_gd_tomato_elsewhere | on_plate | 被占用 | 番茄（在别人盘子里） | 不在 | 1 |
-| T09 | pot_in_dining_room | pot_away | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 0 |
+| T09 | pot_in_dining_room | pot_away | 不用替换 | 按指令（the best the seed offers (what is asked for when it is there, else the stand-in: the plate for the lid, the second pot, the fridge's tomato, the big tomato): the tomatoes in the pot at 60 C, stirred, covered, the stove off, the fridge closed） | 在 | 1 |
 | T09 | pot_in_dining_room | spare_pot | 缺失 | 常用的汤锅（不在，用备用锅） | 不在 | 0 |
 | T10 | can_on_island | — | 不用替换 | 按指令（the can in the trash can, the hand empty） | 在 | 0 |
 | T10 | can_in_dining_room | — | 不用替换 | 按指令（the can found and in the trash can） | 在 | 0 |
 | T10 | can_in_dining_room | alt_tv_stand_2 | 不用替换 | 按指令（the can found and in the trash can） | 在 | 0 |
 | T10 | keep_kids_can | kid_desk | 被占用 | 喝完的那罐扔掉，孩子的不动 | 在 | 1 |
 | T10 | keep_kids_can | kid_island | 被占用 | 喝完的那罐扔掉，孩子的不动 | 在 | 1 |
-| T10 | trash_moved | dining | 不用替换 | 按指令（the can in the trash can that has room: the moved one (dining room); when the one by the island is full, the bathroom's, the full one untouched） | 在 | 0 |
+| T10 | trash_moved | dining | 不用替换 | 按指令（the can in the trash can that has room: the moved one (dining room); when the one by the island is full, the bathroom's, the full one untouched） | 在 | 1 |
 | T10 | trash_moved | trash_full | 能力不足 | 垃圾桶（满了） | 不在 | 0 |
 | T10 | after_dinner_clear | rubbish_leftovers | 去处替换 | 每样东西各回各处 | 在 | 1 |
 | T10 | after_dinner_clear | leftovers_mug | 去处替换 | 每样东西各回各处 | 在 | 1 |
@@ -140,10 +140,10 @@
 | T10 | guests_coming | can_mug_block | 去处替换 | 每样东西各回各处 | 在 | 1 |
 | T10 | guests_coming | can_block | 去处替换 | 每样东西各回各处 | 在 | 1 |
 | T10 | guests_coming | can_mug | 去处替换 | 每样东西各回各处 | 在 | 1 |
-| T10 | x6_gd_can_put_away | in_cabinet | 不用替换 | 按指令（the empty can found and in the trash, the unopened can in the fridge untouched, every door closed） | 在 | 0 |
+| T10 | x6_gd_can_put_away | in_cabinet | 不用替换 | 按指令（the empty can found and in the trash, the unopened can in the fridge untouched, every door closed） | 在 | 1 |
 | T10 | x6_gd_can_put_away | fridge_drink | 看着像但不能用 | 喝完的那罐（冰箱里有罐没开的） | 在 | 1 |
 | T11 | fruits_on_table | — | 不用替换 | 按指令（the apple in the fruit basket） | 在 | 1 |
-| T11 | basket_missing | — | 缺失 | 果篮（没有，用托盘） | 不在 | 0 |
+| T11 | basket_missing | — | 缺失 | 果篮（没有，用托盘） | 不在 | 1 |
 | T11 | basket_missing | — | 看着像但不能用 | 果篮（没有，原处是个用过的碗） | 不在 | 1 |
 | T11 | leave_one_for_kid | apple_orange | 去处替换 | 留一个给孩子，其余拿走 | 在 | 1 |
 | T11 | leave_one_for_kid | orange_banana | 去处替换 | 留一个给孩子，其余拿走 | 在 | 1 |
@@ -163,10 +163,10 @@
 | T12 | castle_stays | short_one_loose | 被占用 | 散玩具进筐，城堡不动 | 在 | 1 |
 | T12 | castle_stays | tall_none_loose | 被占用 | 散玩具进筐，城堡不动 | 在 | 1 |
 | T13 | dishes_on_tv_stand | — | 不用替换 | 按指令（bowl, cup and spoon together on the dining table, upright） | 在 | 1 |
-| T13 | no_cup | — | 缺失 | 杯子（没有，用马克杯） | 不在 | 0 |
+| T13 | no_cup | — | 缺失 | 杯子（没有，用马克杯） | 不在 | 1 |
 | T13 | copy_the_setting | bowl_cup | 去处替换 | 照样摆的那几样 | 在 | 1 |
 | T13 | copy_the_setting | plate_bowl_mug_left | 去处替换 | 照样摆的那几样 | 在 | 1 |
-| T13 | copy_the_setting | no_cup | 缺失 | 杯子（没有，用马克杯） | 不在 | 0 |
+| T13 | copy_the_setting | no_cup | 缺失 | 杯子（没有，用马克杯） | 不在 | 1 |
 | T13 | finish_the_table | adult_seat | 去处替换 | 缺的那份摆齐 | 在 | 1 |
 | T13 | finish_the_table | kid_seat | 去处替换 | 缺的那份摆齐 | 在 | 1 |
 | T13 | finish_the_table | adult_and_kid | 去处替换 | 缺的那份摆齐 | 在 | 1 |
@@ -176,7 +176,7 @@
 | T15 | no_lid | — | 缺失 | 锅盖（没有，用盘子） | 不在 | 1 |
 | T15 | lid_in_use | — | 被占用 | 锅盖（正盖着别的锅，用盘子） | 不在 | 1 |
 | T16 | box_on_counter | — | 不用替换 | 按指令（the apple in the snack box on his desk） | 在 | 0 |
-| T16 | box_in_cabinet | in_cabinet | 不用替换 | 按指令（the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched） | 在 | 0 |
+| T16 | box_in_cabinet | in_cabinet | 不用替换 | 按指令（the best the seed offers: the apple in the snack box on his desk when the box is free (the cabinet closed), else in the bowl, the box's contents untouched） | 在 | 1 |
 | T16 | box_in_cabinet | box_full | 能力不足 | 饭盒（满了） | 不在 | 1 |
 | T16 | no_box | — | 缺失 | 饭盒（没有） | 不在 | 1 |
 | T16 | box_in_use | — | 被占用 | 饭盒（正被用着） | 不在 | 1 |
@@ -195,14 +195,14 @@
 | T18 | bowl_in_use | oatmeal | 被占用 | 两个干净碗（一个装着燕麦，用玻璃盒） | 不在 | 1 |
 | T18 | door_stuck | — | 看着像但不能用 | 柜子里的碗（门卡住） | 不在 | 0 |
 | T19 | bin_on_bookcase | — | 不用替换 | 按指令（the can and the cube in the recycling bin） | 在 | 0 |
-| T19 | m_can_in_dining_room | — | 不用替换 | 按指令（the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed） | 在 | 0 |
+| T19 | m_can_in_dining_room | — | 不用替换 | 按指令（the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed） | 在 | 1 |
 | T19 | m_can_in_dining_room | — | 被占用 | 喝完的那罐（旁边那罐有人在喝） | 在 | 1 |
 | T19 | lookalike_bin | — | 看着像但不能用 | 回收箱（旁边有个像的箱子） | 在 | 1 |
 | T19 | lookalike_bin | alt_tv_stand_2 | 看着像但不能用 | 回收箱（旁边有个像的箱子） | 在 | 1 |
-| T19 | x6_gd_can_put_away | in_4 | 不用替换 | 按指令（the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed） | 在 | 0 |
+| T19 | x6_gd_can_put_away | in_4 | 不用替换 | 按指令（the finished can and the cube in the recycling bin, what is in use or unopened left alone, doors closed） | 在 | 1 |
 | T19 | x6_gd_can_put_away | juice_full | 看着像但不能用 | 喝完的罐（旁边果汁是满的） | 在 | 1 |
 | T20 | bottle_on_cabinet | — | 不用替换 | 按指令（the bottle standing on the breakfast table） | 在 | 0 |
-| T20 | m_bottle_on_tv_stand | — | 不用替换 | 按指令（the breakfast bottle standing on the dining table, the bottle in use and the stock left alone） | 在 | 0 |
+| T20 | m_bottle_on_tv_stand | — | 不用替换 | 按指令（the breakfast bottle standing on the dining table, the bottle in use and the stock left alone） | 在 | 1 |
 | T20 | m_bottle_on_tv_stand | — | 被占用 | 早饭那瓶（另一瓶有人在用） | 在 | 1 |
 | T20 | x6_gd_bottle_put_away | on_tv_stand | 看着像但不能用 | 早饭那瓶 | 在 | 1 |
 | T20 | x6_gd_bottle_put_away | in_bedroom | 看着像但不能用 | 早饭那瓶 | 在 | 1 |
@@ -243,7 +243,7 @@
 | T23 | dropped_in_two_rooms | shelf_room | 不用替换 | 按指令（the spoon to the kitchen, the book on his bookcase -- or, the bookcase full, on another bookcase or a desk, his books left as they are） | 在 | 1 |
 | T23 | dropped_in_two_rooms | shelf_full | 能力不足 | 他的书架（每层都满，小熊放别的书架或床上） | 不在 | 1 |
 | T24 | apple_on_table | — | 不用替换 | 按指令（the apple on the study desk） | 在 | 0 |
-| T24 | no_apples_for_him | apple_free | 不用替换 | 按指令（something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone） | 在 | 0 |
+| T24 | no_apples_for_him | apple_free | 不用替换 | 按指令（something nobody is eating on the desk: the apple when free, else the banana from the basket, someone's plate left alone） | 在 | 1 |
 | T24 | no_apples_for_him | apple_in_use | 被占用 | 苹果（在别人盘子里，用果篮的香蕉） | 不在 | 1 |
 | T24 | dinner_soon | apple | 看着像但不能用 | 水果（不是零食） | 在 | 1 |
 | T24 | dinner_soon | banana | 看着像但不能用 | 水果（不是零食） | 在 | 1 |
@@ -260,7 +260,7 @@
 | T25 | cup_elsewhere | blocks_in_cup | 被占用 | 能喝的杯子（台面杯子装着积木，马克杯一样好，11-20） | 在 | 1 |
 | T25 | cold_one | cold_juice | 不用替换 | 按指令（the cold juice from the fridge and a cup by the guest, the fridge closed, the warm bottle left） | 在 | 1 |
 | T25 | cold_one | cold_soda | 缺失 | 冰果汁（没有，用冰汽水） | 不在 | 1 |
-| T25 | drink_in_fridge | juice | 不用替换 | 按指令（the juice from the fridge and a cup by the guest, the fridge closed） | 在 | 0 |
+| T25 | drink_in_fridge | juice | 不用替换 | 按指令（the juice from the fridge and a cup by the guest, the fridge closed） | 在 | 1 |
 | T25 | drink_in_fridge | soda_only | 缺失 | 果汁（冰箱里没有，用汽水） | 不在 | 0 |
 | T25 | cups_for_two | one_there | 不用替换 | 按指令（two plain cups by the guests in all (the ones there kept), none extra, the cabinet closed） | 在 | 1 |
 | T25 | cups_for_two | none_one_inside | 缺失 | 两个普通杯子（柜里只有一个，补马克杯） | 不在 | 1 |
@@ -272,7 +272,7 @@
 | T26 | car_in_living_room | — | 不用替换 | 按指令（the car in his toy basket） | 在 | 0 |
 | T26 | whose | shelf_room | 不用替换 | 按指令（his picture book to his bookcase (the one by his bed when his is full), the novel left） | 在 | 1 |
 | T26 | whose | shelf_full | 能力不足 | 他的书架（每层都满，放床边那个书架） | 不在 | 1 |
-| T26 | scattered | basket | 不用替换 | 按指令（all three in what holds his toys (the basket; or, no basket, his toy bin)） | 在 | 0 |
+| T26 | scattered | basket | 不用替换 | 按指令（all three in what holds his toys (the basket; or, no basket, his toy bin)） | 在 | 1 |
 | T26 | scattered | no_basket | 缺失 | 玩具筐（没有，用书架上的小玩具盒） | 不在 | 1 |
 | T26 | where_in_room | basket | 不用替换 | 按指令（the car in the toy basket (no basket: onto his bookcase), the book on his bookcase） | 在 | 1 |
 | T26 | where_in_room | waste_bin | 看着像但不能用 | 玩具筐（没有，原处是垃圾桶；小车放书架） | 不在 | 1 |
@@ -310,12 +310,12 @@
 | T29 | which_table | east | 去处替换 | 要吃饭的那张桌 | 在 | 1 |
 | T29 | which_table | west | 去处替换 | 要吃饭的那张桌 | 在 | 1 |
 | T30 | bowl_on_cabinet | — | 不用替换 | 按指令（a clean bowl on the island by the stove） | 在 | 0 |
-| T30 | how_many | three_bowls | 不用替换 | 按指令（three bowls on the island (three spoons at the table)） | 在 | 0 |
-| T30 | how_many | two_bowls | 缺失 | 三个碗（只有两个，补马克杯） | 不在 | 0 |
+| T30 | how_many | three_bowls | 不用替换 | 按指令（three bowls on the island (three spoons at the table)） | 在 | 1 |
+| T30 | how_many | two_bowls | 缺失 | 三个碗（只有两个，补马克杯） | 不在 | 1 |
 | T30 | bowls_in_cabinet | two_inside | 不用替换 | 按指令（three for the three spoons: bowls (a mug only when the bowls run out), the cabinet closed） | 在 | 1 |
-| T30 | bowls_in_cabinet | one_inside | 缺失 | 三个碗（只有两个，补马克杯） | 不在 | 0 |
-| T30 | bowl_put_away | bowl_inside | 不用替换 | 按指令（a bowl from the cabinet on the island, the door closed） | 在 | 0 |
-| T30 | bowl_put_away | mug_inside | 缺失 | 碗（家里没有，柜里只有盘子和马克杯，用马克杯） | 不在 | 0 |
+| T30 | bowls_in_cabinet | one_inside | 缺失 | 三个碗（只有两个，补马克杯） | 不在 | 1 |
+| T30 | bowl_put_away | bowl_inside | 不用替换 | 按指令（a bowl from the cabinet on the island, the door closed） | 在 | 1 |
+| T30 | bowl_put_away | mug_inside | 缺失 | 碗（家里没有，柜里只有盘子和马克杯，用马克杯） | 不在 | 1 |
 | T30 | no_bowl | — | 缺失 | 碗（没有，用马克杯） | 不在 | 1 |
 | T30 | bowl_not_plate | — | 看着像但不能用 | 干净的碗（旁边是盘子） | 在 | 1 |
 | T30 | bowl_not_plate | — | 被占用 | 干净的碗（旁边那碗装着燕麦） | 在 | 1 |

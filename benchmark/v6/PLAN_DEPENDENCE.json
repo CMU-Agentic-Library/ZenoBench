@@ -53,10 +53,10 @@
   ],
   "routes_between_layouts": {
    "passes": 131,
-   "goal_not_met": 172,
-   "not_observed": 24,
-   "argument_mismatch": 64,
-   "resource_missing": 153
+   "goal_not_met": 183,
+   "not_observed": 28,
+   "argument_mismatch": 65,
+   "resource_missing": 137
   },
   "universal_fixed_sequence": [
    "T01 table_seats",
@@ -97,11 +97,13 @@
    "T03 which_bin_by_contents",
    "T04 two_guests",
    "T04 x6_gd_cup_in_cabinets",
+   "T05 no_pen_pencil_away",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
    "T07 two_portions",
    "T08 far_sponge_tv",
    "T08 return_sponge_home",
+   "T09 pot_in_dining_room",
    "T09 tomato_in_fridge",
    "T09 x6_gd_tomato_elsewhere",
    "T10 after_dinner_clear",
@@ -124,6 +126,7 @@
    "T23 only_this_room",
    "T24 dinner_soon",
    "T24 fruit_out_of_view",
+   "T24 no_apples_for_him",
    "T24 two_kids",
    "T24 where_is_he",
    "T25 cold_one",
@@ -255,9 +258,13 @@
     "example_cup",
     "example_mug",
     "example_plate",
-    "example_spoon"
+    "example_spoon",
+    "kid_cup"
    ],
    "T13 finish_the_table": [
+    "kid_cup"
+   ],
+   "T13 no_cup": [
     "kid_cup"
    ],
    "T14 homework_stays": [
@@ -1938,8 +1945,8 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "utensils_apart__bin_full_tray": "resource_missing",
-    "utensils_apart__bin_full_basket": "resource_missing",
+    "utensils_apart__bin_full_tray": "goal_not_met",
+    "utensils_apart__bin_full_basket": "goal_not_met",
     "utensils_apart__bin_full_fruit": "resource_missing"
    },
    "other_variants_passing": []
@@ -2006,7 +2013,7 @@
    "other_layouts": {
     "no_cup_mug_away": "passes",
     "no_cup_mug_away__alt_dining_table_2": "argument_mismatch",
-    "no_cup_kid": "resource_missing"
+    "no_cup_kid": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -2027,7 +2034,7 @@
    "other_layouts": {
     "no_cup": "not_observed",
     "no_cup_mug_away__alt_dining_table_2": "argument_mismatch",
-    "no_cup_kid": "resource_missing"
+    "no_cup_kid": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -2048,7 +2055,7 @@
    "other_layouts": {
     "no_cup": "not_observed",
     "no_cup_mug_away": "argument_mismatch",
-    "no_cup_kid": "resource_missing"
+    "no_cup_kid": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -2165,7 +2172,7 @@
    "control_route": "goal_not_met",
    "other_layouts": {
     "two_guests__glass_in_cabinet": "resource_missing",
-    "two_guests__kid_cup": "resource_missing"
+    "two_guests__kid_cup": "argument_mismatch"
    },
    "other_variants_passing": []
   },
@@ -2226,7 +2233,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "no_pen_pencil_in_use": "resource_missing"
+    "no_pen_pencil_in_use": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -2747,7 +2754,7 @@
    "control_route": "passes",
    "other_layouts": {
     "far_sponge_foam_cube": "passes",
-    "far_sponge_spare_only": "resource_missing"
+    "far_sponge_spare_only": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -2953,7 +2960,7 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "tomato_in_fridge__big_tomato": "resource_missing"
+    "tomato_in_fridge__big_tomato": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -3007,7 +3014,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "pot_in_dining_room__spare_pot": "resource_missing"
+    "pot_in_dining_room__spare_pot": "goal_not_met"
    },
    "other_variants_passing": [
     "pot_in_use__in_use"
@@ -3604,7 +3611,8 @@
    },
    "other_variants_passing": [
     "no_cup",
-    "finish_the_table__adult_seat"
+    "finish_the_table__adult_seat",
+    "finish_the_table__kid_seat"
    ]
   },
   {
@@ -3717,7 +3725,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "box_in_cabinet__box_full": "resource_missing"
+    "box_in_cabinet__box_full": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -4539,12 +4547,13 @@
    "geometric_atoms": [],
    "control_route": "passes",
    "other_layouts": {
-    "no_apples_for_him__apple_in_use": "resource_missing"
+    "no_apples_for_him__apple_in_use": "goal_not_met"
    },
    "other_variants_passing": [
     "dinner_soon__apple",
-    "fruit_out_of_view__apple_in_basket",
-    "where_is_he__study"
+    "where_is_he__study",
+    "two_kids__apple_banana",
+    "two_kids__desk3_covered"
    ]
   },
   {
@@ -4786,7 +4795,7 @@
    ],
    "control_route": "resource_missing",
    "other_layouts": {
-    "drink_in_fridge__soda_only": "resource_missing"
+    "drink_in_fridge__soda_only": "goal_not_met"
    },
    "other_variants_passing": [
     "cold_one__cold_juice"
@@ -4955,7 +4964,7 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "scattered__no_basket": "resource_missing"
+    "scattered__no_basket": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -5468,7 +5477,7 @@
    "geometric_atoms": [],
    "control_route": "goal_not_met",
    "other_layouts": {
-    "how_many__two_bowls": "resource_missing"
+    "how_many__two_bowls": "not_observed"
    },
    "other_variants_passing": [
     "bowls_in_cabinet__two_inside"
@@ -5524,7 +5533,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "bowl_put_away__mug_inside": "resource_missing"
+    "bowl_put_away__mug_inside": "goal_not_met"
    },
    "other_variants_passing": []
   },
@@ -8005,7 +8014,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -8018,7 +8027,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -8109,7 +8118,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": false
   },
   {
@@ -8135,7 +8144,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": false
   },
   {
@@ -8148,7 +8157,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": false
   },
   {
@@ -8200,7 +8209,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "argument_mismatch",
    "hidden_state_branch": true
   },
   {
@@ -8224,10 +8233,10 @@
     "no_pen_pencil_in_use"
    ],
    "start_room": "bedroom_0_1",
-   "same_before_key_observation": false,
+   "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "resource_missing",
-   "hidden_state_branch": false
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -8642,7 +8651,7 @@
    "start_room": "dining_room_0_1",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -8759,7 +8768,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -8783,10 +8792,10 @@
     "pot_in_dining_room__spare_pot"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": false,
+   "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
-   "hidden_state_branch": false
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
   },
   {
    "task": "T10_trash_the_can",
@@ -9331,7 +9340,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "not_observed",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -9706,10 +9715,10 @@
     "no_apples_for_him__apple_in_use"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": false,
+   "same_before_key_observation": true,
    "route_a_on_b": "goal_not_met",
-   "route_b_on_a": "resource_missing",
-   "hidden_state_branch": false
+   "route_b_on_a": "goal_not_met",
+   "hidden_state_branch": true
   },
   {
    "task": "T24_snack_for_kid",
@@ -9851,7 +9860,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -9968,7 +9977,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {
@@ -10267,7 +10276,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "not_observed",
    "hidden_state_branch": false
   },
   {
@@ -10293,7 +10302,7 @@
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "resource_missing",
+   "route_b_on_a": "goal_not_met",
    "hidden_state_branch": true
   },
   {

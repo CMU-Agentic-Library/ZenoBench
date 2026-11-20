@@ -7561,7 +7561,10 @@
     "rolling_pin",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "spare_tray",
+    "storage_basket"
+   ],
    "removed": [
     "mug"
    ],
@@ -7979,7 +7982,9 @@
    "moved": [
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_cup"
+   ],
    "removed": [
     "cup_counter_b"
    ],
@@ -8075,7 +8080,9 @@
    "moved": [
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_cup"
+   ],
    "removed": [
     "cup_counter_b"
    ],
@@ -8171,7 +8178,9 @@
    "moved": [
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_cup"
+   ],
    "removed": [
     "cup_counter_b"
    ],
@@ -8611,7 +8620,9 @@
     "cup_counter_b",
     "mug"
    ],
-   "added": [],
+   "added": [
+    "kid_cup"
+   ],
    "removed": [
     "juice_bottle"
    ],
@@ -9189,7 +9200,9 @@
    "moved": [
     "pencil"
    ],
-   "added": [],
+   "added": [
+    "spare_pen"
+   ],
    "removed": [
     "pen"
    ],
@@ -11791,7 +11804,11 @@
    "moved": [
     "kitchen_sponge"
    ],
-   "added": [],
+   "added": [
+    "foam_cube_toy",
+    "spare_sponge",
+    "sponge_tray"
+   ],
    "removed": [],
    "conditions": [
     "start_elsewhere",
@@ -11898,6 +11915,7 @@
    ],
    "moved": [],
    "added": [
+    "foam_cube_toy",
     "spare_sponge",
     "sponge_tray"
    ],
@@ -12563,7 +12581,9 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "lid_plate"
+   ],
    "removed": [
     "spoon_kitchen_cabinet"
    ],
@@ -12910,6 +12930,7 @@
     "pot_lid"
    ],
    "added": [
+    "big_tomato",
     "fridge_tomato"
    ],
    "removed": [],
@@ -13095,7 +13116,11 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "lunch_plate",
+    "lunch_spoon",
+    "plate_tomato"
+   ],
    "removed": [],
    "conditions": [],
    "initial_checks": [
@@ -13274,7 +13299,9 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "spare_pot"
+   ],
    "removed": [
     "bowl_kitchen_cabinet",
     "mug_counter"
@@ -13698,7 +13725,9 @@
     "soda_can",
     "trash_can"
    ],
-   "added": [],
+   "added": [
+    "bathroom_trash"
+   ],
    "removed": [],
    "conditions": [
     "destination_unnamed",
@@ -14249,7 +14278,9 @@
    "moved": [
     "soda_can"
    ],
-   "added": [],
+   "added": [
+    "fridge_soda"
+   ],
    "removed": [
     "plate_inside_kitchen_cabinet"
    ],
@@ -14450,7 +14481,9 @@
     "apple",
     "serving_tray"
    ],
-   "added": [],
+   "added": [
+    "used_bowl"
+   ],
    "removed": [
     "fruit_basket"
    ],
@@ -16526,7 +16559,9 @@
     "mug",
     "spoon"
    ],
-   "added": [],
+   "added": [
+    "kid_cup"
+   ],
    "removed": [
     "cup"
    ],
@@ -16824,7 +16859,8 @@
    "added": [
     "example_bowl",
     "example_cup",
-    "example_spoon"
+    "example_spoon",
+    "kid_cup"
    ],
    "removed": [
     "clutter_cereal_a",
@@ -17707,7 +17743,8 @@
    "moved": [],
    "added": [
     "school_apple",
-    "snack_box"
+    "snack_box",
+    "spare_bowl"
    ],
    "removed": [
     "bowl_inside_kitchen_cabinet",
@@ -18977,7 +19014,11 @@
     "soda_can",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "seat_book",
+    "seat_bowl",
+    "seat_can"
+   ],
    "removed": [],
    "conditions": [
     "not_in_view"
@@ -19208,7 +19249,9 @@
     "soda_can",
     "wide_storage_bin"
    ],
-   "added": [],
+   "added": [
+    "full_juice"
+   ],
    "removed": [
     "plate_inside_kitchen_cabinet"
    ],
@@ -19397,7 +19440,10 @@
    "moved": [
     "juice_bottle"
    ],
-   "added": [],
+   "added": [
+    "living_cup",
+    "living_juice"
+   ],
    "removed": [],
    "conditions": [
     "not_in_view"
@@ -23196,8 +23242,10 @@
    "start": null,
    "moved": [],
    "added": [
+    "home_basket",
     "homework",
-    "snack_apple"
+    "snack_apple",
+    "snack_banana"
    ],
    "removed": [],
    "conditions": [
@@ -24238,6 +24286,7 @@
    "moved": [],
    "added": [
     "cold_juice",
+    "cold_soda",
     "guest_cup"
    ],
    "removed": [],
@@ -25162,6 +25211,7 @@
    "added": [
     "kids_basket",
     "kids_shelf_book",
+    "kids_toy_bin",
     "living_block",
     "living_car",
     "living_duck"
@@ -27770,6 +27820,7 @@
     "soup_bowl_1",
     "soup_bowl_2",
     "soup_bowl_3",
+    "spare_mug",
     "stove_soup"
    ],
    "removed": [
@@ -28065,6 +28116,7 @@
    "moved": [],
    "added": [
     "soup_bowl_1",
+    "stored_mug",
     "stove_soup"
    ],
    "removed": [],

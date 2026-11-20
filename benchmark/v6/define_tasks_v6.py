@@ -3455,6 +3455,47 @@ SPLIT = set()
 
 
 # conditions that are no challenge for the variant's own instruction: it names the substitute itself
+# 11-20 (user: as few single-level seeds as possible, more levels): substitutes put into a seed's scene, the poses
+# taken from the sibling seed that uses them (scoring.LOOSEN says what each one scores there).  Keyed by (task, layout)
+_SURF = lambda sup, x, y, asset, yaw=0.0: {"asset": asset, "support": sup, "xy": [x, y], "yaw_deg": yaw}  # noqa: E731
+_ON = lambda x, y, z, asset: {"asset": asset, "support": None, "z": z, "xy": [x, y], "yaw_deg": 0.0}  # noqa: E731
+_KID_CUP = {"kid_cup": _SURF("kitchen_counter_2/top", -0.364, 7.709, "plastic_cup")}
+EXTRA_SUBSTITUTES = {
+    ("T03", "utensils_apart__bin_free"): {"storage_basket": _ON(0.894, -1.931, 0.001, "storage_basket"),
+                                          "spare_tray": _SURF("desk_1/top", -0.7, -6.218, "shallow_sorting_tray")},
+    ("T05", "no_pen_pencil_away"): {"spare_pen": _SURF("bookcase_2/top", 1.15, -0.40, "pen")},
+    ("T08", "far_sponge_tv"): {"sponge_tray": _SURF("kitchen_cabinet_4/top", 1.40, 0.42, "shallow_sorting_tray"),
+                               "spare_sponge": _ON(1.45, 0.42, 0.645, "kitchen_sponge"),
+                               "foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
+    ("T08", "far_sponge_spare_only"): {"foam_cube_toy": _SURF("kitchen_island/top", 8.164, 1.82, "foam_cube")},
+    ("T09", "lid_on_spoon_away"): {"lid_plate": _SURF("kitchen_island/top", 8.06, 1.795, "breakfast_plate")},
+    ("T09", "tomato_in_fridge__in_fridge"): {"big_tomato": _SURF("breakfast_fridge/inside_shelf", 5.75, 3.28, "big_tomato")},
+    ("T09", "x6_gd_tomato_elsewhere__dining"): {"lunch_plate": _SURF("dining_table_2/top", 3.62, 6.65, "breakfast_plate"),
+                                                "plate_tomato": _ON(3.62, 6.65, 0.858, "cherry_tomato"),
+                                                "lunch_spoon": _SURF("dining_table_2/top", 3.62, 6.86, "breakfast_spoon")},
+    ("T09", "pot_in_dining_room__pot_away"): {"spare_pot": _SURF("kitchen_island/top", 8.11, 1.80, "handled_cooking_pot")},
+    ("T10", "trash_moved__dining"): {"bathroom_trash": _ON(-0.75, 3.25, 0.0, "trash_can")},
+    ("T10", "x6_gd_can_put_away__in_cabinet"): {"fridge_soda": _SURF("breakfast_fridge/inside_shelf", 5.90, 3.30, "soda_can")},
+    ("T16", "box_in_cabinet__in_cabinet"): {"spare_bowl": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_bowl")},
+    ("T19", "m_can_in_dining_room"): {"seat_can": _SURF("dining_table_2/top", 3.70, 6.75, "soda_can"),
+                                      "seat_bowl": _SURF("dining_table_2/top", 3.45, 6.62, "oatmeal_bowl"),
+                                      "seat_book": _SURF("dining_table_2/top", 3.62, 6.92, "paperback_book")},
+    ("T19", "x6_gd_can_put_away__in_4"): {"full_juice": _SURF("kitchen_cabinet_4/inside_shelf", 1.15, 0.42, "juice_bottle")},
+    ("T20", "m_bottle_on_tv_stand"): {"living_juice": _SURF("tv_stand_2/top", 7.60, 0.36, "juice_bottle"),
+                                      "living_cup": _SURF("tv_stand_2/top", 7.75, 0.36, "breakfast_cup")},
+    ("T24", "no_apples_for_him__apple_free"): {"home_basket": _SURF("kitchen_island/top", 7.10, 1.78, "fruit_basket"),
+                                               "snack_banana": _ON(7.10, 1.78, 0.881, "banana")},
+    ("T25", "drink_in_fridge__juice"): {"cold_soda": _SURF("breakfast_fridge/inside_shelf", 6.05, 3.30, "soda_can")},
+    ("T26", "scattered__basket"): {"kids_toy_bin": _SURF("bookcase_2/top", 1.15, -0.43, "small_storage_bin")},
+    ("T30", "how_many__three_bowls"): {"spare_mug": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_mug")},
+    ("T30", "bowl_put_away__bowl_inside"): {"stored_mug": _SURF("kitchen_cabinet_4/inside_shelf", 1.65, 0.42, "breakfast_mug")},
+    **{("T04", lid): _KID_CUP for lid in ("no_cup", "no_cup_mug_away", "no_cup_mug_away__alt_dining_table_2",
+                                          "two_guests__mug")},
+    ("T11", "basket_missing"): {"used_bowl": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_bowl")},
+    ("T13", "no_cup"): _KID_CUP, ("T13", "copy_the_setting__no_cup"): _KID_CUP,
+}
+
+
 NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
                    # a pencil is asked for: no pen in the house is no longer a substitution
                    ("T05_pen_or_pencil_to_desk", "no_pen_pencil_away"): ["no_pen"],
@@ -3576,6 +3617,13 @@ def build_task(t: dict) -> dict:
             fam["seeds"] = seed_cases(t["task_id"], into, fam["layouts"])
             fam["factor"] = MERGE_FACTOR[(tid, into)]
     t["v6_variants"] = families
+    for (tid, lid), add in EXTRA_SUBSTITUTES.items():       # 11-20: substitutes put into the scene (scoring.LOOSEN)
+        if tid == t["task_id"][:3]:
+            v = t["variants"][lid]
+            v["add"] = {**v.get("add", {}), **copy.deepcopy(add)}
+            if "remove" in v:
+                v["remove"] = [n for n in v["remove"] if n not in add]
+            v["watch"] = sorted(set(v.get("watch") or []) | set(add))
     t["v6_replaced"] = {vid: why for (tid, vid), why in REPLACED.items() if tid == t["task_id"]}
     for (tid, vid), conds in NOT_A_CHALLENGE.items():
         if tid == t["task_id"]:
