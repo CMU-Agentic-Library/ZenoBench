@@ -108228,6 +108228,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -108346,6 +108358,18 @@
      ],
      "recovery": "collect refused (lid) -> uncover -> collect; spoon not on the island -> search",
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -108499,6 +108523,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -108649,6 +108685,18 @@
     },
     "v6_pot_in_use__free": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -108954,7 +109002,7 @@
       {
        "skill": "heat",
        "args": {
-        "food": "cherry_tomato_1",
+        "food": "fridge_tomato",
         "appliance": "kitchen_stove",
         "temp_c": 60
        }
@@ -109153,7 +109201,7 @@
       {
        "skill": "heat",
        "args": {
-        "food": "cherry_tomato_1",
+        "food": "big_tomato",
         "appliance": "kitchen_stove",
         "temp_c": 60
        }
@@ -109164,6 +109212,18 @@
     },
     "v6_x6_gd_tomato_elsewhere__dining": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -109318,6 +109378,18 @@
     },
     "v6_x6_gd_tomato_elsewhere__on_plate": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -109507,6 +109579,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -109621,6 +109705,18 @@
     },
     "v6_pot_in_dining_room__pot_away": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -109793,6 +109889,18 @@
     },
     "v6_pot_in_dining_room__spare_pot": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -117181,6 +117289,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -117248,6 +117368,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -117309,6 +117441,18 @@
     },
     "v6_can_in_dining_room__alt_tv_stand_2": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -117374,6 +117518,18 @@
     },
     "v6_keep_kids_can__kid_desk": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -117447,6 +117603,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -117517,6 +117685,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -117577,6 +117757,18 @@
     },
     "v6_trash_moved__trash_full": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -117658,6 +117850,18 @@
     },
     "v6_after_dinner_clear__rubbish_leftovers": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -117806,6 +118010,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "dining_table_2/top"
        }
       },
@@ -117944,6 +118160,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "dining_table_2/top"
        }
       },
@@ -118061,6 +118289,18 @@
     },
     "v6_guests_coming__can_mug_block": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -118195,6 +118435,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -118301,6 +118553,18 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_island/top"
        }
       },
@@ -118398,6 +118662,18 @@
     },
     "v6_x6_gd_can_put_away__in_cabinet": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -118504,6 +118780,18 @@
     },
     "v6_x6_gd_can_put_away__fridge_drink": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
@@ -174459,8 +174747,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 30.0
       }
@@ -174533,8 +174821,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 30.0
       },
@@ -174543,8 +174831,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        2.6,
-        12.3
+        -0.4,
+        12.35
        ],
        "yaw_deg": 0.0
       },
@@ -174697,8 +174985,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 30.0
       },
@@ -174707,8 +174995,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        2.6,
-        12.3
+        -0.4,
+        12.35
        ],
        "yaw_deg": 0.0
       },
@@ -175454,8 +175742,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 0.0
       },
@@ -175464,8 +175752,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        2.4,
-        12.25
+        -1.55,
+        12.5
        ],
        "yaw_deg": 0.0
       },
@@ -175474,8 +175762,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        0.7,
-        12.1
+        -0.5,
+        12.25
        ],
        "yaw_deg": 0.0
       },
@@ -175809,8 +176097,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 0.0
       },
@@ -175819,8 +176107,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        2.4,
-        12.25
+        -1.55,
+        12.5
        ],
        "yaw_deg": 0.0
       },
@@ -175829,8 +176117,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        0.7,
-        12.1
+        -0.5,
+        12.25
        ],
        "yaw_deg": 0.0
       },
@@ -178229,8 +178517,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 0.0
       },
@@ -178534,8 +178822,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 0.0
       },
@@ -178870,8 +179158,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 30.0
       },
@@ -179175,8 +179463,8 @@
        "support": null,
        "z": 0.0,
        "xy": [
-        1.5,
-        12.1
+        -1.1,
+        12.3
        ],
        "yaw_deg": 30.0
       },

@@ -51,10 +51,10 @@ def on(asset, sup, x, y, yaw=0.0):
 # 11-20 (v6_layouts_1120: explore_room of the small kitchen never saw a thing at (-0.85, 7.70) -- the strip between
 # counter 2 and the west wall, behind the counter): what fell lies on the open floor of the small kitchen north of
 # the counter (still kitchen_0_1; east of the counter is the dining room), 0.7 m from oven_2
-DROP_XY = (1.50, 12.10)   # 11-20 (v6_layouts_1120 + a sim probe): the small kitchen's north floor, in front of
-# cell_shelf_1 -- explore_room(kitchen_0_1) sweeps this strip from its one viewpoint (3.08, 11.01) whatever the start;
-# (-0.10, 10.40) lay 0.4 m from counter_2's stand-off, under the frustum (the head pitches 18 deg down at most):
-# never seen (NOT_OBSERVED in 20 of 20)
+DROP_XY = (-1.10, 12.30)  # 11-21 (v6_layouts_1120, v6_verify_1120b + sim probes): the small kitchen's north-west
+# floor, north of kitchen_cabinet_2 -- explore_room(kitchen_0_1) stands at one of two viewpoints, west (-1.0, 8.2)
+# or east (3.0, 10.9), by where the robot is; this corner is in the sweep from both.  (-0.10, 10.40) lay 0.4 m
+# from counter_2's stand-off, under the frustum (never seen); (1.50, 12.10) only from the east viewpoint
 
 
 def floor(asset, x, y, yaw=0.0):
@@ -434,7 +434,7 @@ def t23():
 
     # by_kind: the block goes where the kid's toys are kept -- the toy box (ideal); or (11-17) his small toy bin,
     # full of blocks, an empty sorting tray beside it (capacity)
-    block_k = floor("wooden_block", 2.60, 12.30)          # in the strip explore_room sees (DROP_XY)
+    block_k = floor("wooden_block", -0.40, 12.35)         # in the corner explore_room sees (DROP_XY)
     LT["by_kind__toy_box"] = cost_tiers([(sgoal + [["inside", BLK, "toy_box"]], 0), (sgoal + off_floor(BLK), 2)])
     LT["by_kind__bin_full"] = cost_tiers([(sgoal + [["inside", BLK, TRAY]] + bin_stays, 0),
                                           (sgoal + [["inside", BLK, BIN]], 1), (sgoal + off_floor(BLK), 2)])
@@ -443,7 +443,7 @@ def t23():
     # the floor and stay); no toy box in the house, a sorting tray on the TV stand (absent); or his toy bin full,
     # the tray beside it (capacity).  The laundry basket holds clothes: the block in it is the worst
     BB, LB = "kitchen_bin", "laundry_basket"
-    floor_things = {BB: floor("trash_can", 2.40, 12.25), LB: floor("storage_basket", 0.70, 12.10)}  # beside DROP_XY
+    floor_things = {BB: floor("trash_can", -1.55, 12.50), LB: floor("storage_basket", -0.50, 12.25)}  # beside DROP_XY
     stay = [["near_start", BB, 0.03], ["near_start", LB, 0.03]]
     on_floor = [["on_floor", BB], ["on_floor", LB]]
     blk_f = {BLK: floor("wooden_block", *DROP_XY)}
