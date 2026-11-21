@@ -407,12 +407,11 @@ def shelf_books(levels):
     return out
 
 
-# 11-21 (v6_verify_1121_t23): carried from the north floor, navigate(counter) parks the base off the counter's north
-# end (-0.73, 10.40) and every place from there fails (carry tilt TRAJOPT_FAIL), whether to (-0.10, 7.60) or the
-# north end (-0.20, 9.10), 7 of 9.  Every place that worked came from the west side (base ~(-1.0, 8.2) facing east):
-# the route walks to the cup on the counter's west edge (-0.34, 8.20) instead, then places south of it
-CTR_W = [-0.10, 7.60]
-CTR_CUP = "cup_counter_b"        # on the counter in every design that carries the spoon back (only out_of_view removes it)
+# 11-21 (v6_verify_1121_t23): the spoon picked off the floor does not go onto counter_2 -- from its north end 2 of 9
+# places worked, from its west side (via the cup there) 1 of 3, every failure the carry tilt (TRAJOPT_FAIL).  The goal
+# takes any kitchen worktop; the reference takes it to the island, where the spoons of dropped_out_of_view went (4 of 4)
+CTR_W = [-0.10, 7.60]            # the cup of only_this_room (worked from the cabinet side)
+ISL_SPOT = [7.40, 1.62]
 
 
 def t23():
@@ -425,10 +424,10 @@ def t23():
     sgoal = [["on_any", SP, WORKTOPS]]                                         # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
-                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP), nav(CTR_CUP), place(SP, COUNTER, CTR_W)], [SP],
+                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)], [SP],
                   start=START)
     spoon = {SP: floor("breakfast_spoon", *DROP_XY, 30.0)}
-    back = [nav(SP), pick(SP), nav(CTR_CUP), place(SP, COUNTER, CTR_W)]
+    back = [nav(SP), pick(SP), nav(ISL), place(SP, ISL, ISL_SPOT)]
     LT = LAYOUT_TIERS.setdefault(("T23", "*"), {})
     BLK, BIN, TRAY = "dropped_block", "toy_bin", "spare_tray"
     BIN_AT, TRAY_AT = (7.30, 0.36), (7.80, 0.36)

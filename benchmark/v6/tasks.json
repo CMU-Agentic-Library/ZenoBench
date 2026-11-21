@@ -105512,10 +105512,10 @@
     "tomato_in_fridge__in_fridge": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_island/top",
        "xy": [
-        8.715,
-        1.655
+        7.25,
+        1.85
        ],
        "yaw_deg": 0.0
       },
@@ -105650,65 +105650,25 @@
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
+         "breakfast_spoon",
+         "cherry_tomato_1",
+         "cherry_tomato_2",
+         "pot_lid"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.3853,
+         7.125,
          1.5929,
-         7.5347,
-         1.7571
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.06,
-         0.21
-        ],
-        "pick": [
-         "breakfast_spoon"
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.34
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
          7.814,
-         1.634
+         1.975
         ],
         "dx": [
-         -1.23,
+         -0.57,
          0.43
         ],
-        "dy": [
-         -0.08,
-         0.34
+        "pick": [
+         "breakfast_spoon",
+         "pot_lid"
         ]
        }
       ],
@@ -105907,10 +105867,10 @@
     "tomato_in_fridge__big_tomato": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_island/top",
        "xy": [
-        8.715,
-        1.655
+        7.25,
+        1.85
        ],
        "yaw_deg": 0.0
       },
@@ -106045,65 +106005,25 @@
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
+         "breakfast_spoon",
+         "cherry_tomato_1",
+         "cherry_tomato_2",
+         "pot_lid"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.3853,
+         7.125,
          1.5929,
-         7.5347,
-         1.7571
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.06,
-         0.21
-        ],
-        "pick": [
-         "breakfast_spoon"
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.34
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
          7.814,
-         1.634
+         1.975
         ],
         "dx": [
-         -1.23,
+         -0.57,
          0.43
         ],
-        "dy": [
-         -0.08,
-         0.34
+        "pick": [
+         "breakfast_spoon",
+         "pot_lid"
         ]
        }
       ],
@@ -180322,17 +180242,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup_counter_b"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
+        "receptacle": "kitchen_island/top",
         "hint_xy": [
-         -0.364,
-         7.609
+         7.4,
+         1.62
         ]
        }
       }
@@ -180379,17 +180299,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup_counter_b"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
+        "receptacle": "kitchen_island/top",
         "hint_xy": [
-         -0.364,
-         7.609
+         7.4,
+         1.62
         ]
        }
       },
@@ -180475,17 +180395,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup_counter_b"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
+        "receptacle": "kitchen_island/top",
         "hint_xy": [
-         -0.364,
-         7.609
+         7.4,
+         1.62
         ]
        }
       },
@@ -180947,17 +180867,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup_counter_b"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
+        "receptacle": "kitchen_island/top",
         "hint_xy": [
-         -0.364,
-         7.609
+         7.4,
+         1.62
         ]
        }
       },
@@ -181047,17 +180967,17 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup_counter_b"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "dropped_spoon",
-        "receptacle": "kitchen_counter_2/top",
+        "receptacle": "kitchen_island/top",
         "hint_xy": [
-         -0.364,
-         7.609
+         7.4,
+         1.62
         ]
        }
       },

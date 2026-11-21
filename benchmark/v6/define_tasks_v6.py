@@ -1602,6 +1602,9 @@ def T09(t):
     # not for the first cherry tomato
     for case, x in ((fridge, F3), (big, BIG)):
         case["route"] = [dict(st, args=dict(st["args"], food=x)) if st["skill"] == "heat" else st for st in case["route"]]
+        # 11-21 (v6_verify_1120b s10/s15/s17, v6_verify_1121 s11: 4 of 7 picks of the lid on the stove's right burner
+        # (8.71, 1.66) out of reach at the straight's start): the lid on the island by the tomatoes, as in pot_in_dining_room
+        case["move"] = {**case.get("move", {}), LID: lid_isl}
     # per-seed tiers (11-17): the soup's side steps (stir, cover, the fridge closed) cost a level each
     LT = LAYOUT_TIERS.setdefault(("T09", "*"), {})
     core = lambda pot, xs: [*[["inside", x, pot] for x in xs], *[["temperature_at_least", x, 60] for x in xs],  # noqa: E731
