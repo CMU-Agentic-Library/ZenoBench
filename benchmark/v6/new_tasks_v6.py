@@ -407,6 +407,11 @@ def shelf_books(levels):
     return out
 
 
+# 11-21 (v6_verify_1121_t23 s13: the spoon carried from the north floor, the base at the counter's north end, 3 of 3
+# reaches to (-0.10, 7.60) failed): the counter's free north end, 0.3 m in from its north and west edges
+CTR_N = [-0.20, 9.10]
+
+
 def t23():
     from benchmark.v6.scoring import LAYOUT_TIERS, cost_tiers
     SP = "dropped_spoon"
@@ -417,9 +422,9 @@ def t23():
     sgoal = [["on_any", SP, WORKTOPS]]                                         # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
-                  {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, [-0.10, 7.60]), [SP], start=START)
+                  {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, CTR_N), [SP], start=START)
     spoon = {SP: floor("breakfast_spoon", *DROP_XY, 30.0)}
-    back = fetch(SP, COUNTER, [-0.10, 7.60])
+    back = fetch(SP, COUNTER, CTR_N)
     LT = LAYOUT_TIERS.setdefault(("T23", "*"), {})
     BLK, BIN, TRAY = "dropped_block", "toy_bin", "spare_tray"
     BIN_AT, TRAY_AT = (7.30, 0.36), (7.80, 0.36)
@@ -577,7 +582,7 @@ def t23():
                                   watch=[CUP, CAR, *full_c4],
                                   goal={"all": [["on_any", CUP, WORKTOPS], *closed, *car_stays, H]},
                                   route=[nav(CUP), look(CUP), pick(CUP), nav(C4T), look(C4T), nav(COUNTER),
-                                         place(CUP, COUNTER, [-0.10, 7.60])])},
+                                         place(CUP, COUNTER, CTR_N)])},
             instruction="Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
             instruction_zh="厨房地上掉了东西，帮忙捡起来放好。"),
         "dropped_in_two_rooms": fam(
