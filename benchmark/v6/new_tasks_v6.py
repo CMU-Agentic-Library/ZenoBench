@@ -783,6 +783,10 @@ def t25():
     in_fridge = lambda n: {"asset": "juice_bottle", **P(FS, 5.90, 3.30)}  # noqa: E731
     MUGS = ["mug_dining_cabinet", "mug_shelf", "mug_counter"]       # the dining room's mugs: the fallback
 
+    # 11-21 (user): the stock cups in cabinet 6 -- cabinet 4's shelf has 0.30 m above it and no pick reached a cup
+    # there (v6_verify_1120b, 3 of 3); every pick inside cabinet 6 worked (7 of 7, 0.38 m above its shelf)
+    STOCK = C6
+
     def cups_goal(n_tv, n_in):
         """exactly two cups by the guests, as many ordinary ones as the house has (up to two), the ones there stay"""
         mine = [f"tv_cup_{k + 1}" for k in range(n_tv)] + [f"stock_cup_{k + 1}" for k in range(n_in)]
@@ -794,13 +798,13 @@ def t25():
         need, out, hints = 2 - n_tv, [], [7.55, 7.05]
         if need <= 0:
             return out
-        out += explore(C4)
+        out += explore(STOCK)
         take = min(need, n_in)
         for k in range(take):
             x = f"stock_cup_{k + 1}"
-            out += (from_closed(x, C4) if k == take - 1 else [nav(x), pick(x)]) + [nav(TV), place(x, TV, [hints[k], 0.36])]
+            out += (from_closed(x, STOCK) if k == take - 1 else [nav(x), pick(x)]) + [nav(TV), place(x, TV, [hints[k], 0.36])]
         if take == 0:
-            out += [S("close", articulated=C4)]
+            out += [S("close", articulated=STOCK)]
         for k in range(take, need):
             out += [S("search", object="mug_shelf", region="dining_room_0_1")] + fetch("mug_shelf", TV, [hints[k], 0.36])
         return out
@@ -886,11 +890,11 @@ def t25():
             "exactly two cups in the end, the ones already there left where they are",
             {c: dict(add={J: on("juice_bottle", ISL, 7.30, 1.80),
                           **{f"tv_cup_{k + 1}": on("breakfast_cup", TV, x, 0.36) for k, x in enumerate((7.80, 8.05)[:n_tv])},
-                          **{f"stock_cup_{k + 1}": on("breakfast_cup", f"{C4}/inside_shelf", x, 0.50)
-                             for k, x in enumerate((1.25, 1.55)[:n_in])}},
+                          **{f"stock_cup_{k + 1}": on("breakfast_cup", f"{STOCK}/inside_shelf", x, 0.36)
+                             for k, x in enumerate((3.35, 3.63)[:n_in])}},
                      remove=["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"],
                      watch=[J, *[f"tv_cup_{k + 1}" for k in range(n_tv)], *[f"stock_cup_{k + 1}" for k in range(n_in)]],
-                     goal={"all": [["on", J, TV], ["upright", J]] + cups_goal(n_tv, n_in) + [["is_closed", C4], H]},
+                     goal={"all": [["on", J, TV], ["upright", J]] + cups_goal(n_tv, n_in) + [["is_closed", STOCK], H]},
                      route=[look(TV)] + fetch(J, TV, [7.30, 0.36]) + cups_route(n_tv, n_in))
              for c, n_tv, n_in in (("one_there", 1, 1), ("none_one_inside", 0, 1), ("none_two_inside", 0, 2),
                                    ("two_there", 2, 1))},

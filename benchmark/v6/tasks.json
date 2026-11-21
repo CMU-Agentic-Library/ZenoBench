@@ -135748,7 +135748,7 @@
       "spoon": {
        "support": "dining_table_2/top",
        "xy": [
-        2.89,
+        2.95,
         7.3
        ],
        "yaw_deg": 0.0
@@ -136263,7 +136263,7 @@
       "spoon": {
        "support": "dining_table_2/top",
        "xy": [
-        2.89,
+        2.95,
         7.3
        ],
        "yaw_deg": 0.0
@@ -136829,7 +136829,7 @@
       "spoon": {
        "support": "dining_table_2/top",
        "xy": [
-        2.89,
+        2.95,
         7.3
        ],
        "yaw_deg": 0.0
@@ -139373,7 +139373,7 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.49
         ]
        }
@@ -139402,7 +139402,7 @@
         "object": "cup",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.15
         ]
        }
@@ -139467,7 +139467,7 @@
         "object": "plate_counter_a",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.49
         ]
        }
@@ -139545,7 +139545,7 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.68
         ]
        }
@@ -139610,7 +139610,7 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.49
         ]
        }
@@ -139651,7 +139651,7 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.89,
+         2.95,
          7.15
         ]
        }
@@ -192608,10 +192608,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        1.25,
-        0.5
+        3.35,
+        0.36
        ],
        "yaw_deg": 0.0
       }
@@ -192667,7 +192667,7 @@
        ],
        [
         "is_closed",
-        "kitchen_cabinet_4"
+        "kitchen_cabinet_6"
        ],
        [
         "hand_empty",
@@ -192960,10 +192960,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        1.25,
-        0.5
+        3.35,
+        0.36
        ],
        "yaw_deg": 0.0
       }
@@ -193011,7 +193011,7 @@
        ],
        [
         "is_closed",
-        "kitchen_cabinet_4"
+        "kitchen_cabinet_6"
        ],
        [
         "hand_empty",
@@ -193291,19 +193291,19 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        1.25,
-        0.5
+        3.35,
+        0.36
        ],
        "yaw_deg": 0.0
       },
       "stock_cup_2": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        1.55,
-        0.5
+        3.63,
+        0.36
        ],
        "yaw_deg": 0.0
       }
@@ -193354,7 +193354,7 @@
        ],
        [
         "is_closed",
-        "kitchen_cabinet_4"
+        "kitchen_cabinet_6"
        ],
        [
         "hand_empty",
@@ -193604,10 +193604,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
-        1.25,
-        0.5
+        3.35,
+        0.36
        ],
        "yaw_deg": 0.0
       }
@@ -193671,7 +193671,7 @@
        ],
        [
         "is_closed",
-        "kitchen_cabinet_4"
+        "kitchen_cabinet_6"
        ],
        [
         "hand_empty",
@@ -195661,13 +195661,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
@@ -195677,7 +195677,7 @@
       {
        "skill": "explore_furniture",
        "args": {
-        "furniture": "kitchen_cabinet_4"
+        "furniture": "kitchen_cabinet_6"
        }
       },
       {
@@ -195699,7 +195699,7 @@
       {
        "skill": "retreat",
        "args": {
-        "obstacle": "kitchen_cabinet_4",
+        "obstacle": "kitchen_cabinet_6",
         "distance_m": 0.3
        }
       },
@@ -195723,13 +195723,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -195794,13 +195794,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
@@ -195810,7 +195810,7 @@
       {
        "skill": "explore_furniture",
        "args": {
-        "furniture": "kitchen_cabinet_4"
+        "furniture": "kitchen_cabinet_6"
        }
       },
       {
@@ -195832,7 +195832,7 @@
       {
        "skill": "retreat",
        "args": {
-        "obstacle": "kitchen_cabinet_4",
+        "obstacle": "kitchen_cabinet_6",
         "distance_m": 0.3
        }
       },
@@ -195856,13 +195856,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
@@ -195963,13 +195963,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
@@ -195979,7 +195979,7 @@
       {
        "skill": "explore_furniture",
        "args": {
-        "furniture": "kitchen_cabinet_4"
+        "furniture": "kitchen_cabinet_6"
        }
       },
       {
@@ -196030,7 +196030,7 @@
       {
        "skill": "retreat",
        "args": {
-        "obstacle": "kitchen_cabinet_4",
+        "obstacle": "kitchen_cabinet_6",
         "distance_m": 0.3
        }
       },
@@ -196054,13 +196054,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -197155,7 +197155,7 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ],
             [
@@ -197166,7 +197166,7 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ]
            ]
@@ -197231,13 +197231,13 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ],
             [
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ]
            ]
@@ -197306,13 +197306,13 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ],
             [
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ]
            ]
@@ -197395,7 +197395,7 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ],
             [
@@ -197411,7 +197411,7 @@
              ],
              [
               "is_closed",
-              "kitchen_cabinet_4"
+              "kitchen_cabinet_6"
              ]
             ]
            ]

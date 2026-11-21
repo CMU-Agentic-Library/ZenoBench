@@ -2052,7 +2052,9 @@ def T13(t):
     # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
     # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
     # the room.  No cup in the house: the mug takes the cup's place.
-    B_SP, A_SP = [2.89, 7.30], [3.70, 6.55]     # the copy's spoon 10 cm from the west edge
+    # 11-21 (v6_verify_1120b s11: the bowl's place at x 2.89 hit the torso, 2 mm): the copy's spoon 16 cm from the west
+    # edge (x 2.788), the bowl and cup set beside it 8 cm clear of the edge, like the example 14 cm from the east edge
+    B_SP, A_SP = [2.95, 7.30], [3.70, 6.55]
     # (forward, left) of the spoon; nothing forward of it: the diner sits at the table's edge and what is
     # set there stays within 20 cm of it, in the robot's reach (the cup 17 cm forward lay 33 cm in)
     RIGHT = {"bowl": (0.0, 0.19), "cup": (0.0, -0.15)}
