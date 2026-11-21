@@ -407,9 +407,12 @@ def shelf_books(levels):
     return out
 
 
-# 11-21 (v6_verify_1121_t23 s13: the spoon carried from the north floor, the base at the counter's north end, 3 of 3
-# reaches to (-0.10, 7.60) failed): the counter's free north end, 0.3 m in from its north and west edges
-CTR_N = [-0.20, 9.10]
+# 11-21 (v6_verify_1121_t23): carried from the north floor, navigate(counter) parks the base off the counter's north
+# end (-0.73, 10.40) and every place from there fails (carry tilt TRAJOPT_FAIL), whether to (-0.10, 7.60) or the
+# north end (-0.20, 9.10), 7 of 9.  Every place that worked came from the west side (base ~(-1.0, 8.2) facing east):
+# the route walks to the cup on the counter's west edge (-0.34, 8.20) instead, then places south of it
+CTR_W = [-0.10, 7.60]
+CTR_CUP = "cup_counter_b"        # on the counter in every design that carries the spoon back (only out_of_view removes it)
 
 
 def t23():
@@ -422,9 +425,10 @@ def t23():
     sgoal = [["on_any", SP, WORKTOPS]]                                         # any kitchen worktop
     t = base_task("T23_pick_up_dropped", "ZB-T23", "Something fell on the floor. Please pick it up and put it "
                   "where it belongs.", "地上掉了东西，帮忙捡起来放好。", "spoon_on_floor", ctl,
-                  {"all": sgoal + [H]}, [look(COUNTER)] + fetch(SP, COUNTER, CTR_N), [SP], start=START)
+                  {"all": sgoal + [H]}, [look(COUNTER)] + [nav(SP), pick(SP), nav(CTR_CUP), place(SP, COUNTER, CTR_W)], [SP],
+                  start=START)
     spoon = {SP: floor("breakfast_spoon", *DROP_XY, 30.0)}
-    back = fetch(SP, COUNTER, CTR_N)
+    back = [nav(SP), pick(SP), nav(CTR_CUP), place(SP, COUNTER, CTR_W)]
     LT = LAYOUT_TIERS.setdefault(("T23", "*"), {})
     BLK, BIN, TRAY = "dropped_block", "toy_bin", "spare_tray"
     BIN_AT, TRAY_AT = (7.30, 0.36), (7.80, 0.36)
@@ -582,7 +586,7 @@ def t23():
                                   watch=[CUP, CAR, *full_c4],
                                   goal={"all": [["on_any", CUP, WORKTOPS], *closed, *car_stays, H]},
                                   route=[nav(CUP), look(CUP), pick(CUP), nav(C4T), look(C4T), nav(COUNTER),
-                                         place(CUP, COUNTER, CTR_N)])},
+                                         place(CUP, COUNTER, CTR_W)])},
             instruction="Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
             instruction_zh="厨房地上掉了东西，帮忙捡起来放好。"),
         "dropped_in_two_rooms": fam(
