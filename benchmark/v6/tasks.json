@@ -78480,10 +78480,10 @@
        "yaw_deg": 0.0
       },
       "pen": {
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.4,
-        0.54
+        0.46
        ],
        "yaw_deg": 0.0
       }
@@ -78526,27 +78526,78 @@
         [
          "on",
          "pen",
-         "kitchen_cabinet_4/inside_shelf"
+         "kitchen_cabinet_4/top"
         ]
        ]
       }
      ],
      "since": "v6",
-     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
      "v6": {
       "family": "x6_gd_pen_or_pencil_cabinets",
       "case": "pen_in_4",
-      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
       "rationale": "find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen taken) costs",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
-      "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
+      "factor": "where the pen is (seed: on top of cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
       "derived_from": "h_task_pencil_in_cabinet"
      },
      "layout": {
-      "clusters": [],
+      "clusters": [
+       {
+        "names": [
+         "pen"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.33,
+         0.4519,
+         1.47,
+         0.4681
+        ],
+        "dx": [
+         -0.28,
+         0.28
+        ],
+        "dy": [
+         -0.18,
+         0.1
+        ],
+        "pick": [
+         "pen"
+        ]
+       }
+      ],
       "static": {},
-      "reach": {},
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "bedroom_0_1",
        "hide": [],
@@ -78625,7 +78676,7 @@
       "not_ok": "nothing to write with on the desk (or no notebook); one errand only; still held or dropped",
       "top": "ideal",
       "ideal_present": true,
-      "ideal_zh": "笔（在矮柜里）",
+      "ideal_zh": "笔（在 4 号柜顶上）",
       "loosened": "11-20"
      }
     },
@@ -78705,15 +78756,15 @@
       "grandma_list"
      ],
      "since": "v6",
-     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+     "note": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
      "v6": {
       "family": "x6_gd_pen_or_pencil_cabinets",
       "case": "pen_in_use",
-      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+      "challenge": "nothing to write with on the desk; the writing things are put away in the two closed low kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
       "rationale": "find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen taken) costs",
       "control": "h_task_pencil_in_cabinet",
       "contrast": null,
-      "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
+      "factor": "where the pen is (seed: on top of cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
       "derived_from": "h_task_pencil_in_cabinet"
      },
      "layout": {
@@ -79688,60 +79739,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_6"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -79756,13 +79761,6 @@
        }
       },
       {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_4",
-        "distance_m": 0.3
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "desk_1/top"
@@ -79773,18 +79771,6 @@
        "args": {
         "object": "pen",
         "receptacle": "desk_1/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -81276,7 +81262,7 @@
       "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "x6_gd_pen_or_pencil_cabinets__pen_in_use"
      ],
-     "factor": "where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
+     "factor": "where the pen is (seed: on top of cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining table, in use, only the pencil in the cabinets)",
      "seeds": {
       "10": "x6_gd_pen_or_pencil_cabinets__pen_in_use",
       "11": "x6_gd_pen_or_pencil_cabinets__pen_in_4",

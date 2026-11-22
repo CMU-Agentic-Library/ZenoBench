@@ -892,13 +892,16 @@ def T05(t):
     # never picked (0 of 13: v5 runs, v6full_1119, v6_sticky_1121)
     # 11-22 (v6_sticky_1121j s10): 10 cm in, neither was reachable (no collision-free path to any grasp, 2 of 2):
     # 2 cm behind the shelf's front edge (cabinet 4: y 0.562, cabinet 6: 0.502), the wrist outside the cabinet
-    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.54], "yaw_deg": 0.0}
+    # 11-22 (v6_sticky_1121j/m s10): in cabinet 4 (shelf z 0.31, 0.30 m clear) the pen had no collision-free IK at
+    # 10 cm in nor 2 cm behind the front (the arm on the cabinet's frame, 2 of 2): on cabinet 4's top instead, as
+    # the cups in cabinet 4 (user, 11-21); the pencil stays in cabinet 6 (picked 2 cm behind its front)
+    in4 = {"support": "kitchen_cabinet_4/top", "xy": [1.40, 0.46], "yaw_deg": 0.0}
     in6_pencil = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.50, 0.48], "yaw_deg": 0.0}
 
     def fetch(x, art):
         return [nav(x), pick(x), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]
-    pen4 = open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")] \
-        + open_explore("kitchen_cabinet_4") + fetch("pen", "kitchen_cabinet_4") + [nav("desk_1/top"), place("pen", "desk_1/top")]
+    pen4 = [nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"), nav("pen"), pick("pen"),
+            nav("desk_1/top"), place("pen", "desk_1/top")]
     pen6 = open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")] \
         + open_explore("kitchen_cabinet_6") + fetch("pen", "kitchen_cabinet_6") + [nav("desk_1/top"), place("pen", "desk_1/top")]
     pen_goal = {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"], ["is_closed", "kitchen_cabinet_6"],
@@ -1132,16 +1135,16 @@ def T05(t):
             cases=errand_cases),
         "x6_gd_pen_or_pencil_cabinets": dict(
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
-            factor="where the pen is (seed: in cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining "
+            factor="where the pen is (seed: on top of cabinet 4, the pencil in cabinet 6; or on grandma's list at the dining "
                    "table, in use, only the pencil in the cabinets)",
             instruction=PEN_TXT[0], instruction_zh=PEN_TXT[1],
             challenge="nothing to write with on the desk; the writing things are put away in the two closed low "
-                      "kitchen cabinets: a pencil in one, the pen in the other -- or the pen is in use on grandma's list",
+                      "kitchen cabinets: a pencil in cabinet 6, the pen on top of cabinet 4 -- or the pen is in use on grandma's list",
             rationale="find the pen (open the cabinets, close them again); a pencil is the stand-in only when the pen "
                       "is in use; each fault (the pencil, a door left open, the other one brought too, grandma's pen "
                       "taken) costs",
             cases={"pen_in_4": dict(move={"pen": in4, "pencil": in6_pencil}, goal=pen_goal, route=pen4,
-                                    failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/inside_shelf"]],
+                                    failures=[f_initial("resource", [["on", "pen", "kitchen_cabinet_4/top"]],
                                                         fid="resource_pen_in_cabinet")]),
                    # pen_in_use (11-17, replaces pen_in_6): only the pencil in the cabinets (cabinet 6)
                    "pen_in_use": dict(
