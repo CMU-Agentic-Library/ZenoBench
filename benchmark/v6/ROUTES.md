@@ -370,19 +370,19 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Control
 
-* `e1_book_ready` (v5_e1_book_ready, 6 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top)
+* `e1_book_ready` (v5_e1_book_ready, 6 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.005, -0.459])
 
 ### Task-Level
 
 * `within_kids_reach__set_on_large_shelf_4` (v6_within_kids_reach__set_on_large_shelf_4, 7 steps): navigate(desk_1/top) look(desk_1/top) explore_room(bedroom_0_1) navigate(book_red) pick(book_red) navigate(large_shelf_4/shelf_1) place(book_red,large_shelf_4/shelf_1,[3.7, -5.15])
 * `within_kids_reach__set_on_large_shelf_5` (v6_within_kids_reach__set_on_large_shelf_5, 7 steps): navigate(desk_1/top) look(desk_1/top) explore_room(bedroom_0_1) navigate(book_red) pick(book_red) navigate(large_shelf_5/shelf_1) place(book_red,large_shelf_5/shelf_1,[4.45, -0.35])
-* `homework_stays` (v6_homework_stays, 10 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top) navigate(desk_mug) pick(desk_mug) navigate(kitchen_counter_2/top) place(desk_mug,kitchen_counter_2/top,[-0.384, 7.609])
+* `homework_stays` (v6_homework_stays, 10 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.005, -0.459]) navigate(desk_mug) pick(desk_mug) navigate(kitchen_counter_2/top) place(desk_mug,kitchen_counter_2/top,[-0.384, 7.609])
 * `whose_book__blue_book` (v6_whose_book__blue_book, 6 steps): navigate(desk_1/top) look(desk_1/top) navigate(blue_book) pick(blue_book) navigate(bookcase_2/top) place(blue_book,bookcase_2/top,[1.0, -0.5])
 * `whose_book__paperback` (v6_whose_book__paperback, 6 steps): navigate(desk_1/top) look(desk_1/top) navigate(paperback) pick(paperback) navigate(large_shelf_2/shelf_2) place(paperback,large_shelf_2/shelf_2,[-1.86, -0.95])
 * `whose_book__both` (v6_whose_book__both, 10 steps): navigate(desk_1/top) look(desk_1/top) navigate(blue_book) pick(blue_book) navigate(bookcase_2/top) place(blue_book,bookcase_2/top,[1.0, -0.5]) navigate(paperback) pick(paperback) navigate(large_shelf_2/shelf_2) place(paperback,large_shelf_2/shelf_2,[-1.86, -0.95])
-* `next_in_series__on_bookcase` (v6_next_in_series__on_bookcase, 11 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
-* `next_in_series__on_other_bookcase` (v6_next_in_series__on_other_bookcase, 13 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(bookcase_3/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
-* `next_in_series__on_tall_shelf` (v6_next_in_series__on_tall_shelf, 13 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(large_shelf_4/shelf_1) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
+* `next_in_series__on_bookcase` (v6_next_in_series__on_bookcase, 11 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.45]) look(bookcase_2/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
+* `next_in_series__on_other_bookcase` (v6_next_in_series__on_other_bookcase, 13 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.45]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(bookcase_3/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
+* `next_in_series__on_tall_shelf` (v6_next_in_series__on_tall_shelf, 13 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.45]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(large_shelf_4/shelf_1) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.808, -6.166])
 
 ## T21_bring_tissues
 
