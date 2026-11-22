@@ -672,14 +672,14 @@ def _cups_second(g, lid):
 
 R[("T25", "cups_for_two")] = tiers(
     second=_cups_second, worst=_cups_worst,
-    why=("two plain cups by the guests in all (the ones there kept), none extra, the cabinet closed",
-         "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the "
-         "cups already there moved",
+    why=("two plain cups by the guests in all (the ones there kept), none extra",
+         "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there "
+         "moved",
          "more than two, or two slips at once"),
     not_ok="fewer than two cups; no juice; the juice lying; still held or dropped",
-    zh=dict(sit="两位客人；客人那已有 0-2 个杯子，矮柜里 1-2 个；其他只有餐厅的马克杯；尽量用普通杯子、不重复拿",
-            good="一共两个普通杯子（已有的不动、不多拿），柜门关好",
-            second="一共两个，但柜里有普通杯子却用了马克杯，或柜门没关，或挪了已有的杯子",
+    zh=dict(sit="两位客人；客人那已有 0-2 个杯子，小厨房台面上 1-2 个；其他只有餐厅的马克杯；尽量用普通杯子、不重复拿",
+            good="一共两个普通杯子（已有的不动、不多拿）",
+            second="一共两个，但台面上有普通杯子却用了马克杯，或挪了已有的杯子",
             worst="拿多了，或同时有两个疏忽", no="不到两个杯子；没饮料；躺着；还拿着或掉了"))
 R[("T25", "little_guest")] = tiers(
     second=lambda g, lid: drop(g, "near_start"),

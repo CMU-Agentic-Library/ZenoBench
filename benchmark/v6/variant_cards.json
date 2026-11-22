@@ -22781,7 +22781,7 @@
   "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T23_pick_up_dropped/dropped_out_of_view__no_room_for_lid": {
+ "T23_pick_up_dropped/dropped_out_of_view__no_room_for_bowl": {
   "variant": "dropped_out_of_view",
   "category": "task",
   "seeds": [
@@ -22824,7 +22824,7 @@
     "counter_plate_w3",
     "counter_plate_w5",
     "counter_plate_w7",
-    "dropped_lid"
+    "dropped_bowl"
    ],
    "removed": [
     "cup_counter_b",
@@ -22845,7 +22845,7 @@
    "all": [
     [
      "on_any",
-     "dropped_lid",
+     "dropped_bowl",
      [
       "kitchen_counter_1/top",
       "kitchen_island/top"
@@ -22858,7 +22858,7 @@
    ]
   },
   "control": "spoon_on_floor",
-  "oracle_route": "v6_dropped_out_of_view__no_room_for_lid",
+  "oracle_route": "v6_dropped_out_of_view__no_room_for_bowl",
   "challenge": "the dropped thing slid into the dining room next door, out of view; the small kitchen's counter is covered with dishes (no room; or only room for small things)",
   "rationale": "find it, then put it on another kitchen worktop (the island) rather than on or among the dishes",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -24448,7 +24448,7 @@
    ],
    "conditions": [
     "count_from_scene",
-    "item_put_away",
+    "not_in_view",
     "resource_absent",
     "dependent_decisions"
    ],
@@ -24505,10 +24505,6 @@
      0.03
     ],
     [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
      "hand_empty",
      "right"
     ]
@@ -24516,7 +24512,7 @@
   },
   "control": "drink_on_island",
   "oracle_route": "v6_cups_for_two__one_there",
-  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
   "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -24546,7 +24542,7 @@
    ],
    "conditions": [
     "count_from_scene",
-    "item_put_away",
+    "not_in_view",
     "resource_absent",
     "dependent_decisions"
    ],
@@ -24595,10 +24591,6 @@
      1
     ],
     [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
      "hand_empty",
      "right"
     ]
@@ -24606,7 +24598,7 @@
   },
   "control": "drink_on_island",
   "oracle_route": "v6_cups_for_two__none_one_inside",
-  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
   "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -24634,7 +24626,7 @@
    ],
    "conditions": [
     "count_from_scene",
-    "item_put_away",
+    "not_in_view",
     "resource_absent",
     "dependent_decisions"
    ],
@@ -24686,10 +24678,6 @@
      2
     ],
     [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
      "hand_empty",
      "right"
     ]
@@ -24697,7 +24685,7 @@
   },
   "control": "drink_on_island",
   "oracle_route": "v6_cups_for_two__none_two_inside",
-  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
   "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -24726,7 +24714,7 @@
    ],
    "conditions": [
     "count_from_scene",
-    "item_put_away",
+    "not_in_view",
     "resource_absent",
     "dependent_decisions"
    ],
@@ -24791,10 +24779,6 @@
      0.03
     ],
     [
-     "is_closed",
-     "kitchen_cabinet_4"
-    ],
-    [
      "hand_empty",
      "right"
     ]
@@ -24802,7 +24786,7 @@
   },
   "control": "drink_on_island",
   "oracle_route": "v6_cups_for_two__two_there",
-  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+  "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
   "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

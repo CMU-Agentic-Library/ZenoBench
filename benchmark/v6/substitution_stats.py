@@ -121,7 +121,7 @@ KIND = {
     ("T23", "spoon_on_floor"): {"*": None},
     ("T23", "by_kind"): {"toy_box": "去处替换", "bin_full": "能力不足"},
     ("T23", "belongs_on_floor"): {"no_toy_box": "缺失", "bin_full": "能力不足"},
-    ("T23", "dropped_out_of_view"): {"counter_full": "被占用", "no_room_for_lid": "能力不足"},
+    ("T23", "dropped_out_of_view"): {"counter_full": "被占用", "no_room_for_bowl": "能力不足"},
     ("T23", "only_this_room"): {"cabinet_room": None, "cabinet_full": "能力不足"},
     ("T23", "dropped_in_two_rooms"): {"shelf_room": None, "shelf_full": "能力不足"},
     ("T24", "apple_on_table"): {"*": None},

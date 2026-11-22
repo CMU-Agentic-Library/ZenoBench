@@ -1597,6 +1597,14 @@ def T09(t):
         route=base[:2] + open_explore(FRIDGE) + [nav(BIG), pick(BIG), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                                                  S("close", articulated=FRIDGE), nav(POT),
                                                  S("drop", object=BIG, container=POT)] + base[2:])
+    # 11-21 (v6_verify_1120b big_tomato s11, s14: every step done, the big tomato 55.9 C): heat waits for its food's
+    # target and switches off -- wait for the slowest thing in the pot (the cold one from the fridge, the big tomato),
+    # not for the first cherry tomato
+    for case, x in ((fridge, F3), (big, BIG)):
+        case["route"] = [dict(st, args=dict(st["args"], food=x)) if st["skill"] == "heat" else st for st in case["route"]]
+        # 11-21 (v6_verify_1120b s10/s15/s17, v6_verify_1121 s11: 4 of 7 picks of the lid on the stove's right burner
+        # (8.71, 1.66) out of reach at the straight's start): the lid on the island by the tomatoes, as in pot_in_dining_room
+        case["move"] = {**case.get("move", {}), LID: lid_isl}
     # per-seed tiers (11-17): the soup's side steps (stir, cover, the fridge closed) cost a level each
     LT = LAYOUT_TIERS.setdefault(("T09", "*"), {})
     core = lambda pot, xs: [*[["inside", x, pot] for x in xs], *[["temperature_at_least", x, 60] for x in xs],  # noqa: E731
@@ -2047,7 +2055,9 @@ def T13(t):
     # copy_the_setting: one place is set (the example, east side); the other place has only its spoon (west side).
     # Copy what it holds and where, in the diner's frame: the copy faces the other way, so left and right flip in
     # the room.  No cup in the house: the mug takes the cup's place.
-    B_SP, A_SP = [2.89, 7.30], [3.70, 6.55]     # the copy's spoon 10 cm from the west edge
+    # 11-21 (v6_verify_1120b s11: the bowl's place at x 2.89 hit the torso, 2 mm): the copy's spoon 16 cm from the west
+    # edge (x 2.788), the bowl and cup set beside it 8 cm clear of the edge, like the example 14 cm from the east edge
+    B_SP, A_SP = [2.95, 7.30], [3.70, 6.55]
     # (forward, left) of the spoon; nothing forward of it: the diner sits at the table's edge and what is
     # set there stays within 20 cm of it, in the robot's reach (the cup 17 cm forward lay 33 cm in)
     RIGHT = {"bowl": (0.0, 0.19), "cup": (0.0, -0.15)}
@@ -3735,6 +3745,12 @@ GT_PREFIX = {
     # 11-20 (v6_layouts_1120, 3 of 5 big_tomato seeds): collect into the pot after looking only at the island:
     # NOT_OBSERVED, the pot on the stove never seen -- look at the stove first
     ("T09", "tomato_in_fridge"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
+    # 11-21 (v6_verify_1120b; (task, "*") = every design of the task): T09 -- the pot at the island's east end
+    # (8.41, 1.73) is out of view from the island's west stand-off, collect NOT_OBSERVED in 4 runs; T10 -- the
+    # trash can south of the stove (9.05, 1.12) was seen neither from the island nor by explore_room(living_room_0_0)
+    # in 3 runs; a sim probe: navigate(stove) sees it from every approach tried
+    ("T09", "*"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
+    ("T10", "*"): [("navigate", "kitchen_stove/top"), ("look", "kitchen_stove/top")],
 }
 GT_NAV_BEFORE_LOOK = {("T21", "which_table"), ("T24", "where_is_he"), ("T28", "which_bed")}
 _GT_ARG = {"navigate": "destination", "look": "target", "explore_room": "room"}
@@ -3803,7 +3819,7 @@ def gt_sequence_fixes(task: dict) -> list:
     added again.  Returns [(layout, what)]."""
     out, tid = [], task["task_id"][:3]
     for vid, info in task.get("v6_variants", {}).items():
-        prefix = GT_PREFIX.get((tid, vid))
+        prefix = GT_PREFIX.get((tid, vid)) or GT_PREFIX.get((tid, "*"))
         nav_look = (tid, vid) in GT_NAV_BEFORE_LOOK
         if not prefix and not nav_look:
             continue

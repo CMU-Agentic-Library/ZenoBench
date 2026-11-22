@@ -1064,6 +1064,58 @@ LOOSEN_SEEDS: dict = {
 }
 
 
+# 11-20: the levels' words follow loosen -- what no longer scores (a door, a nudge, tidiness, a fault count) goes out
+# of the "why" text; what still does (a thing in use taken, things moved to make room, the soup's steps) stays
+WHY_FIX = [
+    (r"no fault: the glass \(two apart for two guests\) upright where it belongs, nothing disturbed, doors closed",
+     "the glass (two for two guests) upright where it belongs"),
+    (r"one fault: a mug for the glass \(iced: the kid's cup\), the other low cabinet for the spot, the kid's things "
+     r"moved, two touching, or a door left open",
+     "a mug for the glass (iced: the kid's cup), the other low cabinet for the spot, or the kid's things moved"),
+    (r"two faults or more: the kid's plastic cup \(iced: a mug\), another top, the bowl or lid left outside the "
+     r"kitchen, or several faults together",
+     "the kid's plastic cup (iced: a mug), another top, or the bowl or lid left outside the kitchen"),
+    (r"one fault: a substitute toy \(toy block or duck\) as the third level, or the base at the edge \(block A used "
+     r"as the base where it lay\); doors closed", "a substitute toy (toy block or duck) as the third level"),
+    (r"two faults \(a substitute and the base at the edge\), the dish sponge as the third level, or a cabinet door "
+     r"left open", "the dish sponge as the third level"),
+    (r"all three in one row, squared, at the front, apart, on", "all three in one row on"),
+    (r", a block askew, or the row split over two tops", ""),
+    (r"touching or at the back, crammed onto the full cabinet, the family's things moved, or several faults",
+     "crammed onto the full cabinet or the family's things moved"),
+    (r"lying on the table; or another bottle brought instead \(the one in use, one from the stock\), or the stock "
+     r"disturbed", "another bottle brought instead (the one in use, one from the stock)"),
+    (r"the soup in the empty pot, but the full pot moved off its burner \(still standing\), or not stirred or not "
+     r"covered", "the soup in the empty pot, but the full pot moved off its burner"),
+    (r"the soup in the empty pot but neither stirred nor covered; or ", ""),
+    (r"two side steps or more missed; or ", ""),
+    (r"something extra moved or brought, a door left open, the mug", "or the mug"),
+    (r"nothing anyone is using taken, nothing extra moved, doors closed, ", "nothing anyone is using taken, "),
+    (r", several faults", ""), (r"; or several faults", ""), (r", or several faults", ""),
+    (r"(?:a|the) door left open(?:; or |, or |; )", ""), (r"the (?:cabinet|fridge) left open or ", ""),
+    (r", the cabinet left open or the cups already there moved", ""), (r"the fridge open and the cereal moved; or ", ""),
+    (r"; or right places with a door left open", ""), (r"; or in the microwave with its door left open", ""),
+    (r"; or the door left open", ""), (r", or a cabinet door left open", ""),
+    (r",? (?:and )?(?:every |both |its |the )?(?:cabinet |microwave )?doors? closed", ""),
+    (r" \(the cabinet closed\)", ""), (r" \(closed\)", ""), (r", the (?:fridge|cabinet) closed", ""),
+    (r", 10 cm from its edge and its things", ""), (r", 5 cm from the edge and clear of the table's things", ""),
+    (r", the base 5 cm from the edge", ""), (r", 10 cm clear", ""), (r" and 2 cm from the edge", ""),
+    (r", or squeezed among the things on a table or at its edge", ""), (r" or at the edge", ""),
+    (r", the bowl upright", ""), (r" or tipped", ""), (r" \(still standing\)", ""),
+    # what is left of "nudged" is a thing moved more than 25 cm (STAY_TOL): moved off its place
+    (r"the castle standing at the end, but taken apart and built again, nudged, or", "the castle moved off its place, or"),
+    (r"lying on the table and the stock disturbed", "the stock moved off its place"),
+    (r" \(the kid's can still standing\)", ""), (r"nudged", "moved off its place"),
+]
+
+
+def fix_why(text: str) -> str:
+    import re
+    for a, b in WHY_FIX:
+        text = re.sub(a, b, text)
+    return text
+
+
 def _names(x) -> list:
     return list(x) if isinstance(x, list) else [x]
 
@@ -1179,6 +1231,8 @@ def loosen(task: dict, design: str, lid: str, p: dict) -> dict:
         else:
             out.append({"name": "worst", "score": 0.3, "raw": "poor_or_wrong", "goal": {"all": [], "any": low},
                         "why": "a poor substitute, something in use taken, or the wrong place (11-20)"})
+    for t in out:
+        t["why"] = fix_why(t["why"])
     return {**p, "tiers": out, "D": 1 if len(out) > 1 else 0, "loosened": "11-20"}
 
 
