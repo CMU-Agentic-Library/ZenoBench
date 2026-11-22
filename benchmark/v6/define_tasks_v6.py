@@ -536,8 +536,9 @@ def T02(t):
         tk_tiers[case] = tiers
     LAYOUT_TIERS[("T02", "tower_for_kid")] = tk_tiers
     # block_put_away: as edge_base (A at the edge, B in the open), the third block put away in a closed low cabinet
+    # 11-22: the block 9 cm in from cabinet 6's front (0.36 was 14 cm in; a pencil top-pinched there was never picked)
     in_cab = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
-              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
+              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.41], "yaw_deg": 0.0}}
     put_away_goal = copy.deepcopy(tower_goal)
     put_away_goal["all"] += [["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
     edge_two = OR(t, "edge_base")                # look, nav A, pick A, nav B, approach B, stack A on B
