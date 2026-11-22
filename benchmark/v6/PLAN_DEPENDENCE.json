@@ -4184,7 +4184,7 @@
    "task": "T14_shelve_the_book",
    "variant": "next_in_series",
    "layout": "next_in_series__on_bookcase",
-   "steps": 11,
+   "steps": 12,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "goal_not_met",

@@ -2263,7 +2263,10 @@ def T14(t):
     others = {"blue_book_case": book("book_blue", CASE, 0.785, -0.45, 90.0), "green_book_case": book("book_green", CASE, 1.20, -0.45, 90.0),
               "paperback_shelf": book("paperback_book", "bookcase_3/top", 2.05, -4.90)}
     series_cases = {}
-    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.205, -0.45), None)),   # the right end, turned: in reach
+    # 11-22 (v6_sticky_1121j s10): at the right end (1.205) the slide to the edge put the arm on the wall behind
+    # the bookcase; now 6 cm over the south edge at its middle (as T01's bedroom book, picked without a slide),
+    # fetched before the red book is shelved into the middle
+    for c, (sup, xy, region) in (("on_bookcase", (CASE, (1.00, -0.559), None)),
                                  ("on_other_bookcase", ("bookcase_3/top", (2.25, -4.90), "bedroom_0_1")),
                                  ("on_tall_shelf", ("large_shelf_4/shelf_1", (3.60, -5.15), "bedroom_0_1"))):
         add = {**others, "red_book_2": book("book_red", sup, *xy, 90.0 if sup == CASE else 0.0)}
@@ -2271,8 +2274,10 @@ def T14(t):
             add["green_book_case"] = book("book_green", "large_shelf_4/shelf_1", 3.60, -5.15)
         series_cases[c] = dict(
             add=add, watch=[B, "red_book_2", *others],
-            route=[look(DESK)] + shelve(B, CASE, [1.00, -0.45]) + [look(CASE)]
-            + ([S("search", object="red_book_2", region=region), look(sup)] if region else [])
+            route=([look(DESK), nav(CASE), look(CASE), nav("red_book_2"), pick("red_book_2"), nav(DESK),
+                    place("red_book_2", DESK, [-0.80, -6.05])] + shelve(B, CASE, [1.00, -0.45])) if sup == CASE
+            else [look(DESK)] + shelve(B, CASE, [1.00, -0.45]) + [look(CASE)]
+            + [S("search", object="red_book_2", region=region), look(sup)]
             + [nav("red_book_2"), pick("red_book_2"), nav(DESK), place("red_book_2", DESK, [-0.80, -6.05])])
     return {
         "within_kids_reach": dict(
