@@ -10772,7 +10772,7 @@
 
 ### two_leftovers（Task）
 
-**情况**：剩饭和一锅汤 → 都收（汤可能还在灶上）；汤锅摆在有人正在吃的座位前时只收剩饭（把汤收走最不好）
+**情况**：剩饭和剩汤（11-21：剩汤装在带盖的小饭盒里，汤锅放不进冰箱）→ 都收（汤可能还在灶上）；一锅汤摆在有人正在吃的座位前时只收剩饭（把汤收走最不好）
 
 **成功条件**（D 按摆法：`soup_at_seat` D = 1、理想物在，`soup_on_table` D = 0、理想物在，`soup_on_stove` D = 0、理想物在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -10828,8 +10828,8 @@
 **参考调用顺序**：
 
 - 摆法 `soup_at_seat`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.18])` → 9. `close(articulated=breakfast_fridge)`
-- 摆法 `soup_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.46])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.2])` → 13. `close(articulated=breakfast_fridge)`
-- 摆法 `soup_on_stove`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=breakfast_fridge)` → 6. `open(articulated=breakfast_fridge)` → 7. `navigate(destination=leftover_rice)` → 8. `pick(object=leftover_rice)` → 9. `navigate(destination=breakfast_fridge)` → 10. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.46])` → 11. `navigate(destination=leftover_soup)` → 12. `pick(object=leftover_soup)` → 13. `navigate(destination=breakfast_fridge)` → 14. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.9, 3.2])` → 15. `close(articulated=breakfast_fridge)`
+- 摆法 `soup_on_table`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `navigate(destination=leftover_rice)` → 6. `pick(object=leftover_rice)` → 7. `navigate(destination=breakfast_fridge)` → 8. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.16])` → 9. `navigate(destination=leftover_soup)` → 10. `pick(object=leftover_soup)` → 11. `navigate(destination=breakfast_fridge)` → 12. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[6.03, 3.16])` → 13. `close(articulated=breakfast_fridge)`
+- 摆法 `soup_on_stove`：1. `navigate(destination=dining_table_2/top)` → 2. `look(target=dining_table_2/top)` → 3. `navigate(destination=kitchen_stove/top)` → 4. `look(target=kitchen_stove/top)` → 5. `navigate(destination=breakfast_fridge)` → 6. `open(articulated=breakfast_fridge)` → 7. `navigate(destination=leftover_rice)` → 8. `pick(object=leftover_rice)` → 9. `navigate(destination=breakfast_fridge)` → 10. `place(object=leftover_rice, receptacle=breakfast_fridge/inside_shelf, hint_xy=[5.78, 3.16])` → 11. `navigate(destination=leftover_soup)` → 12. `pick(object=leftover_soup)` → 13. `navigate(destination=breakfast_fridge)` → 14. `place(object=leftover_soup, receptacle=breakfast_fridge/inside_shelf, hint_xy=[6.03, 3.16])` → 15. `close(articulated=breakfast_fridge)`
 
 ### fridge_out_of_view（Task）
 

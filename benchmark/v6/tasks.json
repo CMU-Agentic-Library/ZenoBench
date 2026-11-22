@@ -205463,15 +205463,15 @@
       "eating_bowl"
      ],
      "since": "v6",
-     "note": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+     "note": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
      "v6": {
       "family": "two_leftovers",
       "case": "soup_at_seat",
-      "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+      "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
       "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
       "control": "rice_on_table",
       "contrast": null,
-      "factor": "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the table where someone is still eating from a bowl -- in use)",
+      "factor": "where the soup is (seed: in a lunch box on the table, or on the stove -- leftovers; or a pot of it on the table where someone is still eating from a bowl -- in use)",
       "derived_from": "bare"
      },
      "move": {},
@@ -205628,11 +205628,11 @@
        "yaw_deg": 0.0
       },
       "leftover_soup": {
-       "asset": "soup_pot",
+       "asset": "steel_lunch_box",
        "support": "dining_table_2/top",
        "xy": [
-        3.648,
-        6.055
+        3.7,
+        6.05
        ],
        "yaw_deg": 0.0
       }
@@ -205668,15 +205668,15 @@
       "leftover_soup"
      ],
      "since": "v6",
-     "note": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+     "note": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
      "v6": {
       "family": "two_leftovers",
       "case": "soup_on_table",
-      "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+      "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
       "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
       "control": "rice_on_table",
       "contrast": null,
-      "factor": "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the table where someone is still eating from a bowl -- in use)",
+      "factor": "where the soup is (seed: in a lunch box on the table, or on the stove -- leftovers; or a pot of it on the table where someone is still eating from a bowl -- in use)",
       "derived_from": "bare"
      },
      "move": {},
@@ -205689,17 +205689,17 @@
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.518,
-         5.905,
-         3.778,
+         3.598,
+         5.995,
+         3.78,
          6.775
         ],
         "dx": [
-         -0.72,
-         0.05
+         -0.8,
+         0.04
         ],
         "dy": [
-         -0.39,
+         -0.49,
          1.16
         ],
         "pick": [
@@ -205808,11 +205808,11 @@
        "yaw_deg": 0.0
       },
       "leftover_soup": {
-       "asset": "soup_pot",
+       "asset": "steel_lunch_box",
        "support": "kitchen_stove/top",
        "xy": [
         8.41,
-        1.725
+        1.55
        ],
        "yaw_deg": 0.0
       }
@@ -205848,15 +205848,15 @@
       "leftover_soup"
      ],
      "since": "v6",
-     "note": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+     "note": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
      "v6": {
       "family": "two_leftovers",
       "case": "soup_on_stove",
-      "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+      "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
       "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
       "control": "rice_on_table",
       "contrast": null,
-      "factor": "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the table where someone is still eating from a bowl -- in use)",
+      "factor": "where the soup is (seed: in a lunch box on the table, or on the stove -- leftovers; or a pot of it on the table where someone is still eating from a bowl -- in use)",
       "derived_from": "bare"
      },
      "move": {},
@@ -207099,8 +207099,8 @@
         "object": "leftover_rice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.9,
-         3.46
+         5.78,
+         3.16
         ]
        }
       },
@@ -207128,8 +207128,8 @@
         "object": "leftover_soup",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.9,
-         3.2
+         6.03,
+         3.16
         ]
        }
       },
@@ -207205,8 +207205,8 @@
         "object": "leftover_rice",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.9,
-         3.46
+         5.78,
+         3.16
         ]
        }
       },
@@ -207234,8 +207234,8 @@
         "object": "leftover_soup",
         "receptacle": "breakfast_fridge/inside_shelf",
         "hint_xy": [
-         5.9,
-         3.2
+         6.03,
+         3.16
         ]
        }
       },
@@ -207762,7 +207762,7 @@
       "two_leftovers__soup_on_table",
       "two_leftovers__soup_on_stove"
      ],
-     "factor": "where the soup is (seed: on the table, or still in its pot on the stove -- leftovers; or on the table where someone is still eating from a bowl -- in use)",
+     "factor": "where the soup is (seed: in a lunch box on the table, or on the stove -- leftovers; or a pot of it on the table where someone is still eating from a bowl -- in use)",
      "seeds": {
       "10": "two_leftovers__soup_at_seat",
       "11": "two_leftovers__soup_on_stove",

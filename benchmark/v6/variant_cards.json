@@ -26003,7 +26003,7 @@
   },
   "control": "rice_on_table",
   "oracle_route": "v6_two_leftovers__soup_at_seat",
-  "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+  "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
   "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -26060,7 +26060,7 @@
   },
   "control": "rice_on_table",
   "oracle_route": "v6_two_leftovers__soup_on_table",
-  "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+  "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
   "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -26117,7 +26117,7 @@
   },
   "control": "rice_on_table",
   "oracle_route": "v6_two_leftovers__soup_on_stove",
-  "challenge": "the box of rice on the table, and a pot of soup: left over on the table or the stove, or still being eaten from at a place",
+  "challenge": "the box of rice on the table, and soup: left over in a lunch box on the table or the stove, or a pot still being eaten from at a place",
   "rationale": "all the leftovers, not only the first one seen: both into the fridge -- unless someone is still eating the soup, then only the rice",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
