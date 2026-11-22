@@ -150861,7 +150861,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.22,
-        0.42
+        0.47
        ],
        "yaw_deg": 0.0
       },
@@ -150869,8 +150869,8 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.41,
-        0.42
+        1.42,
+        0.47
        ],
        "yaw_deg": 0.0
       },
