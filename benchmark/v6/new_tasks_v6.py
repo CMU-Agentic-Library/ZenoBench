@@ -939,6 +939,14 @@ def t25():
             instruction="A little girl is visiting and sitting in the living room. Bring her something to drink.",
             instruction_zh="来了个小朋友，在客厅坐着，给她拿点喝的。"),
     }
+    # 11-21 (muqingj v6full_1119, v6_sticky_1121 s11: mug_shelf on large_shelf_6's top, 1.48 m up, never picked):
+    # the dining room's fallback mug stands on the low cell shelf (0.95 m, like the island where mugs were picked 23
+    # of 23), 12 cm from its north edge, still out of the guests' view
+    import json as _json
+    for _f in fams.values():
+        for _c in _f["cases"].values():
+            if "mug_shelf" in _json.dumps(_c.get("route", [])):
+                _c["move"] = {**_c.get("move", {}), "mug_shelf": P("cell_shelf_4/top", 4.40, 4.50)}
     return t, fams
 
 
