@@ -56,6 +56,10 @@ EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
 STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
                                          # from 0.45 out is still well inside the arm's 0.78 m
 SEARCH_TYPES = ("search_target", "search_tool")
+# 11-22 (v6_sticky_1121 T11 basket_gone_bowl_there s10): an apple drawn 1.7 cm from the dining table's west edge rolled
+# over it before the first step (2.76, the top ends at 2.788) and had no grasp. Round things keep this from every edge
+ROLLING = {"apple", "orange", "cherry_tomato", "big_tomato"}
+ROLL_EDGE_M = 0.06
 # 11-21 (v6_verify_1121, muqingj v6full_1119): the small kitchen's counter has wall cabinets over it; reach_edges
 # counts its south end and its north end, but a pick there failed (T25 s11: a cup at (-0.38, 7.04), no grasp from any
 # base pose; plates at its north end 1 of 3) and 18 cm in from the front no arm reached (T25 counter_cup).  What the
@@ -719,6 +723,9 @@ def apply_layout(cfg, spec, rng):
                  for n in c.get("pick") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
         sought = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
                   for n in c.get("search") or [] if (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
+        rolling = [_box(_asset_of(base, n, cfg.get("add") or {}), (cfg["move"].get(n) or cfg["add"][n]))
+                   for n in c["names"] if _asset_of(base, n, cfg.get("add") or {}) in ROLLING
+                   and (cfg["move"].get(n) or (cfg.get("add") or {}).get(n) or {}).get("xy")]
         S = _sups(base)[c["support"]]["aabb_xy"]
         k_long = 0 if S[2] - S[0] >= S[3] - S[1] else 1
         long_top = max(S[2] - S[0], S[3] - S[1]) >= LONG_SUPPORT_M
@@ -737,6 +744,9 @@ def apply_layout(cfg, spec, rng):
             if long_top and any(min((sh(m)[k_long] + sh(m)[k_long + 2]) / 2 - S[k_long],
                                     S[k_long + 2] - (sh(m)[k_long] + sh(m)[k_long + 2]) / 2) < SEARCH_END_M
                                 for m in sought):
+                return False
+            if any(sh(m)[0] < S[0] + ROLL_EDGE_M or sh(m)[1] < S[1] + ROLL_EDGE_M or sh(m)[2] > S[2] - ROLL_EDGE_M
+                   or sh(m)[3] > S[3] - ROLL_EDGE_M for m in rolling):
                 return False
             zone = PICK_ZONE.get(c["support"])
             if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= (sh(m)[1] + sh(m)[3]) / 2
