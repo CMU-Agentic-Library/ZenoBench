@@ -56,6 +56,11 @@ EDGE_STEP_M = 0.05       # reach edges: samples along each edge of a top
 STANDOFFS_M = (0.30, 0.35, 0.40, 0.45)   # base centre from the edge (the column is 0.244 + 0.046 m); 0.20 m in
                                          # from 0.45 out is still well inside the arm's 0.78 m
 SEARCH_TYPES = ("search_target", "search_tool")
+# 11-21 (v6_verify_1121, muqingj v6full_1119): the small kitchen's counter has wall cabinets over it; reach_edges
+# counts its south end and its north end, but a pick there failed (T25 s11: a cup at (-0.38, 7.04), no grasp from any
+# base pose; plates at its north end 1 of 3) and 18 cm in from the front no arm reached (T25 counter_cup).  What the
+# route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
+PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.15)}
 
 
 # ----------------------------------------------------------------- scene data
@@ -730,6 +735,10 @@ def apply_layout(cfg, spec, rng):
             if long_top and any(min((sh(m)[k_long] + sh(m)[k_long + 2]) / 2 - S[k_long],
                                     S[k_long + 2] - (sh(m)[k_long] + sh(m)[k_long + 2]) / 2) < SEARCH_END_M
                                 for m in sought):
+                return False
+            zone = PICK_ZONE.get(c["support"])
+            if zone and not all(zone[0] <= (sh(m)[0] + sh(m)[2]) / 2 <= zone[2] and zone[1] <= (sh(m)[1] + sh(m)[3]) / 2
+                                <= zone[3] for m in members):
                 return False
             # every object of the cluster within reach; a cluster too deep for that: the cluster at the edge
             return edges is None or (all(reachable(sh(m), edges) for m in members) if each else reachable(b, edges))

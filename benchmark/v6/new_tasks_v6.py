@@ -1662,7 +1662,9 @@ def t18():
     B1, B2, S1, S2 = "dinner_bowl_1", "dinner_bowl_2", "dinner_spoon_1", "dinner_spoon_2"
     GBOX, CAB6, CAB4 = "glass_box", "kitchen_cabinet_6/inside_shelf", "kitchen_cabinet_4/inside_shelf"
     bowl = lambda sup, x, y: on("breakfast_bowl", sup, x, y)  # noqa: E731
-    spoons = {S1: on("breakfast_spoon", COUNTER, 0.10, 7.30, 90.0), S2: on("breakfast_spoon", COUNTER, 0.10, 7.55, 90.0)}
+    # 11-21: the counter is reached from its west side only (wall cabinets and the wall on the east): the spoons, the
+    # mug and the glass box start at its west front (layout.PICK_ZONE), not on the east half where no base stands
+    spoons = {S1: on("breakfast_spoon", COUNTER, -0.42, 7.40, 90.0), S2: on("breakfast_spoon", COUNTER, -0.42, 7.65, 90.0)}
     SPOTS = [(3.66, 6.20), (3.66, 6.75)]                  # the dining table's east edge, two places
     SPOON_AT = [(3.66, 6.42), (3.66, 6.97)]
     to_table = lambda x, k: [nav(T2), place(x, T2, SPOTS[k])]  # noqa: E731
@@ -1683,12 +1685,12 @@ def t18():
     t = base_task("T18_set_out_bowls", "ZB-T18", "Dinner is soon. Take two clean bowls from the low wall cabinet to "
                   "the dining table, with a spoon by each.", "快吃晚饭了，从靠墙矮柜里拿两只干净的碗摆到餐桌上，每只碗配一把勺子。",
                   "bowls_in_cabinet", ctl, goal([B1, B2]), two_from(C6, B1, B2) + spoon_route, [B1, B2, S1, S2])
-    gbox = {GBOX: on("glass_food_container", COUNTER, 0.19, 7.85, 90.0)}     # over the counter's front edge (pinch)
+    gbox = {GBOX: on("glass_food_container", COUNTER, -0.47, 8.30, 90.0)}    # 2 cm over the counter's west edge (pinch)
     one_and_box = lambda b: [nav(C6), S("open", articulated=C6), S("bend"), S("explore_furniture", furniture=C6),  # noqa: E731
                              S("straighten"), nav(b), pick(b), S("retreat", obstacle=C6, distance_m=0.3),
                              S("close", articulated=C6)] + to_table(b, 0) + [nav(GBOX), pick(GBOX)] + to_table(GBOX, 1)
     MUG = "spare_mug"
-    mug_out = {MUG: on("breakfast_mug", COUNTER, 0.15, 7.85)}
+    mug_out = {MUG: on("breakfast_mug", COUNTER, -0.43, 8.30)}
     one_and = lambda b, x: [nav(C6), S("open", articulated=C6), S("bend"), S("explore_furniture", furniture=C6),  # noqa: E731
                             S("straighten"), nav(b), pick(b), S("retreat", obstacle=C6, distance_m=0.3),
                             S("close", articulated=C6)] + to_table(b, 0) + [nav(x), pick(x)] + to_table(x, 1)

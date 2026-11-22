@@ -1031,6 +1031,8 @@ def T05(t):
     # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
     # pen first, so the trip to the desk also starts the mug's
     MUG = "used_mug"
+    # 11-21: at counter_2's west front -- (-0.15, 7.3) lay 37 cm in, under the wall cabinets (no spot reached, v6full_1116/17)
+    KC_FRONT = [-0.40, 7.60]
     # 11-17 (user): the mug goes "back where it belongs" -- a kitchen counter (0), the island or the stove (1),
     # outside the kitchen (2); seeds: pen_bedroom (the pen free), pen_in_use (the pen on grandma's list, the pencil on
     # the bedroom bookcase: 1; the pen taken from her 2)
@@ -1038,13 +1040,13 @@ def T05(t):
               (["not on", MUG, DESK], 2)]
     errand_cases = {
         "pen_bedroom": dict(move={"pen": P(BOOK, 1.15, -0.40)},
-                            route=fetch_to("pen", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, [-0.15, 7.3])]),
+                            route=fetch_to("pen", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, KC_FRONT)]),
         "pen_in_use": dict(move={"pen": on_list("pen"), "pencil": PENCIL0}, add=copy.deepcopy(list_add),
                            goal={"all": [*on_desk("pencil"), *stays("pen", LIST), ["on_any", MUG, KITCHEN_WORKTOPS_DESK],
                                          ["upright", MUG], ["hand_empty", "right"]]},
                            watch=["pen", "pencil", MUG, LIST],
                            route=[S("search", object="pen", region=REG[DT]), nav("pen"), look("pen")]
-                           + fetch_to("pencil", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, [-0.15, 7.3])])}
+                           + fetch_to("pencil", BOOK, [-0.75, -5.95]) + [pick(MUG), nav(KC), place(MUG, KC, KC_FRONT)])}
     LT["errand_combined__pen_bedroom"] = cost_tiers(
         [(on_desk(w) + [m, ["upright", MUG]], cw + cm) for w, cw in (("pen", 0), ("pencil", 1)) for m, cm in mug_at])
     LT["errand_combined__pen_in_use"] = cost_tiers(
@@ -1776,7 +1778,9 @@ def T10(t):
              LEFT: [nav(FRIDGE), S("open", articulated=FRIDGE), nav(LEFT), pick(LEFT), nav(FRIDGE),
                     place(LEFT, f"{FRIDGE}/inside_shelf"), S("retreat", obstacle=FRIDGE, distance_m=0.3),
                     S("close", articulated=FRIDGE)],
-             MUG: [nav(MUG), pick(MUG), nav(COUNTER), place(MUG, COUNTER)]}
+             # 11-21 (muqingj v6full_1116-1119: a mug set on counter_2 found no reachable spot 3 of 4): the island,
+             # a kitchen worktop the goal takes as well
+             MUG: [nav(MUG), pick(MUG), nav("kitchen_island/top"), place(MUG, "kitchen_island/top")]}
     dinner_cases = {}
     for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
                      ("rubbish_mug", (CAN, TRAY, MUG))):
