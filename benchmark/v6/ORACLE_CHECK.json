@@ -3135,8 +3135,8 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__one_there",
-   "steps": 20,
-   "atoms_checked": 7,
+   "steps": 14,
+   "atoms_checked": 6,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright guest_juice"
@@ -3147,8 +3147,8 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__none_one_inside",
-   "steps": 25,
-   "atoms_checked": 6,
+   "steps": 19,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright guest_juice"
@@ -3159,8 +3159,8 @@
   {
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__none_two_inside",
-   "steps": 24,
-   "atoms_checked": 6,
+   "steps": 18,
+   "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright guest_juice"
@@ -3172,7 +3172,7 @@
    "task": "T25_drink_for_guest",
    "layout": "cups_for_two__two_there",
    "steps": 8,
-   "atoms_checked": 8,
+   "atoms_checked": 7,
    "atoms_geometric": 1,
    "geometric_atoms": [
     "upright guest_juice"

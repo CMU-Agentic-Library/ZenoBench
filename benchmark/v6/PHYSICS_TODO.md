@@ -129,7 +129,7 @@
 | T25 | cup_elsewhere | task | 0/0 of 10 | - |
 | T25 | cold_one | task | 0/0 of 10 | - |
 | T25 | drink_in_fridge | task | 0/0 of 10 | - |
-| T25 | cups_for_two | task | 0/0 of 10 | low cabinet doors |
+| T25 | cups_for_two | task | 0/0 of 10 | - |
 | T25 | two_guests | task | 0/0 of 10 | - |
 | T25 | little_guest | task | 0/0 of 10 | - |
 | T26 | car_in_living_room | control | 0/0 of 10 | - |

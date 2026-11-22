@@ -146,7 +146,7 @@ Removed with the injected action failures: 121 variants (17 had nothing else, 46
 | T25 | cup_elsewhere | Task-Level | - | not_in_view; resource_absent | 3 |
 | T25 | cold_one | Task-Level | - | preference_allocation; resource_absent | 2 |
 | T25 | drink_in_fridge | Task-Level | - | not_in_view; resource_absent; storage_place | 2 |
-| T25 | cups_for_two | Task-Level | - | count_from_scene; dependent_decisions; item_put_away; resource_absent | 4 |
+| T25 | cups_for_two | Task-Level | - | count_from_scene; dependent_decisions; not_in_view; resource_absent | 4 |
 | T25 | two_guests | Task-Level | - | count_from_scene; multi_object_goal; resource_absent | 2 |
 | T25 | little_guest | Task-Level | - | preference_allocation | 1 |
 | T26 | car_in_living_room | Control | - | - | 1 |

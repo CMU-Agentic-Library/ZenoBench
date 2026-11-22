@@ -192496,7 +192496,7 @@
     "cups_for_two__one_there": {
      "conditions": [
       "count_from_scene",
-      "item_put_away",
+      "not_in_view",
       "resource_absent",
       "dependent_decisions"
      ],
@@ -192528,10 +192528,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_counter_2/top",
        "xy": [
-        3.35,
-        0.36
+        -0.384,
+        8.209
        ],
        "yaw_deg": 0.0
       }
@@ -192586,10 +192586,6 @@
         0.03
        ],
        [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
         "hand_empty",
         "right"
        ]
@@ -192601,20 +192597,43 @@
       "stock_cup_1"
      ],
      "since": "v6",
-     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
       "case": "one_there",
-      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
       "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
       "derived_from": "bare"
      },
      "move": {},
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "stock_cup_1"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4378,
+         8.1542,
+         -0.3302,
+         8.2638
+        ],
+        "dx": [
+         -0.07,
+         0.57
+        ],
+        "dy": [
+         -1.17,
+         1.16
+        ],
+        "pick": [
+         "stock_cup_1"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -192660,6 +192679,26 @@
        }
       ],
       "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
        "tv_stand_2/top": [
         [
          7.271,
@@ -192676,6 +192715,32 @@
        ]
       },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -192844,7 +192909,7 @@
           ]
          ]
         },
-        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cups already there moved",
+        "why": "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there moved",
         "raw": "second"
        }
       ],
@@ -192857,7 +192922,7 @@
     "cups_for_two__none_one_inside": {
      "conditions": [
       "count_from_scene",
-      "item_put_away",
+      "not_in_view",
       "resource_absent",
       "dependent_decisions"
      ],
@@ -192880,10 +192945,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_counter_2/top",
        "xy": [
-        3.35,
-        0.36
+        -0.384,
+        8.209
        ],
        "yaw_deg": 0.0
       }
@@ -192930,10 +192995,6 @@
         1
        ],
        [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
         "hand_empty",
         "right"
        ]
@@ -192944,15 +193005,15 @@
       "stock_cup_1"
      ],
      "since": "v6",
-     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
       "case": "none_one_inside",
-      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
       "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
       "derived_from": "bare"
      },
      "move": {
@@ -192967,6 +193028,29 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "stock_cup_1"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4378,
+         8.1542,
+         -0.3302,
+         8.2638
+        ],
+        "dx": [
+         -0.07,
+         0.57
+        ],
+        "dy": [
+         -1.17,
+         1.16
+        ],
+        "pick": [
+         "stock_cup_1"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -193017,8 +193101,55 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -193066,7 +193197,9 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [],
+       "hide": [
+        "mug_shelf"
+       ],
        "look": []
       }
      },
@@ -193174,21 +193307,21 @@
           ]
          ]
         },
-        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cups already there moved",
+        "why": "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there moved",
         "raw": "second"
        }
       ],
       "not_ok": "fewer than two cups; no juice; the juice lying; still held or dropped",
       "top": "moderate",
       "ideal_present": false,
-      "ideal_zh": "两个普通杯子（柜里只有一个，补马克杯）",
+      "ideal_zh": "两个普通杯子（台面上只有一个，补马克杯）",
       "loosened": "11-20"
      }
     },
     "cups_for_two__none_two_inside": {
      "conditions": [
       "count_from_scene",
-      "item_put_away",
+      "not_in_view",
       "resource_absent",
       "dependent_decisions"
      ],
@@ -193211,19 +193344,19 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_counter_2/top",
        "xy": [
-        3.35,
-        0.36
+        -0.384,
+        8.209
        ],
        "yaw_deg": 0.0
       },
       "stock_cup_2": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_counter_2/top",
        "xy": [
-        3.63,
-        0.36
+        -0.384,
+        7.709
        ],
        "yaw_deg": 0.0
       }
@@ -193273,10 +193406,6 @@
         2
        ],
        [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
         "hand_empty",
         "right"
        ]
@@ -193288,20 +193417,45 @@
       "stock_cup_2"
      ],
      "since": "v6",
-     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
       "case": "none_two_inside",
-      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
       "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
       "derived_from": "bare"
      },
      "move": {},
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "stock_cup_1",
+         "stock_cup_2"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.4378,
+         7.6542,
+         -0.3302,
+         8.2638
+        ],
+        "dx": [
+         -0.07,
+         0.57
+        ],
+        "dy": [
+         -0.67,
+         1.16
+        ],
+        "pick": [
+         "stock_cup_1",
+         "stock_cup_2"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -193326,8 +193480,55 @@
         ]
        }
       ],
-      "static": {},
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ]
+      },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -193470,7 +193671,7 @@
           ]
          ]
         },
-        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cups already there moved",
+        "why": "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there moved",
         "raw": "second"
        }
       ],
@@ -193483,7 +193684,7 @@
     "cups_for_two__two_there": {
      "conditions": [
       "count_from_scene",
-      "item_put_away",
+      "not_in_view",
       "resource_absent",
       "dependent_decisions"
      ],
@@ -193524,10 +193725,10 @@
       },
       "stock_cup_1": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_counter_2/top",
        "xy": [
-        3.35,
-        0.36
+        -0.34,
+        8.2
        ],
        "yaw_deg": 0.0
       }
@@ -193590,10 +193791,6 @@
         0.03
        ],
        [
-        "is_closed",
-        "kitchen_cabinet_6"
-       ],
-       [
         "hand_empty",
         "right"
        ]
@@ -193606,20 +193803,40 @@
       "stock_cup_1"
      ],
      "since": "v6",
-     "note": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+     "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
       "case": "two_there",
-      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; in the low cabinet one or two cups; the house's only other cups are mugs in the dining room",
+      "challenge": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
       "rationale": "two decisions on what is found: what stands by the guests says how many cups are missing; what the cabinet holds says whether ordinary cups cover it or a mug from the dining room makes up the rest; exactly two cups in the end, the ones already there left where they are",
       "control": "drink_on_island",
       "contrast": null,
-      "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+      "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
       "derived_from": "bare"
      },
      "move": {},
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "stock_cup_1"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.3938,
+         8.1452,
+         -0.2862,
+         8.2548
+        ],
+        "dx": [
+         -0.12,
+         0.52
+        ],
+        "dy": [
+         -1.16,
+         1.17
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -193666,6 +193883,26 @@
        }
       ],
       "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
        "tv_stand_2/top": [
         [
          7.271,
@@ -193676,6 +193913,32 @@
        ]
       },
       "reach": {
+       "kitchen_counter_2/top": [
+        [
+         0,
+         -1,
+         -0.524,
+         7.019,
+         9.437,
+         0.2
+        ],
+        [
+         1,
+         1,
+         9.437,
+         -0.524,
+         0.25,
+         0.2
+        ],
+        [
+         1,
+         -1,
+         6.969,
+         -0.266,
+         0.147,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -193849,7 +194112,7 @@
           ]
          ]
         },
-        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cups already there moved",
+        "why": "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there moved",
         "raw": "second"
        }
       ],
@@ -195581,28 +195844,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6"
+        "destination": "kitchen_counter_2/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_6"
+        "target": "kitchen_counter_2/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -195614,13 +195863,6 @@
        "skill": "pick",
        "args": {
         "object": "stock_cup_1"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
        }
       },
       {
@@ -195638,18 +195880,6 @@
          7.544,
          0.371
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -195714,28 +195944,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6"
+        "destination": "kitchen_counter_2/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_6"
+        "target": "kitchen_counter_2/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -195747,13 +195963,6 @@
        "skill": "pick",
        "args": {
         "object": "stock_cup_1"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
        }
       },
       {
@@ -195771,18 +195980,6 @@
          7.544,
          0.371
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
        }
       },
       {
@@ -195883,28 +196080,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6"
+        "destination": "kitchen_counter_2/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_6"
+        "target": "kitchen_counter_2/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -195948,13 +196131,6 @@
        }
       },
       {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "tv_stand_2/top"
@@ -195969,18 +196145,6 @@
          7.044,
          0.371
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -196979,7 +197143,7 @@
       "cups_for_two__none_two_inside",
       "cups_for_two__two_there"
      ],
-     "factor": "how many cups already stand by the guests and how many the closed cabinet holds (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the last two look the same until the door is open",
+     "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
      "seeds": {
       "10": "cups_for_two__one_there",
       "11": "cups_for_two__none_one_inside",
@@ -196999,7 +197163,7 @@
         "name": "best",
         "score": 1.0,
         "goal": null,
-        "why": "two plain cups by the guests in all (the ones there kept), none extra, the cabinet closed"
+        "why": "two plain cups by the guests in all (the ones there kept), none extra"
        },
        {
         "name": "second",
@@ -197072,10 +197236,6 @@
               ],
               "tv_stand_2/top",
               2
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ],
             [
@@ -197083,10 +197243,6 @@
               "near_start",
               "tv_cup_1",
               0.03
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ]
            ]
@@ -197148,18 +197304,9 @@
               ],
               "tv_stand_2/top",
               1
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ],
-            [
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
-             ]
-            ]
+            []
            ]
           },
           "cups_for_two__none_two_inside": {
@@ -197223,18 +197370,9 @@
               ],
               "tv_stand_2/top",
               2
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ],
-            [
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
-             ]
-            ]
+            []
            ]
           },
           "cups_for_two__two_there": {
@@ -197312,10 +197450,6 @@
               ],
               "tv_stand_2/top",
               2
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ],
             [
@@ -197328,17 +197462,13 @@
               "near_start",
               "tv_cup_2",
               0.03
-             ],
-             [
-              "is_closed",
-              "kitchen_cabinet_6"
              ]
             ]
            ]
           }
          }
         },
-        "why": "two in all, but a mug used though a plain cup was in the cabinet (user 11-12), the cabinet left open or the cups already there moved"
+        "why": "two in all, but a mug used though a plain cup was on the kitchen counter (user 11-12), or the cups already there moved"
        },
        {
         "name": "worst",
@@ -197651,7 +197781,7 @@
      "longer": [
       "count_from_scene",
       "dependent_decisions",
-      "item_put_away",
+      "not_in_view",
       "resource_absent"
      ]
     },

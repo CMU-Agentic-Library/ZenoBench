@@ -4822,7 +4822,7 @@
    "task": "T25_drink_for_guest",
    "variant": "cups_for_two",
    "layout": "cups_for_two__one_there",
-   "steps": 20,
+   "steps": 14,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"
@@ -4839,7 +4839,7 @@
    "task": "T25_drink_for_guest",
    "variant": "cups_for_two",
    "layout": "cups_for_two__none_one_inside",
-   "steps": 25,
+   "steps": 19,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"
@@ -4856,7 +4856,7 @@
    "task": "T25_drink_for_guest",
    "variant": "cups_for_two",
    "layout": "cups_for_two__none_two_inside",
-   "steps": 24,
+   "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright guest_juice"

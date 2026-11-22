@@ -263,7 +263,7 @@
 | T25 | drink_in_fridge | juice | 不用替换 | 按指令（the juice from the fridge and a cup by the guest） | 在 | 1 |
 | T25 | drink_in_fridge | soda_only | 缺失 | 果汁（冰箱里没有，用汽水） | 不在 | 0 |
 | T25 | cups_for_two | one_there | 不用替换 | 按指令（two plain cups by the guests in all (the ones there kept), none extra） | 在 | 1 |
-| T25 | cups_for_two | none_one_inside | 缺失 | 两个普通杯子（柜里只有一个，补马克杯） | 不在 | 1 |
+| T25 | cups_for_two | none_one_inside | 缺失 | 两个普通杯子（台面上只有一个，补马克杯） | 不在 | 1 |
 | T25 | cups_for_two | none_two_inside | 不用替换 | 按指令（two plain cups by the guests in all (the ones there kept), none extra） | 在 | 1 |
 | T25 | cups_for_two | two_there | 不用替换 | 按指令（two plain cups by the guests in all (the ones there kept), none extra） | 在 | 1 |
 | T25 | two_guests | two_cups | 不用替换 | 按指令（the juice and two cups by the guests） | 在 | 0 |

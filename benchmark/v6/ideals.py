@@ -123,7 +123,7 @@ IDEAL = {
     ("T25", "cold_one"): {"cold_soda": (False, "冰果汁（没有，用冰汽水）")},
     ("T25", "cup_elsewhere"): {"only_mugs": (True, "能喝的杯子（没有普通杯子，马克杯一样好，11-20）"),
                                "blocks_in_cup": (True, "能喝的杯子（台面杯子装着积木，马克杯一样好，11-20）")},
-    ("T25", "cups_for_two"): {"none_one_inside": (False, "两个普通杯子（柜里只有一个，补马克杯）")},
+    ("T25", "cups_for_two"): {"none_one_inside": (False, "两个普通杯子（台面上只有一个，补马克杯）")},
     ("T25", "drink_in_fridge"): {"soda_only": (False, "果汁（冰箱里没有，用汽水）")},
     ("T25", "two_guests"): {"one_cup": (True, "两个能喝的杯子（一个杯子加一个马克杯，一样好，11-20）")},
     ("T26", "bear_to_bed"): {"top_covered": (False, "床边书架顶（摆满书，放他另一个书架顶或床上）")},
