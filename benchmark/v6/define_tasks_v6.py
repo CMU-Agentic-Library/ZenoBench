@@ -2101,7 +2101,11 @@ def T13(t):
                 + [["near_start", r, 0.03] for r in [*refs, "example_spoon"]]
                 + [["upright", use[k]] for k in order if k in ("bowl", "cup", "mug")]
                 + ([["on_top_of", BOWL, "plate_counter_a"]] if "plate" in kinds else []) + [["hand_empty", "right"]]}
-        copy_cases[c] = dict(add=ex, move={SPOON: {"support": TABLE, "xy": B_SP, "yaw_deg": 0.0}},
+        # 11-21: the plate to copy with stands 4 cm over counter_2's west edge (taken by that edge, no slide under
+        # the wall cabinets: v6_sticky_1121 T15 lid_in_use)
+        plate_edge = {"plate_counter_a": {"support": "kitchen_counter_2/top", "xy": [-0.44, 8.42], "yaw_deg": 0.0}} \
+            if "plate" in kinds else {}
+        copy_cases[c] = dict(add=ex, move={SPOON: {"support": TABLE, "xy": B_SP, "yaw_deg": 0.0}, **plate_edge},
                              remove=clear + ([CUP] if c == "no_cup" else []), goal=goal,
                              watch=[*news, *refs, "example_spoon", SPOON], route=route)
     # finish_the_table: some places are set (adults: bowl and mug; the kid: bowl and a plastic cup, a toy beside it);
