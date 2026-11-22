@@ -925,7 +925,7 @@
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "two_guests__glass_in_cabinet",
-   "steps": 18,
+   "steps": 12,
    "atoms_checked": 4,
    "atoms_geometric": 3,
    "geometric_atoms": [
@@ -994,7 +994,7 @@
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "x6_gd_cup_in_cabinets__cup_in_4",
-   "steps": 20,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -1006,7 +1006,7 @@
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "layout": "x6_gd_cup_in_cabinets__plastic_only",
-   "steps": 20,
+   "steps": 8,
    "atoms_checked": 4,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3471,7 +3471,7 @@
   {
    "task": "T28_cup_to_bedside",
    "layout": "where_his_cup_is__in_cabinet",
-   "steps": 14,
+   "steps": 8,
    "atoms_checked": 5,
    "atoms_geometric": 1,
    "geometric_atoms": [
@@ -3699,7 +3699,7 @@
   {
    "task": "T30_bowls_for_soup",
    "layout": "bowl_put_away__mug_inside",
-   "steps": 12,
+   "steps": 6,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],

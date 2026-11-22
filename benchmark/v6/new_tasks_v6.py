@@ -1265,13 +1265,15 @@ def t28():
                                 goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
                                               ["near_start", "counter_mug", 0.03], H]},
                                 route=[look(COUNTER)] + to_side),
-             "in_cabinet": dict(add={KC: on("plastic_cup", f"{C4}/inside_shelf", 1.40, 0.42),
+             # 11-21 (user): put away on cabinet 4's top, where his cups are kept (T23), not inside -- no cup inside a
+             # cabinet was picked
+             "in_cabinet": dict(add={KC: on("plastic_cup", f"{C4}/top", 1.40, 0.46),
                                      "counter_mug": on("breakfast_mug", COUNTER, -0.30, 9.00), **BEAR},
                                 watch=[KC, "cup_counter_b", "counter_mug"],
                                 goal={"all": [["on_any", KC, SIDES], ["upright", KC], ["near_start", "cup_counter_b", 0.03],
                                               ["near_start", "counter_mug", 0.03], ["is_closed", C4], H]},
-                                route=[look(COUNTER)] + explore(C4) + from_closed(KC, C4)
-                                + [nav(side), place(KC, side, [2.10, -4.88])]),
+                                route=[look(COUNTER), nav(f"{C4}/top"), look(f"{C4}/top"), nav(KC), pick(KC),
+                                       nav(side), place(KC, side, [2.10, -4.88])]),
              "no_kid_cup": dict(add={"counter_mug": on("breakfast_mug", COUNTER, -0.30, 9.00), **BEAR},
                                 watch=["cup_counter_b", "counter_mug"],
                                 goal={"all": [["count_on_at_least", OTHER + HOUSE_CUPS[1:3], side, 1]]
@@ -1506,15 +1508,16 @@ def t30():
             {"bowl_inside": dict(add={**SOUP, B1: on("breakfast_bowl", f"{C4}/inside_shelf", 1.40, 0.42)},
                                  goal={"all": [bowls(B1), ["is_closed", C4], H]},
                                  route=explore(C4) + from_closed(B1, C4) + [nav(ISL), place(B1, ISL, [8.05, 1.75])]),
-             "mug_inside": dict(add={**SOUP, "stored_mug": on("breakfast_mug", f"{C4}/inside_shelf", 1.40, 0.42),
-                                     "stored_plate": on("breakfast_plate", f"{C4}/inside_shelf", 1.20, 0.42)},
+             # 11-21 (user): the mug and the plate on cabinet 4's top -- the mug inside was never picked
+             "mug_inside": dict(add={**SOUP, "stored_mug": on("breakfast_mug", f"{C4}/top", 1.55, 0.46),
+                                     "stored_plate": on("breakfast_plate", f"{C4}/top", 1.22, 0.44)},
                                 remove=["bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table",
                                         "bowl_inside_kitchen_cabinet"],
                                 watch=["stored_mug", "stored_plate"],
                                 goal={"all": [["count_on_at_least", ["stored_mug"] + HOUSE_CUPS, ISL, 1],
                                               ["is_closed", C4], H]},
-                                route=explore(C4) + from_closed("stored_mug", C4)
-                                + [nav(ISL), place("stored_mug", ISL, [8.05, 1.75])])}),
+                                route=[nav(f"{C4}/top"), look(f"{C4}/top"), nav("stored_mug"), pick("stored_mug"),
+                                       nav(ISL), place("stored_mug", ISL, [8.05, 1.75])])}),
         "no_bowl": fam(
             "bowl_on_cabinet", ["resource_absent"], "the seed's layout only",
             "no clean bowl anywhere; a mug and a plate on the cabinet",

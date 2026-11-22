@@ -60,7 +60,9 @@ SEARCH_TYPES = ("search_target", "search_tool")
 # counts its south end and its north end, but a pick there failed (T25 s11: a cup at (-0.38, 7.04), no grasp from any
 # base pose; plates at its north end 1 of 3) and 18 cm in from the front no arm reached (T25 counter_cup).  What the
 # route picks there stays at the front, clear of the ends: centre x <= -0.36, y 7.25..9.15 (picks there: 14 of 14)
-PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.15)}
+PICK_ZONE = {"kitchen_counter_2/top": (-0.60, 7.25, -0.36, 9.15),
+             # cabinet 4's low top (0.62 m): what was picked there stood at y 0.40-0.46 (8 of 10); not deeper than 0.38
+             "kitchen_cabinet_4/top": (1.0, 0.38, 1.80, 0.60)}
 
 
 # ----------------------------------------------------------------- scene data

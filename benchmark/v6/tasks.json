@@ -62992,10 +62992,10 @@
      "add": {
       "glass_cup_2": {
        "asset": "breakfast_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.4,
-        0.5
+        0.46
        ],
        "yaw_deg": 0.0
       }
@@ -63032,6 +63032,29 @@
         "dy": [
          -0.73,
          1.58
+        ]
+       },
+       {
+        "names": [
+         "glass_cup_2"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3462,
+         0.4052,
+         1.4538,
+         0.5148
+        ],
+        "dx": [
+         -0.3,
+         0.3
+        ],
+        "dy": [
+         -0.13,
+         0.05
+        ],
+        "pick": [
+         "glass_cup_2"
         ]
        },
        {
@@ -63168,6 +63191,32 @@
          5.495,
          2.788,
          3.839,
+         0.2
+        ]
+       ],
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
          0.2
         ]
        ],
@@ -64819,10 +64868,10 @@
        "yaw_deg": 0.0
       },
       "cup_counter_b": {
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.4,
-        0.5
+        0.46
        ],
        "yaw_deg": 0.0
       }
@@ -64886,6 +64935,29 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "cup_counter_b"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.3462,
+         0.4052,
+         1.4538,
+         0.5148
+        ],
+        "dx": [
+         -0.3,
+         0.3
+        ],
+        "dy": [
+         -0.13,
+         0.05
+        ],
+        "pick": [
+         "cup_counter_b"
+        ]
+       },
        {
         "names": [
          "mug"
@@ -64966,6 +65038,32 @@
        ]
       },
       "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -65154,10 +65252,10 @@
      "add": {
       "kid_cup": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_6/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
-        3.5,
-        0.36
+        1.62,
+        0.46
        ],
        "yaw_deg": 0.0
       }
@@ -65176,6 +65274,29 @@
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "kid_cup"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.58,
+         0.42,
+         1.66,
+         0.5
+        ],
+        "dx": [
+         -0.53,
+         0.09
+        ],
+        "dy": [
+         -0.15,
+         0.06
+        ],
+        "pick": [
+         "kid_cup"
+        ]
+       },
        {
         "names": [
          "mug"
@@ -65256,6 +65377,32 @@
        ]
       },
       "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -65992,28 +66139,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -66025,13 +66158,6 @@
        "skill": "pick",
        "args": {
         "object": "glass_cup_2"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_4",
-        "distance_m": 0.3
        }
       },
       {
@@ -66049,18 +66175,6 @@
          3.622,
          0.38
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -66250,60 +66364,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_6"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -66318,13 +66386,6 @@
        }
       },
       {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_4",
-        "distance_m": 0.3
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_cabinet_6/top"
@@ -66335,18 +66396,6 @@
        "args": {
         "object": "cup_counter_b",
         "receptacle": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -66370,60 +66419,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -66438,13 +66441,6 @@
        }
       },
       {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_6",
-        "distance_m": 0.3
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_cabinet_6/top"
@@ -66455,18 +66451,6 @@
        "args": {
         "object": "kid_cup",
         "receptacle": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -209266,10 +209250,10 @@
      "add": {
       "kid_cup": {
        "asset": "plastic_cup",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
         1.4,
-        0.42
+        0.46
        ],
        "yaw_deg": 0.0
       },
@@ -209348,6 +209332,29 @@
       "clusters": [
        {
         "names": [
+         "kid_cup"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.36,
+         0.42,
+         1.44,
+         0.5
+        ],
+        "dx": [
+         -0.31,
+         0.31
+        ],
+        "dy": [
+         -0.15,
+         0.06
+        ],
+        "pick": [
+         "kid_cup"
+        ]
+       },
+       {
+        "names": [
          "counter_mug"
         ],
         "support": "kitchen_counter_2/top",
@@ -209416,6 +209423,32 @@
        ]
       },
       "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ],
        "kitchen_counter_2/top": [
         [
          0,
@@ -211146,28 +211179,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -211179,13 +211198,6 @@
        "skill": "pick",
        "args": {
         "object": "kid_cup"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_4",
-        "distance_m": 0.3
        }
       },
       {
@@ -211203,18 +211215,6 @@
          2.093,
          -4.837
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -223158,19 +223158,19 @@
       },
       "stored_mug": {
        "asset": "breakfast_mug",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
-        1.4,
-        0.42
+        1.55,
+        0.46
        ],
        "yaw_deg": 0.0
       },
       "stored_plate": {
        "asset": "breakfast_plate",
-       "support": "kitchen_cabinet_4/inside_shelf",
+       "support": "kitchen_cabinet_4/top",
        "xy": [
-        1.2,
-        0.42
+        1.22,
+        0.44
        ],
        "yaw_deg": 0.0
       }
@@ -223219,9 +223219,57 @@
      },
      "move": {},
      "layout": {
-      "clusters": [],
+      "clusters": [
+       {
+        "names": [
+         "stored_mug",
+         "stored_plate"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.096,
+         0.316,
+         1.5963,
+         0.564
+        ],
+        "dx": [
+         -0.05,
+         0.16
+        ],
+        "pick": [
+         "stored_mug"
+        ]
+       }
+      ],
       "static": {},
-      "reach": {},
+      "reach": {
+       "kitchen_cabinet_4/top": [
+        [
+         0,
+         1,
+         1.767,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         0,
+         -1,
+         1.033,
+         0.313,
+         0.58,
+         0.2
+        ],
+        [
+         1,
+         1,
+         0.58,
+         1.033,
+         1.767,
+         0.2
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -224470,28 +224518,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_4"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
-       "skill": "open",
+       "skill": "look",
        "args": {
-        "articulated": "kitchen_cabinet_4"
+        "target": "kitchen_cabinet_4/top"
        }
-      },
-      {
-       "skill": "bend",
-       "args": {}
-      },
-      {
-       "skill": "explore_furniture",
-       "args": {
-        "furniture": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "straighten",
-       "args": {}
       },
       {
        "skill": "navigate",
@@ -224503,13 +224537,6 @@
        "skill": "pick",
        "args": {
         "object": "stored_mug"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_cabinet_4",
-        "distance_m": 0.3
        }
       },
       {
@@ -224527,18 +224554,6 @@
          8.06,
          1.655
         ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
