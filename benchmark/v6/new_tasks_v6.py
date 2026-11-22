@@ -519,7 +519,10 @@ def t23():
     LT["dropped_in_two_rooms__shelf_full"] = cost_tiers(
         [(sgoal + [["on_any", BK, OTHER_CASES + [BED]]] + [["near_start", n, 0.03] for n in sorted(books_b)], 0),
          (sgoal + [["on_any", BK, KIDS]], 1), (sgoal + off_floor(BK), 2)])
-    book = {BK: floor("teddy_bear", 0.25, -6.10, 15.0)}
+    # 11-21 (v6_verify_1121e s12: explore_room(living_room_0_1) from the island looks from (-6.15, 4.68) and from the
+    # study desk's east stand-off (0.68, -6.02); the bear at (0.25, -6.10), between the desk's east end and the bed, lay
+    # under the second view, out of it): in front of the desk, 1.1 m south-west of that stand-off, in its floor strip
+    book = {BK: floor("teddy_bear", 0.20, -7.00, 15.0)}
 
     fams = {
         "by_kind": fam(
