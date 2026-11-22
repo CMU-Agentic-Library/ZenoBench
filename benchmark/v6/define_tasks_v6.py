@@ -2451,7 +2451,9 @@ def T17(t):
             rationale="two hides share the lid: find the second block, take the lid off again between the hides, "
                       "cover at the end",
             cases={"tv_stand": dict(move={F: P("tv_stand_2/top", 7.0, 0.36)}, route=both("living_room_0_0")),
-                   "two_pots": dict(move={F: P("dining_table_2/top", 3.7, 6.3)},
+                   # 11-22 (v6_sticky_1121, muqingj v6full_1119: the lid at the stove's front right, beside the soup
+                   # pot, no grasp 2 of 2): the lid on the island, as T09's
+                   "two_pots": dict(move={F: P("dining_table_2/top", 3.7, 6.3), LID: P("kitchen_island/top", 7.75, 1.85)},
                                     add={SOUPP: {"asset": "soup_pot", **P(STOVE, 8.70, 1.725)}},
                                     goal={"all": [*both_goal["all"], ["near_start", SOUPP, 0.03]]},
                                     watch=[B, F, LID, POT, SOUPP],
@@ -3536,7 +3538,7 @@ EXTRA_SUBSTITUTES = {
     ("T20", "m_bottle_on_tv_stand"): {"living_juice": _SURF("tv_stand_2/top", 7.60, 0.36, "juice_bottle"),
                                       "living_cup": _SURF("tv_stand_2/top", 7.75, 0.36, "breakfast_cup")},
     ("T24", "no_apples_for_him__apple_free"): {"home_basket": _SURF("kitchen_island/top", 7.10, 1.78, "fruit_basket"),
-                                               "snack_banana": _ON(7.10, 1.78, 0.881, "banana")},
+                                               "snack_banana": _SURF("kitchen_island/top", 7.40, 1.85, "banana")},
     ("T25", "drink_in_fridge__juice"): {"cold_soda": _SURF("breakfast_fridge/inside_shelf", 6.05, 3.30, "soda_can")},
     ("T26", "scattered__basket"): {"kids_toy_bin": _SURF("bookcase_2/top", 1.15, -0.43, "small_storage_bin")},
     ("T30", "how_many__three_bowls"): {"spare_mug": _SURF("kitchen_counter_2/top", -0.364, 7.709, "breakfast_mug")},

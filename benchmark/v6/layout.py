@@ -510,6 +510,9 @@ def layout_spec(task, vid, registry, control=None):
     placed = {n: m for n, m in {**move, **add}.items() if n not in gone}    # 11-20: taken out stays out
     steps = task["routes"][task["oracle"][vid]]["steps"]
     picked = {s["args"].get("object") for s in steps if s["skill"] == "pick"}
+    # 11-22: what a composite step picks up as well (hide: the thing and the lid; cover: the lid) -- T17 two_pots s19
+    # put the lid 2 cm from a block, the finger room only kept around plain picks
+    picked |= {s["args"].get(k) for s in steps if s["skill"] in ("hide", "cover") for k in ("object", "lid")} - {None}
     searched = {s["args"].get("object") for s in steps if s["skill"] == "search"}
     keep_out = reserved(task, vid, steps)
     boxes = {n: _box(_asset_of(base, n, add), m) for n, m in placed.items() if m.get("xy")}
