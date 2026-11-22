@@ -780,7 +780,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__bin_free",
-   "steps": 14,
+   "steps": 15,
    "atoms_checked": 3,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -790,7 +790,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__bin_full_tray",
-   "steps": 17,
+   "steps": 18,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -800,7 +800,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__bin_full_basket",
-   "steps": 17,
+   "steps": 18,
    "atoms_checked": 8,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -810,7 +810,7 @@
   {
    "task": "T03_utensils_one_container",
    "layout": "utensils_apart__bin_full_fruit",
-   "steps": 17,
+   "steps": 18,
    "atoms_checked": 10,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1386,7 +1386,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "vessel_decides_appliance__in_pot",
-   "steps": 8,
+   "steps": 9,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],
@@ -1416,7 +1416,7 @@
   {
    "task": "T07_heat_oatmeal",
    "layout": "two_portions__dining",
-   "steps": 20,
+   "steps": 21,
    "atoms_checked": 6,
    "atoms_geometric": 0,
    "geometric_atoms": [],
