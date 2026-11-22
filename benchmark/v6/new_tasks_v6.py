@@ -659,12 +659,13 @@ def t24():
     at = lambda x: [["on", x, DESK]]  # noqa: E731
     basket_isl = {"home_basket": on("fruit_basket", ISL, 7.10, 1.78)}
     # no_apples_for_him (11-17, user: no "he doesn't like apples"; the task's words): the apple free on the table
-    # (ideal); or on someone's plate at a place set at the table, someone eating (in use), a banana in the fruit
+    # (ideal); or on someone's plate at a place set at the table, someone eating (in use), a banana beside the fruit
     # basket on the island -- someone's apple taken is the worst
     SEAT = {"seat_plate": on("breakfast_plate", T2, 3.30, 6.70), "seat_spoon": on("breakfast_spoon", T2, 3.30, 6.90),
             "seat_cup": on("breakfast_cup", T2, 3.52, 6.70)}
     apple_on_seat = {AP: {"asset": "apple", "support": None, "z": 0.858, "xy": [3.30, 6.70], "yaw_deg": 0.0}}
-    banana_in_basket = {BA: {"asset": "banana", "support": None, "z": 0.881, "xy": [7.10, 1.78], "yaw_deg": 0.0}}
+    # 11-22 (v6_sticky_1121, muqingj v6full_1119: no grasp, 2 of 2): the banana lies beside the basket, not in it
+    banana_in_basket = {BA: on("banana", ISL, 7.40, 1.85)}
     seat_stays = [["near_start", n, 0.03] for n in (AP, "seat_plate")]
     LT["no_apples_for_him__apple_free"] = cost_tiers([(at(AP), 0)])
     LT["no_apples_for_him__apple_in_use"] = cost_tiers(
@@ -697,7 +698,7 @@ def t24():
         "no_apples_for_him": fam(
             "apple_on_table", ["resource_in_use"],
             "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the "
-            "table, a banana in the fruit basket on the island)",
+            "table, a banana beside the fruit basket on the island)",
             "an apple on the dining table: free, or on someone's plate at a place where someone is eating",
             "bring something nobody is eating: the apple when it is free, else the banana from the basket",
             {"apple_free": dict(add={AP: on("apple", T2, 3.30, 6.70), **hw}, watch=[AP],

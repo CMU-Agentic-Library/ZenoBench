@@ -145664,6 +145664,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        }
       ],
@@ -145924,6 +145927,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        }
       ],
@@ -146222,6 +146228,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        },
        {
@@ -146242,6 +146251,9 @@
         "dy": [
          -0.11,
          0.12
+        ],
+        "pick": [
+         "floor_block"
         ],
         "search": [
          "floor_block"
@@ -146420,10 +146432,10 @@
     "hide_both__two_pots": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_island/top",
        "xy": [
-        8.715,
-        1.655
+        7.75,
+        1.85
        ],
        "yaw_deg": 0.0
       },
@@ -146551,8 +146563,30 @@
          -0.77,
          1.62
         ],
+        "pick": [
+         "floor_block"
+        ],
         "search": [
          "floor_block"
+        ]
+       },
+       {
+        "names": [
+         "pot_lid"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.625,
+         1.725,
+         7.875,
+         1.975
+        ],
+        "dx": [
+         -1.07,
+         0.37
+        ],
+        "pick": [
+         "pot_lid"
         ]
        },
        {
@@ -146613,6 +146647,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        }
       ],
@@ -146990,6 +147027,9 @@
         "dy": [
          -0.13,
          0.07
+        ],
+        "pick": [
+         "cover_plate"
         ]
        },
        {
@@ -147050,6 +147090,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        }
       ],
@@ -147332,6 +147375,9 @@
         "dy": [
          -0.08,
          0.33
+        ],
+        "pick": [
+         "wooden_block_b"
         ]
        }
       ],
@@ -183879,11 +183925,10 @@
       },
       "snack_banana": {
        "asset": "banana",
-       "support": null,
-       "z": 0.881,
+       "support": "kitchen_island/top",
        "xy": [
-        7.1,
-        1.78
+        7.4,
+        1.85
        ],
        "yaw_deg": 0.0
       }
@@ -183915,7 +183960,7 @@
       "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
+      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana beside the fruit basket on the island)",
       "derived_from": "bare"
      },
      "move": {},
@@ -183973,12 +184018,12 @@
         "box": [
          6.9544,
          1.6538,
-         7.2455,
+         7.4962,
          1.9062
         ],
         "dx": [
          -0.4,
-         1.0
+         0.75
         ],
         "dy": [
          -0.12,
@@ -184197,11 +184242,10 @@
       },
       "snack_banana": {
        "asset": "banana",
-       "support": null,
-       "z": 0.881,
+       "support": "kitchen_island/top",
        "xy": [
-        7.1,
-        1.78
+        7.4,
+        1.85
        ],
        "yaw_deg": 0.0
       },
@@ -184254,7 +184298,7 @@
       "rationale": "bring something nobody is eating: the apple when it is free, else the banana from the basket",
       "control": "apple_on_table",
       "contrast": null,
-      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
+      "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana beside the fruit basket on the island)",
       "derived_from": "bare"
      },
      "move": {},
@@ -184312,12 +184356,12 @@
         "box": [
          6.9544,
          1.6538,
-         7.2455,
+         7.4962,
          1.9062
         ],
         "dx": [
          -0.4,
-         1.0
+         0.75
         ],
         "dy": [
          -0.12,
@@ -189078,7 +189122,7 @@
       "no_apples_for_him__apple_free",
       "no_apples_for_him__apple_in_use"
      ],
-     "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana in the fruit basket on the island)",
+     "factor": "whether the apple is free (seed: alone on the table; or on someone's plate at a place set at the table, a banana beside the fruit basket on the island)",
      "seeds": {
       "10": "no_apples_for_him__apple_in_use",
       "11": "no_apples_for_him__apple_in_use",
