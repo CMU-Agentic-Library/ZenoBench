@@ -50658,9 +50658,6 @@
         ],
         "pick": [
          "breakfast_spoon"
-        ],
-        "search": [
-         "breakfast_spoon"
         ]
        },
        {
@@ -50834,7 +50831,6 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "breakfast_spoon",
         "wide_storage_bin"
        ],
        "look": []
@@ -51124,9 +51120,6 @@
         ],
         "pick": [
          "breakfast_spoon"
-        ],
-        "search": [
-         "breakfast_spoon"
         ]
        },
        {
@@ -51330,7 +51323,6 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "breakfast_spoon",
         "spare_tray",
         "wide_storage_bin"
        ],
@@ -51654,9 +51646,6 @@
         ],
         "pick": [
          "breakfast_spoon"
-        ],
-        "search": [
-         "breakfast_spoon"
         ]
        },
        {
@@ -51834,7 +51823,6 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "breakfast_spoon",
         "rolling_pin",
         "wide_storage_bin"
        ],
@@ -52194,7 +52182,6 @@
          "breakfast_spoon"
         ],
         "search": [
-         "breakfast_spoon",
          "fruit_basket"
         ]
        },
@@ -52373,7 +52360,6 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [
-        "breakfast_spoon",
         "fruit_basket",
         "wide_storage_bin"
        ],
@@ -53301,10 +53287,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "breakfast_spoon",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -53439,10 +53430,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "breakfast_spoon",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -53551,10 +53547,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "breakfast_spoon",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -53664,10 +53665,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "breakfast_spoon",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -94514,9 +94520,6 @@
         ],
         "pick": [
          "soup_pot"
-        ],
-        "search": [
-         "soup_pot"
         ]
        }
       ],
@@ -95314,9 +95317,6 @@
          1.03
         ],
         "pick": [
-         "soup_pot"
-        ],
-        "search": [
          "soup_pot"
         ]
        },
@@ -96667,10 +96667,15 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "soup_pot",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -96851,10 +96856,15 @@
     "v6_two_portions__dining": {
      "steps": [
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "soup_pot",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {

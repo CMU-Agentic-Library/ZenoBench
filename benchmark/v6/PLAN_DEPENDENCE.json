@@ -54,8 +54,8 @@
   "routes_between_layouts": {
    "passes": 131,
    "goal_not_met": 184,
-   "not_observed": 28,
-   "argument_mismatch": 65,
+   "not_observed": 29,
+   "argument_mismatch": 64,
    "resource_missing": 136
   },
   "universal_fixed_sequence": [
@@ -1859,7 +1859,8 @@
     "small_bin_or_bedroom_bin__basket_in_bedroom": "resource_missing"
    },
    "other_variants_passing": [
-    "which_bin_by_contents__toys_near"
+    "which_bin_by_contents__toys_near",
+    "utensils_apart__bin_free"
    ]
   },
   {
@@ -1874,7 +1875,8 @@
     "small_bin_or_bedroom_bin__wide_in_bedroom": "resource_missing"
    },
    "other_variants_passing": [
-    "no_bin_substitute__basket"
+    "no_bin_substitute__basket",
+    "utensils_apart__bin_full_basket"
    ]
   },
   {
@@ -1889,7 +1891,8 @@
     "which_bin_by_contents__kitchen_bin_full": "resource_missing"
    },
    "other_variants_passing": [
-    "small_bin_or_bedroom_bin__wide_in_bedroom"
+    "small_bin_or_bedroom_bin__wide_in_bedroom",
+    "utensils_apart__bin_free"
    ]
   },
   {
@@ -1903,7 +1906,9 @@
    "other_layouts": {
     "which_bin_by_contents__toys_near": "goal_not_met"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "utensils_apart__bin_full_tray"
+   ]
   },
   {
    "task": "T03_utensils_one_container",
@@ -1917,7 +1922,8 @@
     "no_bin_substitute__tray": "resource_missing"
    },
    "other_variants_passing": [
-    "small_bin_or_bedroom_bin__basket_in_bedroom"
+    "small_bin_or_bedroom_bin__basket_in_bedroom",
+    "utensils_apart__bin_full_basket"
    ]
   },
   {
@@ -1937,7 +1943,7 @@
    "task": "T03_utensils_one_container",
    "variant": "utensils_apart",
    "layout": "utensils_apart__bin_free",
-   "steps": 14,
+   "steps": 15,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
@@ -1952,7 +1958,7 @@
    "task": "T03_utensils_one_container",
    "variant": "utensils_apart",
    "layout": "utensils_apart__bin_full_tray",
-   "steps": 17,
+   "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
@@ -1967,7 +1973,7 @@
    "task": "T03_utensils_one_container",
    "variant": "utensils_apart",
    "layout": "utensils_apart__bin_full_basket",
-   "steps": 17,
+   "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
@@ -1982,7 +1988,7 @@
    "task": "T03_utensils_one_container",
    "variant": "utensils_apart",
    "layout": "utensils_apart__bin_full_fruit",
-   "steps": 17,
+   "steps": 18,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",
@@ -2675,7 +2681,7 @@
    "task": "T07_heat_oatmeal",
    "variant": "vessel_decides_appliance",
    "layout": "vessel_decides_appliance__in_pot",
-   "steps": 8,
+   "steps": 9,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
@@ -2723,7 +2729,7 @@
    "task": "T07_heat_oatmeal",
    "variant": "two_portions",
    "layout": "two_portions__dining",
-   "steps": 20,
+   "steps": 21,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
@@ -2741,7 +2747,7 @@
    "geometric_atoms": [],
    "control_route": "resource_missing",
    "other_layouts": {
-    "two_portions__dining": "argument_mismatch"
+    "two_portions__dining": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -8627,7 +8633,7 @@
    ],
    "start_room": "living_room_0_0",
    "same_before_key_observation": true,
-   "route_a_on_b": "argument_mismatch",
+   "route_a_on_b": "not_observed",
    "route_b_on_a": "argument_mismatch",
    "hidden_state_branch": true
   },

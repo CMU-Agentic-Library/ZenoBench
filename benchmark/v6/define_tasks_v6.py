@@ -1358,7 +1358,11 @@ def T07(t):
     clear_stove = [X, POT, LID]                          # the old bowl and the empty pot on the burner leave
 
     def grab(x, region=None):
-        return ([S("search", object=x, region=region)] if region else []) + [nav(x)] \
+        # 11-22: the dining room's search drove for a view of kitchen cabinet 3 from (0.16, 5.27) / (0.01, 5.67),
+        # never reached (0 of 4; the view from (0.83, 6.34) 5 of 5) -- the dining table looked at instead
+        dining = [nav("dining_table_2/top"), look("dining_table_2/top")]
+        return (dining if region == "dining_room_0_1" else [S("search", object=x, region=region)] if region else []) \
+            + [nav(x)] \
             + ([S("expose", object=x), look(x)] if x in FLAT else []) + [pick(x)]
 
     def to_microwave(x, region=None, temp=40, heat=True):
@@ -2995,7 +2999,8 @@ def T03_more(t):
         the spoon goes first (as in put_both): dropped over the pin already lying there, the arm stopped short twice
         (v6full_1119, v6_sticky_1121; 193 other spoon drops into that bin passed)"""
         pn = [nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
-        sp = [S("search", object=spoon, region="dining_room_0_1"), nav(spoon), pick(spoon), nav(c),
+        # 11-22: the dining table looked at, not the dining room searched (its kitchen-cabinet-3 view never reached)
+        sp = [nav("dining_table_2/top"), look("dining_table_2/top"), nav(spoon), pick(spoon), nav(c),
               S("approach", target=c), S("drop", object=spoon, container=c)]
         return find_bin + list(first) + (sp + pn if spoon_first else pn + sp)
     apart, apart_tiers = {}, {}
