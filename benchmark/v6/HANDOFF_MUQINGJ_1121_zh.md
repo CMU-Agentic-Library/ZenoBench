@@ -1,6 +1,6 @@
 # 11-21 bench 改动：给 muqingj 的全量回归说明
 
-整理：2026-11-21 夜。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
+整理：2026-11-21 夜，11-22 中午定稿。以 `main` 为准（分支 `benchmark-v5-extensible` 已合并进 main）。
 
 ## 1. 请跑全量
 
@@ -97,4 +97,10 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 
 **今早改动的复跑：**
 
-（跑完补上）
+- T18 `door_stuck`（两只碗贴 4 号柜层板前沿）：**成功**（2025 s）
+- T14 `next_in_series__on_bookcase`（第二本红书伸出书架南沿）：**成功**（1275 s）
+- T05 `pen_in_4`（笔在 4 号柜顶）：**成功**（410 s）
+- T07 `two_portions__dining`（看餐桌代替 search）：**成功**（900 s）
+- T03 `utensils_apart__bin_full_tray`（看餐桌代替 search）：**成功**（2000 s）
+
+11-22 的布局改动到此结束，最新的 `main` 就是全量要用的版本。
