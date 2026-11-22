@@ -2371,7 +2371,7 @@
    "task": "T05_pen_or_pencil_to_desk",
    "variant": "x6_gd_pen_or_pencil_cabinets",
    "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-   "steps": 18,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "not_observed",

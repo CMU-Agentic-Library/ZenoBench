@@ -42,7 +42,7 @@ IDEAL = {
     ("T05", "homework_ready"): {"single": (True, "孩子的作业本"), "several": (True, "孩子的作业本"),
                                 "notebook_in_use": (False, "作业本（正被用着）")},
     ("T05", "no_pen_pencil_away"): {"no_pen_pencil_in_use": (False, "铅笔（奶奶正用着，用卧室的笔）")},
-    ("T05", "x6_gd_pen_or_pencil_cabinets"): {"pen_in_4": (True, "笔（在矮柜里）"), "pen_in_use": (False, "笔（正被用着）")},
+    ("T05", "x6_gd_pen_or_pencil_cabinets"): {"pen_in_4": (True, "笔（在 4 号柜顶上）"), "pen_in_use": (False, "笔（正被用着）")},
     ("T06", "display_row"): {"cab_short": (False, "矮柜顶一排摆开（太短，放不下）")},
     ("T06", "display_spot_or_tv"): {"front_taken": (False, "矮柜正面那块地方（被占了）"),
                                     "front_taken_tv_full": (False, "矮柜正面那块地方（被占了，电视柜也满）")},

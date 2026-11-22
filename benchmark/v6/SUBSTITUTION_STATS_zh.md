@@ -82,7 +82,7 @@
 | T05 | homework_ready | notebook_in_use | 被占用 | 作业本（正被用着） | 不在 | 1 |
 | T05 | errand_combined | pen_bedroom | 不用替换 | 按指令（the best the seed offers: what was asked for when it is free, else the stand-in, nothing anyone is using taken, the mug where it belongs） | 在 | 1 |
 | T05 | errand_combined | pen_in_use | 被占用 | 笔（正被用着） | 不在 | 1 |
-| T05 | x6_gd_pen_or_pencil_cabinets | pen_in_4 | 看着像但不能用 | 笔（在矮柜里） | 在 | 1 |
+| T05 | x6_gd_pen_or_pencil_cabinets | pen_in_4 | 看着像但不能用 | 笔（在 4 号柜顶上） | 在 | 1 |
 | T05 | x6_gd_pen_or_pencil_cabinets | pen_in_use | 被占用 | 笔（正被用着） | 不在 | 1 |
 | T06 | free | — | 不用替换 | 按指令（a block (or both) on the low wall cabinet or the TV stand, the hand empty） | 在 | 0 |
 | T06 | display_row | cab_free | 不用替换 | 按指令（the best the seed offers: all three in one row on the low cabinet when it has room, else on the TV stand or the other low cabinet; the family's things untouched） | 在 | 1 |

@@ -1132,7 +1132,7 @@
   {
    "task": "T05_pen_or_pencil_to_desk",
    "layout": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
-   "steps": 18,
+   "steps": 6,
    "atoms_checked": 4,
    "atoms_geometric": 0,
    "geometric_atoms": [],
