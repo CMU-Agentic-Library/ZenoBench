@@ -788,9 +788,10 @@ def t25():
     # 11-21 (user): the stock cups stand on a top, not in a cabinet: no cup inside a cabinet was picked (taken by its
     # rim from above, the board over the shelf leaves no room: cabinet 4, 1 of 6; cabinet 6, 0 of 3).  The small
     # kitchen's counter, another room than the guests' (cabinet 6's top is in view from the start, and the count must
-    # be found there); cups were picked off it 4 of 4, at the spots cup_counter_b and the kid's cup stood on
+    # be found there).  At its front edge (x -0.45: cup_counter_b picked there 2 of 2); 18 cm deep under the wall
+    # cabinet no arm reached it (v6_verify_1121f s11: the seed slid the cup to (-0.38, 7.04)), so the design pins them
     STOCK = COUNTER
-    STOCK_AT = [(-0.34, 8.20), (-0.30, 7.70)]
+    STOCK_AT = [(-0.45, 8.20), (-0.45, 7.80)]
 
     def cups_goal(n_tv, n_in):
         """exactly two cups by the guests, as many ordinary ones as the house has (up to two), the ones there stay"""
@@ -901,6 +902,7 @@ def t25():
                      route=[look(TV)] + fetch(J, TV, [7.30, 0.36]) + cups_route(n_tv, n_in))
              for c, n_tv, n_in in (("one_there", 1, 1), ("none_one_inside", 0, 1), ("none_two_inside", 0, 2),
                                    ("two_there", 2, 1))},
+            keep_design=[STOCK],
             instruction="Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup "
                         "each, ordinary cups where possible; what is already on their table need not be brought again.",
             instruction_zh="两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。"),

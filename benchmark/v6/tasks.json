@@ -192530,8 +192530,8 @@
        "asset": "breakfast_cup",
        "support": "kitchen_counter_2/top",
        "xy": [
-        -0.384,
-        8.209
+        -0.45,
+        8.2
        ],
        "yaw_deg": 0.0
       }
@@ -192597,6 +192597,9 @@
       "stock_cup_1"
      ],
      "since": "v6",
+     "keep_design": [
+      "kitchen_counter_2/top"
+     ],
      "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
@@ -192611,29 +192614,6 @@
      "move": {},
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "stock_cup_1"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.4378,
-         8.1542,
-         -0.3302,
-         8.2638
-        ],
-        "dx": [
-         -0.07,
-         0.57
-        ],
-        "dy": [
-         -1.17,
-         1.16
-        ],
-        "pick": [
-         "stock_cup_1"
-        ]
-       },
        {
         "names": [
          "guest_juice"
@@ -192679,26 +192659,6 @@
        }
       ],
       "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ],
        "tv_stand_2/top": [
         [
          7.271,
@@ -192715,32 +192675,6 @@
        ]
       },
       "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         6.969,
-         -0.266,
-         0.147,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
@@ -192947,8 +192881,8 @@
        "asset": "breakfast_cup",
        "support": "kitchen_counter_2/top",
        "xy": [
-        -0.384,
-        8.209
+        -0.45,
+        8.2
        ],
        "yaw_deg": 0.0
       }
@@ -193005,6 +192939,9 @@
       "stock_cup_1"
      ],
      "since": "v6",
+     "keep_design": [
+      "kitchen_counter_2/top"
+     ],
      "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
@@ -193028,29 +192965,6 @@
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "stock_cup_1"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.4378,
-         8.1542,
-         -0.3302,
-         8.2638
-        ],
-        "dx": [
-         -0.07,
-         0.57
-        ],
-        "dy": [
-         -1.17,
-         1.16
-        ],
-        "pick": [
-         "stock_cup_1"
-        ]
-       },
        {
         "names": [
          "guest_juice"
@@ -193101,55 +193015,8 @@
         ]
        }
       ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ]
-      },
+      "static": {},
       "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         6.969,
-         -0.266,
-         0.147,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
@@ -193346,8 +193213,8 @@
        "asset": "breakfast_cup",
        "support": "kitchen_counter_2/top",
        "xy": [
-        -0.384,
-        8.209
+        -0.45,
+        8.2
        ],
        "yaw_deg": 0.0
       },
@@ -193355,8 +193222,8 @@
        "asset": "breakfast_cup",
        "support": "kitchen_counter_2/top",
        "xy": [
-        -0.384,
-        7.709
+        -0.45,
+        7.8
        ],
        "yaw_deg": 0.0
       }
@@ -193417,6 +193284,9 @@
       "stock_cup_2"
      ],
      "since": "v6",
+     "keep_design": [
+      "kitchen_counter_2/top"
+     ],
      "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
@@ -193431,31 +193301,6 @@
      "move": {},
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "stock_cup_1",
-         "stock_cup_2"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.4378,
-         7.6542,
-         -0.3302,
-         8.2638
-        ],
-        "dx": [
-         -0.07,
-         0.57
-        ],
-        "dy": [
-         -0.67,
-         1.16
-        ],
-        "pick": [
-         "stock_cup_1",
-         "stock_cup_2"
-        ]
-       },
        {
         "names": [
          "guest_juice"
@@ -193480,55 +193325,8 @@
         ]
        }
       ],
-      "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ]
-      },
+      "static": {},
       "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         6.969,
-         -0.266,
-         0.147,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
@@ -193727,7 +193525,7 @@
        "asset": "breakfast_cup",
        "support": "kitchen_counter_2/top",
        "xy": [
-        -0.34,
+        -0.45,
         8.2
        ],
        "yaw_deg": 0.0
@@ -193803,6 +193601,9 @@
       "stock_cup_1"
      ],
      "since": "v6",
+     "keep_design": [
+      "kitchen_counter_2/top"
+     ],
      "note": "two guests; the juice on the island; by the guests none, one or two cups; on the small kitchen's counter one or two cups; the house's only other cups are mugs in the dining room",
      "v6": {
       "family": "cups_for_two",
@@ -193817,26 +193618,6 @@
      "move": {},
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "stock_cup_1"
-        ],
-        "support": "kitchen_counter_2/top",
-        "box": [
-         -0.3938,
-         8.1452,
-         -0.2862,
-         8.2548
-        ],
-        "dx": [
-         -0.12,
-         0.52
-        ],
-        "dy": [
-         -1.16,
-         1.17
-        ]
-       },
        {
         "names": [
          "guest_juice"
@@ -193883,26 +193664,6 @@
        }
       ],
       "static": {
-       "kitchen_counter_2/top": [
-        [
-         -0.1452,
-         8.2954,
-         0.1035,
-         8.5437
-        ],
-        [
-         -0.1165,
-         7.8786,
-         0.2138,
-         8.2089
-        ],
-        [
-         -0.0723,
-         7.8765,
-         0.0735,
-         8.0449
-        ]
-       ],
        "tv_stand_2/top": [
         [
          7.271,
@@ -193913,32 +193674,6 @@
        ]
       },
       "reach": {
-       "kitchen_counter_2/top": [
-        [
-         0,
-         -1,
-         -0.524,
-         7.019,
-         9.437,
-         0.2
-        ],
-        [
-         1,
-         1,
-         9.437,
-         -0.524,
-         0.25,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         6.969,
-         -0.266,
-         0.147,
-         0.2
-        ]
-       ],
        "kitchen_island/top": [
         [
          0,
