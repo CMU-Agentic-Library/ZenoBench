@@ -79607,8 +79607,8 @@
         "object": "used_mug",
         "receptacle": "kitchen_counter_2/top",
         "hint_xy": [
-         -0.144,
-         7.109
+         -0.4,
+         7.6
         ]
        }
       }
@@ -79690,8 +79690,8 @@
         "object": "used_mug",
         "receptacle": "kitchen_counter_2/top",
         "hint_xy": [
-         -0.144,
-         7.109
+         -0.4,
+         7.6
         ]
        }
       }
@@ -118061,14 +118061,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_counter_2/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "used_mug",
-        "receptacle": "kitchen_counter_2/top"
+        "receptacle": "kitchen_island/top"
        }
       }
      ],
@@ -118193,14 +118193,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_counter_2/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "used_mug",
-        "receptacle": "kitchen_counter_2/top"
+        "receptacle": "kitchen_island/top"
        }
       }
      ],
@@ -118305,14 +118305,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_counter_2/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "used_mug",
-        "receptacle": "kitchen_counter_2/top"
+        "receptacle": "kitchen_island/top"
        }
       },
       {
@@ -118566,14 +118566,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_counter_2/top"
+        "destination": "kitchen_island/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "used_mug",
-        "receptacle": "kitchen_counter_2/top"
+        "receptacle": "kitchen_island/top"
        }
       }
      ],
