@@ -78475,7 +78475,7 @@
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
         3.5,
-        0.41
+        0.48
        ],
        "yaw_deg": 0.0
       },
@@ -78483,7 +78483,7 @@
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
         1.4,
-        0.46
+        0.54
        ],
        "yaw_deg": 0.0
       }
@@ -78635,7 +78635,7 @@
        "support": "kitchen_cabinet_6/inside_shelf",
        "xy": [
         3.5,
-        0.41
+        0.48
        ],
        "yaw_deg": 0.0
       },
