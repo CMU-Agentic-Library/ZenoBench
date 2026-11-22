@@ -150862,7 +150862,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.25,
+        1.22,
         0.42
        ],
        "yaw_deg": 0.0
@@ -150871,7 +150871,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.55,
+        1.45,
         0.42
        ],
        "yaw_deg": 0.0
@@ -190869,6 +190869,16 @@
       "not_in_view",
       "resource_absent"
      ],
+     "move": {
+      "mug_shelf": {
+       "support": "cell_shelf_4/top",
+       "xy": [
+        4.4,
+        4.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -190930,18 +190940,34 @@
       "factor": "what cup there is (seed: one on the kitchen counter; or only the dining room's mugs; or the counter's cup holds the kid's blocks, the other ordinary cups gone)",
       "derived_from": "bare"
      },
-     "move": {
-      "mug_shelf": {
-       "support": "large_shelf_6/top",
-       "xy": [
-        5.09,
-        8.545
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "cell_shelf_4/top",
+        "box": [
+         4.3537,
+         4.4367,
+         4.4463,
+         4.5633
+        ],
+        "dx": [
+         -0.94,
+         0.75
+        ],
+        "dy": [
+         -0.21,
+         0.04
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -190964,36 +190990,28 @@
         "pick": [
          "guest_juice"
         ]
-       },
-       {
-        "names": [
-         "mug_shelf"
-        ],
-        "support": "large_shelf_6/top",
-        "box": [
-         5.0437,
-         8.4817,
-         5.1363,
-         8.6083
-        ],
-        "dx": [
-         -0.08,
-         0.14
-        ],
-        "dy": [
-         -0.94,
-         0.69
-        ],
-        "pick": [
-         "mug_shelf"
-        ],
-        "search": [
-         "mug_shelf"
-        ]
        }
       ],
       "static": {},
       "reach": {
+       "cell_shelf_4/top": [
+        [
+         0,
+         -1,
+         3.396,
+         4.314,
+         4.622,
+         0.2
+        ],
+        [
+         1,
+         1,
+         4.622,
+         3.396,
+         5.162,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -191017,24 +191035,6 @@
          1.515,
          6.54,
          8.26,
-         0.2
-        ]
-       ],
-       "large_shelf_6/top": [
-        [
-         0,
-         -1,
-         4.95,
-         7.525,
-         9.169,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         7.525,
-         4.95,
-         5.144,
          0.2
         ]
        ]
@@ -191109,10 +191109,10 @@
        "yaw_deg": 0.0
       },
       "mug_shelf": {
-       "support": "large_shelf_6/top",
+       "support": "cell_shelf_4/top",
        "xy": [
-        5.09,
-        8.545
+        4.4,
+        4.5
        ],
        "yaw_deg": 0.0
       }
@@ -191216,6 +191216,32 @@
       "clusters": [
        {
         "names": [
+         "mug_shelf"
+        ],
+        "support": "cell_shelf_4/top",
+        "box": [
+         4.3537,
+         4.4367,
+         4.4463,
+         4.5633
+        ],
+        "dx": [
+         -0.94,
+         0.75
+        ],
+        "dy": [
+         -0.21,
+         0.04
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       },
+       {
+        "names": [
          "cup_block_1",
          "cup_block_2",
          "cup_block_3",
@@ -191258,32 +191284,6 @@
         "pick": [
          "guest_juice"
         ]
-       },
-       {
-        "names": [
-         "mug_shelf"
-        ],
-        "support": "large_shelf_6/top",
-        "box": [
-         5.0437,
-         8.4817,
-         5.1363,
-         8.6083
-        ],
-        "dx": [
-         -0.08,
-         0.14
-        ],
-        "dy": [
-         -0.94,
-         0.69
-        ],
-        "pick": [
-         "mug_shelf"
-        ],
-        "search": [
-         "mug_shelf"
-        ]
        }
       ],
       "static": {
@@ -191309,6 +191309,24 @@
        ]
       },
       "reach": {
+       "cell_shelf_4/top": [
+        [
+         0,
+         -1,
+         3.396,
+         4.314,
+         4.622,
+         0.2
+        ],
+        [
+         1,
+         1,
+         4.622,
+         3.396,
+         5.162,
+         0.2
+        ]
+       ],
        "kitchen_counter_2/top": [
         [
          0,
@@ -191358,24 +191376,6 @@
          1.515,
          6.54,
          8.26,
-         0.2
-        ]
-       ],
-       "large_shelf_6/top": [
-        [
-         0,
-         -1,
-         4.95,
-         7.525,
-         9.169,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         7.525,
-         4.95,
-         5.144,
          0.2
         ]
        ]
@@ -191564,7 +191564,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
@@ -191829,7 +191829,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
@@ -192085,7 +192085,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       },
@@ -192324,7 +192324,7 @@
        "support": "breakfast_fridge/inside_shelf",
        "xy": [
         5.9,
-        3.3
+        3.16
        ],
        "yaw_deg": 0.0
       }
@@ -192862,6 +192862,16 @@
      ],
      "instruction": "Two guests are sitting in the living room. Get the drink and the cups ready for them, one cup each, ordinary cups where possible; what is already on their table need not be brought again.",
      "instruction_zh": "两位客人在客厅，给他们准备好饮料和杯子，每人一个杯子，尽量用普通杯子；桌上已有的不用重复拿。",
+     "move": {
+      "mug_shelf": {
+       "support": "cell_shelf_4/top",
+       "xy": [
+        4.4,
+        4.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -192953,18 +192963,34 @@
       "factor": "how many cups already stand by the guests and how many stand on the small kitchen's counter (seed: 1 + 1, 0 + 1, 0 + 2, 2 + 1); the counter is in another room, the count is known only once there",
       "derived_from": "bare"
      },
-     "move": {
-      "mug_shelf": {
-       "support": "large_shelf_6/top",
-       "xy": [
-        5.09,
-        8.545
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "cell_shelf_4/top",
+        "box": [
+         4.3537,
+         4.4367,
+         4.4463,
+         4.5633
+        ],
+        "dx": [
+         -0.94,
+         0.75
+        ],
+        "dy": [
+         -0.21,
+         0.04
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       },
        {
         "names": [
          "guest_juice"
@@ -192987,36 +193013,28 @@
         "pick": [
          "guest_juice"
         ]
-       },
-       {
-        "names": [
-         "mug_shelf"
-        ],
-        "support": "large_shelf_6/top",
-        "box": [
-         5.0437,
-         8.4817,
-         5.1363,
-         8.6083
-        ],
-        "dx": [
-         -0.08,
-         0.14
-        ],
-        "dy": [
-         -0.94,
-         0.69
-        ],
-        "pick": [
-         "mug_shelf"
-        ],
-        "search": [
-         "mug_shelf"
-        ]
        }
       ],
       "static": {},
       "reach": {
+       "cell_shelf_4/top": [
+        [
+         0,
+         -1,
+         3.396,
+         4.314,
+         4.622,
+         0.2
+        ],
+        [
+         1,
+         1,
+         4.622,
+         3.396,
+         5.162,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -193040,24 +193058,6 @@
          1.515,
          6.54,
          8.26,
-         0.2
-        ]
-       ],
-       "large_shelf_6/top": [
-        [
-         0,
-         -1,
-         4.95,
-         7.525,
-         9.169,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         7.525,
-         4.95,
-         5.144,
          0.2
         ]
        ]
@@ -194110,6 +194110,16 @@
      ],
      "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
      "instruction_zh": "两位客人在客厅坐着，给他们拿点喝的。",
+     "move": {
+      "mug_shelf": {
+       "support": "cell_shelf_4/top",
+       "xy": [
+        4.4,
+        4.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "remove": [
       "cup_counter_b",
       "cup_kitchen_cabinet",
@@ -194182,18 +194192,34 @@
       "factor": "how many cups there are (seed: two on the island; or one, the house's other ordinary cups gone, mugs in the dining room)",
       "derived_from": "bare"
      },
-     "move": {
-      "mug_shelf": {
-       "support": "large_shelf_6/top",
-       "xy": [
-        5.09,
-        8.545
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "mug_shelf"
+        ],
+        "support": "cell_shelf_4/top",
+        "box": [
+         4.3537,
+         4.4367,
+         4.4463,
+         4.5633
+        ],
+        "dx": [
+         -0.94,
+         0.75
+        ],
+        "dy": [
+         -0.21,
+         0.04
+        ],
+        "pick": [
+         "mug_shelf"
+        ],
+        "search": [
+         "mug_shelf"
+        ]
+       },
        {
         "names": [
          "guest_cup"
@@ -194239,36 +194265,28 @@
         "pick": [
          "guest_juice"
         ]
-       },
-       {
-        "names": [
-         "mug_shelf"
-        ],
-        "support": "large_shelf_6/top",
-        "box": [
-         5.0437,
-         8.4817,
-         5.1363,
-         8.6083
-        ],
-        "dx": [
-         -0.08,
-         0.14
-        ],
-        "dy": [
-         -0.94,
-         0.69
-        ],
-        "pick": [
-         "mug_shelf"
-        ],
-        "search": [
-         "mug_shelf"
-        ]
        }
       ],
       "static": {},
       "reach": {
+       "cell_shelf_4/top": [
+        [
+         0,
+         -1,
+         3.396,
+         4.314,
+         4.622,
+         0.2
+        ],
+        [
+         1,
+         1,
+         4.622,
+         3.396,
+         5.162,
+         0.2
+        ]
+       ],
        "kitchen_island/top": [
         [
          0,
@@ -194292,24 +194310,6 @@
          1.515,
          6.54,
          8.26,
-         0.2
-        ]
-       ],
-       "large_shelf_6/top": [
-        [
-         0,
-         -1,
-         4.95,
-         7.525,
-         9.169,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         7.525,
-         4.95,
-         5.144,
          0.2
         ]
        ]
