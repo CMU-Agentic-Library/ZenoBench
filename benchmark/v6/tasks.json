@@ -136172,6 +136172,14 @@
        ],
        "yaw_deg": 0.0
       },
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.44,
+        8.42
+       ],
+       "yaw_deg": 0.0
+      },
       "cup": {
        "support": "tv_stand_2/top",
        "xy": [
@@ -136187,14 +136195,6 @@
         -0.479
        ],
        "yaw_deg": 61.42
-      },
-      "plate_counter_a": {
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.324,
-        8.429
-       ],
-       "yaw_deg": 0.0
       }
      },
      "conditions": [
@@ -136378,18 +136378,14 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.448,
+         -0.564,
          7.669,
-         -0.2,
-         8.5531
-        ],
-        "dx": [
-         -0.06,
-         0.44
+         -0.316,
+         8.5441
         ],
         "dy": [
          -0.68,
-         0.87
+         0.88
         ],
         "pick": [
          "plate_counter_a"
@@ -141296,19 +141292,19 @@
        ],
        "yaw_deg": 0.0
       },
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.44,
+        8.42
+       ],
+       "yaw_deg": 0.0
+      },
       "handled_cooking_pot": {
        "support": "kitchen_stove/top",
        "xy": [
         8.4097,
         1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.324,
-        8.429
        ],
        "yaw_deg": 0.0
       }
@@ -141412,18 +141408,14 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.448,
-         8.3049,
-         -0.2,
-         8.5531
-        ],
-        "dx": [
-         -0.06,
-         0.44
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
         ],
         "dy": [
-         -1.32,
-         0.87
+         -1.31,
+         0.88
         ],
         "pick": [
          "plate_counter_a"
@@ -141630,6 +141622,24 @@
       "resource_absent",
       "not_in_view"
      ],
+     "move": {
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.44,
+        8.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "remove": [
       "pot_lid"
      ],
@@ -141686,24 +141696,6 @@
       "factor": "the layout only",
       "derived_from": "bare"
      },
-     "move": {
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.324,
-        8.429
-       ],
-       "yaw_deg": 0.0
-      }
-     },
      "layout": {
       "clusters": [
        {
@@ -141712,18 +141704,14 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.448,
-         8.3049,
-         -0.2,
-         8.5531
-        ],
-        "dx": [
-         -0.06,
-         0.44
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
         ],
         "dy": [
-         -1.32,
-         0.87
+         -1.31,
+         0.88
         ],
         "pick": [
          "plate_counter_a"
@@ -141918,19 +141906,19 @@
        ],
        "yaw_deg": 0.0
       },
+      "plate_counter_a": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.44,
+        8.42
+       ],
+       "yaw_deg": 0.0
+      },
       "handled_cooking_pot": {
        "support": "kitchen_stove/top",
        "xy": [
         8.4097,
         1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "kitchen_counter_2/top",
-       "xy": [
-        -0.324,
-        8.429
        ],
        "yaw_deg": 0.0
       }
@@ -142006,18 +141994,14 @@
         ],
         "support": "kitchen_counter_2/top",
         "box": [
-         -0.448,
-         8.3049,
-         -0.2,
-         8.5531
-        ],
-        "dx": [
-         -0.06,
-         0.44
+         -0.564,
+         8.2959,
+         -0.316,
+         8.5441
         ],
         "dy": [
-         -1.32,
-         0.87
+         -1.31,
+         0.88
         ],
         "pick": [
          "plate_counter_a"
