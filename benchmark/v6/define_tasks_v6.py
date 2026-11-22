@@ -890,8 +890,10 @@ def T05(t):
     # (11-17, user: no hint where the pens are kept, no "close the doors"; an open door is still a fault)
     # 11-22: lying across the shelf's front, 10 cm in -- pointing into the cabinet at (3.63, 0.36) the pencil was
     # never picked (0 of 13: v5 runs, v6full_1119, v6_sticky_1121)
-    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.46], "yaw_deg": 0.0}
-    in6_pencil = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.50, 0.41], "yaw_deg": 0.0}
+    # 11-22 (v6_sticky_1121j s10): 10 cm in, neither was reachable (no collision-free path to any grasp, 2 of 2):
+    # 2 cm behind the shelf's front edge (cabinet 4: y 0.562, cabinet 6: 0.502), the wrist outside the cabinet
+    in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.54], "yaw_deg": 0.0}
+    in6_pencil = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.50, 0.48], "yaw_deg": 0.0}
 
     def fetch(x, art):
         return [nav(x), pick(x), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]
