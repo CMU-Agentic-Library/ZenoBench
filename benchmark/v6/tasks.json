@@ -53301,31 +53301,6 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "rolling_pin"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rolling_pin"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "rolling_pin",
-        "receptacle": "wide_storage_bin"
-       }
-      },
-      {
        "skill": "search",
        "args": {
         "object": "breakfast_spoon",
@@ -53355,6 +53330,31 @@
        "args": {
         "object": "breakfast_spoon",
         "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
        }
       }
      ],
@@ -150830,7 +150830,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.22,
+        1.18,
         0.42
        ],
        "yaw_deg": 0.0
@@ -150839,7 +150839,7 @@
        "asset": "breakfast_bowl",
        "support": "kitchen_cabinet_4/inside_shelf",
        "xy": [
-        1.45,
+        1.41,
         0.42
        ],
        "yaw_deg": 0.0

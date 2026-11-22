@@ -2961,14 +2961,16 @@ def T03_more(t):
     find_bin = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"), nav("bookcase_2/top"),
                 look("bookcase_2/top")]
 
-    def apart_route(c, first=()):
-        """The pin first, then the spoon from the dining table, both into ``c``."""
-        return find_bin + list(first) + [
-            nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c),
-            S("search", object=spoon, region="dining_room_0_1"), nav(spoon), pick(spoon), nav(c),
-            S("approach", target=c), S("drop", object=spoon, container=c)]
+    def apart_route(c, first=(), spoon_first=False):
+        """The pin first, then the spoon from the dining table, both into ``c``.  11-21 night: into the empty wide bin
+        the spoon goes first (as in put_both): dropped over the pin already lying there, the arm stopped short twice
+        (v6full_1119, v6_sticky_1121; 193 other spoon drops into that bin passed)"""
+        pn = [nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        sp = [S("search", object=spoon, region="dining_room_0_1"), nav(spoon), pick(spoon), nav(c),
+              S("approach", target=c), S("drop", object=spoon, container=c)]
+        return find_bin + list(first) + (sp + pn if spoon_first else pn + sp)
     apart, apart_tiers = {}, {}
-    apart["bin_free"] = dict(move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING}, route=apart_route(bin_),
+    apart["bin_free"] = dict(move={bin_: copy.deepcopy(BEDROOM_BIN), spoon: SP_DINING}, route=apart_route(bin_, spoon_first=True),
                              goal={"all": both_in(bin_) + [["hand_empty", "right"]]}, watch=[pin, spoon, bin_])
     apart_tiers["bin_free"] = container_tiers(both_in, {bin_: "best"}, [])
     for case, (x, add_x, first) in {
