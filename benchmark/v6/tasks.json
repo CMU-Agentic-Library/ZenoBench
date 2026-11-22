@@ -53007,31 +53007,6 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spare_tray"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "breakfast_spoon",
-        "container": "spare_tray"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "rolling_pin"
        }
       },
@@ -53052,6 +53027,31 @@
        "args": {
         "object": "rolling_pin",
         "receptacle": "spare_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spare_tray"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "spare_tray"
        }
       }
      ],
@@ -53216,31 +53216,6 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "serving_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "serving_tray"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "rolling_pin"
        }
       },
@@ -53260,6 +53235,31 @@
        "skill": "place",
        "args": {
         "object": "rolling_pin",
+        "receptacle": "serving_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
         "receptacle": "serving_tray"
        }
       }

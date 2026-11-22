@@ -153,7 +153,7 @@ def object_attrs(rig, name, st, values=None):
         "handle_collider": _handle_collider(rig, obj),
         "near_closed_edge": _near_closed_edge(rig, name, st),
         "edge_ready": _edge_ready(rig, name, st),
-        "is_container": bool(asset.get("container")), "is_lid": "lid" in tags,
+        "is_container": bool(asset.get("container")), "is_lid": bool({"lid", "plate"} & set(tags)),   # 11-21 (user): a plate covers a pot too (lid_ref)
         "lid": lid, "contents": contents,
         "initial_support": (getattr(rig, "memory", {}) or {}).get("initial_support", {}).get(name) or obj.get("support"),
         "initial_xy": (getattr(rig, "memory", {}) or {}).get("initial_xy", {}).get(name),

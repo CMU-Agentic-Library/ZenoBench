@@ -2843,9 +2843,12 @@ def T03_more(t):
     sup_z = {"tv_stand_2/top": 0.484, "bookcase_2/top": 0.709}
 
     def put_both(c, drop_spoon=True):
-        return [nav(spoon), pick(spoon), nav(c), S("approach", target=c),
-                S("drop", object=spoon, container=c) if drop_spoon else place(spoon, c),
-                nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        sp = [nav(spoon), pick(spoon), nav(c), S("approach", target=c),
+              S("drop", object=spoon, container=c) if drop_spoon else place(spoon, c)]
+        pn = [nav(pin), pick(pin), nav(c), S("approach", target=c), place(pin, c)]
+        # 11-21 (muqingj v6full_1119 kitchen_bin_full: "no free spot in spare_tray"): a tray (26 x 19 cm inside) takes
+        # the 22 cm pin only while it is empty -- the pin first, the spoon dropped in beside it
+        return pn + sp if "tray" in c else sp + pn
 
     def inside_bin(where, items):
         """Items lying in a wide bin at ``where`` (support pose): [(name, dx, dy, yaw)]."""
