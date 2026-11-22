@@ -299,7 +299,10 @@ def robot_attrs(rig):
 SLOT_VALIDATORS = {
     "object_ref": lambda rig, n: n in rig.ann.objects,
     "container_ref": lambda rig, n: n in rig.ann.objects and bool(rig.ann.asset_of(rig.ann.objects[n]).get("container")),
-    "lid_ref": lambda rig, n: n in rig.ann.objects and "lid" in rig.ann.asset_of(rig.ann.objects[n]).get("tags", []),
+    # 11-21 (user): a plate stands in for a lid (T15 no_lid / lid_elsewhere): 24.8 cm across like the 25 cm pot lid,
+    # set on the rim by the same place; CoverWithLidPolicy and lid_on assume nothing else of a lid
+    "lid_ref": lambda rig, n: n in rig.ann.objects and bool({"lid", "plate"} &
+                                                            set(rig.ann.asset_of(rig.ann.objects[n]).get("tags", []))),
     "tool_ref": lambda rig, n: n in rig.ann.objects and bool({"wiping_tool", "utensil", "sponge"} &
                                                              set(rig.ann.asset_of(rig.ann.objects[n]).get("tags", []))),
     "support_ref": lambda rig, n: any(s["name"] == n for s in rig.ann.supports),
