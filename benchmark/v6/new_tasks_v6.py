@@ -1771,7 +1771,8 @@ def t18():
             # 1.40 were picked): both bowls in from the sides, 5 cm apart
             # 11-21 night (v6_sticky_1121 s10): the second bowl alone at 1.45 found no path either; alone at 1.40 it
             # was picked (bowls_apart). The first one 1.18 (1.22 picked beside a neighbour), the second 1.41
-            {"": dict(add={B1: bowl(CAB4, 1.18, 0.42), B2: bowl(CAB4, 1.41, 0.42), **spoons}, remove=remove,
+            # 11-22 (v6_sticky_1121j s10): at 1.18, by the cabinet's left wall, no reachable grasp -- back to 1.22
+            {"": dict(add={B1: bowl(CAB4, 1.22, 0.42), B2: bowl(CAB4, 1.41, 0.42), **spoons}, remove=remove,
                       locked_articulated=[C6], goal=goal([B1, B2], (C4,)), watch=[B1, B2, S1, S2],
                       route=[nav(C6), look(C6)] + two_from(C4, B1, B2) + spoon_route)}),
     }
