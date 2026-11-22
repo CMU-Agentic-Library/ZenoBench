@@ -723,21 +723,27 @@ def T04(t):
                nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top")]
     shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.50], "yaw_deg": 0.0},  # front: 0.30 m headroom
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
+    # 11-21 (user): the cups put away stand on cabinet 4's top (0.62 m) instead -- inside a cabinet none was picked
+    C4_TOP = {"support": "kitchen_cabinet_4/top", "xy": [1.40, 0.46], "yaw_deg": 0.0}
+    C4_TOP_B = {"support": "kitchen_cabinet_4/top", "xy": [1.62, 0.46], "yaw_deg": 0.0}
+
+    def cup_on_top(x):
+        """the cup on cabinet 4's top: look there, take it to the drinks spot"""
+        return [look("kitchen_island/top"), nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"),
+                nav(x), pick(x), nav("kitchen_cabinet_6/top"), place(x, "kitchen_cabinet_6/top")]
     # x6_gd_cup_in_cabinets (11-17, user): iced lemonade -- a glass; the mug in plain view is a poor stand-in for a
     # cold drink.  cup_in_4: the glass in cabinet 4 (ideal); plastic_only: no glass, the kid's plastic cup in
     # cabinet 6 (moderate).  Cups: glass 0, plastic 1, mug 2; a cabinet door left open costs 1
     closed = [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
     ICED_COST = {C: 0, KID: 1, **{m: 2 for m in MUGS}}
     cup_cases = {
-        "cup_in_4": dict(move={C: shelf["kitchen_cabinet_4"]}, route=cup_from("kitchen_cabinet_6", "kitchen_cabinet_4"),
+        "cup_in_4": dict(move={C: C4_TOP}, route=cup_on_top(C),
                          failures=[f_initial("resource", [["on", C, "kitchen_cabinet_4/inside_shelf"]],
                                              fid="resource_cup_in_cabinet")]),
         "plastic_only": dict(
-            add={KID: {"asset": "plastic_cup", **shelf["kitchen_cabinet_6"]}},
+            add={KID: {"asset": "plastic_cup", **C4_TOP_B}},
             goal={"all": [*up(KID), ["hand_empty", "right"], *closed]},
-            route=[st if st.get("args", {}).get("object") != C and st.get("args", {}).get("destination") != C
-                   else {**st, "args": {k: (KID if v == C else v) for k, v in st["args"].items()}}
-                   for st in cup_from("kitchen_cabinet_4", "kitchen_cabinet_6")])}
+            route=cup_on_top(KID))}
     LT["x6_gd_cup_in_cabinets__cup_in_4"] = cost_tiers([(up(x), ICED_COST[x]) for x in (C, *MUGS)], [(closed, 1)])
     LT["x6_gd_cup_in_cabinets__plastic_only"] = cost_tiers([(up(x), ICED_COST[x]) for x in (KID, *MUGS)],
                                                            [(closed, 1)])
@@ -767,11 +773,12 @@ def T04(t):
     two_cases = {
         "glass_in_cabinet": dict(
             move={"mug": away["dining"][0]},
-            add={G2: {"asset": "breakfast_cup", **shelf["kitchen_cabinet_4"]}},
+            # 11-21 (user): on cabinet 4's top, not inside -- no cup inside a cabinet is picked (rim from above, the
+            # board over the shelf in the way: 1 of 6 in cabinet 4)
+            add={G2: {"asset": "breakfast_cup", **C4_TOP}},
             goal={"all": [*up(C), *up(G2), *apart(C, G2), ["is_closed", "kitchen_cabinet_4"], ["hand_empty", "right"]]},
-            route=first + open_explore("kitchen_cabinet_4") + [
-                nav(G2), pick(G2), S("retreat", obstacle="kitchen_cabinet_4", distance_m=0.3),
-                S("close", articulated="kitchen_cabinet_4"), nav(SPOT), place(G2, SPOT, [3.62, 0.36])]),
+            route=first + [nav("kitchen_cabinet_4/top"), look("kitchen_cabinet_4/top"),
+                           nav(G2), pick(G2), nav(SPOT), place(G2, SPOT, [3.62, 0.36])]),
         "mug": dict(move={"mug": away["dining"][0]}, route=second("mug", away["dining"][1])),
         "kid_cup": dict(remove=list(MUGS), add={KID: {"asset": "plastic_cup", **away["study"][0]}},
                         goal={"all": [*up(C), *up(KID), *apart(C, KID), ["hand_empty", "right"]]},

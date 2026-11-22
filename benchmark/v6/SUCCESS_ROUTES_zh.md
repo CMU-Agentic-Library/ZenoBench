@@ -3156,13 +3156,13 @@
 
 **参考调用顺序**：
 
-- 摆法 `glass_in_cabinet`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=glass_cup_2)` → 13. `pick(object=glass_cup_2)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `navigate(destination=kitchen_cabinet_6/top)` → 16. `place(object=glass_cup_2, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])` → 17. `navigate(destination=kitchen_cabinet_4)` → 18. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `glass_in_cabinet`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `navigate(destination=kitchen_cabinet_4/top)` → 8. `look(target=kitchen_cabinet_4/top)` → 9. `navigate(destination=glass_cup_2)` → 10. `pick(object=glass_cup_2)` → 11. `navigate(destination=kitchen_cabinet_6/top)` → 12. `place(object=glass_cup_2, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
 - 摆法 `mug`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=mug, region=dining_room_0_1)` → 8. `navigate(destination=mug)` → 9. `pick(object=mug)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=mug, receptacle=kitchen_cabinet_6/top, hint_xy=[3.622, 0.38])`
 - 摆法 `kid_cup`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=cup_counter_b)` → 4. `pick(object=cup_counter_b)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.342, 0.36])` → 7. `search(object=kid_cup, region=living_room_0_1)` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `navigate(destination=kitchen_cabinet_6/top)` → 11. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top, hint_xy=[3.62, 0.36])`
 
 ### x6_gd_cup_in_cabinets（Task）
 
-**情况**：（能力不足）“有客人要来，想喝冰柠檬水，在饮品角摆个杯子”：马克杯就在眼前，但装冰饮不合适；玻璃杯或孩子的塑料杯收在关着的矮柜里 → 打开柜子找。冰饮杯子：玻璃杯 0、塑料杯 1、马克杯 2；柜门没关 1；总数 0 好、1 次好、2 及以上最不好
+**情况**：（能力不足）“有客人要来，想喝冰柠檬水，在饮品角摆个杯子”：马克杯就在眼前，但装冰饮不合适；玻璃杯或孩子的塑料杯放在 4 号矮柜顶上（11-21：柜子里的杯子技能拿不出来）→ 去矮柜那边找。冰饮杯子：玻璃杯 0、塑料杯 1、马克杯 2；柜门没关 1；总数 0 好、1 次好、2 及以上最不好
 
 **指令**：有客人要来，想喝冰柠檬水，在靠墙矮柜上的饮品角摆个杯子。
 
@@ -3277,8 +3277,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `cup_in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_6)` → 4. `open(articulated=kitchen_cabinet_6)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_6)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_6)` → 9. `navigate(destination=kitchen_cabinet_4)` → 10. `open(articulated=kitchen_cabinet_4)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_4)` → 13. `straighten()` → 14. `navigate(destination=cup_counter_b)` → 15. `pick(object=cup_counter_b)` → 16. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)` → 19. `navigate(destination=kitchen_cabinet_4)` → 20. `close(articulated=kitchen_cabinet_4)`
-- 摆法 `plastic_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=kitchen_cabinet_6)` → 10. `open(articulated=kitchen_cabinet_6)` → 11. `bend()` → 12. `explore_furniture(furniture=kitchen_cabinet_6)` → 13. `straighten()` → 14. `navigate(destination=kid_cup)` → 15. `pick(object=kid_cup)` → 16. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 17. `navigate(destination=kitchen_cabinet_6/top)` → 18. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top)` → 19. `navigate(destination=kitchen_cabinet_6)` → 20. `close(articulated=kitchen_cabinet_6)`
+- 摆法 `cup_in_4`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4/top)` → 4. `look(target=kitchen_cabinet_4/top)` → 5. `navigate(destination=cup_counter_b)` → 6. `pick(object=cup_counter_b)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=cup_counter_b, receptacle=kitchen_cabinet_6/top)`
+- 摆法 `plastic_only`：1. `navigate(destination=kitchen_island/top)` → 2. `look(target=kitchen_island/top)` → 3. `navigate(destination=kitchen_cabinet_4/top)` → 4. `look(target=kitchen_cabinet_4/top)` → 5. `navigate(destination=kid_cup)` → 6. `pick(object=kid_cup)` → 7. `navigate(destination=kitchen_cabinet_6/top)` → 8. `place(object=kid_cup, receptacle=kitchen_cabinet_6/top)`
 
 ---
 
@@ -10945,7 +10945,7 @@
 
 ### where_his_cup_is（Task）
 
-**情况**：台面上有瓷杯和马克杯；他的塑料杯也在那儿，或者收在矮柜里，或者家里根本没有 → 到台面看：有他的就拿；只有别人的 → 打开矮柜找他的，拿出来关好门；柜里也没有 → 拿家里的杯子代替
+**情况**：台面上有瓷杯和马克杯；他的塑料杯也在那儿，或者收在 4 号矮柜顶上，或者家里根本没有 → 到台面看：有他的就拿；只有别人的 → 去矮柜顶上找他的；那里也没有 → 拿家里的杯子代替
 
 **成功条件**（D 按摆法：`on_counter` D = 1、理想物在，`in_cabinet` D = 1、理想物在，`no_kid_cup` D = 0、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -11093,7 +11093,7 @@
 **参考调用顺序**：
 
 - 摆法 `on_counter`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kid_cup)` → 4. `pick(object=kid_cup)` → 5. `navigate(destination=bookcase_3/top)` → 6. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
-- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `navigate(destination=kid_cup)` → 9. `pick(object=kid_cup)` → 10. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `in_cabinet`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4/top)` → 4. `look(target=kitchen_cabinet_4/top)` → 5. `navigate(destination=kid_cup)` → 6. `pick(object=kid_cup)` → 7. `navigate(destination=bookcase_3/top)` → 8. `place(object=kid_cup, receptacle=bookcase_3/top, hint_xy=[2.093, -4.837])`
 - 摆法 `no_kid_cup`：1. `navigate(destination=kitchen_counter_2/top)` → 2. `look(target=kitchen_counter_2/top)` → 3. `navigate(destination=kitchen_cabinet_4)` → 4. `open(articulated=kitchen_cabinet_4)` → 5. `bend()` → 6. `explore_furniture(furniture=kitchen_cabinet_4)` → 7. `straighten()` → 8. `close(articulated=kitchen_cabinet_4)` → 9. `navigate(destination=cup_counter_b)` → 10. `pick(object=cup_counter_b)` → 11. `navigate(destination=bookcase_3/top)` → 12. `place(object=cup_counter_b, receptacle=bookcase_3/top, hint_xy=[2.093, -4.817])`
 
 ### cup_out_of_view（Task）
@@ -11668,7 +11668,7 @@
 
 ### bowl_put_away（Task）
 
-**情况**：碗收在矮柜里 → 打开找，拿出来关好；柜里只有盘子和马克杯时拿马克杯（不拿盘子）
+**情况**：碗收在矮柜里 → 打开找，拿出来关好；没有碗、矮柜顶上只有盘子和马克杯时拿马克杯（不拿盘子；11-21 马克杯从柜里挪到柜顶）
 
 **成功条件**（D 按摆法：`bowl_inside` D = 1、理想物在，`mug_inside` D = 1、理想物不在；理想物不在的摆法里，能做到的最好结果算好，往下依次次好、最不好；以下各档都算成功，分数不同）：
 
@@ -11696,7 +11696,7 @@
 **参考调用顺序**：
 
 - 摆法 `bowl_inside`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=soup_bowl_1)` → 7. `pick(object=soup_bowl_1)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=soup_bowl_1, receptacle=kitchen_island/top, hint_xy=[8.06, 1.675])` → 11. `navigate(destination=kitchen_cabinet_4)` → 12. `close(articulated=kitchen_cabinet_4)`
-- 摆法 `mug_inside`：1. `navigate(destination=kitchen_cabinet_4)` → 2. `open(articulated=kitchen_cabinet_4)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_4)` → 5. `straighten()` → 6. `navigate(destination=stored_mug)` → 7. `pick(object=stored_mug)` → 8. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=stored_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])` → 11. `navigate(destination=kitchen_cabinet_4)` → 12. `close(articulated=kitchen_cabinet_4)`
+- 摆法 `mug_inside`：1. `navigate(destination=kitchen_cabinet_4/top)` → 2. `look(target=kitchen_cabinet_4/top)` → 3. `navigate(destination=stored_mug)` → 4. `pick(object=stored_mug)` → 5. `navigate(destination=kitchen_island/top)` → 6. `place(object=stored_mug, receptacle=kitchen_island/top, hint_xy=[8.06, 1.655])`
 
 ### no_bowl（Task）
 

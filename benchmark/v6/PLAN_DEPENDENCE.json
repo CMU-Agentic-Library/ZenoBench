@@ -6,9 +6,9 @@
    "candidates": "per layout: the control's route, every other layout's route of the variant, every route of the task's other variants; per variant: one route through all its layouts"
   },
   "control_route_on_other_variants": {
-   "passes": 56,
+   "passes": 57,
    "goal_not_met": 96,
-   "not_observed": 58,
+   "not_observed": 57,
    "resource_missing": 71,
    "argument_mismatch": 5
   },
@@ -52,8 +52,8 @@
    "T30 bowl_not_plate"
   ],
   "routes_between_layouts": {
-   "passes": 130,
-   "goal_not_met": 185,
+   "passes": 131,
+   "goal_not_met": 184,
    "not_observed": 28,
    "argument_mismatch": 65,
    "resource_missing": 136
@@ -95,7 +95,6 @@
    "T03 utensils_apart",
    "T03 which_bin_by_contents",
    "T04 two_guests",
-   "T04 x6_gd_cup_in_cabinets",
    "T05 no_pen_pencil_away",
    "T05 x6_gd_pen_or_pencil_cabinets",
    "T06 display_spot_or_tv",
@@ -138,7 +137,6 @@
    "T28 where_his_cup_is",
    "T28 which_bed",
    "T29 which_table",
-   "T30 bowl_put_away",
    "T30 bowls_in_cabinet"
   ],
   "own_route_fails_with_gate": [],
@@ -2116,7 +2114,7 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "two_guests",
    "layout": "two_guests__glass_in_cabinet",
-   "steps": 18,
+   "steps": 12,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright cup_counter_b",
@@ -2197,7 +2195,7 @@
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "x6_gd_cup_in_cabinets",
    "layout": "x6_gd_cup_in_cabinets__cup_in_4",
-   "steps": 20,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright cup_counter_b"
@@ -2206,13 +2204,15 @@
    "other_layouts": {
     "x6_gd_cup_in_cabinets__plastic_only": "resource_missing"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "cup_available"
+   ]
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
    "variant": "x6_gd_cup_in_cabinets",
    "layout": "x6_gd_cup_in_cabinets__plastic_only",
-   "steps": 20,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"
@@ -2221,7 +2221,9 @@
    "other_layouts": {
     "x6_gd_cup_in_cabinets__cup_in_4": "resource_missing"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "no_cup_kid"
+   ]
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -5258,17 +5260,20 @@
    "task": "T28_cup_to_bedside",
    "variant": "where_his_cup_is",
    "layout": "where_his_cup_is__in_cabinet",
-   "steps": 14,
+   "steps": 8,
    "own_route_passes": true,
    "geometric_atoms": [
     "upright kid_cup"
    ],
-   "control_route": "not_observed",
+   "control_route": "passes",
    "other_layouts": {
-    "where_his_cup_is__on_counter": "not_observed",
+    "where_his_cup_is__on_counter": "passes",
     "where_his_cup_is__no_kid_cup": "goal_not_met"
    },
-   "other_variants_passing": []
+   "other_variants_passing": [
+    "which_bed__east",
+    "already_there__wrong_cup"
+   ]
   },
   {
    "task": "T28_cup_to_bedside",
@@ -5533,7 +5538,7 @@
    "geometric_atoms": [],
    "control_route": "not_observed",
    "other_layouts": {
-    "bowl_put_away__mug_inside": "goal_not_met"
+    "bowl_put_away__mug_inside": "not_observed"
    },
    "other_variants_passing": []
   },
@@ -5541,7 +5546,7 @@
    "task": "T30_bowls_for_soup",
    "variant": "bowl_put_away",
    "layout": "bowl_put_away__mug_inside",
-   "steps": 12,
+   "steps": 6,
    "own_route_passes": true,
    "geometric_atoms": [],
    "control_route": "resource_missing",
@@ -8179,10 +8184,10 @@
     "two_guests__mug"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
    "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
@@ -8192,10 +8197,10 @@
     "two_guests__kid_cup"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
    "route_b_on_a": "resource_missing",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T04_cup_or_mug_to_cabinet",
@@ -8218,10 +8223,10 @@
     "x6_gd_cup_in_cabinets__plastic_only"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
    "route_b_on_a": "resource_missing",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T05_pen_or_pencil_to_desk",
@@ -10129,8 +10134,8 @@
     "where_his_cup_is__in_cabinet"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
-   "route_a_on_b": "not_observed",
+   "same_before_key_observation": false,
+   "route_a_on_b": "passes",
    "route_b_on_a": "passes",
    "hidden_state_branch": false
   },
@@ -10155,10 +10160,10 @@
     "where_his_cup_is__no_kid_cup"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
    "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
+   "hidden_state_branch": false
   },
   {
    "task": "T28_cup_to_bedside",
@@ -10298,10 +10303,10 @@
     "bowl_put_away__mug_inside"
    ],
    "start_room": "living_room_0_0",
-   "same_before_key_observation": true,
+   "same_before_key_observation": false,
    "route_a_on_b": "resource_missing",
-   "route_b_on_a": "goal_not_met",
-   "hidden_state_branch": true
+   "route_b_on_a": "not_observed",
+   "hidden_state_branch": false
   },
   {
    "task": "T30_bowls_for_soup",
