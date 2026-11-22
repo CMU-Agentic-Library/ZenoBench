@@ -2610,7 +2610,7 @@
   {
    "task": "T14_shelve_the_book",
    "layout": "next_in_series__on_bookcase",
-   "steps": 11,
+   "steps": 12,
    "atoms_checked": 5,
    "atoms_geometric": 0,
    "geometric_atoms": [],

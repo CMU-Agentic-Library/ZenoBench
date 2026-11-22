@@ -161322,8 +161322,8 @@
        "asset": "book_red",
        "support": "bookcase_2/top",
        "xy": [
-        1.205,
-        -0.45
+        1.0,
+        -0.559
        ],
        "yaw_deg": 90.0
       }
@@ -161349,26 +161349,6 @@
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "blue_book_case",
-         "red_book_2"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.7151,
-         -0.57,
-         1.2887,
-         -0.33
-        ],
-        "dy": [
-         -0.03,
-         0.08
-        ],
-        "pick": [
-         "red_book_2"
-        ]
-       },
        {
         "names": [
          "paperback_shelf"
@@ -161426,14 +161406,6 @@
        }
       ],
       "static": {
-       "bookcase_2/top": [
-        [
-         0.88,
-         -0.5337,
-         1.12,
-         -0.3663
-        ]
-       ],
        "desk_1/top": [
         [
          -0.928,
@@ -161444,32 +161416,6 @@
        ]
       },
       "reach": {
-       "bookcase_2/top": [
-        [
-         0,
-         1,
-         1.295,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         0,
-         -1,
-         0.705,
-         -0.619,
-         -0.335,
-         0.2
-        ],
-        [
-         1,
-         -1,
-         -0.619,
-         0.705,
-         1.295,
-         0.2
-        ]
-       ],
        "bookcase_3/top": [
         [
          0,
@@ -163395,30 +163341,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "book_red"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "book_red"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "book_red",
-        "receptacle": "bookcase_2/top",
-        "hint_xy": [
-         1.0,
-         -0.45
-        ]
        }
       },
       {
@@ -163453,6 +163376,35 @@
         "hint_xy": [
          -0.808,
          -6.166
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         1.005,
+         -0.459
         ]
        }
       }
